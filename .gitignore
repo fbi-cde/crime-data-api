@@ -1,89 +1,64 @@
-# Byte-compiled / optimized / DLL files
-__pycache__/
+### OSX ###
+.DS_Store
+.AppleDouble
+.LSOverride
+
+### SublimeText ###
+# cache files for sublime text
+*.tmlanguage.cache
+*.tmPreferences.cache
+*.stTheme.cache
+
+# workspace files are user-specific
+*.sublime-workspace
+
+# project files should be checked into the repository, unless a significant
+# proportion of contributors will probably not be using SublimeText
+# *.sublime-project
+
+# sftp configuration file
+sftp-config.json
+
+# Basics
 *.py[cod]
-*$py.class
+__pycache__
 
-# C extensions
-*.so
-
-# Distribution / packaging
-.Python
-env/
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-*.egg-info/
-.installed.cfg
-*.egg
-
-# PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
-*.manifest
-*.spec
-
-# Installer logs
+# Logs
+*.log
 pip-log.txt
-pip-delete-this-directory.txt
 
 # Unit test / coverage reports
-htmlcov/
-.tox/
 .coverage
-.coverage.*
-.cache
+.tox
 nosetests.xml
-coverage.xml
-*,cover
-.hypothesis/
+htmlcov
 
 # Translations
 *.mo
 *.pot
 
-# Django stuff:
-*.log
-local_settings.py
+# Pycharm
+.idea/*
 
-# Flask stuff:
-instance/
-.webassets-cache
 
-# Scrapy stuff:
-.scrapy
+# Vim
 
-# Sphinx documentation
-docs/_build/
+*~
+*.swp
+*.swo
 
-# PyBuilder
-target/
+# npm
+node_modules/
 
-# IPython Notebook
-.ipynb_checkpoints
+# Compass
+.sass-cache
 
-# pyenv
-.python-version
-
-# celery beat schedule file
-celerybeat-schedule
-
-# dotenv
+# virtual environments
 .env
 
-# virtualenv
-venv/
-ENV/
+# User-uploaded media
+crime_data_api/media/
 
-# Spyder project settings
-.spyderproject
+# Hitch directory
+tests/.hitch
 
-# Rope project settings
-.ropeproject

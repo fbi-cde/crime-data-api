@@ -1,0 +1,5 @@
+[run]
+include = crime_data_api/*
+omit = *migrations*, *tests*
+plugins =
+    django_coverage_plugin
