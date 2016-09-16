@@ -81,7 +81,7 @@ for state in states:
                 key = cell.attrs['headers'][-1]
                 # If it's not in the field map, we don't care about it.
                 if key in bjs.field_map:
-                    field = bjs.field_map[cell.attrs['headers'][-1]]
+                    field = bjs.field_map[key]
                     value = cell.text.strip().replace(',','')
                     try:
                         value = int(value)
