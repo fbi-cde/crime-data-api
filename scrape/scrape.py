@@ -7,6 +7,30 @@ class BJS(object):
 
     url = 'http://www.bjs.gov/ucrdata/Search/Crime/Local/RunCrimeOneYearofData.cfm'
 
+    field_map = {
+        "months": "months_reporting",
+        "rape2": "forcible_rape_rate_per_1000",
+        "mvtheft2": "motor_vehicle_theft_rate_per_1000",
+        "murd2": "murder_rate_per_1000",
+        "pctot2": "property_crime_rate_total_per_1000",
+        "aggr": "aggravated_assault",
+        "population": "population",
+        "larc": "larceny",
+        "rob2": "robbery_per_1000",
+        "burg2": "burglary_per_1000",
+        "vctot2": "violent_crime_rate_per_1000",
+        "murd": "murder",
+        "vctot": "violent_crime_total",
+        "aggr2": "aggravated_assault_rate_per_1000",
+        "state": "state",
+        "pctot": "property_crime",
+        "mvtheft": "motor_vehicle_theft",
+        "burg": "burglary",
+        "larc2": "larceny_rate_per_1000",
+        "rape": "forcible_rape",
+        "rob": "robbery"
+    }
+
     def __init__(self):
         self.browser = RoboBrowser(history=True)
         self.data = {}
@@ -38,7 +62,8 @@ for state in states:
     print('State ' + state)
     bjs.data[state] = {}
     bjs.navigate([{'StateId': state}])
-    years = bjs.form['YearStart'].options
+    years = ['1986'] #bjs.form['YearStart'].options
+
     for year in years:
         print('Year ' + year)
         bjs.data[state][year] = {}
@@ -47,13 +72,15 @@ for state in states:
 
         table = bjs.browser.find('table', title='Data table: crime, local-level, one year of data')
         agency = None
+        print(table)
         for cell in table.find_all('td', headers=True):
             if cell.attrs['headers'] == ['agency']:
                 agency = cell.text
                 print('agency ' + agency)
                 bjs.data[state][year][agency] = {}
             else:
-                bjs.data[state][year][agency][cell.attrs['headers'][-1]] = cell.text
+                field = bjs.field_map[cell.attrs['headers'][-1]]
+                bjs.data[state][year][agency][field] = cell.text
 
 
 with open('data.json', 'w') as outfile:
