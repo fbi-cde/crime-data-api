@@ -72,7 +72,6 @@ for state in states:
 
         table = bjs.browser.find('table', title='Data table: crime, local-level, one year of data')
         agency = None
-        print(table)
         for cell in table.find_all('td', headers=True):
             if cell.attrs['headers'] == ['agency']:
                 agency = cell.text
