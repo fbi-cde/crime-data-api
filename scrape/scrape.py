@@ -20,6 +20,30 @@ class BJS(object):
 
     url = 'http://www.bjs.gov/ucrdata/Search/Crime/Local/RunCrimeOneYearofData.cfm'
 
+    field_map = {
+        "months": "months_reporting",
+        # "rape2": "forcible_rape_rate_per_1000",
+        # "mvtheft2": "motor_vehicle_theft_rate_per_1000",
+        # "murd2": "murder_rate_per_1000",
+        # "pctot2": "property_crime_rate_total_per_1000",
+        "aggr": "aggravated_assault",
+        # "population": "population",
+        "larc": "larceny",
+        # "rob2": "robbery_per_1000",
+        # "burg2": "burglary_per_1000",
+        # "vctot2": "violent_crime_rate_per_1000",
+        "murd": "murder",
+        "vctot": "violent_crime_total",
+        # "aggr2": "aggravated_assault_rate_per_1000",
+        "state": "state",
+        "pctot": "property_crime",
+        "mvtheft": "motor_vehicle_theft",
+        "burg": "burglary",
+        # "larc2": "larceny_rate_per_1000",
+        "rape": "forcible_rape",
+        "rob": "robbery"
+    }
+
     def __init__(self):
         self.browser = RoboBrowser(history=True)
         self.data = {}
@@ -70,6 +94,13 @@ for (index, state_id) in enumerate(states):
                 bjs.data[state][year][agency] = {}
             else:
                 bjs.data[state][year][agency][cell.attrs['headers'][-1]] = cast(cell.text)
+                key = cell.attrs['headers'][-1]
+                # If it's not in the field map, we don't care about it.
+                if key in bjs.field_map:
+                    field = bjs.field_map[key]
+                    value = cell.text.replace(',','')
+                    value = cast(value)
+                    bjs.data[state][year][agency][field] = value
 
 
 with open('data.json', 'w') as outfile:
