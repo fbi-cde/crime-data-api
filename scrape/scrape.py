@@ -62,7 +62,7 @@ for state in states:
     print('State ' + state)
     bjs.data[state] = {}
     bjs.navigate([{'StateId': state}])
-    years = ['1986'] #bjs.form['YearStart'].options
+    years = bjs.form['YearStart'].options
 
     for year in years:
         print('Year ' + year)
