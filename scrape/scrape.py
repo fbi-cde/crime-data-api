@@ -1,7 +1,20 @@
 from robobrowser import RoboBrowser
+
+import decimal
 import json
 
 ALL = 'all values'
+
+def cast(datum):
+    try:
+        return int(datum)
+    except (ValueError, ):
+        try:
+            return decimal.Decimal(datum)
+        except (ValueError, decimal.InvalidOperation):
+            if not datum.strip():
+                return None
+            return datum.strip()
 
 class BJS(object):
 
@@ -34,26 +47,29 @@ class BJS(object):
 bjs = BJS()
 bjs.navigate()
 states = bjs.form['StateId'].options
-for state in states:
+state_labels = bjs.form['StateId'].labels
+for (index, state_id) in enumerate(states):
+    state = state_labels[index].strip()
     print('State ' + state)
     bjs.data[state] = {}
-    bjs.navigate([{'StateId': state}])
+    bjs.navigate([{'StateId': state_id}])
     years = bjs.form['YearStart'].options
-    for year in years:
-        print('Year ' + year)
+    for year_str in years:
+        year = cast(year_str)
+        print('Year %s' % year)
         bjs.data[state][year] = {}
-        navigation = {'YearStart': year, 'CrimeCrossId': ALL, 'DataType': ALL, 'submit': 'NextPage'}
-        bjs.navigate([{'StateId': state}, navigation])
+        navigation = {'YearStart': year_str, 'CrimeCrossId': ALL, 'DataType': ALL, 'submit': 'NextPage'}
+        bjs.navigate([{'StateId': state_id}, navigation])
 
         table = bjs.browser.find('table', title='Data table: crime, local-level, one year of data')
         agency = None
         for cell in table.find_all('td', headers=True):
             if cell.attrs['headers'] == ['agency']:
-                agency = cell.text
+                agency = cell.text.strip()
                 print('agency ' + agency)
                 bjs.data[state][year][agency] = {}
             else:
-                bjs.data[state][year][agency][cell.attrs['headers'][-1]] = cell.text
+                bjs.data[state][year][agency][cell.attrs['headers'][-1]] = cast(cell.text)
 
 
 with open('data.json', 'w') as outfile:
