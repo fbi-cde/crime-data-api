@@ -5,8 +5,6 @@ ALL = 'all values'
 
 class BJS(object):
 
-    url = 'http://www.bjs.gov/ucrdata/Search/Crime/Local/RunCrimeOneYearofData.cfm'
-
     field_map = {
         "months": "months_reporting",
         # "rape2": "forcible_rape_rate_per_1000",
@@ -31,9 +29,11 @@ class BJS(object):
         "rob": "robbery"
     }
 
-    def __init__(self):
+    def __init__(self, url):
+        self.url = url
         self.browser = RoboBrowser(history=True)
         self.data = {}
+
 
     def navigate(self, selections=[]):
         """
@@ -41,7 +41,9 @@ class BJS(object):
         """
         self.browser.open(self.url)
         self.form = self.browser.get_form('CFForm_1')
+        print(self.form)
         for sel in selections:
+            print(sel)
             if 'submit' in sel:
                 which_submit = self.form.submit_fields[sel.pop('submit')]
             else:
@@ -55,40 +57,94 @@ class BJS(object):
             self.form = self.browser.get_form('CFForm_1')
 
 
-bjs = BJS()
+# bjs = BJS('http://www.bjs.gov/ucrdata/Search/Crime/Local/RunCrimeOneYearofData.cfm')
+# bjs.navigate()
+# states = bjs.form['StateId'].options
+# for state in states:
+#     print('State ' + state)
+#     bjs.data[state] = {}
+#     bjs.navigate([{'StateId': state}])
+#     years = bjs.form['YearStart'].options
+
+#     for year in years:
+#         print('Year ' + year)
+#         bjs.data[state][year] = {}
+#         navigation = {'YearStart': year, 'CrimeCrossId': ALL, 'DataType': ALL, 'submit': 'NextPage'}
+#         bjs.navigate([{'StateId': state}, navigation])
+
+#         table = bjs.browser.find('table', title='Data table: crime, local-level, one year of data')
+#         agency = None
+#         for cell in table.find_all('td', headers=True):
+#             if cell.attrs['headers'] == ['agency']:
+#                 agency = cell.text
+#                 print('agency ' + agency)
+#                 bjs.data[state][year][agency] = {}
+#             else:
+#                 key = cell.attrs['headers'][-1]
+#                 # If it's not in the field map, we don't care about it.
+#                 if key in bjs.field_map:
+#                     field = bjs.field_map[key]
+#                     value = cell.text.strip().replace(',','')
+#                     try:
+#                         value = int(value)
+#                     except:
+#                         pass
+#                     bjs.data[state][year][agency][field] = value
+
+
+# with open('data.json', 'w') as outfile:
+#     json.dump(bjs.data, outfile, indent=2)
+
+
+bjs = BJS('http://www.bjs.gov/ucrdata/Search/Crime/State/OneYearofData.cfm')
 bjs.navigate()
+
 states = bjs.form['StateId'].options
+years = bjs.form['YearStart'].options
 for state in states:
-    print('State ' + state)
+    # print('State ' + state)
     bjs.data[state] = {}
-    bjs.navigate([{'StateId': state}])
-    years = bjs.form['YearStart'].options
+    # bjs.navigate([{'StateId': state}])
+    # years = bjs.form['YearStart'].options
 
     for year in years:
         print('Year ' + year)
+        print('State ' + state)
         bjs.data[state][year] = {}
-        navigation = {'YearStart': year, 'CrimeCrossId': ALL, 'DataType': ALL, 'submit': 'NextPage'}
-        bjs.navigate([{'StateId': state}, navigation])
-
-        table = bjs.browser.find('table', title='Data table: crime, local-level, one year of data')
-        agency = None
+        navigation = {'StateId': state, 'YearStart': year, 'DataType': ALL, 'submit': 'NextPage'}
+        bjs.navigate([navigation])
+        print(bjs.browser)
+        table = bjs.browser.find('table', title='Data table: crime, state level, one year of data')
+        print(table)
         for cell in table.find_all('td', headers=True):
-            if cell.attrs['headers'] == ['agency']:
-                agency = cell.text
-                print('agency ' + agency)
-                bjs.data[state][year][agency] = {}
-            else:
-                key = cell.attrs['headers'][-1]
-                # If it's not in the field map, we don't care about it.
-                if key in bjs.field_map:
-                    field = bjs.field_map[key]
-                    value = cell.text.strip().replace(',','')
-                    try:
-                        value = int(value)
-                    except:
-                        pass
-                    bjs.data[state][year][agency][field] = value
+            key = cell.attrs['headers'][-1]
+            print(key)
+            print(cell)
+        # If it's not in the field map, we don't care about it.
+        # if key in bjs.field_map:
+        #     field = bjs.field_map[key]
+        #     value = cell.text.strip().replace(',','')
+        #     try:
+        #         value = int(value)
+        #     except:
+        #         pass
+        #     bjs.data[state][year][agency][field] = value
 
+        #agency = None
+        # for cell in table.find_all('td', headers=True):
+        #     if cell.attrs['headers'] == ['agency']:
+        #         agency = cell.text
+        #         print('agency ' + agency)
+        #         bjs.data[state][year][agency] = {}
+        #     else:
+        #         key = cell.attrs['headers'][-1]
+        #         # If it's not in the field map, we don't care about it.
+        #         if key in bjs.field_map:
+        #             field = bjs.field_map[key]
+        #             value = cell.text.strip().replace(',','')
+        #             try:
+        #                 value = int(value)
+        #             except:
+        #                 pass
+        #             bjs.data[state][year][agency][field] = value
 
-with open('data.json', 'w') as outfile:
-    json.dump(bjs.data, outfile, indent=2)
