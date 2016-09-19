@@ -71,45 +71,6 @@ class BJS(object):
             self.form = self.browser.get_form('CFForm_1')
 
 
-# bjs = BJS('http://www.bjs.gov/ucrdata/Search/Crime/Local/RunCrimeOneYearofData.cfm')
-# bjs.navigate()
-# states = bjs.form['StateId'].options
-# for state in states:
-#     print('State ' + state)
-#     bjs.data[state] = {}
-#     bjs.navigate([{'StateId': state}])
-#     years = bjs.form['YearStart'].options
-
-#     for year in years:
-#         print('Year ' + year)
-#         bjs.data[state][year] = {}
-#         navigation = {'YearStart': year, 'CrimeCrossId': ALL, 'DataType': ALL, 'submit': 'NextPage'}
-#         bjs.navigate([{'StateId': state}, navigation])
-
-#         table = bjs.browser.find('table', title='Data table: crime, local-level, one year of data')
-#         agency = None
-#         for cell in table.find_all('td', headers=True):
-#             if cell.attrs['headers'] == ['agency']:
-#                 agency = cell.text
-#                 print('agency ' + agency)
-#                 bjs.data[state][year][agency] = {}
-#             else:
-#                 key = cell.attrs['headers'][-1]
-#                 # If it's not in the field map, we don't care about it.
-#                 if key in bjs.field_map:
-#                     field = bjs.field_map[key]
-#                     value = cell.text.strip().replace(',','')
-#                     try:
-#                         value = int(value)
-#                     except:
-#                         pass
-#                     bjs.data[state][year][agency][field] = value
-
-
-# with open('data.json', 'w') as outfile:
-#     json.dump(bjs.data, outfile, indent=2)
-
-
 bjs = BJS('http://www.bjs.gov/ucrdata/Search/Crime/State/OneYearofData.cfm')
 bjs.navigate()
 
