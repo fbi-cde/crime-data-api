@@ -71,41 +71,41 @@ class BJS(object):
             self.form = self.browser.get_form('CFForm_1')
 
 
-# bjs = BJS('http://www.bjs.gov/ucrdata/Search/Crime/State/OneYearofData.cfm')
-# bjs.navigate()
+bjs = BJS('http://www.bjs.gov/ucrdata/Search/Crime/State/OneYearofData.cfm')
+bjs.navigate()
 
-# states = bjs.form['StateId'].options
-# years = bjs.form['YearStart'].options
-# state_labels = bjs.form['StateId'].labels
-# print("=========== STARTING STATE LEVEL BJS SCRAPE ============")
-# for (index, state_id) in enumerate(states):
-#     state = state_labels[index].strip()
-#     bjs.data[state] = {}
+states = bjs.form['StateId'].options
+years = bjs.form['YearStart'].options
+state_labels = bjs.form['StateId'].labels
+print("=========== STARTING STATE LEVEL BJS SCRAPE ============")
+for (index, state_id) in enumerate(states):
+    state = state_labels[index].strip()
+    bjs.data[state] = {}
 
-#     for year in years:
-#         bjs.data[state][year] = {}
-#         navigation = {'StateId': state, 'YearStart': year, 'DataType': ALL, 'submit': 'NextPage'}
-#         bjs.navigate([navigation])
-#         table = bjs.browser.find('table', title='Data table: crime, state level, one year of data')
+    for year in years:
+        bjs.data[state][year] = {}
+        navigation = {'StateId': state, 'YearStart': year, 'DataType': ALL, 'submit': 'NextPage'}
+        bjs.navigate([navigation])
+        table = bjs.browser.find('table', title='Data table: crime, state level, one year of data')
 
-#         if table is not None:
-#             for cell in table.find_all('td', headers=True):
-#                 if cell.attrs['headers'] == ['state']:
-#                     bjs.data[state][year] = {}
-#                 else:
-#                     key = cell.attrs['headers'][-1]
-#                     # If it's not in the field map, we don't care about it.
-#                     if key in bjs.field_map:
-#                         field = bjs.field_map[key]
-#                         value = cell.text.replace(',','')
-#                         value = cast(value)
-#                         bjs.data[state][year][field] = value
-#         else:
-#             bjs.data[state][year] = {}
+        if table is not None:
+            for cell in table.find_all('td', headers=True):
+                if cell.attrs['headers'] == ['state']:
+                    bjs.data[state][year] = {}
+                else:
+                    key = cell.attrs['headers'][-1]
+                    # If it's not in the field map, we don't care about it.
+                    if key in bjs.field_map:
+                        field = bjs.field_map[key]
+                        value = cell.text.replace(',','')
+                        value = cast(value)
+                        bjs.data[state][year][field] = value
+        else:
+            bjs.data[state][year] = {}
 
-# with open(states_file, 'w') as outfile:
-#     print("DUMPING STATES DATA TO " + states_file)
-#     json.dump(bjs.data, outfile, indent=2)
+with open(states_file, 'w') as outfile:
+    print("DUMPING STATES DATA TO " + states_file)
+    json.dump(bjs.data, outfile, indent=2)
 
 print("=========== STARTING AGENCY LEVEL BJS SCRAPE ============")
 
