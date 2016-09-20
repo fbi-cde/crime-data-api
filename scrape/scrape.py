@@ -131,7 +131,8 @@ for (index, state_id) in enumerate(states):
             for cell in table.find_all('td', headers=True):
                 if cell.attrs['headers'] == ['agency']:
                     agency = cell.text.strip()
-                    bjs.data[state][agency] = {}
+                    if agency not in bjs.data[state]:
+                        bjs.data[state][agency] = {}
                     bjs.data[state][agency][year] = {}
                 else:
                     key = cell.attrs['headers'][-1]
@@ -141,9 +142,6 @@ for (index, state_id) in enumerate(states):
                         value = cell.text.replace(',','')
                         value = cast(value)
                         bjs.data[state][agency][year][field] = value
-        else:
-            bjs.data[state][agency][year] = value
-
 
 with open(agencies_file, 'w') as outfile:
     print("DUMPING AGENCIES DATA TO " + agencies_file)
