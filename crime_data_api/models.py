@@ -19,6 +19,7 @@ class Person(models.Model):
     name = models.CharField(max_length=256)
     race = models.ForeignKey(Race)
     sex = models.CharField(max_length=128, null=True)
+    age = models.IntegerField(null=True)
 
 class WeaponType(models.Model):
     name = models.CharField(max_length=128, null=True)
@@ -85,6 +86,7 @@ class Incident(models.Model):
     '''''
     NIBRS - Incident Level data.
     '''''
+    agency_ori = models.ForeignKey(AgencyOri, on_delete=models.CASCADE)
     date  = models.DateField(null=False)
     offender = models.ForeignKey(Person, related_name='+')
     victim = models.ForeignKey(Person, related_name='+')
