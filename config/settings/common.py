@@ -100,7 +100,7 @@ MANAGERS = ADMINS
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
-    'default': env.db('DATABASE_URL', default='postgres:///fbi_ucr'),
+    'default': env.db('DATABASE_URL', default='postgres:///crime_data_api'),
 }
 DATABASES['default']['ATOMIC_REQUESTS'] = True
 
