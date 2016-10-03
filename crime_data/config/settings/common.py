@@ -12,8 +12,8 @@ from __future__ import absolute_import, unicode_literals
 
 import environ
 
-ROOT_DIR = environ.Path(__file__) - 3  # (crime_data_api/config/settings/common.py - 3 = crime_data_api/)
-APPS_DIR = ROOT_DIR.path('crime_data_api')
+ROOT_DIR = environ.Path(__file__) - 4  # (crime_data_api/crime_data/config/settings/common.py - 3 = crime_data_api/)
+APPS_DIR = ROOT_DIR.path('crime_data')
 
 env = environ.Env()
 
@@ -44,7 +44,7 @@ THIRD_PARTY_APPS = (
 # Apps specific for this project go here.
 LOCAL_APPS = (
     # custom users app
-    'crime_data_api.users.apps.UsersConfig',
+    'api.users.apps.UsersConfig',
     'ref',
     'supp',
     'shr',
@@ -77,7 +77,7 @@ MIDDLEWARE_CLASSES = (
 # MIGRATIONS CONFIGURATION
 # ------------------------------------------------------------------------------
 MIGRATION_MODULES = {
-    'sites': 'crime_data_api.contrib.sites.migrations'
+    'sites': 'api.contrib.sites.migrations'
 }
 
 # DEBUG
@@ -111,7 +111,7 @@ MANAGERS = ADMINS
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
-    'default': env.db('DATABASE_URL', default='postgres:///crime_data_api'),
+    'default': env.db('DATABASE_URL', default='postgres:///crime_data'),
 }
 DATABASES['default']['ATOMIC_REQUESTS'] = True
 
@@ -225,8 +225,8 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
 ACCOUNT_ALLOW_REGISTRATION = env.bool('DJANGO_ACCOUNT_ALLOW_REGISTRATION', True)
-ACCOUNT_ADAPTER = 'crime_data_api.users.adapters.AccountAdapter'
-SOCIALACCOUNT_ADAPTER = 'crime_data_api.users.adapters.SocialAccountAdapter'
+ACCOUNT_ADAPTER = 'api.users.adapters.AccountAdapter'
+SOCIALACCOUNT_ADAPTER = 'api.users.adapters.SocialAccountAdapter'
 
 # Custom user app defaults
 # Select the correct user model

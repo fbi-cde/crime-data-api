@@ -12,7 +12,7 @@ class ShrCircumstances(models.Model):
     current_flag = models.CharField(max_length=1, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'shr_circumstances'
 
 
@@ -34,7 +34,7 @@ class ShrIncident(models.Model):
     nibrs_incident_id = models.BigIntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'shr_incident'
         unique_together = (('shr_month', 'incident_num', 'data_home'),)
 
@@ -54,7 +54,7 @@ class ShrMonth(models.Model):
     did = models.BigIntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'shr_month'
         unique_together = (('agency', 'data_year', 'month_num', 'data_home'),)
 
@@ -71,7 +71,7 @@ class ShrOffender(models.Model):
     nibrs_offender_id = models.BigIntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'shr_offender'
 
 
@@ -86,7 +86,7 @@ class ShrOffense(models.Model):
     nibrs_offense_id = models.BigIntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'shr_offense'
 
 
@@ -96,7 +96,7 @@ class ShrRelationship(models.Model):
     relationship_name = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'shr_relationship'
 
 
@@ -106,7 +106,7 @@ class ShrSituation(models.Model):
     situation_name = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'shr_situation'
 
 
@@ -122,5 +122,5 @@ class ShrVictim(models.Model):
     nibrs_offense_id = models.BigIntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'shr_victim'

@@ -10,7 +10,7 @@ class SuppLarcenyType(models.Model):
     larceny_xml_name = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'supp_larceny_type'
 
 
@@ -36,7 +36,7 @@ class SuppMonth(models.Model):
     ff_line_number = models.BigIntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'supp_month'
         unique_together = (('agency', 'data_year', 'month_num', 'data_home'),)
 
@@ -47,7 +47,7 @@ class SuppOffense(models.Model):
     offense_code = models.CharField(max_length=20)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'supp_offense'
 
 
@@ -59,7 +59,7 @@ class SuppOffenseSubcat(models.Model):
     offense_subcat_xml_name = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'supp_offense_subcat'
 
 
@@ -72,7 +72,7 @@ class SuppPropByOffenseSubcat(models.Model):
     stolen_value_status = models.SmallIntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'supp_prop_by_offense_subcat'
         unique_together = (('supp_month', 'offense_subcat'),)
 
@@ -86,7 +86,7 @@ class SuppPropertyByTypeValue(models.Model):
     recovered_value_status = models.SmallIntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'supp_property_by_type_value'
         unique_together = (('prop_type', 'supp_month'),)
 
@@ -98,5 +98,5 @@ class SuppPropertyType(models.Model):
     prop_type_code_num = models.SmallIntegerField()
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'supp_property_type'

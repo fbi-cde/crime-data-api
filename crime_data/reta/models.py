@@ -31,7 +31,7 @@ class RetaMonth(models.Model):
     ff_line_number = models.BigIntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'reta_month'
         unique_together = (('agency', 'data_year', 'month_num', 'data_home', 'source_flag'),)
 
@@ -51,7 +51,7 @@ class RetaMonthOffenseSubcat(models.Model):
     juvenile_cleared_status = models.SmallIntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'reta_month_offense_subcat'
         unique_together = (('offense_subcat', 'reta_month'),)
 
@@ -66,7 +66,7 @@ class RetaOffense(models.Model):
     offense_sort_order = models.BigIntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'reta_offense'
 
 
@@ -77,7 +77,7 @@ class RetaOffenseCategory(models.Model):
     offense_category_sort_order = models.SmallIntegerField()
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'reta_offense_category'
 
 
@@ -92,5 +92,5 @@ class RetaOffenseSubcat(models.Model):
     crime_index_flag = models.CharField(max_length=1, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'reta_offense_subcat'

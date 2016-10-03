@@ -2,7 +2,7 @@ from django.apps import AppConfig
 
 
 class UsersConfig(AppConfig):
-    name = 'crime_data_api.users'
+    name = 'api.users'
     verbose_name = "Users"
 
     def ready(self):

@@ -26,7 +26,7 @@ class HtMonth(models.Model):
     ff_line_number = models.BigIntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ht_month'
         unique_together = (('agency', 'data_year', 'month_num', 'data_home'),)
 
@@ -46,6 +46,6 @@ class HtMonthOffenseSubcat(models.Model):
     juvenile_cleared_status = models.SmallIntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ht_month_offense_subcat'
         unique_together = (('offense_subcat', 'ht_month'),)

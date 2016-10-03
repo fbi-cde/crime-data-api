@@ -20,7 +20,7 @@ class ArsonMonth(models.Model):
     ff_line_number = models.BigIntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'arson_month'
         unique_together = (('agency', 'data_year', 'month_num', 'data_home'),)
 
@@ -44,7 +44,7 @@ class ArsonMonthBySubcat(models.Model):
     est_damage_value_status = models.SmallIntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'arson_month_by_subcat'
         unique_together = (('arson_month', 'subcategory'),)
 
@@ -57,7 +57,7 @@ class ArsonSubcategory(models.Model):
     subcat_xml_path = models.CharField(max_length=4000, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'arson_subcategory'
 
 
@@ -68,5 +68,5 @@ class ArsonSubclassification(models.Model):
     subclass_xml_path = models.CharField(max_length=4000, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'arson_subclassification'

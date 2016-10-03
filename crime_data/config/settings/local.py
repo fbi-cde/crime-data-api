@@ -52,7 +52,7 @@ MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
 
 # Apps specific to this project go here.
 LOCAL_APPS = (
-    'crime_data_api',
+    'api',
 )
 
 INSTALLED_APPS += ('debug_toolbar', ) + LOCAL_APPS

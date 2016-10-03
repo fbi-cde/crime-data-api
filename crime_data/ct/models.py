@@ -12,7 +12,7 @@ class CtArrestee(models.Model):
     race = models.ForeignKey('ref.RefRace', models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ct_arrestee'
 
 
@@ -39,7 +39,7 @@ class CtIncident(models.Model):
     nibrs_incident_id = models.BigIntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ct_incident'
 
 
@@ -58,7 +58,7 @@ class CtMonth(models.Model):
     orig_format = models.CharField(max_length=1, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ct_month'
 
 
@@ -71,7 +71,7 @@ class CtOffender(models.Model):
     race = models.ForeignKey('ref.RefRace', models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ct_offender'
 
 
@@ -83,7 +83,7 @@ class CtOffense(models.Model):
     ct_offense_flag = models.CharField(max_length=1, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ct_offense'
 
 
@@ -97,7 +97,7 @@ class CtProperty(models.Model):
     recovered_value = models.BigIntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ct_property'
 
 
@@ -106,7 +106,7 @@ class CtVictim(models.Model):
     victim_type = models.ForeignKey('nibrs.NibrsVictimType', models.DO_NOTHING)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ct_victim'
         unique_together = (('incident', 'victim_type'),)
 
@@ -117,5 +117,5 @@ class CtWeapon(models.Model):
     ct_weapon_id = models.BigIntegerField(primary_key=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ct_weapon'

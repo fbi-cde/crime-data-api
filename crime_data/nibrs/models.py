@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from django.db import models
 from ref.models import RefAgency
 
@@ -8,7 +9,7 @@ class NibrsActivityType(models.Model):
     activity_type_name = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'nibrs_activity_type'
 
 
@@ -18,7 +19,7 @@ class NibrsAge(models.Model):
     age_name = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'nibrs_age'
 
 
@@ -28,7 +29,7 @@ class NibrsArrestType(models.Model):
     arrest_type_name = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'nibrs_arrest_type'
 
 
@@ -54,7 +55,7 @@ class NibrsArrestee(models.Model):
     age_range_high_num = models.SmallIntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'nibrs_arrestee'
 
 
@@ -64,7 +65,7 @@ class NibrsArresteeWeapon(models.Model):
     nibrs_arrestee_weapon_id = models.BigIntegerField(primary_key=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'nibrs_arrestee_weapon'
 
 
@@ -74,7 +75,7 @@ class NibrsAssignmentType(models.Model):
     assignment_type_name = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'nibrs_assignment_type'
 
 
@@ -84,7 +85,7 @@ class NibrsBiasList(models.Model):
     bias_name = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'nibrs_bias_list'
 
 
@@ -93,7 +94,7 @@ class NibrsBiasMotivation(models.Model):
     offense = models.ForeignKey('NibrsOffense', models.DO_NOTHING)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'nibrs_bias_motivation'
         unique_together = (('bias', 'offense'),)
 
@@ -105,7 +106,7 @@ class NibrsCircumstances(models.Model):
     circumstances_name = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'nibrs_circumstances'
 
 
@@ -115,7 +116,7 @@ class NibrsClearedExcept(models.Model):
     cleared_except_name = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'nibrs_cleared_except'
 
 
@@ -124,7 +125,7 @@ class NibrsCriminalAct(models.Model):
     offense = models.ForeignKey('NibrsOffense', models.DO_NOTHING)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'nibrs_criminal_act'
         unique_together = (('criminal_act', 'offense'),)
 
@@ -135,7 +136,7 @@ class NibrsCriminalActType(models.Model):
     criminal_act_name = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'nibrs_criminal_act_type'
 
 
@@ -145,7 +146,7 @@ class NibrsDrugMeasureType(models.Model):
     drug_measure_name = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'nibrs_drug_measure_type'
 
 
@@ -168,7 +169,7 @@ class NibrsEds(models.Model):
     submission_ser_num = models.IntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'nibrs_eds'
 
 
@@ -179,7 +180,7 @@ class NibrsEthnicity(models.Model):
     hc_flag = models.CharField(max_length=1, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'nibrs_ethnicity'
 
 
@@ -209,7 +210,7 @@ class NibrsGrpbArrest(models.Model):
     age_range_high_num = models.SmallIntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'nibrs_grpb_arrest'
 
 
@@ -219,7 +220,7 @@ class NibrsGrpbArrestWeapon(models.Model):
     nibrs_grpb_arrest_weapon_id = models.BigIntegerField(primary_key=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'nibrs_grpb_arrest_weapon'
 
 
@@ -243,7 +244,7 @@ class NibrsIncident(models.Model):
     did = models.BigIntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'nibrs_incident'
 
 
@@ -253,7 +254,7 @@ class NibrsInjury(models.Model):
     injury_name = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'nibrs_injury'
 
 
@@ -263,7 +264,7 @@ class NibrsJustifiableForce(models.Model):
     justifiable_force_name = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'nibrs_justifiable_force'
 
 
@@ -273,7 +274,7 @@ class NibrsLocationType(models.Model):
     location_name = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'nibrs_location_type'
 
 
@@ -293,7 +294,7 @@ class NibrsMonth(models.Model):
     did = models.BigIntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'nibrs_month'
         unique_together = (('agency', 'month_num', 'data_year', 'data_home'),)
 
@@ -312,7 +313,7 @@ class NibrsOffender(models.Model):
     age_range_high_num = models.SmallIntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'nibrs_offender'
 
 
@@ -327,7 +328,7 @@ class NibrsOffense(models.Model):
     ff_line_number = models.BigIntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'nibrs_offense'
 
 
@@ -342,7 +343,7 @@ class NibrsOffenseType(models.Model):
     offense_category_name = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'nibrs_offense_type'
 
 
@@ -352,7 +353,7 @@ class NibrsPropDescType(models.Model):
     prop_desc_name = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'nibrs_prop_desc_type'
 
 
@@ -361,7 +362,7 @@ class NibrsPropLossType(models.Model):
     prop_loss_name = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'nibrs_prop_loss_type'
 
 
@@ -374,7 +375,7 @@ class NibrsProperty(models.Model):
     ff_line_number = models.BigIntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'nibrs_property'
 
 
@@ -386,7 +387,7 @@ class NibrsPropertyDesc(models.Model):
     nibrs_prop_desc_id = models.BigIntegerField(primary_key=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'nibrs_property_desc'
 
 
@@ -396,7 +397,7 @@ class NibrsRelationship(models.Model):
     relationship_name = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'nibrs_relationship'
 
 
@@ -420,7 +421,7 @@ class NibrsSumMonthTemp(models.Model):
     nibrs_ht_flag = models.CharField(max_length=1, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'nibrs_sum_month_temp'
 
 
@@ -429,7 +430,7 @@ class NibrsSuspectUsing(models.Model):
     offense = models.ForeignKey(NibrsOffense, models.DO_NOTHING)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'nibrs_suspect_using'
         unique_together = (('suspect_using', 'offense'),)
 
@@ -442,7 +443,7 @@ class NibrsSuspectedDrug(models.Model):
     nibrs_suspected_drug_id = models.BigIntegerField(primary_key=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'nibrs_suspected_drug'
 
 
@@ -452,7 +453,7 @@ class NibrsSuspectedDrugType(models.Model):
     suspected_drug_name = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'nibrs_suspected_drug_type'
 
 
@@ -462,7 +463,7 @@ class NibrsUsingList(models.Model):
     suspect_using_name = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'nibrs_using_list'
 
 
@@ -486,7 +487,7 @@ class NibrsVictim(models.Model):
     age_range_high_num = models.SmallIntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'nibrs_victim'
 
 
@@ -496,7 +497,7 @@ class NibrsVictimCircumstances(models.Model):
     justifiable_force = models.ForeignKey(NibrsJustifiableForce, models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'nibrs_victim_circumstances'
         unique_together = (('victim', 'circumstances'),)
 
@@ -506,7 +507,7 @@ class NibrsVictimInjury(models.Model):
     injury = models.ForeignKey(NibrsInjury, models.DO_NOTHING)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'nibrs_victim_injury'
         unique_together = (('victim', 'injury'),)
 
@@ -518,7 +519,7 @@ class NibrsVictimOffenderRel(models.Model):
     nibrs_victim_offender_id = models.BigIntegerField(primary_key=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'nibrs_victim_offender_rel'
 
 
@@ -527,7 +528,7 @@ class NibrsVictimOffense(models.Model):
     offense = models.ForeignKey(NibrsOffense, models.DO_NOTHING)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'nibrs_victim_offense'
         unique_together = (('victim', 'offense'),)
 
@@ -538,7 +539,7 @@ class NibrsVictimType(models.Model):
     victim_type_name = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'nibrs_victim_type'
 
 
@@ -548,7 +549,7 @@ class NibrsWeapon(models.Model):
     nibrs_weapon_id = models.BigIntegerField(primary_key=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'nibrs_weapon'
 
 
@@ -559,5 +560,5 @@ class NibrsWeaponType(models.Model):
     shr_flag = models.CharField(max_length=1, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'nibrs_weapon_type'

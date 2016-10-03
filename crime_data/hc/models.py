@@ -7,7 +7,7 @@ class HcBiasMotivation(models.Model):
     bias = models.ForeignKey('nibrs.NibrsBiasList', models.DO_NOTHING)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'hc_bias_motivation'
         unique_together = (('offense', 'bias'),)
 
@@ -39,7 +39,7 @@ class HcIncident(models.Model):
     nibrs_incident_id = models.BigIntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'hc_incident'
 
 
@@ -52,7 +52,7 @@ class HcOffense(models.Model):
     nibrs_offense_id = models.BigIntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'hc_offense'
 
 
@@ -71,7 +71,7 @@ class HcQuarter(models.Model):
     data_home = models.CharField(max_length=1)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'hc_quarter'
         unique_together = (('agency', 'quarter_num', 'data_year', 'data_home'),)
 
@@ -81,6 +81,6 @@ class HcVictim(models.Model):
     victim_type = models.ForeignKey('nibrs.NibrsVictimType', models.DO_NOTHING)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'hc_victim'
         unique_together = (('offense', 'victim_type'),)

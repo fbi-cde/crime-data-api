@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from django.db import models
 
 # Create your models here.
@@ -29,7 +30,7 @@ class RefAgency(models.Model):
     field_office = models.ForeignKey('RefFieldOffice', models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ref_agency'
 
 
@@ -48,7 +49,7 @@ class RefAgencyCounty(models.Model):
     change_user = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ref_agency_county'
         unique_together = (('agency', 'county', 'metro_div', 'data_year'),)
 
@@ -59,7 +60,7 @@ class RefAgencyCoveredBy(models.Model):
     covered_by_agency = models.ForeignKey(RefAgency, models.DO_NOTHING)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ref_agency_covered_by'
         unique_together = (('agency', 'data_year'),)
 
@@ -76,7 +77,7 @@ class RefAgencyDataContent(models.Model):
     nibrs_ht_flag = models.CharField(max_length=1, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ref_agency_data_content'
         unique_together = (('agency', 'data_year'),)
 
@@ -87,7 +88,7 @@ class RefAgencyPoc(models.Model):
     primary_poc_flag = models.CharField(max_length=1, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ref_agency_poc'
         unique_together = (('agency_id', 'poc'),)
 
@@ -98,7 +99,7 @@ class RefAgencyType(models.Model):
     default_pop_family = models.ForeignKey('RefPopulationFamily', models.DO_NOTHING)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ref_agency_type'
 
 
@@ -113,7 +114,7 @@ class RefCampusPopulation(models.Model):
     reporting_population = models.BigIntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ref_campus_population'
         unique_together = (('campus', 'data_year'),)
 
@@ -124,7 +125,7 @@ class RefCity(models.Model):
     city_name = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ref_city'
         unique_together = (('city_name', 'state'),)
 
@@ -134,7 +135,7 @@ class RefContinent(models.Model):
     continent_desc = models.CharField(max_length=50, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ref_continent'
 
 
@@ -144,7 +145,7 @@ class RefCountry(models.Model):
     country_desc = models.CharField(max_length=50, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ref_country'
 
 
@@ -158,7 +159,7 @@ class RefCounty(models.Model):
     comments = models.CharField(max_length=1000, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ref_county'
 
 
@@ -172,7 +173,7 @@ class RefCountyPopulation(models.Model):
     reporting_population = models.BigIntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ref_county_population'
         unique_together = (('county', 'data_year'),)
 
@@ -184,7 +185,7 @@ class RefDepartment(models.Model):
     sort_order = models.SmallIntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ref_department'
 
 
@@ -196,7 +197,7 @@ class RefDivision(models.Model):
     division_desc = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ref_division'
 
 
@@ -208,7 +209,7 @@ class RefFieldOffice(models.Model):
     field_office_numeric_code = models.CharField(max_length=10, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ref_field_office'
 
 
@@ -218,7 +219,7 @@ class RefGlobalLocation(models.Model):
     global_location_desc = models.CharField(max_length=50, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ref_global_location'
 
 
@@ -233,7 +234,7 @@ class RefMetroDivPopulation(models.Model):
     reporting_population = models.BigIntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ref_metro_div_population'
         unique_together = (('metro_div', 'data_year'),)
 
@@ -247,7 +248,7 @@ class RefMetroDivision(models.Model):
     legacy_msa_code = models.CharField(max_length=5, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ref_metro_division'
 
 
@@ -257,7 +258,7 @@ class RefMsa(models.Model):
     msa_omb_code = models.CharField(max_length=5, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ref_msa'
         unique_together = (('msa_name', 'msa_omb_code'),)
 
@@ -270,7 +271,7 @@ class RefParentPopulationGroup(models.Model):
     population_family = models.ForeignKey('RefPopulationFamily', models.DO_NOTHING)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ref_parent_population_group'
 
 
@@ -292,7 +293,7 @@ class RefPoc(models.Model):
     poc_fax2 = models.CharField(max_length=20, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ref_poc'
 
 
@@ -301,7 +302,7 @@ class RefPocRole(models.Model):
     poc_role_name = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ref_poc_role'
 
 
@@ -310,7 +311,7 @@ class RefPocRoleAssign(models.Model):
     poc_role = models.ForeignKey(RefPocRole, models.DO_NOTHING)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ref_poc_role_assign'
         unique_together = (('poc', 'poc_role'),)
 
@@ -322,7 +323,7 @@ class RefPopulationFamily(models.Model):
     sort_order = models.SmallIntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ref_population_family'
 
 
@@ -334,7 +335,7 @@ class RefPopulationGroup(models.Model):
     publication_name = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ref_population_group'
 
 
@@ -348,7 +349,7 @@ class RefRace(models.Model):
     notes = models.CharField(max_length=1000, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ref_race'
 
 
@@ -359,7 +360,7 @@ class RefRegion(models.Model):
     region_desc = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ref_region'
 
 
@@ -374,7 +375,7 @@ class RefState(models.Model):
     state_pub_freq_months = models.SmallIntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ref_state'
 
 
@@ -389,7 +390,7 @@ class RefSubmittingAgency(models.Model):
     comments = models.CharField(max_length=2000, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ref_submitting_agency'
 
 
@@ -398,7 +399,7 @@ class RefTribe(models.Model):
     tribe_name = models.CharField(unique=True, max_length=100, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ref_tribe'
 
 
@@ -413,7 +414,7 @@ class RefTribePopulation(models.Model):
     reporting_population = models.BigIntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ref_tribe_population'
         unique_together = (('tribe', 'data_year'),)
 
@@ -424,7 +425,7 @@ class RefUniversity(models.Model):
     university_name = models.CharField(unique=True, max_length=100, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ref_university'
 
 
@@ -434,7 +435,7 @@ class RefUniversityCampus(models.Model):
     campus_name = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'ref_university_campus'
 
 class OffenseClassification(models.Model):
@@ -443,7 +444,7 @@ class OffenseClassification(models.Model):
     class_sort_order = models.SmallIntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'offense_classification'
 
 class CrimeType(models.Model):
@@ -453,5 +454,5 @@ class CrimeType(models.Model):
     crime_flag = models.CharField(max_length=1, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'crime_type'

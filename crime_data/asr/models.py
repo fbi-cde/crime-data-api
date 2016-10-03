@@ -12,7 +12,7 @@ class AsrAgeRange(models.Model):
     xml_code = models.CharField(max_length=2001, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'asr_age_range'
 
 
@@ -28,7 +28,7 @@ class AsrAgeSexSubcat(models.Model):
     ff_line_number = models.BigIntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'asr_age_sex_subcat'
         unique_together = (('asr_month', 'offense_subcat', 'age_range'),)
 
@@ -40,7 +40,7 @@ class AsrEthnicity(models.Model):
     ff_sort_order = models.CharField(max_length=3, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'asr_ethnicity'
 
 
@@ -56,7 +56,7 @@ class AsrEthnicityOffense(models.Model):
     ff_line_number = models.BigIntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'asr_ethnicity_offense'
         unique_together = (('asr_month', 'offense_subcat', 'ethnicity', 'juvenile_flag'),)
 
@@ -73,7 +73,7 @@ class AsrJuvenileDisposition(models.Model):
     ff_line_number = models.BigIntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'asr_juvenile_disposition'
 
 
@@ -92,7 +92,7 @@ class AsrMonth(models.Model):
     data_home = models.CharField(max_length=1)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'asr_month'
         unique_together = (('agency', 'data_year', 'month_num', 'data_home'),)
 
@@ -105,7 +105,7 @@ class AsrOffense(models.Model):
     total_flag = models.CharField(max_length=1, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'asr_offense'
 
 
@@ -115,7 +115,7 @@ class AsrOffenseCategory(models.Model):
     offense_cat_code = models.CharField(unique=True, max_length=20, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'asr_offense_category'
 
 
@@ -130,7 +130,7 @@ class AsrOffenseSubcat(models.Model):
     adult_juv_flag = models.CharField(max_length=1, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'asr_offense_subcat'
 
 
@@ -147,6 +147,6 @@ class AsrRaceOffenseSubcat(models.Model):
     ff_line_number = models.BigIntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'asr_race_offense_subcat'
         unique_together = (('asr_month', 'offense_subcat', 'race', 'juvenile_flag'),)
