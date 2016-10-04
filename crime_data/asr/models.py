@@ -17,9 +17,9 @@ class AsrAgeRange(models.Model):
 
 
 class AsrAgeSexSubcat(models.Model):
-    asr_month = models.ForeignKey('AsrMonth', models.DO_NOTHING)
-    offense_subcat = models.ForeignKey('AsrOffenseSubcat', models.DO_NOTHING)
-    age_range = models.ForeignKey(AsrAgeRange, models.DO_NOTHING)
+    asr_month = models.ForeignKey('AsrMonth', models.DO_NOTHING, primary_key=True)
+    offense_subcat = models.ForeignKey('AsrOffenseSubcat', models.DO_NOTHING, primary_key=True)
+    age_range = models.ForeignKey(AsrAgeRange, models.DO_NOTHING, primary_key=True)
     arrest_count = models.IntegerField(blank=True, null=True)
     arrest_status = models.SmallIntegerField(blank=True, null=True)
     active_flag = models.CharField(max_length=1, blank=True, null=True)
@@ -45,10 +45,10 @@ class AsrEthnicity(models.Model):
 
 
 class AsrEthnicityOffense(models.Model):
-    asr_month = models.ForeignKey('AsrMonth', models.DO_NOTHING)
-    offense_subcat = models.ForeignKey('AsrOffenseSubcat', models.DO_NOTHING)
-    ethnicity = models.ForeignKey(AsrEthnicity, models.DO_NOTHING)
-    juvenile_flag = models.CharField(max_length=1)
+    asr_month = models.ForeignKey('AsrMonth', models.DO_NOTHING, primary_key=True)
+    offense_subcat = models.ForeignKey('AsrOffenseSubcat', models.DO_NOTHING, primary_key=True)
+    ethnicity = models.ForeignKey(AsrEthnicity, models.DO_NOTHING, primary_key=True)
+    juvenile_flag = models.CharField(max_length=1, primary_key=True)
     arrest_count = models.IntegerField(blank=True, null=True)
     arrest_status = models.SmallIntegerField(blank=True, null=True)
     prepared_date = models.DateTimeField(blank=True, null=True)
@@ -135,10 +135,10 @@ class AsrOffenseSubcat(models.Model):
 
 
 class AsrRaceOffenseSubcat(models.Model):
-    asr_month = models.ForeignKey(AsrMonth, models.DO_NOTHING)
-    offense_subcat = models.ForeignKey(AsrOffenseSubcat, models.DO_NOTHING)
-    race = models.ForeignKey('ref.RefRace', models.DO_NOTHING)
-    juvenile_flag = models.CharField(max_length=1)
+    asr_month = models.ForeignKey(AsrMonth, models.DO_NOTHING, primary_key=True)
+    offense_subcat = models.ForeignKey(AsrOffenseSubcat, models.DO_NOTHING, primary_key=True)
+    race = models.ForeignKey('ref.RefRace', models.DO_NOTHING, primary_key=True)
+    juvenile_flag = models.CharField(max_length=1, primary_key=True)
     arrest_count = models.IntegerField(blank=True, null=True)
     arrest_status = models.SmallIntegerField(blank=True, null=True)
     active_flag = models.CharField(max_length=1, blank=True, null=True)

@@ -37,8 +37,8 @@ class RetaMonth(models.Model):
 
 
 class RetaMonthOffenseSubcat(models.Model):
-    reta_month = models.ForeignKey(RetaMonth, models.DO_NOTHING)
-    offense_subcat = models.ForeignKey('RetaOffenseSubcat', models.DO_NOTHING)
+    reta_month = models.ForeignKey(RetaMonth, models.DO_NOTHING, primary_key=True)
+    offense_subcat = models.ForeignKey('RetaOffenseSubcat', models.DO_NOTHING, primary_key=True)
     reported_count = models.IntegerField(blank=True, null=True)
     reported_status = models.SmallIntegerField(blank=True, null=True)
     unfounded_count = models.IntegerField(blank=True, null=True)

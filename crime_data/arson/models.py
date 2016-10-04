@@ -26,8 +26,8 @@ class ArsonMonth(models.Model):
 
 
 class ArsonMonthBySubcat(models.Model):
-    arson_month = models.ForeignKey(ArsonMonth, models.DO_NOTHING)
-    subcategory = models.ForeignKey('ArsonSubcategory', models.DO_NOTHING)
+    arson_month = models.ForeignKey(ArsonMonth, models.DO_NOTHING, primary_key=True)
+    subcategory = models.ForeignKey('ArsonSubcategory', models.DO_NOTHING, primary_key=True)
     reported_count = models.IntegerField(blank=True, null=True)
     reported_status = models.SmallIntegerField(blank=True, null=True)
     unfounded_count = models.IntegerField(blank=True, null=True)
