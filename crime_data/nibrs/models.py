@@ -90,8 +90,8 @@ class NibrsBiasList(models.Model):
 
 
 class NibrsBiasMotivation(models.Model):
-    bias = models.ForeignKey(NibrsBiasList, models.DO_NOTHING)
-    offense = models.ForeignKey('NibrsOffense', models.DO_NOTHING)
+    bias = models.ForeignKey(NibrsBiasList, models.DO_NOTHING, primary_key=True)
+    offense = models.ForeignKey('NibrsOffense', models.DO_NOTHING, primary_key=True)
 
     class Meta:
         managed = True
@@ -121,8 +121,8 @@ class NibrsClearedExcept(models.Model):
 
 
 class NibrsCriminalAct(models.Model):
-    criminal_act = models.ForeignKey('NibrsCriminalActType', models.DO_NOTHING)
-    offense = models.ForeignKey('NibrsOffense', models.DO_NOTHING)
+    criminal_act = models.ForeignKey('NibrsCriminalActType', models.DO_NOTHING, primary_key=True)
+    offense = models.ForeignKey('NibrsOffense', models.DO_NOTHING, primary_key=True)
 
     class Meta:
         managed = True
@@ -149,6 +149,8 @@ class NibrsDrugMeasureType(models.Model):
         managed = True
         db_table = 'nibrs_drug_measure_type'
 
+"""
+TODO: This table lacks a primary key (PK)
 
 class NibrsEds(models.Model):
     ddocname = models.CharField(max_length=100, blank=True, null=True)
@@ -171,6 +173,7 @@ class NibrsEds(models.Model):
     class Meta:
         managed = True
         db_table = 'nibrs_eds'
+"""
 
 
 class NibrsEthnicity(models.Model):
@@ -401,6 +404,9 @@ class NibrsRelationship(models.Model):
         db_table = 'nibrs_relationship'
 
 
+"""
+TODO: Lacks primary key; except 'Temp' implies it's throwaway
+
 class NibrsSumMonthTemp(models.Model):
     nibrs_month_id = models.BigIntegerField(blank=True, null=True)
     agency_id = models.BigIntegerField(blank=True, null=True)
@@ -423,11 +429,12 @@ class NibrsSumMonthTemp(models.Model):
     class Meta:
         managed = True
         db_table = 'nibrs_sum_month_temp'
+        """
 
 
 class NibrsSuspectUsing(models.Model):
-    suspect_using = models.ForeignKey('NibrsUsingList', models.DO_NOTHING)
-    offense = models.ForeignKey(NibrsOffense, models.DO_NOTHING)
+    suspect_using = models.ForeignKey('NibrsUsingList', models.DO_NOTHING, primary_key=True)
+    offense = models.ForeignKey(NibrsOffense, models.DO_NOTHING, primary_key=True)
 
     class Meta:
         managed = True
@@ -492,8 +499,8 @@ class NibrsVictim(models.Model):
 
 
 class NibrsVictimCircumstances(models.Model):
-    victim = models.ForeignKey(NibrsVictim, models.DO_NOTHING)
-    circumstances = models.ForeignKey(NibrsCircumstances, models.DO_NOTHING)
+    victim = models.ForeignKey(NibrsVictim, models.DO_NOTHING, primary_key=True)
+    circumstances = models.ForeignKey(NibrsCircumstances, models.DO_NOTHING, primary_key=True)
     justifiable_force = models.ForeignKey(NibrsJustifiableForce, models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
@@ -503,8 +510,8 @@ class NibrsVictimCircumstances(models.Model):
 
 
 class NibrsVictimInjury(models.Model):
-    victim = models.ForeignKey(NibrsVictim, models.DO_NOTHING)
-    injury = models.ForeignKey(NibrsInjury, models.DO_NOTHING)
+    victim = models.ForeignKey(NibrsVictim, models.DO_NOTHING, primary_key=True)
+    injury = models.ForeignKey(NibrsInjury, models.DO_NOTHING, primary_key=True)
 
     class Meta:
         managed = True
@@ -524,8 +531,8 @@ class NibrsVictimOffenderRel(models.Model):
 
 
 class NibrsVictimOffense(models.Model):
-    victim = models.ForeignKey(NibrsVictim, models.DO_NOTHING)
-    offense = models.ForeignKey(NibrsOffense, models.DO_NOTHING)
+    victim = models.ForeignKey(NibrsVictim, models.DO_NOTHING, primary_key=True)
+    offense = models.ForeignKey(NibrsOffense, models.DO_NOTHING, primary_key=True)
 
     class Meta:
         managed = True

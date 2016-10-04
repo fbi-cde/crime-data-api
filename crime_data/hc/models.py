@@ -3,8 +3,8 @@ from ref.models import RefAgency
 
 # Create your models here.
 class HcBiasMotivation(models.Model):
-    offense = models.ForeignKey('HcOffense', models.DO_NOTHING)
-    bias = models.ForeignKey('nibrs.NibrsBiasList', models.DO_NOTHING)
+    offense = models.ForeignKey('HcOffense', models.DO_NOTHING, primary_key=True)
+    bias = models.ForeignKey('nibrs.NibrsBiasList', models.DO_NOTHING, primary_key=True)
 
     class Meta:
         managed = True
@@ -77,8 +77,8 @@ class HcQuarter(models.Model):
 
 
 class HcVictim(models.Model):
-    offense = models.ForeignKey(HcOffense, models.DO_NOTHING)
-    victim_type = models.ForeignKey('nibrs.NibrsVictimType', models.DO_NOTHING)
+    offense = models.ForeignKey(HcOffense, models.DO_NOTHING, primary_key=True)
+    victim_type = models.ForeignKey('nibrs.NibrsVictimType', models.DO_NOTHING, primary_key=True)
 
     class Meta:
         managed = True

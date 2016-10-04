@@ -102,8 +102,8 @@ class CtProperty(models.Model):
 
 
 class CtVictim(models.Model):
-    incident = models.ForeignKey(CtIncident, models.DO_NOTHING)
-    victim_type = models.ForeignKey('nibrs.NibrsVictimType', models.DO_NOTHING)
+    incident = models.ForeignKey(CtIncident, models.DO_NOTHING, primary_key=True)
+    victim_type = models.ForeignKey('nibrs.NibrsVictimType', models.DO_NOTHING, primary_key=True)
 
     class Meta:
         managed = True

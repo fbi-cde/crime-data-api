@@ -35,11 +35,11 @@ class RefAgency(models.Model):
 
 
 class RefAgencyCounty(models.Model):
-    agency = models.ForeignKey(RefAgency, models.DO_NOTHING)
-    county = models.ForeignKey('RefCounty', models.DO_NOTHING)
-    metro_div = models.ForeignKey('RefMetroDivision', models.DO_NOTHING)
+    agency = models.ForeignKey(RefAgency, models.DO_NOTHING, primary_key=True)
+    county = models.ForeignKey('RefCounty', models.DO_NOTHING, primary_key=True)
+    metro_div = models.ForeignKey('RefMetroDivision', models.DO_NOTHING, primary_key=True)
     core_city_flag = models.CharField(max_length=1, blank=True, null=True)
-    data_year = models.SmallIntegerField()
+    data_year = models.SmallIntegerField(primary_key=True)
     population = models.BigIntegerField(blank=True, null=True)
     census = models.BigIntegerField(blank=True, null=True)
     legacy_county_code = models.CharField(max_length=20, blank=True, null=True)
@@ -55,8 +55,8 @@ class RefAgencyCounty(models.Model):
 
 
 class RefAgencyCoveredBy(models.Model):
-    agency = models.ForeignKey(RefAgency, models.DO_NOTHING, related_name='+')
-    data_year = models.SmallIntegerField()
+    agency = models.ForeignKey(RefAgency, models.DO_NOTHING, related_name='+', primary_key=True)
+    data_year = models.SmallIntegerField(primary_key=True)
     covered_by_agency = models.ForeignKey(RefAgency, models.DO_NOTHING)
 
     class Meta:
@@ -66,8 +66,8 @@ class RefAgencyCoveredBy(models.Model):
 
 
 class RefAgencyDataContent(models.Model):
-    agency = models.ForeignKey(RefAgency, models.DO_NOTHING)
-    data_year = models.SmallIntegerField()
+    agency = models.ForeignKey(RefAgency, models.DO_NOTHING, primary_key=True)
+    data_year = models.SmallIntegerField(primary_key=True)
     reporting_type = models.CharField(max_length=1, blank=True, null=True)
     nibrs_ct_flag = models.CharField(max_length=1, blank=True, null=True)
     nibrs_hc_flag = models.CharField(max_length=1, blank=True, null=True)
@@ -83,8 +83,8 @@ class RefAgencyDataContent(models.Model):
 
 
 class RefAgencyPoc(models.Model):
-    poc = models.ForeignKey('RefPoc', models.DO_NOTHING)
-    agency_id = models.BigIntegerField()
+    poc = models.ForeignKey('RefPoc', models.DO_NOTHING, primary_key=True)
+    agency_id = models.BigIntegerField(primary_key=True)
     primary_poc_flag = models.CharField(max_length=1, blank=True, null=True)
 
     class Meta:
@@ -104,8 +104,8 @@ class RefAgencyType(models.Model):
 
 
 class RefCampusPopulation(models.Model):
-    campus = models.ForeignKey('RefUniversityCampus', models.DO_NOTHING)
-    data_year = models.SmallIntegerField()
+    campus = models.ForeignKey('RefUniversityCampus', models.DO_NOTHING, primary_key=True)
+    data_year = models.SmallIntegerField(primary_key=True)
     population = models.BigIntegerField(blank=True, null=True)
     source_flag = models.CharField(max_length=1)
     census = models.BigIntegerField(blank=True, null=True)
@@ -164,8 +164,8 @@ class RefCounty(models.Model):
 
 
 class RefCountyPopulation(models.Model):
-    county = models.ForeignKey(RefCounty, models.DO_NOTHING)
-    data_year = models.SmallIntegerField()
+    county = models.ForeignKey(RefCounty, models.DO_NOTHING, primary_key=True)
+    data_year = models.SmallIntegerField(primary_key=True)
     population = models.BigIntegerField(blank=True, null=True)
     source_flag = models.CharField(max_length=1)
     change_timestamp = models.DateTimeField(blank=True, null=True)
@@ -224,8 +224,8 @@ class RefGlobalLocation(models.Model):
 
 
 class RefMetroDivPopulation(models.Model):
-    metro_div = models.ForeignKey('RefMetroDivision', models.DO_NOTHING)
-    data_year = models.SmallIntegerField()
+    metro_div = models.ForeignKey('RefMetroDivision', models.DO_NOTHING, primary_key=True)
+    data_year = models.SmallIntegerField(primary_key=True)
     population = models.BigIntegerField(blank=True, null=True)
     source_flag = models.CharField(max_length=1)
     census = models.BigIntegerField(blank=True, null=True)
@@ -307,8 +307,8 @@ class RefPocRole(models.Model):
 
 
 class RefPocRoleAssign(models.Model):
-    poc = models.ForeignKey(RefPoc, models.DO_NOTHING)
-    poc_role = models.ForeignKey(RefPocRole, models.DO_NOTHING)
+    poc = models.ForeignKey(RefPoc, models.DO_NOTHING, primary_key=True)
+    poc_role = models.ForeignKey(RefPocRole, models.DO_NOTHING, primary_key=True)
 
     class Meta:
         managed = True
@@ -404,8 +404,8 @@ class RefTribe(models.Model):
 
 
 class RefTribePopulation(models.Model):
-    tribe = models.ForeignKey(RefTribe, models.DO_NOTHING)
-    data_year = models.SmallIntegerField()
+    tribe = models.ForeignKey(RefTribe, models.DO_NOTHING, primary_key=True)
+    data_year = models.SmallIntegerField(primary_key=True)
     population = models.BigIntegerField(blank=True, null=True)
     source_flag = models.CharField(max_length=1)
     census = models.BigIntegerField(blank=True, null=True)

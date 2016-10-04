@@ -64,8 +64,8 @@ class SuppOffenseSubcat(models.Model):
 
 
 class SuppPropByOffenseSubcat(models.Model):
-    supp_month = models.ForeignKey(SuppMonth, models.DO_NOTHING)
-    offense_subcat = models.ForeignKey(SuppOffenseSubcat, models.DO_NOTHING)
+    supp_month = models.ForeignKey(SuppMonth, models.DO_NOTHING, primary_key=True)
+    offense_subcat = models.ForeignKey(SuppOffenseSubcat, models.DO_NOTHING, primary_key=True)
     actual_count = models.IntegerField(blank=True, null=True)
     actual_status = models.SmallIntegerField(blank=True, null=True)
     stolen_value = models.BigIntegerField(blank=True, null=True)
@@ -78,8 +78,8 @@ class SuppPropByOffenseSubcat(models.Model):
 
 
 class SuppPropertyByTypeValue(models.Model):
-    supp_month = models.ForeignKey(SuppMonth, models.DO_NOTHING)
-    prop_type = models.ForeignKey('SuppPropertyType', models.DO_NOTHING)
+    supp_month = models.ForeignKey(SuppMonth, models.DO_NOTHING, primary_key=True)
+    prop_type = models.ForeignKey('SuppPropertyType', models.DO_NOTHING, primary_key=True)
     stolen_value = models.BigIntegerField(blank=True, null=True)
     stolen_value_status = models.SmallIntegerField(blank=True, null=True)
     recovered_value = models.BigIntegerField(blank=True, null=True)
