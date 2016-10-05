@@ -7,31 +7,6 @@ from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
 metadata = Base.metadata
 
-
-class AccountEmailaddres(Base):
-    __tablename__ = 'account_emailaddress'
-
-    id = Column(Integer, primary_key=True, server_default=text("nextval('account_emailaddress_id_seq'::regclass)"))
-    email = Column(String(254), nullable=False, unique=True)
-    verified = Column(Boolean, nullable=False)
-    primary = Column(Boolean, nullable=False)
-    user_id = Column(ForeignKey('users_user.id', deferrable=True, initially='DEFERRED'), nullable=False, index=True)
-
-    user = relationship('UsersUser')
-
-
-class AccountEmailconfirmation(Base):
-    __tablename__ = 'account_emailconfirmation'
-
-    id = Column(Integer, primary_key=True, server_default=text("nextval('account_emailconfirmation_id_seq'::regclass)"))
-    created = Column(DateTime(True), nullable=False)
-    sent = Column(DateTime(True))
-    key = Column(String(64), nullable=False, unique=True)
-    email_address_id = Column(ForeignKey('account_emailaddress.id', deferrable=True, initially='DEFERRED'), nullable=False, index=True)
-
-    email_address = relationship('AccountEmailaddres')
-
-
 class ArsonMonth(Base):
     __tablename__ = 'arson_month'
     __table_args__ = (
@@ -265,41 +240,6 @@ class AsrRaceOffenseSubcat(Base):
     race = relationship('RefRace')
 
 
-class AuthGroup(Base):
-    __tablename__ = 'auth_group'
-
-    id = Column(Integer, primary_key=True, server_default=text("nextval('auth_group_id_seq'::regclass)"))
-    name = Column(String(80), nullable=False, unique=True)
-
-
-class AuthGroupPermission(Base):
-    __tablename__ = 'auth_group_permissions'
-    __table_args__ = (
-        UniqueConstraint('group_id', 'permission_id'),
-    )
-
-    id = Column(Integer, primary_key=True, server_default=text("nextval('auth_group_permissions_id_seq'::regclass)"))
-    group_id = Column(ForeignKey('auth_group.id', deferrable=True, initially='DEFERRED'), nullable=False, index=True)
-    permission_id = Column(ForeignKey('auth_permission.id', deferrable=True, initially='DEFERRED'), nullable=False, index=True)
-
-    group = relationship('AuthGroup')
-    permission = relationship('AuthPermission')
-
-
-class AuthPermission(Base):
-    __tablename__ = 'auth_permission'
-    __table_args__ = (
-        UniqueConstraint('content_type_id', 'codename'),
-    )
-
-    id = Column(Integer, primary_key=True, server_default=text("nextval('auth_permission_id_seq'::regclass)"))
-    name = Column(String(255), nullable=False)
-    content_type_id = Column(ForeignKey('django_content_type.id', deferrable=True, initially='DEFERRED'), nullable=False, index=True)
-    codename = Column(String(100), nullable=False)
-
-    content_type = relationship('DjangoContentType')
-
-
 class CrimeType(Base):
     __tablename__ = 'crime_type'
 
@@ -438,59 +378,6 @@ class CtWeapon(Base):
 
     incident = relationship('CtIncident')
     weapon = relationship('NibrsWeaponType')
-
-
-class DjangoAdminLog(Base):
-    __tablename__ = 'django_admin_log'
-
-    id = Column(Integer, primary_key=True, server_default=text("nextval('django_admin_log_id_seq'::regclass)"))
-    action_time = Column(DateTime(True), nullable=False)
-    object_id = Column(Text)
-    object_repr = Column(String(200), nullable=False)
-    action_flag = Column(SmallInteger, nullable=False)
-    change_message = Column(Text, nullable=False)
-    content_type_id = Column(ForeignKey('django_content_type.id', deferrable=True, initially='DEFERRED'), index=True)
-    user_id = Column(ForeignKey('users_user.id', deferrable=True, initially='DEFERRED'), nullable=False, index=True)
-
-    content_type = relationship('DjangoContentType')
-    user = relationship('UsersUser')
-
-
-class DjangoContentType(Base):
-    __tablename__ = 'django_content_type'
-    __table_args__ = (
-        UniqueConstraint('app_label', 'model'),
-    )
-
-    id = Column(Integer, primary_key=True, server_default=text("nextval('django_content_type_id_seq'::regclass)"))
-    app_label = Column(String(100), nullable=False)
-    model = Column(String(100), nullable=False)
-
-
-class DjangoMigration(Base):
-    __tablename__ = 'django_migrations'
-
-    id = Column(Integer, primary_key=True, server_default=text("nextval('django_migrations_id_seq'::regclass)"))
-    app = Column(String(255), nullable=False)
-    name = Column(String(255), nullable=False)
-    applied = Column(DateTime(True), nullable=False)
-
-
-class DjangoSession(Base):
-    __tablename__ = 'django_session'
-
-    session_key = Column(String(40), primary_key=True, index=True)
-    session_data = Column(Text, nullable=False)
-    expire_date = Column(DateTime(True), nullable=False, index=True)
-
-
-class DjangoSite(Base):
-    __tablename__ = 'django_site'
-
-    id = Column(Integer, primary_key=True, server_default=text("nextval('django_site_id_seq'::regclass)"))
-    domain = Column(String(100), nullable=False, unique=True)
-    name = Column(String(50), nullable=False)
-
 
 class HcBiasMotivation(Base):
     __tablename__ = 'hc_bias_motivation'
@@ -1175,7 +1062,7 @@ class NibrsVictimOffenderRel(Base):
     victim_id = Column(ForeignKey('nibrs_victim.victim_id', deferrable=True, initially='DEFERRED'), nullable=False, index=True)
 
     offender = relationship('NibrsOffender')
-    relationship = relationship('NibrsRelationship')
+    relationship_ = relationship('NibrsRelationship')
     victim = relationship('NibrsVictim')
 
 
@@ -1882,7 +1769,7 @@ class ShrOffense(Base):
     circumstances = relationship('ShrCircumstance')
     incident = relationship('ShrIncident')
     offender = relationship('ShrOffender')
-    relationship = relationship('ShrRelationship')
+    relationship_ = relationship('ShrRelationship')
     victim = relationship('ShrVictim')
     weapon = relationship('NibrsWeaponType')
 
@@ -1919,65 +1806,6 @@ class ShrVictim(Base):
     age = relationship('NibrsAge')
     ethnicity = relationship('NibrsEthnicity')
     race = relationship('RefRace')
-
-
-class SocialaccountSocialaccount(Base):
-    __tablename__ = 'socialaccount_socialaccount'
-    __table_args__ = (
-        UniqueConstraint('provider', 'uid'),
-    )
-
-    id = Column(Integer, primary_key=True, server_default=text("nextval('socialaccount_socialaccount_id_seq'::regclass)"))
-    provider = Column(String(30), nullable=False)
-    uid = Column(String(191), nullable=False)
-    last_login = Column(DateTime(True), nullable=False)
-    date_joined = Column(DateTime(True), nullable=False)
-    extra_data = Column(Text, nullable=False)
-    user_id = Column(ForeignKey('users_user.id', deferrable=True, initially='DEFERRED'), nullable=False, index=True)
-
-    user = relationship('UsersUser')
-
-
-class SocialaccountSocialapp(Base):
-    __tablename__ = 'socialaccount_socialapp'
-
-    id = Column(Integer, primary_key=True, server_default=text("nextval('socialaccount_socialapp_id_seq'::regclass)"))
-    provider = Column(String(30), nullable=False)
-    name = Column(String(40), nullable=False)
-    client_id = Column(String(191), nullable=False)
-    secret = Column(String(191), nullable=False)
-    key = Column(String(191), nullable=False)
-
-
-class SocialaccountSocialappSite(Base):
-    __tablename__ = 'socialaccount_socialapp_sites'
-    __table_args__ = (
-        UniqueConstraint('socialapp_id', 'site_id'),
-    )
-
-    id = Column(Integer, primary_key=True, server_default=text("nextval('socialaccount_socialapp_sites_id_seq'::regclass)"))
-    socialapp_id = Column(ForeignKey('socialaccount_socialapp.id', deferrable=True, initially='DEFERRED'), nullable=False, index=True)
-    site_id = Column(ForeignKey('django_site.id', deferrable=True, initially='DEFERRED'), nullable=False, index=True)
-
-    site = relationship('DjangoSite')
-    socialapp = relationship('SocialaccountSocialapp')
-
-
-class SocialaccountSocialtoken(Base):
-    __tablename__ = 'socialaccount_socialtoken'
-    __table_args__ = (
-        UniqueConstraint('app_id', 'account_id'),
-    )
-
-    id = Column(Integer, primary_key=True, server_default=text("nextval('socialaccount_socialtoken_id_seq'::regclass)"))
-    token = Column(Text, nullable=False)
-    token_secret = Column(Text, nullable=False)
-    expires_at = Column(DateTime(True))
-    account_id = Column(ForeignKey('socialaccount_socialaccount.id', deferrable=True, initially='DEFERRED'), nullable=False, index=True)
-    app_id = Column(ForeignKey('socialaccount_socialapp.id', deferrable=True, initially='DEFERRED'), nullable=False, index=True)
-
-    account = relationship('SocialaccountSocialaccount')
-    app = relationship('SocialaccountSocialapp')
 
 
 class SuppLarcenyType(Base):
@@ -2082,47 +1910,3 @@ class SuppPropertyType(Base):
     prop_type_code = Column(String(20), nullable=False)
     prop_type_code_num = Column(SmallInteger, nullable=False)
 
-
-class UsersUser(Base):
-    __tablename__ = 'users_user'
-
-    id = Column(Integer, primary_key=True, server_default=text("nextval('users_user_id_seq'::regclass)"))
-    password = Column(String(128), nullable=False)
-    last_login = Column(DateTime(True))
-    is_superuser = Column(Boolean, nullable=False)
-    username = Column(String(150), nullable=False, unique=True)
-    first_name = Column(String(30), nullable=False)
-    last_name = Column(String(30), nullable=False)
-    email = Column(String(254), nullable=False)
-    is_staff = Column(Boolean, nullable=False)
-    is_active = Column(Boolean, nullable=False)
-    date_joined = Column(DateTime(True), nullable=False)
-    name = Column(String(255), nullable=False)
-
-
-class UsersUserGroup(Base):
-    __tablename__ = 'users_user_groups'
-    __table_args__ = (
-        UniqueConstraint('user_id', 'group_id'),
-    )
-
-    id = Column(Integer, primary_key=True, server_default=text("nextval('users_user_groups_id_seq'::regclass)"))
-    user_id = Column(ForeignKey('users_user.id', deferrable=True, initially='DEFERRED'), nullable=False, index=True)
-    group_id = Column(ForeignKey('auth_group.id', deferrable=True, initially='DEFERRED'), nullable=False, index=True)
-
-    group = relationship('AuthGroup')
-    user = relationship('UsersUser')
-
-
-class UsersUserUserPermission(Base):
-    __tablename__ = 'users_user_user_permissions'
-    __table_args__ = (
-        UniqueConstraint('user_id', 'permission_id'),
-    )
-
-    id = Column(Integer, primary_key=True, server_default=text("nextval('users_user_user_permissions_id_seq'::regclass)"))
-    user_id = Column(ForeignKey('users_user.id', deferrable=True, initially='DEFERRED'), nullable=False, index=True)
-    permission_id = Column(ForeignKey('auth_permission.id', deferrable=True, initially='DEFERRED'), nullable=False, index=True)
-
-    permission = relationship('AuthPermission')
-    user = relationship('UsersUser')
