@@ -8,8 +8,10 @@ from crime_data.extensions import bcrypt, cache, csrf_protect, db, debug_toolbar
 from crime_data.settings import ProdConfig
 import crime_data.resources.agencies
 import crime_data.resources.incidents
+from crime_data.common.models import db
 
 import flask_restful as restful
+
 
 if __name__ == '__main__':
     app.run(debug=True)
@@ -28,6 +30,7 @@ def create_app(config_object=ProdConfig):
     register_shellcontext(app)
     add_resources(app)
     register_commands(app)
+    db.init_app(app)
     return app
 
 

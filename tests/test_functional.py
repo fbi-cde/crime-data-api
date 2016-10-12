@@ -132,3 +132,25 @@ class TestIncidentsEndpoint:
     def test_incidents_endpoint_exists(self, user, testapp):
         res = testapp.get('/incidents/')
         assert res.status_code == 200
+
+    def test_incidents_endpoint_returns_incidents(self, user, testapp):
+        res = testapp.get('/incidents/')
+        assert len(res.json) > 0
+        assert 'incident_number' in res.json[0]
+
+    def test_incidents_endpoint_includes_offenses(self, user, testapp):
+        res = testapp.get('/incidents/')
+        for incident in res.json:
+            assert 'offenses' in incident
+            for offense in incident['offenses']:
+                assert 'offense_type' in offense
+                assert 'offense_name' in offense['offense_type']
+
+    def test_incidents_endpoint_includes_locations(self, user, testapp):
+        res = testapp.get('/incidents/')
+        for incident in res.json:
+            assert 'offenses' in incident
+            for offense in incident['offenses']:
+                assert 'location' in offense
+                assert 'location_name' in offense['location']
+            
