@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Test configs."""
-from crime_data_api.app import create_app
-from crime_data_api.settings import DevConfig, ProdConfig
+from crime_data.app import create_app
+from crime_data.settings import DevConfig, ProdConfig
 
 
 def test_production_config():

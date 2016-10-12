@@ -3,11 +3,11 @@
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import login_required, login_user, logout_user
 
-from crime_data_api.extensions import login_manager
-from crime_data_api.public.forms import LoginForm
-from crime_data_api.user.forms import RegisterForm
-from crime_data_api.user.models import User
-from crime_data_api.utils import flash_errors
+from crime_data.extensions import login_manager
+from crime_data.public.forms import LoginForm
+from crime_data.user.forms import RegisterForm
+from crime_data.user.models import User
+from crime_data.utils import flash_errors
 
 blueprint = Blueprint('public', __name__, static_folder='../static')
 

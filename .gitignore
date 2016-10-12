@@ -1,64 +1,46 @@
-### OSX ###
-.DS_Store
-.AppleDouble
-.LSOverride
-
-### SublimeText ###
-# cache files for sublime text
-*.tmlanguage.cache
-*.tmPreferences.cache
-*.stTheme.cache
-
-# workspace files are user-specific
-*.sublime-workspace
-
-# project files should be checked into the repository, unless a significant
-# proportion of contributors will probably not be using SublimeText
-# *.sublime-project
-
-# sftp configuration file
-sftp-config.json
-
-# Basics
 *.py[cod]
-__pycache__
 
-# Logs
-*.log
+# C extensions
+*.so
+
+# Packages
+*.egg
+*.egg-info
+build
+eggs
+parts
+bin
+var
+sdist
+develop-eggs
+.installed.cfg
+lib
+lib64
+
+# Installer logs
 pip-log.txt
 
 # Unit test / coverage reports
 .coverage
 .tox
 nosetests.xml
-htmlcov
 
 # Translations
 *.mo
-*.pot
 
-# Pycharm
-.idea/*
+# Mr Developer
+.mr.developer.cfg
+.project
+.pydevproject
 
+# Complexity
+output/*.html
+output/*/index.html
 
-# Vim
+# Sphinx
+docs/_build
 
-*~
-*.swp
-*.swo
+.webassets-cache
 
-# npm
-node_modules/
-
-# Compass
-.sass-cache
-
-# virtual environments
-.env
-
-# User-uploaded media
-crime_data_api/media/
-
-# Hitch directory
-tests/.hitch
-
+# Virtualenvs
+env/

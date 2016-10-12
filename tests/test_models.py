@@ -4,7 +4,7 @@ import datetime as dt
 
 import pytest
 
-from crime_data_api.user.models import Role, User
+from crime_data.user.models import Role, User
 
 from .factories import UserFactory
 
