@@ -118,3 +118,17 @@ class TestRegistering:
         res = form.submit()
         # sees error
         assert 'Username already registered' in res
+
+
+class TestAgenciesEndpoint:
+
+    def test_agencies_endpoint_exists(self, user, testapp):
+        res = testapp.get('/agencies/')
+        assert res.status_code == 200
+
+
+class TestIncidentsEndpoint:
+
+    def test_incidents_endpoint_exists(self, user, testapp):
+        res = testapp.get('/incidents/')
+        assert res.status_code == 200

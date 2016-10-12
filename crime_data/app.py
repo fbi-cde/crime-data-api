@@ -7,6 +7,7 @@ from crime_data.assets import assets
 from crime_data.extensions import bcrypt, cache, csrf_protect, db, debug_toolbar, login_manager, migrate
 from crime_data.settings import ProdConfig
 import crime_data.resources.agencies
+import crime_data.resources.incidents
 
 import flask_restful as restful
 
@@ -84,3 +85,4 @@ def register_commands(app):
 def add_resources(app):
     api = restful.Api(app)
     api.add_resource(crime_data.resources.agencies.AgenciesList, '/agencies/')
+    api.add_resource(crime_data.resources.incidents.IncidentsList, '/incidents/')
