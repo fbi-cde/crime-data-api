@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """The app module, containing the app factory function."""
+import csv
+import io
 from flask import Flask, render_template
 
 from crime_data import commands, public, user
@@ -87,5 +89,21 @@ def register_commands(app):
 
 def add_resources(app):
     api = restful.Api(app)
+
+    @api.representation('text/csv')
+    def output_csv(data, code, headers=None):
+        """Curl with -H "Accept: text/csv" """
+        outfile = io.StringIO()
+        keys = data[0].keys()
+        writer = csv.DictWriter(outfile, keys)
+        writer.writerows(data)
+        outfile.seek(0)
+        resp = api.make_response(outfile.read(), code)
+        resp.headers.extend(headers or {})
+        return resp
+
     api.add_resource(crime_data.resources.agencies.AgenciesList, '/agencies/')
-    api.add_resource(crime_data.resources.incidents.IncidentsList, '/incidents/')
+    api.add_resource(crime_data.resources.incidents.IncidentsList,
+      '/incidents/')
+    api.add_resource(crime_data.resources.incidents.IncidentsDetail,
+      '/incidents/<string:nbr>/')

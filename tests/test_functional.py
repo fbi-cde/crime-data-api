@@ -153,4 +153,20 @@ class TestIncidentsEndpoint:
             for offense in incident['offenses']:
                 assert 'location' in offense
                 assert 'location_name' in offense['location']
-            
+
+    def test_incidents_endpoint_filters_offense_code(self, user, testapp):
+        res = testapp.get('/incidents/?offense_code=35A')
+        for incident in res.json:
+            assert 'offenses' in incident
+            hits = [o for o in incident['offenses']
+                if o['offense_type']['offense_code'] == '35A']
+            assert len(hits) > 0
+
+    def _single_incident_number(self, testapp):
+        res = testapp.get('/incidents/')
+        return res.json[0]['incident_number']
+
+    def test_incidents_endpoint_single_record_works(self, user, testapp):
+        id_no = self._single_incident_number(testapp)
+        res = testapp.get('/incidents/{}/'.format(id_no))
+        assert res.status_code == 200

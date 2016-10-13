@@ -1,0 +1,10 @@
+---
+# all applications use these settings and services
+memory: 512M
+instances: 1
+applications:
+- name: crime-data-api
+  path: .
+  timeout: 180
+services:
+- crime-data-api-db
