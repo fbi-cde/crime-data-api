@@ -26,7 +26,7 @@ Then run the following commands to bootstrap your environment ::
     git clone https://github.com/catherinedevlin/crime_data
     cd crime_data
     pip install -r requirements/dev.txt
-    bower install
+    npm install && npm run swagger
     flask run
 
 You will see a pretty welcome screen.
@@ -39,6 +39,7 @@ database tables and perform the initial migration ::
     flask db upgrade
     flask run
 
+You can find the Swagger UI API documentation page at ``http://127.0.0.1:5000/static/libs/swagger/index.html?url=/static/crime-data-api-swagger.yaml``
 
 Deployment
 ----------
