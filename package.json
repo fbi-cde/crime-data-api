@@ -1,0 +1,29 @@
+{
+  "name": "crime-data-api",
+  "version": "1.0.0",
+  "description": "RESTful API service providing data and statistics on crime in the USA",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "swagger": "npm run swagger:mkdir && npm run swagger:cp",
+    "swagger:mkdir": "mkdir crime_data/static/libs/swagger",
+    "swagger:cp": "cp -r node_modules/swagger-ui/dist/* crime_data/static/libs/swagger/",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/18F/crime-data-api.git"
+  },
+  "keywords": [],
+  "author": "Jeremia Kimelman <jeremia.kimelman@gsa.gov>",
+  "license": "Public Domain",
+  "bugs": {
+    "url": "https://github.com/18F/crime-data-api/issues"
+  },
+  "homepage": "https://github.com/18F/crime-data-api#readme",
+  "dependencies": {
+    "swagger-ui": "^2.2.5"
+  }
+}
