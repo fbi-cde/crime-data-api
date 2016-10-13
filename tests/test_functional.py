@@ -126,6 +126,19 @@ class TestAgenciesEndpoint:
         res = testapp.get('/agencies/')
         assert res.status_code == 200
 
+    def test_agencies_endpoint_returns_agencies(self, user, testapp):
+        res = testapp.get('/agencies/')
+        assert len(res.json) > 0
+        assert 'ori' in res.json[0]
+
+    def _single_ori(self, testapp):
+        res = testapp.get('/agencies/')
+        return res.json[0]['ori']
+
+    def test_agencies_endpoint_single_record_works(self, user, testapp):
+        id_no = self._single_ori(testapp)
+        res = testapp.get('/agencies/{}/'.format(id_no))
+        assert res.status_code == 200
 
 class TestIncidentsEndpoint:
 
@@ -146,6 +159,12 @@ class TestIncidentsEndpoint:
                 assert 'offense_type' in offense
                 assert 'offense_name' in offense['offense_type']
 
+    def test_incidents_endpoint_includes_ori(self, user, testapp):
+        res = testapp.get('/incidents/')
+        for incident in res.json:
+            assert 'agency' in incident
+            assert 'ori' in incident['agency']
+
     def test_incidents_endpoint_includes_locations(self, user, testapp):
         res = testapp.get('/incidents/')
         for incident in res.json:
@@ -161,6 +180,16 @@ class TestIncidentsEndpoint:
             hits = [o for o in incident['offenses']
                 if o['offense_type']['offense_code'] == '35A']
             assert len(hits) > 0
+
+    def test_incidents_paginate(self, user, testapp):
+        page1 = testapp.get('/incidents/?page=1')
+        page2 = testapp.get('/incidents/?page=2')
+        assert len(page1.json) == 10
+        assert len(page2.json) == 10
+        assert page2.json[0] not in page1.json
+
+    def test_incidents_page_size(self, user, testapp):
+        assert False
 
     def _single_incident_number(self, testapp):
         res = testapp.get('/incidents/')
