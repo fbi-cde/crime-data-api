@@ -2,18 +2,17 @@
 """The app module, containing the app factory function."""
 import csv
 import io
-from flask import Flask, render_template
-
-from crime_data import commands, public, user
-from crime_data.assets import assets
-from crime_data.extensions import bcrypt, cache, csrf_protect, db, debug_toolbar, login_manager, migrate
-from crime_data.settings import ProdConfig
-import crime_data.resources.agencies
-import crime_data.resources.incidents
-from crime_data.common.models import db
 
 import flask_restful as restful
+from flask import Flask, render_template
 
+import crime_data.resources.agencies
+import crime_data.resources.incidents
+from crime_data import commands, public, user
+from crime_data.assets import assets
+from crime_data.common.models import db
+from crime_data.extensions import bcrypt, cache, csrf_protect, db, debug_toolbar, login_manager, migrate
+from crime_data.settings import ProdConfig
 
 if __name__ == '__main__':
     app.run(debug=True)
@@ -58,11 +57,13 @@ def register_blueprints(app):
 
 def register_errorhandlers(app):
     """Register error handlers."""
+
     def render_error(error):
         """Render error template."""
         # If a HTTPException, pull the `code` attribute; default to 500
         error_code = getattr(error, 'code', 500)
         return render_template('{0}.html'.format(error_code)), error_code
+
     for errcode in [401, 404, 500]:
         app.errorhandler(errcode)(render_error)
     return None
@@ -70,11 +71,10 @@ def register_errorhandlers(app):
 
 def register_shellcontext(app):
     """Register shell context objects."""
+
     def shell_context():
         """Shell context objects."""
-        return {
-            'db': db,
-            'User': user.models.User}
+        return {'db': db, 'User': user.models.User}
 
     app.shell_context_processor(shell_context)
 
@@ -104,8 +104,8 @@ def add_resources(app):
 
     api.add_resource(crime_data.resources.agencies.AgenciesList, '/agencies/')
     api.add_resource(crime_data.resources.agencies.AgenciesDetail,
-      '/agencies/<string:nbr>/')
+                     '/agencies/<string:nbr>/')
     api.add_resource(crime_data.resources.incidents.IncidentsList,
-      '/incidents/')
+                     '/incidents/')
     api.add_resource(crime_data.resources.incidents.IncidentsDetail,
-      '/incidents/<string:nbr>/')
+                     '/incidents/<string:nbr>/')

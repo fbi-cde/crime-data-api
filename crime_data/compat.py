@@ -13,6 +13,6 @@ if PY2:
 else:
     text_type = str
     binary_type = bytes
-    string_types = (str,)
+    string_types = (str, )
     unicode = str
     basestring = (str, bytes)

@@ -102,7 +102,8 @@ class TestRegistering:
         # sees error message
         assert 'Passwords must match' in res
 
-    def test_sees_error_message_if_user_already_registered(self, user, testapp):
+    def test_sees_error_message_if_user_already_registered(self, user,
+                                                           testapp):
         """Show error if user already registered."""
         user = UserFactory(active=True)  # A registered user
         user.save()
@@ -121,7 +122,6 @@ class TestRegistering:
 
 
 class TestAgenciesEndpoint:
-
     def test_agencies_endpoint_exists(self, user, testapp):
         res = testapp.get('/agencies/')
         assert res.status_code == 200
@@ -140,8 +140,8 @@ class TestAgenciesEndpoint:
         res = testapp.get('/agencies/{}/'.format(id_no))
         assert res.status_code == 200
 
-class TestIncidentsEndpoint:
 
+class TestIncidentsEndpoint:
     def test_incidents_endpoint_exists(self, user, testapp):
         res = testapp.get('/incidents/')
         assert res.status_code == 200
@@ -177,8 +177,9 @@ class TestIncidentsEndpoint:
         res = testapp.get('/incidents/?offense_code=35A')
         for incident in res.json:
             assert 'offenses' in incident
-            hits = [o for o in incident['offenses']
-                if o['offense_type']['offense_code'] == '35A']
+            hits = [o
+                    for o in incident['offenses']
+                    if o['offense_type']['offense_code'] == '35A']
             assert len(hits) > 0
 
     def test_incidents_paginate(self, user, testapp):
@@ -189,7 +190,8 @@ class TestIncidentsEndpoint:
         assert page2.json[0] not in page1.json
 
     def test_incidents_page_size(self, user, testapp):
-        assert False
+        res = testapp.get('/incidents/?page_size=5')
+        assert len(res.json) == 5
 
     def _single_incident_number(self, testapp):
         res = testapp.get('/incidents/')

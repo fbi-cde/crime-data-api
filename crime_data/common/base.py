@@ -1,8 +1,7 @@
 import random
 
 # import celery
-from flask_sqlalchemy import SQLAlchemy
-from flask_sqlalchemy import SignallingSession
+from flask_sqlalchemy import SignallingSession, SQLAlchemy
 
 
 class RoutingSession(SignallingSession):
@@ -44,7 +43,6 @@ class RoutingSession(SignallingSession):
 
 
 class RoutingSQLAlchemy(SQLAlchemy):
-
     def create_session(self, options):
         return RoutingSession(self, **options)
 
