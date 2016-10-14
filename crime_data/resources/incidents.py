@@ -63,8 +63,8 @@ class IncidentsList(Resource):
         if args['offense_code']:
             result = result.join(models.NibrsOffense). \
                 join(models.NibrsOffenseType)
-            result = result.filter(models.NibrsOffenseType.offense_code ==
-                                   args['offense_code'])
+            result = result.filter(
+                models.NibrsOffenseType.offense_code == args['offense_code'])
 
         return result.paginate(args['page'], args['page_size']).items
 

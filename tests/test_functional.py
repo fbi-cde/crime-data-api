@@ -140,6 +140,17 @@ class TestAgenciesEndpoint:
         res = testapp.get('/agencies/{}/'.format(id_no))
         assert res.status_code == 200
 
+    def test_agencies_paginate(self, user, testapp):
+        page1 = testapp.get('/agencies/?page=1')
+        page2 = testapp.get('/agencies/?page=2')
+        assert len(page1.json) == 10
+        assert len(page2.json) == 10
+        assert page2.json[0] not in page1.json
+
+    def test_agencies_page_size(self, user, testapp):
+        res = testapp.get('/agencies/?page_size=5')
+        assert len(res.json) == 5
+
 
 class TestIncidentsEndpoint:
     def test_incidents_endpoint_exists(self, user, testapp):

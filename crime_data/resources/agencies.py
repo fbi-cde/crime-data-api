@@ -5,6 +5,7 @@ from flask import request
 from flask_login import login_required
 #from webservices.common.views import ApiResource
 from flask_restful import Resource, fields, marshal_with, reqparse
+from . import helpers
 
 from crime_data.common import models
 # from webservices import args
@@ -28,27 +29,22 @@ FIELDS = {
 }
 
 parser = reqparse.RequestParser()
-if os.getenv('VCAP_APPLICATION'):
-    parser.add_argument('api_key', required=True, help='Get from Catherine')
+helpers.add_standard_arguments(parser)
 
 
 class AgenciesList(Resource):
     @marshal_with(FIELDS)
     def get(self):
         args = parser.parse_args()
-        if os.getenv('VCAP_APPLICATION'):
-            if args['api_key'] != os.getenv('API_KEY'):
-                return ({'message': 'Ask Catherine for API key'}, 401)
+        helpers.verify_api_key(args)
         result = models.RefAgency.query
-        return result.paginate(1, 10).items
+        return result.paginate(args['page'], args['page_size']).items
 
 
 class AgenciesDetail(Resource):
     @marshal_with(FIELDS)
     def get(self, nbr):
         args = parser.parse_args()
-        if os.getenv('VCAP_APPLICATION'):
-            if args['api_key'] != os.getenv('API_KEY'):
-                return ({'message': 'Ask Catherine for API key'}, 401)
+        helpers.verify_api_key(args)
         agency = models.RefAgency.query.filter_by(ori=nbr).first()
         return agency
