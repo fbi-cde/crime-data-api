@@ -3,21 +3,15 @@ crime-data-api
 
 RESTful API service providing data and statistics on crime
 
-.. image:: https://img.shields.io/travis/catherinedevlin/crime_data_api.svg?branch=master
-     :target: https://travis-ci.org/catherinedevlin/crime_data_api
+.. image:: https://img.shields.io/travis/18F/crime_data_api.svg?branch=master
+     :target: https://travis-ci.org/18F/crime_data_api
      :alt: Build Status
-.. image:: https://coveralls.io/repos/github/catherinedevlin/crime_data_api.svg?branch=master
-     :target: https://coveralls.io/github/catherinedevlin/crime_data_api?branch=master
+.. image:: https://coveralls.io/repos/github/18F/crime_data_api.svg?branch=master
+     :target: https://coveralls.io/github/18F/crime_data_api?branch=master
      :alt: Coverage status
-.. image:: https://codeclimate.com/github/catherinedevlin/crime_data_api.svg
-     :target: https://codeclimate.com/github/catherinedevlin/crime_data_api
+.. image:: https://codeclimate.com/github/18F/crime_data_api.svg
+     :target: https://codeclimate.com/github/18F/crime_data_api
      :alt: Code Climate status
-.. image:: https://continua11y.18f.gov/catherinedevlin/crime_data_api?branch=master
-     :target: https://continua11y.18f.gov/catherinedevlin/crime_data_api
-     :alt: Accessibility status
-.. image:: https://img.shields.io/badge/built%20with-Cookiecutter%20Django-ff69b4.svg
-     :target: https://github.com/pydanny/cookiecutter-django/
-     :alt: Built with Cookiecutter Django
 
 
 :License: CC0
@@ -40,7 +34,7 @@ environment variables ::
 
 Then run the following commands to bootstrap your environment ::
 
-    git clone https://github.com/catherinedevlin/crime-data-api
+    git clone https://github.com/18F/crime-data-api
     cd crime-data-api
     pip install -r requirements/dev.txt
     bower install
