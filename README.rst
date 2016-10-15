@@ -1,9 +1,26 @@
-===============================
-crime_data_api
-===============================
+crime-data-api
+==============
 
-A flasky app.
+RESTful API service providing data and statistics on crime
 
+.. image:: https://img.shields.io/travis/catherinedevlin/crime_data_api.svg?branch=master
+     :target: https://travis-ci.org/catherinedevlin/crime_data_api
+     :alt: Build Status
+.. image:: https://coveralls.io/repos/github/catherinedevlin/crime_data_api.svg?branch=master
+     :target: https://coveralls.io/github/catherinedevlin/crime_data_api?branch=master
+     :alt: Coverage status
+.. image:: https://codeclimate.com/github/catherinedevlin/crime_data_api.svg
+     :target: https://codeclimate.com/github/catherinedevlin/crime_data_api
+     :alt: Code Climate status
+.. image:: https://continua11y.18f.gov/catherinedevlin/crime_data_api?branch=master
+     :target: https://continua11y.18f.gov/catherinedevlin/crime_data_api
+     :alt: Accessibility status
+.. image:: https://img.shields.io/badge/built%20with-Cookiecutter%20Django-ff69b4.svg
+     :target: https://github.com/pydanny/cookiecutter-django/
+     :alt: Built with Cookiecutter Django
+
+
+:License: CC0
 
 Quickstart
 ----------
@@ -23,8 +40,8 @@ environment variables ::
 
 Then run the following commands to bootstrap your environment ::
 
-    git clone https://github.com/catherinedevlin/crime_data
-    cd crime_data
+    git clone https://github.com/catherinedevlin/crime-data-api
+    cd crime-data-api
     pip install -r requirements/dev.txt
     bower install
     flask run

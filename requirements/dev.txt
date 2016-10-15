@@ -15,3 +15,6 @@ flake8-isort==1.2
 flake8-quotes==0.2.4
 isort==4.2.2
 pep8-naming==0.3.3
+
+codeclimate-test-reporter
+pytest-cov

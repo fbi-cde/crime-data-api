@@ -1,5 +1,5 @@
 {
-  "name": "crime_data",
+  "name": "crime_data_api",
   "dependencies": {
     "bootstrap": "~3.2.0",
     "jQuery": "~2.1.3"

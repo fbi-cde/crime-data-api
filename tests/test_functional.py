@@ -212,3 +212,7 @@ class TestIncidentsEndpoint:
         id_no = self._single_incident_number(testapp)
         res = testapp.get('/incidents/{}/'.format(id_no))
         assert res.status_code == 200
+
+    def test_instances_count_exists(self, testapp):
+        res = testapp.get('/incidents/count/')
+        assert res.status_code == 200
