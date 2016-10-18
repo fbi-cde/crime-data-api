@@ -1,11 +1,12 @@
 import os
+import re
 
 import sqlalchemy as sa
 from flask import request
 from flask_login import login_required
 #from webservices.common.views import ApiResource
 from flask_restful import Resource, fields, marshal_with, reqparse
-from .helpers import add_standard_arguments, verify_api_key
+from sqlalchemy import func
 
 from crime_data.common import models
 # from webservices import args
@@ -14,6 +15,8 @@ from crime_data.common import models
 # from webservices import schemas
 # from webservices import exceptions
 from crime_data.extensions import db
+
+from .helpers import QueryWithAggregates, add_standard_arguments, verify_api_key
 
 # from flask_apispec import doc
 
@@ -49,6 +52,7 @@ parser.add_argument('location_code')
 parser.add_argument('location_name')
 add_standard_arguments(parser)
 
+
 class IncidentsList(Resource):
     @marshal_with(FIELDS)
     def get(self):
@@ -72,3 +76,22 @@ class IncidentsDetail(Resource):
         incident = models.NibrsIncident.query.filter_by(
             incident_number=nbr).first()
         return incident
+
+
+summary_parser = reqparse.RequestParser()
+summary_parser.add_argument('by', default='year')
+# no nargs available
+add_standard_arguments(summary_parser)
+
+
+class IncidentsCount(Resource):
+
+    SPLITTER = re.compile(r"\s*,\s*")
+
+    def get(self):
+        args = summary_parser.parse_args()
+        verify_api_key(args)
+        by = self.SPLITTER.split(args['by'].lower())
+        result = models.RetaMonthQuery(grouped=by)
+        return [r._asdict() for r in result.qry]
+        #newly_reporting

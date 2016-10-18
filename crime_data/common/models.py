@@ -3,9 +3,10 @@ import flask_restful as restful
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import (BigInteger, Boolean, Column, DateTime, Float,
                         ForeignKey, Integer, SmallInteger, String, Text,
-                        UniqueConstraint, text)
+                        UniqueConstraint, text, func)
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
+from sqlalchemy.sql import label
 
 db = SQLAlchemy()
 
@@ -1837,8 +1838,7 @@ class RefAgencyCoveredBy(db.Model):
         primaryjoin='RefAgencyCoveredBy.agency_id == RefAgency.agency_id')
     covered_by_agency = db.relationship(
         'RefAgency',
-        primaryjoin=
-        'RefAgencyCoveredBy.covered_by_agency_id == RefAgency.agency_id')
+        primaryjoin='RefAgencyCoveredBy.covered_by_agency_id == RefAgency.agency_id')
 
 
 class RefAgencyDataContent(db.Model):
@@ -2801,3 +2801,60 @@ class SuppPropertyType(db.Model):
     prop_type_name = db.Column(db.String(100), nullable=False)
     prop_type_code = db.Column(db.String(20), nullable=False)
     prop_type_code_num = db.Column(db.SmallInteger, nullable=False)
+
+
+class QueryWithAggregates(object):
+
+    OPERATION = func.sum
+    seed_label = None
+    seed_agg = func.sum
+
+    def _sql_name(self, readable_name):
+        return self.COL_NAME_MAP.get(readable_name, readable_name)
+
+    def _col(self, readable_name):
+        for tbl in self.tables:
+            try:
+                result = getattr(tbl, self._sql_name(readable_name))
+                return result
+            except AttributeError:
+                pass  # keep looking
+        raise AttributeError()
+
+    def _add_column(self, readable_name, operation=None):
+        col = self._col(readable_name)
+        if operation:
+            col = operation(col)
+        self.qry = self.qry.add_columns(label(readable_name, col))
+
+    def _base_query(self):
+        tbl = self.tables[0]
+        col = getattr(tbl, self.seed_col)
+        lbl = self.seed_label or self.seed_col
+        labelled = label(lbl, self.seed_agg(col))
+        return db.session.query(labelled)
+
+    def __init__(self, aggregated=None, grouped=None):
+        if grouped in (['none', None]):
+            grouped = []
+        aggregated = aggregated or []
+        self.qry = self._base_query()
+        for tbl in self.tables[1:]:
+            self.qry = self.qry.join(tbl)
+        for col in aggregated:
+            if not isinstance(col, str):
+                (col, operation) = col
+            else:
+                operation = self.OPERATION
+            self._add_column(col, operation)
+        for col in grouped:
+            self._add_column(col)
+            self.qry = self.qry.group_by(self._col(col))
+        print(self.qry)
+
+
+class RetaMonthQuery(QueryWithAggregates):
+
+    COL_NAME_MAP = {'year': 'data_year', 'state': 'state_abbr'}
+    tables = [RetaMonth, RefAgency, RefState]
+    seed_col = 'total_actual_count'
