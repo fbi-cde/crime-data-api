@@ -2,10 +2,16 @@
 """The app module, containing the app factory function."""
 from flask import Flask, render_template
 
-from crime_data_api import commands, public, user
-from crime_data_api.assets import assets
-from crime_data_api.extensions import bcrypt, cache, csrf_protect, db, debug_toolbar, login_manager, migrate
-from crime_data_api.settings import ProdConfig
+from crime_data import commands, public, user
+from crime_data.assets import assets
+from crime_data.extensions import bcrypt, cache, csrf_protect, db, debug_toolbar, login_manager, migrate
+from crime_data.settings import ProdConfig
+import crime_data.resources.agencies
+
+import flask_restful as restful
+
+if __name__ == '__main__':
+    app.run(debug=True)
 
 
 def create_app(config_object=ProdConfig):
@@ -19,6 +25,7 @@ def create_app(config_object=ProdConfig):
     register_blueprints(app)
     register_errorhandlers(app)
     register_shellcontext(app)
+    add_resources(app)
     register_commands(app)
     return app
 
@@ -72,3 +79,8 @@ def register_commands(app):
     app.cli.add_command(commands.lint)
     app.cli.add_command(commands.clean)
     app.cli.add_command(commands.urls)
+
+
+def add_resources(app):
+    api = restful.Api(app)
+    api.add_resource(crime_data.resources.agencies.AgenciesList, '/agencies/')

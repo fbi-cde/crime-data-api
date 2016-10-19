@@ -4,7 +4,7 @@ from flask_wtf import Form
 from wtforms import PasswordField, StringField
 from wtforms.validators import DataRequired
 
-from crime_data_api.user.models import User
+from crime_data.user.models import User
 
 
 class LoginForm(Form):

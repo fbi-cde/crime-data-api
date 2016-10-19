@@ -1,8 +1,10 @@
-crime-data-api
-==============
+===============================
+crime_data_api
+===============================
 
-RESTful API service providing data and statistics on crime
+A flasky app.
 
+<<<<<<< HEAD
 .. image:: https://circleci.com/gh/18F/crime-data-api.svg?style=svg
     :target: https://circleci.com/gh/18F/crime-data-api
     :alt: Build status
@@ -19,75 +21,77 @@ RESTful API service providing data and statistics on crime
      :target: https://github.com/pydanny/cookiecutter-django/
      :alt: Built with Cookiecutter Django
 
-
-:License: CC0
-
-
-Settings
---------
-
-Moved to settings_.
-
-.. _settings: http://cookiecutter-django.readthedocs.io/en/latest/settings.html
-
-Basic Commands
---------------
-
-Setting Up Your Users
-^^^^^^^^^^^^^^^^^^^^^
-
-* To create a **normal user account**, just go to Sign Up and fill out the form. Once you submit it, you'll see a "Verify Your E-mail Address" page. Go to your console to see a simulated email verification message. Copy the link into your browser. Now the user's email should be verified and ready to go.
-
-* To create an **superuser account**, use this command::
-
-    $ python manage.py createsuperuser
-
-For convenience, you can keep your normal user logged in on Chrome and your superuser logged in on Firefox (or similar), so that you can see how the site behaves for both kinds of users.
-
-Running
+Quickstart
 ----------
 
-  $ pip install -r requirements.txt
-  $ python rest.py
+First, set your app's secret key as an environment variable. For example,
+add the following to ``.bashrc`` or ``.bash_profile``.
 
+.. code-block:: bash
 
-Test coverage
-^^^^^^^^^^^^^
+    export CRIME_DATA_SECRET='something-really-secret'
 
-To run the tests, check your test coverage, and generate an HTML coverage report::
+Before running shell commands, set the ``FLASK_APP`` and ``FLASK_DEBUG``
+environment variables ::
 
-    $ coverage run manage.py test
-    $ coverage html
-    $ open htmlcov/index.html
+    export FLASK_APP=/path/to/autoapp.py
+    export FLASK_DEBUG=1
 
-Running tests with py.test
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Then run the following commands to bootstrap your environment ::
 
-::
+    git clone https://github.com/catherinedevlin/crime_data
+    cd crime_data
+    pip install -r requirements/dev.txt
+    bower install
+    flask run
 
-  $ py.test
+You will see a pretty welcome screen.
 
-Live reloading and Sass CSS compilation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Once you have installed your DBMS, run the following to create your app's
+database tables and perform the initial migration ::
 
-Moved to `Live reloading and SASS compilation`_.
-
-.. _`Live reloading and SASS compilation`: http://cookiecutter-django.readthedocs.io/en/latest/live-reloading-and-sass-compilation.html
-
-
-
+    flask db init
+    flask db migrate
+    flask db upgrade
+    flask run
 
 
 Deployment
 ----------
 
-The following details how to deploy this application.
+In your production environment, make sure the ``FLASK_DEBUG`` environment
+variable is unset or is set to ``0``, so that ``ProdConfig`` is used.
 
 
+Shell
+-----
 
-Docker
-^^^^^^
+To open the interactive shell, run ::
 
-See detailed `cookiecutter-django Docker documentation`_.
+    flask shell
 
-.. _`cookiecutter-django Docker documentation`: http://cookiecutter-django.readthedocs.io/en/latest/deployment-with-docker.html
+By default, you will have access to the flask ``app``.
+
+
+Running Tests
+-------------
+
+To run all tests, run ::
+
+    flask test
+
+
+Migrations
+----------
+
+Whenever a database migration needs to be made. Run the following commands ::
+
+    flask db migrate
+
+This will generate a new migration script. Then run ::
+
+    flask db upgrade
+
+To apply the migration.
+
+For a full migration command reference, run ``flask db --help``.

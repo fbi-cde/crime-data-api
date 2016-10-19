@@ -4,9 +4,9 @@
 import pytest
 from webtest import TestApp
 
-from crime_data_api.app import create_app
-from crime_data_api.database import db as _db
-from crime_data_api.settings import TestConfig
+from crime_data.app import create_app
+from crime_data.database import db as _db
+from crime_data.settings import TestConfig
 
 from .factories import UserFactory
 

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """Test forms."""
 
-from crime_data_api.public.forms import LoginForm
-from crime_data_api.user.forms import RegisterForm
+from crime_data.public.forms import LoginForm
+from crime_data.user.forms import RegisterForm
 
 
 class TestRegisterForm:
