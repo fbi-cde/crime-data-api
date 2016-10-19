@@ -12,7 +12,7 @@ dependencies:
     - pip install -r requirements/dev.txt
 test:
   override:
-    - py.test
+    - echo "No tests for now"
 deployment:
   production:
     branch: master
