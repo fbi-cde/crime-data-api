@@ -1,0 +1,58 @@
+swagger: '2.0'
+info:
+  title: Crime Data API
+  description: RESTful API service providing data and statistics on crime in the USA
+  version: "1.0.0"
+# the domain of the service
+host: crime-data-api.fr.cloud.gov
+# array of all schemes that your API supports
+schemes:
+  - https
+# will be prefixed to all paths
+basePath: /
+produces:
+  - application/json
+paths:
+  /incidents:
+    get:
+      summary: NIBRS incidents
+      description: |
+        Incidents reported to the FBI with the National Incident Based Reporting Standard (NIBRS)
+      parameters:
+        - name: ori
+          in: query
+          description: Originating Reference ID (ORI) refers to a law enforcement agency
+          type: string
+      responses:
+        200:
+          description: An array of incidents
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Incident'
+        default:
+          description: 'Unauthenticated error'
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  Incident:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      fields:
+        type: string
+
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      fields:
+        type: string

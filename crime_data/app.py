@@ -5,6 +5,7 @@ import io
 
 import flask_restful as restful
 from flask import Flask, render_template
+from flask_cors import CORS, cross_origin
 
 import crime_data.resources.agencies
 import crime_data.resources.incidents
@@ -25,6 +26,7 @@ def create_app(config_object=ProdConfig):
     """
     app = Flask(__name__)
     app.config.from_object(config_object)
+    CORS(app)
     register_extensions(app)
     register_blueprints(app)
     register_errorhandlers(app)
