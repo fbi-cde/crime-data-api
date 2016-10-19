@@ -140,6 +140,17 @@ class TestAgenciesEndpoint:
         res = testapp.get('/agencies/{}/'.format(id_no))
         assert res.status_code == 200
 
+    def test_agencies_paginate(self, user, testapp):
+        page1 = testapp.get('/agencies/?page=1')
+        page2 = testapp.get('/agencies/?page=2')
+        assert len(page1.json) == 10
+        assert len(page2.json) == 10
+        assert page2.json[0] not in page1.json
+
+    def test_agencies_page_size(self, user, testapp):
+        res = testapp.get('/agencies/?page_size=5')
+        assert len(res.json) == 5
+
 
 class TestIncidentsEndpoint:
     def test_incidents_endpoint_exists(self, user, testapp):
@@ -177,8 +188,7 @@ class TestIncidentsEndpoint:
         res = testapp.get('/incidents/?offense_code=35A')
         for incident in res.json:
             assert 'offenses' in incident
-            hits = [o
-                    for o in incident['offenses']
+            hits = [o for o in incident['offenses']
                     if o['offense_type']['offense_code'] == '35A']
             assert len(hits) > 0
 
@@ -201,3 +211,44 @@ class TestIncidentsEndpoint:
         id_no = self._single_incident_number(testapp)
         res = testapp.get('/incidents/{}/'.format(id_no))
         assert res.status_code == 200
+
+
+class TestIncidentsCountEndpoint:
+    def test_instances_count_exists(self, testapp):
+        res = testapp.get('/incidents/count/')
+        assert res.status_code == 200
+
+    def test_instances_count_returns_counts(self, testapp):
+        res = testapp.get('/incidents/count/')
+        assert isinstance(res.json, list)
+        assert 'total_actual_count' in res.json[0]
+
+    def test_instances_count_groups_by_year_by_default(self, testapp):
+        res = testapp.get('/incidents/count/')
+        years = [row['year'] for row in res.json]
+        assert len(years) == len(set(years))
+
+    def test_instances_count_groups_by_agency_id(self, testapp):
+        res = testapp.get('/incidents/count/?by=agency_id')
+        agency_ids = [row['agency_id'] for row in res.json]
+        assert len(agency_ids) == len(set(agency_ids))
+
+    def test_instances_count_groups_by_agency_id_any_year(self, testapp):
+        res = testapp.get('/incidents/count/?by=agency_id,year')
+        rows = [(row['year'], row['agency_id']) for row in res.json]
+        assert len(rows) == len(set(rows))
+
+    def test_instances_count_groups_by_state(self, testapp):
+        res = testapp.get('/incidents/count/?by=state')
+        rows = [row['state'] for row in res.json]
+        assert len(rows) == len(set(rows))
+
+    def test_instances_count_groups_by_offense(self, testapp):
+        res = testapp.get('/incidents/count/?by=offense')
+        rows = [row['offense'] for row in res.json]
+        assert len(rows) == len(set(rows))
+
+    def test_instances_count_shows_fields_in_month(self, testapp):
+        res = testapp.get('/incidents/count/?fields=leoka_felony')
+        for row in res.json:
+            assert 'leoka_felony' in row

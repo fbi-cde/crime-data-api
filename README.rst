@@ -1,9 +1,20 @@
-===============================
-crime_data_api
-===============================
+crime-data-api
+==============
 
-A flasky app.
+RESTful API service providing data and statistics on crime
 
+.. image:: https://img.shields.io/travis/18F/crime-data-api.svg?branch=master
+     :target: https://travis-ci.org/18F/crime-data-api
+     :alt: Build Status
+.. image:: https://coveralls.io/repos/github/18F/crime-data-api.svg?branch=master
+     :target: https://coveralls.io/github/18F/crime-data-api?branch=master
+     :alt: Coverage status
+.. image:: https://codeclimate.com/github/18F/crime-data-api.svg
+     :target: https://codeclimate.com/github/18F/crime-data-api
+     :alt: Code Climate status
+
+
+:License: CC0
 
 Quickstart
 ----------
@@ -23,8 +34,8 @@ environment variables ::
 
 Then run the following commands to bootstrap your environment ::
 
-    git clone https://github.com/catherinedevlin/crime_data
-    cd crime_data
+    git clone https://github.com/18F/crime-data-api
+    cd crime-data-api
     pip install -r requirements/dev.txt
     npm install && npm run swagger
     flask run

@@ -109,5 +109,7 @@ def add_resources(app):
                      '/agencies/<string:nbr>/')
     api.add_resource(crime_data.resources.incidents.IncidentsList,
                      '/incidents/')
+    api.add_resource(crime_data.resources.incidents.IncidentsCount,
+                     '/incidents/count/')
     api.add_resource(crime_data.resources.incidents.IncidentsDetail,
                      '/incidents/<string:nbr>/')
