@@ -1,5 +1,6 @@
 import os
 import re
+from datetime import date, datetime
 
 import sqlalchemy as sa
 from flask import request
@@ -80,18 +81,36 @@ class IncidentsDetail(Resource):
 
 summary_parser = reqparse.RequestParser()
 summary_parser.add_argument('by', default='year')
-# no nargs available
+summary_parser.add_argument('fields')
+# no nargs available for multiple use of field names
 add_standard_arguments(summary_parser)
 
+SUMM_FIELDS = {
+    'year': fields.String,
+    'total_actual_count': fields.Integer,
+    'report_date': fields.DateTime,
+    }
 
 class IncidentsCount(Resource):
 
     SPLITTER = re.compile(r"\s*,\s*")
 
+    def _stringify(self, data):
+        """Avoid JSON serialization errors
+        by converting values in list of dicts
+        into strings."""
+        return [{k: (d[k] if hasattr(d[k], '__pow__') else str(d[k])) for k in d}
+        for d in (r._asdict() for r in data)]
+
+
     def get(self):
         args = summary_parser.parse_args()
         verify_api_key(args)
         by = self.SPLITTER.split(args['by'].lower())
-        result = models.RetaMonthQuery(grouped=by)
-        return [r._asdict() for r in result.qry]
-        #newly_reporting
+        if args['fields']:
+            fields = self.SPLITTER.split(args['fields'].lower())
+        else:
+            fields = []
+        result = models.RetaMonthQuery(aggregated=fields, grouped=by)
+        return self._stringify(result.qry)
+        # This result isn't working with @marshal_with

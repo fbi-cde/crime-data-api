@@ -237,3 +237,18 @@ class TestIncidentsCountEndpoint:
         res = testapp.get('/incidents/count/?by=agency_id,year')
         rows = [(row['year'], row['agency_id']) for row in res.json]
         assert len(rows) == len(set(rows))
+
+    def test_instances_count_groups_by_state(self, testapp):
+        res = testapp.get('/incidents/count/?by=state')
+        rows = [row['state'] for row in res.json]
+        assert len(rows) == len(set(rows))
+
+    def test_instances_count_groups_by_offense(self, testapp):
+        res = testapp.get('/incidents/count/?by=offense')
+        rows = [row['offense'] for row in res.json]
+        assert len(rows) == len(set(rows))
+
+    def test_instances_count_shows_fields_in_month(self, testapp):
+        res = testapp.get('/incidents/count/?fields=leoka_felony')
+        for row in res.json:
+            assert 'leoka_felony' in row

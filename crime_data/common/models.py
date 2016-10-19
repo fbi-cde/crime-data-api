@@ -7,6 +7,8 @@ from sqlalchemy import (BigInteger, Boolean, Column, DateTime, Float,
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import label
+from decimal import Decimal
+import datetime
 
 db = SQLAlchemy()
 
@@ -2834,6 +2836,16 @@ class QueryWithAggregates(object):
         labelled = label(lbl, self.seed_agg(col))
         return db.session.query(labelled)
 
+    def _can_aggregate(self, col_name, aggregate):
+        col = self._col(col_name)
+        types = [c.type.python_type for c in col.prop.columns]
+        if types in ([int, ], [float, ], [Decimal, ]):
+            return True
+        if (types in ([datetime.datetime, ], [datetime.date, ])
+            and aggregate in (func.min, func.max)):
+            return True
+        return False
+
     def __init__(self, aggregated=None, grouped=None):
         if grouped in (['none', None]):
             grouped = []
@@ -2846,7 +2858,10 @@ class QueryWithAggregates(object):
                 (col, operation) = col
             else:
                 operation = self.OPERATION
-            self._add_column(col, operation)
+            if self._can_aggregate(col, operation):
+                self._add_column(col, operation)
+            else:
+                grouped.append(col)
         for col in grouped:
             self._add_column(col)
             self.qry = self.qry.group_by(self._col(col))
@@ -2855,6 +2870,6 @@ class QueryWithAggregates(object):
 
 class RetaMonthQuery(QueryWithAggregates):
 
-    COL_NAME_MAP = {'year': 'data_year', 'state': 'state_abbr'}
-    tables = [RetaMonth, RefAgency, RefState]
+    COL_NAME_MAP = {'year': 'data_year', 'state': 'state_abbr', 'offense': 'offense_subcat_name'}
+    tables = [RetaMonth, RefAgency, RefState, RetaMonthOffenseSubcat, RetaOffenseSubcat]
     seed_col = 'total_actual_count'
