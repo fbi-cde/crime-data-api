@@ -5,3 +5,5 @@ applications:
   buildpack: python_buildpack
   host: crime-data-api
   domain: fr.cloud.gov
+env:
+  FLASK_APP: autoapp.py
