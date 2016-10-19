@@ -3,9 +3,9 @@ crime-data-api
 
 RESTful API service providing data and statistics on crime
 
-.. image:: https://img.shields.io/travis/catherinedevlin/crime_data_api.svg?branch=master
-     :target: https://travis-ci.org/catherinedevlin/crime_data_api
-     :alt: Build Status
+.. image:: https://circleci.com/gh/18F/crime-data-api.svg?style=svg
+    :target: https://circleci.com/gh/18F/crime-data-api
+    :alt: Build status
 .. image:: https://coveralls.io/repos/github/catherinedevlin/crime_data_api.svg?branch=master
      :target: https://coveralls.io/github/catherinedevlin/crime_data_api?branch=master
      :alt: Coverage status
@@ -91,4 +91,3 @@ Docker
 See detailed `cookiecutter-django Docker documentation`_.
 
 .. _`cookiecutter-django Docker documentation`: http://cookiecutter-django.readthedocs.io/en/latest/deployment-with-docker.html
-
