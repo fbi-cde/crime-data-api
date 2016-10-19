@@ -1,12 +1,15 @@
 machine:
   python:
-    version: 3.4.0
+    version: 3.4.4
   environment:
     CF_API: https://api.fr.cloud.gov
     CF_USERNAME: fbi-crime-explorer_deployer
     CF_ORGANIZATION: fbi-crime-explorer
     CF_SPACE: prototype
     CF_APP: crime-data-api
+dependencies:
+  override:
+    - pip install -r requirements/dev.txt
 test:
   override:
     - py.test
