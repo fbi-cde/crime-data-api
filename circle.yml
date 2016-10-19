@@ -19,4 +19,4 @@ deployment:
       - cf install-plugin autopilot -f -r CF-Community
       - cf api $CF_API
       - cf auth $CF_USERNAME $CF_PASSWORD && cf target -o $CF_ORGANIZATION -s $CF_SPACE
-      - cd $CIRCLE_PROJECT_REPONAME && cf zero-downtime-push $CF_APP -f ./manifests/dev.yml -p .
+      - cd $CIRCLE_PROJECT_REPONAME && cf zero-downtime-push $CF_APP -f manifest.yml -p .
