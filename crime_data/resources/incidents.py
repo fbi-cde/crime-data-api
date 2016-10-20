@@ -10,6 +10,7 @@ from flask_restful import Resource, fields, marshal_with, reqparse
 from sqlalchemy import func
 
 from crime_data.common import models
+from crime_data.common.base import CdeResource
 # from webservices import args
 # from webservices import docs
 # from webservices import utils
@@ -91,17 +92,9 @@ SUMM_FIELDS = {
     'report_date': fields.DateTime,
     }
 
-class IncidentsCount(Resource):
+class IncidentsCount(CdeResource):
 
     SPLITTER = re.compile(r"\s*,\s*")
-
-    def _stringify(self, data):
-        """Avoid JSON serialization errors
-        by converting values in list of dicts
-        into strings."""
-        return [{k: (d[k] if hasattr(d[k], '__pow__') else str(d[k])) for k in d}
-        for d in (r._asdict() for r in data)]
-
 
     def get(self):
         args = summary_parser.parse_args()
