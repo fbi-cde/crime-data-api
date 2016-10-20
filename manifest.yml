@@ -1,10 +1,11 @@
----
-# all applications use these settings and services
-memory: 512M
-instances: 1
 applications:
 - name: crime-data-api
-  path: .
-  timeout: 180
+  memory: 512M
+  buildpack: python_buildpack
+  host: crime-data-api
+  domain: fr.cloud.gov
+  command: flask run
+env:
+  FLASK_APP: autoapp.py
 services:
 - crime-data-api-db

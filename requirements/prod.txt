@@ -1,5 +1,7 @@
 # Everything needed in production
 
+wheel==0.29.0
+
 # Flask
 Flask==0.11.1
 MarkupSafe==0.23
@@ -7,8 +9,6 @@ Werkzeug==0.11.4
 Jinja2==2.8
 itsdangerous==0.24
 click>=5.0
-Flask-RESTful==0.3.5
-Flask-Cors==3.0.2
 
 # Database
 Flask-SQLAlchemy==2.1
