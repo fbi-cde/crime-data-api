@@ -56,10 +56,8 @@ class SurrogatePK(object):
     @classmethod
     def get_by_id(cls, record_id):
         """Get record by ID."""
-        if any(
-                (isinstance(record_id, basestring) and record_id.isdigit(),
-                 isinstance(record_id, (int, float))),
-        ):
+        if any((isinstance(record_id, basestring) and record_id.isdigit(),
+                isinstance(record_id, (int, float))), ):
             return cls.query.get(int(record_id))
         return None
 
@@ -74,4 +72,5 @@ def reference_col(tablename, nullable=False, pk_name='id', **kwargs):
     """
     return db.Column(
         db.ForeignKey('{0}.{1}'.format(tablename, pk_name)),
-        nullable=nullable, **kwargs)
+        nullable=nullable,
+        **kwargs)

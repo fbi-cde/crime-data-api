@@ -1,14 +1,19 @@
 # -*- coding: utf-8 -*-
 """The app module, containing the app factory function."""
-from flask import Flask, render_template
-
-from crime_data import commands, public, user
-from crime_data.assets import assets
-from crime_data.extensions import bcrypt, cache, csrf_protect, db, debug_toolbar, login_manager, migrate
-from crime_data.settings import ProdConfig
-import crime_data.resources.agencies
+import csv
+import io
 
 import flask_restful as restful
+from flask import Flask, render_template
+from flask_cors import CORS, cross_origin
+
+import crime_data.resources.agencies
+import crime_data.resources.incidents
+from crime_data import commands, public, user
+from crime_data.assets import assets
+from crime_data.common.models import db
+from crime_data.extensions import bcrypt, cache, csrf_protect, db, debug_toolbar, login_manager, migrate
+from crime_data.settings import ProdConfig
 
 if __name__ == '__main__':
     app.run(debug=True)
@@ -21,12 +26,14 @@ def create_app(config_object=ProdConfig):
     """
     app = Flask(__name__)
     app.config.from_object(config_object)
+    CORS(app)
     register_extensions(app)
     register_blueprints(app)
     register_errorhandlers(app)
     register_shellcontext(app)
     add_resources(app)
     register_commands(app)
+    db.init_app(app)
     return app
 
 
@@ -52,11 +59,13 @@ def register_blueprints(app):
 
 def register_errorhandlers(app):
     """Register error handlers."""
+
     def render_error(error):
         """Render error template."""
         # If a HTTPException, pull the `code` attribute; default to 500
         error_code = getattr(error, 'code', 500)
         return render_template('{0}.html'.format(error_code)), error_code
+
     for errcode in [401, 404, 500]:
         app.errorhandler(errcode)(render_error)
     return None
@@ -64,11 +73,10 @@ def register_errorhandlers(app):
 
 def register_shellcontext(app):
     """Register shell context objects."""
+
     def shell_context():
         """Shell context objects."""
-        return {
-            'db': db,
-            'User': user.models.User}
+        return {'db': db, 'User': user.models.User}
 
     app.shell_context_processor(shell_context)
 
@@ -83,4 +91,25 @@ def register_commands(app):
 
 def add_resources(app):
     api = restful.Api(app)
+
+    @api.representation('text/csv')
+    def output_csv(data, code, headers=None):
+        """Curl with -H "Accept: text/csv" """
+        outfile = io.StringIO()
+        keys = data[0].keys()
+        writer = csv.DictWriter(outfile, keys)
+        writer.writerows(data)
+        outfile.seek(0)
+        resp = api.make_response(outfile.read(), code)
+        resp.headers.extend(headers or {})
+        return resp
+
     api.add_resource(crime_data.resources.agencies.AgenciesList, '/agencies/')
+    api.add_resource(crime_data.resources.agencies.AgenciesDetail,
+                     '/agencies/<string:nbr>/')
+    api.add_resource(crime_data.resources.incidents.IncidentsList,
+                     '/incidents/')
+    api.add_resource(crime_data.resources.incidents.IncidentsCount,
+                     '/incidents/count/')
+    api.add_resource(crime_data.resources.incidents.IncidentsDetail,
+                     '/incidents/<string:nbr>/')

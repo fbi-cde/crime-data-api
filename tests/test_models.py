@@ -47,7 +47,8 @@ class TestUser:
 
     def test_check_password(self):
         """Check password."""
-        user = User.create(username='foo', email='foo@bar.com',
+        user = User.create(username='foo',
+                           email='foo@bar.com',
                            password='foobarbaz123')
         assert user.check_password('foobarbaz123') is True
         assert user.check_password('barfoobaz') is False
