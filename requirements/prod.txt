@@ -24,6 +24,7 @@ WTForms==2.1
 
 # Deployment
 gunicorn>=19.1.1
+Flask-Cors==3.0.2
 
 # Assets
 Flask-Assets==0.12
@@ -39,3 +40,6 @@ Flask-Caching>=1.0.0
 
 # Debug toolbar
 Flask-DebugToolbar==0.10.0
+
+# RESTful
+Flask-RESTful==0.3.5
