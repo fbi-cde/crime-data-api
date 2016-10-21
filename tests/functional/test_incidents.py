@@ -86,20 +86,26 @@ class TestIncidentsEndpoint:
     def test_incidents_endpoint_filters_offense_name_case_insensitive(
             self, user, testapp):
         res0 = testapp.get('/incidents/?offense_name=Intimidation')
-        assert len(res0) > 0
+        assert len(res0.json) > 0
         res1 = testapp.get('/incidents/?offense_name=intimidation')
-        assert len(res1) == len(res0)
+        assert len(res1.json) == len(res0.json)
 
     @pytest.mark.xfail  # TODO
     def test_incidents_endpoint_filters_null_method_entry_code(self, user,
                                                                testapp):
         res = testapp.get('/incidents/?method_entry_code=None')
-        assert len(res) > 0
+        assert len(res.json) > 0
         for incident in res.json:
             assert 'offenses' in incident
             hits = [o for o in incident['offenses']
                     if o['method_entry_code'] == 'F']
             assert len(hits) > 0
+
+    def test_incidents_endpoint_filters_incident_hour(self, user, testapp):
+        res = testapp.get('/incidents/?incident_hour=22')
+        assert len(res.json) > 0
+        for incident in res.json:
+            assert incident['incident_hour'] == 22
 
     def test_incidents_paginate(self, user, testapp):
         page1 = testapp.get('/incidents/?page=1')

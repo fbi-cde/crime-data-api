@@ -48,6 +48,7 @@ FIELDS = {
 }
 
 parser = reqparse.RequestParser()
+parser.add_argument('incident_hour')
 parser.add_argument('crime_against')
 parser.add_argument('offense_code')
 parser.add_argument('offense_name')
@@ -61,6 +62,7 @@ add_standard_arguments(parser)
 class IncidentsList(Resource):
 
     TABLES_BY_COLUMN = {
+        'incident_hour': (models.NibrsIncident, ),
         'method_entry_code': (models.NibrsOffense, ),
         'offense_category_name': (models.NibrsOffense,
                                   models.NibrsOffenseType, ),
@@ -83,7 +85,7 @@ class IncidentsList(Resource):
         args = parser.parse_args()
         verify_api_key(args)
         result = models.NibrsIncident.query
-        joined = set()
+        joined = set([models.NibrsIncident, ])
         for col, tables in self.TABLES_BY_COLUMN.items():
             if args.get(col):  # TODO: specifying null
                 for table in tables:
