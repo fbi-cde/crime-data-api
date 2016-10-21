@@ -8,3 +8,4 @@ env:
   FLASK_APP: autoapp.py
 services:
 - crime-data-api-db
+- crime-data-api-creds
