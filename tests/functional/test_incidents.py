@@ -161,3 +161,8 @@ class TestIncidentsCountEndpoint:
         res = testapp.get('/incidents/count/?fields=leoka_felony')
         for row in res.json:
             assert 'leoka_felony' in row
+
+    def test_instances_count_sorts_by_state(self, testapp):
+        res = testapp.get('/incidents/count/?by=state')
+        state_names = [r['state'] for r in res.json]
+        assert state_names == sorted(state_names)
