@@ -28,11 +28,13 @@ OFFENSE_FIELDS = {
         'location_code': fields.String,
         'location_name': fields.String,
     }),
+    'method_entry_code': fields.String,  # needs explanation
     'offense_type': fields.Nested({
         'offense_code': fields.String,
         'offense_name': fields.String,
         'crime_against': fields.String,
         'offense_category_name': fields.String,
+        # 'attempt_complete_flag': fields.String, - stored as C or U
     })
 }
 
@@ -50,23 +52,45 @@ parser.add_argument('crime_against')
 parser.add_argument('offense_code')
 parser.add_argument('offense_name')
 parser.add_argument('offense_category_name')
+parser.add_argument('method_entry_code')
 parser.add_argument('location_code')
 parser.add_argument('location_name')
 add_standard_arguments(parser)
 
 
 class IncidentsList(Resource):
+
+    TABLES_BY_COLUMN = {
+        'method_entry_code': (models.NibrsOffense, ),
+        'offense_category_name': (models.NibrsOffense,
+                                  models.NibrsOffenseType, ),
+        'offense_code': (models.NibrsOffense,
+                         models.NibrsOffenseType, ),
+        'offense_name': (models.NibrsOffense,
+                         models.NibrsOffenseType, ),
+        'crime_against': (models.NibrsOffense,
+                          models.NibrsOffenseType, ),
+        'offense_category_name': (models.NibrsOffense,
+                                  models.NibrsOffenseType, ),
+        'location_code': (models.NibrsOffense,
+                          models.NibrsLocationType, ),
+        'location_name': (models.NibrsOffense,
+                          models.NibrsLocationType, ),
+    }
+
     @marshal_with(FIELDS)
     def get(self):
         args = parser.parse_args()
         verify_api_key(args)
         result = models.NibrsIncident.query
-        if args['offense_code']:
-            result = result.join(models.NibrsOffense). \
-                join(models.NibrsOffenseType)
-            result = result.filter(
-                models.NibrsOffenseType.offense_code == args['offense_code'])
-
+        joined = set()
+        for col, tables in self.TABLES_BY_COLUMN.items():
+            if args.get(col):  # TODO: specifying null
+                for table in tables:
+                    if table not in joined:
+                        result = result.join(table)
+                        joined.add(table)
+                result = result.filter(getattr(tables[-1], col) == args[col])
         return result.paginate(args['page'], args['page_size']).items
 
 
@@ -90,7 +114,8 @@ SUMM_FIELDS = {
     'year': fields.String,
     'total_actual_count': fields.Integer,
     'report_date': fields.DateTime,
-    }
+}
+
 
 class IncidentsCount(CdeResource):
 

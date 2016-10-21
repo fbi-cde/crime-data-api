@@ -3,6 +3,8 @@
 
 See: http://webtest.readthedocs.org/
 """
+import pytest
+
 
 class TestIncidentsEndpoint:
     def test_incidents_endpoint_exists(self, user, testapp):
@@ -42,6 +44,61 @@ class TestIncidentsEndpoint:
             assert 'offenses' in incident
             hits = [o for o in incident['offenses']
                     if o['offense_type']['offense_code'] == '35A']
+            assert len(hits) > 0
+
+    def test_incidents_endpoint_filters_method_entry_code(self, user, testapp):
+        res = testapp.get('/incidents/?method_entry_code=N')
+        for incident in res.json:
+            assert 'offenses' in incident
+            hits = [o for o in incident['offenses']
+                    if o['method_entry_code'] == 'N']
+            assert len(hits) > 0
+
+    def test_incidents_endpoint_filters_offense_code_plus_method_entry_code(
+            self, user, testapp):
+        res = testapp.get('/incidents/?offense_code=220&method_entry_code=F')
+        for incident in res.json:
+            assert 'offenses' in incident
+            hits = [o for o in incident['offenses']
+                    if o['offense_type']['offense_code'] == '220' and o[
+                        'method_entry_code'] == 'F']
+            assert len(hits) > 0
+
+    def test_incidents_endpoint_filters_location_code(self, user, testapp):
+        res = testapp.get('/incidents/?location_code=22')
+        for incident in res.json:
+            assert 'offenses' in incident
+            hits = [o for o in incident['offenses']
+                    if o['location']['location_code'] == '22']
+            assert len(hits) > 0
+
+    def test_incidents_endpoint_filters_location_code_plus_offense_code(
+            self, user, testapp):
+        res = testapp.get('/incidents/?location_code=22&offense_code=13C')
+        for incident in res.json:
+            assert 'offenses' in incident
+            hits = [o for o in incident['offenses']
+                    if o['location']['location_code'] == '22'
+                    if o['offense_type']['offense_code'] == '13C']
+            assert len(hits) > 0
+
+    @pytest.mark.xfail  # TODO
+    def test_incidents_endpoint_filters_offense_name_case_insensitive(
+            self, user, testapp):
+        res0 = testapp.get('/incidents/?offense_name=Intimidation')
+        assert len(res0) > 0
+        res1 = testapp.get('/incidents/?offense_name=intimidation')
+        assert len(res1) == len(res0)
+
+    @pytest.mark.xfail  # TODO
+    def test_incidents_endpoint_filters_null_method_entry_code(self, user,
+                                                               testapp):
+        res = testapp.get('/incidents/?method_entry_code=None')
+        assert len(res) > 0
+        for incident in res.json:
+            assert 'offenses' in incident
+            hits = [o for o in incident['offenses']
+                    if o['method_entry_code'] == 'F']
             assert len(hits) > 0
 
     def test_incidents_paginate(self, user, testapp):
@@ -105,10 +162,12 @@ class TestIncidentsCountEndpoint:
         for row in res.json:
             assert 'leoka_felony' in row
 
+
 class TestIncidentsUnit:
     def test_incidents_list(self):
         from crime_data.resources.incidents import IncidentsList
         assert IncidentsList()
+
     def test_incidents_count(self):
         from crime_data.resources.incidents import IncidentsCount
         assert IncidentsCount()
