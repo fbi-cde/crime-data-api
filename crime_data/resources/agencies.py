@@ -42,7 +42,7 @@ class AgenciesList(CdeResource):
     def get(self):
         args = parser.parse_args()
         helpers.verify_api_key(args)
-        result = models.cdeRefAgency.query
+        result = models.CdeRefAgency.query
         return result.paginate(args['page'], args['page_size']).items
 
 class AgenciesDetail(CdeResource):
@@ -50,7 +50,7 @@ class AgenciesDetail(CdeResource):
     def get(self, nbr):
         args = parser.parse_args()
         helpers.verify_api_key(args)
-        agency = models.cdeRefAgency.query.filter_by(ori=nbr).first()
+        agency = models.CdeRefAgency.query.filter_by(ori=nbr).first()
         return agency
 
 class AgenciesNibrsCount(CdeResource):
@@ -62,16 +62,16 @@ class AgenciesNibrsCount(CdeResource):
         results = []
         query = (session
                     .query(
-                        func.count(models.cdeNibrsIncident.incident_id), 
-                        models.cdeRefAgency.ori, 
-                        models.cdeRefAgency.agency_id
+                        func.count(models.CdeNibrsIncident.incident_id), 
+                        models.CdeRefAgency.ori, 
+                        models.CdeRefAgency.agency_id
                     )
-                    .join(models.cdeRefAgency)
-                    .group_by(models.cdeRefAgency.ori, models.cdeRefAgency.agency_id)
+                    .join(models.CdeRefAgency)
+                    .group_by(models.CdeRefAgency.ori, models.CdeRefAgency.agency_id)
                 )
 
         if ori:
-            query = query.filter(models.cdeRefAgency.ori==ori)
+            query = query.filter(models.CdeRefAgency.ori==ori)
 
         counts = query.all()
 
