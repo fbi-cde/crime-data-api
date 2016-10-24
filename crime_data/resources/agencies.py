@@ -1,13 +1,15 @@
 import os
 
 import sqlalchemy as sa
+from sqlalchemy import func
 from flask import request
 from flask_login import login_required
 #from webservices.common.views import ApiResource
 from flask_restful import Resource, fields, marshal_with, reqparse
 from . import helpers
-
-from crime_data.common import models
+import json
+from crime_data.common import cdemodels as models
+from crime_data.common.base import CdeResource
 # from webservices import args
 # from webservices import docs
 # from webservices import utils
@@ -28,23 +30,62 @@ FIELDS = {
     'agency_type': fields.Nested({'agency_type_name': fields.String, }),
 }
 
+session = db.session
+#from crime_data.common.cdemodels import *
+#db.session.query(cdeRefAgency).join(cdeNibrsMonth, cdeRefAgency.agency_id == cdeNibrsMonth.agency_id).all()
 parser = reqparse.RequestParser()
 helpers.add_standard_arguments(parser)
 
 
-class AgenciesList(Resource):
+class AgenciesList(CdeResource):
     @marshal_with(FIELDS)
     def get(self):
         args = parser.parse_args()
         helpers.verify_api_key(args)
-        result = models.RefAgency.query
+        result = models.cdeRefAgency.query
         return result.paginate(args['page'], args['page_size']).items
 
-
-class AgenciesDetail(Resource):
+class AgenciesDetail(CdeResource):
     @marshal_with(FIELDS)
     def get(self, nbr):
         args = parser.parse_args()
         helpers.verify_api_key(args)
-        agency = models.RefAgency.query.filter_by(ori=nbr).first()
+        agency = models.cdeRefAgency.query.filter_by(ori=nbr).first()
         return agency
+
+class AgenciesNibrsCount(CdeResource):
+
+    def get(self, ori=None):
+        '''''
+        Get Incident Count by Agency ID.
+        '''''
+        results = []
+        query = (session
+                    .query(
+                        func.count(models.cdeNibrsIncident.incident_id), 
+                        models.cdeRefAgency.ori, 
+                        models.cdeRefAgency.agency_id
+                    )
+                    .join(models.cdeRefAgency)
+                    .group_by(models.cdeRefAgency.ori, models.cdeRefAgency.agency_id)
+                )
+
+        if ori:
+            query = query.filter(models.cdeRefAgency.ori==ori)
+
+        counts = query.all()
+
+        if counts:
+            for r in counts:
+                as_dict = self._as_dict(('count', 'ori', 'agency_id'), r)
+                results.append(as_dict)
+
+        return results
+
+
+
+
+
+
+
+

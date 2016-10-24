@@ -55,6 +55,9 @@ class CdeResource(Resource):
         return [{k: (d[k] if hasattr(d[k], '__pow__') else str(d[k])) for k in d}
         for d in (r._asdict() for r in data)]
 
+    def _as_dict(self, fieldTuple, res):
+        return dict(zip(fieldTuple, res))
+
 
 db = RoutingSQLAlchemy()
 
