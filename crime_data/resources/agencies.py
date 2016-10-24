@@ -57,7 +57,7 @@ class AgenciesNibrsCount(CdeResource):
 
     def get(self, ori=None):
         '''''
-        Get Incident Count by Agency ID.
+        Get Incident Count by Agency ID/ORI.
         '''''
         results = []
         query = (session
