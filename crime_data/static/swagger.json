@@ -1,0 +1,96 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Crime Data API",
+        "description": "RESTful API service providing data and statistics on crime in the USA",
+        "version": "1.0.0"
+    },
+    "host": "localhost:5000",
+    "schemes": [
+        "http"
+    ],
+    "basePath": "/",
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/incidents": {
+            "get": {
+                "summary": "NIBRS incidents",
+                "description": "Incidents reported to the FBI with the National Incident Based Reporting Standard (NIBRS)\n",
+                "parameters": [
+                    {
+                      "name": "api_key",
+                      "in": "query",
+                      "description": "API key to provide access to the data",
+                      "type": "string",
+                      "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An array of incidents",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Incident"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Unauthenticated error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Incident": {
+            "type": "object",
+            "properties": {
+                "incident_date": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "Date of incident"
+                },
+                "incident_hour": {
+                  "type": "integer",
+                  "description": "Hour from 0 through 23 of incident"
+                },
+                "agency": {
+                  "type": "object",
+                  "properties": {
+                    "ori": {
+                      "type": "string",
+                      "description": "The Originating Reference ID (ORI) for the submitting law enforcement agency"
+                    }
+                  }
+                }
+            }
+        },
+        "Error": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "fields": {
+                    "type": "string"
+                }
+            }
+        },
+        "Offense": {
+          "type": "object",
+          "properties": {
+
+          }
+        }
+    }
+}
