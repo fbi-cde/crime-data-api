@@ -1,12 +1,6 @@
 import os
 
 import sqlalchemy as sa
-from flask import request
-from flask_login import login_required
-#from webservices.common.views import ApiResource
-from flask_restful import Resource, fields, marshal_with, reqparse
-from . import helpers
-
 from crime_data.common import models
 # from webservices import args
 # from webservices import docs
@@ -14,6 +8,12 @@ from crime_data.common import models
 # from webservices import schemas
 # from webservices import exceptions
 from crime_data.extensions import db
+from flask import request
+from flask_login import login_required
+#from webservices.common.views import ApiResource
+from flask_restful import Resource, fields, marshal_with, reqparse
+
+from . import helpers
 
 # from flask_apispec import doc
 
@@ -38,7 +38,7 @@ class AgenciesList(Resource):
         args = parser.parse_args()
         helpers.verify_api_key(args)
         result = models.RefAgency.query
-        return result.paginate(args['page'], args['page_size']).items
+        return result.paginate(args['page'], args['per_page']).items
 
 
 class AgenciesDetail(Resource):

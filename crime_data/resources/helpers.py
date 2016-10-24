@@ -1,11 +1,13 @@
 import json
 import os
+
 from sqlalchemy import sql
+
 
 def add_standard_arguments(parser):
     """Add arguments supported by all endpoints."""
     parser.add_argument('page', type=int, default=1)
-    parser.add_argument('page_size', type=int, default=10)
+    parser.add_argument('per_page', type=int, default=10)
     if os.getenv('VCAP_APPLICATION'):
         parser.add_argument('api_key',
                             required=True,
@@ -21,12 +23,25 @@ def verify_api_key(args):
         if args['api_key'] != key:
             raise Exception('Ask Catherine for API key')
 
+
 def expand_delimited_items(lst, sep=','):
     new_lst = []
     for itm in lst:
         for subitm in lst.split(sep):
             new_lst.append(subitm.strip())
     return new_lst
+
+
+def with_metadata(results, args):
+    results = results.paginate(args['page'], args['per_page'])
+    return {'results': results.items,
+            'pagination': {
+                'count': results.total,
+                'page': results.page,
+                'pages': results.pages,
+                'per_page': results.per_page,
+            }, }
+
 
 class QueryWithAggregates(object):
 
@@ -40,7 +55,6 @@ class QueryWithAggregates(object):
         self.qry = self.qry.add_columns(label(readable_name, col))
 
     def __init__(self, aggregated, grouped):
-        import ipdb; ipdb.set_trace()
         self.result = db.session.query()
         for col in aggregated:
             if not isinstance(col, str):
