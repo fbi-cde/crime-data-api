@@ -31,5 +31,5 @@ class TestAgenciesEndpoint:
         assert page2.json[0] not in page1.json
 
     def test_agencies_page_size(self, user, testapp):
-        res = testapp.get('/agencies/?page_size=5')
+        res = testapp.get('/agencies/?per_page=5')
         assert len(res.json) == 5

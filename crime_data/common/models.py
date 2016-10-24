@@ -2862,9 +2862,10 @@ class QueryWithAggregates(object):
                 self._add_column(col, operation)
             else:
                 grouped.append(col)
-        for col in grouped:
-            self._add_column(col)
-            self.qry = self.qry.group_by(self._col(col))
+        for col_name in grouped:
+            self._add_column(col_name)
+            col = self._col(col_name)
+            self.qry = self.qry.group_by(col).order_by(col)
         print(self.qry)
 
 

@@ -3,12 +3,6 @@ import re
 from datetime import date, datetime
 
 import sqlalchemy as sa
-from flask import request
-from flask_login import login_required
-#from webservices.common.views import ApiResource
-from flask_restful import Resource, fields, marshal_with, reqparse
-from sqlalchemy import func
-
 from crime_data.common import models
 from crime_data.common.base import CdeResource
 # from webservices import args
@@ -17,8 +11,14 @@ from crime_data.common.base import CdeResource
 # from webservices import schemas
 # from webservices import exceptions
 from crime_data.extensions import db
+from flask import request
+from flask_login import login_required
+#from webservices.common.views import ApiResource
+from flask_restful import Resource, fields, marshal_with, reqparse
+from sqlalchemy import func
 
-from .helpers import QueryWithAggregates, add_standard_arguments, verify_api_key
+from .helpers import (QueryWithAggregates, add_standard_arguments,
+                      verify_api_key, with_metadata)
 
 # from flask_apispec import doc
 
@@ -28,11 +28,13 @@ OFFENSE_FIELDS = {
         'location_code': fields.String,
         'location_name': fields.String,
     }),
+    'method_entry_code': fields.String,  # needs explanation
     'offense_type': fields.Nested({
         'offense_code': fields.String,
         'offense_name': fields.String,
         'crime_against': fields.String,
         'offense_category_name': fields.String,
+        # 'attempt_complete_flag': fields.String, - stored as C or U
     })
 }
 
@@ -45,29 +47,63 @@ FIELDS = {
     'agency': fields.Nested({'ori': fields.String}),
 }
 
+META_FIELDS = {
+    'pagination': fields.Nested({
+        'count': fields.Integer,
+        'page': fields.Integer,
+        'pages': fields.Integer,
+        'per_page': fields.Integer,
+    }),
+    'results': fields.Nested(FIELDS),
+}
+
 parser = reqparse.RequestParser()
+parser.add_argument('incident_hour')
 parser.add_argument('crime_against')
 parser.add_argument('offense_code')
 parser.add_argument('offense_name')
 parser.add_argument('offense_category_name')
+parser.add_argument('method_entry_code')
 parser.add_argument('location_code')
 parser.add_argument('location_name')
 add_standard_arguments(parser)
 
 
 class IncidentsList(Resource):
-    @marshal_with(FIELDS)
+
+    TABLES_BY_COLUMN = {
+        'incident_hour': (models.NibrsIncident, ),
+        'method_entry_code': (models.NibrsOffense, ),
+        'offense_category_name': (models.NibrsOffense,
+                                  models.NibrsOffenseType, ),
+        'offense_code': (models.NibrsOffense,
+                         models.NibrsOffenseType, ),
+        'offense_name': (models.NibrsOffense,
+                         models.NibrsOffenseType, ),
+        'crime_against': (models.NibrsOffense,
+                          models.NibrsOffenseType, ),
+        'offense_category_name': (models.NibrsOffense,
+                                  models.NibrsOffenseType, ),
+        'location_code': (models.NibrsOffense,
+                          models.NibrsLocationType, ),
+        'location_name': (models.NibrsOffense,
+                          models.NibrsLocationType, ),
+    }
+
+    @marshal_with(META_FIELDS)
     def get(self):
         args = parser.parse_args()
         verify_api_key(args)
         result = models.NibrsIncident.query
-        if args['offense_code']:
-            result = result.join(models.NibrsOffense). \
-                join(models.NibrsOffenseType)
-            result = result.filter(
-                models.NibrsOffenseType.offense_code == args['offense_code'])
-
-        return result.paginate(args['page'], args['page_size']).items
+        joined = set([models.NibrsIncident, ])
+        for col, tables in self.TABLES_BY_COLUMN.items():
+            if args.get(col):  # TODO: specifying null
+                for table in tables:
+                    if table not in joined:
+                        result = result.join(table)
+                        joined.add(table)
+                result = result.filter(getattr(tables[-1], col) == args[col])
+        return with_metadata(result, args)
 
 
 class IncidentsDetail(Resource):
@@ -90,7 +126,8 @@ SUMM_FIELDS = {
     'year': fields.String,
     'total_actual_count': fields.Integer,
     'report_date': fields.DateTime,
-    }
+}
+
 
 class IncidentsCount(CdeResource):
 
