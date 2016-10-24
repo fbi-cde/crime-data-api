@@ -16,9 +16,8 @@ def verify_api_key(args):
     if os.getenv('VCAP_SERVICES'):
         service_env = json.loads(os.getenv('VCAP_SERVICES'))
         cups_name = 'crime-data-api-creds'
-        user_provided =service_env['user-provided']
-        creds = filter(lambda x: x['name']==cups_name, user_provided).pop()
-        key = creds['credentials']['API_KEY']
+        creds = [u['credentials'] for u in service_env['user-provided'] if 'credentials' in u]
+        key = creds[0]['API_KEY']
         if args['api_key'] != key:
             raise Exception('Ask Catherine for API key')
 
