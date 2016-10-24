@@ -3,12 +3,6 @@ import re
 from datetime import date, datetime
 
 import sqlalchemy as sa
-from flask import request
-from flask_login import login_required
-#from webservices.common.views import ApiResource
-from flask_restful import Resource, fields, marshal_with, reqparse
-from sqlalchemy import func
-
 from crime_data.common import models
 from crime_data.common.base import CdeResource
 # from webservices import args
@@ -17,8 +11,14 @@ from crime_data.common.base import CdeResource
 # from webservices import schemas
 # from webservices import exceptions
 from crime_data.extensions import db
+from flask import request
+from flask_login import login_required
+#from webservices.common.views import ApiResource
+from flask_restful import Resource, fields, marshal_with, reqparse
+from sqlalchemy import func
 
-from .helpers import QueryWithAggregates, add_standard_arguments, verify_api_key
+from .helpers import (QueryWithAggregates, add_standard_arguments,
+                      verify_api_key, with_metadata)
 
 # from flask_apispec import doc
 
@@ -45,6 +45,16 @@ FIELDS = {
     'incident_hour': fields.Integer,
     'offenses': fields.List(fields.Nested(OFFENSE_FIELDS)),
     'agency': fields.Nested({'ori': fields.String}),
+}
+
+META_FIELDS = {
+    'pagination': fields.Nested({
+        'count': fields.Integer,
+        'page': fields.Integer,
+        'pages': fields.Integer,
+        'per_page': fields.Integer,
+    }),
+    'results': fields.Nested(FIELDS),
 }
 
 parser = reqparse.RequestParser()
@@ -80,7 +90,7 @@ class IncidentsList(Resource):
                           models.NibrsLocationType, ),
     }
 
-    @marshal_with(FIELDS)
+    @marshal_with(META_FIELDS)
     def get(self):
         args = parser.parse_args()
         verify_api_key(args)
@@ -93,7 +103,7 @@ class IncidentsList(Resource):
                         result = result.join(table)
                         joined.add(table)
                 result = result.filter(getattr(tables[-1], col) == args[col])
-        return result.paginate(args['page'], args['page_size']).items
+        return with_metadata(result, args)
 
 
 class IncidentsDetail(Resource):
