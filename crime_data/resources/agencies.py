@@ -1,7 +1,6 @@
 import os
 
 import sqlalchemy as sa
-from sqlalchemy import func
 from flask import request
 from flask_login import login_required
 #from webservices.common.views import ApiResource
@@ -37,12 +36,14 @@ FIELDS = {
     'agency_type': fields.Nested({'agency_type_name': fields.String, }),
 }
 
-session = db.session
+
 #from crime_data.common.cdemodels import *
 #db.session.query(cdeRefAgency).join(cdeNibrsMonth, cdeRefAgency.agency_id == cdeNibrsMonth.agency_id).all()
 parser = reqparse.RequestParser()
 helpers.add_standard_arguments(parser)
 
+parser.add_argument('by', default='year')
+parser.add_argument('fields')
 
 class AgenciesList(CdeResource):
     @marshal_with(FIELDS)
@@ -62,25 +63,14 @@ class AgenciesDetail(CdeResource):
 
 class AgenciesNibrsCount(CdeResource):
 
-    def get(self, ori=None):
+    def get(self, ori=None, filters=None):
         '''''
         Get Incident Count by Agency ID/ORI.
         '''''
+
         results = []
-        query = (session
-                    .query(
-                        func.count(models.CdeNibrsIncident.incident_id), 
-                        models.CdeRefAgency.ori, 
-                        models.CdeRefAgency.agency_id
-                    )
-                    .join(models.CdeRefAgency)
-                    .group_by(models.CdeRefAgency.ori, models.CdeRefAgency.agency_id)
-                )
 
-        if ori:
-            query = query.filter(models.CdeRefAgency.ori==ori)
-
-        counts = query.all()
+        counts = models.CdeNibrsIncident.get_nibrs_incident_by_ori(ori, filters)
 
         if counts:
             for r in counts:
