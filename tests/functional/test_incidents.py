@@ -149,43 +149,47 @@ class TestIncidentsCountEndpoint:
     def test_instances_count_exists(self, testapp):
         res = testapp.get('/incidents/count/')
         assert res.status_code == 200
+        
+    def test_incidents_endpoint_includes_metadata(self, user, testapp):
+        res = testapp.get('/incidents/count/')
+        assert 'pagination' in res.json
 
     def test_instances_count_returns_counts(self, testapp):
         res = testapp.get('/incidents/count/')
-        assert isinstance(res.json, list)
-        assert 'total_actual_count' in res.json[0]
+        assert isinstance(res.json['results'], list)
+        assert 'total_actual_count' in res.json['results'][0]
 
     def test_instances_count_groups_by_year_by_default(self, testapp):
         res = testapp.get('/incidents/count/')
-        years = [row['year'] for row in res.json]
+        years = [row['year'] for row in res.json['results']]
         assert len(years) == len(set(years))
 
     def test_instances_count_groups_by_agency_id(self, testapp):
         res = testapp.get('/incidents/count/?by=agency_id')
-        agency_ids = [row['agency_id'] for row in res.json]
+        agency_ids = [row['agency_id'] for row in res.json['results']]
         assert len(agency_ids) == len(set(agency_ids))
 
     def test_instances_count_groups_by_agency_id_any_year(self, testapp):
         res = testapp.get('/incidents/count/?by=agency_id,year')
-        rows = [(row['year'], row['agency_id']) for row in res.json]
+        rows = [(row['year'], row['agency_id']) for row in res.json['results']]
         assert len(rows) == len(set(rows))
 
     def test_instances_count_groups_by_state(self, testapp):
         res = testapp.get('/incidents/count/?by=state')
-        rows = [row['state'] for row in res.json]
+        rows = [row['state'] for row in res.json['results']]
         assert len(rows) == len(set(rows))
 
     def test_instances_count_groups_by_offense(self, testapp):
         res = testapp.get('/incidents/count/?by=offense')
-        rows = [row['offense'] for row in res.json]
+        rows = [row['offense'] for row in res.json['results']]
         assert len(rows) == len(set(rows))
 
     def test_instances_count_shows_fields_in_month(self, testapp):
         res = testapp.get('/incidents/count/?fields=leoka_felony')
-        for row in res.json:
+        for row in res.json['results']:
             assert 'leoka_felony' in row
 
     def test_instances_count_sorts_by_state(self, testapp):
         res = testapp.get('/incidents/count/?by=state')
-        state_names = [r['state'] for r in res.json]
+        state_names = [r['state'] for r in res.json['results']]
         assert state_names == sorted(state_names)
