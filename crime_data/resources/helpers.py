@@ -33,9 +33,10 @@ def expand_delimited_items(lst, sep=','):
     return new_lst
 
 
-def with_metadata(results, args):
+def with_metadata(results, args, schema=None):
     try:
         results = results.paginate(args['page'], args['per_page'])
+        items = schema.dump(results.items).data
     except AttributeError:
         page = results.limit(args['per_page']).offset((args['page'] - 1) *
                                                       args['per_page'])
@@ -45,13 +46,15 @@ def with_metadata(results, args):
                              per_page=args['per_page'],
                              total=results.count(),
                              items=items)
-    return {'results': results.items,
+        items = results.items
+    final = {'results': items,
             'pagination': {
                 'count': results.total,
                 'page': results.page,
                 'pages': results.pages,
                 'per_page': results.per_page,
             }, }
+    return final
 
 
 class QueryWithAggregates(object):

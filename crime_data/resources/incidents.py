@@ -3,7 +3,7 @@ import re
 from datetime import date, datetime
 
 import sqlalchemy as sa
-from crime_data.common import models
+from crime_data.common import models, marshmallow_schemas
 from crime_data.common.base import CdeResource
 # from webservices import args
 # from webservices import docs
@@ -11,7 +11,7 @@ from crime_data.common.base import CdeResource
 # from webservices import schemas
 # from webservices import exceptions
 from crime_data.extensions import db
-from flask import request
+from flask import abort, request
 from flask_login import login_required
 #from webservices.common.views import ApiResource
 from flask_restful import Resource, fields, marshal_with, reqparse
@@ -20,42 +20,6 @@ from sqlalchemy import func
 from .helpers import (QueryWithAggregates, add_standard_arguments,
                       verify_api_key, with_metadata)
 
-# from flask_apispec import doc
-
-OFFENSE_FIELDS = {
-    'offense_id': fields.Integer,
-    'location': fields.Nested({
-        'location_code': fields.String,
-        'location_name': fields.String,
-    }),
-    'method_entry_code': fields.String,  # needs explanation
-    'offense_type': fields.Nested({
-        'offense_code': fields.String,
-        'offense_name': fields.String,
-        'crime_against': fields.String,
-        'offense_category_name': fields.String,
-        # 'attempt_complete_flag': fields.String, - stored as C or U
-    })
-}
-
-FIELDS = {
-    'incident_number': fields.String,
-    'incident_date': fields.DateTime,
-    'submission_date': fields.DateTime,
-    'incident_hour': fields.Integer,
-    'offenses': fields.List(fields.Nested(OFFENSE_FIELDS)),
-    'agency': fields.Nested({'ori': fields.String}),
-}
-
-META_FIELDS = {
-    'pagination': fields.Nested({
-        'count': fields.Integer,
-        'page': fields.Integer,
-        'pages': fields.Integer,
-        'per_page': fields.Integer,
-    }),
-    'results': fields.Nested(FIELDS),
-}
 
 parser = reqparse.RequestParser()
 parser.add_argument('incident_hour')
@@ -70,6 +34,8 @@ add_standard_arguments(parser)
 
 
 class IncidentsList(Resource):
+    
+    schema = marshmallow_schemas.NibrsIncidentSchema(many=True)
 
     TABLES_BY_COLUMN = {
         'incident_hour': (models.NibrsIncident, ),
@@ -90,7 +56,6 @@ class IncidentsList(Resource):
                           models.NibrsLocationType, ),
     }
 
-    @marshal_with(META_FIELDS)
     def get(self):
         args = parser.parse_args()
         verify_api_key(args)
@@ -103,17 +68,19 @@ class IncidentsList(Resource):
                         result = result.join(table)
                         joined.add(table)
                 result = result.filter(getattr(tables[-1], col) == args[col])
-        return with_metadata(result, args)
+        return with_metadata(result, args, schema=self.schema)
 
 
 class IncidentsDetail(Resource):
-    @marshal_with(FIELDS)
+    
+    schema = marshmallow_schemas.NibrsIncidentSchema(many=True) 
+    
     def get(self, nbr):
         args = parser.parse_args()
         verify_api_key(args)
-        incident = models.NibrsIncident.query.filter_by(
-            incident_number=nbr).first()
-        return incident
+        incidents = models.NibrsIncident.query.filter_by(
+            incident_number=nbr)
+        return with_metadata(incidents, args, schema=self.schema)
 
 
 summary_parser = reqparse.RequestParser()
@@ -121,12 +88,6 @@ summary_parser.add_argument('by', default='year')
 summary_parser.add_argument('fields')
 # no nargs available for multiple use of field names
 add_standard_arguments(summary_parser)
-
-SUMM_FIELDS = {
-    'year': fields.String,
-    'total_actual_count': fields.Integer,
-    'report_date': fields.DateTime,
-}
 
 
 class IncidentsCount(CdeResource):
