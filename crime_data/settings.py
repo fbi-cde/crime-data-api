@@ -27,7 +27,6 @@ class ProdConfig(Config):
     DEBUG_TB_ENABLED = False  # Disable Debug toolbar
     port = os.getenv('PORT') or 5000
     server = 'crime-data-api.fr.cloud.gov'
-    SERVER_NAME = '{}:{}'.format(server, port)
 
 
 class DevConfig(Config):
