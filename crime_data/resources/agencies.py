@@ -21,7 +21,8 @@ from flask_login import login_required
 #from webservices.common.views import ApiResource
 from flask_restful import Resource, fields, marshal_with, reqparse
 
-from . import helpers
+from .helpers import (QueryWithAggregates, add_standard_arguments,
+                      verify_api_key, with_metadata)
 
 # from flask_apispec import doc
 
@@ -36,6 +37,32 @@ FIELDS = {
     'agency_type': fields.Nested({'agency_type_name': fields.String, }),
 }
 
+COUNT_FIELDS = {
+    'count': fields.String,
+    'ori': fields.String,
+    'agency_id': fields.String,
+}
+
+META_COUNT_FIELDS = {
+    'pagination': fields.Nested({
+        'count': fields.Integer,
+        'page': fields.Integer,
+        'pages': fields.Integer,
+        'per_page': fields.Integer,
+    }),
+    'results': fields.Nested(COUNT_FIELDS),
+}
+
+META_FIELDS = {
+    'pagination': fields.Nested({
+        'count': fields.Integer,
+        'page': fields.Integer,
+        'pages': fields.Integer,
+        'per_page': fields.Integer,
+    }),
+    'results': fields.Nested(FIELDS),
+}
+
 
 #from crime_data.common.cdemodels import *
 #db.session.query(cdeRefAgency).join(cdeNibrsMonth, cdeRefAgency.agency_id == cdeNibrsMonth.agency_id).all()
@@ -46,12 +73,12 @@ parser.add_argument('by', default='year')
 parser.add_argument('fields')
 
 class AgenciesList(CdeResource):
-    @marshal_with(FIELDS)
+    @marshal_with(META_FIELDS)
     def get(self):
         args = parser.parse_args()
         helpers.verify_api_key(args)
         result = models.CdeRefAgency.query
-        return result.paginate(args['page'], args['page_size']).items
+        return with_metadata(result, args)
 
 class AgenciesDetail(CdeResource):
     @marshal_with(FIELDS)
@@ -62,22 +89,24 @@ class AgenciesDetail(CdeResource):
         return agency
 
 class AgenciesNibrsCount(CdeResource):
-
+    @marshal_with(META_COUNT_FIELDS)
     def get(self, ori=None, filters=None):
         '''''
         Get Incident Count by Agency ID/ORI.
         '''''
+        args = parser.parse_args()
+        helpers.verify_api_key(args)
 
-        results = []
+        query = models.CdeNibrsIncident.get_nibrs_incident_by_ori(ori, filters)
+        result = with_metadata(query, args)
 
-        counts = models.CdeNibrsIncident.get_nibrs_incident_by_ori(ori, filters)
+        #Hacky, To be replaced via Marshmellow implementation.
+        if result:
+            for k,v in enumerate(result['results']):
+                as_dict = self._as_dict(('count', 'ori', 'agency_id'), v)
+                result['results'][k] = as_dict
 
-        if counts:
-            for r in counts:
-                as_dict = self._as_dict(('count', 'ori', 'agency_id'), r)
-                results.append(as_dict)
-
-        return results
+        return result
 
 
 

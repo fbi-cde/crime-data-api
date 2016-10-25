@@ -14,19 +14,26 @@ class CdeNibrsOffense(models.NibrsOffense):
     pass
 
 class CdeNibrsIncident(models.NibrsIncident):
+    '''''
+    Extends models.NibrsIncident.
+    '''''
 
-    def get_nibrs_incident_by_ori(ori = None, filters = None):
+    # Maps API filter to DB column name.
+    FILTER_COLUMN_MAP = {'state': 'state_abbr', 'offense': 'offense_subcat_name'}
+
+    def get_nibrs_incident_by_ori(ori = None, filters = None, page= 1, per_page= 10):
         '''''
         Returns Query for Incident counts by Agency/ORI.
         '''''
 
-        query = (session
-            .query(
+        query = (CdeNibrsIncident
+            .query
+            .with_entities(
                 func.count(CdeNibrsIncident.incident_id), 
                 CdeRefAgency.ori, 
                 CdeRefAgency.agency_id
             )
-            .join(CdeRefAgency)
+            .outerjoin(CdeRefAgency)
             .group_by(CdeRefAgency.ori, CdeRefAgency.agency_id)
         )
 
@@ -34,9 +41,10 @@ class CdeNibrsIncident(models.NibrsIncident):
             query = query.filter(CdeRefAgency.ori==ori)
 
         # Apply all filters
-        # .....
+        # for filter in filters:
+        #     query = query.filter(getattr())
 
-        counts = query.all()
+        # query = query.paginate(page, per_page)
 
         return query
 
