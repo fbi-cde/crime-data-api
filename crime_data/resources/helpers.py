@@ -1,8 +1,8 @@
 import json
 import os
 
-from sqlalchemy import sql
 from flask.ext.sqlalchemy import Pagination
+from sqlalchemy import sql
 
 
 def add_standard_arguments(parser):
@@ -19,8 +19,8 @@ def verify_api_key(args):
     if os.getenv('VCAP_SERVICES'):
         service_env = json.loads(os.getenv('VCAP_SERVICES'))
         cups_name = 'crime-data-api-creds'
-        user_provided =service_env['user-provided']
-        creds = filter(lambda x: x['name']==cups_name, user_provided).pop()
+        user_provided = service_env['user-provided']
+        creds = filter(lambda x: x['name'] == cups_name, user_provided).pop()
         key = creds['credentials']['API_KEY']
         if args['api_key'] != key:
             raise Exception('Ask Catherine for API key')
@@ -38,10 +38,14 @@ def with_metadata(results, args):
     try:
         results = results.paginate(args['page'], args['per_page'])
     except AttributeError:
-        page = results.limit(args['per_page']).offset((args['page']-1)*args['per_page'])
+        page = results.limit(args['per_page']).offset((args['page'] - 1) *
+                                                      args['per_page'])
         items = [row._asdict() for row in page]
-        results = Pagination(results, page=args['page'], per_page=args['per_page'], total=results.count(), 
-                             items=items) 
+        results = Pagination(results,
+                             page=args['page'],
+                             per_page=args['per_page'],
+                             total=results.count(),
+                             items=items)
     return {'results': results.items,
             'pagination': {
                 'count': results.total,

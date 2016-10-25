@@ -1,14 +1,15 @@
 # coding: utf-8
+import datetime
+from decimal import Decimal
+
 import flask_restful as restful
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import (BigInteger, Boolean, Column, DateTime, Float,
                         ForeignKey, Integer, SmallInteger, String, Text,
-                        UniqueConstraint, text, func)
+                        UniqueConstraint, func, text)
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import label
-from decimal import Decimal
-import datetime
 
 db = SQLAlchemy()
 
@@ -2841,8 +2842,8 @@ class QueryWithAggregates(object):
         types = [c.type.python_type for c in col.prop.columns]
         if types in ([int, ], [float, ], [Decimal, ]):
             return True
-        if (types in ([datetime.datetime, ], [datetime.date, ])
-            and aggregate in (func.min, func.max)):
+        if (types in ([datetime.datetime, ], [datetime.date, ]) and
+                aggregate in (func.min, func.max)):
             return True
         return False
 
@@ -2871,6 +2872,9 @@ class QueryWithAggregates(object):
 
 class RetaMonthQuery(QueryWithAggregates):
 
-    COL_NAME_MAP = {'year': 'data_year', 'state': 'state_abbr', 'offense': 'offense_subcat_name'}
-    tables = [RetaMonth, RefAgency, RefState, RetaMonthOffenseSubcat, RetaOffenseSubcat]
+    COL_NAME_MAP = {'year': 'data_year',
+                    'state': 'state_abbr',
+                    'offense': 'offense_subcat_name'}
+    tables = [RetaMonth, RefAgency, RefState, RetaMonthOffenseSubcat,
+              RetaOffenseSubcat]
     seed_col = 'total_actual_count'

@@ -1,8 +1,9 @@
 import random
 
+from flask_restful import Resource
 # import celery
 from flask_sqlalchemy import SignallingSession, SQLAlchemy
-from flask_restful import Resource
+
 
 class RoutingSession(SignallingSession):
     """Route requests to database leader or follower as appropriate.
@@ -46,14 +47,16 @@ class RoutingSQLAlchemy(SQLAlchemy):
     def create_session(self, options):
         return RoutingSession(self, **options)
 
+
 class CdeResource(Resource):
     __abstract__ = True
+
     def _stringify(self, data):
         """Avoid JSON serialization errors
         by converting values in list of dicts
         into strings."""
-        return [{k: (d[k] if hasattr(d[k], '__pow__') else str(d[k])) for k in d}
-        for d in (r._asdict() for r in data)]
+        return [{k: (d[k] if hasattr(d[k], '__pow__') else str(d[k]))
+                 for k in d} for d in (r._asdict() for r in data)]
 
 
 db = RoutingSQLAlchemy()
