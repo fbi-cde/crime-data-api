@@ -64,8 +64,6 @@ META_FIELDS = {
 }
 
 
-#from crime_data.common.cdemodels import *
-#db.session.query(cdeRefAgency).join(cdeNibrsMonth, cdeRefAgency.agency_id == cdeNibrsMonth.agency_id).all()
 parser = reqparse.RequestParser()
 helpers.add_standard_arguments(parser)
 
