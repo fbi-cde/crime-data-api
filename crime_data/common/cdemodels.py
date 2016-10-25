@@ -21,7 +21,7 @@ class CdeNibrsIncident(models.NibrsIncident):
     # Maps API filter to DB column name.
     FILTER_COLUMN_MAP = {'state': 'state_abbr', 'offense': 'offense_subcat_name'}
 
-    def get_nibrs_incident_by_ori(ori = None, filters = None, page= 1, per_page= 10):
+    def get_nibrs_incident_by_ori(ori = None, filters = None):
         '''''
         Returns Query for Incident counts by Agency/ORI.
         '''''
@@ -40,11 +40,9 @@ class CdeNibrsIncident(models.NibrsIncident):
         if ori:
             query = query.filter(CdeRefAgency.ori==ori)
 
-        # Apply all filters
+        # TODO: Apply all filters
         # for filter in filters:
-        #     query = query.filter(getattr())
-
-        # query = query.paginate(page, per_page)
+        #     query = query.filter()
 
         return query
 
