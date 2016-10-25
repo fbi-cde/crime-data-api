@@ -2,6 +2,7 @@ import json
 import os
 
 from sqlalchemy import sql
+from flask.ext.sqlalchemy import Pagination
 
 
 def add_standard_arguments(parser):
@@ -34,7 +35,13 @@ def expand_delimited_items(lst, sep=','):
 
 
 def with_metadata(results, args):
-    results = results.paginate(args['page'], args['per_page'])
+    try:
+        results = results.paginate(args['page'], args['per_page'])
+    except AttributeError:
+        page = results.limit(args['per_page']).offset((args['page']-1)*args['per_page'])
+        items = [row._asdict() for row in page]
+        results = Pagination(results, page=args['page'], per_page=args['per_page'], total=results.count(), 
+                             items=items) 
     return {'results': results.items,
             'pagination': {
                 'count': results.total,

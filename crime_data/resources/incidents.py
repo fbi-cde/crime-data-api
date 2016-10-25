@@ -142,5 +142,5 @@ class IncidentsCount(CdeResource):
         else:
             fields = []
         result = models.RetaMonthQuery(aggregated=fields, grouped=by)
-        return self._stringify(result.qry)
+        return with_metadata(result.qry, args)
         # This result isn't working with @marshal_with
