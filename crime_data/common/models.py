@@ -1841,7 +1841,8 @@ class RefAgencyCoveredBy(db.Model):
         primaryjoin='RefAgencyCoveredBy.agency_id == RefAgency.agency_id')
     covered_by_agency = db.relationship(
         'RefAgency',
-        primaryjoin='RefAgencyCoveredBy.covered_by_agency_id == RefAgency.agency_id')
+        primaryjoin=
+        'RefAgencyCoveredBy.covered_by_agency_id == RefAgency.agency_id')
 
 
 class RefAgencyDataContent(db.Model):

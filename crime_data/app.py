@@ -3,19 +3,19 @@
 import csv
 import io
 
-import crime_data.resources.agencies
-import crime_data.resources.incidents
 import flask_restful as restful
-from crime_data import commands, public, user
-from crime_data.assets import assets
-from crime_data.common.models import db
-from crime_data.common.marshmallow_schemas import ma 
-from crime_data.extensions import (bcrypt, cache, csrf_protect, db,
-                                   debug_toolbar, login_manager, migrate)
-from crime_data.settings import ProdConfig
 from flask import Flask, render_template
 from flask_cors import CORS, cross_origin
 
+import crime_data.resources.agencies
+import crime_data.resources.incidents
+from crime_data import commands, public, user
+from crime_data.assets import assets
+from crime_data.common.marshmallow_schemas import ma
+from crime_data.common.models import db
+from crime_data.extensions import (bcrypt, cache, csrf_protect, db,
+                                   debug_toolbar, login_manager, migrate)
+from crime_data.settings import ProdConfig
 
 if __name__ == '__main__':
     app.run(debug=True)

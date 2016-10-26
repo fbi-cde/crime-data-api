@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 """Public section, including homepage and signup."""
+from flask import (Blueprint, flash, redirect, render_template, request,
+                   send_file, url_for)
+from flask_login import login_required, login_user, logout_user
+
 from crime_data.extensions import login_manager
 from crime_data.public.forms import LoginForm
 from crime_data.user.forms import RegisterForm
 from crime_data.user.models import User
 from crime_data.utils import flash_errors
-from flask import (Blueprint, flash, redirect, render_template, request,
-                   send_file, url_for)
-from flask_login import login_required, login_user, logout_user
 
 blueprint = Blueprint('public', __name__, static_folder='../static')
 
@@ -17,9 +18,11 @@ def load_user(user_id):
     """Load user by ID."""
     return User.get_by_id(int(user_id))
 
+
 @blueprint.route('/docs/', methods=['GET'])
 def docs():
     return render_template('public/docs.html')
+
 
 @blueprint.route('/', methods=['GET', 'POST'])
 def home():

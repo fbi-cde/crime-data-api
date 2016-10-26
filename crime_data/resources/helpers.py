@@ -19,7 +19,8 @@ def verify_api_key(args):
     if os.getenv('VCAP_SERVICES'):
         service_env = json.loads(os.getenv('VCAP_SERVICES'))
         cups_name = 'crime-data-api-creds'
-        creds = [u['credentials'] for u in service_env['user-provided'] if 'credentials' in u]
+        creds = [u['credentials']
+                 for u in service_env['user-provided'] if 'credentials' in u]
         key = creds[0]['API_KEY']
         if args['api_key'] != key:
             raise Exception('Ask Catherine for API key')
@@ -48,12 +49,12 @@ def with_metadata(results, args, schema=None):
                              items=items)
         items = results.items
     final = {'results': items,
-            'pagination': {
-                'count': results.total,
-                'page': results.page,
-                'pages': results.pages,
-                'per_page': results.per_page,
-            }, }
+             'pagination': {
+                 'count': results.total,
+                 'page': results.page,
+                 'pages': results.pages,
+                 'per_page': results.per_page,
+             }, }
     return final
 
 

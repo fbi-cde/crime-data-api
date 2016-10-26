@@ -3,38 +3,32 @@ import re
 from datetime import date, datetime
 
 import sqlalchemy as sa
-from crime_data.common import models, marshmallow_schemas
+from flask import abort, request
+from flask_login import login_required
+#from webservices.common.views import ApiResource
+from flask_restful import Resource, fields, marshal_with, reqparse
+from sqlalchemy import func
+from webargs import fields
+from webargs.flaskparser import use_args
+
+from crime_data.common import marshmallow_schemas, models
 from crime_data.common.base import CdeResource
+from crime_data.common.marshmallow_schemas import (
+    ArgumentsSchema, IncidentArgsSchema, IncidentCountArgsSchema,
+    NibrsIncidentSchema)
 # from webservices import args
 # from webservices import docs
 # from webservices import utils
 # from webservices import schemas
 # from webservices import exceptions
 from crime_data.extensions import db
-from flask import abort, request
-from flask_login import login_required
-#from webservices.common.views import ApiResource
-from flask_restful import Resource, fields, marshal_with, reqparse
-from sqlalchemy import func
 
 from .helpers import (QueryWithAggregates, add_standard_arguments,
                       verify_api_key, with_metadata)
 
 
-parser = reqparse.RequestParser()
-parser.add_argument('incident_hour')
-parser.add_argument('crime_against')
-parser.add_argument('offense_code')
-parser.add_argument('offense_name')
-parser.add_argument('offense_category_name')
-parser.add_argument('method_entry_code')
-parser.add_argument('location_code')
-parser.add_argument('location_name')
-add_standard_arguments(parser)
-
-
 class IncidentsList(Resource):
-    
+
     schema = marshmallow_schemas.NibrsIncidentSchema(many=True)
 
     TABLES_BY_COLUMN = {
@@ -56,8 +50,9 @@ class IncidentsList(Resource):
                           models.NibrsLocationType, ),
     }
 
-    def get(self):
-        args = parser.parse_args()
+    @use_args(IncidentArgsSchema)
+    def get(self, args):
+        # TODO: apply "fields" arg
         verify_api_key(args)
         result = models.NibrsIncident.query
         joined = set([models.NibrsIncident, ])
@@ -72,36 +67,28 @@ class IncidentsList(Resource):
 
 
 class IncidentsDetail(Resource):
-    
-    schema = marshmallow_schemas.NibrsIncidentSchema(many=True) 
-    
-    def get(self, nbr):
-        args = parser.parse_args()
+
+    schema = marshmallow_schemas.NibrsIncidentSchema(many=True)
+
+    @use_args(ArgumentsSchema)
+    def get(self, args, nbr):
         verify_api_key(args)
-        incidents = models.NibrsIncident.query.filter_by(
-            incident_number=nbr)
+        incidents = models.NibrsIncident.query.filter_by(incident_number=nbr)
         return with_metadata(incidents, args, schema=self.schema)
-
-
-summary_parser = reqparse.RequestParser()
-summary_parser.add_argument('by', default='year')
-summary_parser.add_argument('fields')
-# no nargs available for multiple use of field names
-add_standard_arguments(summary_parser)
 
 
 class IncidentsCount(CdeResource):
 
     SPLITTER = re.compile(r"\s*,\s*")
 
-    def get(self):
-        args = summary_parser.parse_args()
+    @use_args(IncidentCountArgsSchema)
+    def get(self, args):
         verify_api_key(args)
-        by = self.SPLITTER.split(args['by'].lower())
-        if args['fields']:
+        by = self.SPLITTER.split(args['by'].lower()
+                                 )  # TODO: can post-process in schema?
+        if args.get('fields'):
             fields = self.SPLITTER.split(args['fields'].lower())
         else:
             fields = []
         result = models.RetaMonthQuery(aggregated=fields, grouped=by)
         return with_metadata(result.qry, args)
-        # This result isn't working with @marshal_with
