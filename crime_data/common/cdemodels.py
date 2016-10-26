@@ -12,6 +12,7 @@ class CdeRefState(models.RefState):
 
 class CdeRetaOffense(models.RetaOffense):
     pass
+    
 class CdeRetaMonthOffenseSubcat(models.RetaMonthOffenseSubcat):
     pass
 
