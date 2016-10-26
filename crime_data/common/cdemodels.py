@@ -90,7 +90,7 @@ class CdeNibrsIncident(models.NibrsIncident):
         query = (CdeRetaMonthOffenseSubcat
             .query
             .with_entities(
-                sums.columns.total_count,
+                sums.columns.count,
                 sums.columns.month_num,
                 sums.columns.data_year,
                 CdeRefAgency.ori,
