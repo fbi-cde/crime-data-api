@@ -19,10 +19,10 @@ class RegisterForm(Form):
     password = PasswordField('Password',
                              validators=[DataRequired(), Length(min=6,
                                                                 max=40)])
-    confirm = PasswordField(
-        'Verify password',
-        [DataRequired(), EqualTo('password',
-                                 message='Passwords must match')])
+    confirm = PasswordField('Verify password',
+                            [DataRequired(),
+                             EqualTo('password',
+                                     message='Passwords must match')])
 
     def __init__(self, *args, **kwargs):
         """Create instance."""

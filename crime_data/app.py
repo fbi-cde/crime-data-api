@@ -3,17 +3,19 @@
 import csv
 import io
 
-import crime_data.resources.agencies
-import crime_data.resources.incidents
 import flask_restful as restful
-from crime_data import commands, public, user
-from crime_data.assets import assets
-from crime_data.common.models import db
-from crime_data.extensions import (bcrypt, cache, csrf_protect, db,
-                                   debug_toolbar, login_manager, migrate)
-from crime_data.settings import ProdConfig
 from flask import Flask, render_template
 from flask_cors import CORS, cross_origin
+
+import crime_data.resources.agencies
+import crime_data.resources.incidents
+from crime_data import commands, public, user
+from crime_data.assets import assets
+from crime_data.common.marshmallow_schemas import ma
+from crime_data.common.models import db
+from crime_data.extensions import (bcrypt, cache, csrf_protect, debug_toolbar,
+                                   login_manager, migrate)
+from crime_data.settings import ProdConfig
 
 if __name__ == '__main__':
     app.run(debug=True)
@@ -43,6 +45,7 @@ def register_extensions(app):
     bcrypt.init_app(app)
     cache.init_app(app)
     db.init_app(app)
+    ma.init_app(app)
     csrf_protect.init_app(app)
     login_manager.init_app(app)
     debug_toolbar.init_app(app)
@@ -108,7 +111,8 @@ def add_resources(app):
     api.add_resource(crime_data.resources.agencies.AgenciesDetail,
                      '/agencies/<string:nbr>/')
     api.add_resource(crime_data.resources.agencies.AgenciesNibrsCount,
-                     '/agencies/nibrs/count/<string:ori>', '/agencies/nibrs/count/')
+                     '/agencies/nibrs/count/<string:ori>',
+                     '/agencies/nibrs/count/')
     api.add_resource(crime_data.resources.incidents.IncidentsList,
                      '/incidents/')
     api.add_resource(crime_data.resources.incidents.IncidentsCount,

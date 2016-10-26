@@ -42,5 +42,11 @@ docs/_build
 
 .webassets-cache
 
+.cache/
+
 # Virtualenvs
 env/
+
+.cache/
+prospector.log
+*.swp

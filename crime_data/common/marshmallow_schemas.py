@@ -1,21 +1,179 @@
 # coding: utf-8
-import datetime
-from decimal import Decimal
 
-import flask_restful as restful
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import (BigInteger, Boolean, Column, DateTime, Float,
-                        ForeignKey, Integer, SmallInteger, String, Text,
-                        UniqueConstraint, func, text)
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship
+import os
 
-db = SQLAlchemy()
+from flask_marshmallow import Marshmallow
+from marshmallow import Schema, fields
 
-#Base = declarative_base()
-#metadata = Base.metadata
+from . import models
+
+ma = Marshmallow()
 
 
+# Schemas for request parsing
+class ArgumentsSchema(Schema):
+    page = fields.Integer(missing=1)
+    per_page = fields.Integer(missing=10)
+    fields = fields.String()
+    if os.getenv('VCAP_APPLICATION'):
+        api_key = fields.String(
+            required=True,
+            error_messages={'required': 'Get API key from Catherine'})
+
+
+class IncidentArgsSchema(ArgumentsSchema):
+    incident_hour = fields.Integer()
+    crime_against = fields.String()
+    offense_code = fields.String()
+    offense_name = fields.String()
+    offense_category_name = fields.String()
+    method_entry_code = fields.String()
+    location_code = fields.String()
+    location_name = fields.String()
+
+
+class IncidentCountArgsSchema(ArgumentsSchema):
+    by = fields.String(missing='data_year')
+
+# Schemas for data serialization
+'''
+    tables = [models.RetaMonth, CdeRefAgency, models.RefState, models.RetaMonthOffenseSubcat,
+              models.RetaOffenseSubcat]
+
+'''
+
+
+class RefStateSchema(ma.ModelSchema):
+    class Meta:
+        model = models.RefState
+        exclude = ('state_id', )
+
+
+class RefAgencySchema(ma.ModelSchema):
+    class Meta:
+        model = models.RefAgency
+
+    state = ma.Nested(RefStateSchema)
+
+
+class RetaMonthSchema(ma.ModelSchema):
+    class Meta:
+        model = models.RetaMonth
+        exclude = ('reta_month_id', )
+
+    agency = ma.Nested(RefAgencySchema)
+
+
+class RefRaceSchema(ma.ModelSchema):
+    class Meta:
+        model = models.RefRace
+        exclude = ('race_id', 'arrestees', 'offenders', 'victims', )
+
+
+class NibrsLocationTypeSchema(ma.ModelSchema):
+    class Meta:
+        model = models.NibrsLocationType
+        exclude = ('offenses', 'location_id')
+
+
+class NibrsOffenseTypeSchema(ma.ModelSchema):
+    class Meta:
+        model = models.NibrsOffenseType
+        exclude = ('arrestees', 'offenses', 'offense_type_id', )
+
+
+class NibrsOffenseSchema(ma.ModelSchema):
+    class Meta:
+        model = models.NibrsOffense
+        exclude = ('incident', 'offense_id', )
+
+    offense_type = ma.Nested(NibrsOffenseTypeSchema)
+    location = ma.Nested(NibrsLocationTypeSchema)
+
+
+class NibrsClearedExceptSchema(ma.ModelSchema):
+    class Meta:
+        model = models.NibrsClearedExcept
+        exclude = ('cleared_except_id', )
+
+
+class NibrsPropertySchema(ma.ModelSchema):
+    class Meta:
+        model = models.NibrsProperty
+        exclude = ('incident', 'property_id', )
+
+
+class NibrsAgeSchema(ma.ModelSchema):
+    class Meta:
+        model = models.NibrsAge
+        exclude = ('age_id', 'arrestees', 'offenders', 'victims', )
+
+
+class NibrsEthnicitySchema(ma.ModelSchema):
+    class Meta:
+        model = models.NibrsEthnicity
+        exclude = ('ethnicity_id', 'arrestees', 'offenders', 'victims', )
+
+
+class NibrsVictimTypeSchema(ma.ModelSchema):
+    class Meta:
+        model = models.NibrsVictimType
+        exclude = ('victim_type_id', 'victims', )
+
+
+class NibrsVictimSchema(ma.ModelSchema):
+    class Meta:
+        model = models.NibrsVictim
+        exclude = ('victim_id', 'victim_seq_num', )
+
+    ethnicity = ma.Nested(NibrsEthnicitySchema)
+    race = ma.Nested(RefRaceSchema)
+    victim_type = ma.Nested(NibrsVictimTypeSchema)
+    age = ma.Nested(NibrsAgeSchema)
+
+
+class NibrsArresteeSchema(ma.ModelSchema):
+    class Meta:
+        model = models.NibrsArrestee
+        exclude = ('arrestee_id',
+                   'arrestee_seq_num',
+                   'incident',
+                   'offense_type', )
+
+    ethnicity = ma.Nested(NibrsEthnicitySchema)
+    race = ma.Nested(RefRaceSchema)
+    age = ma.Nested(NibrsAgeSchema)
+
+
+class NibrsOffenderSchema(ma.ModelSchema):
+    class Meta:
+        model = models.NibrsOffender
+        exclude = ('offender_id', 'incident', 'offender_seq_num', )
+
+    ethnicity = ma.Nested(NibrsEthnicitySchema)
+    race = ma.Nested(RefRaceSchema)
+    age = ma.Nested(NibrsAgeSchema)
+
+
+class NibrsIncidentSchema(ma.ModelSchema):
+    class Meta:
+        model = models.NibrsIncident
+        exclude = ('data_home',
+                   'ddocname',
+                   'nibrs_month',
+                   'orig_format',
+                   'incident_id', )
+
+    offenses = ma.Nested(NibrsOffenseSchema, many=True)
+    agency = ma.Nested(RefAgencySchema)
+    cleared_except = ma.Nested(NibrsClearedExceptSchema)
+    property = ma.Nested(NibrsPropertySchema, many=True)
+    victims = ma.Nested(NibrsVictimSchema, many=True)
+    arrestees = ma.Nested(NibrsArresteeSchema, many=True)
+    offenders = ma.Nested(NibrsOffenderSchema, many=True)
+
+
+"""
 class ArsonMonth(db.Model):
     __tablename__ = 'arson_month'
     __table_args__ = (
@@ -1840,8 +1998,7 @@ class RefAgencyCoveredBy(db.Model):
         primaryjoin='RefAgencyCoveredBy.agency_id == RefAgency.agency_id')
     covered_by_agency = db.relationship(
         'RefAgency',
-        primaryjoin=
-        'RefAgencyCoveredBy.covered_by_agency_id == RefAgency.agency_id')
+        primaryjoin='RefAgencyCoveredBy.covered_by_agency_id == RefAgency.agency_id')
 
 
 class RefAgencyDataContent(db.Model):
@@ -2804,3 +2961,79 @@ class SuppPropertyType(db.Model):
     prop_type_name = db.Column(db.String(100), nullable=False)
     prop_type_code = db.Column(db.String(20), nullable=False)
     prop_type_code_num = db.Column(db.SmallInteger, nullable=False)
+
+
+class QueryWithAggregates(object):
+
+    OPERATION = func.sum
+    seed_label = None
+    seed_agg = func.sum
+
+    def _sql_name(self, readable_name):
+        return self.COL_NAME_MAP.get(readable_name, readable_name)
+
+    def _col(self, readable_name):
+        for tbl in self.tables:
+            try:
+                result = getattr(tbl, self._sql_name(readable_name))
+                return result
+            except AttributeError:
+                pass  # keep looking
+        raise AttributeError()
+
+    def _add_column(self, readable_name, operation=None):
+        col = self._col(readable_name)
+        if operation:
+            col = operation(col)
+        self.qry = self.qry.add_columns(label(readable_name, col))
+
+    def _base_query(self):
+        tbl = self.tables[0]
+        col = getattr(tbl, self.seed_col)
+        lbl = self.seed_label or self.seed_col
+        labelled = label(lbl, self.seed_agg(col))
+        return db.session.query(labelled)
+
+    def _can_aggregate(self, col_name, aggregate):
+        col = self._col(col_name)
+        types = [c.type.python_type for c in col.prop.columns]
+        if types in ([int, ], [float, ], [Decimal, ]):
+            return True
+        if (types in ([datetime.datetime, ], [datetime.date, ]) and
+                aggregate in (func.min, func.max)):
+            return True
+        return False
+
+    def __init__(self, aggregated=None, grouped=None):
+        if grouped in (['none', None]):
+            grouped = []
+        aggregated = aggregated or []
+        self.qry = self._base_query()
+        for tbl in self.tables[1:]:
+            self.qry = self.qry.join(tbl)
+        for col in aggregated:
+            if not isinstance(col, str):
+                (col, operation) = col
+            else:
+                operation = self.OPERATION
+            if self._can_aggregate(col, operation):
+                self._add_column(col, operation)
+            else:
+                grouped.append(col)
+        for col_name in grouped:
+            self._add_column(col_name)
+            col = self._col(col_name)
+            self.qry = self.qry.group_by(col).order_by(col)
+        print(self.qry)
+
+
+class RetaMonthQuery(QueryWithAggregates):
+
+    COL_NAME_MAP = {'year': 'data_year',
+                    'state': 'state_abbr',
+                    'offense': 'offense_subcat_name'}
+    tables = [RetaMonth, RefAgency, RefState, RetaMonthOffenseSubcat,
+              RetaOffenseSubcat]
+    seed_col = 'total_actual_count'
+
+"""

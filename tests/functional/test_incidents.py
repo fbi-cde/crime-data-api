@@ -161,7 +161,7 @@ class TestIncidentsCountEndpoint:
 
     def test_instances_count_groups_by_year_by_default(self, testapp):
         res = testapp.get('/incidents/count/')
-        years = [row['year'] for row in res.json['results']]
+        years = [row['data_year'] for row in res.json['results']]
         assert len(years) == len(set(years))
 
     def test_instances_count_groups_by_agency_id(self, testapp):
