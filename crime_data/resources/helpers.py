@@ -2,7 +2,6 @@ import json
 import os
 
 from flask.ext.sqlalchemy import Pagination
-from sqlalchemy import sql
 
 
 def add_standard_arguments(parser):
@@ -48,40 +47,12 @@ def with_metadata(results, args, schema=None):
                              total=results.count(),
                              items=items)
         items = results.items
-    final = {'results': items,
-             'pagination': {
-                 'count': results.total,
-                 'page': results.page,
-                 'pages': results.pages,
-                 'per_page': results.per_page,
-             }, }
-    return final
+    return {'results': items,
+            'pagination': {
+                'count': results.total,
+                'page': results.page,
+                'pages': results.pages,
+                'per_page': results.per_page,
+            }, }
 
 
-class QueryWithAggregates(object):
-
-    OPERATION = sql.func.sum
-
-    def _add_column(self, readable_name, operation=None):
-        sql_name = self.COL_NAME_MAP.get(readable_name, readable_name)
-        col = getattr(self.table, sql_name)
-        if operation:
-            col = operation(col)
-        self.qry = self.qry.add_columns(label(readable_name, col))
-
-    def __init__(self, aggregated, grouped):
-        self.result = db.session.query()
-        for col in aggregated:
-            if not isinstance(col, str):
-                (col, operation) = col
-            else:
-                operation = self.OPERATION
-            self._add_column(col, operation)
-        for col in grouped:
-            self._add_column(col)
-            self.qry = self.qry.group_by(getattr(self.table, col))
-
-    def __next__(self):
-        for row in self.qry:
-            return row._asdict()
-        raise StopIteration

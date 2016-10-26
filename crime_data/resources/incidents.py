@@ -1,30 +1,14 @@
-import os
 import re
-from datetime import date, datetime
 
-import sqlalchemy as sa
-from flask import abort, request
-from flask_login import login_required
-#from webservices.common.views import ApiResource
-from flask_restful import Resource, fields, marshal_with, reqparse
-from sqlalchemy import func
-from webargs import fields
+from flask_restful import Resource
 from webargs.flaskparser import use_args
 
 from crime_data.common import marshmallow_schemas, models
 from crime_data.common.base import CdeResource
 from crime_data.common.marshmallow_schemas import (
-    ArgumentsSchema, IncidentArgsSchema, IncidentCountArgsSchema,
-    NibrsIncidentSchema)
-# from webservices import args
-# from webservices import docs
-# from webservices import utils
-# from webservices import schemas
-# from webservices import exceptions
-from crime_data.extensions import db
+    ArgumentsSchema, IncidentArgsSchema, IncidentCountArgsSchema)
 
-from .helpers import (QueryWithAggregates, add_standard_arguments,
-                      verify_api_key, with_metadata)
+from .helpers import verify_api_key, with_metadata
 
 
 class IncidentsList(Resource):
@@ -84,8 +68,8 @@ class IncidentsCount(CdeResource):
     @use_args(IncidentCountArgsSchema)
     def get(self, args):
         verify_api_key(args)
-        by = self.SPLITTER.split(args['by'].lower()
-                                 )  # TODO: can post-process in schema?
+        by = self.SPLITTER.split(
+            args['by'].lower())  # TODO: can post-process in schema?
         if args.get('fields'):
             fields = self.SPLITTER.split(args['fields'].lower())
         else:
