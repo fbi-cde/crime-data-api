@@ -43,17 +43,86 @@ class IncidentCountArgsSchema(ArgumentsSchema):
 '''
 
 
+class RefRegionSchema(ma.ModelSchema):
+    class Meta:
+        model = models.RefRegion
+        exclude = ('region_id', )
+
+
+class RefDivisionSchema(ma.ModelSchema):
+    class Meta:
+        model = models.RefDivision
+        exclude = ('division_id', )
+
+    region = ma.Nested(RefRegionSchema)
+
+
 class RefStateSchema(ma.ModelSchema):
     class Meta:
         model = models.RefState
         exclude = ('state_id', )
+
+    division = ma.Nested(RefDivisionSchema)
+
+
+class RefCitySchema(ma.ModelSchema):
+    class Meta:
+        model = models.RefCity
+        exclude = ('city_id', )
+
+    state = ma.Nested(RefStateSchema)
+
+
+class RefPopulationFamilySchema(ma.ModelSchema):
+    class Meta:
+        model = models.RefPopulationFamily
+        exclude = ('population_family_id', )
+
+
+class RefFieldOfficeSchema(ma.ModelSchema):
+    class Meta:
+        model = models.RefFieldOffice
+        exclude = ('field_office_id', )
+
+
+class RefAgencyTypeSchema(ma.ModelSchema):
+    class Meta:
+        model = models.RefAgencyType
+        exclude = ('agency_type_id', 'default_pop_family_id', )
+
+
+class RefDepartmentSchema(ma.ModelSchema):
+    class Meta:
+        model = models.RefDepartment
+        exclude = ('department_id', )
+
+
+class RefSubmittingAgencySchema(ma.ModelSchema):
+    class Meta:
+        model = models.RefSubmittingAgency
+        exclude = ('agency_id', )
+
+    state = ma.Nested(RefStateSchema)
+
+
+class RefTribeSchema(ma.ModelSchema):
+    class Meta:
+        model = models.RefTribe
+        exclude = ('tribe_id', )
 
 
 class RefAgencySchema(ma.ModelSchema):
     class Meta:
         model = models.RefAgency
 
+    city = ma.Nested(RefCitySchema)
     state = ma.Nested(RefStateSchema)
+    agency_type = ma.Nested(RefAgencyTypeSchema)
+    department = ma.Nested(RefDepartmentSchema)
+    field_office = ma.Nested(RefFieldOfficeSchema)
+    population_family = ma.Nested(RefPopulationFamilySchema)
+    submitting_agency = ma.Nested(RefSubmittingAgencySchema)
+    tribe = ma.Nested(RefTribeSchema)
 
 
 class RetaMonthSchema(ma.ModelSchema):
@@ -67,7 +136,11 @@ class RetaMonthSchema(ma.ModelSchema):
 class RefRaceSchema(ma.ModelSchema):
     class Meta:
         model = models.RefRace
-        exclude = ('race_id', 'arrestees', 'offenders', 'victims', )
+        exclude = ('race_id',
+                   'arrestees',
+                   'offenders',
+                   'victims',
+                   'sort_order', )
 
 
 class NibrsLocationTypeSchema(ma.ModelSchema):
@@ -97,10 +170,18 @@ class NibrsClearedExceptSchema(ma.ModelSchema):
         exclude = ('cleared_except_id', )
 
 
+class NibrsPropLossTypeSchema(ma.ModelSchema):
+    class Meta:
+        model = models.NibrsPropLossType
+        exclude = ('prop_loss_id', 'property', )
+
+
 class NibrsPropertySchema(ma.ModelSchema):
     class Meta:
         model = models.NibrsProperty
         exclude = ('incident', 'property_id', )
+
+    prop_loss = ma.Nested(NibrsPropLossTypeSchema)
 
 
 class NibrsAgeSchema(ma.ModelSchema):
@@ -121,6 +202,12 @@ class NibrsVictimTypeSchema(ma.ModelSchema):
         exclude = ('victim_type_id', 'victims', )
 
 
+class NibrsActivityTypeSchema(ma.ModelSchema):
+    class Meta:
+        model = models.NibrsActivityType
+        exclude = ('activity_type_id', 'victims', )
+
+
 class NibrsVictimSchema(ma.ModelSchema):
     class Meta:
         model = models.NibrsVictim
@@ -130,6 +217,7 @@ class NibrsVictimSchema(ma.ModelSchema):
     race = ma.Nested(RefRaceSchema)
     victim_type = ma.Nested(NibrsVictimTypeSchema)
     age = ma.Nested(NibrsAgeSchema)
+    activity_type = ma.Nested(NibrsActivityTypeSchema)
 
 
 class NibrsArresteeSchema(ma.ModelSchema):

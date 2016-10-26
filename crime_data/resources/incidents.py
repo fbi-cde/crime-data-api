@@ -1,6 +1,5 @@
 import re
 
-from marshmallow import Schema
 from webargs.flaskparser import use_args
 
 from crime_data.common import cdemodels, marshmallow_schemas, models
