@@ -2,10 +2,11 @@
 """User models."""
 import datetime as dt
 
+from flask_login import UserMixin
+
 from crime_data.database import (Column, Model, SurrogatePK, db, reference_col,
                                  relationship)
 from crime_data.extensions import bcrypt
-from flask_login import UserMixin
 
 
 class Role(SurrogatePK, Model):

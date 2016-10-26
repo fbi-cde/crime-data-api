@@ -1,3 +1,5 @@
+import json
+import os
 import random
 
 from flask_restful import Resource
@@ -50,6 +52,7 @@ class RoutingSQLAlchemy(SQLAlchemy):
 
 class CdeResource(Resource):
     __abstract__ = True
+    schema = None
 
     def _stringify(self, data):
         """Avoid JSON serialization errors
@@ -60,6 +63,31 @@ class CdeResource(Resource):
 
     def _as_dict(self, fieldTuple, res):
         return dict(zip(fieldTuple, res))
+
+    def with_metadata(self, results, args):
+        results = results.paginate(args['page'], args['per_page'])
+        if self.schema:
+            items = self.schema.dump(results.items).data
+        else:
+            items = self._stringify(results.items)
+        return {'results': items,
+                'pagination': {
+                    'count': results.total,
+                    'page': results.page,
+                    'pages': results.pages,
+                    'per_page': results.per_page,
+                }, }
+
+    def verify_api_key(self, args):
+        if os.getenv('VCAP_SERVICES'):
+            service_env = json.loads(os.getenv('VCAP_SERVICES'))
+            cups_name = 'crime-data-api-creds'
+            creds = [u['credentials']
+                     for u in service_env['user-provided']
+                     if 'credentials' in u]
+            key = creds[0]['API_KEY']
+            if args['api_key'] != key:
+                raise Exception('Ask Catherine for API key')
 
 
 db = RoutingSQLAlchemy()
