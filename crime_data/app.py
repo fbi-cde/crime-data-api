@@ -13,8 +13,8 @@ from crime_data import commands, public, user
 from crime_data.assets import assets
 from crime_data.common.marshmallow_schemas import ma
 from crime_data.common.models import db
-from crime_data.extensions import (bcrypt, cache, csrf_protect, db,
-                                   debug_toolbar, login_manager, migrate)
+from crime_data.extensions import (bcrypt, cache, csrf_protect, debug_toolbar,
+                                   login_manager, migrate)
 from crime_data.settings import ProdConfig
 
 if __name__ == '__main__':
@@ -110,6 +110,9 @@ def add_resources(app):
     api.add_resource(crime_data.resources.agencies.AgenciesList, '/agencies/')
     api.add_resource(crime_data.resources.agencies.AgenciesDetail,
                      '/agencies/<string:nbr>/')
+    api.add_resource(crime_data.resources.agencies.AgenciesNibrsCount,
+                     '/agencies/nibrs/count/<string:ori>',
+                     '/agencies/nibrs/count/')
     api.add_resource(crime_data.resources.incidents.IncidentsList,
                      '/incidents/')
     api.add_resource(crime_data.resources.incidents.IncidentsCount,
