@@ -106,7 +106,26 @@ class AgenciesNibrsCount(CdeResource):
 
         return result
 
+class AgenciesRetaCount(CdeResource):
+    #@marshal_with(META_COUNT_FIELDS)
+    def get(self, ori=None, filters=None):
+        '''''
+        Get Incident Count by Agency ID/ORI.
+        '''''
+        args = parser.parse_args()
+        helpers.verify_api_key(args)
 
+        query = models.CdeNibrsIncident.get_reta_by_ori(ori, filters)
+        result = with_metadata(query, args)
+        print(result)
+
+        #Hacky, To be replaced via Marshmellow implementation.
+        # if result:
+        #     for k,v in enumerate(result['results']):
+        #         as_dict = self._as_dict(('count', 'ori', 'agency_id'), v)
+        #         result['results'][k] = as_dict
+
+        return result
 
 
 
