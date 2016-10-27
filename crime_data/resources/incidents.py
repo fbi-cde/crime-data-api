@@ -73,5 +73,5 @@ class IncidentsCount(CdeResource):
         else:
             fields = []
         result = cdemodels.RetaMonthQuery(aggregated=fields, grouped=by)
-        print(result.qry)
+
         return self.with_metadata(result, args)
