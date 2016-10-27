@@ -17,6 +17,9 @@ class CdeRetaMonth(models.RetaMonth):
 class CdeRefState(models.RefState):
     pass
 
+class CdeRefCity(models.RefCity):
+    pass
+
 class CdeRetaOffense(models.RetaOffense):
     pass
     
@@ -29,6 +32,14 @@ class CdeRetaOffenseSubcat(models.RetaOffenseSubcat):
 class CdeRefAgency(models.RefAgency):
     pass
 
+class CdeNibrsEthnicity(models.NibrsEthnicity):
+    pass
+
+class CdeNibrsVictim(models.NibrsVictim):
+    pass
+
+class CdeNibrsOffender(models.NibrsOffender):
+    pass
 
 class CdeNibrsMonth(models.NibrsMonth):
     pass
@@ -37,76 +48,185 @@ class CdeNibrsMonth(models.NibrsMonth):
 class CdeNibrsOffense(models.NibrsOffense):
     pass
 
+class CdeNibrsLocationType(models.NibrsLocationType):
+    pass
 
 class CdeNibrsIncident(models.NibrsIncident):
     '''''
     Extends models.NibrsIncident.
-    ''' ''
+    '''''
 
-    # Maps API filter to DB column name.
-    FILTER_COLUMN_MAP = {'state': 'state_abbr',
-                         'offense': 'offense_subcat_name'}
+    @staticmethod
+    def __get_fields(agg_fields, fields):
+        requested_fields = []
+        for field in fields:
+            if field in CdeNibrsIncident.get_filter_map():
+                requested_fields.append(CdeNibrsIncident.get_filter_map()[field])
+        
+        requested_fields += agg_fields
+        return requested_fields
 
-    def get_nibrs_incident_by_ori(ori=None, filters=None):
-        '''''
-        Returns Query for Incident counts by Agency/ORI.
-        ''' ''
-
-        query = (CdeNibrsIncident.query.with_entities(
-            label('count', func.count(CdeNibrsIncident.incident_id)),
-            CdeRefAgency.ori, CdeRefAgency.agency_id).outerjoin(CdeRefAgency)
-                 .group_by(CdeRefAgency.ori, CdeRefAgency.agency_id))
-
-        if ori:
-            query = query.filter(CdeRefAgency.ori == ori)
-
-        # TODO: Apply all filters
-        # for filter in filters:
-        #     query = query.filter()
+    @staticmethod
+    def __apply_filters(query, filters):
+        for filter,value in filters.items():
+            if filter in CdeNibrsIncident.get_filter_map():
+                if filter == 'victim_ethnicity' or filter == 'offender_ethnicity':
+                    query = query.filter(CdeNibrsIncident.victims.any(CdeNibrsEthnicity.ethnicity_name.in_([value])))
+                else:    
+                    query = query.filter(CdeNibrsIncident.get_filter_map()[filter] == value)
 
         return query
 
+    @staticmethod
+    def __apply_group_by(query, group_bys):
+        for group in group_bys:
+            if group in CdeNibrsIncident.get_filter_map():
+                query = query.group_by(CdeNibrsIncident.get_filter_map()[group]).order_by(CdeNibrsIncident.get_filter_map()[group])
+        return query
 
-    def get_reta_by_ori(ori = None, filters = None):
+
+    # Maps API filter to DB column name.
+    @staticmethod
+    def get_filter_map():
+        return {#'state': CdeRefState.state_abbr,
+        'month':CdeNibrsMonth.month_num,
+        'year':CdeNibrsMonth.data_year,
+        'ori': CdeRefAgency.ori,
+        'offense_location': CdeNibrsLocationType.location_name,
+        'victim_ethnicity': CdeNibrsEthnicity.ethnicity_name.label('victim_ethnicity'),
+        'offender_ethnicity': CdeNibrsEthnicity.ethnicity_name.label('offender_ethnicity') }
+
+    @staticmethod
+    def get_nibrs_incident_by_ori(ori = None, filters = None, by = None):
         '''''
         Returns Query for RETA counts by Agency/ORI - Monthly Sums.
         '''''
 
-        # Get Aggregated data, and attach along all relevent metadata.
-        # Todo: Break into two queries based on the filter input-
-        # (1) Query with JUST agencies month totals.
-        # (2) Query with JUST subcat totals.
-        # It is not apparent that the SUM(subcat totals) = month totals...
-        query = (CdeRetaMonthOffenseSubcat
-            .query
-            .with_entities(
-                CdeRetaMonth.total_actual_count,
-                CdeRetaMonth.month_num,
-                CdeRetaMonth.data_year,
-                CdeRetaMonth.agency_id,
-                CdeRetaMonthOffenseSubcat.offense_subcat_id,
-                CdeRetaMonthOffenseSubcat.actual_count,
-                CdeRefAgency.ori,
-                CdeRefAgency.state_id,
-                CdeRefState.state_abbr,
-                CdeRetaOffenseSubcat.offense_subcat_name,
-                CdeRetaOffenseSubcat.offense_subcat_code,
-                CdeRetaOffense.offense_id,
-            )
-            .join(CdeRetaMonthOffenseSubcat, CdeRetaMonthOffenseSubcat.reta_month_id == CdeRetaMonth.reta_month_id)
-            .join(CdeRefAgency, CdeRetaMonth.agency_id == CdeRefAgency.agency_id)
-            .join(CdeRefState, CdeRefAgency.state_id == CdeRefState.state_id)
-            .join(CdeRetaOffenseSubcat, CdeRetaMonthOffenseSubcat.offense_subcat_id == CdeRetaOffenseSubcat.offense_subcat_id)
-            .join(CdeRetaOffense, CdeRetaOffenseSubcat.offense_id == CdeRetaOffense.offense_id)
-        )
+        agg_fields = [
+            func.count(CdeNibrsIncident.incident_id).label('incident_count')
+        ]
+
+        fields = CdeNibrsIncident.__get_fields(agg_fields, by)
+
+        # Base Query
+        query = CdeNibrsIncident.query
 
         # Get ONE ORI.
-        if ori:
-            query = query.filter(CdeRefAgency.ori==ori)
+        # if ori:
+        #     query = query.filter(CdeRefAgency.ori==ori)
+        
+        # Apply JOINS.
+        query = (query
+             .join(CdeNibrsOffense)
+             .join(CdeNibrsLocationType)
+             .join(CdeNibrsMonth)
+             .join(CdeRefAgency)
+             .join(CdeRefCity)
+             .join(CdeRefState)
+             )
 
-        # TODO: Apply all filters
-        # for filter in filters:
-        #     query = query.filter()
+        join_eth = False
+        if 'victim_ethnicity' in by:
+            join_eth = True
+            query = (query.outerjoin(CdeNibrsVictim))
+        if 'offender_ethnicity' in by:
+            join_eth = True
+            query = (query.outerjoin(CdeNibrsOffender))
+
+        if join_eth:
+            query = query.outerjoin(CdeNibrsEthnicity)
+
+
+        # Apply field selections.
+        query = query.with_entities(*fields)
+
+        # Apply group by.
+        query = CdeNibrsIncident.__apply_group_by(query, by)
+
+        # Apply all filters
+        query = CdeNibrsIncident.__apply_filters(query, filters)
+
+        return query
+
+
+class CdeRetaMonth(models.RetaMonth):
+
+    @staticmethod
+    def __get_fields(agg_fields, fields):
+        requested_fields = []
+        for field in fields:
+            if field in CdeRetaMonth.get_filter_map():
+                requested_fields.append(CdeRetaMonth.get_filter_map()[field])
+        
+        requested_fields += agg_fields
+        return requested_fields
+
+    @staticmethod
+    def __apply_filters(query, filters):
+        for filter,value in filters.items():
+            if filter in CdeRetaMonth.get_filter_map():
+                query = query.filter(CdeRetaMonth.get_filter_map()[filter] == value)
+        return query
+
+    @staticmethod
+    def __apply_group_by(query, group_bys):
+        for group in group_bys:
+            if group in CdeRetaMonth.get_filter_map():
+                query = query.group_by(CdeRetaMonth.get_filter_map()[group]).order_by(CdeRetaMonth.get_filter_map()[group])
+        return query
+
+
+    # Maps API filter to DB column name.
+    @staticmethod
+    def get_filter_map():
+        return {'state': CdeRefState.state_abbr, 
+        'offense': CdeRetaOffense.offense_name,
+        'ori': CdeRefAgency.ori,
+        'subcategory': CdeRetaOffenseSubcat.offense_subcat_name,
+        'agency_name': CdeRefAgency.pub_agency_name, # Assuming Public Agency Name is the best one.
+        'city': CdeRefCity.city_name,
+        'year': CdeRetaMonth.data_year,
+        'month': CdeRetaMonth.month_num }
+
+    @staticmethod
+    def get_reta_by_ori(ori = None, filters = None, by = None):
+        '''''
+        Returns Query for RETA counts by Agency/ORI - Monthly Sums.
+        '''''
+
+        agg_fields = [
+            func.sum(CdeRetaMonthOffenseSubcat.actual_count).label('actual_count'),
+            func.sum(CdeRetaMonthOffenseSubcat.reported_count).label('reported_count'),
+            func.sum(CdeRetaMonthOffenseSubcat.unfounded_count).label('unfounded_count'),
+            func.sum(CdeRetaMonthOffenseSubcat.cleared_count).label('cleared_count'),
+            func.sum(CdeRetaMonthOffenseSubcat.juvenile_cleared_count).label('juvenile_cleared_count'),
+        ]
+
+        fields = CdeRetaMonth.__get_fields(agg_fields, by)
+
+        # Base Query
+        query = CdeRetaMonth.query
+
+        # Get ONE ORI.
+        # if ori:
+        #     query = query.filter(CdeRefAgency.ori==ori)
+        
+        # Apply JOINS.
+        query = (query.join(CdeRetaMonthOffenseSubcat)
+             .join(CdeRefAgency)
+             .join(CdeRefCity)
+             .join(CdeRefState)
+             .join(CdeRetaOffenseSubcat)
+             .join(CdeRetaOffense))
+        
+        # Apply field selections.
+        query = query.with_entities(*fields)
+
+        # Apply group by.
+        query = CdeRetaMonth.__apply_group_by(query, by)
+
+        # Apply all filters
+        query = CdeRetaMonth.__apply_filters(query, filters)
 
         return query
 
