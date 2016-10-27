@@ -10,6 +10,8 @@ class Config(object):
                                 'secret-key')  # TODO: Change me
     APP_DIR = os.path.abspath(os.path.dirname(__file__))  # This directory
     PROJECT_ROOT = os.path.abspath(os.path.join(APP_DIR, os.pardir))
+    BASIC_AUTH_USERNAME = '18f'
+    BASIC_AUTH_PASSWORD = SECRET_KEY
     BCRYPT_LOG_ROUNDS = 13
     ASSETS_DEBUG = False
     DEBUG_TB_ENABLED = False  # Disable Debug toolbar

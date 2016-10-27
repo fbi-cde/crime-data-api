@@ -12,10 +12,13 @@ import crime_data.resources.incidents
 from crime_data import commands, public, user
 from crime_data.assets import assets
 from crime_data.common.marshmallow_schemas import ma
+from crime_data.common.auth import basic_auth
 from crime_data.common.models import db
 from crime_data.extensions import (bcrypt, cache, csrf_protect, debug_toolbar,
                                    login_manager, migrate)
 from crime_data.settings import ProdConfig
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
@@ -36,6 +39,7 @@ def create_app(config_object=ProdConfig):
     add_resources(app)
     register_commands(app)
     db.init_app(app)
+    basic_auth.init_app(app)
     return app
 
 
