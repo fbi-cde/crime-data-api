@@ -2,7 +2,7 @@ import datetime
 from decimal import Decimal
 
 from flask.ext.sqlalchemy import Pagination
-from sqlalchemy import func, select, join, over
+from sqlalchemy import func
 from sqlalchemy.sql import label
 
 from crime_data.common import models
