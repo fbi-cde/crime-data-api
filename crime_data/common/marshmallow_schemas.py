@@ -28,6 +28,9 @@ class IncidentArgsSchema(ArgumentsSchema):
     offense_name = fields.String()
     offense_category_name = fields.String()
     method_entry_code = fields.String()
+    state = fields.String()
+    city = fields.String()
+    tribe = fields.String()
     location_code = fields.String()
     location_name = fields.String()
 
