@@ -2,7 +2,7 @@ import datetime
 from decimal import Decimal
 
 from flask.ext.sqlalchemy import Pagination
-from sqlalchemy import func
+from sqlalchemy import func, select, join, over
 from sqlalchemy.sql import label
 
 from crime_data.common import models
@@ -72,38 +72,31 @@ class CdeNibrsIncident(models.NibrsIncident):
         Returns Query for RETA counts by Agency/ORI - Monthly Sums.
         '''''
 
-        # Aggregation by: (Year, Month, OffenseSubcategory)
-        sums = (CdeRetaMonth
-            .query
-            .with_entities(
-                func.sum(CdeRetaMonth.total_actual_count).label('count'), 
-                CdeRetaMonth.data_year,
-                CdeRetaMonth.month_num,
-                CdeRetaMonth.agency_id,
-                CdeRetaMonthOffenseSubcat.offense_subcat_id,
-            )
-            .join(CdeRetaMonthOffenseSubcat, CdeRetaMonth.reta_month_id == CdeRetaMonthOffenseSubcat.reta_month_id)
-            .group_by(CdeRetaMonth.agency_id, CdeRetaMonth.data_year, CdeRetaMonth.month_num, CdeRetaMonthOffenseSubcat.offense_subcat_id)
-        ).subquery()
-
         # Get Aggregated data, and attach along all relevent metadata.
+        # Todo: Break into two queries based on the filter input-
+        # (1) Query with JUST agencies month totals.
+        # (2) Query with JUST subcat totals.
+        # It is not apparent that the SUM(subcat totals) = month totals...
         query = (CdeRetaMonthOffenseSubcat
             .query
             .with_entities(
-                sums.columns.count,
-                sums.columns.month_num,
-                sums.columns.data_year,
+                CdeRetaMonth.total_actual_count,
+                CdeRetaMonth.month_num,
+                CdeRetaMonth.data_year,
+                CdeRetaMonth.agency_id,
+                CdeRetaMonthOffenseSubcat.offense_subcat_id,
+                CdeRetaMonthOffenseSubcat.actual_count,
                 CdeRefAgency.ori,
                 CdeRefAgency.state_id,
-                CdeRetaMonthOffenseSubcat.offense_subcat_id,
                 CdeRefState.state_abbr,
                 CdeRetaOffenseSubcat.offense_subcat_name,
                 CdeRetaOffenseSubcat.offense_subcat_code,
                 CdeRetaOffense.offense_id,
             )
-            .join(CdeRefAgency, sums.columns.agency_id == CdeRefAgency.agency_id)
+            .join(CdeRetaMonthOffenseSubcat, CdeRetaMonthOffenseSubcat.reta_month_id == CdeRetaMonth.reta_month_id)
+            .join(CdeRefAgency, CdeRetaMonth.agency_id == CdeRefAgency.agency_id)
             .join(CdeRefState, CdeRefAgency.state_id == CdeRefState.state_id)
-            .join(CdeRetaOffenseSubcat)
+            .join(CdeRetaOffenseSubcat, CdeRetaMonthOffenseSubcat.offense_subcat_id == CdeRetaOffenseSubcat.offense_subcat_id)
             .join(CdeRetaOffense, CdeRetaOffenseSubcat.offense_id == CdeRetaOffense.offense_id)
         )
 

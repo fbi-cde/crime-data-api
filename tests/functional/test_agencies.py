@@ -44,3 +44,14 @@ class TestAgenciesEndpoint:
         page1 = testapp.get('/agencies/nibrs/count/?page=1')
         assert len(page1.json['results']) == 10
         assert page2.json['results'][0] not in page1.json['results']
+
+    def test_agencies_reta_counts_page_size(self, user, testapp):
+        res = testapp.get('/agencies/reta/count/?per_page=5')
+        assert len(res.json['results']) == 5
+
+    def test_agencies_reta_counts_paginate(self, user, testapp):
+        page2 = testapp.get('/agencies/reta/count/?page=2')
+        assert len(page2.json['results']) == 10
+        page1 = testapp.get('/agencies/reta/count/?page=1')
+        assert len(page1.json['results']) == 10
+        assert page2.json['results'][0] not in page1.json['results']
