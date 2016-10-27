@@ -1,0 +1,55 @@
+body {
+  margin: 0 auto;
+  min-height: 100%;
+  width: 1024px;
+}
+
+main {
+  display: inline-block;
+  padding: 0 1em;
+}
+
+#filters {
+  float: left;
+  min-height: 100%;
+  width: 300px;
+}
+
+.filter {
+  border: 1px solid black;
+  border-bottom: none;
+  padding: 1em;
+  position: relative;
+}
+
+.filter:last-child {
+  border-bottom: 1px solid black;
+}
+
+.filter legend {
+  display: table-cell;
+  font-size: 1.1em;
+}
+
+.filter:before {
+  --arrow-size: 20px;
+  background-image: url('/static/libs/uswds/img/arrow-down.svg');
+  background-repeat: no-repeat;
+  content: '';
+  height: var(--arrow-size);
+  position: absolute;
+  right: 1em;
+  width: var(--arrow-size);
+}
+
+.filter[aria-expanded="false"]:before {
+  transform: rotate(-90deg);
+}
+
+.filter[aria-expanded="true"]:before {
+  transform: rotate(0deg);
+}
+
+.filter[aria-expanded="false"] :not(legend) {
+  display: none;
+}

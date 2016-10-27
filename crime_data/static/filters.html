@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Crime Data Explorer filter prototype</title>
+    <link rel="stylesheet" href="/static/libs/uswds/css/uswds.css">
+    <link rel="stylesheet" href="/static/css/filters.css">
+  </head>
+  <body>
+    <form id="filters" action="/static/filters.html">
+      <h1>Filters</h1>
+      <fieldset class="filter" id="type-filter">
+        <legend>Data type</legend>
+        <select name="type" id="type">
+          <optgroup label="Crime data">
+            <option>Violent crime</option>
+            <option>Property crime</option>
+          </optgroup>
+          <optgroup label="Crime clearance">
+            <option>Something</option>
+          </optgroup>
+          <optgroup label="Arrest data">
+            <option>By race</option>
+            <option>By age</option>
+          </optgroup>
+          <optgroup label="Police employee data">
+            <option>Employee counts</option>
+            <option>Police killed</option>
+          </optgroup>
+        </select>
+      </fieldset>
+      <fieldset class="filter" id="location-filter">
+        <legend>Location</legend>
+        <select name="location" id="location">
+          <option>United States</option>
+          <option>California</option>
+          <option>New York</option>
+          <option>Tennessee</option>
+          <option>West Virginia</option>
+        </select>
+      </fieldset>
+      <fieldset class="filter" id="time-filter">
+        <legend>Time</legend>
+        <label for="time-from">Starting year</label>
+        <input type="number" name="time-from" id="time-from" min="1960" max="2016" value="1960">
+        <label for="time-to">Ending year</label>
+        <input type="number" name="time-to" id="time-to" min="1960" max="2016" value="2016">
+      </fieldset>
+      <fieldset class="filter" id="race-filter">
+        <legend>Race</legend>
+        <input type="checkbox" name="asian" id="asian">
+        <label for="asian">Asian</label>
+        <input type="checkbox" name="black" id="black">
+        <label for="black">Black</label>
+        <input type="checkbox" name="other-race" id="other">
+        <label for="Other">Other</label>
+        <input type="checkbox" name="unknown-race" id="unknown-race">
+        <label for="unknown-race">Unknown</label>
+        <input type="checkbox" name="white" id="white">
+        <label for="white">White</label>
+      </fieldset>
+      <fieldset class="filter" id="sex-filter">
+        <legend>Biological sex</legend>
+        <input type="checkbox" name="female" id="female">
+        <label for="female">Female</label>
+        <input type="checkbox" name="male" id="male">
+        <label for="male">Male</label>
+        <input type="checkbox" name="unknown-sex" id="unknown-sex">
+        <label for="unknown-sex">Unknown</label>
+      </fieldset>
+    </form>
+    <main>
+      <h1>Content</h1>
+      <div id="basic-text"></div>
+    </main>
+    <script src="/static/js/filters.js"></script>
+  </body>
+</html>
