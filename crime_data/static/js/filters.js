@@ -115,6 +115,18 @@ function updateContent() {
 
   if (basicText) basicText.innerHTML = makeBasicText(values)
   if (methodology) methodology.innerHTML = `<p>${makeMethodologyText(values)}</p>`
+
+  if (values.type.toLowerCase() === 'employee counts') {
+    var toDisable = ['offender-sex-filter', 'offender-race-filter', 'victim-race-filter', 'victim-sex-filter']
+    toDisable.forEach(function(id) {
+      $(`#${id}`)[0].setAttribute('disabled', true)
+    })
+  } else {
+    var toDisable = ['offender-sex-filter', 'offender-race-filter', 'victim-race-filter', 'victim-sex-filter']
+    toDisable.forEach(function(id) {
+      $(`#${id}`)[0].removeAttribute('disabled')
+    })
+  }
 }
 
 $('#filters')[0].addEventListener('change', updateContent)

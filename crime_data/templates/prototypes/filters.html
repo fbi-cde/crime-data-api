@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="/static/css/filters.css">
   </head>
   <body>
+    <header>
+
+    </header>
     <form id="filters" action="/static/filters.html">
       <h1>Filters</h1>
       <fieldset class="filter" id="type-filter">
@@ -57,26 +60,48 @@
         <label for="time-to">Ending year</label>
         <input type="number" name="time-to" id="time-to" min="1960" max="2016" value="2016">
       </fieldset>
-      <fieldset class="filter" id="race-filter">
-        <legend>Race</legend>
-        <input type="checkbox" name="asian" id="asian">
+      <fieldset class="filter" id="offender-race-filter">
+        <legend>Offender's race</legend>
+        <input type="checkbox" name="offender-asian" id="offender-asian">
         <label for="asian">Asian</label>
-        <input type="checkbox" name="black" id="black">
+        <input type="checkbox" name="offender-black" id="offender-black">
         <label for="black">Black</label>
-        <input type="checkbox" name="other-race" id="other">
+        <input type="checkbox" name="offender-other-race" id="offender-other">
         <label for="Other">Other</label>
-        <input type="checkbox" name="unknown-race" id="unknown-race">
+        <input type="checkbox" name="offender-unknown-race" id="offender-unknown-race">
         <label for="unknown-race">Unknown</label>
-        <input type="checkbox" name="white" id="white">
+        <input type="checkbox" name="offender-white" id="offender-white">
         <label for="white">White</label>
       </fieldset>
-      <fieldset class="filter" id="sex-filter">
-        <legend>Biological sex</legend>
-        <input type="checkbox" name="female" id="female">
+      <fieldset class="filter" id="offender-sex-filter">
+        <legend>Offender's biological sex</legend>
+        <input type="checkbox" name="offender-female" id="offender-female">
         <label for="female">Female</label>
-        <input type="checkbox" name="male" id="male">
+        <input type="checkbox" name="offender-male" id="offender-male">
         <label for="male">Male</label>
-        <input type="checkbox" name="unknown-sex" id="unknown-sex">
+        <input type="checkbox" name="offender-unknown-sex" id="offender-unknown-sex">
+        <label for="unknown-sex">Unknown</label>
+      </fieldset>
+      <fieldset class="filter" id="victim-race-filter">
+        <legend>Victim's race</legend>
+        <input type="checkbox" name="victim-asian" id="victim-asian">
+        <label for="asian">Asian</label>
+        <input type="checkbox" name="victim-black" id="victim-black">
+        <label for="black">Black</label>
+        <input type="checkbox" name="victim-other-race" id="victim-other">
+        <label for="Other">Other</label>
+        <input type="checkbox" name="victim-unknown-race" id="victim-unknown-race">
+        <label for="unknown-race">Unknown</label>
+        <input type="checkbox" name="victim-white" id="victim-white">
+        <label for="white">White</label>
+      </fieldset>
+      <fieldset class="filter" id="victim-sex-filter">
+        <legend>Victim's biological sex</legend>
+        <input type="checkbox" name="victim-female" id="victim-female">
+        <label for="female">Female</label>
+        <input type="checkbox" name="victim-male" id="victim-male">
+        <label for="male">Male</label>
+        <input type="checkbox" name="victim-unknown-sex" id="victim-unknown-sex">
         <label for="unknown-sex">Unknown</label>
       </fieldset>
     </form>
@@ -94,6 +119,7 @@
           <li>What filters are available for each data source?</li>
           <li>If all of the elements in "Race" are selected ("Black", "Other", "Unknown", and "White") what does the user expect the data to have?</li>
           <li>What if none of the elements are selected?</li>
+          <li>Is there a distinction between victim and offender in property crimes?</li>
         </ul>
       </section>
     </main>
