@@ -37,3 +37,17 @@ class AgenciesNibrsCount(CdeResource):
 
         query = models.CdeNibrsIncident.get_nibrs_incident_by_ori(ori, filters)
         return self.with_metadata(query, args)
+
+class AgenciesRetaCount(CdeResource):
+    @use_args(marshmallow_schemas.ArgumentsSchema)
+    def get(self, args, ori=None, filters=None):
+        '''''
+        Get Incident Count by Agency ID/ORI.
+        '''''
+        self.verify_api_key(args)
+
+        query = models.CdeNibrsIncident.get_reta_by_ori(ori, filters)
+        result = self.with_metadata(query, args)
+
+        return result
+

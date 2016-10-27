@@ -2,14 +2,29 @@ import datetime
 from decimal import Decimal
 
 from flask.ext.sqlalchemy import Pagination
-from sqlalchemy import func
+from sqlalchemy import func, select, join, over
 from sqlalchemy.sql import label
 
 from crime_data.common import models
 from crime_data.extensions import db
+from sqlalchemy import func, and_
 
 session = db.session
 
+class CdeRetaMonth(models.RetaMonth):
+    pass
+
+class CdeRefState(models.RefState):
+    pass
+
+class CdeRetaOffense(models.RetaOffense):
+    pass
+    
+class CdeRetaMonthOffenseSubcat(models.RetaMonthOffenseSubcat):
+    pass
+
+class CdeRetaOffenseSubcat(models.RetaOffenseSubcat):
+    pass
 
 class CdeRefAgency(models.RefAgency):
     pass
@@ -44,6 +59,50 @@ class CdeNibrsIncident(models.NibrsIncident):
 
         if ori:
             query = query.filter(CdeRefAgency.ori == ori)
+
+        # TODO: Apply all filters
+        # for filter in filters:
+        #     query = query.filter()
+
+        return query
+
+
+    def get_reta_by_ori(ori = None, filters = None):
+        '''''
+        Returns Query for RETA counts by Agency/ORI - Monthly Sums.
+        '''''
+
+        # Get Aggregated data, and attach along all relevent metadata.
+        # Todo: Break into two queries based on the filter input-
+        # (1) Query with JUST agencies month totals.
+        # (2) Query with JUST subcat totals.
+        # It is not apparent that the SUM(subcat totals) = month totals...
+        query = (CdeRetaMonthOffenseSubcat
+            .query
+            .with_entities(
+                CdeRetaMonth.total_actual_count,
+                CdeRetaMonth.month_num,
+                CdeRetaMonth.data_year,
+                CdeRetaMonth.agency_id,
+                CdeRetaMonthOffenseSubcat.offense_subcat_id,
+                CdeRetaMonthOffenseSubcat.actual_count,
+                CdeRefAgency.ori,
+                CdeRefAgency.state_id,
+                CdeRefState.state_abbr,
+                CdeRetaOffenseSubcat.offense_subcat_name,
+                CdeRetaOffenseSubcat.offense_subcat_code,
+                CdeRetaOffense.offense_id,
+            )
+            .join(CdeRetaMonthOffenseSubcat, CdeRetaMonthOffenseSubcat.reta_month_id == CdeRetaMonth.reta_month_id)
+            .join(CdeRefAgency, CdeRetaMonth.agency_id == CdeRefAgency.agency_id)
+            .join(CdeRefState, CdeRefAgency.state_id == CdeRefState.state_id)
+            .join(CdeRetaOffenseSubcat, CdeRetaMonthOffenseSubcat.offense_subcat_id == CdeRetaOffenseSubcat.offense_subcat_id)
+            .join(CdeRetaOffense, CdeRetaOffenseSubcat.offense_id == CdeRetaOffense.offense_id)
+        )
+
+        # Get ONE ORI.
+        if ori:
+            query = query.filter(CdeRefAgency.ori==ori)
 
         # TODO: Apply all filters
         # for filter in filters:

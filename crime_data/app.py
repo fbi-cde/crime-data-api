@@ -110,9 +110,13 @@ def add_resources(app):
     api.add_resource(crime_data.resources.agencies.AgenciesList, '/agencies/')
     api.add_resource(crime_data.resources.agencies.AgenciesDetail,
                      '/agencies/<string:nbr>/')
+
     api.add_resource(crime_data.resources.agencies.AgenciesNibrsCount,
-                     '/agencies/nibrs/count/<string:ori>',
+                     '/agencies/nibrs/count/<string:ori>', 
                      '/agencies/nibrs/count/')
+    api.add_resource(crime_data.resources.agencies.AgenciesRetaCount,
+                     '/agencies/reta/count/<string:ori>',
+                     '/agencies/reta/count/')
     api.add_resource(crime_data.resources.incidents.IncidentsList,
                      '/incidents/')
     api.add_resource(crime_data.resources.incidents.IncidentsCount,
