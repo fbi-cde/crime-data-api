@@ -15,8 +15,17 @@
         <legend>Data type</legend>
         <select name="type" id="type">
           <optgroup label="Crime data">
-            <option>Violent crime</option>
-            <option>Property crime</option>
+            <option>Total violent crime</option>
+            <option>Murder</option>
+            <option>Non-negligent manslaughter</option>
+            <option>Rape</option>
+            <option>Robbery</option>
+            <option>Aggravated assualt</option>
+            <option>Total property crime</option>
+            <option>Burglary</option>
+            <option>Larceny-theft</option>
+            <option>Mother vehicle theft</option>
+            <option>Arson</option>
           </optgroup>
           <optgroup label="Crime clearance">
             <option>Something</option>
@@ -73,7 +82,20 @@
     </form>
     <main>
       <h1>Content</h1>
-      <div id="basic-text"></div>
+      <!-- <div id="basic-text"></div> -->
+      <section>
+        <h2>Methodology</h2>
+        <div id='methodology'></div>
+      </section>
+      <section>
+        <h2>Questions</h2>
+        <ul>
+          <li>What are the things that should be in the "data type" select?</li>
+          <li>What filters are available for each data source?</li>
+          <li>If all of the elements in "Race" are selected ("Black", "Other", "Unknown", and "White") what does the user expect the data to have?</li>
+          <li>What if none of the elements are selected?</li>
+        </ul>
+      </section>
     </main>
     <script src="/static/js/filters.js"></script>
   </body>

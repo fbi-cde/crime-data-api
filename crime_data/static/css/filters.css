@@ -1,34 +1,60 @@
+:root {
+  --body-width: 1024px;
+  --filters-background: #122E51;
+  --filters-width: 300px;
+  --main-width: calc(var(--body-width) - var(--filters-width));
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Source Sans Pro", "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
+  font-weight: 500;
+}
+
 body {
   margin: 0 auto;
   min-height: 100%;
-  width: 1024px;
+  width: var(--body-width);
 }
 
 main {
   display: inline-block;
   padding: 0 1em;
+  width: var(--main-width);
 }
 
 #filters {
+  background-color: var(--filters-background);
+  color: white;
   float: left;
   min-height: 100%;
-  width: 300px;
+  padding: 0 1em;
+  padding-bottom: 1em;
+  width: var(--filters-width);
 }
 
 .filter {
-  border: 1px solid black;
+  border: 1px solid white;
   border-bottom: none;
   padding: 1em;
   position: relative;
 }
 
+.filter[disabled] {
+  cursor: not-allowed;
+}
+
 .filter:last-child {
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid white;
 }
 
 .filter legend {
   display: table-cell;
   font-size: 1.1em;
+  font-weight: 600;
+}
+
+.filter[disabled] legend {
+  color: gray;
 }
 
 .filter:before {
@@ -36,12 +62,19 @@ main {
   background-image: url('/static/libs/uswds/img/arrow-down.svg');
   background-repeat: no-repeat;
   content: '';
+  -webkit-filter: invert(100%);
+  filter: invert(100%);
   height: var(--arrow-size);
   position: absolute;
   right: 1em;
   width: var(--arrow-size);
 }
 
+.filter[disabled]:before {
+  opacity: 0.5;
+}
+
+.filter[disabled]:before,
 .filter[aria-expanded="false"]:before {
   transform: rotate(-90deg);
 }
@@ -50,6 +83,7 @@ main {
   transform: rotate(0deg);
 }
 
+.filter[disabled] :not(legend),
 .filter[aria-expanded="false"] :not(legend) {
   display: none;
 }

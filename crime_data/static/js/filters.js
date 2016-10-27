@@ -3,20 +3,8 @@ function $(sel) {
 }
 
 function applyParams(params) {
-  applyHideParam(params)
   applyCollapseParam(params)
-}
-
-function applyHideParam(params) {
-  var hide = params['hide']
-  if (!hide) return
-  var ids = hide.split('+')
-  ids.forEach(function(id) {
-    var el = $('#' + id + '-filter')[0]
-    if (!el) return
-
-    el.setAttribute('style', 'display: none;')
-  })
+  applyHideParam(params)
 }
 
 function applyCollapseParam(params) {
@@ -28,6 +16,30 @@ function applyCollapseParam(params) {
     if (!el) return
 
     el.setAttribute('aria-expanded', 'false')
+  })
+}
+
+// function applyDisabledParams(params) {
+//   var disabled = params['disabled']
+//   if (!disabled) return
+//   var ids = disabled.split('+')
+//   ids.forEach(function(id) {
+//     var el = $('#' + id + '-filter')[0]
+//     if (!el) return
+//
+//     el.setAttribute('disabled', true)
+//   })
+// }
+
+function applyHideParam(params) {
+  var hide = params['hide']
+  if (!hide) return
+  var ids = hide.split('+')
+  ids.forEach(function(id) {
+    var el = $('#' + id + '-filter')[0]
+    if (!el) return
+
+    el.setAttribute('style', 'display: none;')
   })
 }
 
@@ -82,16 +94,35 @@ function makeBasicText(values) {
   return `Loading ${values['location']} ${values['type'].toLowerCase()} data starting from ${values['time-from']} until ${values['time-to']}.`
 }
 
+function makeMethodologyText(values) {
+  var type
+
+  switch (values['type']) {
+    case 'arrest':
+      type = 'arrest data'
+      break
+    default:
+      type = values['type']
+  }
+
+  return `The data is from <strong>${values['location']} law enforcement agencies</strong> that submitted 12 months of <strong>${type.toLowerCase()}</strong> data for the years <strong>${values['time-from']}</strong> through </strong>${values['time-to']}</strong>. Totals are aggregates of the totals reported by agencies providing data to the UCR Program within each state.`
+}
+
 function updateContent() {
   var values = getFormValues('#filters')
-  $('#basic-text')[0].innerText = makeBasicText(values)
+  var basicText = $('#basic-text')[0]
+  var methodology = $('#methodology')[0]
+
+  if (basicText) basicText.innerHTML = makeBasicText(values)
+  if (methodology) methodology.innerHTML = `<p>${makeMethodologyText(values)}</p>`
 }
 
 $('#filters')[0].addEventListener('change', updateContent)
 
 $('.filter').forEach(function(el) {
   el.addEventListener('click', function(ev) {
-    expanded = ev.target.getAttribute('aria-expanded')
+    var disabled = ev.target.getAttribute('disabled')
+    var expanded = ev.target.getAttribute('aria-expanded')
     if (expanded === 'false') {
       ev.target.setAttribute('aria-expanded', 'true')
     } else {
