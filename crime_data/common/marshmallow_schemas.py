@@ -33,6 +33,7 @@ class IncidentArgsSchema(ArgumentsSchema):
     tribe = fields.String()
     location_code = fields.String()
     location_name = fields.String()
+    ethnicity_code = fields.String()
 
 
 class IncidentCountArgsSchema(ArgumentsSchema):

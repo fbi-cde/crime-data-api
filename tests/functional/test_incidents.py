@@ -110,6 +110,15 @@ class TestIncidentsEndpoint:
         assert len(res.json['results']) > 0
         for incident in res.json['results']:
             assert incident['incident_hour'] == 22
+            
+    def test_incidents_endpoint_filters_ethnicity_code(self, user, testapp):
+        res = testapp.get('/incidents/?ethnicity_code=N')
+        assert len(res.json['results']) > 0
+        for incident in res.json['results']:
+            assert incident.get('victims')
+            ethnicities = [v['ethnicity'] for v in incident['victims']]
+            codes = [e['ethnicity_code'] for e in ethnicities if e]
+            assert 'N' in codes
 
     def test_incidents_paginate(self, user, testapp):
         page1 = testapp.get('/incidents/?page=1')
