@@ -70,11 +70,7 @@ class CdeNibrsIncident(models.NibrsIncident):
     def __apply_filters(query, filters):
         for filter,value in filters.items():
             if filter in CdeNibrsIncident.get_filter_map():
-                if filter == 'victim_ethnicity' or filter == 'offender_ethnicity':
-                    query = query.filter(CdeNibrsIncident.victims.any(CdeNibrsEthnicity.ethnicity_name.in_([value])))
-                else:    
-                    query = query.filter(CdeNibrsIncident.get_filter_map()[filter] == value)
-
+                query = query.filter(CdeNibrsIncident.get_filter_map()[filter] == value)
         return query
 
     @staticmethod
@@ -88,7 +84,8 @@ class CdeNibrsIncident(models.NibrsIncident):
     # Maps API filter to DB column name.
     @staticmethod
     def get_filter_map():
-        return {#'state': CdeRefState.state_abbr,
+        return {'state': CdeRefState.state_abbr,
+        'city': CdeRefCity.city_name,
         'month':CdeNibrsMonth.month_num,
         'year':CdeNibrsMonth.data_year,
         'ori': CdeRefAgency.ori,
@@ -125,17 +122,12 @@ class CdeNibrsIncident(models.NibrsIncident):
              .outerjoin(CdeRefState)
              )
 
-        join_eth = False
-        if 'victim_ethnicity' in by:
-            join_eth = True
-            query = (query.outerjoin(CdeNibrsVictim))
-        if 'offender_ethnicity' in by:
-            join_eth = True
-            query = (query.outerjoin(CdeNibrsOffender))
-
-        if join_eth:
+        if 'victim_ethnicity' in by or 'offender_ethnicity' in by:
+            if 'victim_ethnicity' in by:
+                query = (query.outerjoin(CdeNibrsVictim))
+            if 'offender_ethnicity' in by:
+                query = (query.outerjoin(CdeNibrsOffender))
             query = query.outerjoin(CdeNibrsEthnicity)
-
 
         # Apply field selections.
         query = query.with_entities(*fields)
@@ -145,8 +137,6 @@ class CdeNibrsIncident(models.NibrsIncident):
 
         # Apply all filters
         query = CdeNibrsIncident.__apply_filters(query, filters)
-
-        print(query)
 
         return query
 

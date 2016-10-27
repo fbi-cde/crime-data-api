@@ -45,7 +45,9 @@ class AgenciesIncidentArgsSchema(ArgumentsSchema):
 
 class AgenciesRetaArgsSchema(ArgumentsSchema):
     state = fields.String()
+    ori = fields.String()
     victim_ethnicity = fields.String()
+    offender_ethnicity = fields.String()
     by = fields.String(missing='ori')
 
 class IncidentCountArgsSchema(ArgumentsSchema):
