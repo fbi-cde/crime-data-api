@@ -33,14 +33,25 @@ class IncidentArgsSchema(ArgumentsSchema):
 
 
 class IncidentCountArgsSchema(ArgumentsSchema):
-    by = fields.String(missing='data_year')
+    by = fields.String(missing='year')
 
 # Schemas for data serialization
-'''
-    tables = [models.RetaMonth, CdeRefAgency, models.RefState, models.RetaMonthOffenseSubcat,
-              models.RetaOffenseSubcat]
 
-'''
+
+class SummarySchema(ma.ModelSchema):
+    class Meta:
+        model = models.RetaMonthOffenseSubcat
+
+    year = fields.Integer()
+    month = fields.Integer()
+    ori = fields.String()
+    agency_name = fields.String()
+    state = fields.String()
+    city = fields.String()
+    tribe = fields.String()
+    offense_subcat = fields.String()
+    offense = fields.String()
+    offense_category = fields.String()
 
 
 class RefRegionSchema(ma.ModelSchema):

@@ -157,21 +157,21 @@ class TestIncidentsCountEndpoint:
     def test_instances_count_returns_counts(self, testapp):
         res = testapp.get('/incidents/count/')
         assert isinstance(res.json['results'], list)
-        assert 'total_actual_count' in res.json['results'][0]
+        assert 'actual_count' in res.json['results'][0]
 
     def test_instances_count_groups_by_year_by_default(self, testapp):
         res = testapp.get('/incidents/count/')
-        years = [row['data_year'] for row in res.json['results']]
+        years = [row['year'] for row in res.json['results']]
         assert len(years) == len(set(years))
 
-    def test_instances_count_groups_by_agency_id(self, testapp):
-        res = testapp.get('/incidents/count/?by=agency_id')
-        agency_ids = [row['agency_id'] for row in res.json['results']]
-        assert len(agency_ids) == len(set(agency_ids))
+    def test_instances_count_groups_by_ori(self, testapp):
+        res = testapp.get('/incidents/count/?by=ori')
+        oris = [row['ori'] for row in res.json['results']]
+        assert len(oris) == len(set(oris))
 
-    def test_instances_count_groups_by_agency_id_any_year(self, testapp):
-        res = testapp.get('/incidents/count/?by=agency_id,year')
-        rows = [(row['year'], row['agency_id']) for row in res.json['results']]
+    def test_instances_count_groups_by_ori_any_year(self, testapp):
+        res = testapp.get('/incidents/count/?by=ori,year')
+        rows = [(row['year'], row['ori']) for row in res.json['results']]
         assert len(rows) == len(set(rows))
 
     def test_instances_count_groups_by_state(self, testapp):
@@ -183,11 +183,6 @@ class TestIncidentsCountEndpoint:
         res = testapp.get('/incidents/count/?by=offense')
         rows = [row['offense'] for row in res.json['results']]
         assert len(rows) == len(set(rows))
-
-    def test_instances_count_shows_fields_in_month(self, testapp):
-        res = testapp.get('/incidents/count/?fields=leoka_felony')
-        for row in res.json['results']:
-            assert 'leoka_felony' in row
 
     def test_instances_count_sorts_by_state(self, testapp):
         res = testapp.get('/incidents/count/?by=state')
