@@ -4,6 +4,7 @@ from flask import (Blueprint, flash, redirect, render_template, request,
                    send_file, url_for)
 from flask_login import login_required, login_user, logout_user
 
+from crime_data.common.auth import basic_auth
 from crime_data.extensions import login_manager
 from crime_data.public.forms import LoginForm
 from crime_data.user.forms import RegisterForm
@@ -12,17 +13,10 @@ from crime_data.utils import flash_errors
 
 blueprint = Blueprint('public', __name__, static_folder='../static')
 
-
 @login_manager.user_loader
 def load_user(user_id):
     """Load user by ID."""
     return User.get_by_id(int(user_id))
-
-
-@blueprint.route('/docs/', methods=['GET'])
-def docs():
-    return render_template('public/docs.html')
-
 
 @blueprint.route('/', methods=['GET', 'POST'])
 def home():
@@ -39,7 +33,6 @@ def home():
             flash_errors(form)
     return render_template('public/home.html', form=form)
 
-
 @blueprint.route('/logout/')
 @login_required
 def logout():
@@ -47,7 +40,6 @@ def logout():
     logout_user()
     flash('You are logged out.', 'info')
     return redirect(url_for('public.home'))
-
 
 @blueprint.route('/register/', methods=['GET', 'POST'])
 def register():
@@ -64,9 +56,17 @@ def register():
         flash_errors(form)
     return render_template('public/register.html', form=form)
 
-
 @blueprint.route('/about/')
 def about():
     """About page."""
     form = LoginForm(request.form)
     return render_template('public/about.html', form=form)
+
+@blueprint.route('/docs/', methods=['GET'])
+def docs():
+    return render_template('public/docs.html')
+
+@blueprint.route('/prototypes/filters/', methods=['GET'])
+@basic_auth.required
+def filter_prototype():
+    return render_template('/prototypes/filters.html')
