@@ -119,10 +119,10 @@ class CdeNibrsIncident(models.NibrsIncident):
         query = (query
              .join(CdeNibrsOffense)
              .join(CdeNibrsLocationType)
-             .join(CdeNibrsMonth)
-             .join(CdeRefAgency)
-             .join(CdeRefCity)
-             .join(CdeRefState)
+             .outerjoin(CdeNibrsMonth)
+             .outerjoin(CdeRefAgency)
+             .outerjoin(CdeRefCity)
+             .outerjoin(CdeRefState)
              )
 
         join_eth = False
@@ -145,6 +145,8 @@ class CdeNibrsIncident(models.NibrsIncident):
 
         # Apply all filters
         query = CdeNibrsIncident.__apply_filters(query, filters)
+
+        print(query)
 
         return query
 
@@ -213,9 +215,9 @@ class CdeRetaMonth(models.RetaMonth):
         
         # Apply JOINS.
         query = (query.join(CdeRetaMonthOffenseSubcat)
-             .join(CdeRefAgency)
-             .join(CdeRefCity)
-             .join(CdeRefState)
+             .outerjoin(CdeRefAgency)
+             .outerjoin(CdeRefCity)
+             .outerjoin(CdeRefState)
              .join(CdeRetaOffenseSubcat)
              .join(CdeRetaOffense))
         
