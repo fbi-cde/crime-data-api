@@ -5,6 +5,7 @@ function $(sel) {
 function applyParams(params) {
   applyCollapseParam(params)
   applyHideParam(params)
+  applyValueParam(params)
 }
 
 function applyCollapseParam(params) {
@@ -40,6 +41,31 @@ function applyHideParam(params) {
     if (!el) return
 
     el.setAttribute('style', 'display: none;')
+  })
+}
+
+function applyValueParam(params) {
+  var values = decodeURI(params.values)
+  if (!values) return;
+
+  var j = JSON.parse(values)
+  var fields = Object.keys(j)
+  fields.forEach(function(id) {
+    var field = $(`#${id}`)[0]
+    var value = j[id]
+    switch (field.type) {
+      case 'select-one':
+        field.value = value.charAt(0).toUpperCase() + value.substring(1)
+        break
+      case 'checkbox':
+        (value === 'true') ? field.checked = true : field.checked = false
+        break
+      case 'number':
+        field.value = value
+        break
+      default:
+        console.log(`no handler for ${field.type}`)
+    }
   })
 }
 
@@ -112,19 +138,25 @@ function updateContent() {
   var values = getFormValues('#filters')
   var basicText = $('#basic-text')[0]
   var methodology = $('#methodology')[0]
+  var toDisable = [
+    'offender-sex-filter',
+    'offender-race-filter',
+    'victim-race-filter',
+    'victim-sex-filter'
+  ]
 
   if (basicText) basicText.innerHTML = makeBasicText(values)
   if (methodology) methodology.innerHTML = `<p>${makeMethodologyText(values)}</p>`
 
   if (values.type.toLowerCase() === 'employee counts') {
-    var toDisable = ['offender-sex-filter', 'offender-race-filter', 'victim-race-filter', 'victim-sex-filter']
     toDisable.forEach(function(id) {
       $(`#${id}`)[0].setAttribute('disabled', true)
     })
   } else {
-    var toDisable = ['offender-sex-filter', 'offender-race-filter', 'victim-race-filter', 'victim-sex-filter']
     toDisable.forEach(function(id) {
-      $(`#${id}`)[0].removeAttribute('disabled')
+      var el = $(`#${id}`)[0]
+      if (!el) return
+      el.removeAttribute('disabled')
     })
   }
 }

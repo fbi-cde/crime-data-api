@@ -54,55 +54,62 @@
         </select>
       </fieldset>
       <fieldset class="filter" id="time-filter">
-        <legend>Time</legend>
-        <label for="time-from">Starting year</label>
+        <legend>Time period</legend>
+        <label for="time-from">From</label>
         <input type="number" name="time-from" id="time-from" min="1960" max="2016" value="1960">
-        <label for="time-to">Ending year</label>
+        <label for="time-to">until</label>
         <input type="number" name="time-to" id="time-to" min="1960" max="2016" value="2016">
       </fieldset>
-      <fieldset class="filter" id="offender-race-filter">
-        <legend>Offender's race</legend>
-        <input type="checkbox" name="offender-asian" id="offender-asian">
-        <label for="asian">Asian</label>
-        <input type="checkbox" name="offender-black" id="offender-black">
-        <label for="black">Black</label>
-        <input type="checkbox" name="offender-other-race" id="offender-other">
-        <label for="Other">Other</label>
-        <input type="checkbox" name="offender-unknown-race" id="offender-unknown-race">
-        <label for="unknown-race">Unknown</label>
-        <input type="checkbox" name="offender-white" id="offender-white">
-        <label for="white">White</label>
+      <fieldset class="filter" id="offender-filter">
+        <legend>About the offender</legend>
+
+        <fieldset>
+          <legend>Race</legend>
+          <input type="checkbox" name="offender-asian" id="offender-asian">
+          <label for="asian">Asian</label>
+          <input type="checkbox" name="offender-black" id="offender-black">
+          <label for="black">Black</label>
+          <input type="checkbox" name="offender-other-race" id="offender-other">
+          <label for="Other">Other</label>
+          <input type="checkbox" name="offender-unknown-race" id="offender-unknown-race">
+          <label for="unknown-race">Unknown</label>
+          <input type="checkbox" name="offender-white" id="offender-white">
+          <label for="white">White</label>
+        </fieldset>
+        <fieldset>
+          <legend>Sex</legend>
+          <input type="checkbox" name="offender-female" id="offender-female">
+          <label for="female">Female</label>
+          <input type="checkbox" name="offender-male" id="offender-male">
+          <label for="male">Male</label>
+          <input type="checkbox" name="offender-unknown-sex" id="offender-unknown-sex">
+          <label for="unknown-sex">Unknown</label>
+        </fieldset>
       </fieldset>
-      <fieldset class="filter" id="offender-sex-filter">
-        <legend>Offender's biological sex</legend>
-        <input type="checkbox" name="offender-female" id="offender-female">
-        <label for="female">Female</label>
-        <input type="checkbox" name="offender-male" id="offender-male">
-        <label for="male">Male</label>
-        <input type="checkbox" name="offender-unknown-sex" id="offender-unknown-sex">
-        <label for="unknown-sex">Unknown</label>
-      </fieldset>
-      <fieldset class="filter" id="victim-race-filter">
-        <legend>Victim's race</legend>
-        <input type="checkbox" name="victim-asian" id="victim-asian">
-        <label for="asian">Asian</label>
-        <input type="checkbox" name="victim-black" id="victim-black">
-        <label for="black">Black</label>
-        <input type="checkbox" name="victim-other-race" id="victim-other">
-        <label for="Other">Other</label>
-        <input type="checkbox" name="victim-unknown-race" id="victim-unknown-race">
-        <label for="unknown-race">Unknown</label>
-        <input type="checkbox" name="victim-white" id="victim-white">
-        <label for="white">White</label>
-      </fieldset>
-      <fieldset class="filter" id="victim-sex-filter">
-        <legend>Victim's biological sex</legend>
-        <input type="checkbox" name="victim-female" id="victim-female">
-        <label for="female">Female</label>
-        <input type="checkbox" name="victim-male" id="victim-male">
-        <label for="male">Male</label>
-        <input type="checkbox" name="victim-unknown-sex" id="victim-unknown-sex">
-        <label for="unknown-sex">Unknown</label>
+      <fieldset class="filter" id="victim-filter">
+        <legend>About the victim</legend>
+        <fieldset>
+          <legend>Race</legend>
+          <input type="checkbox" name="victim-asian" id="victim-asian">
+          <label for="asian">Asian</label>
+          <input type="checkbox" name="victim-black" id="victim-black">
+          <label for="black">Black</label>
+          <input type="checkbox" name="victim-other-race" id="victim-other">
+          <label for="Other">Other</label>
+          <input type="checkbox" name="victim-unknown-race" id="victim-unknown-race">
+          <label for="unknown-race">Unknown</label>
+          <input type="checkbox" name="victim-white" id="victim-white">
+          <label for="white">White</label>
+        </fieldset>
+        <fieldset>
+          <legend>Sex</legend>
+          <input type="checkbox" name="victim-female" id="victim-female">
+          <label for="female">Female</label>
+          <input type="checkbox" name="victim-male" id="victim-male">
+          <label for="male">Male</label>
+          <input type="checkbox" name="victim-unknown-sex" id="victim-unknown-sex">
+          <label for="unknown-sex">Unknown</label>
+        </fieldset>
       </fieldset>
     </form>
     <main>

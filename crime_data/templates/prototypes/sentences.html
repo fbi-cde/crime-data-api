@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Crime Data Explorer filter prototype</title>
+    <link rel="stylesheet" href="/static/libs/uswds/css/uswds.css">
+    <link rel="stylesheet" href="/static/css/filters.css">
+  </head>
+  <body>
+    <main>
+      <form>I'd like to find data about
+        <select name="type" id="type">
+          <optgroup label="Crime data">
+            <option>Total violent crime</option>
+            <option>Murder</option>
+            <option>Non-negligent manslaughter</option>
+            <option>Rape</option>
+            <option>Robbery</option>
+            <option>Aggravated assualt</option>
+            <option>Total property crime</option>
+            <option>Burglary</option>
+            <option>Larceny-theft</option>
+            <option>Mother vehicle theft</option>
+            <option>Arson</option>
+          </optgroup>
+          <optgroup label="Crime clearance">
+            <option>Something</option>
+          </optgroup>
+          <optgroup label="Arrest data">
+            <option>By race</option>
+            <option>By age</option>
+          </optgroup>
+          <optgroup label="Police employee data">
+            <option>Employee counts</option>
+            <option>Police killed</option>
+          </optgroup>
+        </select>
+        in
+        <select name="location" id="location">
+          <option>United States</option>
+          <option>California</option>
+          <option>New York</option>
+          <option>Tennessee</option>
+          <option>West Virginia</option>
+        </select>
+        from <input type="number" name="time-from" id="time-from" min="1960" max="2016" value="1960">
+        to <input type="number" name="time-to" id="time-to" min="1960" max="2016" value="2016">
+        <button type="button" id="find">Find</button>
+      </form>
+    </main>
+    <script src="/static/js/sentences.js"></script>
+  </body>
+</html>

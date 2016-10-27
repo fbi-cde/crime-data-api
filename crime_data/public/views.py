@@ -66,6 +66,11 @@ def about():
 def docs():
     return render_template('public/docs.html')
 
+@blueprint.route('/prototypes/sentences/', methods=['GET'])
+@basic_auth.required
+def sentences_prototype():
+    return render_template('/prototypes/sentences.html')
+
 @blueprint.route('/prototypes/filters/', methods=['GET'])
 @basic_auth.required
 def filter_prototype():
