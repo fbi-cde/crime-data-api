@@ -2,7 +2,7 @@ import json
 import os
 import random
 
-from flask import request
+from flask import request, abort
 from flask_restful import Resource
 # import celery
 from flask_sqlalchemy import SignallingSession, SQLAlchemy
@@ -87,8 +87,8 @@ class CdeResource(Resource):
                      for u in service_env['user-provided']
                      if 'credentials' in u]
             key = creds[0]['API_KEY']
-            if args['api_key'] != key:
-                raise Exception('Ask Catherine for API key')
+            if args.get('api_key') != key:
+                abort(401, 'Specify `?api_key=(correct key)` for access')
 
     def unparsed_args(self, parsed):
         """A dict of `requests.get` that are missing from `parsed`."""
