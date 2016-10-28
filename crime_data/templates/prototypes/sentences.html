@@ -6,11 +6,13 @@
 
     <title>Crime Data Explorer filter prototype</title>
     <link rel="stylesheet" href="/static/libs/uswds/css/uswds.css">
-    <link rel="stylesheet" href="/static/css/filters.css">
+    <!-- <link rel="stylesheet" href="/static/css/filters.css"> -->
+    <link rel="stylesheet" href="/static/css/sentences.css">
   </head>
   <body>
     <main>
-      <form>I'd like to find data about
+      <form>
+        I'd like to find data about
         <select name="type" id="type">
           <optgroup label="Crime data">
             <option>Total violent crime</option>
@@ -36,8 +38,7 @@
             <option>Employee counts</option>
             <option>Police killed</option>
           </optgroup>
-        </select>
-        in
+        </select> in
         <select name="location" id="location">
           <option>United States</option>
           <option>California</option>

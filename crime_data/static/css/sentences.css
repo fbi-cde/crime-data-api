@@ -1,0 +1,30 @@
+body {
+  font-size: 2em;
+}
+
+main {
+  margin: 0 auto;
+  margin-top: 3em;
+  text-align: center;
+  width: 700px;
+}
+
+form select,
+form input {
+  display: inline-block;
+}
+
+button[type="button"] {
+  display: block;
+  font-size: 1.4em;
+  margin: 0 auto;
+  margin-top: 1.4em;
+}
+
+select {
+  width: 15em;
+}
+
+[type="number"] {
+  width: 5em;
+}

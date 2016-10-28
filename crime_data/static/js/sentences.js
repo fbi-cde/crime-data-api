@@ -15,13 +15,7 @@ function makeUrl(values) {
   return `/prototypes/filters?collapse=time&values=${JSON.stringify(values)}`
 }
 
-function submit(ev) {
-  // console.log('submit', getFormValues())
-
-  window.location = makeUrl(getFormValues())
-}
-
 $('#find').addEventListener('click', function (ev) {
   ev.preventDefault()
-  submit(ev)
+  window.location = makeUrl(getFormValues())
 })
