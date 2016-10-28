@@ -33,22 +33,22 @@ class IncidentArgsSchema(ArgumentsSchema):
 
 
 class AgenciesIncidentArgsSchema(ArgumentsSchema):
-    incident_hour = fields.Integer()
-    crime_against = fields.String()
-    offense_code = fields.String()
-    offense_name = fields.String()
-    offense_category_name = fields.String()
-    method_entry_code = fields.String()
-    location_code = fields.String()
-    location_name = fields.String()
-    state = fields.String()
+    incident_hour = marsh_fields.Integer()
+    crime_against = marsh_fields.String()
+    offense_code = marsh_fields.String()
+    offense_name = marsh_fields.String()
+    offense_category_name = marsh_fields.String()
+    method_entry_code = marsh_fields.String()
+    location_code = marsh_fields.String()
+    location_name = marsh_fields.String()
+    state = marsh_fields.String()
 
 class AgenciesRetaArgsSchema(ArgumentsSchema):
-    state = fields.String()
-    ori = fields.String()
-    victim_ethnicity = fields.String()
-    offender_ethnicity = fields.String()
-    by = fields.String(missing='ori')
+    state = marsh_fields.String()
+    ori = marsh_fields.String()
+    victim_ethnicity = marsh_fields.String()
+    offender_ethnicity = marsh_fields.String()
+    by = marsh_fields.String(missing='ori')
 
 class IncidentCountArgsSchema(ArgumentsSchema):
     by = marsh_fields.String(missing='data_year')
