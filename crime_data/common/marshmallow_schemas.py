@@ -33,6 +33,7 @@ class IncidentArgsSchema(ArgumentsSchema):
     tribe = marsh_fields.String()
     location_code = marsh_fields.String()
     location_name = marsh_fields.String()
+    ethnicity_code = marsh_fields.String()
 
 
 

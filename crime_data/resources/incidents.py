@@ -4,15 +4,15 @@ from webargs.flaskparser import use_args
 
 from crime_data.common import cdemodels, marshmallow_schemas, models
 from crime_data.common.base import CdeResource
-from crime_data.common.marshmallow_schemas import (ArgumentsSchema,
-                                                   IncidentArgsSchema,
-                                                   IncidentCountArgsSchema)
+from crime_data.common.marshmallow_schemas import (
+    ArgumentsSchema, IncidentArgsSchema, IncidentCountArgsSchema)
 
 
 class IncidentsList(CdeResource):
 
     schema = marshmallow_schemas.NibrsIncidentSchema(many=True)
-
+    """For each column we wish to be able to filter by,
+    list the tables necessary, in join order from NibrsIncident."""
     TABLES_BY_COLUMN = {
         'incident_hour': (models.NibrsIncident, ),
         'method_entry_code': (models.NibrsOffense, ),
@@ -30,6 +30,8 @@ class IncidentsList(CdeResource):
                           models.NibrsLocationType, ),
         'location_name': (models.NibrsOffense,
                           models.NibrsLocationType, ),
+        'ethnicity_code': (models.NibrsVictim,
+                           models.NibrsEthnicity, ),
     }
 
     @use_args(IncidentArgsSchema)
