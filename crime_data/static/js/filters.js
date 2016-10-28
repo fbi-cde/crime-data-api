@@ -46,7 +46,7 @@ function applyHideParam(params) {
 
 function applyValueParam(params) {
   var values = decodeURI(params.values)
-  if (!values) return;
+  if (!values || values === 'undefined') return;
 
   var j = JSON.parse(values)
   var fields = Object.keys(j)
