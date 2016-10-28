@@ -5,14 +5,13 @@ from flask.ext.sqlalchemy import Pagination
 from sqlalchemy import func
 from sqlalchemy.sql import label
 
+from crime_data.common.base import QueryTraits
+
 from crime_data.common import models
 from crime_data.extensions import db
 from sqlalchemy import func, and_
 
 session = db.session
-
-class CdeRetaMonth(models.RetaMonth):
-    pass
 
 class CdeRefState(models.RefState):
     pass
@@ -29,27 +28,25 @@ class CdeRetaMonthOffenseSubcat(models.RetaMonthOffenseSubcat):
 class CdeRetaOffenseSubcat(models.RetaOffenseSubcat):
     pass
 
-class CdeRefAgency(models.RefAgency):
-
-    @staticmethod
-    def __apply_filters(query, filters):
-        for filter,value in filters.items():
-            if filter in CdeRefAgency.get_filter_map():
-                query = query.filter(CdeRefAgency.get_filter_map()[filter] == value)
-        return query
+class CdeRefAgency(models.RefAgency, QueryTraits):
 
     @staticmethod
     def get_filter_map():
-        return {'state': CdeRefAgency.state.label('state'), }
+        return {'state': CdeRefState.state_abbr.label('state'),
+        'city': CdeRefCity.city_name.label('city') }
 
     def get(args, ori = None):
 
         # Base Query
         query = CdeRefAgency.query
 
-        print(args)
+        query = (query
+             .outerjoin(CdeRefState)
+             .outerjoin(CdeRefCity)
+        )
+
         # Apply all filters
-        query = CdeRefAgency.__apply_filters(query, args)
+        query = CdeRefAgency.apply_filters(query, args)
 
         return query
 
@@ -74,41 +71,16 @@ class CdeNibrsOffense(models.NibrsOffense):
 class CdeNibrsLocationType(models.NibrsLocationType):
     pass
 
-class CdeNibrsIncident(models.NibrsIncident):
+class CdeNibrsIncident(models.NibrsIncident, QueryTraits):
     '''''
     Extends models.NibrsIncident.
     '''''
-
-    @staticmethod
-    def __get_fields(agg_fields, fields):
-        requested_fields = []
-        for field in fields:
-            if field in CdeNibrsIncident.get_filter_map():
-                requested_fields.append(CdeNibrsIncident.get_filter_map()[field])
-        
-        requested_fields += agg_fields
-        return requested_fields
-
-    @staticmethod
-    def __apply_filters(query, filters):
-        for filter,value in filters.items():
-            if filter in CdeNibrsIncident.get_filter_map():
-                query = query.filter(CdeNibrsIncident.get_filter_map()[filter] == value)
-        return query
-
-    @staticmethod
-    def __apply_group_by(query, group_bys):
-        for group in group_bys:
-            if group in CdeNibrsIncident.get_filter_map():
-                query = query.group_by(CdeNibrsIncident.get_filter_map()[group]).order_by(CdeNibrsIncident.get_filter_map()[group])
-        return query
-
 
     # Maps API filter to DB column name.
     @staticmethod
     def get_filter_map():
         return {'state': CdeRefState.state_abbr.label('state'),
-        'city': CdeRefCity.city_name,
+        'city': CdeRefCity.city_name.label('city'),
         'month':CdeNibrsMonth.month_num,
         'year':CdeNibrsMonth.data_year,
         'ori': CdeRefAgency.ori,
@@ -126,14 +98,10 @@ class CdeNibrsIncident(models.NibrsIncident):
             func.count(CdeNibrsIncident.incident_id).label('incident_count')
         ]
 
-        fields = CdeNibrsIncident.__get_fields(agg_fields, by)
+        fields = CdeNibrsIncident.get_fields(agg_fields, by)
 
         # Base Query
         query = CdeNibrsIncident.query
-
-        # Get ONE ORI.
-        # if ori:
-        #     query = query.filter(CdeRefAgency.ori==ori)
         
         # Apply JOINS.
         query = (query
@@ -156,40 +124,15 @@ class CdeNibrsIncident(models.NibrsIncident):
         query = query.with_entities(*fields)
 
         # Apply group by.
-        query = CdeNibrsIncident.__apply_group_by(query, by)
+        query = CdeNibrsIncident.apply_group_by(query, by)
 
         # Apply all filters
-        query = CdeNibrsIncident.__apply_filters(query, filters)
+        query = CdeNibrsIncident.apply_filters(query, filters)
 
         return query
 
 
-class CdeRetaMonth(models.RetaMonth):
-
-    @staticmethod
-    def __get_fields(agg_fields, fields):
-        requested_fields = []
-        for field in fields:
-            if field in CdeRetaMonth.get_filter_map():
-                requested_fields.append(CdeRetaMonth.get_filter_map()[field])
-        
-        requested_fields += agg_fields
-        return requested_fields
-
-    @staticmethod
-    def __apply_filters(query, filters):
-        for filter,value in filters.items():
-            if filter in CdeRetaMonth.get_filter_map():
-                query = query.filter(CdeRetaMonth.get_filter_map()[filter] == value)
-        return query
-
-    @staticmethod
-    def __apply_group_by(query, group_bys):
-        for group in group_bys:
-            if group in CdeRetaMonth.get_filter_map():
-                query = query.group_by(CdeRetaMonth.get_filter_map()[group]).order_by(CdeRetaMonth.get_filter_map()[group])
-        return query
-
+class CdeRetaMonth(models.RetaMonth, QueryTraits):
 
     # Maps API filter to DB column name.
     @staticmethod
@@ -199,7 +142,7 @@ class CdeRetaMonth(models.RetaMonth):
         'ori': CdeRefAgency.ori,
         'subcategory': CdeRetaOffenseSubcat.offense_subcat_name,
         'agency_name': CdeRefAgency.pub_agency_name, # Assuming Public Agency Name is the best one.
-        'city': CdeRefCity.city_name,
+        'city': CdeRefCity.city_name.label('city'),
         'year': CdeRetaMonth.data_year,
         'month': CdeRetaMonth.month_num }
 
@@ -217,14 +160,10 @@ class CdeRetaMonth(models.RetaMonth):
             func.sum(CdeRetaMonthOffenseSubcat.juvenile_cleared_count).label('juvenile_cleared_count'),
         ]
 
-        fields = CdeRetaMonth.__get_fields(agg_fields, by)
+        fields = CdeRetaMonth.get_fields(agg_fields, by)
 
         # Base Query
         query = CdeRetaMonth.query
-
-        # Get ONE ORI.
-        # if ori:
-        #     query = query.filter(CdeRefAgency.ori==ori)
         
         # Apply JOINS.
         query = (query.join(CdeRetaMonthOffenseSubcat)
@@ -238,10 +177,10 @@ class CdeRetaMonth(models.RetaMonth):
         query = query.with_entities(*fields)
 
         # Apply group by.
-        query = CdeRetaMonth.__apply_group_by(query, by)
+        query = CdeRetaMonth.apply_group_by(query, by)
 
         # Apply all filters
-        query = CdeRetaMonth.__apply_filters(query, filters)
+        query = CdeRetaMonth.apply_filters(query, filters)
 
         return query
 

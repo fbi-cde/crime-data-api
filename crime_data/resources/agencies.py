@@ -8,7 +8,8 @@ from crime_data.common import marshmallow_schemas
 from crime_data.common.base import CdeResource
 
 from crime_data.common.marshmallow_schemas import (
-    ArgumentsSchema, IncidentArgsSchema, IncidentCountArgsSchema, AgenciesRetaArgsSchema)
+    ArgumentsSchema, IncidentArgsSchema, IncidentCountArgsSchema, AgenciesRetaArgsSchema,
+    AgencySchema, AgenciesIncidentArgsSchema)
 
 class AgenciesResource(CdeResource):
 
@@ -16,12 +17,12 @@ class AgenciesResource(CdeResource):
 
 
 class AgenciesList(AgenciesResource):
-    @use_args(marshmallow_schemas.ArgumentsSchema)
+    @use_args(marshmallow_schemas.AgencySchema)
     def get(self, args):
         self.verify_api_key(args)
 
         result = models.CdeRefAgency.get(args)
-        
+
         return self.with_metadata(result, args)
 
 
@@ -37,7 +38,7 @@ class AgenciesNibrsCount(CdeResource):
 
     SPLITTER = re.compile(r"\s*,\s*")
 
-    @use_args(AgenciesRetaArgsSchema)
+    @use_args(AgenciesIncidentArgsSchema)
     def get(self, args, ori=None):
         '''''
         Get Incident Count by Agency ID/ORI.

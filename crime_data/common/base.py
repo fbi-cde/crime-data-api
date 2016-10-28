@@ -44,6 +44,33 @@ class RoutingSession(SignallingSession):
 
         return super().get_bind(mapper=mapper, clause=clause)
 
+class QueryTraits(object):
+
+    @classmethod
+    def apply_filters(cls, query, filters):
+        for filter,value in filters.items():
+            if filter in cls.get_filter_map():
+                col = cls.get_filter_map()[filter]
+                query = query.filter(col.ilike(value))
+        return query
+
+    @classmethod
+    def get_fields(cls, agg_fields, fields):
+        requested_fields = []
+        for field in fields:
+            if field in cls.get_filter_map():
+                requested_fields.append(cls.get_filter_map()[field])
+        
+        requested_fields += agg_fields
+        return requested_fields
+
+    @classmethod
+    def apply_group_by(cls, query, group_bys):
+        for group in group_bys:
+            if group in cls.get_filter_map():
+                query = query.group_by(cls.get_filter_map()[group]).order_by(cls.get_filter_map()[group])
+        return query
+    pass
 
 class RoutingSQLAlchemy(SQLAlchemy):
     def create_session(self, options):
