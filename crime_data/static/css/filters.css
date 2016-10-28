@@ -16,6 +16,11 @@ body {
   width: var(--body-width);
 }
 
+header h1 {
+  color: var(--filters-background);
+  font-weight: 900;
+}
+
 main {
   display: inline-block;
   padding: 0 1em;
@@ -24,17 +29,17 @@ main {
 
 #filters {
   background-color: var(--filters-background);
-  color: white;
   float: left;
   min-height: 100%;
   padding: 0 1em;
   padding-bottom: 1em;
+  padding-top: 3em;
   width: var(--filters-width);
 }
 
 .filter {
-  border: 1px solid white;
-  border-bottom: none;
+  background-color: white;
+  margin-bottom: 1em;
   padding: 1em;
   position: relative;
 }
@@ -49,7 +54,7 @@ main {
 
 .filter legend {
   display: table-cell;
-  font-size: 1.3em;
+  font-size: 1.1em;
   font-weight: 600;
 }
 
@@ -58,7 +63,11 @@ main {
 }
 
 .filter fieldset legend {
+  background-color: #ccc;
+  display: inline-block;
   font-size: 1.0em;
+  padding: 0.5em;
+  width: 100%;
 }
 
 .filter fieldset label {
@@ -74,8 +83,6 @@ main {
   background-image: url('/static/libs/uswds/img/arrow-down.svg');
   background-repeat: no-repeat;
   content: '';
-  -webkit-filter: invert(100%);
-  filter: invert(100%);
   height: var(--arrow-size);
   position: absolute;
   right: 1em;

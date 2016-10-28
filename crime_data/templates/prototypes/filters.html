@@ -4,16 +4,15 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Crime Data Explorer filter prototype</title>
+    <title>Crime Data Explorer prototypes</title>
     <link rel="stylesheet" href="/static/libs/uswds/css/uswds.css">
     <link rel="stylesheet" href="/static/css/filters.css">
   </head>
   <body>
     <header>
-
+      <h1>CDE</h1>
     </header>
     <form id="filters" action="/static/filters.html">
-      <h1>Filters</h1>
       <fieldset class="filter" id="type-filter">
         <legend>Data type</legend>
         <select name="type" id="type">
@@ -62,7 +61,6 @@
       </fieldset>
       <fieldset class="filter" id="offender-filter">
         <legend>About the offender</legend>
-
         <fieldset>
           <legend>Race</legend>
           <input type="checkbox" name="offender-asian" id="offender-asian">
@@ -113,8 +111,6 @@
       </fieldset>
     </form>
     <main>
-      <h1>Content</h1>
-      <!-- <div id="basic-text"></div> -->
       <section>
         <h2>Methodology</h2>
         <div id='methodology'></div>

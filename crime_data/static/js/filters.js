@@ -98,28 +98,6 @@ function getParams() {
   return params
 }
 
-function makeBasicText(values) {
-  function isOn(key) {
-    return values[key] === 'on'
-  }
-
-  var sex = []
-  var sexText
-  var race = []
-  if (isOn('female')) sex.push('female')
-  if (isOn('male')) sex.push('male')
-  if (isOn('unknown-sex')) sex.push('unknown sex')
-
-  if (sex.length === 0 || sex.length === 3) {
-    sexText = 'all biological sexes'
-  } else {
-    sexText = sex.join(' and ')
-  }
-
-
-  return `Loading ${values['location']} ${values['type'].toLowerCase()} data starting from ${values['time-from']} until ${values['time-to']}.`
-}
-
 function makeMethodologyText(values) {
   var type
 
@@ -139,10 +117,8 @@ function updateContent() {
   var basicText = $('#basic-text')[0]
   var methodology = $('#methodology')[0]
   var toDisable = [
-    'offender-sex-filter',
-    'offender-race-filter',
-    'victim-race-filter',
-    'victim-sex-filter'
+    'offender-filter',
+    'victim-filter'
   ]
 
   if (basicText) basicText.innerHTML = makeBasicText(values)
