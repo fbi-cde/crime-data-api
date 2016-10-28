@@ -200,3 +200,20 @@ class TestIncidentsCountEndpoint:
         assert res.json['results']
         for row in res.json['results']:
             assert row['offense_category'] == 'Robbery'
+            
+    def test_instances_count_bad_filter_400s(self, testapp):
+        res = testapp.get('/incidents/count/?llamas=angry', expect_errors=True)
+        assert res.status_code == 400 
+        
+    def test_instances_count_filter_names_case_insensitive(self, testapp):
+        res = testapp.get('/incidents/count/?by=year,offense_category&offense_category=Robbery')
+        assert res.json['results']
+        for row in res.json['results']:
+            assert row['offense_category'] == 'Robbery'
+  
+    def test_instances_count_filter_values_case_insensitive(self, testapp):
+        res = testapp.get('/incidents/count/?by=year,offense_category&offense_category=RobBeRY') 
+        assert res.json['results']
+        for row in res.json['results']:
+            assert row['offense_category'] == 'Robbery'
+            

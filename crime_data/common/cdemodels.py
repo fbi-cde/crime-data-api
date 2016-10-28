@@ -1,3 +1,4 @@
+from flask import abort
 from flask.ext.sqlalchemy import Pagination
 from sqlalchemy import and_, func
 from sqlalchemy.sql import label
@@ -258,7 +259,11 @@ class QueryWithAggregates(object):
             self.qry = self.qry.group_by(col).order_by(col)
         if filters:
             for (col_name, value) in filters.items():
-                self.qry = self.qry.filter(self._col(col_name) == value)
+                try:
+                    col = self._col(col_name)
+                except AttributeError:
+                    abort(400, 'field name {} not found'.format(col_name))
+                self.qry = self.qry.filter(col.ilike(value))
 
     def paginate(self, page, per_page):
         paginated = self.qry.limit(per_page).offset((page - 1) * per_page)
