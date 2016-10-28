@@ -19,7 +19,9 @@ class AgenciesList(AgenciesResource):
     @use_args(marshmallow_schemas.ArgumentsSchema)
     def get(self, args):
         self.verify_api_key(args)
-        result = models.CdeRefAgency.query
+
+        result = models.CdeRefAgency.get(args)
+        
         return self.with_metadata(result, args)
 
 

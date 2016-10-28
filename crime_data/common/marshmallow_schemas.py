@@ -43,6 +43,11 @@ class AgenciesIncidentArgsSchema(ArgumentsSchema):
     location_name = fields.String()
     state = fields.String()
 
+class AgencySchema(ArgumentsSchema):
+    state = fields.String()
+    ori = fields.String()
+    city = fields.String()
+
 class AgenciesRetaArgsSchema(ArgumentsSchema):
     state = fields.String()
     ori = fields.String()

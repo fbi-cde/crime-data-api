@@ -30,6 +30,29 @@ class CdeRetaOffenseSubcat(models.RetaOffenseSubcat):
     pass
 
 class CdeRefAgency(models.RefAgency):
+
+    @staticmethod
+    def __apply_filters(query, filters):
+        for filter,value in filters.items():
+            if filter in CdeRefAgency.get_filter_map():
+                query = query.filter(CdeRefAgency.get_filter_map()[filter] == value)
+        return query
+
+    @staticmethod
+    def get_filter_map():
+        return {'state': CdeRefAgency.state.label('state'), }
+
+    def get(args, ori = None):
+
+        # Base Query
+        query = CdeRefAgency.query
+
+        print(args)
+        # Apply all filters
+        query = CdeRefAgency.__apply_filters(query, args)
+
+        return query
+
     pass
 
 class CdeNibrsEthnicity(models.NibrsEthnicity):
@@ -84,7 +107,7 @@ class CdeNibrsIncident(models.NibrsIncident):
     # Maps API filter to DB column name.
     @staticmethod
     def get_filter_map():
-        return {'state': CdeRefState.state_abbr,
+        return {'state': CdeRefState.state_abbr.label('state'),
         'city': CdeRefCity.city_name,
         'month':CdeNibrsMonth.month_num,
         'year':CdeNibrsMonth.data_year,
@@ -171,7 +194,7 @@ class CdeRetaMonth(models.RetaMonth):
     # Maps API filter to DB column name.
     @staticmethod
     def get_filter_map():
-        return {'state': CdeRefState.state_abbr, 
+        return {'state': CdeRefState.state_abbr.label('state'), 
         'offense': CdeRetaOffense.offense_name,
         'ori': CdeRefAgency.ori,
         'subcategory': CdeRetaOffenseSubcat.offense_subcat_name,
