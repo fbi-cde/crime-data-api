@@ -45,6 +45,11 @@ class CdeRefAgency(models.RefAgency, QueryTraits):
              .outerjoin(CdeRefCity)
         )
 
+        
+        # Get ONE ORI.
+        if ori:
+            query = query.filter(CdeRefAgency.ori==ori)
+
         # Apply all filters
         query = CdeRefAgency.apply_filters(query, args)
 
