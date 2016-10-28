@@ -45,10 +45,10 @@ class CdeRefAgency(models.RefAgency, QueryTraits):
              .outerjoin(CdeRefCity)
         )
 
-        
+
         # Get ONE ORI.
         if ori:
-            query = query.filter(CdeRefAgency.ori==ori)
+            query = query.filter(CdeRefAgency.ori == ori)
 
         # Apply all filters
         query = CdeRefAgency.apply_filters(query, args)
@@ -94,7 +94,7 @@ class CdeNibrsIncident(models.NibrsIncident, QueryTraits):
         'offender_ethnicity': CdeNibrsEthnicity.ethnicity_name.label('offender_ethnicity') }
 
     @staticmethod
-    def get_nibrs_incident_by_ori(ori = None, filters = None, by = None):
+    def get_nibrs_incident_by_ori(ori=None, filters=None, by=None):
         '''''
         Returns Query for RETA counts by Agency/ORI - Monthly Sums.
         '''''
@@ -115,8 +115,7 @@ class CdeNibrsIncident(models.NibrsIncident, QueryTraits):
              .outerjoin(CdeNibrsMonth)
              .outerjoin(CdeRefAgency)
              .outerjoin(CdeRefCity)
-             .outerjoin(CdeRefState)
-             )
+             .outerjoin(CdeRefState))
 
         if 'victim_ethnicity' in by or 'offender_ethnicity' in by:
             if 'victim_ethnicity' in by:
@@ -152,7 +151,7 @@ class CdeRetaMonth(models.RetaMonth, QueryTraits):
         'month': CdeRetaMonth.month_num }
 
     @staticmethod
-    def get_reta_by_ori(ori = None, filters = None, by = None):
+    def get_reta_by_ori(ori=None, filters=None, by=None):
         '''''
         Returns Query for RETA counts by Agency/ORI - Monthly Sums.
         '''''
