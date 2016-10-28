@@ -11,9 +11,6 @@ from sqlalchemy import func, and_
 
 session = db.session
 
-class CdeRetaMonth(models.RetaMonth):
-    pass
-
 class CdeRefState(models.RefState):
     pass
 
