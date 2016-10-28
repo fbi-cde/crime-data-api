@@ -2,7 +2,7 @@ import json
 import os
 import random
 
-from flask_restful import Resource
+from flask_restful import Resource, abort
 # import celery
 from flask_sqlalchemy import SignallingSession, SQLAlchemy
 
@@ -86,8 +86,8 @@ class CdeResource(Resource):
                      for u in service_env['user-provided']
                      if 'credentials' in u]
             key = creds[0]['API_KEY']
-            if args['api_key'] != key:
-                raise Exception('Ask Catherine for API key')
+            if args.get('api_key') != key:
+                abort(401, 'Use correct `api_key` argument')
 
 
 db = RoutingSQLAlchemy()
