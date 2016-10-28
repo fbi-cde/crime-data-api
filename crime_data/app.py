@@ -112,7 +112,7 @@ def add_resources(app):
                      '/agencies/<string:nbr>/')
 
     api.add_resource(crime_data.resources.agencies.AgenciesNibrsCount,
-                     '/agencies/nibrs/count/<string:ori>', 
+                     '/agencies/nibrs/count/<string:ori>',
                      '/agencies/nibrs/count/')
     api.add_resource(crime_data.resources.agencies.AgenciesRetaCount,
                      '/agencies/reta/count/<string:ori>',

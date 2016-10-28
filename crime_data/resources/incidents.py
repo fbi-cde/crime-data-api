@@ -1,12 +1,10 @@
 import re
 
-from webargs.flaskparser import use_args
-
 from crime_data.common import cdemodels, marshmallow_schemas, models
 from crime_data.common.base import CdeResource
-from crime_data.common.marshmallow_schemas import (ArgumentsSchema,
-                                                   IncidentArgsSchema,
-                                                   IncidentCountArgsSchema)
+from crime_data.common.marshmallow_schemas import (
+    ArgumentsSchema, IncidentArgsSchema, IncidentCountArgsSchema)
+from webargs.flaskparser import use_args
 
 
 class IncidentsList(CdeResource):
@@ -70,5 +68,6 @@ class IncidentsCount(CdeResource):
         self.verify_api_key(args)
         by = self.SPLITTER.split(
             args['by'].lower())  # TODO: can post-process in schema?
-        result = cdemodels.RetaQuery(by)
+        filters = self.unparsed_args(args)
+        result = cdemodels.RetaQuery(by, filters)
         return self.with_metadata(result, args)

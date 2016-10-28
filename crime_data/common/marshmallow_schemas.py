@@ -3,7 +3,8 @@
 import os
 
 from flask_marshmallow import Marshmallow
-from marshmallow import Schema, fields as marsh_fields
+from marshmallow import fields as marsh_fields
+from marshmallow import Schema
 
 from . import models
 
@@ -35,7 +36,6 @@ class IncidentArgsSchema(ArgumentsSchema):
     location_name = marsh_fields.String()
 
 
-
 class AgenciesIncidentArgsSchema(ArgumentsSchema):
     incident_hour = marsh_fields.Integer()
     crime_against = marsh_fields.String()
@@ -47,6 +47,7 @@ class AgenciesIncidentArgsSchema(ArgumentsSchema):
     location_name = marsh_fields.String()
     state = marsh_fields.String()
 
+
 class AgenciesRetaArgsSchema(ArgumentsSchema):
     state = marsh_fields.String()
     ori = marsh_fields.String()
@@ -54,10 +55,11 @@ class AgenciesRetaArgsSchema(ArgumentsSchema):
     offender_ethnicity = marsh_fields.String()
     by = marsh_fields.String(missing='ori')
 
+
 class IncidentCountArgsSchema(ArgumentsSchema):
     by = marsh_fields.String(missing='year')
 
-# Schemas for data serialization
+    # Schemas for data serialization
 
 
 class SummarySchema(ma.ModelSchema):
@@ -72,7 +74,9 @@ class SummarySchema(ma.ModelSchema):
     city = marsh_fields.String()
     tribe = marsh_fields.String()
     offense_subcat = marsh_fields.String()
+    offense_subcat_code = marsh_fields.String()
     offense = marsh_fields.String()
+    offense_code = marsh_fields.String()
     offense_category = marsh_fields.String()
 
 
@@ -292,4 +296,3 @@ class NibrsIncidentSchema(ma.ModelSchema):
     victims = ma.Nested(NibrsVictimSchema, many=True)
     arrestees = ma.Nested(NibrsArresteeSchema, many=True)
     offenders = ma.Nested(NibrsOffenderSchema, many=True)
-

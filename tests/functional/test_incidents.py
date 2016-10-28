@@ -188,3 +188,15 @@ class TestIncidentsCountEndpoint:
         res = testapp.get('/incidents/count/?by=state')
         state_names = [r['state'] for r in res.json['results']]
         assert state_names == sorted(state_names)
+
+    def test_instances_count_filters_on_subcategory(self, testapp):
+        res = testapp.get('/incidents/count/?by=year,offense_subcat_code&offense_subcat_code=SUM_HOM')
+        assert res.json['results']
+        for row in res.json['results']:
+            assert row['offense_subcat_code'] == 'SUM_HOM'
+            
+    def test_instances_count_filters_on_category(self, testapp):
+        res = testapp.get('/incidents/count/?by=year,offense_category&offense_category=Robbery')
+        assert res.json['results']
+        for row in res.json['results']:
+            assert row['offense_category'] == 'Robbery'

@@ -2,6 +2,7 @@ import json
 import os
 import random
 
+from flask import request
 from flask_restful import Resource
 # import celery
 from flask_sqlalchemy import SignallingSession, SQLAlchemy
@@ -88,6 +89,12 @@ class CdeResource(Resource):
             key = creds[0]['API_KEY']
             if args['api_key'] != key:
                 raise Exception('Ask Catherine for API key')
+
+    def unparsed_args(self, parsed):
+        """A dict of `requests.get` that are missing from `parsed`."""
+
+        result = {k: v for (k, v) in request.args.items() if k not in parsed}
+        return result
 
 
 db = RoutingSQLAlchemy()
