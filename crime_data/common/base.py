@@ -2,8 +2,12 @@ import json
 import os
 import random
 
+<<<<<<< HEAD
 from flask import request, abort
 from flask_restful import Resource
+=======
+from flask_restful import Resource, abort
+>>>>>>> master
 # import celery
 from flask_sqlalchemy import SignallingSession, SQLAlchemy
 
@@ -88,7 +92,7 @@ class CdeResource(Resource):
                      if 'credentials' in u]
             key = creds[0]['API_KEY']
             if args.get('api_key') != key:
-                abort(401, 'Specify `?api_key=(correct key)` for access')
+                abort(401, 'Use correct `api_key` argument')
 
     def unparsed_args(self, parsed):
         """A dict of `requests.get` that are missing from `parsed`."""
