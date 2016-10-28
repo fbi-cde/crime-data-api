@@ -16,17 +16,22 @@ session = db.session
 class CdeRefState(models.RefState):
     pass
 
+
 class CdeRefCity(models.RefCity):
     pass
+
 
 class CdeRetaOffense(models.RetaOffense):
     pass
     
+
 class CdeRetaMonthOffenseSubcat(models.RetaMonthOffenseSubcat):
     pass
 
+
 class CdeRetaOffenseSubcat(models.RetaOffenseSubcat):
     pass
+
 
 class CdeRefAgency(models.RefAgency, QueryTraits):
 
@@ -57,14 +62,18 @@ class CdeRefAgency(models.RefAgency, QueryTraits):
 
     pass
 
+
 class CdeNibrsEthnicity(models.NibrsEthnicity):
     pass
+
 
 class CdeNibrsVictim(models.NibrsVictim):
     pass
 
+
 class CdeNibrsOffender(models.NibrsOffender):
     pass
+
 
 class CdeNibrsMonth(models.NibrsMonth):
     pass
@@ -73,8 +82,10 @@ class CdeNibrsMonth(models.NibrsMonth):
 class CdeNibrsOffense(models.NibrsOffense):
     pass
 
+
 class CdeNibrsLocationType(models.NibrsLocationType):
     pass
+
 
 class CdeNibrsIncident(models.NibrsIncident, QueryTraits):
     '''''
