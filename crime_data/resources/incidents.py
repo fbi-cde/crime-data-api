@@ -68,6 +68,6 @@ class IncidentsCount(CdeResource):
         self.verify_api_key(args)
         by = self.SPLITTER.split(
             args['by'].lower())  # TODO: can post-process in schema?
-        filters = self.unparsed_args(args)
+        filters = list(self.filters(args))
         result = cdemodels.RetaQuery(by, filters)
         return self.with_metadata(result, args)

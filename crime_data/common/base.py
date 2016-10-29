@@ -2,12 +2,8 @@ import json
 import os
 import random
 
-<<<<<<< HEAD
-from flask import request, abort
-from flask_restful import Resource
-=======
+from flask import request
 from flask_restful import Resource, abort
->>>>>>> master
 # import celery
 from flask_sqlalchemy import SignallingSession, SQLAlchemy
 
@@ -94,11 +90,39 @@ class CdeResource(Resource):
             if args.get('api_key') != key:
                 abort(401, 'Use correct `api_key` argument')
 
-    def unparsed_args(self, parsed):
-        """A dict of `requests.get` that are missing from `parsed`."""
+    OPERATORS = {'!=': '__ne__',
+                 '>=': '__ge__',
+                 '<=': '__le__',
+                 '>': '__gt__',
+                 '<': '__le__',
+                 '==': '__eq__', }
 
-        result = {k: v for (k, v) in request.args.items() if k not in parsed}
-        return result
+    def _parse_inequality_operator(self, k, v):
+        """
+        Returns (key, value, comparitor)
+        """
+        if v:
+            for sign in ('!', '>', '<'):
+                if k.endswith(sign) and v:
+                    return (k[:-1], sign + '=', v)
+            return (k, '==', v)
+        else:
+            for sign in ('>', '<'):
+                if sign in k:
+                    (new_k, new_v) = k.split(sign, 1)
+                    return (new_k, sign, new_v)
+            return (k, '==', True)
+
+    def filters(self, parsed):
+        """Yields `(key, comparitor, value)` from `request.args` not already in `parsed`.
+        
+        `comparitor` may be '__eq__', '__gt__', '__le__', etc."""
+
+        for (k, v) in request.args.items():
+            if k in parsed:
+                continue
+            (k, op, v) = self._parse_inequality_operator(k, v)
+            yield (k, self.OPERATORS[op], v)
 
 
 db = RoutingSQLAlchemy()

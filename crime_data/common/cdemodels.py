@@ -233,6 +233,15 @@ class CdeRetaMonth(models.RetaMonth):
         return query
 
 
+def _is_string(col):
+    col0 = list(col.base_columns)[0]
+    return issubclass(col0.type.python_type, str)
+
+
+class FieldNameError(AttributeError):
+    pass
+
+
 class QueryWithAggregates(object):
     def _sql_name(self, readable_name):
         return self.COL_NAME_MAP.get(readable_name, readable_name)
@@ -247,23 +256,29 @@ class QueryWithAggregates(object):
             if operation:
                 col = operation(col)
             return label(readable_name, col)
-        raise AttributeError()
+        raise FieldNameError('No field `{}`'.format(readable_name))
+
+    def _apply_filters(self, filters):
+        if filters:
+            for (col_name, comparitor, value) in filters:
+                col = self._col(col_name)
+                if _is_string(col):
+                    col = func.lower(col)
+                    value = value.lower()
+                self.qry = self.qry.filter(getattr(col, comparitor)(value))
 
     def __init__(self, by=None, filters=None):
-        self.qry = self._base_query()
-        if by in (['none', None]):
-            by = []
-        for col_name in by:
-            col = self._col(col_name)
-            self.qry = self.qry.add_columns(col)
-            self.qry = self.qry.group_by(col).order_by(col)
-        if filters:
-            for (col_name, value) in filters.items():
-                try:
-                    col = self._col(col_name)
-                except AttributeError:
-                    abort(400, 'field name {} not found'.format(col_name))
-                self.qry = self.qry.filter(col.ilike(value))
+        try:
+            self.qry = self._base_query()
+            if by in (['none', None]):
+                by = []
+            for col_name in by:
+                col = self._col(col_name)
+                self.qry = self.qry.add_columns(col)
+                self.qry = self.qry.group_by(col).order_by(col)
+            self._apply_filters(filters)
+        except FieldNameError as e:
+            abort(400, e)
 
     def paginate(self, page, per_page):
         paginated = self.qry.limit(per_page).offset((page - 1) * per_page)
