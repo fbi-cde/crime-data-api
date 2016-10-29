@@ -233,6 +233,52 @@ class CdeRetaMonth(models.RetaMonth):
         return query
 
 
+class TableFamily:
+    def _is_string(col):
+        return issubclass(col.type.python_type, str)
+
+    def filtered(self, filters):
+        qry = self.base_table.query
+        joined = set([self.base_table, ])
+        for (col_name, comparitor, val) in filters:
+            if col_name not in self.TABLES_BY_COLUMN:
+                abort(400, 'field {} not found'.format(col_name))
+            tables = self.TABLES_BY_COLUMN[col_name]
+            for table in tables:
+                if table not in joined:
+                    qry = qry.join(table)
+                    joined.add(table)
+            col = getattr(tables[-1], col_name)
+            if _is_string(col):
+                col = func.lower(col)
+                val = val.lower()
+            qry = qry.filter(getattr(col, comparitor)(val))
+        return qry
+
+
+class IncidentTableFamily(TableFamily):
+
+    base_table = models.NibrsIncident
+    TABLES_BY_COLUMN = {
+        'incident_hour': (models.NibrsIncident, ),
+        'method_entry_code': (models.NibrsOffense, ),
+        'offense_category_name': (models.NibrsOffense,
+                                  models.NibrsOffenseType, ),
+        'offense_code': (models.NibrsOffense,
+                         models.NibrsOffenseType, ),
+        'offense_name': (models.NibrsOffense,
+                         models.NibrsOffenseType, ),
+        'crime_against': (models.NibrsOffense,
+                          models.NibrsOffenseType, ),
+        'offense_category_name': (models.NibrsOffense,
+                                  models.NibrsOffenseType, ),
+        'location_code': (models.NibrsOffense,
+                          models.NibrsLocationType, ),
+        'location_name': (models.NibrsOffense,
+                          models.NibrsLocationType, ),
+    }
+
+
 def _is_string(col):
     col0 = list(col.base_columns)[0]
     return issubclass(col0.type.python_type, str)

@@ -104,13 +104,33 @@ class TestIncidentsEndpoint:
             hits = [o for o in incident['offenses']
                     if o['method_entry_code'] == 'F']
             assert len(hits) > 0
-
+            
+    def test_instances_endpoint_bad_filter_400s(self, testapp):
+        res = testapp.get('/incidents/?llamas=angry', expect_errors=True)
+        assert res.status_code == 400 
+        
+    def test_incidents_endpoint_filter_names_case_insensitive(self, user, testapp):
+        res0 = testapp.get('/incidents/?Incident_Hour=22')
+        assert res0.json['pagination']['count'] > 0
+        res1 = testapp.get('/incidents/?incident_hour=22')
+        assert res0.json['pagination']['count'] == res1.json['pagination']['count'] 
+ 
     def test_incidents_endpoint_filters_incident_hour(self, user, testapp):
         res = testapp.get('/incidents/?incident_hour=22')
         assert len(res.json['results']) > 0
         for incident in res.json['results']:
             assert incident['incident_hour'] == 22
+            
+    def test_incidents_endpoint_filters_incident_hour_greater_than(self, user, testapp):
+        res = testapp.get('/incidents/?incident_hour>16')
+        assert len(res.json['results']) > 0
+        for incident in res.json['results']:
+            assert incident['incident_hour'] > 16 
 
+    @pytest.mark.xfail  # TODO 
+    def test_incidents_endpoint_filters_for_nulls(self, user, testapp):
+        pass 
+    
     def test_incidents_paginate(self, user, testapp):
         page1 = testapp.get('/incidents/?page=1')
         page2 = testapp.get('/incidents/?page=2')

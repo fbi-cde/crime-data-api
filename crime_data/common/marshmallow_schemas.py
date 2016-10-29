@@ -22,20 +22,6 @@ class ArgumentsSchema(Schema):
             error_messages={'required': 'Get API key from Catherine'})
 
 
-class IncidentArgsSchema(ArgumentsSchema):
-    incident_hour = marsh_fields.Integer()
-    crime_against = marsh_fields.String()
-    offense_code = marsh_fields.String()
-    offense_name = marsh_fields.String()
-    offense_category_name = marsh_fields.String()
-    method_entry_code = marsh_fields.String()
-    state = marsh_fields.String()
-    city = marsh_fields.String()
-    tribe = marsh_fields.String()
-    location_code = marsh_fields.String()
-    location_name = marsh_fields.String()
-
-
 class AgenciesIncidentArgsSchema(ArgumentsSchema):
     incident_hour = marsh_fields.Integer()
     crime_against = marsh_fields.String()

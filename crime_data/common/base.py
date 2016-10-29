@@ -122,7 +122,7 @@ class CdeResource(Resource):
             if k in parsed:
                 continue
             (k, op, v) = self._parse_inequality_operator(k, v)
-            yield (k, self.OPERATORS[op], v)
+            yield (k.lower(), self.OPERATORS[op], v)
 
 
 db = RoutingSQLAlchemy()
