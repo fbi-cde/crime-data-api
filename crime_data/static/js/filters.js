@@ -205,7 +205,7 @@ function makeApiSearchQuery(values) {
 
 function makeApiUrl(endpoint, search) {
   var api = 'https://crime-data-api.fr.cloud.gov'
-  var url = `${api}/${endpoint}/?api_key=${KEY}`
+  var url = `${api}/${endpoint}/?api_key=${KEY}&per_page=100`
 
   if (!search) return url
 
