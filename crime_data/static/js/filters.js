@@ -120,12 +120,15 @@ function fetchData(endpoint, search) {
   });
 }
 
-function fetchIncidents(search) {
-  var query = makeApiSearchQuery(search)
+function fetchIncidents(form) {
+  var query = makeApiSearchQuery(form)
   console.log('incident query', query)
   fetchData('incidents', query).then(function(incidents) {
     return incidents.map((function(incident) {
-      return makeIncidentRow(incident)
+      var i = Object.assign({}, incident, {
+        location: form.location
+      })
+      return makeIncidentRow(i)
     }))
   }).then(function(html) {
     return html.join('')
@@ -148,7 +151,7 @@ function makeIncidentRow(i) {
     <td>${i.incident_number}</td>
     <td>2014</td>
     <td>${new Date(i.incident_date)}</td>
-    <td>California</td>
+    <td>${i.location}</td>
     <td>${i.agency.pub_agency_name}</td>
     <td>
       <a href="${agencyUrl}">${i.agency.ori}</a>
