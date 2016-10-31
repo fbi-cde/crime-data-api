@@ -75,7 +75,7 @@ class CdeNibrsOffense(models.NibrsOffense):
 class CdeNibrsLocationType(models.NibrsLocationType):
     pass
 
-class CdeNibrsIncident(models.NibrsIncident):
+class CdeNibrsIncident(models.NibrsIncident, QueryTraits):
 
     '''''
     Extends models.NibrsIncident.
