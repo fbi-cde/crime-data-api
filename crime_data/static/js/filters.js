@@ -107,6 +107,7 @@ function getParams() {
 
 function fetchData(endpoint, search) {
   var url = makeApiUrl(endpoint, search)
+  console.log('url', url)
   return fetch(url).then(function(data) {
     if (data.status === 200) return data.json()
     throw new Error(data.statusText)
@@ -130,6 +131,8 @@ function fetchIncidents(search) {
     return html.join('')
   }).then(function(html) {
     $('#incident-data tbody')[0].innerHTML = html
+  }).catch(function(err) {
+    console.error('err', err)
   })
 }
 
@@ -199,7 +202,7 @@ function makeApiSearchQuery(values) {
 
 function makeApiUrl(endpoint, search) {
   var api = 'https://crime-data-api.fr.cloud.gov'
-  var url = `${api}/${endpoint}?api_key=${KEY}`
+  var url = `${api}/${endpoint}/?api_key=${KEY}`
 
   if (!search) return url
 
