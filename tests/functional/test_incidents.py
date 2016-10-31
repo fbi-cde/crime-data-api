@@ -14,7 +14,7 @@ class TestIncidentsEndpoint:
     def test_incidents_endpoint_includes_metadata(self, user, testapp):
         res = testapp.get('/incidents/')
         assert 'pagination' in res.json
-        
+
     def test_incidents_endpoint_returns_incidents(self, user, testapp):
         res = testapp.get('/incidents/')
         assert len(res.json['results']) > 0
@@ -105,11 +105,39 @@ class TestIncidentsEndpoint:
                     if o['method_entry_code'] == 'F']
             assert len(hits) > 0
 
+    def test_instances_endpoint_bad_filter_400s(self, testapp):
+        res = testapp.get('/incidents/?llamas=angry', expect_errors=True)
+        assert res.status_code == 400
+
+    def test_incidents_endpoint_filter_names_case_insensitive(self, user, testapp):
+        res0 = testapp.get('/incidents/?Incident_Hour=22')
+        assert res0.json['pagination']['count'] > 0
+        res1 = testapp.get('/incidents/?incident_hour=22')
+        assert res0.json['pagination']['count'] == res1.json['pagination']['count']
+
     def test_incidents_endpoint_filters_incident_hour(self, user, testapp):
         res = testapp.get('/incidents/?incident_hour=22')
         assert len(res.json['results']) > 0
         for incident in res.json['results']:
             assert incident['incident_hour'] == 22
+
+    def test_incidents_endpoint_filters_incident_hour_greater_than(self, user, testapp):
+        res = testapp.get('/incidents/?incident_hour>16')
+        assert len(res.json['results']) > 0
+        for incident in res.json['results']:
+            assert incident['incident_hour'] > 16
+
+    def test_incidents_endpoint_filters_location_name(self, user, testapp):
+        res = testapp.get('/incidents/?location_name=Parking+Lot/Garage')
+        assert len(res.json['results']) > 0
+        for incident in res.json['results']:
+            assert len(incident['offenses']) > 0
+            hits = [o for o in incident['offenses'] if o['location']['location_name'] == 'Parking Lot/Garage']
+            assert len(hits) > 0
+
+    @pytest.mark.xfail  # TODO
+    def test_incidents_endpoint_filters_for_nulls(self, user, testapp):
+        pass
 
     def test_incidents_paginate(self, user, testapp):
         page1 = testapp.get('/incidents/?page=1')
@@ -117,20 +145,20 @@ class TestIncidentsEndpoint:
         assert len(page1.json['results']) == 10
         assert len(page2.json['results']) == 10
         assert page2.json['results'][0] not in page1.json['results']
-        
+
     def test_incidents_pagination_data_in_metadata(self, user, testapp):
         page = testapp.get('/incidents/?page=3&per_page=7')
-        assert page.json['pagination']['page'] == 3 
-        assert page.json['pagination']['per_page'] == 7 
-        assert 'count' in page.json['pagination'] 
-        assert 'pages' in page.json['pagination'] 
-        assert page.json['pagination']['pages'] > 1 
+        assert page.json['pagination']['page'] == 3
+        assert page.json['pagination']['per_page'] == 7
+        assert 'count' in page.json['pagination']
+        assert 'pages' in page.json['pagination']
+        assert page.json['pagination']['pages'] > 1
 
-    @pytest.mark.xfail  # TODO 
+    @pytest.mark.xfail  # TODO
     def test_incidents_pagination_beyond_end_fails_gracefully(self, user, testapp):
         page = testapp.get('/incidents/?state=DE&page=100000&per_page=1000')
-        assert False 
-   
+        assert False
+
     def test_incidents_page_size(self, user, testapp):
         res = testapp.get('/incidents/?per_page=5')
         assert len(res.json['results']) == 5
@@ -149,7 +177,7 @@ class TestIncidentsCountEndpoint:
     def test_instances_count_exists(self, testapp):
         res = testapp.get('/incidents/count/')
         assert res.status_code == 200
-        
+
     def test_incidents_endpoint_includes_metadata(self, user, testapp):
         res = testapp.get('/incidents/count/')
         assert 'pagination' in res.json
@@ -157,21 +185,21 @@ class TestIncidentsCountEndpoint:
     def test_instances_count_returns_counts(self, testapp):
         res = testapp.get('/incidents/count/')
         assert isinstance(res.json['results'], list)
-        assert 'total_actual_count' in res.json['results'][0]
+        assert 'actual_count' in res.json['results'][0]
 
     def test_instances_count_groups_by_year_by_default(self, testapp):
         res = testapp.get('/incidents/count/')
-        years = [row['data_year'] for row in res.json['results']]
+        years = [row['year'] for row in res.json['results']]
         assert len(years) == len(set(years))
 
-    def test_instances_count_groups_by_agency_id(self, testapp):
-        res = testapp.get('/incidents/count/?by=agency_id')
-        agency_ids = [row['agency_id'] for row in res.json['results']]
-        assert len(agency_ids) == len(set(agency_ids))
+    def test_instances_count_groups_by_ori(self, testapp):
+        res = testapp.get('/incidents/count/?by=ori')
+        oris = [row['ori'] for row in res.json['results']]
+        assert len(oris) == len(set(oris))
 
-    def test_instances_count_groups_by_agency_id_any_year(self, testapp):
-        res = testapp.get('/incidents/count/?by=agency_id,year')
-        rows = [(row['year'], row['agency_id']) for row in res.json['results']]
+    def test_instances_count_groups_by_ori_any_year(self, testapp):
+        res = testapp.get('/incidents/count/?by=ori,year')
+        rows = [(row['year'], row['ori']) for row in res.json['results']]
         assert len(rows) == len(set(rows))
 
     def test_instances_count_groups_by_state(self, testapp):
@@ -184,12 +212,63 @@ class TestIncidentsCountEndpoint:
         rows = [row['offense'] for row in res.json['results']]
         assert len(rows) == len(set(rows))
 
-    def test_instances_count_shows_fields_in_month(self, testapp):
-        res = testapp.get('/incidents/count/?fields=leoka_felony')
-        for row in res.json['results']:
-            assert 'leoka_felony' in row
-
     def test_instances_count_sorts_by_state(self, testapp):
         res = testapp.get('/incidents/count/?by=state')
         state_names = [r['state'] for r in res.json['results']]
         assert state_names == sorted(state_names)
+
+    def test_instances_count_filters_on_subcategory(self, testapp):
+        res = testapp.get('/incidents/count/?by=year,offense_subcat_code&offense_subcat_code=SUM_HOM')
+        assert res.json['results']
+        for row in res.json['results']:
+            assert row['offense_subcat_code'] == 'SUM_HOM'
+
+    def test_instances_count_filters_on_category(self, testapp):
+        res = testapp.get('/incidents/count/?by=year,offense_category&offense_category=Robbery')
+        assert res.json['results']
+        for row in res.json['results']:
+            assert row['offense_category'] == 'Robbery'
+
+    def test_instances_count_bad_filter_400s(self, testapp):
+        res = testapp.get('/incidents/count/?llamas=angry', expect_errors=True)
+        assert res.status_code == 400
+
+    def test_instances_count_bad_group_by_400s(self, testapp):
+        res = testapp.get('/incidents/count/?by=llamas', expect_errors=True)
+        assert res.status_code == 400
+
+    def test_instances_count_filter_names_case_insensitive(self, testapp):
+        res = testapp.get('/incidents/count/?by=year,offense_category&offense_category=Robbery')
+        assert res.json['results']
+        for row in res.json['results']:
+            assert row['offense_category'] == 'Robbery'
+
+    def test_instances_count_filter_values_case_insensitive(self, testapp):
+        res = testapp.get('/incidents/count/?by=year,offense_category&offense_category=RobBeRY')
+        assert res.json['results']
+        for row in res.json['results']:
+            assert row['offense_category'] == 'Robbery'
+
+    def test_instances_count_equality_filter_by_number(self, testapp):
+        res = testapp.get('/incidents/count/?by=year,month&month=10')
+        assert res.json['results']
+        for row in res.json['results']:
+            assert row['month'] == 10
+
+    def test_instances_count_filters_by_greater_than(self, testapp):
+        res = testapp.get('/incidents/count/?by=year,month&month>6')
+        assert res.json['results']
+        for row in res.json['results']:
+            assert row['month'] > 6
+
+    def test_instances_count_filters_by_less_than_or_equal_to(self, testapp):
+        res = testapp.get('/incidents/count/?by=year,month&month<=3')
+        assert res.json['results']
+        for row in res.json['results']:
+            assert row['month'] <= 3
+
+    def test_instances_count_filters_by_less_than_or_equal_to(self, testapp):
+        res = testapp.get('/incidents/count/?by=year,offense_category&offense_category!=Robbery&per_page=100')
+        assert res.json['results']
+        for row in res.json['results']:
+            assert row['offense_category'] != 'Robbery'
