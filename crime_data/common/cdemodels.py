@@ -1,10 +1,7 @@
-from collections import OrderedDict
-
-from flask import abort, current_app
+from flask import abort
 from flask.ext.sqlalchemy import Pagination
 from sqlalchemy import and_, func
 from sqlalchemy.orm import aliased
-from sqlalchemy.orm.properties import ColumnProperty
 from sqlalchemy.sql import label
 
 from crime_data.common import models
@@ -238,7 +235,6 @@ class CdeRetaMonth(models.RetaMonth):
 
 
 class TableFamily:
-
     def _is_string(col):
         return issubclass(col.type.python_type, str)
 
@@ -267,6 +263,7 @@ class TableFamily:
     def query(self):
 
         self._build_map()
+        self.print_map()
         qry = self.base_table.table.query
         for table in self.tables:
             if table.join is None:
@@ -274,6 +271,28 @@ class TableFamily:
             else:
                 qry = qry.join(table.table, table.join, isouter=table.outer)
         return qry
+
+    def print_map(self):
+        """
+        Quick-and-dirty output into stdout of filter columns for swagger.
+
+        TODO: should be less quick and dirty!
+        """
+
+        template = """
+                "parameters": [
+                    {{
+                      "name": "{name}",
+                      "in": "query",
+                      "type": "{type}",
+                      "required": false
+                    }}, """
+
+        types = {int: 'integer', bool: 'boolean', }
+        for (name, col) in self.map.items():
+            sqla_col = list(col.base_columns)[0]
+            typ = types.get(sqla_col.type.python_type, 'string')
+            print(template.format(name=name, type=typ))
 
 
 class JoinedTable:
@@ -293,7 +312,8 @@ class JoinedTable:
         """
         for attr_name in dir(self.table):
             col = getattr(self.table, attr_name)
-            if hasattr(col, 'key') and hasattr(col, 'prop'):
+            if hasattr(col, 'key') and hasattr(col, 'prop') and hasattr(
+                    col, 'base_columns'):
                 yield col
 
     def map(self):
@@ -383,8 +403,6 @@ class IncidentTableFamily(TableFamily):
                     join=(models.NibrsOffense.location_id ==
                           models.NibrsLocationType.location_id)),
     ]
-
-    # output swagger
 
 
 def _is_string(col):
