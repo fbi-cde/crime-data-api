@@ -108,6 +108,27 @@
           <input type="checkbox" name="victim-unknown-sex" id="victim-unknown-sex">
           <label for="unknown-sex">Unknown</label>
         </fieldset>
+        <fieldset>
+          <legend>Age</legend>
+          <input type="checkbox" name="victim-age-under-18" id="victim-age-under-18">
+          <label for="victim-age-under-18">Under 18</label>
+          <input type="checkbox" name="victim-age-over-18" id="victim-age-over-18">
+          <label for="victim-age-over-18">Over 18</label>
+        </fieldset>
+      </fieldset>
+      <fieldset class="filter" id="property-filter">
+        <legend>Involved property</legend>
+        <input type="radio" id="property-yes" name="involved-property" value="yes">
+        <label for="property-yes">Yes</label>
+        <input type="radio" id="property-no" name="involved-property" value="no">
+        <label for="property-no">No</label>
+      </fieldset>
+      <fieldset class="filter" id="clearance-filter">
+        <legend>Case cleared</legend>
+        <input type="radio" id="clearance-yes" name="clearance" value="yes">
+        <label for="clearance-yes">Yes</label>
+        <input type="radio" id="clearance-no" name="clearance" value="no">
+        <label for="clearance-no">No</label>
       </fieldset>
     </form>
     <main>
@@ -115,15 +136,68 @@
         <h2>Methodology</h2>
         <div id='methodology'></div>
       </section>
-      <section>
-        <h2>Questions</h2>
-        <ul>
-          <li>What are the things that should be in the "data type" select?</li>
-          <li>What filters are available for each data source?</li>
-          <li>If all of the elements in "Race" are selected ("Black", "Other", "Unknown", and "White") what does the user expect the data to have?</li>
-          <li>What if none of the elements are selected?</li>
-          <li>Is there a distinction between victim and offender in property crimes?</li>
-        </ul>
+      <section class="tables">
+        <table id="summary-data">
+          <caption>Summary data</caption>
+          <thead>
+            <th>Year</th>
+            <th>Location</th>
+            <th>Population</th>
+            <th>Type</th>
+            <th>Count</th>
+            <th>Rate per 100,000</th>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1980</td>
+              <td>California</td>
+              <td>38000000</td>
+              <td>Murder</td>
+              <td>7600</td>
+              <td>20</td>
+            </tr>
+            <tr>
+              <td>1981</td>
+              <td>California</td>
+              <td>39000000</td>
+              <td>Murder</td>
+              <td>7300</td>
+              <td>20</td>
+            </tr>
+            <tr>
+              <td>1982</td>
+              <td>California</td>
+              <td>39500000</td>
+              <td>Murder</td>
+              <td>7000</td>
+              <td>23</td>
+            </tr>
+          </tbody>
+        </table>
+        <table id="incident-data">
+          <caption>Incident data</caption>
+          <thead>
+            <th>NIBRS ID</th>
+            <th>Year</th>
+            <th>Incident date</th>
+            <th>Location</th>
+            <th>Agency</th>
+            <th>Agency ORI</th>
+            <th>Agency case ID</th>
+            <th>Victims</th>
+            <th>Offenses</th>
+            <th>Offenders</th>
+            <th>Arrestees</th>
+            <th>Property</th>
+            <th>Clearance</th>
+          </thead>
+          <tbody>
+            <tr>
+              <td>hey</td>
+              <td>other</td>
+            </tr>
+          </tbody>
+        </table>
       </section>
     </main>
     <script src="/static/libs/fetch.js"></script>

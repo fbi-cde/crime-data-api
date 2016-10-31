@@ -69,7 +69,8 @@ def docs():
 @blueprint.route('/prototypes/', methods=['GET'])
 @basic_auth.required
 def prototypes():
-    return render_template('/prototypes/index.html')
+    key = request.args.get('k')
+    return render_template('/prototypes/index.html', key=key)
 
 @blueprint.route('/prototypes/sentences/', methods=['GET'])
 @basic_auth.required
