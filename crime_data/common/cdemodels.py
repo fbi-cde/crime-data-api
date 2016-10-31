@@ -279,9 +279,7 @@ class TableFamily:
         TODO: should be less quick and dirty!
         """
 
-        template = """
-                "parameters": [
-                    {{
+        template = """{{
                       "name": "{name}",
                       "in": "query",
                       "type": "{type}",
@@ -289,7 +287,7 @@ class TableFamily:
                     }}, """
 
         types = {int: 'integer', bool: 'boolean', }
-        for (name, col) in self.map.items():
+        for (name, col) in sorted(self.map.items()):
             sqla_col = list(col.base_columns)[0]
             typ = types.get(sqla_col.type.python_type, 'string')
             print(template.format(name=name, type=typ))

@@ -1,96 +1,754 @@
 {
-    "swagger": "2.0",
-    "info": {
-        "title": "Crime Data API",
-        "description": "RESTful API service providing data and statistics on crime in the USA",
-        "version": "1.0.0"
-    },
-    "host": "localhost:5000",
-    "schemes": [
-        "http"
-    ],
-    "basePath": "/",
-    "produces": [
-        "application/json"
-    ],
-    "paths": {
-        "/incidents": {
-            "get": {
-                "summary": "NIBRS incidents",
-                "description": "Incidents reported to the FBI with the National Incident Based Reporting Standard (NIBRS)\n",
-                "parameters": [
-                    {
-                      "name": "api_key",
-                      "in": "query",
-                      "description": "API key to provide access to the data",
-                      "type": "string",
-                      "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "An array of incidents",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Incident"
-                            }
-                        }
-                    },
-                    "default": {
-                        "description": "Unauthenticated error",
-                        "schema": {
-                            "$ref": "#/definitions/Error"
-                        }
-                    }
-                }
+  "swagger": "2.0",
+  "info": {
+    "title": "Crime Data API",
+    "description": "RESTful API service providing data and statistics on crime in the USA",
+    "version": "1.0.0"
+  },
+  "host": "localhost:5000",
+  "schemes": [
+    "http"
+  ],
+  "basePath": "/",
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/incidents": {
+      "get": {
+        "summary": "NIBRS incidents",
+        "description": "Incidents reported to the FBI with the National Incident Based Reporting Standard (NIBRS)\n",
+        "parameters": [
+          {
+            "name": "api_key",
+            "in": "query",
+            "description": "API key to provide access to the data",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "added_date",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "age_id",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "age_num",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "age_range_high_num",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "age_range_low_num",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "agency_email",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "agency_id",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "agency_name",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "agency_status",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "agency_type_id",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "agency_type_name",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "agency_website",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "arrestee.age_id",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "arrestee.ethnicity_id",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "arrestee.race_id",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "attempt_complete_flag",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "campus_id",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "cargo_theft_flag",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "change_timestamp",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "change_user",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "city_id",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "cleared_except_code",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "cleared_except_date",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "cleared_except_id",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "cleared_except_name",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "comments",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "crime_against",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "ct_flag",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "data_home",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "ddocname",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "default_pop_family_id",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "department_id",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "did",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "division_code",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "division_desc",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "division_id",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "division_name",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "dormant_year",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "ethnicity_id",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "ff_line_number",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "fid_code",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "field_office_alpha_code",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "field_office_code",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "field_office_id",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "field_office_name",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "field_office_numeric_code",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "hc_code",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "hc_flag",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "incident_date",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "incident_hour",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "incident_id",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "incident_number",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "incident_status",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "judicial_dist_code",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "legacy_notify_agency",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "legacy_ori",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "location_code",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "location_id",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "location_name",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "method_entry_code",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "ncic_agency_name",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "nibrs_month_id",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "notify_agency",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "num_premises_entered",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "offender.age_id",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "offender.ethnicity_id",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "offender.race_id",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "offender_id",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "offender_seq_num",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "offense_category_name",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "offense_code",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "offense_id",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "offense_name",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "offense_type_id",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "ori",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "orig_format",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "population_family_desc",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "population_family_id",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "population_family_name",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "prop_loss_id",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "prop_loss_name",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "property_id",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "pub_agency_name",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "race_id",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "recovered_count",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "region_code",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "region_desc",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "region_id",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "region_name",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "report_date_flag",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "sai",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "sex_code",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "sort_order",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "special_mailing_address",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "special_mailing_group",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "state_abbr",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "state_code",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "state_fips_code",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "state_id",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "state_name",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "state_postal_abbr",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "state_pub_freq_months",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "stolen_count",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "submission_date",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "submitting_agency_id",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "tribe_id",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "ucr_agency_name",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "victim.age_id",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "victim.ethnicity_id",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "victim.race_id",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of incidents",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Incident"
+              }
             }
-        }
-    },
-    "definitions": {
-        "Incident": {
-            "type": "object",
-            "properties": {
-                "incident_date": {
-                  "type": "string",
-                  "format": "date",
-                  "description": "Date of incident"
-                },
-                "incident_hour": {
-                  "type": "integer",
-                  "description": "Hour from 0 through 23 of incident"
-                },
-                "agency": {
-                  "type": "object",
-                  "properties": {
-                    "ori": {
-                      "type": "string",
-                      "description": "The Originating Reference ID (ORI) for the submitting law enforcement agency"
-                    }
-                  }
-                }
+          },
+          "default": {
+            "description": "Unauthenticated error",
+            "schema": {
+              "$ref": "#/definitions/Error"
             }
-        },
-        "Error": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer",
-                    "format": "int32"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "fields": {
-                    "type": "string"
-                }
-            }
-        },
-        "Offense": {
-          "type": "object",
-          "properties": {
-
           }
         }
+      }
     }
+  },
+  "definitions": {
+    "Incident": {
+      "type": "object",
+      "properties": {
+        "incident_date": {
+          "type": "string",
+          "format": "date",
+          "description": "Date of incident"
+        },
+        "incident_hour": {
+          "type": "integer",
+          "description": "Hour from 0 through 23 of incident"
+        },
+        "agency": {
+          "type": "object",
+          "properties": {
+            "ori": {
+              "type": "string",
+              "description": "The Originating Reference ID (ORI) for the submitting law enforcement agency"
+            }
+          }
+        }
+      }
+    },
+    "Error": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "fields": {
+          "type": "string"
+        }
+      }
+    },
+    "Offense": {
+      "type": "object",
+      "properties": {}
+    }
+  }
 }
