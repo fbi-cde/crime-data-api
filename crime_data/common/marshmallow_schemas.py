@@ -93,7 +93,7 @@ class RefCitySchema(ma.ModelSchema):
         model = models.RefCity
         exclude = ('city_id', )
 
-    state = ma.Nested(RefStateSchema)
+    # state = ma.Nested(RefStateSchema)
 
 
 class RefPopulationFamilySchema(ma.ModelSchema):

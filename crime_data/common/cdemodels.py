@@ -1,6 +1,10 @@
-from flask import abort
+from collections import OrderedDict
+
+from flask import abort, current_app
 from flask.ext.sqlalchemy import Pagination
 from sqlalchemy import and_, func
+from sqlalchemy.orm import aliased
+from sqlalchemy.orm.properties import ColumnProperty
 from sqlalchemy.sql import label
 
 from crime_data.common import models
@@ -234,49 +238,153 @@ class CdeRetaMonth(models.RetaMonth):
 
 
 class TableFamily:
+
     def _is_string(col):
         return issubclass(col.type.python_type, str)
 
     def filtered(self, filters):
-        qry = self.base_table.query
-        joined = set([self.base_table, ])
+        qry = self.query()
         for (col_name, comparitor, val) in filters:
-            if col_name not in self.TABLES_BY_COLUMN:
+            if col_name not in self.map:
                 abort(400, 'field {} not found'.format(col_name))
-            tables = self.TABLES_BY_COLUMN[col_name]
-            for table in tables:
-                if table not in joined:
-                    qry = qry.join(table)
-                    joined.add(table)
-            col = getattr(tables[-1], col_name)
+            col = self.map[col_name]
             if _is_string(col):
                 col = func.lower(col)
                 val = val.lower()
             qry = qry.filter(getattr(col, comparitor)(val))
         return qry
 
+    def _build_map(self):
+        self.map = {}
+        tables = [self.base_table, ] + self.tables
+        for table in tables:
+            for (alias, col) in table.map():
+                if alias in self.map:
+                    print('Column {} already in map'.format(alias))
+                else:
+                    self.map[alias] = col
+
+    def query(self):
+
+        self._build_map()
+        qry = self.base_table.table.query
+        for table in self.tables:
+            if table.join is None:
+                qry = qry.join(table.table, isouter=table.outer)
+            else:
+                qry = qry.join(table.table, table.join, isouter=table.outer)
+        return qry
+
+
+class JoinedTable:
+
+    PREFIX_SEPARATOR = '.'
+
+    def __init__(self, table, outer=True, prefix=None, join=None):
+        self.table = table
+        self.outer = outer
+        self.prefix = prefix
+        self.join = join
+
+    def columns(self):
+        """
+        Build a dictionary mapping column name to column model object
+        for all the tables in the table family.
+        """
+        for attr_name in dir(self.table):
+            col = getattr(self.table, attr_name)
+            if hasattr(col, 'key') and hasattr(col, 'prop'):
+                yield col
+
+    def map(self):
+        for col in self.columns():
+            if self.prefix:
+                alias = '{}{}{}'.format(self.prefix, self.PREFIX_SEPARATOR,
+                                        col.key)
+            else:
+                alias = col.key
+            yield (alias, col)
+
 
 class IncidentTableFamily(TableFamily):
 
-    base_table = models.NibrsIncident
-    TABLES_BY_COLUMN = {
-        'incident_hour': (models.NibrsIncident, ),
-        'method_entry_code': (models.NibrsOffense, ),
-        'offense_category_name': (models.NibrsOffense,
-                                  models.NibrsOffenseType, ),
-        'offense_code': (models.NibrsOffense,
-                         models.NibrsOffenseType, ),
-        'offense_name': (models.NibrsOffense,
-                         models.NibrsOffenseType, ),
-        'crime_against': (models.NibrsOffense,
-                          models.NibrsOffenseType, ),
-        'offense_category_name': (models.NibrsOffense,
-                                  models.NibrsOffenseType, ),
-        'location_code': (models.NibrsOffense,
-                          models.NibrsLocationType, ),
-        'location_name': (models.NibrsOffense,
-                          models.NibrsLocationType, ),
-    }
+    PREFIX_SEPARATOR = '.'
+
+    base_table = JoinedTable(models.NibrsIncident)
+
+    victim_race = aliased(models.RefRace)
+    victim_age = aliased(models.NibrsAge)
+    victim_ethnicity = aliased(models.NibrsEthnicity)
+    offender_race = aliased(models.RefRace)
+    offender_age = aliased(models.NibrsAge)
+    offender_ethnicity = aliased(models.NibrsEthnicity)
+    arrestee_race = aliased(models.RefRace)
+    arrestee_age = aliased(models.NibrsAge)
+    arrestee_ethnicity = aliased(models.NibrsEthnicity)
+
+    tables = [
+        JoinedTable(models.NibrsOffense),
+        JoinedTable(models.NibrsOffenseType),
+        JoinedTable(models.RefAgency,
+                    outer=False),
+        JoinedTable(models.RefAgencyType,
+                    outer=False),
+        JoinedTable(models.RefState,
+                    outer=False),
+        JoinedTable(models.RefDivision,
+                    outer=False),
+        JoinedTable(models.RefRegion,
+                    outer=False),
+        JoinedTable(models.RefSubmittingAgency,
+                    join=(models.RefAgency.agency_id ==
+                          models.RefSubmittingAgency.agency_id)),
+        JoinedTable(models.RefFieldOffice),
+        JoinedTable(models.RefPopulationFamily,
+                    join=(models.RefAgency.population_family_id ==
+                          models.RefPopulationFamily.population_family_id),
+                    outer=False),
+        JoinedTable(models.NibrsClearedExcept),
+        JoinedTable(models.NibrsOffender),
+        JoinedTable(offender_age,
+                    join=(models.NibrsOffender.age_id == offender_age.age_id),
+                    prefix='offender'),
+        JoinedTable(
+            offender_race,
+            join=(models.NibrsOffender.race_id == offender_race.race_id),
+            prefix='offender'),
+        JoinedTable(offender_ethnicity,
+                    join=(models.NibrsOffender.ethnicity_id ==
+                          offender_ethnicity.ethnicity_id),
+                    prefix='offender'),
+        JoinedTable(victim_age,
+                    join=(models.NibrsOffender.age_id == victim_age.age_id),
+                    prefix='victim'),
+        JoinedTable(victim_race,
+                    join=(models.NibrsOffender.race_id == victim_race.race_id),
+                    prefix='victim'),
+        JoinedTable(victim_ethnicity,
+                    join=(models.NibrsOffender.ethnicity_id ==
+                          victim_ethnicity.ethnicity_id),
+                    prefix='victim'),
+        JoinedTable(arrestee_age,
+                    join=(models.NibrsOffender.age_id == arrestee_age.age_id),
+                    prefix='arrestee'),
+        JoinedTable(
+            arrestee_race,
+            join=(models.NibrsOffender.race_id == arrestee_race.race_id),
+            prefix='arrestee'),
+        JoinedTable(arrestee_ethnicity,
+                    join=(models.NibrsOffender.ethnicity_id ==
+                          arrestee_ethnicity.ethnicity_id),
+                    prefix='arrestee'),
+        JoinedTable(models.NibrsProperty),
+        JoinedTable(models.NibrsPropLossType),
+        JoinedTable(models.NibrsLocationType,
+                    join=(models.NibrsOffense.location_id ==
+                          models.NibrsLocationType.location_id)),
+    ]
+
+    # output swagger
 
 
 def _is_string(col):
