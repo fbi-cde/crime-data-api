@@ -41,15 +41,8 @@ class CdeRefAgency(models.RefAgency, QueryTraits):
         'city': CdeRefCity.city_name.label('city') }
 
     def get(args, ori = None):
-
         # Base Query
         query = CdeRefAgency.query
-
-        query = (query
-             .outerjoin(CdeRefState)
-             .outerjoin(CdeRefCity)
-        )
-
 
         # Get ONE ORI.
         if ori:
