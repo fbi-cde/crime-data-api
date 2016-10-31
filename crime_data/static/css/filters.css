@@ -106,3 +106,19 @@ main {
 .filter[aria-expanded="false"] :not(legend) {
   display: none;
 }
+
+section.tables {
+  overflow-x: scroll;
+  width: 100%;
+}
+
+.tables caption {
+  border: 1px solid black;
+  border-bottom: 0;
+  padding: .5em;
+  text-align: left;
+}
+
+.tables th {
+  white-space: nowrap;
+}

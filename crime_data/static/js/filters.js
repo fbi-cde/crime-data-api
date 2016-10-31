@@ -1,3 +1,5 @@
+var KEY
+
 function $(sel) {
   return document.querySelectorAll(sel)
 }
@@ -5,6 +7,7 @@ function $(sel) {
 function applyParams(params) {
   applyCollapseParam(params)
   applyHideParam(params)
+  applyKeyParam(params)
   applyValueParam(params)
 }
 
@@ -42,6 +45,10 @@ function applyHideParam(params) {
 
     el.setAttribute('style', 'display: none;')
   })
+}
+
+function applyKeyParam(params) {
+  KEY = params['k'] || false
 }
 
 function applyValueParam(params) {
@@ -98,6 +105,61 @@ function getParams() {
   return params
 }
 
+function fetchData(endpoint, search) {
+  var url = makeApiUrl(endpoint, search)
+  return fetch(url).then(function(data) {
+    if (data.status === 200) return data.json()
+    throw new Error(data.statusText)
+  })
+  .then(function(resp) {
+    return resp.results
+  })
+  .catch(function(err) {
+    console.error('fetchData() err', err)
+  });
+}
+
+function fetchIncidents(search) {
+  var query = makeApiSearchQuery(search)
+  console.log('incident query', query)
+  fetchData('incidents', query).then(function(incidents) {
+    return incidents.map((function(incident) {
+      return makeIncidentRow(incident)
+    }))
+  }).then(function(html) {
+    return html.join('')
+  }).then(function(html) {
+    $('#incident-data tbody')[0].innerHTML = html
+  })
+}
+
+function makeIncidentRow(i) {
+  function j(data) {
+    if (data.length === 0) return 'No data'
+    return `${data.length} items`
+  }
+
+  var agencyUrl = makeApiUrl(`agencies/${i.agency.ori}`)
+
+  return `<tr>
+    <td>${i.incident_number}</td>
+    <td>2014</td>
+    <td>${new Date(i.incident_date)}</td>
+    <td>California</td>
+    <td>${i.agency.pub_agency_name}</td>
+    <td>
+      <a href="${agencyUrl}">${i.agency.ori}</a>
+    </td>
+    <td>??</td>
+    <td>${j(i.victims)}</td>
+    <td>${j(i.offenses)}</td>
+    <td>${j(i.offenders)}</td>
+    <td>${j(i.arrestees)}</td>
+    <td>${j(i.property)}</td>
+    <td>??</td>
+  </tr>`;
+}
+
 function makeMethodologyText(values) {
   var type
 
@@ -112,17 +174,51 @@ function makeMethodologyText(values) {
   return `The data is from <strong>${values['location']} law enforcement agencies</strong> that submitted 12 months of <strong>${type.toLowerCase()}</strong> data for the years <strong>${values['time-from']}</strong> through </strong>${values['time-to']}</strong>. Totals are aggregates of the totals reported by agencies providing data to the UCR Program within each state.`
 }
 
+function makeApiSearchQuery(values) {
+  if (!values) return false
+
+  return Object.keys(values).map(function(key) {
+    var queryKey, queryValue
+    switch (key) {
+      case 'clearance':
+        queryKey = key
+        queryValue = (values[key] === 'yes') ? true : false
+        break
+      case 'involved-property':
+        queryKey = 'property'
+        queryValue = (values[key] === 'yes') ? true : false
+        break
+      default:
+        queryKey = key
+        queryValue = values[key]
+        break
+    }
+    return `${queryKey}=${encodeURIComponent(queryValue)}`
+  }).join('&')
+}
+
+function makeApiUrl(endpoint, search) {
+  var api = 'https://crime-data-api.fr.cloud.gov'
+  var url = `${api}/${endpoint}?api_key=${KEY}`
+
+  if (!search) return url
+
+  return `${url}&${search}`
+}
+
 function updateContent() {
   var values = getFormValues('#filters')
-  var basicText = $('#basic-text')[0]
   var methodology = $('#methodology')[0]
   var toDisable = [
+    'clearance-filter',
     'offender-filter',
+    'property-filter',
     'victim-filter'
   ]
 
-  if (basicText) basicText.innerHTML = makeBasicText(values)
   if (methodology) methodology.innerHTML = `<p>${makeMethodologyText(values)}</p>`
+
+  fetchIncidents(values)
 
   if (values.type.toLowerCase() === 'employee counts') {
     toDisable.forEach(function(id) {
