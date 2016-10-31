@@ -69,7 +69,8 @@ class QueryTraits(object):
     def apply_group_by(cls, query, group_bys):
         for group in group_bys:
             if group in cls.get_filter_map():
-                query = query.group_by(cls.get_filter_map()[group]).order_by(cls.get_filter_map()[group])
+                query = (query.group_by(cls.get_filter_map()[group])
+                    .order_by(cls.get_filter_map()[group]))
         return query
     pass
 
@@ -81,6 +82,13 @@ class RoutingSQLAlchemy(SQLAlchemy):
 class CdeResource(Resource):
     __abstract__ = True
     schema = None
+
+    OPERATORS = {'!=': '__ne__',
+             '>=': '__ge__',
+             '<=': '__le__',
+             '>': '__gt__',
+             '<': '__le__',
+             '==': '__eq__', }
 
     def _stringify(self, data):
         """Avoid JSON serialization errors
@@ -116,13 +124,6 @@ class CdeResource(Resource):
             key = creds[0]['API_KEY']
             if args.get('api_key') != key:
                 abort(401, 'Use correct `api_key` argument')
-
-    OPERATORS = {'!=': '__ne__',
-                 '>=': '__ge__',
-                 '<=': '__le__',
-                 '>': '__gt__',
-                 '<': '__le__',
-                 '==': '__eq__', }
 
     def _parse_inequality_operator(self, k, v):
         """

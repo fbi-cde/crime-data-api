@@ -201,13 +201,16 @@ class TableFamily:
 
     def filtered(self, filters):
         qry = self.query()
+
         for (col_name, comparitor, val) in filters:
+
             if col_name not in self.map:
                 abort(400, 'field {} not found'.format(col_name))
             col = self.map[col_name]
             if _is_string(col):
                 col = func.lower(col)
                 val = val.lower()
+            
             qry = qry.filter(getattr(col, comparitor)(val))
         return qry
 
