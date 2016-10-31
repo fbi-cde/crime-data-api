@@ -28,7 +28,6 @@ Then run the following commands to bootstrap your environment :
 git clone https://github.com/18F/crime-data-api
 cd crime-data-api
 pip install -r requirements/dev.txt
-npm install && npm run swagger
 flask run
 ```
 
