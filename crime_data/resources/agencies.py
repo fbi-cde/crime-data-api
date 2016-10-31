@@ -1,15 +1,15 @@
 import re
 
 from flask_restful import fields, marshal_with, reqparse
-from webargs.flaskparser import use_args
 
 from crime_data.common import cdemodels as models
 from crime_data.common import marshmallow_schemas
 from crime_data.common.base import CdeResource
-
 from crime_data.common.marshmallow_schemas import (
     ArgumentsSchema, IncidentArgsSchema, IncidentCountArgsSchema, AgenciesRetaArgsSchema,
     AgencySchema, AgenciesIncidentArgsSchema)
+from webargs.flaskparser import use_args
+
 
 class AgenciesResource(CdeResource):
 
@@ -49,8 +49,10 @@ class AgenciesNibrsCount(CdeResource):
         by = self.SPLITTER.split(
             args['by'].lower())  # TODO: can post-process in schema?
 
-        query = models.CdeNibrsIncident.get_nibrs_incident_by_ori(ori, args, by)
+        query = models.CdeNibrsIncident.get_nibrs_incident_by_ori(ori, args,
+                                                                  by)
         return self.with_metadata(query, args)
+
 
 class AgenciesRetaCount(CdeResource):
 
@@ -60,7 +62,7 @@ class AgenciesRetaCount(CdeResource):
     def get(self, args, ori=None):
         '''''
         Get Incident Count by Agency ID/ORI.
-        '''''
+        ''' ''
         self.verify_api_key(args)
         by = []
 
@@ -71,4 +73,3 @@ class AgenciesRetaCount(CdeResource):
         result = self.with_metadata(query, args)
 
         return result
-
