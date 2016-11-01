@@ -146,9 +146,12 @@ function makeIncidentRow(i) {
   }
 
   var agencyUrl = makeApiUrl(`agencies/${i.agency.ori}`)
+  var incidentUrl = makeApiUrl(`incidents/${i.incident_number}`)
 
   return `<tr>
-    <td>${i.incident_number}</td>
+    <td>
+      <a href="${incidentUrl}">${i.incident_number}</a>
+    </td>
     <td>2014</td>
     <td>${new Date(i.incident_date)}</td>
     <td>${i.location}</td>
