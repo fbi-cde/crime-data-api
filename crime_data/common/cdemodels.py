@@ -18,6 +18,9 @@ class CdeRefState(models.RefState):
 class CdeNibrsAge(models.NibrsAge):
     pass
 
+class CdeNibrsOffenseType(models.NibrsOffenseType):
+    pass
+
 class CdeRefRace(models.RefRace):
     pass
 
@@ -97,6 +100,7 @@ class CdeNibrsIncident(models.NibrsIncident, QueryTraits):
         'month':CdeNibrsMonth.month_num,
         'year':CdeNibrsMonth.data_year,
         'ori': CdeRefAgency.ori,
+        'offense': CdeNibrsOffenseType.offense_name,
         'offense.location': CdeNibrsLocationType.location_name,
         'victim.ethnicity': 
         CdeNibrsIncident.victim_ethnicity.ethnicity_name.label('victim.ethnicity'),
@@ -135,6 +139,7 @@ class CdeNibrsIncident(models.NibrsIncident, QueryTraits):
         
         # Apply JOINS.
         query = (query.join(CdeNibrsOffense).join(CdeNibrsLocationType)
+                 .outerjoin(CdeNibrsOffenseType)
                  .outerjoin(CdeNibrsMonth).outerjoin(CdeRefAgency)
                  .outerjoin(CdeRefCity).outerjoin(CdeRefState)
                  .outerjoin(CdeNibrsOffender)
