@@ -15,6 +15,11 @@ session = db.session
 class CdeRefState(models.RefState):
     pass
 
+class CdeNibrsAge(models.NibrsAge):
+    pass
+
+class CdeRefRace(models.RefRace):
+    pass
 
 class CdeRefCity(models.RefCity):
     pass
@@ -77,6 +82,16 @@ class CdeNibrsLocationType(models.NibrsLocationType):
 
 class CdeNibrsIncident(models.NibrsIncident, QueryTraits):
 
+    offender_ethnicity = aliased(CdeNibrsEthnicity, name='offender_ethnicity')
+    victim_ethnicity = aliased(CdeNibrsEthnicity, name='victim_ethnicity')
+    victim_race = aliased(CdeRefRace, name='victim_race')
+    victim_age = aliased(CdeNibrsAge, name='victim_age')
+    offender_race = aliased(CdeRefRace, name='offender_race')
+    offender_age = aliased(CdeNibrsAge, name='offender_age')
+    arrestee_race = aliased(CdeRefRace, name='arrestee_race')
+    arrestee_age = aliased(CdeNibrsAge, name='arrestee_age')
+    arrestee_ethnicity = aliased(CdeNibrsEthnicity, name='arrestee_ethnicity')
+
     '''''
     Extends models.NibrsIncident.
     ''' ''
@@ -91,9 +106,23 @@ class CdeNibrsIncident(models.NibrsIncident, QueryTraits):
         'ori': CdeRefAgency.ori,
         'offense_location': CdeNibrsLocationType.location_name,
         'victim_ethnicity': 
-        CdeNibrsEthnicity.ethnicity_name.label('victim_ethnicity'),
+        CdeNibrsIncident.victim_ethnicity.ethnicity_name.label('victim.ethnicity'),
         'offender_ethnicity': 
-        CdeNibrsEthnicity.ethnicity_name.label('offender_ethnicity') }
+        CdeNibrsIncident.offender_ethnicity.ethnicity_name.label('offender.ethnicity'), 
+        'victim_race_code': 
+        CdeNibrsIncident.victim_race.race_code.label('victim.race_code'),
+        'victim_age_code': 
+        CdeNibrsIncident.victim_age.age_code.label('victim.age_code'),
+        'offender_race_code': 
+        CdeNibrsIncident.offender_race.race_code.label('offender.race_code'),
+        'offender_age_code': 
+        CdeNibrsIncident.offender_age.age_code.label('offender.age_code'),
+        'arrestee_race_code': 
+        CdeNibrsIncident.arrestee_race.race_code.label('arestee.race_code'),
+        'arrestee_age_code': 
+        CdeNibrsIncident.arrestee_age.age_code.label('arestee.age_code'),
+        'arrestee_ethnicity': 
+        CdeNibrsIncident.arrestee_ethnicity.ethnicity_name.label('arrestee.ethnicity'),}
 
 
     @staticmethod
@@ -108,6 +137,7 @@ class CdeNibrsIncident(models.NibrsIncident, QueryTraits):
 
         fields = CdeNibrsIncident.get_fields(agg_fields, by)
 
+
         # Base Query
         query = CdeNibrsIncident.query
 
@@ -115,22 +145,35 @@ class CdeNibrsIncident(models.NibrsIncident, QueryTraits):
         # Apply JOINS.
         query = (query.join(CdeNibrsOffense).join(CdeNibrsLocationType)
                  .outerjoin(CdeNibrsMonth).outerjoin(CdeRefAgency)
-                 .outerjoin(CdeRefCity).outerjoin(CdeRefState))
-
-
-        if 'victim_ethnicity' in by or 'offender_ethnicity' in by:
-            if 'victim_ethnicity' in by:
-                query = (query.outerjoin(CdeNibrsVictim))
-            if 'offender_ethnicity' in by:
-                query = (query.outerjoin(CdeNibrsOffender))
-            query = query.outerjoin(CdeNibrsEthnicity)
+                 .outerjoin(CdeRefCity).outerjoin(CdeRefState)
+                 .outerjoin(CdeNibrsOffender)
+                 .outerjoin(models.NibrsAge)
+                 .outerjoin(CdeNibrsIncident.arrestee_age, CdeNibrsAge.age_id ==
+                           CdeNibrsIncident.arrestee_age.age_id)
+                 .outerjoin(CdeNibrsIncident.victim_age, CdeNibrsAge.age_id ==
+                           CdeNibrsIncident.victim_age.age_id)
+                 .outerjoin(CdeNibrsIncident.offender_age, CdeNibrsAge.age_id ==
+                           CdeNibrsIncident.offender_age.age_id)
+                 .outerjoin(models.RefRace)
+                 .outerjoin(CdeNibrsIncident.arrestee_race, CdeRefRace.race_id ==
+                           CdeNibrsIncident.arrestee_race.race_id)
+                 .outerjoin(CdeNibrsIncident.victim_race, CdeRefRace.race_id ==
+                           CdeNibrsIncident.victim_race.race_id)
+                 .outerjoin(CdeNibrsIncident.offender_race, CdeRefRace.race_id ==
+                           CdeNibrsIncident.offender_race.race_id)
+                 .outerjoin(CdeNibrsEthnicity)
+                 .outerjoin(CdeNibrsIncident.victim_ethnicity,CdeNibrsOffender.ethnicity_id ==
+                          CdeNibrsIncident.victim_ethnicity.ethnicity_id)
+                 .outerjoin(CdeNibrsIncident.offender_ethnicity,CdeNibrsOffender.ethnicity_id ==
+                          CdeNibrsIncident.offender_ethnicity.ethnicity_id)
+                 )
 
         # Apply field selections.
         query = query.with_entities(*fields)
 
         # Apply group by.
         query = CdeNibrsIncident.apply_group_by(query, by)
-
+        
         # Apply all filters
         query = CdeNibrsIncident.apply_filters(query, filters)
 
@@ -227,7 +270,8 @@ class TableFamily:
     def query(self):
 
         self._build_map()
-        self.print_map()
+        print(self.map)
+        #self.print_map()
         qry = self.base_table.table.query
         for table in self.tables:
             if table.join is None:
