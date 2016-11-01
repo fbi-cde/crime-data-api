@@ -135,6 +135,14 @@ class TestIncidentsEndpoint:
             hits = [o for o in incident['offenses'] if o['location']['location_name'] == 'Parking Lot/Garage']
             assert len(hits) > 0
 
+    def test_incidents_endpoint_filters_victim_race_code(self, user, testapp):
+        res = testapp.get('/incidents/?victim.race_code=B')
+        assert len(res.json['results']) > 0
+        for incident in res.json['results']:
+            assert len(incident['victims']) > 0
+            hits = [v for v in incident['victims'] if v['race']['race_code'] == 'B']
+            assert len(hits) > 0
+
     @pytest.mark.xfail  # TODO
     def test_incidents_endpoint_filters_for_nulls(self, user, testapp):
         pass

@@ -3,6 +3,7 @@ from flask.ext.sqlalchemy import Pagination
 from sqlalchemy import and_, func
 from sqlalchemy.orm import aliased
 from sqlalchemy.sql import label
+from sqlalchemy.exc import ArgumentError
 
 from crime_data.common import models
 from crime_data.extensions import db
@@ -263,13 +264,15 @@ class TableFamily:
     def query(self):
 
         self._build_map()
-        self.print_map()
+        # self.print_map()
         qry = self.base_table.table.query
         for table in self.tables:
             if table.join is None:
-                qry = qry.join(table.table, isouter=table.outer)
+                #qry = qry.join(table.table, isouter=table.outer)
+                qry = qry.join(table.table, isouter=True)
             else:
-                qry = qry.join(table.table, table.join, isouter=table.outer)
+                #qry = qry.join(table.table, table.join, isouter=table.outer)
+                qry = qry.join(table.table, table.join, isouter=True) 
         return qry
 
     def print_map(self):
@@ -308,11 +311,20 @@ class JoinedTable:
         Build a dictionary mapping column name to column model object
         for all the tables in the table family.
         """
-        for attr_name in dir(self.table):
-            col = getattr(self.table, attr_name)
-            if hasattr(col, 'key') and hasattr(col, 'prop') and hasattr(
-                    col, 'base_columns'):
-                yield col
+        if hasattr(self.table, '_aliased_insp'):
+            column_source = self.table._aliased_insp.class_
+            # TODO: Relying on underscores is scary.
+        else:
+            column_source = self.table
+        for attr_name in dir(column_source):
+            try:
+                col = getattr(self.table, attr_name)
+                if hasattr(col, 'key') and hasattr(col, 'prop') and hasattr(
+                        col, 'base_columns'):
+                    yield col
+            except ArgumentError:
+                pass
+                # This occurs for non-column itmems found in aliased table
 
     def map(self):
         for col in self.columns():
@@ -342,7 +354,7 @@ class IncidentTableFamily(TableFamily):
 
     tables = [
         JoinedTable(models.NibrsOffense),
-        JoinedTable(models.NibrsOffenseType),
+        JoinedTable(models.NibrsOffenseType, outer=False),
         JoinedTable(models.RefAgency,
                     outer=False),
         JoinedTable(models.RefAgencyType,
@@ -361,45 +373,48 @@ class IncidentTableFamily(TableFamily):
                     join=(models.RefAgency.population_family_id ==
                           models.RefPopulationFamily.population_family_id),
                     outer=False),
-        JoinedTable(models.NibrsClearedExcept),
+        JoinedTable(models.NibrsClearedExcept, outer=False),
         JoinedTable(models.NibrsOffender),
+        JoinedTable(models.NibrsVictim),
+        JoinedTable(models.NibrsArrestee, join=(models.NibrsIncident.incident_id == models.NibrsArrestee.incident_id)),
         JoinedTable(offender_age,
                     join=(models.NibrsOffender.age_id == offender_age.age_id),
-                    prefix='offender'),
+                    prefix='offender', outer=False),
         JoinedTable(
             offender_race,
             join=(models.NibrsOffender.race_id == offender_race.race_id),
-            prefix='offender'),
+            prefix='offender', outer=False),
         JoinedTable(offender_ethnicity,
                     join=(models.NibrsOffender.ethnicity_id ==
                           offender_ethnicity.ethnicity_id),
                     prefix='offender'),
         JoinedTable(victim_age,
-                    join=(models.NibrsOffender.age_id == victim_age.age_id),
-                    prefix='victim'),
+                    join=(models.NibrsVictim.age_id == victim_age.age_id),
+                    prefix='victim', outer=False),
         JoinedTable(victim_race,
-                    join=(models.NibrsOffender.race_id == victim_race.race_id),
-                    prefix='victim'),
+                    join=(models.NibrsVictim.race_id == victim_race.race_id),
+                    prefix='victim', outer=False),
         JoinedTable(victim_ethnicity,
-                    join=(models.NibrsOffender.ethnicity_id ==
+                    join=(models.NibrsVictim.ethnicity_id ==
                           victim_ethnicity.ethnicity_id),
                     prefix='victim'),
         JoinedTable(arrestee_age,
-                    join=(models.NibrsOffender.age_id == arrestee_age.age_id),
-                    prefix='arrestee'),
+                    join=(models.NibrsArrestee.age_id == arrestee_age.age_id),
+                    prefix='arrestee', outer=False),
         JoinedTable(
             arrestee_race,
-            join=(models.NibrsOffender.race_id == arrestee_race.race_id),
-            prefix='arrestee'),
+            join=(models.NibrsArrestee.race_id == arrestee_race.race_id),
+            prefix='arrestee', outer=False),
         JoinedTable(arrestee_ethnicity,
-                    join=(models.NibrsOffender.ethnicity_id ==
+                    join=(models.NibrsArrestee.ethnicity_id ==
                           arrestee_ethnicity.ethnicity_id),
                     prefix='arrestee'),
         JoinedTable(models.NibrsProperty),
-        JoinedTable(models.NibrsPropLossType),
+        JoinedTable(models.NibrsPropLossType, outer=False),
         JoinedTable(models.NibrsLocationType,
                     join=(models.NibrsOffense.location_id ==
-                          models.NibrsLocationType.location_id)),
+                          models.NibrsLocationType.location_id),
+                          outer=False),
     ]
 
 
