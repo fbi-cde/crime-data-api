@@ -105,8 +105,6 @@ class CdeResource(Resource):
 
         return si.getvalue().strip('\r\n')
 
-
-
     def _stringify(self, data):
         """Avoid JSON serialization errors
         by converting values in list of dicts
