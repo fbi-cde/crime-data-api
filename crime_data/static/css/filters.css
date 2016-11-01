@@ -1,11 +1,4 @@
-:root {
-  --body-width: 1024px;
-  --filters-background: #122E51;
-  --filters-width: 300px;
-  --main-width: calc(var(--body-width) - var(--filters-width));
-}
-
-h1, h2, h3, h4, h5, h6 {
+h2, h3, h4, h5, h6 {
   font-family: "Source Sans Pro", "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
   font-weight: 500;
 }
@@ -13,32 +6,102 @@ h1, h2, h3, h4, h5, h6 {
 body {
   margin: 0 auto;
   min-height: 100%;
-  width: var(--body-width);
+}
+
+header {
+  background-color: #122e51;
+  color: white;
+}
+
+header div {
+  margin: 0 auto;
+  padding: 1.3em;
+  padding-left: 1.7em;
+  position: relative;
+  width: 1000px;
+}
+
+header div::after {
+  display: block;
+  content: '';
+  clear: both;
 }
 
 header h1 {
-  color: var(--filters-background);
-  font-weight: 900;
+  display: inline-block;
+  font-size: 1.7em;
+  font-weight: 500;
+  margin-top: .4em;
+}
+
+nav {
+  position: absolute;
+  right: 0;
+  top: 35%;
+}
+
+nav ul {
+  margin: 0;
+}
+
+nav li {
+  display: inline-block;
+  margin-right: 1.9em;
+}
+
+nav li a {
+  color: white;
+  cursor: pointer;
+  position: relative;
+  text-decoration: none;
+}
+
+nav li a.active,
+nav li a:hover {
+  color: pink;
+}
+
+nav li a:before {
+  background-image: url('/static/libs/uswds/img/arrow-down.svg');
+  background-repeat: no-repeat;
+  content: '';
+  height: 10px;
+  position: absolute;
+  right: -1em;
+  top: .4em;
+  width: 10px;
+}
+
+.wrapper {
+  margin: 0 auto;
+  width: 1000px;
 }
 
 main {
   display: inline-block;
-  padding: 0 1em;
-  width: var(--main-width);
+  padding: 0 3em;
+  width: 700px;
+}
+
+main h1 {
+  border-bottom: 2px solid #ccc;
+  font-family: "Merriweather", serif;
+  font-size: 2.4em;
+  font-weight: 700;
+  width: 100%;
 }
 
 #filters {
-  background-color: var(--filters-background);
+  background-color: #eee;
   float: left;
   min-height: 100%;
   padding: 0 1em;
   padding-bottom: 1em;
   padding-top: 3em;
-  width: var(--filters-width);
+  width: 300px;
 }
 
 .filter {
-  background-color: white;
   margin-bottom: 1em;
   padding: 1em;
   position: relative;
@@ -48,14 +111,14 @@ main {
   cursor: not-allowed;
 }
 
-.filter:last-child {
-  border-bottom: 1px solid white;
-}
-
 .filter legend {
-  display: table-cell;
+  border-bottom: 1px solid #ccc;
+  display: inline-block;
+  font-family: "Merriweather", serif;
   font-size: 1.1em;
-  font-weight: 600;
+  font-weight: 700;
+  padding-bottom: .2em;
+  width: 100%;
 }
 
 .filter fieldset {
@@ -79,14 +142,14 @@ main {
 }
 
 .filter:before {
-  --arrow-size: 20px;
   background-image: url('/static/libs/uswds/img/arrow-down.svg');
   background-repeat: no-repeat;
   content: '';
-  height: var(--arrow-size);
+  cursor: pointer;
+  height: 20px;
   position: absolute;
   right: 1em;
-  width: var(--arrow-size);
+  width: 20px;
 }
 
 .filter[disabled]:before {
@@ -122,7 +185,7 @@ section.tables {
 .tables th {
   white-space: nowrap;
 }
-/*
+
 #summary-data {
   display: none;
-}*/
+}

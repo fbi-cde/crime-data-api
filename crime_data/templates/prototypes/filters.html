@@ -10,196 +10,226 @@
   </head>
   <body>
     <header>
-      <h1>CDE</h1>
+      <div>
+        <h1>Crime Data Explorer</h1>
+        <nav>
+          <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="#" class="active">Data tool</a></li>
+            <li><a href="#">Data highlights</a></li>
+          </ul>
+        </nav>
+      </div>
     </header>
-    <form id="filters" action="/static/filters.html">
-      <fieldset class="filter" id="type-filter">
-        <legend>Data type</legend>
-        <select name="type" id="type">
-          <optgroup label="Crime data">
-            <option>Total violent crime</option>
-            <option>Murder</option>
-            <option>Non-negligent manslaughter</option>
-            <option>Rape</option>
-            <option>Robbery</option>
-            <option>Aggravated assualt</option>
-            <option>Total property crime</option>
-            <option>Burglary</option>
-            <option>Larceny-theft</option>
-            <option>Mother vehicle theft</option>
-            <option>Arson</option>
-          </optgroup>
-          <optgroup label="Crime clearance">
-            <option>Something</option>
-          </optgroup>
-          <optgroup label="Arrest data">
-            <option>By race</option>
-            <option>By age</option>
-          </optgroup>
-          <optgroup label="Police employee data">
-            <option>Employee counts</option>
-            <option>Police killed</option>
-          </optgroup>
-        </select>
-      </fieldset>
-      <fieldset class="filter" id="location-filter">
-        <legend>Location</legend>
-        <select name="location" id="location">
-          <option>United States</option>
-          <option>California</option>
-          <option>New York</option>
-          <option>Tennessee</option>
-          <option>West Virginia</option>
-        </select>
-      </fieldset>
-      <fieldset class="filter" id="time-filter">
-        <legend>Time period</legend>
-        <label for="time-from">From</label>
-        <input type="number" name="time-from" id="time-from" min="1960" max="2016" value="1960">
-        <label for="time-to">until</label>
-        <input type="number" name="time-to" id="time-to" min="1960" max="2016" value="2016">
-      </fieldset>
-      <fieldset class="filter" id="offender-filter">
-        <legend>About the offender</legend>
-        <fieldset>
-          <legend>Race</legend>
-          <input type="checkbox" name="offender-asian" id="offender-asian">
-          <label for="asian">Asian</label>
-          <input type="checkbox" name="offender-black" id="offender-black">
-          <label for="black">Black</label>
-          <input type="checkbox" name="offender-other-race" id="offender-other">
-          <label for="Other">Other</label>
-          <input type="checkbox" name="offender-unknown-race" id="offender-unknown-race">
-          <label for="unknown-race">Unknown</label>
-          <input type="checkbox" name="offender-white" id="offender-white">
-          <label for="white">White</label>
+    <div class="wrapper">
+      <form id="filters" action="/static/filters.html">
+        <fieldset class="filter" id="type-filter">
+          <legend>Data type</legend>
+          <select name="type" id="type">
+            <optgroup label="Crime data">
+              <option>Total violent crime</option>
+              <option>Murder</option>
+              <option>Non-negligent manslaughter</option>
+              <option>Rape</option>
+              <option>Robbery</option>
+              <option>Aggravated assualt</option>
+              <option>Total property crime</option>
+              <option>Burglary</option>
+              <option>Larceny-theft</option>
+              <option>Mother vehicle theft</option>
+              <option>Arson</option>
+            </optgroup>
+            <optgroup label="Crime clearance">
+              <option>Something</option>
+            </optgroup>
+            <optgroup label="Arrest data">
+              <option>By race</option>
+              <option>By age</option>
+            </optgroup>
+            <optgroup label="Police employee data">
+              <option>Employee counts</option>
+              <option>Police killed</option>
+            </optgroup>
+          </select>
         </fieldset>
-        <fieldset>
-          <legend>Sex</legend>
-          <input type="checkbox" name="offender-female" id="offender-female">
-          <label for="female">Female</label>
-          <input type="checkbox" name="offender-male" id="offender-male">
-          <label for="male">Male</label>
-          <input type="checkbox" name="offender-unknown-sex" id="offender-unknown-sex">
-          <label for="unknown-sex">Unknown</label>
+        <fieldset class="filter" id="location-filter">
+          <legend>Location</legend>
+          <select name="location" id="location">
+            <option>United States</option>
+            <option>California</option>
+            <option>New York</option>
+            <option>Tennessee</option>
+            <option>West Virginia</option>
+          </select>
         </fieldset>
-      </fieldset>
-      <fieldset class="filter" id="victim-filter">
-        <legend>About the victim</legend>
-        <fieldset>
-          <legend>Race</legend>
-          <input type="checkbox" name="victim-asian" id="victim-asian">
-          <label for="asian">Asian</label>
-          <input type="checkbox" name="victim-black" id="victim-black">
-          <label for="black">Black</label>
-          <input type="checkbox" name="victim-other-race" id="victim-other">
-          <label for="Other">Other</label>
-          <input type="checkbox" name="victim-unknown-race" id="victim-unknown-race">
-          <label for="unknown-race">Unknown</label>
-          <input type="checkbox" name="victim-white" id="victim-white">
-          <label for="white">White</label>
+        <fieldset class="filter" id="time-filter">
+          <legend>Time period</legend>
+          <input type="checkbox" name="jan" id="jan">
+          <label for="jan">January</label>
+          <input type="checkbox" name="feb" id="feb">
+          <label for="feb">February</label>
+          <input type="checkbox" name="march" id="march">
+          <label for="march">March</label>
+          <input type="checkbox" name="april" id="april">
+          <label for="april">January</label>
+          <input type="checkbox" name="may" id="may">
+          <label for="may">May</label>
+          <input type="checkbox" name="june" id="june">
+          <label for="june">June</label>
+          <input type="checkbox" name="july" id="july">
+          <label for="July">July</label>
+          <input type="checkbox" name="aug" id="aug">
+          <label for="aug">August</label>
+          <input type="checkbox" name="sep" id="sep">
+          <label for="sep">September</label>
+          <input type="checkbox" name="oct" id="oct">
+          <label for="oct">October</label>
+          <input type="checkbox" name="nov" id="nov">
+          <label for="jan">November</label>
+          <input type="checkbox" name="dec" id="dec">
+          <label for="dec">December</label>
+          <!-- <label for="time-from">From</label>
+          <input type="number" name="time-from" id="time-from" min="1960" max="2016" value="1960">
+          <label for="time-to">until</label>
+          <input type="number" name="time-to" id="time-to" min="1960" max="2016" value="2016"> -->
         </fieldset>
-        <fieldset>
-          <legend>Sex</legend>
-          <input type="checkbox" name="victim-female" id="victim-female">
-          <label for="female">Female</label>
-          <input type="checkbox" name="victim-male" id="victim-male">
-          <label for="male">Male</label>
-          <input type="checkbox" name="victim-unknown-sex" id="victim-unknown-sex">
-          <label for="unknown-sex">Unknown</label>
+        <fieldset class="filter" id="offender-filter">
+          <legend>About the offender</legend>
+          <fieldset>
+            <legend>Race</legend>
+            <input type="checkbox" name="offender-asian" id="offender-asian">
+            <label for="asian">Asian</label>
+            <input type="checkbox" name="offender-black" id="offender-black">
+            <label for="black">Black</label>
+            <input type="checkbox" name="offender-other-race" id="offender-other">
+            <label for="Other">Other</label>
+            <input type="checkbox" name="offender-unknown-race" id="offender-unknown-race">
+            <label for="unknown-race">Unknown</label>
+            <input type="checkbox" name="offender-white" id="offender-white">
+            <label for="white">White</label>
+          </fieldset>
+          <fieldset>
+            <legend>Sex</legend>
+            <input type="checkbox" name="offender-female" id="offender-female">
+            <label for="female">Female</label>
+            <input type="checkbox" name="offender-male" id="offender-male">
+            <label for="male">Male</label>
+            <input type="checkbox" name="offender-unknown-sex" id="offender-unknown-sex">
+            <label for="unknown-sex">Unknown</label>
+          </fieldset>
         </fieldset>
-        <fieldset>
-          <legend>Age</legend>
-          <input type="checkbox" name="victim-age-under-18" id="victim-age-under-18">
-          <label for="victim-age-under-18">Under 18</label>
-          <input type="checkbox" name="victim-age-over-18" id="victim-age-over-18">
-          <label for="victim-age-over-18">Over 18</label>
+        <fieldset class="filter" id="victim-filter">
+          <legend>About the victim</legend>
+          <fieldset>
+            <legend>Race</legend>
+            <input type="checkbox" name="victim-asian" id="victim-asian">
+            <label for="asian">Asian</label>
+            <input type="checkbox" name="victim-black" id="victim-black">
+            <label for="black">Black</label>
+            <input type="checkbox" name="victim-other-race" id="victim-other">
+            <label for="Other">Other</label>
+            <input type="checkbox" name="victim-unknown-race" id="victim-unknown-race">
+            <label for="unknown-race">Unknown</label>
+            <input type="checkbox" name="victim-white" id="victim-white">
+            <label for="white">White</label>
+          </fieldset>
+          <fieldset>
+            <legend>Sex</legend>
+            <input type="checkbox" name="victim-female" id="victim-female">
+            <label for="female">Female</label>
+            <input type="checkbox" name="victim-male" id="victim-male">
+            <label for="male">Male</label>
+            <input type="checkbox" name="victim-unknown-sex" id="victim-unknown-sex">
+            <label for="unknown-sex">Unknown</label>
+          </fieldset>
+          <fieldset>
+            <legend>Age</legend>
+            <input type="checkbox" name="victim-age-under-18" id="victim-age-under-18">
+            <label for="victim-age-under-18">Under 18</label>
+            <input type="checkbox" name="victim-age-over-18" id="victim-age-over-18">
+            <label for="victim-age-over-18">Over 18</label>
+          </fieldset>
         </fieldset>
-      </fieldset>
-      <fieldset class="filter" id="property-filter">
-        <legend>Involved property</legend>
-        <input type="radio" id="property-yes" name="involved-property" value="yes">
-        <label for="property-yes">Yes</label>
-        <input type="radio" id="property-no" name="involved-property" value="no">
-        <label for="property-no">No</label>
-      </fieldset>
-      <fieldset class="filter" id="clearance-filter">
-        <legend>Case cleared</legend>
-        <input type="radio" id="clearance-yes" name="clearance" value="yes">
-        <label for="clearance-yes">Yes</label>
-        <input type="radio" id="clearance-no" name="clearance" value="no">
-        <label for="clearance-no">No</label>
-      </fieldset>
-    </form>
-    <main>
-      <section>
-        <h2>Methodology</h2>
-        <div id='methodology'></div>
-      </section>
-      <section class="tables">
-        <table id="summary-data">
-          <caption>Summary data</caption>
-          <thead>
-            <th>Year</th>
-            <th>Location</th>
-            <th>Population</th>
-            <th>Type</th>
-            <th>Count</th>
-            <th>Rate per 100,000</th>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1980</td>
-              <td>California</td>
-              <td>38000000</td>
-              <td>Murder</td>
-              <td>7600</td>
-              <td>20</td>
-            </tr>
-            <tr>
-              <td>1981</td>
-              <td>California</td>
-              <td>39000000</td>
-              <td>Murder</td>
-              <td>7300</td>
-              <td>20</td>
-            </tr>
-            <tr>
-              <td>1982</td>
-              <td>California</td>
-              <td>39500000</td>
-              <td>Murder</td>
-              <td>7000</td>
-              <td>23</td>
-            </tr>
-          </tbody>
-        </table>
-        <table id="incident-data">
-          <caption>Incident data</caption>
-          <thead>
-            <th>NIBRS ID</th>
-            <th>Year</th>
-            <th>Incident date</th>
-            <th>Location</th>
-            <th>Agency</th>
-            <th>Agency ORI</th>
-            <th>Agency case ID</th>
-            <th>Victims</th>
-            <th>Offenses</th>
-            <th>Offenders</th>
-            <th>Arrestees</th>
-            <th>Property</th>
-            <th>Clearance</th>
-          </thead>
-          <tbody>
-            <tr>
-              <td>hey</td>
-              <td>other</td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-    </main>
+        <fieldset class="filter" id="property-filter">
+          <legend>Involved property</legend>
+          <input type="radio" id="property-yes" name="involved-property" value="yes">
+          <label for="property-yes">Yes</label>
+          <input type="radio" id="property-no" name="involved-property" value="no">
+          <label for="property-no">No</label>
+        </fieldset>
+        <fieldset class="filter" id="clearance-filter">
+          <legend>Case cleared</legend>
+          <input type="radio" id="clearance-yes" name="clearance" value="yes">
+          <label for="clearance-yes">Yes</label>
+          <input type="radio" id="clearance-no" name="clearance" value="no">
+          <label for="clearance-no">No</label>
+        </fieldset>
+      </form>
+      <main>
+        <section>
+          <h1>Results</h1>
+          <div id='methodology'></div>
+        </section>
+        <section class="tables">
+          <table id="summary-data">
+            <caption>Summary data</caption>
+            <thead>
+              <th>Year</th>
+              <th>Location</th>
+              <th>Population</th>
+              <th>Type</th>
+              <th>Count</th>
+              <th>Rate per 100,000</th>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1980</td>
+                <td>California</td>
+                <td>38000000</td>
+                <td>Murder</td>
+                <td>7600</td>
+                <td>20</td>
+              </tr>
+              <tr>
+                <td>1981</td>
+                <td>California</td>
+                <td>39000000</td>
+                <td>Murder</td>
+                <td>7300</td>
+                <td>20</td>
+              </tr>
+              <tr>
+                <td>1982</td>
+                <td>California</td>
+                <td>39500000</td>
+                <td>Murder</td>
+                <td>7000</td>
+                <td>23</td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="incident-data">
+            <caption>Incident data</caption>
+            <thead>
+              <th>NIBRS ID</th>
+              <th>Year</th>
+              <th>Incident date</th>
+              <th>Location</th>
+              <th>Agency</th>
+              <th>Agency ORI</th>
+              <th>Agency case ID</th>
+              <th>Victims</th>
+              <th>Offenses</th>
+              <th>Offenders</th>
+              <th>Arrestees</th>
+              <th>Property</th>
+              <th>Clearance</th>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </section>
+      </main>
+    </div>
     <script src="/static/libs/fetch.js"></script>
     <script src="/static/js/filters.js"></script>
   </body>
