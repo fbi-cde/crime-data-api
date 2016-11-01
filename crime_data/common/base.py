@@ -6,7 +6,7 @@ from flask import request
 from flask_restful import Resource, abort
 # import celery
 from flask_sqlalchemy import SignallingSession, SQLAlchemy
-
+from sqlalchemy import and_, func
 
 class RoutingSession(SignallingSession):
     """Route requests to database leader or follower as appropriate.
@@ -47,13 +47,16 @@ class RoutingSession(SignallingSession):
 
 class QueryTraits(object):
 
-    @classmethod
-    def apply_filters(cls, query, filters):
-        for filter,value in filters.items():
-            if filter in cls.get_filter_map():
-                col = cls.get_filter_map()[filter]
-                query = query.filter(col.ilike(value))
-        return query
+    # @classmethod
+    # def apply_filters(cls, query, filters):
+    #     for filter,value in filters.items():
+    #         if filter in cls.get_filter_map():
+    #             col = cls.get_filter_map()[filter]
+    #             query = query.filter(col.ilike(value))
+    #     return query
+
+
+
 
     @classmethod
     def get_fields(cls, agg_fields, fields):
@@ -72,7 +75,27 @@ class QueryTraits(object):
                 query = (query.group_by(cls.get_filter_map()[group])
                     .order_by(cls.get_filter_map()[group]))
         return query
-    pass
+
+    @classmethod
+    def apply_filters(cls, query, filters, parsed):
+
+        def _is_string(col):
+            return issubclass(col.type.python_type, str)
+
+        for (col_name, comparitor, val) in filters:
+            col = cls.get_filter_map()[col_name]
+            if _is_string(col):
+                col = func.lower(col)
+                val = val.lower()
+            query = query.filter(getattr(col, comparitor)(val))
+
+
+        for filter,value in parsed.items():
+            if filter in cls.get_filter_map():
+                col = cls.get_filter_map()[filter]
+                query = query.filter(col.ilike('%' + value + '%'))
+
+        return query
 
 class RoutingSQLAlchemy(SQLAlchemy):
     def create_session(self, options):

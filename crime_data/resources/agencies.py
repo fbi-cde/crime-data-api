@@ -49,8 +49,8 @@ class AgenciesNibrsCount(CdeResource):
         by = self.SPLITTER.split(
             args['by'].lower())  # TODO: can post-process in schema?
 
-        query = models.CdeNibrsIncident.get_nibrs_incident_by_ori(ori, args,
-                                                                  by)
+        filters = self.filters(args)
+        query = models.CdeNibrsIncident.get_nibrs_incident_by_ori(ori, filters, by, args)
         return self.with_metadata(query, args)
 
 
@@ -69,7 +69,8 @@ class AgenciesRetaCount(CdeResource):
         by = self.SPLITTER.split(
             args['by'].lower())  # TODO: can post-process in schema?
 
-        query = models.CdeRetaMonth.get_reta_by_ori(ori, args, by)
+        filters = self.filters(args)
+        query = models.CdeRetaMonth.get_reta_by_ori(ori, filters, by, args)
         result = self.with_metadata(query, args)
 
         return result

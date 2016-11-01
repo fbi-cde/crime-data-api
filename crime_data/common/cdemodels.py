@@ -106,27 +106,27 @@ class CdeNibrsIncident(models.NibrsIncident, QueryTraits):
         'ori': CdeRefAgency.ori,
         'offense_location': CdeNibrsLocationType.location_name,
         'victim_ethnicity': 
-        CdeNibrsIncident.victim_ethnicity.ethnicity_name.label('victim.ethnicity'),
+        CdeNibrsIncident.victim_ethnicity.ethnicity_name.label('victim_ethnicity'),
         'offender_ethnicity': 
-        CdeNibrsIncident.offender_ethnicity.ethnicity_name.label('offender.ethnicity'), 
+        CdeNibrsIncident.offender_ethnicity.ethnicity_name.label('offender_ethnicity'), 
         'victim_race_code': 
-        CdeNibrsIncident.victim_race.race_code.label('victim.race_code'),
+        CdeNibrsIncident.victim_race.race_code.label('victim_race_code'),
         'victim_age_code': 
-        CdeNibrsIncident.victim_age.age_code.label('victim.age_code'),
+        CdeNibrsIncident.victim_age.age_code.label('victim_age_code'),
         'offender_race_code': 
-        CdeNibrsIncident.offender_race.race_code.label('offender.race_code'),
+        CdeNibrsIncident.offender_race.race_code.label('offender_race_code'),
         'offender_age_code': 
-        CdeNibrsIncident.offender_age.age_code.label('offender.age_code'),
+        CdeNibrsIncident.offender_age.age_code.label('offender_age_code'),
         'arrestee_race_code': 
-        CdeNibrsIncident.arrestee_race.race_code.label('arestee.race_code'),
+        CdeNibrsIncident.arrestee_race.race_code.label('arestee_race_code'),
         'arrestee_age_code': 
-        CdeNibrsIncident.arrestee_age.age_code.label('arestee.age_code'),
+        CdeNibrsIncident.arrestee_age.age_code.label('arestee_age_code'),
         'arrestee_ethnicity': 
-        CdeNibrsIncident.arrestee_ethnicity.ethnicity_name.label('arrestee.ethnicity'),}
+        CdeNibrsIncident.arrestee_ethnicity.ethnicity_name.label('arrestee_ethnicity'),}
 
 
     @staticmethod
-    def get_nibrs_incident_by_ori(ori=None, filters=None, by=None):
+    def get_nibrs_incident_by_ori(ori=None, filters=None, by=None, args=None):
         '''''
         Returns Query for RETA counts by Agency/ORI - Monthly Sums.
         ''' ''
@@ -175,7 +175,7 @@ class CdeNibrsIncident(models.NibrsIncident, QueryTraits):
         query = CdeNibrsIncident.apply_group_by(query, by)
         
         # Apply all filters
-        query = CdeNibrsIncident.apply_filters(query, filters)
+        query = CdeNibrsIncident.apply_filters(query, filters, args)
 
         return query
 
@@ -198,7 +198,7 @@ class CdeRetaMonth(models.RetaMonth, QueryTraits):
 
 
     @staticmethod
-    def get_reta_by_ori(ori=None, filters=None, by=None):
+    def get_reta_by_ori(ori=None, filters=None, by=None, args=None):
         '''''
         Returns Query for RETA counts by Agency/ORI - Monthly Sums.
         ''' ''
@@ -233,7 +233,7 @@ class CdeRetaMonth(models.RetaMonth, QueryTraits):
         query = CdeRetaMonth.apply_group_by(query, by)
 
         # Apply all filters
-        query = CdeRetaMonth.apply_filters(query, filters)
+        query = CdeRetaMonth.apply_filters(query, filters, args)
 
         return query
 
