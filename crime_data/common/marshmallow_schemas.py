@@ -6,7 +6,7 @@ from flask_marshmallow import Marshmallow
 from marshmallow import fields as marsh_fields
 from marshmallow import Schema
 
-from . import models
+from . import cdemodels, models
 
 ma = Marshmallow()
 
@@ -288,3 +288,45 @@ class NibrsIncidentSchema(ma.ModelSchema):
     victims = ma.Nested(NibrsVictimSchema, many=True)
     arrestees = ma.Nested(NibrsArresteeSchema, many=True)
     offenders = ma.Nested(NibrsOffenderSchema, many=True)
+
+
+class RetaOffenseSubcatSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.CdeRetaOffenseSubcat
+        exclude = ('offense',
+                   'offense_subcat_sort_order',
+                   'offense_subcat_xml_path', )
+
+
+class RetaOffenseClassSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.CdeOffenseClassification
+        exclude = ('class_sort_order', )
+
+
+class RetaOffenseSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.CdeRetaOffense
+        exclude = ('category',
+                   'offense_category',
+                   'offense_sort_order',
+                   'offense_xml_path', )
+
+    subcategories = ma.Nested(RetaOffenseSubcatSchema, many=True)
+    classification = ma.Nested(RetaOffenseClassSchema)
+
+
+class RetaOffenseCategorySchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.CdeRetaOffenseCategory
+        exclude = ('crime_type', 'offense_category_sort_order', )
+
+    offenses = ma.Nested(RetaOffenseSchema, many=True)
+
+
+class CrimeTypeSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.CdeCrimeType
+        exclude = ('crime_type_sort_order', )
+
+    categories = ma.Nested(RetaOffenseCategorySchema, many=True)

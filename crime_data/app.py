@@ -9,6 +9,7 @@ from flask_cors import CORS, cross_origin
 
 import crime_data.resources.agencies
 import crime_data.resources.incidents
+import crime_data.resources.offenses
 from crime_data import commands, public, user
 from crime_data.assets import assets
 from crime_data.common.marshmallow_schemas import ma
@@ -123,3 +124,4 @@ def add_resources(app):
                      '/incidents/count/')
     api.add_resource(crime_data.resources.incidents.IncidentsDetail,
                      '/incidents/<string:nbr>/')
+    api.add_resource(crime_data.resources.offenses.OffensesList, '/offenses/')

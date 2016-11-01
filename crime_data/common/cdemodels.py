@@ -11,7 +11,6 @@ from crime_data.extensions import db
 
 session = db.session
 
-
 class CdeRefState(models.RefState):
     pass
 
@@ -31,6 +30,9 @@ class CdeRefRace(models.RefRace):
     pass
 
 class CdeRefCity(models.RefCity):
+    pass
+
+class CdeRetaMonthOffenseSubcat(models.RetaMonthOffenseSubcat):
     pass
 
 class CdeRetaOffense(models.RetaOffense):
@@ -71,7 +73,6 @@ class CdeNibrsVictim(models.NibrsVictim):
 
 class CdeNibrsOffender(models.NibrsOffender):
     pass
-
 
 class CdeNibrsMonth(models.NibrsMonth):
     pass
@@ -244,6 +245,30 @@ class CdeRetaMonth(models.RetaMonth, QueryTraits):
         query = CdeRetaMonth.apply_filters(query, filters, args)
 
         return query
+
+
+class CdeCrimeType(models.CrimeType):
+    pass
+
+
+class CdeRetaOffenseCategory(models.RetaOffenseCategory):
+
+    crime_type = db.relationship(CdeCrimeType, backref='categories')
+
+
+class CdeRetaOffense(models.RetaOffense):
+
+    category = db.relationship(CdeRetaOffenseCategory, backref='offenses')
+
+
+class CdeRetaOffenseSubcat(models.RetaOffenseSubcat):
+
+    offense = db.relationship(CdeRetaOffense, backref='subcategories')
+
+
+class CdeOffenseClassification(models.OffenseClassification):
+
+    offense = db.relationship(CdeRetaOffense, backref='classifications')
 
 
 class TableFamily:
