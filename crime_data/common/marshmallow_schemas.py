@@ -22,7 +22,6 @@ class ArgumentsSchema(Schema):
             required=True,
             error_messages={'required': 'Get API key from Catherine'})
 
-
 class AgenciesIncidentArgsSchema(ArgumentsSchema):
     incident_hour = marsh_fields.Integer()
     crime_against = marsh_fields.String()

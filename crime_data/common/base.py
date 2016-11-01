@@ -68,18 +68,17 @@ class CdeResource(Resource):
             import csv
             from io import StringIO
 
+            #dat = open('/tmp/out.csv', 'w')
             # create the csv writer object
             si = StringIO()
             csvwriter = csv.writer(si)
             keys = {}
-            list_fields = ['offenders', 'victims', 'arrestees']
+            # These are fields that can contain nested objects and/or lists (many to many)
+            list_fields = ['offenders', 'offenses', 'property', 'victims', 'arrestees', 'agency']
             to_csv = []
 
             # Organize Data
             for d in data['results']:
-                for k,i in d.items():
-                    if not i:
-                        d[k] = 0
                 to_csv_dict = {}
                 for base_field in list_fields:
                     to_csv_dict[base_field] = d[base_field]
@@ -90,7 +89,7 @@ class CdeResource(Resource):
                     base_field = k.split(':')[0]
                     leaf_field = k.split(':')[-1]
                     if base_field not in list_fields:
-                        to_csv_dict[base_field] = v
+                        to_csv_dict[base_field + '.' + leaf_field] = v
 
                 to_csv.append(to_csv_dict)
 
@@ -100,7 +99,6 @@ class CdeResource(Resource):
                     header = cs.keys()
                     csvwriter.writerow(header)
                     count += 1
-
                 csvwriter.writerow(cs.values())
 
         return si.getvalue().strip('\r\n')
