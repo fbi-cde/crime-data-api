@@ -49,6 +49,9 @@ class QueryTraits(object):
 
     @classmethod
     def get_fields(cls, agg_fields, fields):
+        """Builds the query's SELECT clause. 
+        Returns list of fields.
+        """
         requested_fields = []
         for field in fields:
             if field in cls.get_filter_map():
@@ -59,6 +62,10 @@ class QueryTraits(object):
 
     @classmethod
     def apply_group_by(cls, query, group_bys):
+        """ Builds the query's GROUP BY clause.
+        For Aggregations, the group by clause will 
+        contain all output fields. Returns query object.
+        """
         for group in group_bys:
             if group in cls.get_filter_map():
                 query = (query.group_by(cls.get_filter_map()[group])
@@ -67,18 +74,25 @@ class QueryTraits(object):
 
     @classmethod
     def apply_filters(cls, query, filters, parsed):
+        """ Apply All query filters. 
+        Returns query object.
+        """
 
         def _is_string(col):
             return issubclass(col.type.python_type, str)
 
+        # Apply any inequality filters.
         for (col_name, comparitor, val) in filters:
-            col = cls.get_filter_map()[col_name]
-            if _is_string(col):
-                col = func.lower(col)
-                val = val.lower()
-            query = query.filter(getattr(col, comparitor)(val))
+            if col_name in cls.get_filter_map():
+                col = cls.get_filter_map()[col_name]
+                if _is_string(col):
+                    col = func.lower(col)
+                    val = val.lower()
+                    query = query.filter(col.ilike('%' + val + '%'))
+                else:
+                    query = query.filter(getattr(col, comparitor)(val))
 
-
+        # Apply all other filters.
         for filter,value in parsed.items():
             if filter in cls.get_filter_map():
                 col = cls.get_filter_map()[filter]

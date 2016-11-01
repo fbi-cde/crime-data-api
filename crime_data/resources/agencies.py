@@ -22,7 +22,6 @@ class AgenciesList(AgenciesResource):
         self.verify_api_key(args)
         filters = self.filters(args)
         result = models.CdeRefAgency.get(None, filters, args)
-
         return self.with_metadata(result, args)
 
 
@@ -73,5 +72,4 @@ class AgenciesRetaCount(CdeResource):
         filters = self.filters(args)
         query = models.CdeRetaMonth.get_reta_by_ori(ori, filters, by, args)
         result = self.with_metadata(query, args)
-
         return result
