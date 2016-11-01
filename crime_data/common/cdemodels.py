@@ -24,13 +24,11 @@ class CdeRefRace(models.RefRace):
 class CdeRefCity(models.RefCity):
     pass
 
-
 class CdeRetaOffense(models.RetaOffense):
     pass
 
 class CdeRetaMonthOffenseSubcat(models.RetaMonthOffenseSubcat):
     pass
-
 
 class CdeRetaOffenseSubcat(models.RetaOffenseSubcat):
     pass
@@ -137,10 +135,8 @@ class CdeNibrsIncident(models.NibrsIncident, QueryTraits):
 
         fields = CdeNibrsIncident.get_fields(agg_fields, by)
 
-
         # Base Query
         query = CdeNibrsIncident.query
-
         
         # Apply JOINS.
         query = (query.join(CdeNibrsOffense).join(CdeNibrsLocationType)
@@ -244,16 +240,13 @@ class TableFamily:
 
     def filtered(self, filters):
         qry = self.query()
-
         for (col_name, comparitor, val) in filters:
-
             if col_name not in self.map:
                 abort(400, 'field {} not found'.format(col_name))
             col = self.map[col_name]
             if _is_string(col):
                 col = func.lower(col)
                 val = val.lower()
-            
             qry = qry.filter(getattr(col, comparitor)(val))
         return qry
 
@@ -268,10 +261,8 @@ class TableFamily:
                     self.map[alias] = col
 
     def query(self):
-
         self._build_map()
-        print(self.map)
-        #self.print_map()
+        self.print_map()
         qry = self.base_table.table.query
         for table in self.tables:
             if table.join is None:
