@@ -3,6 +3,7 @@
 
 See: http://webtest.readthedocs.org/
 """
+import dateutil
 import pytest
 
 
@@ -167,6 +168,14 @@ class TestIncidentsEndpoint:
             assert len(incident['arrestees']) > 0
             hits = [a for a in incident['arrestees'] if a['resident_code'] != 'R']
             assert len(hits) > 0
+
+    def test_incidents_endpoint_filters_incident_date(self, user, testapp):
+        res = testapp.get('/incidents/?incident_date>2014-06-01&incident_date<2014-06-30')
+        assert len(res.json['results']) > 0
+        for incident in res.json['results']:
+            dt = dateutil.parser.parse(incident['incident_date'])
+            assert dt > dateutil.parser.parse('2014-06-01T00:00+00:00')
+            assert dt <= dateutil.parser.parse('2014-07-01T00:00+00:00')
 
     @pytest.mark.xfail  # TODO
     def test_incidents_endpoint_filters_for_nulls(self, user, testapp):
