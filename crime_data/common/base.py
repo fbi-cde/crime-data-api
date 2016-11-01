@@ -55,26 +55,33 @@ class CdeResource(Resource):
     __abstract__ = True
     schema = None
 
-    def output_serialize(self, data, format='csv'):
-        """ Verrry limited csv parsing of output data.
-        This works for Incidents only! 
-        For the 'offenders', 'victims', 'arrestees', 
-        the associated data is stuffed into a cell as json.
+    def output_serialize(self, data, schema = None,format='csv'):
+        """ Very limited csv parsing of output data.
+        Uses Marshmallow schema to determine which fields are nested,
+        and stores raw json for these fields.
         """
         if format is 'json':
             return data
         if format is 'csv':
+
             import flatdict
             import csv
             from io import StringIO
-
-            #dat = open('/tmp/out.csv', 'w')
+            
             # create the csv writer object
             si = StringIO()
+            #dat = open('/tmp/out.csv', 'w')
+            #csvwriter = csv.writer(dat)
             csvwriter = csv.writer(si)
             keys = {}
-            # These are fields that can contain nested objects and/or lists (many to many)
-            list_fields = ['offenders', 'offenses', 'property', 'victims', 'arrestees', 'agency']
+
+            # These are fields that can contain nested objects and/or lists
+            list_fields = []
+            for k,v in schema.declared_fields.items():
+                if hasattr(v, 'many'):
+                    list_fields.append(k)
+
+            #list_fields = ['offenders', 'offenses', 'property', 'victims', 'arrestees', 'agency']
             to_csv = []
 
             # Organize Data
@@ -100,6 +107,8 @@ class CdeResource(Resource):
                     csvwriter.writerow(header)
                     count += 1
                 csvwriter.writerow(cs.values())
+
+            #dat.close()
 
         return si.getvalue().strip('\r\n')
 
