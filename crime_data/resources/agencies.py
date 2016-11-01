@@ -1,13 +1,13 @@
 import re
 
 from flask_restful import fields, marshal_with, reqparse
+from webargs.flaskparser import use_args
 
 from crime_data.common import cdemodels as models
 from crime_data.common import marshmallow_schemas
 from crime_data.common.base import CdeResource
 from crime_data.common.marshmallow_schemas import (
     AgenciesRetaArgsSchema, ArgumentsSchema, IncidentCountArgsSchema)
-from webargs.flaskparser import use_args
 
 
 class AgenciesResource(CdeResource):
