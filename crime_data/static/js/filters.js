@@ -181,26 +181,17 @@ function makeMethodologyText(values) {
 }
 
 function makeApiSearchQuery(values) {
-  if (!values) return false
+  var query = []
+  console.log('values', values);
+  if (!values) return false;
 
-  return Object.keys(values).map(function(key) {
-    var queryKey, queryValue
-    switch (key) {
-      case 'clearance':
-        queryKey = key
-        queryValue = (values[key] === 'yes') ? true : false
-        break
-      case 'involved-property':
-        queryKey = 'property'
-        queryValue = (values[key] === 'yes') ? true : false
-        break
-      default:
-        queryKey = key
-        queryValue = values[key]
-        break
-    }
-    return `${queryKey}=${encodeURIComponent(queryValue)}`
-  }).join('&')
+  if (values.location && values.location !== 'United States') {
+    query.push(`state_name=${values.location}`)
+  }
+
+  console.log('query', query)
+
+  return query.join('&')
 }
 
 function makeApiUrl(endpoint, search) {
