@@ -54,14 +54,11 @@ class CdeRefAgency(models.RefAgency, QueryTraits):
         return query
     pass
 
-
 class CdeNibrsEthnicity(models.NibrsEthnicity):
     pass
 
-
 class CdeNibrsVictim(models.NibrsVictim):
     pass
-
 
 class CdeNibrsOffender(models.NibrsOffender):
     pass
@@ -70,10 +67,8 @@ class CdeNibrsOffender(models.NibrsOffender):
 class CdeNibrsMonth(models.NibrsMonth):
     pass
 
-
 class CdeNibrsOffense(models.NibrsOffense):
     pass
-
 
 class CdeNibrsLocationType(models.NibrsLocationType):
     pass
