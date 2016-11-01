@@ -21,6 +21,12 @@ class CdeNibrsAge(models.NibrsAge):
 class CdeNibrsOffenseType(models.NibrsOffenseType):
     pass
 
+class CdeNibrsWeapon(models.NibrsWeapon):
+    pass
+
+class CdeNibrsWeaponType(models.NibrsWeaponType):
+    pass
+
 class CdeRefRace(models.RefRace):
     pass
 
@@ -129,10 +135,14 @@ class CdeNibrsIncident(models.NibrsIncident, QueryTraits):
         ''' ''
 
         agg_fields = [
-            func.count(CdeNibrsIncident.incident_id).label('incident_count')
+            func.count(CdeNibrsIncident.incident_id).label('incident_count'),
         ]
 
         fields = CdeNibrsIncident.get_fields(agg_fields, by)
+
+        # Always group by ORI
+        fields.append(CdeRefAgency.ori)
+        by.append('ori')
 
         # Base Query
         query = CdeNibrsIncident.query
@@ -143,6 +153,8 @@ class CdeNibrsIncident(models.NibrsIncident, QueryTraits):
                  .outerjoin(CdeNibrsMonth).outerjoin(CdeRefAgency)
                  .outerjoin(CdeRefCity).outerjoin(CdeRefState)
                  .outerjoin(CdeNibrsOffender)
+                 .outerjoin(CdeNibrsWeapon)
+                 .outerjoin(CdeNibrsWeaponType)
                  .outerjoin(models.NibrsAge)
                  .outerjoin(CdeNibrsIncident.arrestee_age, CdeNibrsAge.age_id ==
                            CdeNibrsIncident.arrestee_age.age_id)
