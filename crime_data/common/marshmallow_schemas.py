@@ -13,6 +13,7 @@ ma = Marshmallow()
 
 # Schemas for request parsing
 class ArgumentsSchema(Schema):
+    output = marsh_fields.String(missing='json')
     page = marsh_fields.Integer(missing=1)
     per_page = marsh_fields.Integer(missing=10)
     fields = marsh_fields.String()

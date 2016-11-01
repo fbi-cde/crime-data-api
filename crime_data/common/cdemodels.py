@@ -279,7 +279,7 @@ class TableFamily:
     def query(self):
 
         self._build_map()
-        self.print_map()
+        #self.print_map()
         qry = self.base_table.table.query
         for table in self.tables:
             if table.join is None:

@@ -23,6 +23,8 @@ class IncidentsList(CdeResource):
         self.verify_api_key(args)
         filters = self.filters(args)
         qry = self.tables.filtered(filters)
+        if args['output'] == 'csv':
+            return self.output_serialize(self.with_metadata(qry, args))
         return self.with_metadata(qry, args)
 
 
