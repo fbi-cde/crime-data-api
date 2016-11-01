@@ -186,7 +186,7 @@ function makeApiSearchQuery(values) {
   if (!values) return false;
 
   if (values.location && values.location !== 'United States') {
-    query.push(`state_name=${values.location}`)
+    query.push(`state_name=${encodeURIComponent(values.location)}`)
   }
 
   console.log('query', query)
