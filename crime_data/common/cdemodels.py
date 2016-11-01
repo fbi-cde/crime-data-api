@@ -42,7 +42,7 @@ class CdeRefAgency(models.RefAgency, QueryTraits):
         return {'state': CdeRefState.state_abbr.label('state'),
         'city': CdeRefCity.city_name.label('city') }
 
-    def get(args, ori = None):
+    def get(ori=None, filters=None, args=None):
         # Base Query
         query = CdeRefAgency.query
 
@@ -51,7 +51,7 @@ class CdeRefAgency(models.RefAgency, QueryTraits):
             query = query.filter(CdeRefAgency.ori == ori)
 
         # Apply all filters
-        query = CdeRefAgency.apply_filters(query, args)
+        query = CdeRefAgency.apply_filters(query, filters, args)
 
         return query
     pass

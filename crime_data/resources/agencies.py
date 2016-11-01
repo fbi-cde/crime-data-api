@@ -20,8 +20,8 @@ class AgenciesList(AgenciesResource):
     @use_args(marshmallow_schemas.AgencySchema)
     def get(self, args):
         self.verify_api_key(args)
-
-        result = models.CdeRefAgency.get(args)
+        filters = self.filters(args)
+        result = models.CdeRefAgency.get(None, filters, args)
 
         return self.with_metadata(result, args)
 
@@ -30,7 +30,8 @@ class AgenciesDetail(AgenciesResource):
     @use_args(marshmallow_schemas.ArgumentsSchema)
     def get(self, args, nbr):
         self.verify_api_key(args)
-        agency = models.CdeRefAgency.get(args, nbr)
+        filters = self.filters(args)
+        agency = models.CdeRefAgency.get(nbr, filters, args)
         return self.with_metadata(agency, args)
 
 
