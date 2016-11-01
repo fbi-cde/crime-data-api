@@ -74,10 +74,15 @@ def prototypes():
 
 @blueprint.route('/prototypes/sentences/', methods=['GET'])
 @basic_auth.required
-def sentences_prototype():
+def sentences():
     return render_template('/prototypes/sentences.html')
 
 @blueprint.route('/prototypes/filters/', methods=['GET'])
 @basic_auth.required
-def filter_prototype():
+def filters():
     return render_template('/prototypes/filters.html')
+
+@blueprint.route('/prototypes/queries/', methods=['GET'])
+@basic_auth.required
+def queries():
+    return render_template('/prototypes/queries.html')

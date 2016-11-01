@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Crime Data Explorer prototypes</title>
+    <link rel="stylesheet" href="/static/libs/uswds/css/uswds.css">
+    <link rel="stylesheet" href="/static/css/queries.css">
+  </head>
+  <body>
+    <header>
+      <h1>CDE</h1>
+    </header>
+    <form id="queries">
+      <legend>Query the data</legend>
+      <fieldset class="query">
+        <label for="column">Column name</label>
+        <select id="column">
+          <option>Agency name</option>
+          <option>Agency ORI</option>
+          <option>Incident date</option>
+          <option>Submission date</option>
+          <option>Incident offense count</option>
+          <option>Incident arrest count</option>
+        </select>
+        <label for="operator">Operator</label>
+        <select id="operator">
+          <option>is equal to</option>
+          <option>is not equal to</option>
+          <option>is less than</option>
+          <option>is more than</option>
+        </select>
+        <label for="value">Value</label>
+        <input type="text" id="value">
+      </fieldset>
+    </form>
+    <main>
+      <section>
+        <h2>Methodology</h2>
+        <div id='methodology'></div>
+      </section>
+      <section class="tables">
+        <table id="summary-data">
+          <caption>Summary data</caption>
+          <thead>
+            <th>Year</th>
+            <th>Location</th>
+            <th>Population</th>
+            <th>Type</th>
+            <th>Count</th>
+            <th>Rate per 100,000</th>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1980</td>
+              <td>California</td>
+              <td>38000000</td>
+              <td>Murder</td>
+              <td>7600</td>
+              <td>20</td>
+            </tr>
+            <tr>
+              <td>1981</td>
+              <td>California</td>
+              <td>39000000</td>
+              <td>Murder</td>
+              <td>7300</td>
+              <td>20</td>
+            </tr>
+            <tr>
+              <td>1982</td>
+              <td>California</td>
+              <td>39500000</td>
+              <td>Murder</td>
+              <td>7000</td>
+              <td>23</td>
+            </tr>
+          </tbody>
+        </table>
+        <table id="incident-data">
+          <caption>Incident data</caption>
+          <thead>
+            <th>NIBRS ID</th>
+            <th>Year</th>
+            <th>Incident date</th>
+            <th>Location</th>
+            <th>Agency</th>
+            <th>Agency ORI</th>
+            <th>Agency case ID</th>
+            <th>Victims</th>
+            <th>Offenses</th>
+            <th>Offenders</th>
+            <th>Arrestees</th>
+            <th>Property</th>
+            <th>Clearance</th>
+          </thead>
+          <tbody>
+            <tr>
+              <td>hey</td>
+              <td>other</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+    <script src="/static/libs/fetch.js"></script>
+    <script src="/static/js/filters.js"></script>
+  </body>
+</html>
