@@ -88,7 +88,7 @@ class CdeResource(Resource):
                      if 'credentials' in u]
             key = creds[0]['API_KEY']
             if args.get('api_key') != key:
-                abort(401, 'Use correct `api_key` argument')
+                abort(401, message='Use correct `api_key` argument')
 
     OPERATORS = {'!=': '__ne__',
                  '>=': '__ge__',
@@ -115,7 +115,7 @@ class CdeResource(Resource):
 
     def filters(self, parsed):
         """Yields `(key, comparitor, value)` from `request.args` not already in `parsed`.
-        
+
         `comparitor` may be '__eq__', '__gt__', '__le__', etc."""
 
         for (k, v) in request.args.items():

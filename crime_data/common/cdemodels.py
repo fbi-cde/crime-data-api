@@ -1,4 +1,4 @@
-from flask import abort
+from flask_restful import abort
 from flask.ext.sqlalchemy import Pagination
 from sqlalchemy import and_, func
 from sqlalchemy.orm import aliased
@@ -242,7 +242,7 @@ class TableFamily:
         qry = self.query()
         for (col_name, comparitor, val) in filters:
             if col_name not in self.map:
-                abort(400, 'field {} not found'.format(col_name))
+                abort(400, message='field {} not found'.format(col_name))
             col = self.map[col_name]
             if _is_string(col):
                 col = func.lower(col)
@@ -448,7 +448,7 @@ class QueryWithAggregates(object):
                 self.qry = self.qry.group_by(col).order_by(col)
             self._apply_filters(filters)
         except FieldNameError as e:
-            abort(400, e)
+            abort(400, message=str(e))
 
     def paginate(self, page, per_page):
         paginated = self.qry.limit(per_page).offset((page - 1) * per_page)
