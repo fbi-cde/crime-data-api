@@ -18,15 +18,7 @@ class CdeRefCity(models.RefCity):
     pass
 
 
-class CdeRetaOffense(models.RetaOffense):
-    pass
-
-
 class CdeRetaMonthOffenseSubcat(models.RetaMonthOffenseSubcat):
-    pass
-
-
-class CdeRetaOffenseSubcat(models.RetaOffenseSubcat):
     pass
 
 
@@ -232,6 +224,30 @@ class CdeRetaMonth(models.RetaMonth):
         query = CdeRetaMonth.__apply_filters(query, filters)
 
         return query
+
+
+class CdeCrimeType(models.CrimeType):
+    pass
+
+
+class CdeRetaOffenseCategory(models.RetaOffenseCategory):
+
+    crime_type = db.relationship(CdeCrimeType, backref='categories')
+
+
+class CdeRetaOffense(models.RetaOffense):
+
+    category = db.relationship(CdeRetaOffenseCategory, backref='offenses')
+
+
+class CdeRetaOffenseSubcat(models.RetaOffenseSubcat):
+
+    offense = db.relationship(CdeRetaOffense, backref='subcategories')
+
+
+class CdeOffenseClassification(models.OffenseClassification):
+
+    offense = db.relationship(CdeRetaOffense, backref='classifications')
 
 
 class TableFamily:
