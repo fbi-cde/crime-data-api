@@ -47,17 +47,6 @@ class RoutingSession(SignallingSession):
 
 class QueryTraits(object):
 
-    # @classmethod
-    # def apply_filters(cls, query, filters):
-    #     for filter,value in filters.items():
-    #         if filter in cls.get_filter_map():
-    #             col = cls.get_filter_map()[filter]
-    #             query = query.filter(col.ilike(value))
-    #     return query
-
-
-
-
     @classmethod
     def get_fields(cls, agg_fields, fields):
         requested_fields = []
@@ -100,7 +89,6 @@ class QueryTraits(object):
 class RoutingSQLAlchemy(SQLAlchemy):
     def create_session(self, options):
         return RoutingSession(self, **options)
-
 
 class CdeResource(Resource):
     __abstract__ = True
