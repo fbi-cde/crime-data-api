@@ -68,7 +68,7 @@ class CdeResource(Resource):
     def with_metadata(self, results, args):
         results = results.paginate(args['page'], args['per_page'])
         # results.total coming back inaccurate for /incidents/!
-        
+
         if self.schema:
             items = self.schema.dump(results.items).data
         else:
