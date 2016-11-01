@@ -123,17 +123,16 @@ function fetchData(endpoint, search) {
 function fetchIncidents(form) {
   var query = makeApiSearchQuery(form)
   console.log('incident query', query)
-  fetchData('incidents', query).then(function(incidents) {
+  return fetchData('incidents', query).then(function(incidents) {
+    $('#incident-data-row-count')[0].innerText = `(${incidents.length} rows)`
     return incidents.map((function(incident) {
-      var i = Object.assign({}, incident, {
-        location: form.location
-      })
-      return makeIncidentRow(i)
+      return makeIncidentRow(incident)
     }))
   }).then(function(html) {
     return html.join('')
   }).then(function(html) {
     $('#incident-data tbody')[0].innerHTML = html
+    return
   }).catch(function(err) {
     console.error('err', err)
   })
@@ -154,22 +153,77 @@ function makeIncidentRow(i) {
     </td>
     <td>2014</td>
     <td>${new Date(i.incident_date)}</td>
-    <td>${i.location}</td>
+    <td>${i.agency.field_office.field_office_name}, ${i.agency.state.state_name}</td>
     <td>${i.agency.pub_agency_name}</td>
     <td>
       <a href="${agencyUrl}">${i.agency.ori}</a>
     </td>
     <td>??</td>
-    <td>${j(i.victims)}</td>
-    <td>${j(i.offenses)}</td>
-    <td>${j(i.offenders)}</td>
-    <td>${j(i.arrestees)}</td>
-    <td>${j(i.property)}</td>
+    <td>${makeVictimsText(i.victims)}</td>
+    <td>${makeOffensesText(i.offenses)}</td>
+    <td>${makeOffendersText(i.offenders)}</td>
+    <td>${makeArresteesText(i.arrestees)}</td>
+    <td>${makePropertyText(i.property)}</td>
     <td>??</td>
   </tr>`;
+
+  function makeArresteesText(arrestees) {
+    var count = arrestees.length
+    if (count === 0) return 'No arrestees'
+    var text = (count === 1) ? 'One arrestee' : `${count} arrestees`
+    return text
+  }
+
+  function makeOffendersText(offenders) {
+    var count = offenders.length
+    if (count === 0) return 'No offenders'
+    var text = (count === 1) ? 'One offender' : `${count} offenders`
+    return text
+  }
+
+  function makeOffensesText(offenses) {
+    if (offenses.length === 0) return 'No offenses'
+    var text = offenses.map(function(o) {
+      var offense_name = o.offense_type.offense_name.toLowerCase()
+      var location = o.location.location_name.toLowerCase()
+      return `<li>A ${offense_name} offense at a ${location}</li>`
+    })
+    return `<ul>${text.join('')}</ul>`
+  }
+
+  function makePropertyText(property) {
+    if (property.length === 0) return 'No properties'
+    return 'yo'
+  }
+
+  function makeVictimsText(victims) {
+    if (victims.length === 0) return 'No victims'
+    var text = victims.map(function(v) {
+      console.log('v', v);
+      var age = (v.age && v.age.age_code === 'AG') ? v.age_num : 'not handled'
+      var race = (v.race) ? v.race.race_desc.toLowerCase() : 'not handled'
+      var sex
+
+      switch(v.sex_code) {
+        case 'M':
+          sex = 'male'
+          break;
+        case 'F':
+          sex = 'female'
+          break;
+        case 'U':
+          sex = 'unknown'
+          break;
+      }
+
+      return `<li>A ${race}, ${sex} victim aged ${age}</li>`
+    })
+    return `<ul>${text.join('')}</ul>`
+  }
 }
 
 function makeMethodologyText(values) {
+  if (properties.length === 0) return 'No properties'
   var type
 
   switch (values['type']) {
@@ -192,13 +246,53 @@ function makeApiSearchQuery(values) {
     query.push(`state_name=${encodeURIComponent(values.location)}`)
   }
 
+  if (values['offender-asian']) {
+    query.push(`offender.race_code=A`)
+  } else if (values['offender-black']) {
+    query.push(`offender.race_code=B`)
+  } else if (values['offender-other-race']) {
+    query.push(`offender.race_code=O`)
+  } else if (values['offender-race-unknown']) {
+    query.push(`offender.race_code=U`)
+  } else if (values['offender-white']) {
+    query.push(`offender.race_code=W`)
+  }
+
+  if (values['offender-female']) {
+    query.push(`offender.sex_code=F`)
+  } else if (values['offender-male']) {
+    query.push(`offender.sex_code=M`)
+  } else if (values['offender-unknown-sex']) {
+    query.push(`offender.sex_code=U`)
+  }
+
+  if (values['victim-asian']) {
+    query.push(`victim.race_code=A`)
+  } else if (values['victim-black']) {
+    query.push(`victim.race_code=B`)
+  } else if (values['victim-other-race']) {
+    query.push(`victim.race_code=O`)
+  } else if (values['victim-race-unknown']) {
+    query.push(`victim.race_code=U`)
+  } else if (values['victim-white']) {
+    query.push(`victim.race_code=W`)
+  }
+
+  if (values['victim-female']) {
+    query.push(`victim.sex_code=F`)
+  } else if (values['victim-male']) {
+    query.push(`victim.sex_code=M`)
+  } else if (values['victim-unknown-sex']) {
+    query.push(`victim.sex_code=U`)
+  }
+
   console.log('query', query)
 
   return query.join('&')
 }
 
 function makeApiUrl(endpoint, search) {
-  var api = 'https://crime-data-api.fr.cloud.gov'
+  var api = 'https://crime-data-api-user-testing.fr.cloud.gov'
   var url = `${api}/${endpoint}/?api_key=${KEY}&per_page=100`
 
   if (!search) return url
@@ -206,8 +300,22 @@ function makeApiUrl(endpoint, search) {
   return `${url}&${search}`
 }
 
+function toggleTableColumn(tableId, columnNumber, show) {
+  var header = $(`#${tableId} th:nth-child(${columnNumber})`)[0]
+  var rows = $(`#${tableId} td:nth-child(${columnNumber})`)
+
+  if (show) {
+    header.style = 'display: table-cell;'
+    rows.forEach(function(el) { el.style = 'display: table-cell;'})
+  } else {
+    header.style = 'display: none;'
+    rows.forEach(function(el) { el.style = 'display: none;'})
+  }
+}
+
 function updateContent() {
   var values = getFormValues('#filters')
+  var loading = $('#loading')[0]
   var methodology = $('#methodology')[0]
   var toDisable = [
     'clearance-filter',
@@ -216,9 +324,12 @@ function updateContent() {
     'victim-filter'
   ]
 
-  if (methodology) methodology.innerHTML = `<p>${makeMethodologyText(values)}</p>`
+  loading.className = ''
+  //if (methodology) methodology.innerHTML = `<p>${makeMethodologyText(values)}</p>`
 
-  fetchIncidents(values)
+  fetchIncidents(values).then(function() {
+    loading.className = 'hide'
+  })
 
   if (values.type.toLowerCase() === 'employee counts') {
     toDisable.forEach(function(id) {
@@ -233,22 +344,39 @@ function updateContent() {
   }
 }
 
-$('#filters')[0].addEventListener('change', updateContent)
-
-$('.filter').forEach(function(el) {
-  el.addEventListener('click', function(ev) {
-    var disabled = ev.target.getAttribute('disabled')
-    var expanded = ev.target.getAttribute('aria-expanded')
-    if (expanded === 'false') {
-      ev.target.setAttribute('aria-expanded', 'true')
-    } else {
-      ev.target.setAttribute('aria-expanded', 'false')
-    }
-  })
-})
-
 window.onload = function () {
   var urlParams = getParams()
   applyParams(urlParams)
   updateContent()
+
+  $('#filters')[0].addEventListener('change', updateContent)
+
+  var columnFilter = $('#incident-data-column-filter')[0]
+  var columnFilterLegend = $('#incident-data-column-filter legend')[0]
+
+  columnFilterLegend.addEventListener('click', function (ev) {
+    var current = columnFilter.getAttribute('aria-expanded')
+    var next = (current === 'true') ? false : true
+    columnFilter.setAttribute('aria-expanded', next)
+  })
+
+  columnFilter.addEventListener('change', function (ev) {
+    var checkboxes = ev.currentTarget.querySelectorAll('input[type="checkbox"]')
+    checkboxes.forEach(function(el, i) {
+      if (el !== ev.target) return
+      toggleTableColumn('incident-data', i + 1, ev.target.checked)
+    })
+  })
+
+  $('.filter').forEach(function(el) {
+    el.addEventListener('click', function(ev) {
+      var disabled = ev.target.getAttribute('disabled')
+      var expanded = ev.target.getAttribute('aria-expanded')
+      if (expanded === 'false') {
+        ev.target.setAttribute('aria-expanded', 'true')
+      } else {
+        ev.target.setAttribute('aria-expanded', 'false')
+      }
+    })
+  })
 }

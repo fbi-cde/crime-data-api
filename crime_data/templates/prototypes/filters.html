@@ -164,14 +164,50 @@
           <input type="radio" id="clearance-no" name="clearance" value="no">
           <label for="clearance-no">No</label>
         </fieldset>
+        <fieldset class="filter" id="advanced-filter" aria-expanded="false">
+          <legend>Advanced</legend>
+        </fieldset>
       </form>
       <main>
+        <section id="loading">
+          <strong>Loading data</strong>
+        </section>
         <section>
           <h1>Results</h1>
           <div id='methodology'></div>
         </section>
         <section class="tables">
-          <table id="summary-data">
+          <form id="incident-data-column-filter" aria-expanded="false">
+            <legend>Show/hide columns</legend>
+            <input type="checkbox" name="col-nibrs-id" id="col-nibrs-id" checked>
+            <label for="col-nibrs-id">NIBRS ID</label>
+            <input type="checkbox" name="col-year" id="col-year" checked>
+            <label for="col-year">Year</label>
+            <input type="checkbox" name="col-incident-date" id="col-incident-date" checked>
+            <label for="col-incident-date">Incident date</label>
+            <input type="checkbox" name="col-location" id="col-location" checked>
+            <label for="col-location">Location</label>
+            <input type="checkbox" name="col-agency" id="col-agency" checked>
+            <label for="col-agency">Agency</label>
+            <input type="checkbox" name="col-agency-ori" id="col-agency-ori" checked>
+            <label for="col-agency-ori">Agency ORI</label>
+            <input type="checkbox" name="col-agency-case-id" id="col-agency-case-id" checked>
+            <label for="col-agency-case-id">Agency case ID</label>
+            <input type="checkbox" name="col-victims" id="col-victims" checked>
+            <label for="col-victims">Victims</label>
+            <input type="checkbox" name="col-offenses" id="col-offenses" checked>
+            <label for="col-offenses">Offenses</label>
+            <input type="checkbox" name="col-offenders" id="col-offenders" checked>
+            <label for="col-offenders">Offenders</label>
+            <input type="checkbox" name="col-arrestees" id="col-arrestees" checked>
+            <label for="col-arrestees">Arrestees</label>
+            <input type="checkbox" name="col-property" id="col-property" checked>
+            <label for="col-property">Property</label>
+            <input type="checkbox" name="col-clearance" id="col-clearance" checked>
+            <label for="col-clearance">Clearance</label>
+          </form>
+          <div>
+            <table id="summary-data">
             <caption>Summary data</caption>
             <thead>
               <th>Year</th>
@@ -208,8 +244,8 @@
               </tr>
             </tbody>
           </table>
-          <table id="incident-data">
-            <caption>Incident data</caption>
+            <table id="incident-data">
+            <caption>Incident data <span id="incident-data-row-count"></span></caption>
             <thead>
               <th>NIBRS ID</th>
               <th>Year</th>
@@ -227,6 +263,7 @@
             </thead>
             <tbody></tbody>
           </table>
+          </div>
         </section>
       </main>
     </div>

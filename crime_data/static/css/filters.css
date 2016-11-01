@@ -18,7 +18,7 @@ header div {
   padding: 1.3em;
   padding-left: 1.7em;
   position: relative;
-  width: 1000px;
+  width: 1200px;
 }
 
 header div::after {
@@ -58,7 +58,7 @@ nav li a {
 
 nav li a.active,
 nav li a:hover {
-  color: pink;
+  color: #00bfe7;
 }
 
 nav li a:before {
@@ -74,13 +74,14 @@ nav li a:before {
 
 .wrapper {
   margin: 0 auto;
-  width: 1000px;
+  width: 1200px;
 }
 
 main {
   display: inline-block;
   padding: 0 3em;
-  width: 700px;
+  position: relative;
+  width: 900px;
 }
 
 main h1 {
@@ -89,6 +90,23 @@ main h1 {
   font-size: 2.4em;
   font-weight: 700;
   width: 100%;
+}
+
+#loading {
+  background-color: rgba(100, 100, 100, 0.8);
+  color: white;
+  left: 0;
+  min-height: 100%;
+  padding-top: 10em;
+  position: absolute;
+  right: 0;
+  text-align: center;
+  width: auto;
+  z-index: 5;
+}
+
+#loading.hide {
+  display: none;
 }
 
 #filters {
@@ -171,8 +189,56 @@ main h1 {
 }
 
 section.tables {
-  overflow-x: scroll;
+  position: relative;
   width: 100%;
+}
+
+section.tables > div {
+  overflow-x: scroll;
+}
+
+#incident-data-column-filter {
+  background-color: white;
+  background-color: rgba(240, 240, 240, 0.9);
+  left: 10em;
+  padding-left: .6em;
+  padding-top: .4em;
+  position: absolute;
+  width: 11em;
+}
+
+#incident-data-column-filter[aria-expanded="false"] {
+  background-color: transparent;
+}
+
+#incident-data-column-filter legend {
+  font-size: 1em;
+  position: relative;
+}
+
+#incident-data-column-filter legend:before {
+  background-image: url('/static/libs/uswds/img/arrow-down.svg');
+  background-repeat: no-repeat;
+  content: '';
+  cursor: pointer;
+  height: 10px;
+  position: absolute;
+  right: -1em;
+  top: .4em;
+  width: 10px;
+}
+
+#incident-data-column-filter[aria-expanded="false"] legend:before {
+  transform: rotate(-90deg);
+}
+
+#incident-data-column-filter[aria-expanded="false"] legend ~ * {
+  display: none;
+}
+
+#filters label,
+#incident-data-column-filter label {
+  margin-top: .2em;
 }
 
 .tables caption {
