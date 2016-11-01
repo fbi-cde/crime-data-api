@@ -67,6 +67,8 @@ class CdeResource(Resource):
 
     def with_metadata(self, results, args):
         results = results.paginate(args['page'], args['per_page'])
+        # results.total coming back inaccurate for /incidents/!
+        
         if self.schema:
             items = self.schema.dump(results.items).data
         else:
@@ -115,7 +117,7 @@ class CdeResource(Resource):
 
     def filters(self, parsed):
         """Yields `(key, comparitor, value)` from `request.args` not already in `parsed`.
-        
+
         `comparitor` may be '__eq__', '__gt__', '__le__', etc."""
 
         for (k, v) in request.args.items():

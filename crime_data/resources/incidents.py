@@ -23,6 +23,7 @@ class IncidentsList(CdeResource):
         self.verify_api_key(args)
         filters = self.filters(args)
         qry = self.tables.filtered(filters)
+        import ipdb; ipdb.set_trace()
         return self.with_metadata(qry, args)
 
 
