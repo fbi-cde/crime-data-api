@@ -275,8 +275,20 @@ function makeApiSearchQuery(values) {
   console.log('values', values);
   if (!values) return false;
 
+  if (values.type && values.type !== 'all') {
+    query.push(`offense_code=${values.type}`)
+  }
+
   if (values.location && values.location !== 'United States') {
     query.push(`state_name=${encodeURIComponent(values.location)}`)
+  }
+
+  if (values['time-from']) {
+    query.push(`incident_date>=${values['time-from']}`)
+  }
+
+  if (values['time-to']) {
+    query.push(`incident_date<=${values['time-to']}`)
   }
 
   if (values['offender-asian']) {
