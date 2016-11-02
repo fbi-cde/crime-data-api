@@ -46,8 +46,15 @@ class CdeNibrsOffense(models.NibrsOffense):
     pass
 
 
-class CdeNibrsLocationType(models.NibrsLocationType):
+class CdeNibrsWeaponType(models.NibrsWeaponType):
+
     pass
+
+
+class CdeNibrsWeapon(models.NibrsWeapon):
+
+    offense = db.relationship(CdeNibrsOffense, backref='weapons')
+    weapon_type = db.relationship(CdeNibrsWeaponType, backref='weapons')
 
 
 class CdeNibrsIncident(models.NibrsIncident):
@@ -357,7 +364,9 @@ class IncidentTableFamily(TableFamily):
     arrestee_ethnicity = aliased(models.NibrsEthnicity)
 
     tables = [
-        JoinedTable(models.NibrsOffense),
+        JoinedTable(CdeNibrsOffense),
+        JoinedTable(CdeNibrsWeapon),
+        JoinedTable(CdeNibrsWeaponType),
         JoinedTable(models.NibrsOffenseType),
         JoinedTable(models.RefAgency,
                     outer=False),
@@ -414,7 +423,7 @@ class IncidentTableFamily(TableFamily):
         JoinedTable(models.NibrsProperty),
         JoinedTable(models.NibrsPropLossType),
         JoinedTable(models.NibrsLocationType,
-                    join=(models.NibrsOffense.location_id ==
+                    join=(CdeNibrsOffense.location_id ==
                           models.NibrsLocationType.location_id)),
     ]
 
