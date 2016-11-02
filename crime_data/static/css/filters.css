@@ -200,9 +200,7 @@ section.tables > div {
 #incident-data-column-filter {
   background-color: white;
   background-color: rgba(240, 240, 240, 0.9);
-  left: 10em;
-  padding-left: .6em;
-  padding-top: .4em;
+  padding-top: 0;
   position: absolute;
   width: 11em;
 }
@@ -241,6 +239,13 @@ section.tables > div {
   margin-top: .2em;
 }
 
+button#download {
+  font-size: .8em;
+  position: absolute;
+  right: 0;
+  top: -1em;
+}
+
 .tables caption {
   border: 1px solid black;
   border-bottom: 0;
@@ -251,10 +256,24 @@ section.tables > div {
 #scroll-for-more {
   display: none;
   margin-left: 400px;
+  position: relative;
 }
 
 #scroll-for-more[aria-visible="true"] {
   display: inline-block;
+}
+
+#scroll-for-more:before {
+  background-image: url('/static/libs/uswds/img/arrow-down.svg');
+  background-repeat: no-repeat;
+  content: '';
+  cursor: pointer;
+  height: 10px;
+  position: absolute;
+  right: -1em;
+  top: .4em;
+  transform: rotate(-90deg);
+  width: 10px;
 }
 
 .tables th {
