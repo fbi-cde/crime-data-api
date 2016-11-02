@@ -24,21 +24,21 @@
     <div class="wrapper">
       <form id="filters" action="/static/filters.html">
         <fieldset class="filter" id="type-filter">
-          <legend>Data type</legend>
+          <legend>Crime</legend>
           <select name="type" id="type">
-            <optgroup label="Crime data">
-              <option>Total violent crime</option>
-              <option>Murder</option>
-              <option>Non-negligent manslaughter</option>
-              <option>Rape</option>
-              <option>Robbery</option>
-              <option>Aggravated assualt</option>
-              <option>Total property crime</option>
-              <option>Burglary</option>
-              <option>Larceny-theft</option>
-              <option>Mother vehicle theft</option>
-              <option>Arson</option>
-            </optgroup>
+            <!-- <optgroup label="Crime data"> -->
+              <!-- <option>Total violent crime</option> -->
+              <option value="all">All</option>
+              <option value="09A">Murder and nonnegligent manslaughter</option>
+              <option value="11A">Rape</option>
+              <option value="120">Robbery</option>
+              <option value="13A">Aggravated assualt</option>
+              <!-- <option>Total property crime</option> -->
+              <option value="220">Burglary</option>
+              <option value="23A">Larceny-theft (pocket-picking)</option>
+              <option value="240">Mother vehicle theft</option>
+              <option value="200">Arson</option>
+            <!-- </optgroup>
             <optgroup label="Crime clearance">
               <option>Something</option>
             </optgroup>
@@ -49,7 +49,7 @@
             <optgroup label="Police employee data">
               <option>Employee counts</option>
               <option>Police killed</option>
-            </optgroup>
+            </optgroup> -->
           </select>
         </fieldset>
         <fieldset class="filter" id="location-filter">
@@ -64,7 +64,7 @@
         </fieldset>
         <fieldset class="filter" id="time-filter">
           <legend>Time period</legend>
-          <input type="checkbox" name="jan" id="jan">
+          <!-- <input type="checkbox" name="jan" id="jan">
           <label for="jan">January</label>
           <input type="checkbox" name="feb" id="feb">
           <label for="feb">February</label>
@@ -87,11 +87,11 @@
           <input type="checkbox" name="nov" id="nov">
           <label for="jan">November</label>
           <input type="checkbox" name="dec" id="dec">
-          <label for="dec">December</label>
-          <!-- <label for="time-from">From</label>
-          <input type="number" name="time-from" id="time-from" min="1960" max="2016" value="1960">
+          <label for="dec">December</label> -->
+          <label for="time-from">From</label>
+          <input type="date" name="time-from" id="time-from" min="2014-01-01" max="2014-12-31" value="2014-01-01">
           <label for="time-to">until</label>
-          <input type="number" name="time-to" id="time-to" min="1960" max="2016" value="2016"> -->
+          <input type="date" name="time-to" id="time-to" min="2014-01-01" max="2014-12-31" value="2014-12-31">
         </fieldset>
         <fieldset class="filter" id="offender-filter">
           <legend>About the offender</legend>
@@ -150,7 +150,7 @@
             <label for="victim-age-over-18">Over 18</label>
           </fieldset>
         </fieldset>
-        <fieldset class="filter" id="property-filter">
+        <!-- <fieldset class="filter" id="property-filter">
           <legend>Involved property</legend>
           <input type="radio" id="property-yes" name="involved-property" value="yes">
           <label for="property-yes">Yes</label>
@@ -163,7 +163,7 @@
           <label for="clearance-yes">Yes</label>
           <input type="radio" id="clearance-no" name="clearance" value="no">
           <label for="clearance-no">No</label>
-        </fieldset>
+        </fieldset> -->
         <fieldset class="filter" id="advanced-filter" aria-expanded="false">
           <legend>Advanced</legend>
         </fieldset>
