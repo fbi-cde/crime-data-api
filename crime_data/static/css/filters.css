@@ -265,6 +265,15 @@ section.tables > div {
   display: none;
 }
 
+#incident-data {
+  white-space: nowrap;
+}
+
+#incident-data ul {
+  margin: 0;
+  padding-left: 1em;
+}
+
 #fixed-table-header {
   overflow: hidden;
   position: fixed;
