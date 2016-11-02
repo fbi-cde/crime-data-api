@@ -117,6 +117,13 @@
             <input type="checkbox" name="offender-unknown-sex" id="offender-unknown-sex">
             <label for="unknown-sex">Unknown</label>
           </fieldset>
+          <fieldset>
+            <legend>Age</legend>
+            <input type="checkbox" name="offender-age-under-18" id="offender-age-under-18">
+            <label for="offender-age-under-18">Under 18</label>
+            <input type="checkbox" name="offender-age-over-18" id="offender-age-over-18">
+            <label for="offender-age-over-18">Over 18</label>
+          </fieldset>
         </fieldset>
         <fieldset class="filter" id="victim-filter">
           <legend>About the victim</legend>
@@ -179,10 +186,8 @@
         <section class="tables">
           <form id="incident-data-column-filter" aria-expanded="false">
             <legend>Show/hide columns</legend>
-            <input type="checkbox" name="col-nibrs-id" id="col-nibrs-id" checked>
-            <label for="col-nibrs-id">NIBRS ID</label>
-            <input type="checkbox" name="col-year" id="col-year" checked>
-            <label for="col-year">Year</label>
+            <!-- <input type="checkbox" name="col-year" id="col-year" checked>
+            <label for="col-year">Year</label> -->
             <input type="checkbox" name="col-incident-date" id="col-incident-date" checked>
             <label for="col-incident-date">Incident date</label>
             <input type="checkbox" name="col-location" id="col-location" checked>
@@ -203,8 +208,10 @@
             <label for="col-arrestees">Arrestees</label>
             <input type="checkbox" name="col-property" id="col-property" checked>
             <label for="col-property">Property</label>
-            <input type="checkbox" name="col-clearance" id="col-clearance" checked>
-            <label for="col-clearance">Clearance</label>
+            <!-- <input type="checkbox" name="col-clearance" id="col-clearance" checked>
+            <label for="col-clearance">Clearance</label> -->
+            <input type="checkbox" name="col-nibrs-id" id="col-nibrs-id" checked>
+            <label for="col-nibrs-id">NIBRS ID</label>
           </form>
           <button id="download">Download as CSV</button>
           <div id="fixed-table-header"></div>
@@ -251,8 +258,6 @@
               <span id="scroll-for-more">Scroll right for more data</span>
             </caption>
             <thead>
-              <th>NIBRS ID</th>
-              <th>Year</th>
               <th>Incident date</th>
               <th>Location</th>
               <th>Agency</th>
@@ -262,7 +267,7 @@
               <th>Offenders</th>
               <th>Arrestees</th>
               <th>Property</th>
-              <th>Clearance</th>
+              <th>NIBRS ID</th>
             </thead>
             <tbody></tbody>
           </table>

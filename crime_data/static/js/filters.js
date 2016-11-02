@@ -167,14 +167,11 @@ function makeIncidentRow(i) {
   }
 
   var agencyUrl = makeApiUrl(`agencies/${i.agency.ori}`)
+  var incidentDate = new Date(i.incident_date)
   var incidentUrl = makeApiUrl(`incidents/${i.incident_number}`)
 
   return `<tr>
-    <td>
-      <a href="${incidentUrl}">${i.incident_number}</a>
-    </td>
-    <td>2014</td>
-    <td>${new Date(i.incident_date)}</td>
+    <td>${incidentDate.toISOString().split('T')[0]}</td>
     <td>${i.agency.field_office.field_office_name}, ${i.agency.state.state_name}</td>
     <td>${i.agency.pub_agency_name}</td>
     <td>
@@ -185,7 +182,9 @@ function makeIncidentRow(i) {
     <td>${makeOffendersText(i.offenders)}</td>
     <td>${makeArresteesText(i.arrestees)}</td>
     <td>${makePropertyText(i.property)}</td>
-    <td>??</td>
+    <td>
+      <a href="${incidentUrl}">${i.incident_number}</a>
+    </td>
   </tr>`;
 
   function makeArresteesText(arrestees) {
@@ -213,8 +212,9 @@ function makeIncidentRow(i) {
   }
 
   function makePropertyText(property) {
-    if (property.length === 0) return 'No properties'
-    return 'yo'
+    var count = property.length
+    if (count === 0) return 'No properties'
+    return (count ===1) ? '1 property' : `${property.count} properties`
   }
 
   function makeVictimsText(victims) {
@@ -311,6 +311,12 @@ function makeApiSearchQuery(values) {
     query.push(`offender.sex_code=U`)
   }
 
+  if (values['offender-age-over-18'] && !values['offender-age-under-18']) {
+    query.push(`offender.age_num>=18`)
+  } else if (!values['victim-age-over-18'] && values['offender-age-under-18']) {
+    query.push(`offender.age_num<=18`)
+  }
+
   if (values['victim-asian']) {
     query.push(`victim.race_code=A`)
   } else if (values['victim-black']) {
@@ -329,6 +335,12 @@ function makeApiSearchQuery(values) {
     query.push(`victim.sex_code=M`)
   } else if (values['victim-unknown-sex']) {
     query.push(`victim.sex_code=U`)
+  }
+
+  if (values['victim-age-over-18'] && !values['victim-age-under-18']) {
+    query.push(`victim.age_num>=18`)
+  } else if (!values['victim-age-over-18'] && values['victim-age-under-18']) {
+    query.push(`victim.age_num<=18`)
   }
 
   console.log('query', query)
