@@ -90,7 +90,11 @@ function createFixedTableHeader() {
 
   $('#incident-data th').map(function(th, i) {
     var width = window.getComputedStyle(th).width
-    ths[i].setAttribute('style', `min-width: ${width};`)
+    if (width === 'auto') {
+      ths[i].setAttribute('style', `display: none;`)
+    } else {
+      ths[i].setAttribute('style', `min-width: ${width};`)
+    }
   });
 }
 
