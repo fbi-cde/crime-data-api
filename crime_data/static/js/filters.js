@@ -332,6 +332,19 @@ function toggleTableColumn(tableId, columnNumber, show) {
     header.style = 'display: none;'
     rows.forEach(function(el) { el.style = 'display: none;'})
   }
+
+  toggleScrollRightText()
+}
+
+function toggleScrollRightText() {
+  var scrollRight = $('#scroll-for-more')[0]
+  var tableContainer = $('#full-table')[0]
+
+  if (tableContainer.scrollWidth > 900) {
+    scrollRight.setAttribute('aria-visible', true)
+  } else {
+    scrollRight.setAttribute('aria-visible', false)
+  }
 }
 
 function updateContent() {
@@ -351,6 +364,8 @@ function updateContent() {
   fetchIncidents(values).then(function() {
     loading.className = 'hide'
   })
+
+  toggleScrollRightText()
 
   if (values.type.toLowerCase() === 'employee counts') {
     toDisable.forEach(function(id) {

@@ -248,6 +248,15 @@ section.tables > div {
   text-align: left;
 }
 
+#scroll-for-more {
+  display: none;
+  margin-left: 400px;
+}
+
+#scroll-for-more[aria-visible="true"] {
+  display: inline-block;
+}
+
 .tables th {
   white-space: nowrap;
 }
