@@ -1,11 +1,31 @@
 import json
 import os
 import random
+from functools import wraps
 
-from flask import request
-from flask_restful import Resource, abort
+import sqltap
+from flask import make_response, request
+from flask_restful import Resource, abort, current_app
 # import celery
 from flask_sqlalchemy import SignallingSession, SQLAlchemy
+
+
+def tuning_page(f):
+    @wraps(f)
+    def decorated_get(*args, **kwargs):
+        if args[1]['tuning']:
+            if not current_app.config.DEBUG:
+                abort(403, message="`DEBUG` must be on for tuning page")
+            profiler = sqltap.start()
+            result = f(*args, **kwargs)
+            profiler.stop()
+            stats = profiler.collect()
+            return make_response(sqltap.report(stats, 'tuning.html'))
+        else:
+            result = f(*args, **kwargs)
+            return result
+
+    return decorated_get
 
 
 class RoutingSession(SignallingSession):
@@ -115,7 +135,7 @@ class CdeResource(Resource):
 
     def filters(self, parsed):
         """Yields `(key, comparitor, value)` from `request.args` not already in `parsed`.
-        
+
         `comparitor` may be '__eq__', '__gt__', '__le__', etc."""
 
         for (k, v) in request.args.items():

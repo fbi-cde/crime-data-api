@@ -27,6 +27,13 @@
             "required": true
           },
           {
+            "name": "tuning",
+            "in": "query",
+            "description": "Return an HTML tuning report instead of data (DEBUG must be on)",
+            "type": "boolean",
+            "required": false
+          },
+          {
             "name": "added_date",
             "in": "query",
             "type": "string",
