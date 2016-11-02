@@ -180,7 +180,6 @@ function makeIncidentRow(i) {
     <td>
       <a href="${agencyUrl}">${i.agency.ori}</a>
     </td>
-    <td>??</td>
     <td>${makeVictimsText(i.victims)}</td>
     <td>${makeOffensesText(i.offenses)}</td>
     <td>${makeOffendersText(i.offenders)}</td>
@@ -224,6 +223,7 @@ function makeIncidentRow(i) {
       var age = (v.age && v.age.age_code === 'AG') ? v.age_num : 'not handled'
       var race = (v.race) ? v.race.race_desc.toLowerCase() : 'not handled'
       var sex
+      var type = v.victim_type.victim_type_code
 
       switch(v.sex_code) {
         case 'M':
@@ -237,7 +237,19 @@ function makeIncidentRow(i) {
           break;
       }
 
-      return `<li>A ${race}, ${sex} victim aged ${age}</li>`
+      if (age === 'not handled') {
+        console.error('age not handled', v)
+      }
+
+      if (race === 'not handled') {
+        console.error('race not handled', v)
+      }
+
+      if (type === 'I') {
+        return `<li>A ${race}, ${sex} victim aged ${age}</li>`
+      } else {
+        return `<li>A ${v.victim_type.victim_type_name}</li>`
+      }
     })
     return `<ul>${text.join('')}</ul>`
   }
@@ -423,6 +435,7 @@ window.onload = function () {
     var offset = document.body.scrollTop
     if (offset > 370 && !fixedTable) {
       createFixedTableHeader()
+      updatedFixedTableHeaderXPosition()
       fixedTable = $('#fixed-table')[0]
     } else if (offset < 370 && fixedTable) {
       fixedTable.remove()
