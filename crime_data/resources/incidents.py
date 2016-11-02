@@ -6,6 +6,7 @@ from crime_data.common.marshmallow_schemas import (ArgumentsSchema,
                                                    IncidentCountArgsSchema)
 from webargs.flaskparser import use_args
 
+from flask import make_response
 
 def _is_string(col):
     col0 = list(col.base_columns)[0]
@@ -24,7 +25,10 @@ class IncidentsList(CdeResource):
         filters = self.filters(args)
         qry = self.tables.filtered(filters)
         if args['output'] == 'csv':
-            return self.output_serialize(self.with_metadata(qry, args), self.schema)
+            output = make_response(self.output_serialize(self.with_metadata(qry, args), self.schema))
+            output.headers["Content-Disposition"] = "attachment; filename=incidents.csv"
+            output.headers["Content-type"] = "text/csv"
+            return output
         return self.with_metadata(qry, args)
 
 

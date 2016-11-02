@@ -70,8 +70,6 @@ class CdeResource(Resource):
             
             # create the csv writer object
             si = StringIO()
-            #dat = open('/tmp/out.csv', 'w')
-            #csvwriter = csv.writer(dat)
             csvwriter = csv.writer(si)
             keys = {}
 
@@ -81,7 +79,6 @@ class CdeResource(Resource):
                 if hasattr(v, 'many'):
                     list_fields.append(k)
 
-            #list_fields = ['offenders', 'offenses', 'property', 'victims', 'arrestees', 'agency']
             to_csv = []
 
             # Organize Data
@@ -107,8 +104,6 @@ class CdeResource(Resource):
                     csvwriter.writerow(header)
                     count += 1
                 csvwriter.writerow(cs.values())
-
-            #dat.close()
 
         return si.getvalue().strip('\r\n')
 
