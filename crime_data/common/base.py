@@ -55,6 +55,58 @@ class CdeResource(Resource):
     __abstract__ = True
     schema = None
 
+    def output_serialize(self, data, schema = None,format='csv'):
+        """ Very limited csv parsing of output data.
+        Uses Marshmallow schema to determine which fields are nested,
+        and stores raw json for these fields.
+        """
+        if format is 'json':
+            return data
+        if format is 'csv':
+
+            import flatdict
+            import csv
+            from io import StringIO
+            
+            # create the csv writer object
+            si = StringIO()
+            csvwriter = csv.writer(si)
+            keys = {}
+
+            # These are fields that can contain nested objects and/or lists
+            list_fields = []
+            for k,v in schema.declared_fields.items():
+                if hasattr(v, 'many'):
+                    list_fields.append(k)
+
+            to_csv = []
+
+            # Organize Data
+            for d in data['results']:
+                to_csv_dict = {}
+                for base_field in list_fields:
+                    to_csv_dict[base_field] = d[base_field]
+
+                flat = flatdict.FlatDict(d)
+
+                for k,v in flat.items():
+                    base_field = k.split(':')[0]
+                    leaf_field = k.split(':')[-1]
+                    if base_field not in list_fields:
+                        to_csv_dict[base_field + '.' + leaf_field] = v
+
+                to_csv.append(to_csv_dict)
+
+            count = 0
+            for cs in to_csv:
+                if count == 0:
+                    header = cs.keys()
+                    csvwriter.writerow(header)
+                    count += 1
+                csvwriter.writerow(cs.values())
+
+        return si.getvalue().strip('\r\n')
+
     def _stringify(self, data):
         """Avoid JSON serialization errors
         by converting values in list of dicts
