@@ -85,7 +85,7 @@ class CdeResource(Resource):
             for d in data['results']:
                 to_csv_dict = {}
                 for base_field in list_fields:
-                    to_csv_dict[base_field] = d[base_field]
+                    to_csv_dict[base_field] = len(d[base_field])
 
                 flat = flatdict.FlatDict(d)
 
