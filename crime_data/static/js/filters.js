@@ -174,17 +174,13 @@ function makeIncidentRow(i) {
     <td>${incidentDate.toISOString().split('T')[0]}</td>
     <td>${i.agency.field_office.field_office_name}, ${i.agency.state.state_name}</td>
     <td>${i.agency.pub_agency_name}</td>
-    <td>
-      <a href="${agencyUrl}">${i.agency.ori}</a>
-    </td>
+    <td>${i.agency.ori}</td>
     <td>${makeVictimsText(i.victims)}</td>
     <td>${makeOffensesText(i.offenses)}</td>
     <td>${makeOffendersText(i.offenders)}</td>
     <td>${makeArresteesText(i.arrestees)}</td>
     <td>${makePropertyText(i.property)}</td>
-    <td>
-      <a href="${incidentUrl}">${i.incident_number}</a>
-    </td>
+    <td>${i.incident_number}</td>
   </tr>`;
 
   function makeArresteesText(arrestees) {
