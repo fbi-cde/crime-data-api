@@ -1,7 +1,8 @@
 var KEY
 
-function $(sel) {
-  return document.querySelectorAll(sel)
+function $(selector) {
+  var selection = document.querySelectorAll(selector)
+  return Array.prototype.slice.apply(selection)
 }
 
 function applyParams(params) {
@@ -74,6 +75,23 @@ function applyValueParam(params) {
         console.log(`no handler for ${field.type}`)
     }
   })
+}
+
+function createFixedTableHeader() {
+  var table = $('#incident-data')[0].cloneNode(true)
+  var target = $('#fixed-table-header')[0]
+  var ths = table.querySelectorAll('th')
+
+  table.setAttribute('id', 'fixed-table')
+  table.querySelector('caption').remove()
+  table.querySelector('tbody').remove()
+  target.appendChild(table)
+  ths = Array.prototype.slice.apply(ths)
+
+  $('#incident-data th').map(function(th, i) {
+    var width = window.getComputedStyle(th).width
+    ths[i].setAttribute('style', `min-width: ${width};`)
+  });
 }
 
 function getFormValues(formSelector) {
@@ -199,7 +217,6 @@ function makeIncidentRow(i) {
   function makeVictimsText(victims) {
     if (victims.length === 0) return 'No victims'
     var text = victims.map(function(v) {
-      console.log('v', v);
       var age = (v.age && v.age.age_code === 'AG') ? v.age_num : 'not handled'
       var race = (v.race) ? v.race.race_desc.toLowerCase() : 'not handled'
       var sex
@@ -344,15 +361,23 @@ function updateContent() {
   }
 }
 
+function updatedFixedTableHeaderXPosition() {
+  var scrolled = $('#full-table')[0].scrollLeft
+  var target = $('#fixed-table')[0]
+
+  target.setAttribute('style', `transform: translateX(-${scrolled}px);`)
+}
+
 window.onload = function () {
   var urlParams = getParams()
   applyParams(urlParams)
   updateContent()
 
-  $('#filters')[0].addEventListener('change', updateContent)
-
   var columnFilter = $('#incident-data-column-filter')[0]
   var columnFilterLegend = $('#incident-data-column-filter legend')[0]
+  var filtersForm = $('#filters')[0]
+  var fixedTable = false
+  var tableContainer = $('#full-table')[0]
 
   columnFilterLegend.addEventListener('click', function (ev) {
     var current = columnFilter.getAttribute('aria-expanded')
@@ -365,11 +390,34 @@ window.onload = function () {
     checkboxes.forEach(function(el, i) {
       if (el !== ev.target) return
       toggleTableColumn('incident-data', i + 1, ev.target.checked)
+
+      if (fixedTable) {
+        fixedTable.remove()
+        fixedTable = false
+      }
     })
   })
 
-  $('.filter').forEach(function(el) {
-    el.addEventListener('click', function(ev) {
+  filtersForm.addEventListener('change', updateContent)
+
+  document.addEventListener('scroll', function (ev) {
+    var offset = document.body.scrollTop
+    if (offset > 370 && !fixedTable) {
+      createFixedTableHeader()
+      fixedTable = $('#fixed-table')[0]
+    } else if (offset < 370 && fixedTable) {
+      fixedTable.remove()
+      fixedTable = false
+    }
+  })
+
+  tableContainer.addEventListener('scroll', function (ev) {
+    if (!fixedTable) return
+    updatedFixedTableHeaderXPosition()
+  })
+
+  $('.filter').forEach(function (el) {
+    el.addEventListener('click', function (ev) {
       var disabled = ev.target.getAttribute('disabled')
       var expanded = ev.target.getAttribute('aria-expanded')
       if (expanded === 'false') {

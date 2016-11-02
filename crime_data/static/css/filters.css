@@ -255,3 +255,10 @@ section.tables > div {
 #summary-data {
   display: none;
 }
+
+#fixed-table-header {
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  width: 800px;
+}
