@@ -7,6 +7,12 @@ import dateutil
 import pytest
 
 
+class TestTuningPage:
+    def test_tuning_page_exists(self, user, testapp):
+        res = testapp.get('/incidents/?tuning=1')
+        assert res.status_code == 200
+        assert b'<!DOCTYPE html>' in res.body
+
 class TestIncidentsEndpoint:
     def test_incidents_endpoint_exists(self, user, testapp):
         res = testapp.get('/incidents/')

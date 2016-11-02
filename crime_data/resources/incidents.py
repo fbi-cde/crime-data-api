@@ -3,7 +3,7 @@ import re
 from webargs.flaskparser import use_args
 
 from crime_data.common import cdemodels, marshmallow_schemas, models
-from crime_data.common.base import CdeResource
+from crime_data.common.base import CdeResource, tuning_page
 from crime_data.common.marshmallow_schemas import (ArgumentsSchema,
                                                    IncidentCountArgsSchema)
 
@@ -19,8 +19,10 @@ class IncidentsList(CdeResource):
     tables = cdemodels.IncidentTableFamily()
 
     @use_args(ArgumentsSchema)
+    @tuning_page
     def get(self, args):
         # TODO: apply "fields" arg
+
         self.verify_api_key(args)
         filters = self.filters(args)
         qry = self.tables.filtered(filters)
@@ -32,6 +34,7 @@ class IncidentsDetail(CdeResource):
     schema = marshmallow_schemas.NibrsIncidentSchema(many=True)
 
     @use_args(ArgumentsSchema)
+    @tuning_page
     def get(self, args, nbr):
         self.verify_api_key(args)
         incidents = models.NibrsIncident.query.filter_by(incident_number=nbr)
@@ -45,6 +48,7 @@ class IncidentsCount(CdeResource):
     SPLITTER = re.compile(r"\s*,\s*")
 
     @use_args(IncidentCountArgsSchema)
+    @tuning_page
     def get(self, args):
         self.verify_api_key(args)
         by = self.SPLITTER.split(
