@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """Public section, including homepage and signup."""
+import os
+
 from flask import (Blueprint, flash, redirect, render_template, request,
                    send_file, url_for)
 from flask_login import login_required, login_user, logout_user
@@ -69,7 +71,7 @@ def docs():
 @blueprint.route('/prototypes/', methods=['GET'])
 @basic_auth.required
 def prototypes():
-    key = request.args.get('k')
+    key = os.environ.get('CRIME_DATA_SECRET', 'secret-key')
     return render_template('/prototypes/index.html', key=key)
 
 @blueprint.route('/prototypes/sentences/', methods=['GET'])

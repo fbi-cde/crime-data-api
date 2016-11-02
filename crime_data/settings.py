@@ -11,7 +11,8 @@ class Config(object):
     APP_DIR = os.path.abspath(os.path.dirname(__file__))  # This directory
     PROJECT_ROOT = os.path.abspath(os.path.join(APP_DIR, os.pardir))
     BASIC_AUTH_USERNAME = '18f'
-    BASIC_AUTH_PASSWORD = SECRET_KEY
+    BASIC_AUTH_PASSWORD = os.environ.get('PROTOTYPE_PASSWORD',
+                                'secret-key')
     BCRYPT_LOG_ROUNDS = 13
     ASSETS_DEBUG = False
     DEBUG_TB_ENABLED = False  # Disable Debug toolbar
