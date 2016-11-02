@@ -14,7 +14,7 @@ def tuning_page(f):
     @wraps(f)
     def decorated_get(*args, **kwargs):
         if args[1]['tuning']:
-            if not current_app.config.DEBUG:
+            if not current_app.config['DEBUG']:
                 abort(403, message="`DEBUG` must be on for tuning page")
             profiler = sqltap.start()
             result = f(*args, **kwargs)
