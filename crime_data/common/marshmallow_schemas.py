@@ -178,13 +178,28 @@ class NibrsOffenseTypeSchema(ma.ModelSchema):
         exclude = ('arrestees', 'offenses', 'offense_type_id', )
 
 
+class NibrsWeaponTypeSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.CdeNibrsWeaponType
+        exclude = ('weapon_id', )
+
+
+class NibrsWeaponSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.CdeNibrsWeapon
+        exclude = ('nibrs_weapon_id', )
+
+    weapon_type = ma.Nested(NibrsWeaponTypeSchema)
+
+
 class NibrsOffenseSchema(ma.ModelSchema):
     class Meta:
-        model = models.NibrsOffense
+        model = cdemodels.CdeNibrsOffense
         exclude = ('incident', 'offense_id', )
 
     offense_type = ma.Nested(NibrsOffenseTypeSchema)
     location = ma.Nested(NibrsLocationTypeSchema)
+    weapons = ma.Nested(NibrsWeaponSchema, many=True)
 
 
 class NibrsClearedExceptSchema(ma.ModelSchema):
