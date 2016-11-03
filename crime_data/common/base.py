@@ -49,21 +49,21 @@ class QueryTraits(object):
 
     @classmethod
     def get_fields(cls, agg_fields, fields):
-        """Builds the query's SELECT clause. 
+        """Builds the query's SELECT clause.
         Returns list of fields.
         """
         requested_fields = []
         for field in fields:
             if field in cls.get_filter_map():
                 requested_fields.append(cls.get_filter_map()[field])
-        
+
         requested_fields += agg_fields
         return requested_fields
 
     @classmethod
     def apply_group_by(cls, query, group_bys):
         """ Builds the query's GROUP BY clause.
-        For Aggregations, the group by clause will 
+        For Aggregations, the group by clause will
         contain all output fields. Returns query object.
         """
         for group in group_bys:
@@ -74,7 +74,7 @@ class QueryTraits(object):
 
     @classmethod
     def apply_filters(cls, query, filters, parsed):
-        """ Apply All query filters. 
+        """ Apply All query filters.
         Returns query object.
         """
 
@@ -114,6 +114,58 @@ class CdeResource(Resource):
              '>': '__gt__',
              '<': '__le__',
              '==': '__eq__', }
+
+    def output_serialize(self, data, schema = None,format='csv'):
+        """ Very limited csv parsing of output data.
+        Uses Marshmallow schema to determine which fields are nested,
+        and stores raw json for these fields.
+        """
+        if format is 'json':
+            return data
+        if format is 'csv':
+
+            import flatdict
+            import csv
+            from io import StringIO
+
+            # create the csv writer object
+            si = StringIO()
+            csvwriter = csv.writer(si)
+            keys = {}
+
+            # These are fields that can contain nested objects and/or lists
+            list_fields = []
+            for k,v in schema.declared_fields.items():
+                if hasattr(v, 'many'):
+                    list_fields.append(k)
+
+            to_csv = []
+
+            # Organize Data
+            for d in data['results']:
+                to_csv_dict = {}
+                for base_field in list_fields:
+                    to_csv_dict[base_field] = d[base_field]
+
+                flat = flatdict.FlatDict(d)
+
+                for k,v in flat.items():
+                    base_field = k.split(':')[0]
+                    leaf_field = k.split(':')[-1]
+                    if base_field not in list_fields:
+                        to_csv_dict[base_field + '.' + leaf_field] = v
+
+                to_csv.append(to_csv_dict)
+
+            count = 0
+            for cs in to_csv:
+                if count == 0:
+                    header = cs.keys()
+                    csvwriter.writerow(header)
+                    count += 1
+                csvwriter.writerow(cs.values())
+
+        return si.getvalue().strip('\r\n')
 
     def _stringify(self, data):
         """Avoid JSON serialization errors
@@ -168,7 +220,7 @@ class CdeResource(Resource):
 
     def filters(self, parsed):
         """Yields `(key, comparitor, value)` from `request.args` not already in `parsed`.
-        
+
         `comparitor` may be '__eq__', '__gt__', '__le__', etc."""
 
         for (k, v) in request.args.items():

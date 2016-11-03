@@ -13,6 +13,7 @@ ma = Marshmallow()
 
 # Schemas for request parsing
 class ArgumentsSchema(Schema):
+    output = marsh_fields.String(missing='json')
     page = marsh_fields.Integer(missing=1)
     per_page = marsh_fields.Integer(missing=10)
     fields = marsh_fields.String()
@@ -20,6 +21,7 @@ class ArgumentsSchema(Schema):
         api_key = marsh_fields.String(
             required=True,
             error_messages={'required': 'Get API key from Catherine'})
+
 
 class AgencySchema(ArgumentsSchema):
     state = marsh_fields.String()
