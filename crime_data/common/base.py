@@ -6,7 +6,7 @@ from flask import request
 from flask_restful import Resource, abort
 # import celery
 from flask_sqlalchemy import SignallingSession, SQLAlchemy
-
+from sqlalchemy import and_, func
 
 class RoutingSession(SignallingSession):
     """Route requests to database leader or follower as appropriate.
@@ -45,15 +45,75 @@ class RoutingSession(SignallingSession):
 
         return super().get_bind(mapper=mapper, clause=clause)
 
+class QueryTraits(object):
+
+    @classmethod
+    def get_fields(cls, agg_fields, fields):
+        """Builds the query's SELECT clause.
+        Returns list of fields.
+        """
+        requested_fields = []
+        for field in fields:
+            if field in cls.get_filter_map():
+                requested_fields.append(cls.get_filter_map()[field])
+
+        requested_fields += agg_fields
+        return requested_fields
+
+    @classmethod
+    def apply_group_by(cls, query, group_bys):
+        """ Builds the query's GROUP BY clause.
+        For Aggregations, the group by clause will
+        contain all output fields. Returns query object.
+        """
+        for group in group_bys:
+            if group in cls.get_filter_map():
+                query = (query.group_by(cls.get_filter_map()[group])
+                    .order_by(cls.get_filter_map()[group]))
+        return query
+
+    @classmethod
+    def apply_filters(cls, query, filters, parsed):
+        """ Apply All query filters.
+        Returns query object.
+        """
+
+        def _is_string(col):
+            return issubclass(col.type.python_type, str)
+
+        # Apply any inequality filters.
+        for (col_name, comparitor, val) in filters:
+            if col_name in cls.get_filter_map():
+                col = cls.get_filter_map()[col_name]
+                if _is_string(col):
+                    col = func.lower(col)
+                    val = val.lower()
+                    query = query.filter(col.ilike('%' + val + '%'))
+                else:
+                    query = query.filter(getattr(col, comparitor)(val))
+
+        # Apply all other filters.
+        for filter,value in parsed.items():
+            if filter in cls.get_filter_map():
+                col = cls.get_filter_map()[filter]
+                query = query.filter(col.ilike('%' + value + '%'))
+
+        return query
 
 class RoutingSQLAlchemy(SQLAlchemy):
     def create_session(self, options):
         return RoutingSession(self, **options)
 
-
 class CdeResource(Resource):
     __abstract__ = True
     schema = None
+
+    OPERATORS = {'!=': '__ne__',
+             '>=': '__ge__',
+             '<=': '__le__',
+             '>': '__gt__',
+             '<': '__le__',
+             '==': '__eq__', }
 
     def output_serialize(self, data, schema = None,format='csv'):
         """ Very limited csv parsing of output data.
@@ -67,7 +127,7 @@ class CdeResource(Resource):
             import flatdict
             import csv
             from io import StringIO
-            
+
             # create the csv writer object
             si = StringIO()
             csvwriter = csv.writer(si)
@@ -142,13 +202,6 @@ class CdeResource(Resource):
             if args.get('api_key') != key:
                 abort(401, 'Use correct `api_key` argument')
 
-    OPERATORS = {'!=': '__ne__',
-                 '>=': '__ge__',
-                 '<=': '__le__',
-                 '>': '__gt__',
-                 '<': '__le__',
-                 '==': '__eq__', }
-
     def _parse_inequality_operator(self, k, v):
         """
         Returns (key, value, comparitor)
@@ -167,7 +220,7 @@ class CdeResource(Resource):
 
     def filters(self, parsed):
         """Yields `(key, comparitor, value)` from `request.args` not already in `parsed`.
-        
+
         `comparitor` may be '__eq__', '__gt__', '__le__', etc."""
 
         for (k, v) in request.args.items():

@@ -6,7 +6,8 @@ from crime_data.common import cdemodels as models
 from crime_data.common import marshmallow_schemas
 from crime_data.common.base import CdeResource
 from crime_data.common.marshmallow_schemas import (
-    AgenciesRetaArgsSchema, ArgumentsSchema, IncidentCountArgsSchema)
+    ArgumentsSchema, AgenciesRetaArgsSchema,
+    AgencySchema, AgenciesIncidentArgsSchema)
 from webargs.flaskparser import use_args
 
 
@@ -16,10 +17,11 @@ class AgenciesResource(CdeResource):
 
 
 class AgenciesList(AgenciesResource):
-    @use_args(marshmallow_schemas.ArgumentsSchema)
+    @use_args(marshmallow_schemas.AgencySchema)
     def get(self, args):
         self.verify_api_key(args)
-        result = models.CdeRefAgency.query
+        filters = self.filters(args)
+        result = models.CdeRefAgency.get(None, filters, args)
         return self.with_metadata(result, args)
 
 
@@ -27,7 +29,8 @@ class AgenciesDetail(AgenciesResource):
     @use_args(marshmallow_schemas.ArgumentsSchema)
     def get(self, args, nbr):
         self.verify_api_key(args)
-        agency = models.CdeRefAgency.query.filter_by(ori=nbr)
+        filters = self.filters(args)
+        agency = models.CdeRefAgency.get(nbr, filters, args)
         return self.with_metadata(agency, args)
 
 
@@ -35,7 +38,7 @@ class AgenciesNibrsCount(CdeResource):
 
     SPLITTER = re.compile(r"\s*,\s*")
 
-    @use_args(AgenciesRetaArgsSchema)
+    @use_args(AgenciesIncidentArgsSchema)
     def get(self, args, ori=None):
         '''''
         Get Incident Count by Agency ID/ORI.
@@ -46,8 +49,8 @@ class AgenciesNibrsCount(CdeResource):
         by = self.SPLITTER.split(
             args['by'].lower())  # TODO: can post-process in schema?
 
-        query = models.CdeNibrsIncident.get_nibrs_incident_by_ori(ori, args,
-                                                                  by)
+        filters = self.filters(args)
+        query = models.CdeNibrsIncident.get_nibrs_incident_by_ori(ori, filters, by, args)
         return self.with_metadata(query, args)
 
 
@@ -66,7 +69,7 @@ class AgenciesRetaCount(CdeResource):
         by = self.SPLITTER.split(
             args['by'].lower())  # TODO: can post-process in schema?
 
-        query = models.CdeRetaMonth.get_reta_by_ori(ori, args, by)
+        filters = self.filters(args)
+        query = models.CdeRetaMonth.get_reta_by_ori(ori, filters, by, args)
         result = self.with_metadata(query, args)
-
         return result
