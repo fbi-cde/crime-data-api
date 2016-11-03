@@ -1,0 +1,11 @@
+applications:
+- name: crime-data-api-user-testing-fbi-hotfix
+  memory: 512M
+  buildpack: python_buildpack
+  host: crime-data-api-user-testing-fbi-hotfix
+  domain: fr.cloud.gov
+env:
+  FLASK_APP: autoapp.py
+services:
+- crime-data-api-db
+- crime-data-api-creds
