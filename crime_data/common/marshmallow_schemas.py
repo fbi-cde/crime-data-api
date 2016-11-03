@@ -17,6 +17,7 @@ class ArgumentsSchema(Schema):
     page = marsh_fields.Integer(missing=1)
     per_page = marsh_fields.Integer(missing=10)
     fields = marsh_fields.String()
+    tuning = marsh_fields.Boolean(missing=False)
     if os.getenv('VCAP_APPLICATION'):
         api_key = marsh_fields.String(
             required=True,

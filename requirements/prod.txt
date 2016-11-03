@@ -44,6 +44,9 @@ Flask-DebugToolbar==0.10.0
 # RESTful
 Flask-RESTful==0.3.5
 
+# Performance tuning
+sqltap==0.3.10
+
 flask-marshmallow==0.7.0
 marshmallow-sqlalchemy==0.12.0
 webargs==1.4.0
