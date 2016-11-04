@@ -10,7 +10,6 @@ from flask_restful import Resource, abort, current_app
 # import celery
 from flask_sqlalchemy import SignallingSession, SQLAlchemy
 from sqlalchemy import and_, func
-from sqlalchemy_pagination import paginate
 
 
 def tuning_page(f):

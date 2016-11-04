@@ -1,5 +1,4 @@
 from flask import abort
-from flask.ext.sqlalchemy import Pagination
 from sqlalchemy import and_, func, distinct
 from sqlalchemy.orm import aliased
 from sqlalchemy.sql import label
