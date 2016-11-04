@@ -1,4 +1,5 @@
 import json
+import math
 import os
 import random
 from functools import wraps
@@ -9,6 +10,8 @@ from flask_restful import Resource, abort, current_app
 # import celery
 from flask_sqlalchemy import SignallingSession, SQLAlchemy
 from sqlalchemy import and_, func
+from sqlalchemy_pagination import paginate
+
 
 def tuning_page(f):
     @wraps(f)
@@ -65,8 +68,8 @@ class RoutingSession(SignallingSession):
 
         return super().get_bind(mapper=mapper, clause=clause)
 
-class QueryTraits(object):
 
+class QueryTraits(object):
     @classmethod
     def get_fields(cls, agg_fields, fields):
         """Builds the query's SELECT clause.
@@ -89,7 +92,7 @@ class QueryTraits(object):
         for group in group_bys:
             if group in cls.get_filter_map():
                 query = (query.group_by(cls.get_filter_map()[group])
-                    .order_by(cls.get_filter_map()[group]))
+                         .order_by(cls.get_filter_map()[group]))
         return query
 
     @classmethod
@@ -113,29 +116,31 @@ class QueryTraits(object):
                     query = query.filter(getattr(col, comparitor)(val))
 
         # Apply all other filters.
-        for filter,value in parsed.items():
+        for filter, value in parsed.items():
             if filter in cls.get_filter_map():
                 col = cls.get_filter_map()[filter]
                 query = query.filter(col.ilike('%' + value + '%'))
 
         return query
 
+
 class RoutingSQLAlchemy(SQLAlchemy):
     def create_session(self, options):
         return RoutingSession(self, **options)
+
 
 class CdeResource(Resource):
     __abstract__ = True
     schema = None
 
     OPERATORS = {'!=': '__ne__',
-             '>=': '__ge__',
-             '<=': '__le__',
-             '>': '__gt__',
-             '<': '__le__',
-             '==': '__eq__', }
+                 '>=': '__ge__',
+                 '<=': '__le__',
+                 '>': '__gt__',
+                 '<': '__le__',
+                 '==': '__eq__', }
 
-    def output_serialize(self, data, schema = None,format='csv'):
+    def output_serialize(self, data, schema=None, format='csv'):
         """ Very limited csv parsing of output data.
         Uses Marshmallow schema to determine which fields are nested,
         and stores raw json for these fields.
@@ -155,7 +160,7 @@ class CdeResource(Resource):
 
             # These are fields that can contain nested objects and/or lists
             list_fields = []
-            for k,v in schema.declared_fields.items():
+            for k, v in schema.declared_fields.items():
                 if hasattr(v, 'many'):
                     list_fields.append(k)
 
@@ -169,7 +174,7 @@ class CdeResource(Resource):
 
                 flat = flatdict.FlatDict(d)
 
-                for k,v in flat.items():
+                for k, v in flat.items():
                     base_field = k.split(':')[0]
                     leaf_field = k.split(':')[-1]
                     if base_field not in list_fields:
@@ -198,18 +203,31 @@ class CdeResource(Resource):
         return dict(zip(fieldTuple, res))
 
     def with_metadata(self, results, args):
-        results = results.paginate(args['page'], args['per_page'])
+        """Paginates results and wraps them in metadata."""
+
         if self.schema:
-            items = self.schema.dump(results.items).data
+            paginated = results.distinct().limit(args['per_page']).offset(
+                (args['page'] - 1) * args['per_page'])
+            if hasattr(paginated, 'data'):
+                paginated = paginated.data
+            count = results.distinct().count()
+            return {'results': self.schema.dump(paginated).data,
+                    'pagination': {
+                        'count': count,
+                        'page': args['page'],
+                        'pages': math.ceil(count / args['per_page']),
+                        'per_page': args['per_page'],
+                    }, }
         else:
-            items = self._stringify(results.items)
-        return {'results': items,
-                'pagination': {
-                    'count': results.total,
-                    'page': results.page,
-                    'pages': results.pages,
-                    'per_page': results.per_page,
-                }, }
+            paginated = results.paginate(args['page'], args['per_page'])
+            items = self._stringify(paginated.items)
+            return {'results': items,
+                    'pagination': {
+                        'count': paginated.total,
+                        'page': paginated.page,
+                        'pages': paginated.pages,
+                        'per_page': paginated.per_page,
+                    }, }
 
     def verify_api_key(self, args):
         if os.getenv('VCAP_SERVICES'):

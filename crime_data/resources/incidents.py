@@ -9,6 +9,7 @@ from crime_data.common.marshmallow_schemas import (ArgumentsSchema,
 
 from flask import make_response
 
+
 def _is_string(col):
     col0 = list(col.base_columns)[0]
     return issubclass(col0.type.python_type, str)
@@ -28,8 +29,10 @@ class IncidentsList(CdeResource):
         filters = self.filters(args)
         qry = self.tables.filtered(filters)
         if args['output'] == 'csv':
-            output = make_response(self.output_serialize(self.with_metadata(qry, args), self.schema))
-            output.headers["Content-Disposition"] = "attachment; filename=incidents.csv"
+            output = make_response(self.output_serialize(
+                self.with_metadata(qry, args), self.schema))
+            output.headers[
+                "Content-Disposition"] = "attachment; filename=incidents.csv"
             output.headers["Content-type"] = "text/csv"
             return output
         return self.with_metadata(qry, args)
@@ -61,4 +64,4 @@ class IncidentsCount(CdeResource):
             args['by'].lower())  # TODO: can post-process in schema?
         filters = list(self.filters(args))
         result = cdemodels.RetaQuery(by, filters)
-        return self.with_metadata(result, args)
+        return self.with_metadata(result.qry, args)
