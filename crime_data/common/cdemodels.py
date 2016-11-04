@@ -519,14 +519,6 @@ class QueryWithAggregates(object):
         except FieldNameError as e:
             abort(400, e)
 
-    def paginate(self, page, per_page):
-        paginated = self.qry.limit(per_page).offset((page - 1) * per_page)
-        return Pagination(self.qry,
-                          page=page,
-                          per_page=per_page,
-                          total=self.qry.count(),
-                          items=paginated)
-
 
 class RetaQuery(QueryWithAggregates):
 

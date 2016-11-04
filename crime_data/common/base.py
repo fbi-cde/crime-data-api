@@ -203,11 +203,15 @@ class CdeResource(Resource):
         return dict(zip(fieldTuple, res))
 
     def with_metadata(self, results, args):
+        """Paginates results and wraps them in metadata."""
+
         if self.schema:
             paginated = results.distinct().limit(args['per_page']).offset(
                 (args['page'] - 1) * args['per_page'])
+            if hasattr(paginated, 'data'):
+                paginated = paginated.data
             count = results.distinct().count()
-            return {'results': self.schema.dump(paginated),
+            return {'results': self.schema.dump(paginated).data,
                     'pagination': {
                         'count': count,
                         'page': args['page'],
@@ -215,14 +219,14 @@ class CdeResource(Resource):
                         'per_page': args['per_page'],
                     }, }
         else:
-            results = results.paginate(args['page'], args['per_page'])
-            items = self._stringify(results.items)
+            paginated = results.paginate(args['page'], args['per_page'])
+            items = self._stringify(paginated.items)
             return {'results': items,
                     'pagination': {
-                        'count': results.total,
-                        'page': results.page,
-                        'pages': results.pages,
-                        'per_page': results.per_page,
+                        'count': paginated.total,
+                        'page': paginated.page,
+                        'pages': paginated.pages,
+                        'per_page': paginated.per_page,
                     }, }
 
     def verify_api_key(self, args):
