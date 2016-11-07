@@ -208,8 +208,8 @@ class TestIncidentsEndpoint:
                 assert ('Larceny/Theft Offenses') in offense_names
 
     def test_incidents_endpoint_filter_with_parens(self, user, testapp):
-        for population_category_desc in ('City (1-7)', 'City+(1-7)'):
-            res = testapp.get('/incidents/?population_category_desc=' + population_category_desc)
+        for population_family_desc in ('City (1-7)', 'City+(1-7)'):
+            res = testapp.get('/incidents/?population_family_desc=' + population_family_desc)
             assert len(res.json['results']) > 0
             for incident in res.json['results']:
                 assert incident['agency']['population_family']['population_family_desc'] == 'City (1-7)'
