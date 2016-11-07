@@ -9,7 +9,7 @@ from flask import make_response, request
 from flask_restful import Resource, abort, current_app
 # import celery
 from flask_sqlalchemy import SignallingSession, SQLAlchemy
-from sqlalchemy import and_, func
+from sqlalchemy import func, or_
 
 
 def tuning_page(f):
@@ -104,15 +104,17 @@ class QueryTraits(object):
             return issubclass(col.type.python_type, str)
 
         # Apply any inequality filters.
-        for (col_name, comparitor, val) in filters:
+        for (col_name, comparitor, values) in filters:
             if col_name in cls.get_filter_map():
                 col = cls.get_filter_map()[col_name]
                 if _is_string(col):
                     col = func.lower(col)
-                    val = val.lower()
-                    query = query.filter(col.ilike('%' + val + '%'))
+                    values = [val.lower() for val in values]
+                    query = query.filter(or_(col.ilike('%' + val + '%')
+                                             for val in values))
                 else:
-                    query = query.filter(getattr(col, comparitor)(val))
+                    operation = getattr(col, comparitor)
+                    query = query.filter(or_(operation(val) for val in values))
 
         # Apply all other filters.
         for filter, value in parsed.items():
@@ -255,8 +257,13 @@ class CdeResource(Resource):
                     return (new_k, sign, new_v)
             return (k, '==', True)
 
+    def _split_values(self, val_string):
+        val_string = val_string.strip('{} \t')
+        values = val_string.split(',')
+        return [v.strip() for v in values]
+
     def filters(self, parsed):
-        """Yields `(key, comparitor, value)` from `request.args` not already in `parsed`.
+        """Yields `(key, comparitor, (values))` from `request.args` not already in `parsed`.
 
         `comparitor` may be '__eq__', '__gt__', '__le__', etc."""
 
@@ -264,6 +271,7 @@ class CdeResource(Resource):
             if k in parsed:
                 continue
             (k, op, v) = self._parse_inequality_operator(k, v)
+            v = self._split_values(v)
             yield (k.lower(), self.OPERATORS[op], v)
 
 
