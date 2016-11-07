@@ -291,6 +291,9 @@ class TableFamily:
     def _is_string(col):
         return issubclass(col.type.python_type, str)
 
+    def base_query(self):
+        return db.session.query(self.base_table.table)
+
     def filtered(self, filters):
         qry = self.query()
         for (col_name, comparitor, values) in filters:
@@ -321,11 +324,9 @@ class TableFamily:
         qry = self.base_query()
         for table in self.tables:
             if table.join is None:
-                #qry = qry.join(table.table, isouter=table.outer)
-                qry = qry.join(table.table, isouter=True)
+                qry = qry.outerjoin(table.table)
             else:
-                #qry = qry.join(table.table, table.join, isouter=table.outer)
-                qry = qry.join(table.table, table.join, isouter=True)
+                qry = qry.outerjoin(table.table, table.join)
         return qry
 
     def print_map(self):
@@ -353,9 +354,8 @@ class JoinedTable:
 
     PREFIX_SEPARATOR = '.'
 
-    def __init__(self, table, outer=True, prefix=None, join=None):
+    def __init__(self, table, prefix=None, join=None):
         self.table = table
-        self.outer = outer
         self.prefix = prefix
         self.join = join
 
@@ -395,9 +395,6 @@ class IncidentTableFamily(TableFamily):
 
     base_table = JoinedTable(models.NibrsIncident)
 
-    def base_query(self):
-        return db.session.query(models.NibrsIncident)
-
     victim_race = aliased(models.RefRace)
     victim_age = aliased(models.NibrsAge)
     victim_ethnicity = aliased(models.NibrsEthnicity)
@@ -411,17 +408,17 @@ class IncidentTableFamily(TableFamily):
     tables = [
         JoinedTable(models.NibrsOffense),
         JoinedTable(models.NibrsOffenseType,
-                    outer=False),
+                    ),
         JoinedTable(models.RefAgency,
-                    outer=False),
+                    ),
         JoinedTable(models.RefAgencyType,
-                    outer=False),
+                    ),
         JoinedTable(models.RefState,
-                    outer=False),
+                    ),
         JoinedTable(models.RefDivision,
-                    outer=False),
+                    ),
         JoinedTable(models.RefRegion,
-                    outer=False),
+                    ),
         JoinedTable(models.RefSubmittingAgency,
                     join=(models.RefAgency.agency_id ==
                           models.RefSubmittingAgency.agency_id)),
@@ -429,9 +426,9 @@ class IncidentTableFamily(TableFamily):
         JoinedTable(models.RefPopulationFamily,
                     join=(models.RefAgency.population_family_id ==
                           models.RefPopulationFamily.population_family_id),
-                    outer=False),
+                    ),
         JoinedTable(models.NibrsClearedExcept,
-                    outer=False),
+                    ),
         JoinedTable(models.NibrsOffender,
                     prefix='offender'),
         JoinedTable(models.NibrsVictim,
@@ -443,12 +440,12 @@ class IncidentTableFamily(TableFamily):
         JoinedTable(offender_age,
                     join=(models.NibrsOffender.age_id == offender_age.age_id),
                     prefix='offender',
-                    outer=False),
+                    ),
         JoinedTable(
             offender_race,
             join=(models.NibrsOffender.race_id == offender_race.race_id),
             prefix='offender',
-            outer=False),
+            ),
         JoinedTable(offender_ethnicity,
                     join=(models.NibrsOffender.ethnicity_id ==
                           offender_ethnicity.ethnicity_id),
@@ -456,11 +453,11 @@ class IncidentTableFamily(TableFamily):
         JoinedTable(victim_age,
                     join=(models.NibrsVictim.age_id == victim_age.age_id),
                     prefix='victim',
-                    outer=False),
+                    ),
         JoinedTable(victim_race,
                     join=(models.NibrsVictim.race_id == victim_race.race_id),
                     prefix='victim',
-                    outer=False),
+                    ),
         JoinedTable(victim_ethnicity,
                     join=(models.NibrsVictim.ethnicity_id ==
                           victim_ethnicity.ethnicity_id),
@@ -468,23 +465,23 @@ class IncidentTableFamily(TableFamily):
         JoinedTable(arrestee_age,
                     join=(models.NibrsArrestee.age_id == arrestee_age.age_id),
                     prefix='arrestee',
-                    outer=False),
+                    ),
         JoinedTable(
             arrestee_race,
             join=(models.NibrsArrestee.race_id == arrestee_race.race_id),
             prefix='arrestee',
-            outer=False),
+            ),
         JoinedTable(arrestee_ethnicity,
                     join=(models.NibrsArrestee.ethnicity_id ==
                           arrestee_ethnicity.ethnicity_id),
                     prefix='arrestee'),
         JoinedTable(models.NibrsProperty),
         JoinedTable(models.NibrsPropLossType,
-                    outer=False),
+                    ),
         JoinedTable(models.NibrsLocationType,
                     join=(models.NibrsOffense.location_id ==
                           models.NibrsLocationType.location_id),
-                    outer=False),
+                    ),
     ]
 
 
