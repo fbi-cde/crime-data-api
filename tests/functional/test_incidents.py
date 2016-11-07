@@ -199,20 +199,20 @@ class TestIncidentsEndpoint:
             races = [v['race']['race_code'] for v in incident['victims']]
             assert ('A' in races) or ('I' in races) or ('P' in races)
 
-    @pytest.mark.xfail  # TODO
     def test_incidents_endpoint_filter_with_spaces(self, user, testapp):
-        res = testapp.get('/incidents/?offense_category_name=Larceny/Theft+Offenses')
-        assert len(res.json['results']) > 0
-        for incident in res.json['results']:
-            offense_names = [o['offense_category_name'] for o in incident['offenses']]
-            assert ('Larceny/Theft Offenses') in offense_names
+        for category_name in ('Larceny/Theft Offenses', 'Larceny/Theft+Offenses', 'Larceny/Theft%20Offenses'):
+            res = testapp.get('/incidents/?offense_category_name=' + category_name)
+            assert len(res.json['results']) > 0
+            for incident in res.json['results']:
+                offense_names = [o['offense_type']['offense_category_name'] for o in incident['offenses']]
+                assert ('Larceny/Theft Offenses') in offense_names
 
-    @pytest.mark.xfail  # TODO
     def test_incidents_endpoint_filter_with_parens(self, user, testapp):
-        res = testapp.get('/incidents/?population_category_desc=City+(1-7)')
-        assert len(res.json['results']) > 0
-        for incident in res.json['results']:
-            assert incident['agency']['population_family']['population_family_desc'] == 'City (1-7)'
+        for population_category_desc in ('City (1-7)', 'City+(1-7)'):
+            res = testapp.get('/incidents/?population_category_desc=' + population_category_desc)
+            assert len(res.json['results']) > 0
+            for incident in res.json['results']:
+                assert incident['agency']['population_family']['population_family_desc'] == 'City (1-7)'
 
     # End filter tests
 
