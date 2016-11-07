@@ -1,5 +1,5 @@
 from flask import abort
-from sqlalchemy import and_, func
+from sqlalchemy import and_, func, or_
 from sqlalchemy.exc import ArgumentError
 from sqlalchemy.orm import aliased
 from sqlalchemy.sql import label
@@ -40,18 +40,6 @@ class CdeRefCity(models.RefCity):
 
 
 class CdeRetaMonthOffenseSubcat(models.RetaMonthOffenseSubcat):
-    pass
-
-
-class CdeRetaOffense(models.RetaOffense):
-    pass
-
-
-class CdeRetaMonthOffenseSubcat(models.RetaMonthOffenseSubcat):
-    pass
-
-
-class CdeRetaOffenseSubcat(models.RetaOffenseSubcat):
     pass
 
 
@@ -305,14 +293,16 @@ class TableFamily:
 
     def filtered(self, filters):
         qry = self.query()
-        for (col_name, comparitor, val) in filters:
+        for (col_name, comparitor, values) in filters:
             if col_name not in self.map:
                 abort(400, 'field {} not found'.format(col_name))
             col = self.map[col_name]
             if _is_string(col):
                 col = func.lower(col)
-                val = val.lower()
-            qry = qry.filter(getattr(col, comparitor)(val))
+                values = [val.lower() for val in values]
+            operation = getattr(col, comparitor)
+            qry = qry.filter(or_(operation(v) for v in values))
+            #$ qry = qry.filter(getattr(col, comparitor)(val))
         return qry
 
     def _build_map(self):
@@ -525,12 +515,15 @@ class QueryWithAggregates(object):
 
     def _apply_filters(self, filters):
         if filters:
-            for (col_name, comparitor, value) in filters:
+            for (col_name, comparitor, values) in filters:
                 col = self._col(col_name)
                 if _is_string(col):
                     col = func.lower(col)
-                    value = value.lower()
-                self.qry = self.qry.filter(getattr(col, comparitor)(value))
+                    values = [val.lower() for val in values]
+                operation = getattr(col, comparitor)
+                self.qry = self.qry.filter(or_(operation(v) for v in values))
+
+                # self.qry = self.qry.filter(getattr(col, comparitor)(value))
 
     def __init__(self, by=None, filters=None):
         try:

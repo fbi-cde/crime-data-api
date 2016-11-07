@@ -183,6 +183,39 @@ class TestIncidentsEndpoint:
             assert dt > dateutil.parser.parse('2014-06-01T00:00+00:00')
             assert dt <= dateutil.parser.parse('2014-07-01T00:00+00:00')
 
+    def test_incidents_endpoint_filters_on_multiple_values(self, user, testapp):
+        res = testapp.get('/incidents/?victim.race_code=A,I,P')
+        assert len(res.json['results']) > 0
+        for incident in res.json['results']:
+            races = [v['race']['race_code'] for v in incident['victims']]
+            assert ('A' in races) or ('I' in races) or ('P' in races)
+
+    # TODO: escaped commas
+
+    def test_incidents_endpoint_filters_on_multiple_values_with_brackets(self, user, testapp):
+        res = testapp.get('/incidents/?victim.race_code={A,I,P}')
+        assert len(res.json['results']) > 0
+        for incident in res.json['results']:
+            races = [v['race']['race_code'] for v in incident['victims']]
+            assert ('A' in races) or ('I' in races) or ('P' in races)
+
+    @pytest.mark.xfail  # TODO
+    def test_incidents_endpoint_filter_with_spaces(self, user, testapp):
+        res = testapp.get('/incidents/?offense_category_name=Larceny/Theft+Offenses')
+        assert len(res.json['results']) > 0
+        for incident in res.json['results']:
+            offense_names = [o['offense_category_name'] for o in incident['offenses']]
+            assert ('Larceny/Theft Offenses') in offense_names
+
+    @pytest.mark.xfail  # TODO
+    def test_incidents_endpoint_filter_with_parens(self, user, testapp):
+        res = testapp.get('/incidents/?population_category_desc=City+(1-7)')
+        assert len(res.json['results']) > 0
+        for incident in res.json['results']:
+            assert incident['agency']['population_family']['population_family_desc'] == 'City (1-7)'
+
+    # End filter tests
+
     @pytest.mark.xfail  # TODO
     def test_incidents_endpoint_filters_for_nulls(self, user, testapp):
         pass
@@ -304,6 +337,12 @@ class TestIncidentsCountEndpoint:
         assert res.json['results']
         for row in res.json['results']:
             assert row['month'] == 10
+
+    def test_instances_count_equality_filter_by_multiple_number(self, testapp):
+        res = testapp.get('/incidents/count/?by=year,month&month=8,10')
+        assert res.json['results']
+        for row in res.json['results']:
+            assert row['month'] in (8, 10)
 
     def test_instances_count_filters_by_greater_than(self, testapp):
         res = testapp.get('/incidents/count/?by=year,month&month>6')
