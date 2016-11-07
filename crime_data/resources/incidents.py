@@ -1,13 +1,12 @@
 import re
 
+from flask import make_response
 from webargs.flaskparser import use_args
 
 from crime_data.common import cdemodels, marshmallow_schemas, models
 from crime_data.common.base import CdeResource, tuning_page
 from crime_data.common.marshmallow_schemas import (ArgumentsSchema,
                                                    IncidentCountArgsSchema)
-
-from flask import make_response
 
 
 def _is_string(col):

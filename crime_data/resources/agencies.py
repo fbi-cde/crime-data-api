@@ -1,14 +1,14 @@
 import re
 
 from flask_restful import fields, marshal_with, reqparse
+from webargs.flaskparser import use_args
 
 from crime_data.common import cdemodels as models
 from crime_data.common import marshmallow_schemas
 from crime_data.common.base import CdeResource
 from crime_data.common.marshmallow_schemas import (
-    ArgumentsSchema, AgenciesRetaArgsSchema,
-    AgencySchema, AgenciesIncidentArgsSchema)
-from webargs.flaskparser import use_args
+    AgenciesIncidentArgsSchema, AgenciesRetaArgsSchema, AgencySchema,
+    ArgumentsSchema)
 
 
 class AgenciesResource(CdeResource):
@@ -50,7 +50,8 @@ class AgenciesNibrsCount(CdeResource):
             args['by'].lower())  # TODO: can post-process in schema?
 
         filters = self.filters(args)
-        query = models.CdeNibrsIncident.get_nibrs_incident_by_ori(ori, filters, by, args)
+        query = models.CdeNibrsIncident.get_nibrs_incident_by_ori(ori, filters,
+                                                                  by, args)
         return self.with_metadata(query, args)
 
 

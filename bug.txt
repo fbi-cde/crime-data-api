@@ -1,0 +1,91 @@
+
+SELECT nibrs_incident.incident_id         AS nibrs_incident_incident_id,
+       nibrs_incident.incident_number     AS nibrs_incident_incident_number,
+       nibrs_incident.cargo_theft_flag    AS nibrs_incident_cargo_theft_flag,
+       nibrs_incident.submission_date     AS nibrs_incident_submission_date,
+       nibrs_incident.incident_date       AS nibrs_incident_incident_date,
+       nibrs_incident.report_date_flag    AS nibrs_incident_report_date_flag,
+       nibrs_incident.incident_hour       AS nibrs_incident_incident_hour,
+       nibrs_incident.cleared_except_date AS nibrs_incident_cleared_except_date,
+       nibrs_incident.incident_status     AS nibrs_incident_incident_status,
+       nibrs_incident.data_home           AS nibrs_incident_data_home,
+       nibrs_incident.ddocname            AS nibrs_incident_ddocname,
+       nibrs_incident.orig_format         AS nibrs_incident_orig_format,
+       nibrs_incident.ff_line_number      AS nibrs_incident_ff_line_number,
+       nibrs_incident.did                 AS nibrs_incident_did,
+       nibrs_incident.agency_id           AS nibrs_incident_agency_id,
+       nibrs_incident.cleared_except_id   AS nibrs_incident_cleared_except_id,
+       nibrs_incident.nibrs_month_id      AS nibrs_incident_nibrs_month_id
+FROM   nibrs_incident
+       LEFT OUTER JOIN nibrs_offense
+                    ON nibrs_incident.incident_id = nibrs_offense.incident_id
+       JOIN nibrs_offense_type
+         ON nibrs_offense_type.offense_type_id = nibrs_offense.offense_type_id
+       JOIN ref_agency
+         ON ref_agency.agency_id = nibrs_incident.agency_id
+       JOIN ref_agency_type
+         ON ref_agency_type.agency_type_id = ref_agency.agency_type_id
+       JOIN ref_state
+         ON ref_state.state_id = ref_agency.state_id
+       JOIN ref_division
+         ON ref_division.division_id = ref_state.division_id
+       JOIN ref_region
+         ON ref_region.region_id = ref_division.region_id
+       LEFT OUTER JOIN ref_submitting_agency
+                    ON ref_agency.agency_id = ref_submitting_agency.agency_id
+       LEFT OUTER JOIN ref_field_office
+                    ON ref_field_office.field_office_id =
+                       ref_agency.field_office_id
+       JOIN ref_population_family
+         ON ref_agency.population_family_id =
+            ref_population_family.population_family_id
+       JOIN nibrs_cleared_except
+         ON nibrs_cleared_except.cleared_except_id =
+            nibrs_incident.cleared_except_id
+       LEFT OUTER JOIN nibrs_offender
+                    ON nibrs_incident.incident_id = nibrs_offender.incident_id
+       LEFT OUTER JOIN nibrs_victim
+                    ON nibrs_incident.incident_id = nibrs_victim.incident_id
+       LEFT OUTER JOIN nibrs_arrestee
+                    ON nibrs_incident.incident_id = nibrs_arrestee.incident_id
+       JOIN nibrs_age AS nibrs_age_1
+         ON nibrs_offender.age_id = nibrs_age_1.age_id
+       JOIN ref_race AS ref_race_1
+         ON nibrs_offender.race_id = ref_race_1.race_id
+       LEFT OUTER JOIN nibrs_ethnicity AS nibrs_ethnicity_1
+                    ON nibrs_offender.ethnicity_id =
+                       nibrs_ethnicity_1.ethnicity_id
+       JOIN nibrs_age AS nibrs_age_2
+         ON nibrs_victim.age_id = nibrs_age_2.age_id
+       JOIN ref_race AS ref_race_2
+         ON nibrs_victim.race_id = ref_race_2.race_id
+       LEFT OUTER JOIN nibrs_ethnicity AS nibrs_ethnicity_2
+                    ON nibrs_victim.ethnicity_id =
+                       nibrs_ethnicity_2.ethnicity_id
+       JOIN nibrs_age AS nibrs_age_3
+         ON nibrs_arrestee.age_id = nibrs_age_3.age_id
+       JOIN ref_race AS ref_race_3
+         ON nibrs_arrestee.race_id = ref_race_3.race_id
+       LEFT OUTER JOIN nibrs_ethnicity AS nibrs_ethnicity_3
+                    ON nibrs_arrestee.ethnicity_id =
+                       nibrs_ethnicity_3.ethnicity_id
+       LEFT OUTER JOIN nibrs_property
+                    ON nibrs_incident.incident_id = nibrs_property.incident_id
+       JOIN nibrs_prop_loss_type
+         ON nibrs_prop_loss_type.prop_loss_id = nibrs_property.prop_loss_id
+       JOIN nibrs_location_type
+         ON nibrs_offense.location_id = nibrs_location_type.location_id
+
+
+
+in
+> /Volumes/exlinux/virt2/ve/fbi/lib/python3.5/site-packages/flask_sqlalchemy/__init__.py(476)paginate()
+
+
+ipdb> self.limit(5).count()
+5
+ipdb> len(self.limit(5).all())
+4
+
+
+         

@@ -141,7 +141,3 @@ class TestAgenciesEndpoint:
         values1 = [r['incident_count'] for r in res1.json['results']]
         values2 = [r['incident_count'] for r in res2.json['results']]
         assert values1 != values2
-
-
-
-

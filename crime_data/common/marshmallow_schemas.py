@@ -275,6 +275,7 @@ class AgenciesIncidentArgsSchema(ArgumentsSchema):
     city = marsh_fields.String()
     by = marsh_fields.String(missing='ori')
 
+
 class NibrsIncidentSchema(ma.ModelSchema):
     class Meta:
         model = models.NibrsIncident
