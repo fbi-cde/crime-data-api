@@ -1,4 +1,5 @@
 import json
+import math
 import os
 import random
 from functools import wraps
@@ -8,6 +9,7 @@ from flask import make_response, request
 from flask_restful import Resource, abort, current_app
 # import celery
 from flask_sqlalchemy import SignallingSession, SQLAlchemy
+from sqlalchemy import and_, func
 
 
 def tuning_page(f):
@@ -66,6 +68,61 @@ class RoutingSession(SignallingSession):
         return super().get_bind(mapper=mapper, clause=clause)
 
 
+class QueryTraits(object):
+    @classmethod
+    def get_fields(cls, agg_fields, fields):
+        """Builds the query's SELECT clause.
+        Returns list of fields.
+        """
+        requested_fields = []
+        for field in fields:
+            if field in cls.get_filter_map():
+                requested_fields.append(cls.get_filter_map()[field])
+
+        requested_fields += agg_fields
+        return requested_fields
+
+    @classmethod
+    def apply_group_by(cls, query, group_bys):
+        """ Builds the query's GROUP BY clause.
+        For Aggregations, the group by clause will
+        contain all output fields. Returns query object.
+        """
+        for group in group_bys:
+            if group in cls.get_filter_map():
+                query = (query.group_by(cls.get_filter_map()[group])
+                         .order_by(cls.get_filter_map()[group]))
+        return query
+
+    @classmethod
+    def apply_filters(cls, query, filters, parsed):
+        """ Apply All query filters.
+        Returns query object.
+        """
+
+        def _is_string(col):
+            return issubclass(col.type.python_type, str)
+
+        # Apply any inequality filters.
+        for (col_name, comparitor, val) in filters:
+            if col_name in cls.get_filter_map():
+                col = cls.get_filter_map()[col_name]
+                if _is_string(col):
+                    col = func.lower(col)
+                    val = val.lower()
+                    query = query.filter(col.ilike('%' + val + '%'))
+                else:
+                    query = query.filter(getattr(col, comparitor)(val))
+
+        # Apply all other filters.
+        for filter, value in parsed.items():
+            if filter in cls.get_filter_map():
+                col = cls.get_filter_map()[filter]
+                query = query.filter(col.ilike('%' + value + '%'))
+
+        return query
+
+
 class RoutingSQLAlchemy(SQLAlchemy):
     def create_session(self, options):
         return RoutingSession(self, **options)
@@ -74,6 +131,65 @@ class RoutingSQLAlchemy(SQLAlchemy):
 class CdeResource(Resource):
     __abstract__ = True
     schema = None
+
+    OPERATORS = {'!=': '__ne__',
+                 '>=': '__ge__',
+                 '<=': '__le__',
+                 '>': '__gt__',
+                 '<': '__le__',
+                 '==': '__eq__', }
+
+    def output_serialize(self, data, schema=None, format='csv'):
+        """ Very limited csv parsing of output data.
+        Uses Marshmallow schema to determine which fields are nested,
+        and stores raw json for these fields.
+        """
+        if format is 'json':
+            return data
+        if format is 'csv':
+
+            import flatdict
+            import csv
+            from io import StringIO
+
+            # create the csv writer object
+            si = StringIO()
+            csvwriter = csv.writer(si)
+            keys = {}
+
+            # These are fields that can contain nested objects and/or lists
+            list_fields = []
+            for k, v in schema.declared_fields.items():
+                if hasattr(v, 'many'):
+                    list_fields.append(k)
+
+            to_csv = []
+
+            # Organize Data
+            for d in data['results']:
+                to_csv_dict = {}
+                for base_field in list_fields:
+                    to_csv_dict[base_field] = d[base_field]
+
+                flat = flatdict.FlatDict(d)
+
+                for k, v in flat.items():
+                    base_field = k.split(':')[0]
+                    leaf_field = k.split(':')[-1]
+                    if base_field not in list_fields:
+                        to_csv_dict[base_field + '.' + leaf_field] = v
+
+                to_csv.append(to_csv_dict)
+
+            count = 0
+            for cs in to_csv:
+                if count == 0:
+                    header = cs.keys()
+                    csvwriter.writerow(header)
+                    count += 1
+                csvwriter.writerow(cs.values())
+
+        return si.getvalue().strip('\r\n')
 
     def _stringify(self, data):
         """Avoid JSON serialization errors
@@ -86,20 +202,31 @@ class CdeResource(Resource):
         return dict(zip(fieldTuple, res))
 
     def with_metadata(self, results, args):
-        results = results.paginate(args['page'], args['per_page'])
-        # results.total coming back inaccurate for /incidents/!
+        """Paginates results and wraps them in metadata."""
 
         if self.schema:
-            items = self.schema.dump(results.items).data
+            paginated = results.distinct().limit(args['per_page']).offset(
+                (args['page'] - 1) * args['per_page'])
+            if hasattr(paginated, 'data'):
+                paginated = paginated.data
+            count = results.distinct().count()
+            return {'results': self.schema.dump(paginated).data,
+                    'pagination': {
+                        'count': count,
+                        'page': args['page'],
+                        'pages': math.ceil(count / args['per_page']),
+                        'per_page': args['per_page'],
+                    }, }
         else:
-            items = self._stringify(results.items)
-        return {'results': items,
-                'pagination': {
-                    'count': results.total,
-                    'page': results.page,
-                    'pages': results.pages,
-                    'per_page': results.per_page,
-                }, }
+            paginated = results.paginate(args['page'], args['per_page'])
+            items = self._stringify(paginated.items)
+            return {'results': items,
+                    'pagination': {
+                        'count': paginated.total,
+                        'page': paginated.page,
+                        'pages': paginated.pages,
+                        'per_page': paginated.per_page,
+                    }, }
 
     def verify_api_key(self, args):
         if os.getenv('VCAP_SERVICES'):
@@ -111,13 +238,6 @@ class CdeResource(Resource):
             key = creds[0]['API_KEY']
             if args.get('api_key') != key:
                 abort(401, 'Use correct `api_key` argument')
-
-    OPERATORS = {'!=': '__ne__',
-                 '>=': '__ge__',
-                 '<=': '__le__',
-                 '>': '__gt__',
-                 '<': '__le__',
-                 '==': '__eq__', }
 
     def _parse_inequality_operator(self, k, v):
         """
