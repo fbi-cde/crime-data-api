@@ -355,6 +355,7 @@ class TableFamily:
                       "required": false
                     }}, """
 
+        print('\n\nmappings for {}\n\n'.format(self))
         types = {int: 'integer', bool: 'boolean', }
         for (name, col) in sorted(self.map.items()):
             sqla_col = list(col.base_columns)[0]
@@ -505,6 +506,7 @@ class IncidentCountTableFamily(TableFamily):
         JoinedTable(models.RetaMonth),
         JoinedTable(models.RetaOffenseSubcat, ),
         JoinedTable(models.RetaOffense, ),
+        JoinedTable(models.OffenseClassification, ),
         JoinedTable(models.RetaOffenseCategory, ),
         # agency tree follows
         JoinedTable(models.RefAgency, ),
