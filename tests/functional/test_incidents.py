@@ -312,6 +312,12 @@ class TestIncidentsCountEndpoint:
         for row in res.json['results']:
             assert row['offense_category'] == 'Robbery'
 
+    def test_instances_count_filters_on_city(self, testapp):
+        res = testapp.get('/incidents/count/?by=city&city=dayton')
+        assert res.json['results']
+        for row in res.json['results']:
+            assert row['city'] == 'Dayton'
+
     def test_instances_count_bad_filter_400s(self, testapp):
         res = testapp.get('/incidents/count/?llamas=angry', expect_errors=True)
         assert res.status_code == 400
