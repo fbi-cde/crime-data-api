@@ -206,29 +206,22 @@ class CdeResource(Resource):
     def with_metadata(self, results, args):
         """Paginates results and wraps them in metadata."""
 
+        paginated = results.limit(args['per_page']).offset((args['page'] - 1) *
+                                                           args['per_page'])
+        if hasattr(paginated, 'data'):
+            paginated = paginated.data
+        count = results.count()
         if self.schema:
-            paginated = results.distinct().limit(args['per_page']).offset(
-                (args['page'] - 1) * args['per_page'])
-            if hasattr(paginated, 'data'):
-                paginated = paginated.data
-            count = results.distinct().count()
-            return {'results': self.schema.dump(paginated).data,
-                    'pagination': {
-                        'count': count,
-                        'page': args['page'],
-                        'pages': math.ceil(count / args['per_page']),
-                        'per_page': args['per_page'],
-                    }, }
+            serialized = self.schema.dump(paginated).data
         else:
-            paginated = results.paginate(args['page'], args['per_page'])
-            items = self._stringify(paginated.items)
-            return {'results': items,
-                    'pagination': {
-                        'count': paginated.total,
-                        'page': paginated.page,
-                        'pages': paginated.pages,
-                        'per_page': paginated.per_page,
-                    }, }
+            serialized = self._stringify(paginated)
+        return {'results': serialized,
+                'pagination': {
+                    'count': count,
+                    'page': args['page'],
+                    'pages': math.ceil(count / args['per_page']),
+                    'per_page': args['per_page'],
+                }, }
 
     def verify_api_key(self, args):
         if os.getenv('VCAP_SERVICES'):
@@ -263,7 +256,9 @@ class CdeResource(Resource):
         return [v.strip() for v in values]
 
     def filters(self, parsed):
-        """Yields `(key, comparitor, (values))` from `request.args` not already in `parsed`.
+        """Yields `(key, comparitor, (values))` from `request.args`.
+
+        `parsed` is automatically filled by the Marshmalow schema.
 
         `comparitor` may be '__eq__', '__gt__', '__le__', etc."""
 

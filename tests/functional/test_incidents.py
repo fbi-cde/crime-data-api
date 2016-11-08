@@ -361,3 +361,15 @@ class TestIncidentsCountEndpoint:
         assert res.json['results']
         for row in res.json['results']:
             assert row['offense_category'] != 'Robbery'
+
+    def test_instances_count_simplified_field_name_is_equivalent(self, testapp):
+        res = testapp.get('/incidents/count/?by=data_year,state_abbr')
+        simplified_res = testapp.get('/incidents/count/?by=year,state')
+        assert res.json['results'] == simplified_res.json['results']
+
+    def test_instances_count_reports_simplified_field_name(self, testapp):
+        res = testapp.get('/incidents/count/?by=data_year,state')
+        assert res.json['results']
+        for row in res.json['results']:
+            assert 'year' in row
+            assert 'state' in row
