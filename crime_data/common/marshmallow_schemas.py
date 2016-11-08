@@ -4,7 +4,7 @@ import os
 
 from flask_marshmallow import Marshmallow
 from marshmallow import fields as marsh_fields
-from marshmallow import Schema
+from marshmallow import Schema, post_dump
 
 from . import cdemodels, models
 
@@ -235,6 +235,14 @@ class NibrsVictimSchema(ma.ModelSchema):
     victim_type = ma.Nested(NibrsVictimTypeSchema)
     age = ma.Nested(NibrsAgeSchema)
     activity_type = ma.Nested(NibrsActivityTypeSchema)
+    age_num = marsh_fields.Integer(missing=0)
+
+    @post_dump
+    def check_age(self, in_data):
+        if 'age_num' in in_data:
+          if in_data['age_num'] is None:
+            in_data['age_num'] = 0
+        return in_data
 
 
 class NibrsArresteeSchema(ma.ModelSchema):
