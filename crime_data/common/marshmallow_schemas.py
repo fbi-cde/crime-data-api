@@ -256,6 +256,14 @@ class NibrsArresteeSchema(ma.ModelSchema):
     ethnicity = ma.Nested(NibrsEthnicitySchema)
     race = ma.Nested(RefRaceSchema)
     age = ma.Nested(NibrsAgeSchema)
+    age_num = marsh_fields.Integer(missing=0)
+
+    @post_dump
+    def check_age(self, in_data):
+        if 'age_num' in in_data:
+          if in_data['age_num'] is None:
+            in_data['age_num'] = 0
+        return in_data
 
 
 class NibrsOffenderSchema(ma.ModelSchema):
@@ -266,7 +274,14 @@ class NibrsOffenderSchema(ma.ModelSchema):
     ethnicity = ma.Nested(NibrsEthnicitySchema)
     race = ma.Nested(RefRaceSchema)
     age = ma.Nested(NibrsAgeSchema)
+    age_num = marsh_fields.Integer(missing=0)
 
+    @post_dump
+    def check_age(self, in_data):
+        if 'age_num' in in_data:
+          if in_data['age_num'] is None:
+            in_data['age_num'] = 0
+        return in_data
 
 class AgenciesIncidentArgsSchema(ArgumentsSchema):
     incident_hour = marsh_fields.Integer()
