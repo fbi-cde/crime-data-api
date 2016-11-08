@@ -26,7 +26,7 @@ class IncidentsList(CdeResource):
 
         self.verify_api_key(args)
         filters = self.filters(args)
-        qry = self.tables.filtered(filters)
+        qry = self.tables.filtered(filters).distinct()
         if args['output'] == 'csv':
             output = make_response(self.output_serialize(
                 self.with_metadata(qry, args), self.schema))
@@ -45,16 +45,19 @@ class IncidentsDetail(CdeResource):
     @tuning_page
     def get(self, args, nbr):
         self.verify_api_key(args)
-        incidents = models.NibrsIncident.query.filter_by(incident_number=nbr)
+        incidents = models.NibrsIncident.query.filter_by(
+            incident_number=nbr).distinct()
         return self.with_metadata(incidents, args)
 
 
 class IncidentsCount(CdeResource):
 
-    schema = marshmallow_schemas.SummarySchema(many=True)
+    # schema = marshmallow_schemas.SummarySchema(many=True)
+
+    tables = cdemodels.IncidentCountTableFamily()
 
     SPLITTER = re.compile(r"\s*,\s*")
-
+    """
     @use_args(IncidentCountArgsSchema)
     @tuning_page
     def get(self, args):
@@ -64,3 +67,25 @@ class IncidentsCount(CdeResource):
         filters = list(self.filters(args))
         result = cdemodels.RetaQuery(by, filters)
         return self.with_metadata(result.qry, args)
+        """
+
+    @use_args(IncidentCountArgsSchema)
+    @tuning_page
+    def get(self, args):
+        # TODO: apply "fields" arg
+
+        # pretty much copied from IncidentsList, TODO: unify
+
+        self.verify_api_key(args)
+        filters = self.filters(args)
+        qry = self.tables.filtered(filters)
+        group_columns = [c.strip() for c in args['by'].split(',')]
+        qry = self.tables.group_by(qry, group_columns)
+        if args['output'] == 'csv':
+            output = make_response(self.output_serialize(
+                self.with_metadata(qry, args), self.schema))
+            output.headers[
+                "Content-Disposition"] = "attachment; filename=incidents.csv"
+            output.headers["Content-type"] = "text/csv"
+            return output
+        return self.with_metadata(qry, args)

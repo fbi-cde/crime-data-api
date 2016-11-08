@@ -208,8 +208,8 @@ class TestIncidentsEndpoint:
                 assert ('Larceny/Theft Offenses') in offense_names
 
     def test_incidents_endpoint_filter_with_parens(self, user, testapp):
-        for population_category_desc in ('City (1-7)', 'City+(1-7)'):
-            res = testapp.get('/incidents/?population_category_desc=' + population_category_desc)
+        for population_family_desc in ('City (1-7)', 'City+(1-7)'):
+            res = testapp.get('/incidents/?population_family_desc=' + population_family_desc)
             assert len(res.json['results']) > 0
             for incident in res.json['results']:
                 assert incident['agency']['population_family']['population_family_desc'] == 'City (1-7)'
@@ -312,6 +312,12 @@ class TestIncidentsCountEndpoint:
         for row in res.json['results']:
             assert row['offense_category'] == 'Robbery'
 
+    def test_instances_count_filters_on_city(self, testapp):
+        res = testapp.get('/incidents/count/?by=city&city=dayton')
+        assert res.json['results']
+        for row in res.json['results']:
+            assert row['city'] == 'Dayton'
+
     def test_instances_count_bad_filter_400s(self, testapp):
         res = testapp.get('/incidents/count/?llamas=angry', expect_errors=True)
         assert res.status_code == 400
@@ -361,3 +367,15 @@ class TestIncidentsCountEndpoint:
         assert res.json['results']
         for row in res.json['results']:
             assert row['offense_category'] != 'Robbery'
+
+    def test_instances_count_simplified_field_name_is_equivalent(self, testapp):
+        res = testapp.get('/incidents/count/?by=data_year,state_abbr')
+        simplified_res = testapp.get('/incidents/count/?by=year,state')
+        assert res.json['results'] == simplified_res.json['results']
+
+    def test_instances_count_reports_simplified_field_name(self, testapp):
+        res = testapp.get('/incidents/count/?by=data_year,state')
+        assert res.json['results']
+        for row in res.json['results']:
+            assert 'year' in row
+            assert 'state' in row
