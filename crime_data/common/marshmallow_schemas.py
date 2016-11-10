@@ -11,6 +11,28 @@ from . import cdemodels, models
 ma = Marshmallow()
 
 
+# Map of age codes to correct null values.
+AGE_CODES = {
+    'BB':0,
+    'NB':0,
+    'NN':0,
+    '99':99,
+    '00':0
+}
+
+
+class SchemaFormater(object):
+
+    @classmethod
+    def format_age(cls, data):
+        """Turns the age_num field into 
+        something a little more useful.
+        """
+        if 'age_num' in data and data['age']:
+            if data['age']['age_code'] in AGE_CODES:
+                data['age_num'] = AGE_CODES[data['age']['age_code']]
+        return data
+
 # Schemas for request parsing
 class ArgumentsSchema(Schema):
     output = marsh_fields.String(missing='json')
@@ -225,7 +247,7 @@ class NibrsActivityTypeSchema(ma.ModelSchema):
         exclude = ('activity_type_id', 'victims', )
 
 
-class NibrsVictimSchema(ma.ModelSchema):
+class NibrsVictimSchema(ma.ModelSchema, SchemaFormater):
     class Meta:
         model = models.NibrsVictim
         exclude = ('victim_id', 'victim_seq_num', )
@@ -238,14 +260,12 @@ class NibrsVictimSchema(ma.ModelSchema):
     age_num = marsh_fields.Integer(missing=0)
 
     @post_dump
-    def check_age(self, in_data):
-        if 'age_num' in in_data:
-          if in_data['age_num'] is None:
-            in_data['age_num'] = 0
-        return in_data
+    def check_age(self, out_data):
+        out_data = self.format_age(out_data)
+        return out_data
 
 
-class NibrsArresteeSchema(ma.ModelSchema):
+class NibrsArresteeSchema(ma.ModelSchema, SchemaFormater):
     class Meta:
         model = models.NibrsArrestee
         exclude = ('arrestee_id',
@@ -259,14 +279,12 @@ class NibrsArresteeSchema(ma.ModelSchema):
     age_num = marsh_fields.Integer(missing=0)
 
     @post_dump
-    def check_age(self, in_data):
-        if 'age_num' in in_data:
-          if in_data['age_num'] is None:
-            in_data['age_num'] = 0
-        return in_data
+    def check_age(self, out_data):
+        out_data = self.format_age(out_data)
+        return out_data
 
 
-class NibrsOffenderSchema(ma.ModelSchema):
+class NibrsOffenderSchema(ma.ModelSchema, SchemaFormater):
     class Meta:
         model = models.NibrsOffender
         exclude = ('offender_id', 'incident', 'offender_seq_num', )
@@ -277,11 +295,9 @@ class NibrsOffenderSchema(ma.ModelSchema):
     age_num = marsh_fields.Integer(missing=0)
 
     @post_dump
-    def check_age(self, in_data):
-        if 'age_num' in in_data:
-          if in_data['age_num'] is None:
-            in_data['age_num'] = 0
-        return in_data
+    def check_age(self, out_data):
+        out_data = self.format_age(out_data)
+        return out_data
 
 class AgenciesIncidentArgsSchema(ArgumentsSchema):
     incident_hour = marsh_fields.Integer()
