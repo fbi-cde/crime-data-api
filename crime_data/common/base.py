@@ -75,11 +75,12 @@ class CdeResource(Resource):
 
             # These are fields that can contain nested objects and/or lists
             list_fields = []
+            nest_fields = []
+            to_csv = []
+
             for k,v in schema.declared_fields.items():
                 if hasattr(v, 'many'):
                     list_fields.append(k)
-
-            to_csv = []
 
             # Organize Data
             for d in data['results']:

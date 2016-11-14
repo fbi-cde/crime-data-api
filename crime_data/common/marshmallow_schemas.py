@@ -276,7 +276,7 @@ class NibrsIncidentSchema(ma.ModelSchema):
                    'incident_id', )
 
     offenses = ma.Nested(NibrsOffenseSchema, many=True)
-    agency = ma.Nested(RefAgencySchema)
+    agency = ma.Nested(RefAgencySchema, tocsv=True)
     cleared_except = ma.Nested(NibrsClearedExceptSchema)
     property = ma.Nested(NibrsPropertySchema, many=True)
     victims = ma.Nested(NibrsVictimSchema, many=True)
