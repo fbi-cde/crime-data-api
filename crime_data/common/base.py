@@ -15,17 +15,17 @@ from sqlalchemy import func, or_
 def tuning_page(f):
     @wraps(f)
     def decorated_get(*args, **kwargs):
-        if args[1]['tuning']:
-            if not current_app.config['DEBUG']:
-                abort(403, message="`DEBUG` must be on for tuning page")
-            profiler = sqltap.start()
-            result = f(*args, **kwargs)
-            profiler.stop()
-            stats = profiler.collect()
-            return make_response(sqltap.report(stats, 'tuning.html'))
-        else:
-            result = f(*args, **kwargs)
-            return result
+        if 'tuning' in args[1]:
+            if args[1]['tuning']:
+                if not current_app.config['DEBUG']:
+                    abort(403, message="`DEBUG` must be on for tuning page")
+                profiler = sqltap.start()
+                result = f(*args, **kwargs)
+                profiler.stop()
+                stats = profiler.collect()
+                return make_response(sqltap.report(stats, 'tuning.html'))
+        result = f(*args, **kwargs)
+        return result
 
     return decorated_get
 

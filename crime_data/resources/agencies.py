@@ -7,7 +7,7 @@ from crime_data.common import cdemodels as models
 from crime_data.common import marshmallow_schemas
 from crime_data.common.base import CdeResource
 from crime_data.common.marshmallow_schemas import (
-    AgenciesIncidentArgsSchema, AgenciesRetaArgsSchema, AgencySchema,
+    AgenciesIncidentArgsSchema, AgenciesRetaArgsSchema, RefAgencySchema,
     ArgumentsSchema)
 
 
@@ -17,7 +17,7 @@ class AgenciesResource(CdeResource):
 
 
 class AgenciesList(AgenciesResource):
-    @use_args(marshmallow_schemas.AgencySchema)
+    @use_args(marshmallow_schemas.RefAgencySchema)
     def get(self, args):
         self.verify_api_key(args)
         filters = self.filters(args)
