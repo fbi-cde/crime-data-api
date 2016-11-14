@@ -1,11 +1,33 @@
 import json
+import math
 import os
 import random
+from functools import wraps
 
-from flask import request
-from flask_restful import Resource, abort
+import sqltap
+from flask import make_response, request
+from flask_restful import Resource, abort, current_app
 # import celery
 from flask_sqlalchemy import SignallingSession, SQLAlchemy
+from sqlalchemy import func, or_
+
+
+def tuning_page(f):
+    @wraps(f)
+    def decorated_get(*args, **kwargs):
+        if args[1]['tuning']:
+            if not current_app.config['DEBUG']:
+                abort(403, message="`DEBUG` must be on for tuning page")
+            profiler = sqltap.start()
+            result = f(*args, **kwargs)
+            profiler.stop()
+            stats = profiler.collect()
+            return make_response(sqltap.report(stats, 'tuning.html'))
+        else:
+            result = f(*args, **kwargs)
+            return result
+
+    return decorated_get
 
 
 class RoutingSession(SignallingSession):
@@ -46,6 +68,63 @@ class RoutingSession(SignallingSession):
         return super().get_bind(mapper=mapper, clause=clause)
 
 
+class QueryTraits(object):
+    @classmethod
+    def get_fields(cls, agg_fields, fields):
+        """Builds the query's SELECT clause.
+        Returns list of fields.
+        """
+        requested_fields = []
+        for field in fields:
+            if field in cls.get_filter_map():
+                requested_fields.append(cls.get_filter_map()[field])
+
+        requested_fields += agg_fields
+        return requested_fields
+
+    @classmethod
+    def apply_group_by(cls, query, group_bys):
+        """ Builds the query's GROUP BY clause.
+        For Aggregations, the group by clause will
+        contain all output fields. Returns query object.
+        """
+        for group in group_bys:
+            if group in cls.get_filter_map():
+                query = (query.group_by(cls.get_filter_map()[group])
+                         .order_by(cls.get_filter_map()[group]))
+        return query
+
+    @classmethod
+    def apply_filters(cls, query, filters, parsed):
+        """ Apply All query filters.
+        Returns query object.
+        """
+
+        def _is_string(col):
+            return issubclass(col.type.python_type, str)
+
+        # Apply any inequality filters.
+        for (col_name, comparitor, values) in filters:
+            if col_name in cls.get_filter_map():
+                col = cls.get_filter_map()[col_name]
+                if _is_string(col):
+                    col = func.lower(col)
+                    values = [val.lower() for val in values]
+                    query = query.filter(or_(col.ilike('%' + val + '%')
+                                             for val in values))
+                else:
+                    operation = getattr(col, comparitor)
+                    query = query.filter(or_(operation(val) for val in values))
+
+        # Apply all other filters.
+        for filter, value in parsed.items():
+            if filter in cls.get_filter_map():
+                col = cls.get_filter_map()[filter]
+                query = query.filter(col.ilike('%' + value + '%'))
+
+        return query
+
+
 class RoutingSQLAlchemy(SQLAlchemy):
     def create_session(self, options):
         return RoutingSession(self, **options)
@@ -55,7 +134,14 @@ class CdeResource(Resource):
     __abstract__ = True
     schema = None
 
-    def output_serialize(self, data, schema = None,format='csv'):
+    OPERATORS = {'!=': '__ne__',
+                 '>=': '__ge__',
+                 '<=': '__le__',
+                 '>': '__gt__',
+                 '<': '__le__',
+                 '==': '__eq__', }
+
+    def output_serialize(self, data, schema=None, format='csv'):
         """ Very limited csv parsing of output data.
         Uses Marshmallow schema to determine which fields are nested,
         and stores raw json for these fields.
@@ -67,7 +153,7 @@ class CdeResource(Resource):
             import flatdict
             import csv
             from io import StringIO
-            
+
             # create the csv writer object
             si = StringIO()
             csvwriter = csv.writer(si)
@@ -75,10 +161,14 @@ class CdeResource(Resource):
 
             # These are fields that can contain nested objects and/or lists
             list_fields = []
+<<<<<<< HEAD
             nest_fields = []
             to_csv = []
 
             for k,v in schema.declared_fields.items():
+=======
+            for k, v in schema.declared_fields.items():
+>>>>>>> e250400d1613d1a7333d29019c739040dc801813
                 if hasattr(v, 'many'):
                     list_fields.append(k)
 
@@ -90,7 +180,7 @@ class CdeResource(Resource):
 
                 flat = flatdict.FlatDict(d)
 
-                for k,v in flat.items():
+                for k, v in flat.items():
                     base_field = k.split(':')[0]
                     leaf_field = k.split(':')[-1]
                     if base_field not in list_fields:
@@ -119,17 +209,23 @@ class CdeResource(Resource):
         return dict(zip(fieldTuple, res))
 
     def with_metadata(self, results, args):
-        results = results.paginate(args['page'], args['per_page'])
+        """Paginates results and wraps them in metadata."""
+
+        paginated = results.limit(args['per_page']).offset((args['page'] - 1) *
+                                                           args['per_page'])
+        if hasattr(paginated, 'data'):
+            paginated = paginated.data
+        count = results.count()
         if self.schema:
-            items = self.schema.dump(results.items).data
+            serialized = self.schema.dump(paginated).data
         else:
-            items = self._stringify(results.items)
-        return {'results': items,
+            serialized = self._stringify(paginated)
+        return {'results': serialized,
                 'pagination': {
-                    'count': results.total,
-                    'page': results.page,
-                    'pages': results.pages,
-                    'per_page': results.per_page,
+                    'count': count,
+                    'page': args['page'],
+                    'pages': math.ceil(count / args['per_page']),
+                    'per_page': args['per_page'],
                 }, }
 
     def verify_api_key(self, args):
@@ -142,13 +238,6 @@ class CdeResource(Resource):
             key = creds[0]['API_KEY']
             if args.get('api_key') != key:
                 abort(401, 'Use correct `api_key` argument')
-
-    OPERATORS = {'!=': '__ne__',
-                 '>=': '__ge__',
-                 '<=': '__le__',
-                 '>': '__gt__',
-                 '<': '__le__',
-                 '==': '__eq__', }
 
     def _parse_inequality_operator(self, k, v):
         """
@@ -166,15 +255,23 @@ class CdeResource(Resource):
                     return (new_k, sign, new_v)
             return (k, '==', True)
 
+    def _split_values(self, val_string):
+        val_string = val_string.strip('{} \t')
+        values = val_string.split(',')
+        return [v.strip() for v in values]
+
     def filters(self, parsed):
-        """Yields `(key, comparitor, value)` from `request.args` not already in `parsed`.
-        
+        """Yields `(key, comparitor, (values))` from `request.args`.
+
+        `parsed` is automatically filled by the Marshmalow schema.
+
         `comparitor` may be '__eq__', '__gt__', '__le__', etc."""
 
         for (k, v) in request.args.items():
             if k in parsed:
                 continue
             (k, op, v) = self._parse_inequality_operator(k, v)
+            v = self._split_values(v)
             yield (k.lower(), self.OPERATORS[op], v)
 
 

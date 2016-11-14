@@ -17,28 +17,22 @@ class ArgumentsSchema(Schema):
     page = marsh_fields.Integer(missing=1)
     per_page = marsh_fields.Integer(missing=10)
     fields = marsh_fields.String()
+    tuning = marsh_fields.Boolean(missing=False)
     if os.getenv('VCAP_APPLICATION'):
         api_key = marsh_fields.String(
             required=True,
             error_messages={'required': 'Get API key from Catherine'})
 
-class AgenciesIncidentArgsSchema(ArgumentsSchema):
-    incident_hour = marsh_fields.Integer()
-    crime_against = marsh_fields.String()
-    offense_code = marsh_fields.String()
-    offense_name = marsh_fields.String()
-    offense_category_name = marsh_fields.String()
-    method_entry_code = marsh_fields.String()
-    location_code = marsh_fields.String()
-    location_name = marsh_fields.String()
+
+class AgencySchema(ArgumentsSchema):
     state = marsh_fields.String()
+    ori = marsh_fields.String()
+    city = marsh_fields.String()
 
 
 class AgenciesRetaArgsSchema(ArgumentsSchema):
     state = marsh_fields.String()
     ori = marsh_fields.String()
-    victim_ethnicity = marsh_fields.String()
-    offender_ethnicity = marsh_fields.String()
     by = marsh_fields.String(missing='ori')
 
 
@@ -264,6 +258,22 @@ class NibrsOffenderSchema(ma.ModelSchema):
     ethnicity = ma.Nested(NibrsEthnicitySchema)
     race = ma.Nested(RefRaceSchema)
     age = ma.Nested(NibrsAgeSchema)
+
+
+class AgenciesIncidentArgsSchema(ArgumentsSchema):
+    incident_hour = marsh_fields.Integer()
+    crime_against = marsh_fields.String()
+    method_entry_code = marsh_fields.String()
+    offenses = ma.Nested(NibrsOffenseSchema, many=True)
+    cleared_except = ma.Nested(NibrsClearedExceptSchema)
+    property = ma.Nested(NibrsPropertySchema, many=True)
+    victims = ma.Nested(NibrsVictimSchema, many=True)
+    arrestees = ma.Nested(NibrsArresteeSchema, many=True)
+    offenders = ma.Nested(NibrsOffenderSchema, many=True)
+
+    state = marsh_fields.String()
+    city = marsh_fields.String()
+    by = marsh_fields.String(missing='ori')
 
 
 class NibrsIncidentSchema(ma.ModelSchema):

@@ -27,33 +27,16 @@
             "required": true
           },
           {
+            "name": "tuning",
+            "in": "query",
+            "description": "Return an HTML tuning report instead of data (DEBUG must be on)",
+            "type": "boolean",
+            "required": false
+          },
+          {
             "name": "added_date",
             "in": "query",
             "type": "string",
-            "required": false
-          },
-          {
-            "name": "age_id",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "age_num",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "age_range_high_num",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "age_range_low_num",
-            "in": "query",
-            "type": "integer",
             "required": false
           },
           {
@@ -99,9 +82,87 @@
             "required": false
           },
           {
+            "name": "arrestee.age_code",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
             "name": "arrestee.age_id",
             "in": "query",
             "type": "integer",
+            "required": false
+          },
+          {
+            "name": "arrestee.age_name",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "arrestee.age_num",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "arrestee.age_range_high_num",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "arrestee.age_range_low_num",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "arrestee.arrest_date",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "arrestee.arrest_num",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "arrestee.arrest_type_id",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "arrestee.arrestee_id",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "arrestee.arrestee_seq_num",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "arrestee.clearance_ind",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "arrestee.end_year",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "arrestee.ethnicity_code",
+            "in": "query",
+            "type": "string",
             "required": false
           },
           {
@@ -111,9 +172,93 @@
             "required": false
           },
           {
+            "name": "arrestee.ethnicity_name",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "arrestee.ff_line_number",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "arrestee.hc_flag",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "arrestee.incident_id",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "arrestee.multiple_indicator",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "arrestee.notes",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "arrestee.offense_type_id",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "arrestee.race_code",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "arrestee.race_desc",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
             "name": "arrestee.race_id",
             "in": "query",
             "type": "integer",
+            "required": false
+          },
+          {
+            "name": "arrestee.resident_code",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "arrestee.sex_code",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "arrestee.sort_order",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "arrestee.start_year",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "arrestee.under_18_disposition_code",
+            "in": "query",
+            "type": "string",
             "required": false
           },
           {
@@ -250,12 +395,6 @@
           },
           {
             "name": "dormant_year",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "ethnicity_id",
             "in": "query",
             "type": "integer",
             "required": false
@@ -411,9 +550,51 @@
             "required": false
           },
           {
+            "name": "offender.age_code",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
             "name": "offender.age_id",
             "in": "query",
             "type": "integer",
+            "required": false
+          },
+          {
+            "name": "offender.age_name",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "offender.age_num",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "offender.age_range_high_num",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "offender.age_range_low_num",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "offender.end_year",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "offender.ethnicity_code",
+            "in": "query",
+            "type": "string",
             "required": false
           },
           {
@@ -423,19 +604,79 @@
             "required": false
           },
           {
+            "name": "offender.ethnicity_name",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "offender.ff_line_number",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "offender.hc_flag",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "offender.incident_id",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "offender.notes",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "offender.offender_id",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "offender.offender_seq_num",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "offender.race_code",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "offender.race_desc",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
             "name": "offender.race_id",
             "in": "query",
             "type": "integer",
             "required": false
           },
           {
-            "name": "offender_id",
+            "name": "offender.sex_code",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "offender.sort_order",
             "in": "query",
             "type": "integer",
             "required": false
           },
           {
-            "name": "offender_seq_num",
+            "name": "offender.start_year",
             "in": "query",
             "type": "integer",
             "required": false
@@ -525,12 +766,6 @@
             "required": false
           },
           {
-            "name": "race_id",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
             "name": "recovered_count",
             "in": "query",
             "type": "integer",
@@ -568,12 +803,6 @@
           },
           {
             "name": "sai",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "sex_code",
             "in": "query",
             "type": "string",
             "required": false
@@ -669,9 +898,69 @@
             "required": false
           },
           {
+            "name": "victim.activity_type_id",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "victim.age_code",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
             "name": "victim.age_id",
             "in": "query",
             "type": "integer",
+            "required": false
+          },
+          {
+            "name": "victim.age_name",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "victim.age_num",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "victim.age_range_high_num",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "victim.age_range_low_num",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "victim.agency_data_year",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "victim.assignment_type_id",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "victim.end_year",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "victim.ethnicity_code",
+            "in": "query",
+            "type": "string",
             "required": false
           },
           {
@@ -681,9 +970,63 @@
             "required": false
           },
           {
+            "name": "victim.ethnicity_name",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "victim.ff_line_number",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "victim.hc_flag",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "victim.incident_id",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "victim.notes",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "victim.outside_agency_id",
+            "in": "query",
+            "type": "integer",
+            "required": false
+          },
+          {
+            "name": "victim.race_code",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "victim.race_desc",
+            "in": "query",
+            "type": "string",
+            "required": false
+          },
+          {
             "name": "victim.race_id",
             "in": "query",
             "type": "integer",
+            "required": false
+          },
+          {
+            "name": "victim.resident_status_code",
+            "in": "query",
+            "type": "string",
             "required": false
           }
         ],
