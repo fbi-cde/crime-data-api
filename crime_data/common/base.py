@@ -203,15 +203,16 @@ class CdeResource(Resource):
     def _as_dict(self, fieldTuple, res):
         return dict(zip(fieldTuple, res))
 
-    def with_metadata(self, results, args):
+    def with_metadata(self, results, args, base_table=None):
         """Paginates results and wraps them in metadata."""
 
         paginated = results.limit(args['per_page']).offset((args['page'] - 1) *
                                                            args['per_page'])
+        if base_table:
+            paginated = paginated.from_self(base_table)
         if hasattr(paginated, 'data'):
             paginated = paginated.data
-        # count = results.count() - temporarily removed for performance
-        count = 10000
+        count = results.count()
         if self.schema:
             serialized = self.schema.dump(paginated).data
         else:

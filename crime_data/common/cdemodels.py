@@ -433,6 +433,10 @@ class IncidentTableFamily(TableFamily):
     arrestee_age = aliased(models.NibrsAge)
     arrestee_ethnicity = aliased(models.NibrsEthnicity)
 
+    def base_query(self):
+        result = db.session.query(models.NibrsIncident.incident_id)
+        return result
+
     tables = [
         JoinedTable(models.NibrsOffense),
         JoinedTable(models.NibrsOffenseType, ),
@@ -527,9 +531,9 @@ class IncidentCountTableFamily(TableFamily):
     def base_query(self):
         return db.session.query(
             label('actual_count',
-                  func.sum(models.RetaMonthOffenseSubcat.actual_count)),
-            label('reported_count',
-                  func.sum(models.RetaMonthOffenseSubcat.reported_count)),
+                  func.sum(models.RetaMonthOffenseSubcat.actual_count)), label(
+                      'reported_count',
+                      func.sum(models.RetaMonthOffenseSubcat.reported_count)),
             label('unfounded_count',
                   func.sum(models.RetaMonthOffenseSubcat.unfounded_count)),
             label('cleared_count',
