@@ -210,7 +210,8 @@ class CdeResource(Resource):
                                                            args['per_page'])
         if hasattr(paginated, 'data'):
             paginated = paginated.data
-        count = results.count()
+        # count = results.count() - temporarily removed for performance
+        count = 10000
         if self.schema:
             serialized = self.schema.dump(paginated).data
         else:
