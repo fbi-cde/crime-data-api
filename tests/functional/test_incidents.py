@@ -175,7 +175,7 @@ class TestIncidentsEndpoint:
             hits = [a for a in incident['arrestees'] if a['resident_code'] != 'R']
             assert len(hits) > 0
 
-    @pytest.xfail
+    @pytest.mark.xfail
     def test_incidents_endpoint_filters_incident_date(self, user, testapp):
         res = testapp.get('/incidents/?incident_date>2014-06-01&incident_date<2014-06-30')
         assert len(res.json['results']) > 0
