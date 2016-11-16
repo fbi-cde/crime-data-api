@@ -349,6 +349,9 @@ class TableFamily:
             abort(400, 'field {} not found'.format(col_name))
         return self.map[col_name]
 
+    def _post_process(self, qry):
+        return qry
+
     def filtered(self, filters):
         qry = self.base_query()
         self.joined = {self.base_table,
@@ -361,6 +364,7 @@ class TableFamily:
                 values = [val.lower() for val in values]
             operation = getattr(col, comparitor)
             qry = qry.filter(or_(operation(v) for v in values))
+        qry = self._post_process(qry)
         return qry
 
     def join(self, qry, table):
@@ -488,6 +492,16 @@ class IncidentTableFamily(TableFamily):
     def base_query(self):
         result = db.session.query(models.NibrsIncident.incident_id)
         return result
+
+    def _post_process(self, qry):
+        """Apply DISTINCT on incident_id.
+
+        For performance, DISTINCT is applied within a subquery, then an
+        outer query fetches all Incident records."""
+        subq = qry.distinct().subquery()
+        results = self.base_table.table.query.join(
+            subq, self.base_table.table.incident_id == subq.c.incident_id)
+        return results
 
     tables = []
     offense = JoinedTable(models.NibrsOffense)
