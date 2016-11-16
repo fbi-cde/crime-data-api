@@ -207,9 +207,9 @@ class CdeResource(Resource):
         """Paginates results and wraps them in metadata."""
 
         if base_table:
-            paginated = results.from_self(base_table)
+            results = results.from_self(base_table)
 
-        paginated = paginated.limit(args['per_page']).offset((args['page'] - 1) *
+        paginated = results.limit(args['per_page']).offset((args['page'] - 1) *
                                                            args['per_page'])
         if hasattr(paginated, 'data'):
             paginated = paginated.data
