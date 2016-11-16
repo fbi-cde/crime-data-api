@@ -9,7 +9,7 @@ from flask import make_response, request
 from flask_restful import Resource, abort, current_app
 # import celery
 from flask_sqlalchemy import SignallingSession, SQLAlchemy
-from sqlalchemy import func, or_, inspection
+from sqlalchemy import func, or_
 
 
 def tuning_page(f):
