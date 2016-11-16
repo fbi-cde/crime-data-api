@@ -9,7 +9,7 @@ from flask import make_response, request
 from flask_restful import Resource, abort, current_app
 # import celery
 from flask_sqlalchemy import SignallingSession, SQLAlchemy
-from sqlalchemy import func, or_
+from sqlalchemy import func, or_, inspection
 
 
 def tuning_page(f):
@@ -203,11 +203,8 @@ class CdeResource(Resource):
     def _as_dict(self, fieldTuple, res):
         return dict(zip(fieldTuple, res))
 
-    def with_metadata(self, results, args, base_table=None):
+    def with_metadata(self, results, args):
         """Paginates results and wraps them in metadata."""
-
-        if base_table:
-            results = results.from_self(base_table)
 
         paginated = results.limit(args['per_page']).offset((args['page'] - 1) *
                                                            args['per_page'])

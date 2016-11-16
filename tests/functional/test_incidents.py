@@ -215,6 +215,11 @@ class TestIncidentsEndpoint:
             for incident in res.json['results']:
                 assert incident['agency']['population_family']['population_family_desc'] == 'City (1-7)'
 
+    def test_incidents_endpoint_filter_state(self, user, testapp):
+        results = testapp.get('/incidents/?state=oh')
+        for incident in results.json['results']:
+            assert incident['agency']['state']['state_abbr'] == 'OH'
+
     # End filter tests
 
     @pytest.mark.xfail  # TODO
