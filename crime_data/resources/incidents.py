@@ -29,12 +29,14 @@ class IncidentsList(CdeResource):
         qry = self.tables.filtered(filters).distinct()
         if args['output'] == 'csv':
             output = make_response(self.output_serialize(
-                self.with_metadata(qry, args), self.schema))
+                self.with_metadata(qry, args,
+                                   self.tables.base_table.table), self.schema))
             output.headers[
                 "Content-Disposition"] = "attachment; filename=incidents.csv"
             output.headers["Content-type"] = "text/csv"
             return output
-        return self.with_metadata(qry, args)
+
+        return self.with_metadata(qry, args, self.tables.base_table.table)
 
 
 class IncidentsDetail(CdeResource):
@@ -45,29 +47,15 @@ class IncidentsDetail(CdeResource):
     @tuning_page
     def get(self, args, nbr):
         self.verify_api_key(args)
-        incidents = models.NibrsIncident.query.filter_by(
-            incident_number=nbr).distinct()
-        return self.with_metadata(incidents, args)
+        incidents = models.NibrsIncident.query.filter_by(incident_number=nbr)
+        return self.with_metadata(incidents, args, None)
 
 
 class IncidentsCount(CdeResource):
 
-    # schema = marshmallow_schemas.SummarySchema(many=True)
-
     tables = cdemodels.IncidentCountTableFamily()
 
     SPLITTER = re.compile(r"\s*,\s*")
-    """
-    @use_args(IncidentCountArgsSchema)
-    @tuning_page
-    def get(self, args):
-        self.verify_api_key(args)
-        by = self.SPLITTER.split(
-            args['by'].lower())  # TODO: can post-process in schema?
-        filters = list(self.filters(args))
-        result = cdemodels.RetaQuery(by, filters)
-        return self.with_metadata(result.qry, args)
-        """
 
     @use_args(IncidentCountArgsSchema)
     @tuning_page

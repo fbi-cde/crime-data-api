@@ -287,103 +287,15 @@ class CdeOffenseClassification(models.OffenseClassification):
     offense = db.relationship(CdeRetaOffense, backref='classifications')
 
 
-class TableFamily:
-    def base_query(self):
-        return db.session.query(self.base_table.table)
-
-    def _col(self, col_name):
-        if col_name not in self.map:
-            abort(400, 'field {} not found'.format(col_name))
-        return self.map[col_name]
-
-    def filtered(self, filters):
-        qry = self.query()
-        for (col_name, comparitor, values) in filters:
-            col = self._col(col_name)
-            if _is_string(col):
-                col = func.lower(col)
-                values = [val.lower() for val in values]
-            operation = getattr(col, comparitor)
-            qry = qry.filter(or_(operation(v) for v in values))
-        return qry
-
-    def group_by(self, qry, group_columns):
-        for col_name in group_columns:
-            col = self._col(col_name)
-            if col_name in UNDERLYING_COLUMN_NAMES:
-                col = label(col_name, col)
-            elif col_name in SIMPLIFIED_COLUMN_NAMES:
-                col = label(SIMPLIFIED_COLUMN_NAMES[col_name], col)
-            qry = qry.add_columns(col)
-            qry = qry.group_by(col).order_by(col)
-        return qry
-
-    def _build_map(self):
-        """Create a record of SQLAlchemy columns by column name."""
-        self.map = {}
-        tables = [self.base_table, ] + self.tables
-        for table in tables:
-            for (alias, col) in table.map():
-                # this alias includes the baked-in table name
-                if alias in self.map:
-                    print('Column {} already in map'.format(alias))
-                else:
-                    self.map[alias] = col
-
-    def query(self):
-        self._build_map()
-        # self.print_map() # - uncomment to generate JSON
-        qry = self.base_query()
-        for table in self.tables:
-            if table.join is None:
-                qry = qry.outerjoin(table.table)
-            else:
-                qry = qry.outerjoin(table.table, table.join)
-        return qry
-
-    def print_map(self):
-        """
-        Quick-and-dirty output into stdout of filter columns for swagger.
-
-        TODO: should be less quick and dirty!
-        """
-
-        template = """{{
-                      "name": "{name}",
-                      "in": "query",
-                      "type": "{type}",
-                      "required": false
-                    }}, """
-
-        print('\n\nmappings for {}\n\n'.format(self))
-        types = {int: 'integer', bool: 'boolean', }
-        for (name, col) in sorted(self.map.items()):
-            sqla_col = list(col.base_columns)[0]
-            typ = types.get(sqla_col.type.python_type, 'string')
-            print(template.format(name=name, type=typ))
-
-
-UNDERLYING_COLUMN_NAMES = {'year': 'data_year',
-                           'month': 'month_num',
-                           'agency_name': 'ucr_agency_name',
-                           'state': 'state_abbr',
-                           'city': 'city_name',
-                           'tribe': 'tribe_name',
-                           'offense': 'offense_name',
-                           'offense_subcat': 'offense_subcat_name',
-                           'offense_category': 'offense_category_name', }
-
-SIMPLIFIED_COLUMN_NAMES = {v: k for (k, v) in UNDERLYING_COLUMN_NAMES.items()}
-
-
 class JoinedTable:
 
     PREFIX_SEPARATOR = '.'
 
-    def __init__(self, table, prefix=None, join=None):
+    def __init__(self, table, prefix=None, join=None, parent=None):
         self.table = table
         self.prefix = prefix
         self.join = join
+        self.parent = parent
 
     def columns(self):
         """Yield all this model's columns."""
@@ -419,6 +331,146 @@ class JoinedTable:
                 yield (alias, col)
 
 
+class TableFamily:
+    def __init__(self):
+        self._map = {}
+
+    @property
+    def map(self):
+        if not self._map:
+            self._build_map()
+        return self._map
+
+    def base_query(self):
+        return db.session.query(self.base_table.table)
+
+    def _col(self, col_name):
+        if col_name not in self.map:
+            abort(400, 'field {} not found'.format(col_name))
+        return self.map[col_name]
+
+    def filtered(self, filters):
+        qry = self.base_query()
+        self.joined = {self.base_table,
+                       }  # Messy way to track what has been joined
+        for (col_name, comparitor, values) in filters:
+            (joined_tbl, col) = self._col(col_name)
+            qry = self.join(qry, joined_tbl)
+            if _is_string(col):
+                col = func.lower(col)
+                values = [val.lower() for val in values]
+            operation = getattr(col, comparitor)
+            qry = qry.filter(or_(operation(v) for v in values))
+        return qry
+
+    def join(self, qry, table):
+        """Joins `table` (JoinedTable instance) if not already present"""
+        if table not in self.joined:
+            if table.parent:
+                qry = self.join(qry, table.parent)
+            if table.join is None:
+                qry = qry.outerjoin(table.table)
+            else:
+                qry = qry.outerjoin(table.table, table.join)
+            self.joined.add(table)
+        return qry
+
+    def group_by(self, qry, group_columns):
+        for col_name in group_columns:
+            (table, col) = self._col(col_name)
+            qry = self.join(qry, table)
+            if col_name in UNDERLYING_COLUMN_NAMES:
+                col = label(col_name, col)
+            elif col_name in SIMPLIFIED_COLUMN_NAMES:
+                col = label(SIMPLIFIED_COLUMN_NAMES[col_name], col)
+            qry = qry.add_columns(col)
+            qry = qry.group_by(col).order_by(col)
+        return qry
+
+    def _build_map(self):
+        """Create a record of SQLAlchemy columns by column name."""
+        self._map = {}
+        tables = [self.base_table, ] + self.tables
+        for table in tables:
+            for (alias, col) in table.map():
+                # this alias includes the baked-in table name
+                if alias in self._map:
+                    print('Column {} already in map'.format(alias))
+                else:
+                    self._map[alias] = (table, col)
+        # self.print_map() # - uncomment to generate JSON
+
+    def query(self):
+        self._build_map()
+        # self.print_map() # - uncomment to generate JSON
+        qry = self.base_query()
+        for table in self.tables:
+            if table.join is None:
+                qry = qry.outerjoin(table.table)
+            else:
+                qry = qry.outerjoin(table.table, table.join)
+        return qry
+
+    def print_map(self):
+        """
+        Quick-and-dirty output into stdout of filter columns for swagger.
+
+        TODO: should be less quick and dirty!
+        """
+
+        template = """{{
+                      "name": "{name}",
+                      "in": "query",
+                      "type": "{type}",
+                      "required": false
+                    }}, """
+
+        print('\n\nmappings for {}\n\n'.format(self))
+        types = {int: 'integer', bool: 'boolean', }
+        for (name, (table, col)) in sorted(self.map.items()):
+            sqla_col = list(col.base_columns)[0]
+            typ = types.get(sqla_col.type.python_type, 'string')
+            print(template.format(name=name, type=typ))
+
+    @classmethod
+    def agency_tables(cls, parent):
+        agency_tables = []
+        _agency = JoinedTable(models.RefAgency, parent=parent)
+        agency_tables.append(_agency)
+        agency_tables.append(JoinedTable(models.RefAgencyType,
+                                         parent=_agency)),
+        _state = JoinedTable(models.RefState, parent=_agency)
+        agency_tables.append(_state),
+        agency_tables.append(JoinedTable(models.RefCity, parent=_agency))
+        _division = JoinedTable(models.RefDivision, parent=_state)
+        agency_tables.append(_division)
+        agency_tables.append(JoinedTable(models.RefRegion, parent=_division))
+        agency_tables.append(JoinedTable(models.RefSubmittingAgency, # prefix?
+                        join=(models.RefAgency.agency_id ==
+                              models.RefSubmittingAgency.agency_id)))
+        agency_tables.append(JoinedTable(models.RefFieldOffice,
+                                         parent=_agency))
+        agency_tables.append(JoinedTable(
+            models.RefPopulationFamily,
+            parent=_agency,
+            join=(models.RefAgency.population_family_id ==
+                  models.RefPopulationFamily.population_family_id), ))
+        return agency_tables
+
+
+UNDERLYING_COLUMN_NAMES = {'year': 'data_year',
+                           'month': 'month_num',
+                           'agency_name': 'ucr_agency_name',
+                           'state': 'state_abbr',
+                           'city': 'city_name',
+                           'tribe': 'tribe_name',
+                           'offense': 'offense_name',
+                           'offense_subcat': 'offense_subcat_name',
+                           'offense_category': 'offense_category_name', }
+
+SIMPLIFIED_COLUMN_NAMES = {v: k for (k, v) in UNDERLYING_COLUMN_NAMES.items()}
+
+
 class IncidentTableFamily(TableFamily):
 
     base_table = JoinedTable(models.NibrsIncident)
@@ -433,103 +485,105 @@ class IncidentTableFamily(TableFamily):
     arrestee_age = aliased(models.NibrsAge)
     arrestee_ethnicity = aliased(models.NibrsEthnicity)
 
-    tables = [
-        JoinedTable(models.NibrsOffense),
-        JoinedTable(models.NibrsOffenseType, ),
-        JoinedTable(models.RefAgency, ),
-        JoinedTable(models.RefAgencyType, ),
-        JoinedTable(models.RefState, ),
-        JoinedTable(models.RefCity, ),
-        JoinedTable(models.RefDivision, ),
-        JoinedTable(models.RefRegion, ),
-        JoinedTable(models.RefSubmittingAgency,
-                    join=(models.RefAgency.agency_id ==
-                          models.RefSubmittingAgency.agency_id)),
-        JoinedTable(models.RefFieldOffice),
-        JoinedTable(models.RefPopulationFamily,
-                    join=(models.RefAgency.population_family_id ==
-                          models.RefPopulationFamily.population_family_id), ),
-        JoinedTable(models.NibrsClearedExcept, ),
-        JoinedTable(models.NibrsOffender,
-                    prefix='offender'),
-        JoinedTable(models.NibrsVictim,
-                    prefix='victim'),
-        JoinedTable(models.NibrsArrestee,
-                    prefix='arrestee',
-                    join=(models.NibrsIncident.incident_id ==
-                          models.NibrsArrestee.incident_id)),
-        JoinedTable(offender_age,
-                    join=(models.NibrsOffender.age_id == offender_age.age_id),
-                    prefix='offender', ),
-        JoinedTable(
-            offender_race,
-            join=(models.NibrsOffender.race_id == offender_race.race_id),
-            prefix='offender', ),
-        JoinedTable(offender_ethnicity,
-                    join=(models.NibrsOffender.ethnicity_id ==
-                          offender_ethnicity.ethnicity_id),
-                    prefix='offender'),
-        JoinedTable(victim_age,
-                    join=(models.NibrsVictim.age_id == victim_age.age_id),
-                    prefix='victim', ),
-        JoinedTable(victim_race,
-                    join=(models.NibrsVictim.race_id == victim_race.race_id),
-                    prefix='victim', ),
-        JoinedTable(victim_ethnicity,
-                    join=(models.NibrsVictim.ethnicity_id ==
-                          victim_ethnicity.ethnicity_id),
-                    prefix='victim'),
-        JoinedTable(arrestee_age,
-                    join=(models.NibrsArrestee.age_id == arrestee_age.age_id),
-                    prefix='arrestee', ),
-        JoinedTable(
-            arrestee_race,
-            join=(models.NibrsArrestee.race_id == arrestee_race.race_id),
-            prefix='arrestee', ),
-        JoinedTable(arrestee_ethnicity,
-                    join=(models.NibrsArrestee.ethnicity_id ==
-                          arrestee_ethnicity.ethnicity_id),
-                    prefix='arrestee'),
-        JoinedTable(models.NibrsProperty),
-        JoinedTable(models.NibrsPropLossType, ),
-        JoinedTable(models.NibrsLocationType,
-                    join=(models.NibrsOffense.location_id ==
-                          models.NibrsLocationType.location_id), ),
-    ]
+    def base_query(self):
+        result = db.session.query(models.NibrsIncident.incident_id)
+        return result
+
+    tables = []
+    offense = JoinedTable(models.NibrsOffense)
+    tables.append(offense)
+    tables.append(JoinedTable(models.NibrsOffenseType, parent=offense)),
+    tables.extend(TableFamily.agency_tables(None))
+    tables.append(JoinedTable(models.NibrsClearedExcept))
+    offender = JoinedTable(models.NibrsOffender,
+                           prefix='offender',
+                           parent=offense)
+    tables.append(offender)
+    victim = JoinedTable(models.NibrsVictim, prefix='victim', parent=offense)
+    tables.append(victim)
+    arrestee = JoinedTable(models.NibrsArrestee,
+                           prefix='arrestee',
+                           parent=offense,
+                           join=(models.NibrsIncident.incident_id ==
+                                 models.NibrsArrestee.incident_id))
+    tables.append(arrestee)
+    tables.append(JoinedTable(offender_age,
+                              join=(models.NibrsOffender.age_id ==
+                                    offender_age.age_id),
+                              prefix='offender',
+                              parent=offender))
+    tables.append(JoinedTable(offender_race,
+                              join=(models.NibrsOffender.race_id ==
+                                    offender_race.race_id),
+                              prefix='offender',
+                              parent=offender))
+    tables.append(JoinedTable(offender_ethnicity,
+                              join=(models.NibrsOffender.ethnicity_id ==
+                                    offender_ethnicity.ethnicity_id),
+                              prefix='offender',
+                              parent=offender))
+    tables.append(JoinedTable(victim_age,
+                              join=(models.NibrsVictim.age_id ==
+                                    victim_age.age_id),
+                              prefix='victim',
+                              parent=victim))
+    tables.append(JoinedTable(victim_race,
+                              join=(models.NibrsVictim.race_id ==
+                                    victim_race.race_id),
+                              prefix='victim',
+                              parent=victim))
+    tables.append(JoinedTable(victim_ethnicity,
+                              join=(models.NibrsVictim.ethnicity_id ==
+                                    victim_ethnicity.ethnicity_id),
+                              prefix='victim',
+                              parent=victim))
+    tables.append(JoinedTable(arrestee_age,
+                              join=(models.NibrsArrestee.age_id ==
+                                    arrestee_age.age_id),
+                              prefix='arrestee',
+                              parent=arrestee))
+    tables.append(JoinedTable(arrestee_race,
+                              join=(models.NibrsArrestee.race_id ==
+                                    arrestee_race.race_id),
+                              prefix='arrestee',
+                              parent=arrestee))
+    tables.append(JoinedTable(arrestee_ethnicity,
+                              join=(models.NibrsArrestee.ethnicity_id ==
+                                    arrestee_ethnicity.ethnicity_id),
+                              prefix='arrestee',
+                              parent=arrestee))
+    property = JoinedTable(models.NibrsProperty)
+    tables.append(property)
+    tables.append(JoinedTable(models.NibrsPropLossType, parent=property))
+    # TODO: property_desc, suspected_drug
+    tables.append(JoinedTable(models.NibrsLocationType,
+                              parent=offense,
+                              join=(models.NibrsOffense.location_id ==
+                                    models.NibrsLocationType.location_id), ))
+    # TODO: COUNTY, TRIBE
 
 
 class IncidentCountTableFamily(TableFamily):
 
     base_table = JoinedTable(models.RetaMonthOffenseSubcat)
 
-    tables = [
-        JoinedTable(models.RetaMonth),
-        JoinedTable(models.RetaOffenseSubcat, ),
-        JoinedTable(models.RetaOffense, ),
-        JoinedTable(models.OffenseClassification, ),
-        JoinedTable(models.RetaOffenseCategory, ),
-        # agency tree follows
-        JoinedTable(models.RefAgency, ),
-        JoinedTable(models.RefAgencyType, ),
-        JoinedTable(models.RefState, ),
-        JoinedTable(models.RefCity, ),
-        JoinedTable(models.RefDivision, ),
-        JoinedTable(models.RefRegion, ),
-        JoinedTable(models.RefSubmittingAgency,
-                    join=(models.RefAgency.agency_id ==
-                          models.RefSubmittingAgency.agency_id)),
-        JoinedTable(models.RefFieldOffice),
-        JoinedTable(models.RefPopulationFamily,
-                    join=(models.RefAgency.population_family_id ==
-                          models.RefPopulationFamily.population_family_id), ),
-    ]
+    tables = []
+    month = JoinedTable(models.RetaMonth)
+    tables.append(month)
+    subcat = JoinedTable(models.RetaOffenseSubcat)
+    tables.append(subcat)
+    offense = JoinedTable(models.RetaOffense, parent=subcat)
+    tables.append(offense)
+    tables.append(JoinedTable(models.OffenseClassification, parent=offense))
+    tables.append(JoinedTable(models.RetaOffenseCategory, parent=offense))
+    tables.extend(TableFamily.agency_tables(month))
 
     def base_query(self):
         return db.session.query(
             label('actual_count',
-                  func.sum(models.RetaMonthOffenseSubcat.actual_count)),
-            label('reported_count',
-                  func.sum(models.RetaMonthOffenseSubcat.reported_count)),
+                  func.sum(models.RetaMonthOffenseSubcat.actual_count)), label(
+                      'reported_count',
+                      func.sum(models.RetaMonthOffenseSubcat.reported_count)),
             label('unfounded_count',
                   func.sum(models.RetaMonthOffenseSubcat.unfounded_count)),
             label('cleared_count',
