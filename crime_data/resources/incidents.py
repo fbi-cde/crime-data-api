@@ -26,7 +26,7 @@ class IncidentsList(CdeResource):
 
         self.verify_api_key(args)
         filters = self.filters(args)
-        qry = self.tables.filtered(filters).distinct()
+        qry = self.tables.filtered(filters)
         if args['output'] == 'csv':
             output = make_response(self.output_serialize(
                 self.with_metadata(qry, args,
@@ -36,7 +36,7 @@ class IncidentsList(CdeResource):
             output.headers["Content-type"] = "text/csv"
             return output
 
-        return self.with_metadata(qry, args, self.tables.base_table.table)
+        return self.with_metadata(qry, args)
 
 
 class IncidentsDetail(CdeResource):
@@ -48,7 +48,7 @@ class IncidentsDetail(CdeResource):
     def get(self, args, nbr):
         self.verify_api_key(args)
         incidents = models.NibrsIncident.query.filter_by(incident_number=nbr)
-        return self.with_metadata(incidents, args, None)
+        return self.with_metadata(incidents, args)
 
 
 class IncidentsCount(CdeResource):
