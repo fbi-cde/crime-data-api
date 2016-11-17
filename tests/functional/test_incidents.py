@@ -375,6 +375,13 @@ class TestIncidentsCountEndpoint:
         for row in res.json['results']:
             assert row['offense_category'] != 'Robbery'
 
+    def test_incidents_null_age_codes(self, testapp):
+        res = testapp.get('/incidents/?victim.age_code=99')
+        assert res.json['results']
+        for row in res.json['results']:
+            for victim in row['victims']:
+                assert victim['age_num'] == 99
+
     def test_instances_count_simplified_field_name_is_equivalent(self, testapp):
         res = testapp.get('/incidents/count/?by=data_year,state_abbr')
         simplified_res = testapp.get('/incidents/count/?by=year,state')
