@@ -115,6 +115,7 @@ class TestIncidentsEndpoint:
     def test_instances_endpoint_bad_filter_400s(self, testapp):
         res = testapp.get('/incidents/?llamas=angry', expect_errors=True)
         assert res.status_code == 400
+        assert res.json['message'] == 'field llamas not found'
 
     def test_incidents_endpoint_filter_names_case_insensitive(self, user, testapp):
         res0 = testapp.get('/incidents/?Incident_Hour=22')
@@ -214,6 +215,11 @@ class TestIncidentsEndpoint:
             assert len(res.json['results']) > 0
             for incident in res.json['results']:
                 assert incident['agency']['population_family']['population_family_desc'] == 'City (1-7)'
+
+    def test_incidents_endpoint_filter_state(self, user, testapp):
+        results = testapp.get('/incidents/?state=oh')
+        for incident in results.json['results']:
+            assert incident['agency']['state']['state_abbr'] == 'OH'
 
     # End filter tests
 

@@ -203,13 +203,10 @@ class CdeResource(Resource):
     def _as_dict(self, fieldTuple, res):
         return dict(zip(fieldTuple, res))
 
-    def with_metadata(self, results, args, base_table=None):
+    def with_metadata(self, results, args):
         """Paginates results and wraps them in metadata."""
 
-        if base_table:
-            paginated = results.from_self(base_table)
-
-        paginated = paginated.limit(args['per_page']).offset((args['page'] - 1) *
+        paginated = results.limit(args['per_page']).offset((args['page'] - 1) *
                                                            args['per_page'])
         if hasattr(paginated, 'data'):
             paginated = paginated.data
@@ -236,7 +233,7 @@ class CdeResource(Resource):
                      if 'credentials' in u]
             key = creds[0]['API_KEY']
             if args.get('api_key') != key:
-                abort(401, 'Use correct `api_key` argument')
+                abort(401, message='Use correct `api_key` argument')
 
     def _parse_inequality_operator(self, k, v):
         """
