@@ -160,9 +160,8 @@ class CdeResource(Resource):
         return accumulator
 
     def output_serialize(self, data, schema=None, format='csv'):
-        """ Very limited csv parsing of output data.
-        Uses Marshmallow schema to determine which fields are nested,
-        and stores raw json for these fields.
+        """ Parses results. 
+        Either outputs JSON, or CSV. 
         """
         if format is 'json':
 
