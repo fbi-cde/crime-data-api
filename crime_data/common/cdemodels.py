@@ -1,4 +1,4 @@
-from flask import abort
+from flask_restful import abort
 from sqlalchemy import and_, func, or_
 from sqlalchemy.exc import ArgumentError
 from sqlalchemy.orm import aliased
@@ -346,7 +346,7 @@ class TableFamily:
 
     def _col(self, col_name):
         if col_name not in self.map:
-            abort(400, 'field {} not found'.format(col_name))
+            abort(400, message='field {} not found'.format(col_name))
         return self.map[col_name]
 
     def _post_process(self, qry):

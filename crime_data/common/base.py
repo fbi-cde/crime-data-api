@@ -233,7 +233,7 @@ class CdeResource(Resource):
                      if 'credentials' in u]
             key = creds[0]['API_KEY']
             if args.get('api_key') != key:
-                abort(401, 'Use correct `api_key` argument')
+                abort(401, message='Use correct `api_key` argument')
 
     def _parse_inequality_operator(self, k, v):
         """

@@ -115,6 +115,7 @@ class TestIncidentsEndpoint:
     def test_instances_endpoint_bad_filter_400s(self, testapp):
         res = testapp.get('/incidents/?llamas=angry', expect_errors=True)
         assert res.status_code == 400
+        assert res.json['message'] == 'field llamas not found'
 
     def test_incidents_endpoint_filter_names_case_insensitive(self, user, testapp):
         res0 = testapp.get('/incidents/?Incident_Hour=22')
