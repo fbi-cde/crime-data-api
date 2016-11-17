@@ -8,7 +8,7 @@ from sqlalchemy import (BigInteger, Boolean, Column, DateTime, Float,
                         ForeignKey, Integer, SmallInteger, String, Text,
                         UniqueConstraint, func, text)
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 
 db = SQLAlchemy()
 
@@ -884,9 +884,9 @@ class NibrsArrestee(db.Model):
     age = db.relationship('NibrsAge', backref='arrestees')
     arrest_type = db.relationship('NibrsArrestType', backref='arrestees')
     ethnicity = db.relationship('NibrsEthnicity', backref='arrestees')
-    incident = db.relationship('NibrsIncident', backref='arrestees')
+    incident = db.relationship('NibrsIncident', backref=backref('arrestees', lazy=False))
     offense_type = db.relationship('NibrsOffenseType', backref='arrestees')
-    race = db.relationship('RefRace', backref='arrestees')
+    race = db.relationship('RefRace', lazy=False, backref='arrestees')
 
 
 class NibrsArresteeWeapon(db.Model):
@@ -1249,8 +1249,8 @@ class NibrsOffender(db.Model):
 
     age = db.relationship('NibrsAge', backref='offenders')
     ethnicity = db.relationship('NibrsEthnicity', backref='offenders')
-    incident = db.relationship('NibrsIncident', backref='offenders')
-    race = db.relationship('RefRace', backref='offenders')
+    incident = db.relationship('NibrsIncident', backref=backref('offenders', lazy=False))
+    race = db.relationship('RefRace', lazy=False, backref='offenders')
 
 
 class NibrsOffense(db.Model):
@@ -1281,9 +1281,9 @@ class NibrsOffense(db.Model):
                                 nullable=False,
                                 index=True)
 
-    incident = db.relationship('NibrsIncident', backref='offenses')
-    location = db.relationship('NibrsLocationType', backref='offenses')
-    offense_type = db.relationship('NibrsOffenseType', backref='offenses')
+    incident = db.relationship('NibrsIncident', backref=backref('offenses', lazy=False))
+    location = db.relationship('NibrsLocationType', lazy=False, backref='offenses')
+    offense_type = db.relationship('NibrsOffenseType', lazy=False, backref='offenses')
 
 
 class NibrsOffenseType(db.Model):
@@ -1334,7 +1334,7 @@ class NibrsProperty(db.Model):
                              nullable=False,
                              index=True)
 
-    incident = db.relationship('NibrsIncident', backref='property')
+    incident = db.relationship('NibrsIncident', backref=backref('property', lazy=False))
     prop_loss = db.relationship('NibrsPropLossType', backref='property')
 
 
@@ -1525,8 +1525,8 @@ class NibrsVictim(db.Model):
     age = db.relationship('NibrsAge', backref='victims')
     assignment_type = db.relationship('NibrsAssignmentType', backref='victims')
     ethnicity = db.relationship('NibrsEthnicity', backref='victims')
-    incident = db.relationship('NibrsIncident', backref='victims')
-    race = db.relationship('RefRace', backref='victims')
+    incident = db.relationship('NibrsIncident', backref=backref('victims', lazy=False))
+    race = db.relationship('RefRace', lazy=False, backref='victims')
     victim_type = db.relationship('NibrsVictimType', backref='victims')
 
 
