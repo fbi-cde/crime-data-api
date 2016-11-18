@@ -29,8 +29,7 @@ class IncidentsList(CdeResource):
         qry = self.tables.filtered(filters)
         if args['output'] == 'csv':
             output = make_response(self.output_serialize(
-                self.with_metadata(qry, args,
-                                   self.tables.base_table.table), self.schema))
+                self.with_metadata(qry, args), self.schema))
             output.headers[
                 "Content-Disposition"] = "attachment; filename=incidents.csv"
             output.headers["Content-type"] = "text/csv"
