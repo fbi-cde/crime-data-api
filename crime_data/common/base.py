@@ -189,9 +189,9 @@ class CdeResource(Resource):
             for cs in to_csv:
                 if count == 0:
                     header = cs.keys()
-                    csvwriter.writerow(header)
+                    csvwriter.writerow(list(header))
                     count += 1
-                csvwriter.writerow(cs.values())
+                csvwriter.writerow(list(cs.values()))
 
         return si.getvalue().strip('\r\n')
 
