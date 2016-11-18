@@ -1905,12 +1905,8 @@ class RefAgencyCounty(db.Model):
     __table_args__ = (UniqueConstraint('agency_id', 'county_id',
                                        'metro_div_id', 'data_year'), )
 
-    id = db.Column(
-        db.Integer,
-        primary_key=True,
-        server_default=text("nextval('ref_agency_county_id_seq'::regclass)"))
     core_city_flag = db.Column(db.String(1))
-    data_year = db.Column(db.SmallInteger, nullable=False)
+    data_year = db.Column(db.SmallInteger, nullable=False, primary_key=True)
     population = db.Column(db.BigInteger)
     census = db.Column(db.BigInteger)
     legacy_county_code = db.Column(db.String(20))
@@ -1918,29 +1914,27 @@ class RefAgencyCounty(db.Model):
     source_flag = db.Column(db.String(1))
     change_timestamp = db.Column(db.DateTime(True))
     change_user = db.Column(db.String(100))
-    agency_id = db.Column(
-        db.Integer,
-        db.ForeignKey(
-            'ref_agency.agency_id', deferrable=True, initially='DEFERRED'),
-        nullable=False,
-        index=True)
-    county_id = db.Column(
-        db.Integer,
-        db.ForeignKey(
-            'ref_county.county_id', deferrable=True, initially='DEFERRED'),
-        nullable=False,
-        index=True)
-    metro_div_id = db.Column(
-        db.Integer,
-        db.ForeignKey(
-            'ref_metro_division.metro_div_id',
-            deferrable=True,
-            initially='DEFERRED'),
-        nullable=False,
-        index=True)
+    agency_id = db.Column(db.Integer,
+                          db.ForeignKey('ref_agency.agency_id',
+                                        deferrable=True,
+                                        initially='DEFERRED'),
+                          nullable=False,
+                          index=True, primary_key=True)
+    county_id = db.Column(db.Integer,
+                          db.ForeignKey('ref_county.county_id',
+                                        deferrable=True,
+                                        initially='DEFERRED'),
+                          nullable=False,
+                          index=True, primary_key=True)
+    metro_div_id = db.Column(db.Integer,
+                             db.ForeignKey('ref_metro_division.metro_div_id',
+                                           deferrable=True,
+                                           initially='DEFERRED'),
+                             nullable=False,
+                             index=True, primary_key=True)
 
-    agency = db.relationship('RefAgency')
-    county = db.relationship('RefCounty')
+    agency = db.relationship('RefAgency', backref='counties')
+    county = db.relationship('RefCounty', backref='agencies')
     metro_div = db.relationship('RefMetroDivision')
 
 

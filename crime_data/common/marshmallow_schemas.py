@@ -240,12 +240,22 @@ class RefTribeSchema(ma.ModelSchema):
         exclude = ('tribe_id', )
 
 
+class RefCountySchema(ma.ModelSchema):
+    class Meta:
+        model = models.RefCounty
+
+
+class RefAgencyCountySchema(ma.ModelSchema):
+    class Meta:
+        model = models.RefAgencyCounty
+
+
 class RefUniversitySchema(ma.ModelSchema):
     class Meta:
         model = models.RefUniversity
         exclude = ('university_id', )
 
-        
+
 class RefAgencySchema(ma.ModelSchema, ArgumentsSchema):
     class Meta:
         model = models.RefAgency
@@ -258,6 +268,7 @@ class RefAgencySchema(ma.ModelSchema, ArgumentsSchema):
     population_family = ma.Nested(RefPopulationFamilySchema)
     submitting_agency = ma.Nested(RefSubmittingAgencySchema)
     tribe = ma.Nested(RefTribeSchema)
+    counties = ma.Nested(RefAgencyCountySchema, many=True)
 
 
 class RetaMonthSchema(ma.ModelSchema):
