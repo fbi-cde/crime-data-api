@@ -162,6 +162,7 @@ class RefCitySchema(ma.ModelSchema):
 
 #    state = ma.Nested(RefStateSchema)
 
+
 class RefContinentSchema(ma.ModelSchema):
     class Meta:
         model = models.RefContinent
@@ -172,7 +173,7 @@ class RefContinentSchema(ma.ModelSchema):
 class RefCountySchema(ma.ModelSchema):
     class Meta:
         model = models.RefCounty
-        exclude = ('county_id', 'state', )
+        exclude = ('county_id', 'state', 'agencies', 'agency_associations', )
         ordered = True
 
     state = ma.Nested(RefStateSchema)
@@ -240,14 +241,12 @@ class RefTribeSchema(ma.ModelSchema):
         exclude = ('tribe_id', )
 
 
-class RefCountySchema(ma.ModelSchema):
-    class Meta:
-        model = models.RefCounty
-
-
 class RefAgencyCountySchema(ma.ModelSchema):
     class Meta:
         model = models.RefAgencyCounty
+        exclude = ('change_timestamp', 'change_user', 'agency', )
+
+    county = ma.Nested(RefCountySchema)
 
 
 class RefUniversitySchema(ma.ModelSchema):
@@ -259,6 +258,7 @@ class RefUniversitySchema(ma.ModelSchema):
 class RefAgencySchema(ma.ModelSchema, ArgumentsSchema):
     class Meta:
         model = models.RefAgency
+        exclude = ('county_associations', )
 
     city = ma.Nested(RefCitySchema)
     state = ma.Nested(RefStateSchema)
@@ -268,7 +268,7 @@ class RefAgencySchema(ma.ModelSchema, ArgumentsSchema):
     population_family = ma.Nested(RefPopulationFamilySchema)
     submitting_agency = ma.Nested(RefSubmittingAgencySchema)
     tribe = ma.Nested(RefTribeSchema)
-    counties = ma.Nested(RefAgencyCountySchema, many=True)
+    counties = ma.Nested(RefCountySchema, many=True)
 
 
 class RetaMonthSchema(ma.ModelSchema):
@@ -295,7 +295,7 @@ class AsrAgeRangeSchema(ma.ModelSchema):
         exclude = ('age_range_id', )
         ordered = True
 
-        
+
 class AsrEthnicitySchema(ma.ModelSchema):
     class Meta:
         model = models.AsrEthnicity
@@ -354,7 +354,7 @@ class NibrsPropDescTypeSchema(ma.ModelSchema):
         model = models.NibrsPropDescType
         exclude = ('prop_desc_id', )
 
-        
+
 class NibrsPropLossTypeSchema(ma.ModelSchema):
     class Meta:
         model = models.NibrsPropLossType
@@ -514,7 +514,7 @@ class NibrsAssignmentTypeSchema(ma.ModelSchema):
         exclude = ('assignment_type_id', )
         ordered = True
 
-    
+
 class NibrsBiasListSchema(ma.ModelSchema):
     class Meta:
         model = models.NibrsBiasList

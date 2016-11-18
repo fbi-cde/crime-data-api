@@ -41,6 +41,12 @@ class TestIncidentsEndpoint:
             assert 'agency' in incident
             assert 'ori' in incident['agency']
 
+    def test_incidents_endpoint_includes_counties(self, user, testapp):
+        res = testapp.get('/incidents/')
+        for incident in res.json['results']:
+            agency = incident['agency']
+            assert 'counties' in agency
+
     def test_incidents_endpoint_includes_locations(self, user, testapp):
         res = testapp.get('/incidents/')
         for incident in res.json['results']:
@@ -220,6 +226,12 @@ class TestIncidentsEndpoint:
         results = testapp.get('/incidents/?state=oh')
         for incident in results.json['results']:
             assert incident['agency']['state']['state_abbr'] == 'OH'
+
+    def test_incidents_endpoint_filter_county(self, user, testapp):
+        results = testapp.get('/incidents/?county=warren')
+        for incident in results.json['results']:
+            county_names = [c['county'].lower() for c in incident['agency']['counties']]
+            assert 'warren' in county_names
 
     # End filter tests
 
@@ -401,7 +413,7 @@ class TestIncidentsCountEndpoint:
     def test_incidents_filter_weapon(self, testapp):
         res = testapp.get('/incidents/?offense.weapon_code=40')
         assert res.json['results']
- 
+
     def test_instances_filter_criminal_act(self, testapp):
         res = testapp.get('/incidents/?offense.criminal_act_code=P')
         assert res.json['results']
