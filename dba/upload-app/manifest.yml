@@ -1,0 +1,10 @@
+---
+applications:
+- name: crime-data-api-upload 
+  host: crime-data-api-upload
+  buildpack: https://github.com/cloudfoundry/staticfile-buildpack.git
+  env:
+    FORCE_HTTPS: true
+services:
+- crime-data-api-upload-db
+- crime-data-api-upload-s3
