@@ -291,7 +291,7 @@ class NibrsActivityTypeSchema(ma.ModelSchema):
     class Meta:
         model = models.NibrsActivityType
         exclude = ('activity_type_id', 'victims', )
-
+        ordered = True
 
 class NibrsInjurySchema(ma.ModelSchema):
     class Meta:

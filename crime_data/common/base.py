@@ -226,6 +226,16 @@ class CdeResource(Resource):
                     'per_page': args['per_page'],
                 }, }
 
+    def as_csv_response(self, results, filename, args):
+        """Returns the data as a CSV"""
+        output = make_response(
+            self.output_serialize(
+                self.with_metadata(results, args),
+                self.schema))
+        output.headers['Content-Disposition'] = 'attachment; filename={0}.csv'.format(filename)
+        output.headers['Content-type'] = 'text/csv'
+        return output
+
     def verify_api_key(self, args):
         if os.getenv('VCAP_SERVICES'):
             service_env = json.loads(os.getenv('VCAP_SERVICES'))
