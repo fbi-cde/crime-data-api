@@ -401,7 +401,7 @@ class TestIncidentsCountEndpoint:
     def test_incidents_filter_weapon(self, testapp):
         res = testapp.get('/incidents/?offense.weapon_code=40')
         assert res.json['results']
-
+ 
     def test_instances_filter_criminal_act(self, testapp):
         res = testapp.get('/incidents/?offense.criminal_act_code=P')
         assert res.json['results']
