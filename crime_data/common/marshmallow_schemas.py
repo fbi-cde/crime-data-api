@@ -71,31 +71,34 @@ class IncidentCountArgsSchema(ArgumentsSchema):
 class NibrsRelationshipSchema(ma.ModelSchema):
     class Meta:
         model = models.NibrsRelationship
+        exclude = ('relationships','offender','victim')
 
 class NibrsVictimOffenderRelSchema(ma.ModelSchema):
     class Meta:
         model = models.NibrsVictimOffenderRel
-    victim_relationship = ma.Nested(NibrsRelationshipSchema)
+    relationship_ = ma.Nested(NibrsRelationshipSchema)
 
 class NibrsCriminalActTypeSchema(ma.ModelSchema):
     class Meta:
         model = models.NibrsCriminalActType
+        exclude = ('criminal_acts',)
 
 class NibrsCriminalActSchema(ma.ModelSchema):
     class Meta:
         model = models.NibrsCriminalAct
         exclude = ('offenses',)
-    criminal_act_type = ma.Nested(NibrsCriminalActTypeSchema)
+    criminal_act = ma.Nested(NibrsCriminalActTypeSchema)
 
 class NibrsWeaponTypeSchema(ma.ModelSchema):
     class Meta:
         model = models.NibrsWeaponType
+        exclude = ('weapons',)
 
 class NibrsWeaponSchema(ma.ModelSchema):
     class Meta:
         model = models.NibrsWeapon
         exclude = ('offense',)
-    weapon_type = ma.Nested(NibrsWeaponTypeSchema)
+    weapon = ma.Nested(NibrsWeaponTypeSchema)
 
 class SummarySchema(ma.ModelSchema):
     class Meta:
@@ -228,7 +231,7 @@ class NibrsOffenseSchema(ma.ModelSchema):
         model = models.NibrsOffense
         exclude = ('incident', 'offense_id', )
 
-    criminal_act = ma.Nested(NibrsCriminalActSchema)
+    criminal_acts = ma.Nested(NibrsCriminalActSchema, many=True)
     weapons = ma.Nested(NibrsWeaponSchema, many=True)
     offense_type = ma.Nested(NibrsOffenseTypeSchema)
     location = ma.Nested(NibrsLocationTypeSchema)
@@ -297,7 +300,7 @@ class NibrsVictimSchema(ma.ModelSchema, SchemaFormater):
         exclude = ( 'victim_seq_num', 'victim_id',)
 
     injuries = ma.Nested(NibrsVictimInjurySchema, many=True)
-    relationship = ma.Nested(NibrsVictimOffenderRelSchema, many=True)
+    relationships = ma.Nested(NibrsVictimOffenderRelSchema, many=True)
 
     ethnicity = ma.Nested(NibrsEthnicitySchema)
     race = ma.Nested(RefRaceSchema)

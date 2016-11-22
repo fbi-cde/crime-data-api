@@ -998,7 +998,7 @@ class NibrsCriminalAct(db.Model):
                            nullable=False,
                            index=True)
 
-    criminal_act = db.relationship('NibrsCriminalActType')
+    criminal_act = db.relationship('NibrsCriminalActType', backref='criminal_acts')
     offense = db.relationship('NibrsOffense', backref='criminal_acts')
 
 
