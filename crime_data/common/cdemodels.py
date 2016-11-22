@@ -504,9 +504,16 @@ class IncidentTableFamily(TableFamily):
         return results
 
     tables = []
+
+    victim_injury = JoinedTable(models.NibrsVictimInjury)
     offense = JoinedTable(models.NibrsOffense)
+
     tables.append(offense)
+    tables.append(victim_injury)
+
     tables.append(JoinedTable(models.NibrsOffenseType, parent=offense)),
+    tables.append(JoinedTable(models.NibrsInjury, parent=victim_injury)),
+
     tables.extend(TableFamily.agency_tables(None))
     tables.append(JoinedTable(models.NibrsClearedExcept))
     offender = JoinedTable(models.NibrsOffender,

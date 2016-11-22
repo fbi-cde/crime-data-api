@@ -27,6 +27,7 @@ class IncidentsList(CdeResource):
         self.verify_api_key(args)
         filters = self.filters(args)
         qry = self.tables.filtered(filters)
+
         if args['output'] == 'csv':
             output = make_response(self.output_serialize(
                 self.with_metadata(qry, args), self.schema))

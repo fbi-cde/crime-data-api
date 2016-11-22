@@ -68,6 +68,34 @@ class IncidentCountArgsSchema(ArgumentsSchema):
 
     # Schemas for data serialization
 
+class NibrsRelationshipSchema(ma.ModelSchema):
+    class Meta:
+        model = models.NibrsRelationship
+
+class NibrsVictimOffenderRelSchema(ma.ModelSchema):
+    class Meta:
+        model = models.NibrsVictimOffenderRel
+    victim_relationship = ma.Nested(NibrsRelationshipSchema)
+
+class NibrsCriminalActTypeSchema(ma.ModelSchema):
+    class Meta:
+        model = models.NibrsCriminalActType
+
+class NibrsCriminalActSchema(ma.ModelSchema):
+    class Meta:
+        model = models.NibrsCriminalAct
+        exclude = ('offenses',)
+    criminal_act_type = ma.Nested(NibrsCriminalActTypeSchema)
+
+class NibrsWeaponTypeSchema(ma.ModelSchema):
+    class Meta:
+        model = models.NibrsWeaponType
+
+class NibrsWeaponSchema(ma.ModelSchema):
+    class Meta:
+        model = models.NibrsWeapon
+        exclude = ('offense',)
+    weapon_type = ma.Nested(NibrsWeaponTypeSchema)
 
 class SummarySchema(ma.ModelSchema):
     class Meta:
@@ -86,12 +114,10 @@ class SummarySchema(ma.ModelSchema):
     offense_code = marsh_fields.String()
     offense_category = marsh_fields.String()
 
-
 class RefRegionSchema(ma.ModelSchema):
     class Meta:
         model = models.RefRegion
         exclude = ('region_id', )
-
 
 class RefDivisionSchema(ma.ModelSchema):
     class Meta:
@@ -192,21 +218,21 @@ class NibrsLocationTypeSchema(ma.ModelSchema):
         model = models.NibrsLocationType
         exclude = ('offenses', 'location_id')
 
-
 class NibrsOffenseTypeSchema(ma.ModelSchema):
     class Meta:
         model = models.NibrsOffenseType
         exclude = ('arrestees', 'offenses', 'offense_type_id', )
-
 
 class NibrsOffenseSchema(ma.ModelSchema):
     class Meta:
         model = models.NibrsOffense
         exclude = ('incident', 'offense_id', )
 
+    criminal_act = ma.Nested(NibrsCriminalActSchema)
+    weapons = ma.Nested(NibrsWeaponSchema, many=True)
     offense_type = ma.Nested(NibrsOffenseTypeSchema)
     location = ma.Nested(NibrsLocationTypeSchema)
-
+    method_entry_code = marsh_fields.String()
 
 class NibrsClearedExceptSchema(ma.ModelSchema):
     class Meta:
@@ -252,10 +278,26 @@ class NibrsActivityTypeSchema(ma.ModelSchema):
         exclude = ('activity_type_id', 'victims', )
 
 
+class NibrsInjurySchema(ma.ModelSchema):
+    class Meta:
+        model = models.NibrsInjury
+        # exclude = ('victim_id')
+    injury_code = marsh_fields.String()
+
+class NibrsVictimInjurySchema(ma.ModelSchema):
+    class Meta:
+        model = models.NibrsVictimInjury
+        exclude = ('victim_id','victim')
+    injury = ma.Nested(NibrsInjurySchema)
+    
+
 class NibrsVictimSchema(ma.ModelSchema, SchemaFormater):
     class Meta:
         model = models.NibrsVictim
-        exclude = ('victim_id', 'victim_seq_num', )
+        exclude = ( 'victim_seq_num', 'victim_id',)
+
+    injuries = ma.Nested(NibrsVictimInjurySchema, many=True)
+    relationship = ma.Nested(NibrsVictimOffenderRelSchema, many=True)
 
     ethnicity = ma.Nested(NibrsEthnicitySchema)
     race = ma.Nested(RefRaceSchema)
@@ -263,6 +305,7 @@ class NibrsVictimSchema(ma.ModelSchema, SchemaFormater):
     age = ma.Nested(NibrsAgeSchema)
     activity_type = ma.Nested(NibrsActivityTypeSchema)
     age_num = marsh_fields.Integer(missing=0)
+    
 
     @post_dump
     def check_age(self, out_data):
