@@ -504,17 +504,43 @@ class IncidentTableFamily(TableFamily):
         return results
 
     tables = []
+
     offense = JoinedTable(models.NibrsOffense)
+
     tables.append(offense)
+
     tables.append(JoinedTable(models.NibrsOffenseType, parent=offense)),
+
     tables.extend(TableFamily.agency_tables(None))
     tables.append(JoinedTable(models.NibrsClearedExcept))
     offender = JoinedTable(models.NibrsOffender,
                            prefix='offender',
                            parent=offense)
     tables.append(offender)
+
     victim = JoinedTable(models.NibrsVictim, prefix='victim', parent=offense)
     tables.append(victim)
+
+    victim_injury = JoinedTable(models.NibrsVictimInjury, prefix='victim',parent=victim)
+    injury = JoinedTable(models.NibrsInjury, prefix='victim',parent=victim_injury)
+    tables.append(victim_injury)
+    tables.append(injury)
+
+    victim_offender_rel = JoinedTable(models.NibrsVictimOffenderRel, prefix='victim', parent=victim)
+    relationship_ = JoinedTable(models.NibrsRelationship, prefix='victim', parent=victim_offender_rel)
+    tables.append(victim_offender_rel)
+    tables.append(relationship_)
+    
+    offense_weapon = JoinedTable(models.NibrsWeapon, prefix='offense', parent=offense)
+    weapon = JoinedTable(models.NibrsWeaponType, prefix='offense', parent=offense_weapon)
+    tables.append(offense_weapon)
+    tables.append(weapon)
+
+    criminal_act = JoinedTable(models.NibrsCriminalAct, prefix='offense', parent=offense)
+    criminal_act_type = JoinedTable(models.NibrsCriminalActType, prefix='offense', parent=criminal_act)
+    tables.append(criminal_act)
+    tables.append(criminal_act_type)
+
     arrestee = JoinedTable(models.NibrsArrestee,
                            prefix='arrestee',
                            parent=offense,
