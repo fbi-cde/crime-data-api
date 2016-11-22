@@ -338,7 +338,7 @@ class NibrsArresteeSchema(ma.ModelSchema, SchemaFormater):
 class NibrsOffenderSchema(ma.ModelSchema, SchemaFormater):
     class Meta:
         model = models.NibrsOffender
-        exclude = ('offender_id', 'incident', 'offender_seq_num', )
+        exclude = ('offender_id', 'incident', 'offender_seq_num', 'relationships', )
 
     ethnicity = ma.Nested(NibrsEthnicitySchema)
     race = ma.Nested(RefRaceSchema)
