@@ -3,8 +3,10 @@
 
 See: http://webtest.readthedocs.org/
 """
+from crime_data.resources.codes import CodeReferenceList
 
 class TestCodesEndpoint:
-    def test_nibrs_activity_endpoint_exists(self, user, testapp):
-        res = testapp.get('/codes/nibrs_activity_type')
-        assert res.status_code == 200
+    def test_codes_endpoints_exists(self, user, testapp):
+        for code in CodeReferenceList.models:
+            res = testapp.get('/codes/{0}'.format(code))
+            assert res.status_code == 200
