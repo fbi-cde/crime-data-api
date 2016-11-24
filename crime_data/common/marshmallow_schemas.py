@@ -49,6 +49,7 @@ class AgenciesIncidentArgsSchema(ArgumentsSchema):
     location_code = marsh_fields.String()
     location_name = marsh_fields.String()
     state = marsh_fields.String()
+    by = marsh_fields.String(missing='ori')
 
 
 class AgenciesRetaArgsSchema(ArgumentsSchema):
@@ -192,7 +193,7 @@ class RefTribeSchema(ma.ModelSchema):
         exclude = ('tribe_id', )
 
 
-class RefAgencySchema(ma.ModelSchema):
+class RefAgencySchema(ma.ModelSchema, ArgumentsSchema):
     class Meta:
         model = models.RefAgency
 
