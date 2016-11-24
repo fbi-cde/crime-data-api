@@ -12,11 +12,11 @@ switch the app to using the uploaded database (see below).
 
     # Set up an empty service to hold the S3 bucket and database
     cf create-service s3 basic $APP_NAME-upload-s3
-    cf create-service aws-rds aws- basic $APP_NAME-upload-db
+    cf create-service aws-rds aws- basic $APP_NAME-upload-db -c '{"storage": 1024}'
 
     # edit manifest.yml with both services
     cd dba/upload-app
-    cf push $APP_NAME-upload
+    cf push $APP_NAME
 
     # set environment variables for s3
     export S3_CREDENTIALS=`cf env $APP_NAME-upload | tail -n +5 | jq -r '.VCAP_SERVICES.s3 // empty' 2>/dev/null`

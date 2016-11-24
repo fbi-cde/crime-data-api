@@ -56,6 +56,7 @@ def upload_file(s3, file_path, chunk_in_mb=CHUNK_MB):
     chunks_count = int(math.ceil(source_size / float(bytes_per_chunk)))
     begin_timestamp = time.time()
     begin_datetime = datetime.datetime.now()
+    bytes_total = 0
 
     for i in range(chunks_count):
         offset = i * bytes_per_chunk
@@ -66,22 +67,27 @@ def upload_file(s3, file_path, chunk_in_mb=CHUNK_MB):
         success = False
         retries = 0
         while not success:
-            print("uploading part {} of {}".format(part_num, chunks_count))
+            print("{}: uploading part {} of {}... ".format(datetime.datetime.now(), part_num, chunks_count), end="")
             with open(file_path, 'r') as fp:
                 fp.seek(offset)
                 try:
                     mp.upload_part_from_file(fp=fp,
                                              part_num=part_num,
                                              size=bytes)
+                    print('success') 
                     success = True
+                    bytes_total += bytes
                 except Exception as e:
+                    print('failure')
                     print('Error during upload:')
                     print(str(e))
                     retries += 1
                     print('Retry #{}'.format(retries))
 
         elapsed_seconds = time.time() - begin_timestamp
-        print('elapsed: {} seconds'.format(elapsed_seconds))
+        mb_total = bytes_total / 1024**2.0
+        gb_per_hour = (bytes_total / 1024**3.0) / (elapsed_seconds / 3600.)
+        print('elapsed: {} MB / {} seconds = {} GB / hr'.format(mb_total, elapsed_seconds, gb_per_hour))
         estimated_completion = begin_datetime + datetime.timedelta(
             seconds=(elapsed_seconds * chunks_count) / part_num)
         print('estimated completion: {}'.format(estimated_completion))
