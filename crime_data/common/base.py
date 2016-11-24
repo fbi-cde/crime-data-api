@@ -15,7 +15,7 @@ from sqlalchemy import func, or_
 def tuning_page(f):
     @wraps(f)
     def decorated_get(*args, **kwargs):
-        if args[1]['tuning']:
+        if 'tuning' in args[1] and args[1]['tuning']:
             if not current_app.config['DEBUG']:
                 abort(403, message="`DEBUG` must be on for tuning page")
             profiler = sqltap.start()
@@ -23,9 +23,8 @@ def tuning_page(f):
             profiler.stop()
             stats = profiler.collect()
             return make_response(sqltap.report(stats, 'tuning.html'))
-        else:
-            result = f(*args, **kwargs)
-            return result
+        result = f(*args, **kwargs)
+        return result
 
     return decorated_get
 
@@ -141,55 +140,58 @@ class CdeResource(Resource):
                  '<': '__le__',
                  '==': '__eq__', }
 
+
+    def _serialize_dict(self, data, accumulator={}):
+        """ Recursively serializes a nested dict 
+        into a flat dict. Replaces lists with their 
+        length as an integer of any lists in nested dict. 
+        """
+        for k,v in data.items():
+            if isinstance(v, dict):
+                # Recurse.
+                self._serialize_dict(v, accumulator)
+            elif isinstance(v, list):
+                # Base case: No more nesting => List.
+                accumulator[k] = len(v)
+            else:
+                # Base case: No more nesting => Value.
+                accumulator[k] = v
+        return accumulator
+
     def output_serialize(self, data, schema=None, format='csv'):
-        """ Very limited csv parsing of output data.
-        Uses Marshmallow schema to determine which fields are nested,
-        and stores raw json for these fields.
+        """ Parses results. 
+        Either outputs JSON, or CSV. 
         """
         if format is 'json':
+
             return data
         if format is 'csv':
 
-            import flatdict
             import csv
             from io import StringIO
 
             # create the csv writer object
             si = StringIO()
             csvwriter = csv.writer(si)
-            keys = {}
-
-            # These are fields that can contain nested objects and/or lists
-            list_fields = []
-            for k, v in schema.declared_fields.items():
-                if hasattr(v, 'many'):
-                    list_fields.append(k)
-
             to_csv = []
 
-            # Organize Data
+            # Serialize Data to flattened list of dicts.
             for d in data['results']:
-                to_csv_dict = {}
-                for base_field in list_fields:
-                    to_csv_dict[base_field] = d[base_field]
+                to_csv.append(self._serialize_dict(d, {}))
 
-                flat = flatdict.FlatDict(d)
+            # Fill in any missing keys.
+            empty = dict.fromkeys(set().union(*to_csv), 0)
+            to_csv = [dict(empty, **d) for d in to_csv]
 
-                for k, v in flat.items():
-                    base_field = k.split(':')[0]
-                    leaf_field = k.split(':')[-1]
-                    if base_field not in list_fields:
-                        to_csv_dict[base_field + '.' + leaf_field] = v
-
-                to_csv.append(to_csv_dict)
-
+            # Generate CSV.
+            # TODO: Sort by columns.
             count = 0
             for cs in to_csv:
                 if count == 0:
                     header = cs.keys()
-                    csvwriter.writerow(header)
+                    csvwriter.writerow(list(header))
                     count += 1
-                csvwriter.writerow(cs.values())
+                csvwriter.writerow(list(cs.values()))
 
         return si.getvalue().strip('\r\n')
 
@@ -233,7 +235,7 @@ class CdeResource(Resource):
                      if 'credentials' in u]
             key = creds[0]['API_KEY']
             if args.get('api_key') != key:
-                abort(401, 'Use correct `api_key` argument')
+                abort(401, message='Use correct `api_key` argument')
 
     def _parse_inequality_operator(self, k, v):
         """

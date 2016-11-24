@@ -115,6 +115,7 @@ class TestIncidentsEndpoint:
     def test_instances_endpoint_bad_filter_400s(self, testapp):
         res = testapp.get('/incidents/?llamas=angry', expect_errors=True)
         assert res.status_code == 400
+        assert res.json['message'] == 'field llamas not found'
 
     def test_incidents_endpoint_filter_names_case_insensitive(self, user, testapp):
         res0 = testapp.get('/incidents/?Incident_Hour=22')
@@ -374,6 +375,13 @@ class TestIncidentsCountEndpoint:
         for row in res.json['results']:
             assert row['offense_category'] != 'Robbery'
 
+    def test_incidents_null_age_codes(self, testapp):
+        res = testapp.get('/incidents/?victim.age_code=99')
+        assert res.json['results']
+        for row in res.json['results']:
+            for victim in row['victims']:
+                assert victim['age_num'] == 99
+
     def test_instances_count_simplified_field_name_is_equivalent(self, testapp):
         res = testapp.get('/incidents/count/?by=data_year,state_abbr')
         simplified_res = testapp.get('/incidents/count/?by=year,state')
@@ -385,3 +393,19 @@ class TestIncidentsCountEndpoint:
         for row in res.json['results']:
             assert 'year' in row
             assert 'state' in row
+
+    def test_incidents_filter_victim_rel(self, testapp):
+        res = testapp.get('/incidents/?victim.relationship_code=AQ')
+        assert res.json['results']
+
+    def test_incidents_filter_weapon(self, testapp):
+        res = testapp.get('/incidents/?offense.weapon_code=40')
+        assert res.json['results']
+ 
+    def test_instances_filter_criminal_act(self, testapp):
+        res = testapp.get('/incidents/?offense.criminal_act_code=P')
+        assert res.json['results']
+
+    def test_instances_filter_injury(self, testapp):
+        res = testapp.get('/incidents/?victim.injury_code=N')
+        assert res.json['results']

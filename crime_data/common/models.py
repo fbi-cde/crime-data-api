@@ -15,6 +15,16 @@ db = SQLAlchemy()
 #Base = declarative_base()
 #metadata = Base.metadata
 
+class RefRace(db.Model):
+    __tablename__ = 'ref_race'
+
+    race_id = db.Column(db.SmallInteger, primary_key=True)
+    race_code = db.Column(db.String(2), nullable=False, unique=True)
+    race_desc = db.Column(db.String(100), nullable=False)
+    sort_order = db.Column(db.SmallInteger)
+    start_year = db.Column(db.SmallInteger)
+    end_year = db.Column(db.SmallInteger)
+    notes = db.Column(db.String(1000))
 
 class ArsonMonth(db.Model):
     __tablename__ = 'arson_month'
@@ -1021,27 +1031,24 @@ class NibrsCriminalAct(db.Model):
     __tablename__ = 'nibrs_criminal_act'
     __table_args__ = (UniqueConstraint('criminal_act_id', 'offense_id'), )
 
-    id = db.Column(
-        db.Integer,
-        primary_key=True,
-        server_default=text("nextval('nibrs_criminal_act_id_seq'::regclass)"))
-    criminal_act_id = db.Column(
-        db.Integer,
-        db.ForeignKey(
-            'nibrs_criminal_act_type.criminal_act_id',
-            deferrable=True,
-            initially='DEFERRED'),
-        nullable=False,
-        index=True)
-    offense_id = db.Column(
-        db.Integer,
-        db.ForeignKey(
-            'nibrs_offense.offense_id', deferrable=True, initially='DEFERRED'),
-        nullable=False,
-        index=True)
+    criminal_act_id = db.Column(db.Integer,
+                                db.ForeignKey(
+                                    'nibrs_criminal_act_type.criminal_act_id',
+                                    deferrable=True,
+                                    initially='DEFERRED'),
+                                primary_key=True,
+                                nullable=False,
+                                index=True)
+    offense_id = db.Column(db.Integer,
+                           db.ForeignKey('nibrs_offense.offense_id',
+                                         deferrable=True,
+                                         initially='DEFERRED'),
+                           primary_key=True,
+                           nullable=False,
+                           index=True)
 
-    criminal_act = db.relationship('NibrsCriminalActType')
-    offense = db.relationship('NibrsOffense')
+    criminal_act = db.relationship('NibrsCriminalActType', backref='criminal_acts')
+    offense = db.relationship('NibrsOffense', backref='criminal_acts')
 
 
 class NibrsCriminalActType(db.Model):
@@ -1672,25 +1679,27 @@ class NibrsVictimInjury(db.Model):
     __tablename__ = 'nibrs_victim_injury'
     __table_args__ = (UniqueConstraint('victim_id', 'injury_id'), )
 
-    id = db.Column(
-        db.Integer,
-        primary_key=True,
-        server_default=text("nextval('nibrs_victim_injury_id_seq'::regclass)"))
-    injury_id = db.Column(
-        db.Integer,
-        db.ForeignKey(
-            'nibrs_injury.injury_id', deferrable=True, initially='DEFERRED'),
-        nullable=False,
-        index=True)
-    victim_id = db.Column(
-        db.Integer,
-        db.ForeignKey(
-            'nibrs_victim.victim_id', deferrable=True, initially='DEFERRED'),
-        nullable=False,
-        index=True)
+    # id = db.Column(
+    #     db.Integer,
+    #     primary_key=True,
+    #     server_default=text("nextval('nibrs_victim_injury_id_seq'::regclass)"))
+    injury_id = db.Column(db.Integer,
+                          db.ForeignKey('nibrs_injury.injury_id',
+                                        deferrable=True,
+                                        initially='DEFERRED'),
+                          primary_key=True,
+                          nullable=False,
+                          index=True)
+    victim_id = db.Column(db.Integer,
+                          db.ForeignKey('nibrs_victim.victim_id',
+                                        deferrable=True,
+                                        initially='DEFERRED'),
+                          primary_key=True,
+                          nullable=False,
+                          index=True)
 
     injury = db.relationship('NibrsInjury')
-    victim = db.relationship('NibrsVictim')
+    victim = db.relationship('NibrsVictim', backref="injuries")
 
 
 class NibrsVictimOffenderRel(db.Model):
@@ -1720,9 +1729,9 @@ class NibrsVictimOffenderRel(db.Model):
         nullable=False,
         index=True)
 
-    offender = db.relationship('NibrsOffender')
-    relationship_ = db.relationship('NibrsRelationship')
-    victim = db.relationship('NibrsVictim')
+    offender = db.relationship('NibrsOffender', backref="relationships")
+    relationship_ = db.relationship('NibrsRelationship', backref="relationships")
+    victim = db.relationship('NibrsVictim', backref="relationships")
 
 
 class NibrsVictimOffense(db.Model):
@@ -1778,8 +1787,9 @@ class NibrsWeapon(db.Model):
         nullable=False,
         index=True)
 
-    offense = db.relationship('NibrsOffense')
-    weapon = db.relationship('NibrsWeaponType')
+    weapon = db.relationship('NibrsWeaponType', backref='weapons')
+    offense = db.relationship('NibrsOffense', backref='weapons')
+
 
 
 class NibrsWeaponType(db.Model):
@@ -2351,18 +2361,6 @@ class RefPopulationGroup(db.Model):
         index=True)
 
     parent_pop_group = db.relationship('RefParentPopulationGroup')
-
-
-class RefRace(db.Model):
-    __tablename__ = 'ref_race'
-
-    race_id = db.Column(db.SmallInteger, primary_key=True)
-    race_code = db.Column(db.String(2), nullable=False, unique=True)
-    race_desc = db.Column(db.String(100), nullable=False)
-    sort_order = db.Column(db.SmallInteger)
-    start_year = db.Column(db.SmallInteger)
-    end_year = db.Column(db.SmallInteger)
-    notes = db.Column(db.String(1000))
 
 
 class RefRegion(db.Model):
