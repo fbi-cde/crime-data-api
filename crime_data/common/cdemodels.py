@@ -5,7 +5,7 @@ from sqlalchemy.orm import aliased
 from sqlalchemy.sql import label
 
 from crime_data.common import models
-from crime_data.common.base import QueryTraits
+from crime_data.common.base import QueryTraits, Fields
 from crime_data.extensions import db
 
 session = db.session
@@ -319,8 +319,8 @@ class JoinedTable:
 
         for col in self.columns():
             column_names = [col.key, ]
-            if col.key in SIMPLIFIED_COLUMN_NAMES:
-                column_names.append(SIMPLIFIED_COLUMN_NAMES[col.key])
+            if col.key in Fields.get_simplified_column_names():
+                column_names.append(Fields.get_simplified_column_names()[col.key])
             for column_name in column_names:
                 if self.prefix:
                     alias = '{}{}{}'.format(self.prefix, self.PREFIX_SEPARATOR,
@@ -335,18 +335,11 @@ class TableFamily:
     Base class for Queries on the CDE database.
     """""
     def __init__(self):
-        self.UNDERLYING_COLUMN_NAMES = {'year': 'data_year',
-                           'month': 'month_num',
-                           'agency_name': 'ucr_agency_name',
-                           'state': 'state_abbr',
-                           'city': 'city_name',
-                           'tribe': 'tribe_name',
-                           'offense': 'offense_name',
-                           'offense_subcat': 'offense_subcat_name',
-                           'offense_category': 'offense_category_name', }
-
-        self.SIMPLIFIED_COLUMN_NAMES = {v: k for (k, v) in self.UNDERLYING_COLUMN_NAMES.items()}
         self._map = {}
+
+    @classmethod
+    def get_tables(cls, parent):
+        return tables
 
     @property
     def map(self):
@@ -406,10 +399,10 @@ class TableFamily:
         for col_name in group_columns:
             (table, col) = self._col(col_name)
             qry = self.join(qry, table)
-            if col_name in self.UNDERLYING_COLUMN_NAMES:
+            if col_name in Fields.get_db_column_names():
                 col = label(col_name, col)
-            elif col_name in self.SIMPLIFIED_COLUMN_NAMES:
-                col = label(self.SIMPLIFIED_COLUMN_NAMES[col_name], col)
+            elif col_name in Fields.get_simplified_column_names():
+                col = label(Fields.get_simplified_column_names()[col_name], col)
             qry = qry.add_columns(col)
             qry = qry.group_by(col).order_by(col)
         return qry
@@ -460,31 +453,32 @@ class TableFamily:
             typ = types.get(sqla_col.type.python_type, 'string')
             print(template.format(name=name, type=typ))
 
+
+class AgencyTableFamily(TableFamily):
     @classmethod
-    def agency_tables(cls, parent):
-        """Returns list of all Agency related tables."""
-        agency_tables = []
+    def get_tables(cls, parent):
+        tables = []
         _agency = JoinedTable(models.RefAgency, parent=parent)
-        agency_tables.append(_agency)
-        agency_tables.append(JoinedTable(models.RefAgencyType,
+        tables.append(_agency)
+        tables.append(JoinedTable(models.RefAgencyType,
                                          parent=_agency)),
         _state = JoinedTable(models.RefState, parent=_agency)
-        agency_tables.append(_state),
-        agency_tables.append(JoinedTable(models.RefCity, parent=_agency))
+        tables.append(_state),
+        tables.append(JoinedTable(models.RefCity, parent=_agency))
         _division = JoinedTable(models.RefDivision, parent=_state)
-        agency_tables.append(_division)
-        agency_tables.append(JoinedTable(models.RefRegion, parent=_division))
-        agency_tables.append(JoinedTable(models.RefSubmittingAgency, # prefix?
+        tables.append(_division)
+        tables.append(JoinedTable(models.RefRegion, parent=_division))
+        tables.append(JoinedTable(models.RefSubmittingAgency, # prefix?
                         join=(models.RefAgency.agency_id ==
                               models.RefSubmittingAgency.agency_id)))
-        agency_tables.append(JoinedTable(models.RefFieldOffice,
+        tables.append(JoinedTable(models.RefFieldOffice,
                                          parent=_agency))
-        agency_tables.append(JoinedTable(
+        tables.append(JoinedTable(
             models.RefPopulationFamily,
             parent=_agency,
             join=(models.RefAgency.population_family_id ==
                   models.RefPopulationFamily.population_family_id), ))
-        return agency_tables
+        return tables
 
 
 class IncidentTableFamily(TableFamily):
@@ -533,7 +527,7 @@ class IncidentTableFamily(TableFamily):
     # Append all Joined tables to list of table for query.
     tables.append(offense)
     tables.append(JoinedTable(models.NibrsOffenseType, parent=offense)),
-    tables.extend(TableFamily.agency_tables(None))
+    tables.extend(AgencyTableFamily.get_tables(None))
     tables.append(JoinedTable(models.NibrsClearedExcept))
     tables.append(offender)    
     tables.append(victim)
@@ -639,7 +633,7 @@ class IncidentCountTableFamily(TableFamily):
     tables.append(offense)
     tables.append(JoinedTable(models.OffenseClassification, parent=offense))
     tables.append(JoinedTable(models.RetaOffenseCategory, parent=offense))
-    tables.extend(TableFamily.agency_tables(month))
+    tables.extend(AgencyTableFamily.get_tables(month))
 
     def base_query(self):
         return db.session.query(

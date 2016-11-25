@@ -123,6 +123,24 @@ class QueryTraits(object):
 
         return query
 
+class Fields(object):
+    @staticmethod
+    def get_db_column_names():
+        return {'year': 'data_year',
+               'month': 'month_num',
+               'agency_name': 'ucr_agency_name',
+               'state': 'state_abbr',
+               'city': 'city_name',
+               'tribe': 'tribe_name',
+               'offense': 'offense_name',
+               'offense_subcat': 'offense_subcat_name',
+               'offense_category': 'offense_category_name', }
+
+    @staticmethod
+    def get_simplified_column_names():
+        return {v: k for (k, v) in Fields.get_db_column_names().items()}
+
+
 
 class RoutingSQLAlchemy(SQLAlchemy):
     def create_session(self, options):
