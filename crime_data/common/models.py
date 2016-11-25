@@ -8,7 +8,7 @@ from sqlalchemy import (BigInteger, Boolean, Column, DateTime, Float,
                         ForeignKey, Integer, SmallInteger, String, Text,
                         UniqueConstraint, func, text)
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 
 db = SQLAlchemy()
 
@@ -45,12 +45,12 @@ class ArsonMonth(db.Model):
     update_flag = db.Column(db.String(1))
     did = db.Column(db.BigInteger)
     ff_line_number = db.Column(db.BigInteger)
-    agency_id = db.Column(db.Integer,
-                          db.ForeignKey('ref_agency.agency_id',
-                                        deferrable=True,
-                                        initially='DEFERRED'),
-                          nullable=False,
-                          index=True)
+    agency_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_agency.agency_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     agency = db.relationship('RefAgency')
 
@@ -60,10 +60,11 @@ class ArsonMonthBySubcat(db.Model):
     __table_args__ = (
         db.UniqueConstraint('arson_month_id', 'subcategory_id'), )
 
-    id = db.Column(db.Integer,
-                   primary_key=True,
-                   server_default=text(
-                       "nextval('arson_month_by_subcat_id_seq'::regclass)"))
+    id = db.Column(
+        db.Integer,
+        primary_key=True,
+        server_default=text(
+            "nextval('arson_month_by_subcat_id_seq'::regclass)"))
     reported_count = db.Column(db.Integer)
     reported_status = db.Column(db.SmallInteger)
     unfounded_count = db.Column(db.Integer)
@@ -78,19 +79,22 @@ class ArsonMonthBySubcat(db.Model):
     uninhabited_status = db.Column(db.SmallInteger)
     est_damage_value = db.Column(db.BigInteger)
     est_damage_value_status = db.Column(db.SmallInteger)
-    arson_month_id = db.Column(db.Integer,
-                               db.ForeignKey('arson_month.arson_month_id',
-                                             deferrable=True,
-                                             initially='DEFERRED'),
-                               nullable=False,
-                               index=True)
-    subcategory_id = db.Column(db.Integer,
-                               db.ForeignKey(
-                                   'arson_subcategory.subcategory_id',
-                                   deferrable=True,
-                                   initially='DEFERRED'),
-                               nullable=False,
-                               index=True)
+    arson_month_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'arson_month.arson_month_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    subcategory_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'arson_subcategory.subcategory_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     arson_month = db.relationship('ArsonMonth')
     subcategory = db.relationship('ArsonSubcategory')
@@ -103,13 +107,14 @@ class ArsonSubcategory(db.Model):
     subcategory_name = db.Column(db.String(100))
     subcategory_code = db.Column(db.String(20), unique=True)
     subcat_xml_path = db.Column(db.String(4000))
-    subclass_id = db.Column(db.Integer,
-                            db.ForeignKey(
-                                'arson_subclassification.subclass_id',
-                                deferrable=True,
-                                initially='DEFERRED'),
-                            nullable=False,
-                            index=True)
+    subclass_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'arson_subclassification.subclass_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     subclass = db.relationship('ArsonSubclassification')
 
@@ -150,25 +155,28 @@ class AsrAgeSexSubcat(db.Model):
     prepared_date = db.Column(db.DateTime(True))
     report_date = db.Column(db.DateTime(True))
     ff_line_number = db.Column(db.BigInteger)
-    age_range_id = db.Column(db.Integer,
-                             db.ForeignKey('asr_age_range.age_range_id',
-                                           deferrable=True,
-                                           initially='DEFERRED'),
-                             nullable=False,
-                             index=True)
-    asr_month_id = db.Column(db.Integer,
-                             db.ForeignKey('asr_month.asr_month_id',
-                                           deferrable=True,
-                                           initially='DEFERRED'),
-                             nullable=False,
-                             index=True)
-    offense_subcat_id = db.Column(db.Integer,
-                                  db.ForeignKey(
-                                      'asr_offense_subcat.offense_subcat_id',
-                                      deferrable=True,
-                                      initially='DEFERRED'),
-                                  nullable=False,
-                                  index=True)
+    age_range_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'asr_age_range.age_range_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    asr_month_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'asr_month.asr_month_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    offense_subcat_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'asr_offense_subcat.offense_subcat_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     age_range = db.relationship('AsrAgeRange')
     asr_month = db.relationship('AsrMonth')
@@ -189,35 +197,39 @@ class AsrEthnicityOffense(db.Model):
     __table_args__ = (db.UniqueConstraint('asr_month_id', 'offense_subcat_id',
                                           'ethnicity_id', 'juvenile_flag'), )
 
-    id = db.Column(db.Integer,
-                   primary_key=True,
-                   server_default=text(
-                       "nextval('asr_ethnicity_offense_id_seq'::regclass)"))
+    id = db.Column(
+        db.Integer,
+        primary_key=True,
+        server_default=text(
+            "nextval('asr_ethnicity_offense_id_seq'::regclass)"))
     juvenile_flag = db.Column(db.String(1), nullable=False)
     arrest_count = db.Column(db.Integer)
     arrest_status = db.Column(db.SmallInteger)
     prepared_date = db.Column(db.DateTime(True))
     report_date = db.Column(db.DateTime(True))
     ff_line_number = db.Column(db.BigInteger)
-    asr_month_id = db.Column(db.Integer,
-                             db.ForeignKey('asr_month.asr_month_id',
-                                           deferrable=True,
-                                           initially='DEFERRED'),
-                             nullable=False,
-                             index=True)
-    ethnicity_id = db.Column(db.Integer,
-                             db.ForeignKey('asr_ethnicity.ethnicity_id',
-                                           deferrable=True,
-                                           initially='DEFERRED'),
-                             nullable=False,
-                             index=True)
-    offense_subcat_id = db.Column(db.Integer,
-                                  db.ForeignKey(
-                                      'asr_offense_subcat.offense_subcat_id',
-                                      deferrable=True,
-                                      initially='DEFERRED'),
-                                  nullable=False,
-                                  index=True)
+    asr_month_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'asr_month.asr_month_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    ethnicity_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'asr_ethnicity.ethnicity_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    offense_subcat_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'asr_offense_subcat.offense_subcat_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     asr_month = db.relationship('AsrMonth')
     ethnicity = db.relationship('AsrEthnicity')
@@ -240,12 +252,12 @@ class AsrMonth(db.Model):
     ddocname = db.Column(db.String(100))
     did = db.Column(db.BigInteger)
     data_home = db.Column(db.String(1), nullable=False)
-    agency_id = db.Column(db.Integer,
-                          db.ForeignKey('ref_agency.agency_id',
-                                        deferrable=True,
-                                        initially='DEFERRED'),
-                          nullable=False,
-                          index=True)
+    agency_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_agency.agency_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     agency = db.relationship('RefAgency')
 
@@ -253,11 +265,11 @@ class AsrMonth(db.Model):
 class AsrJuvenileDisposition(AsrMonth):
     __tablename__ = 'asr_juvenile_disposition'
 
-    asr_month_id = db.Column(db.Integer,
-                             db.ForeignKey('asr_month.asr_month_id',
-                                           deferrable=True,
-                                           initially='DEFERRED'),
-                             primary_key=True)
+    asr_month_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'asr_month.asr_month_id', deferrable=True, initially='DEFERRED'),
+        primary_key=True)
     report_date = db.Column(db.DateTime(True))
     prepared_date = db.Column(db.DateTime(True))
     handled_within_dept = db.Column(db.Integer)
@@ -275,13 +287,14 @@ class AsrOffense(db.Model):
     offense_name = db.Column(db.String(100))
     offense_code = db.Column(db.String(20), unique=True)
     total_flag = db.Column(db.String(1))
-    offense_cat_id = db.Column(db.Integer,
-                               db.ForeignKey(
-                                   'asr_offense_category.offense_cat_id',
-                                   deferrable=True,
-                                   initially='DEFERRED'),
-                               nullable=False,
-                               index=True)
+    offense_cat_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'asr_offense_category.offense_cat_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     offense_cat = db.relationship('AsrOffenseCategory')
 
@@ -304,12 +317,12 @@ class AsrOffenseSubcat(db.Model):
     master_offense_code = db.Column(db.SmallInteger)
     total_flag = db.Column(db.String(1))
     adult_juv_flag = db.Column(db.String(1))
-    offense_id = db.Column(db.Integer,
-                           db.ForeignKey('asr_offense.offense_id',
-                                         deferrable=True,
-                                         initially='DEFERRED'),
-                           nullable=False,
-                           index=True)
+    offense_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'asr_offense.offense_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     offense = db.relationship('AsrOffense')
 
@@ -319,10 +332,11 @@ class AsrRaceOffenseSubcat(db.Model):
     __table_args__ = (db.UniqueConstraint('asr_month_id', 'offense_subcat_id',
                                           'race_id', 'juvenile_flag'), )
 
-    id = db.Column(db.Integer,
-                   primary_key=True,
-                   server_default=text(
-                       "nextval('asr_race_offense_subcat_id_seq'::regclass)"))
+    id = db.Column(
+        db.Integer,
+        primary_key=True,
+        server_default=text(
+            "nextval('asr_race_offense_subcat_id_seq'::regclass)"))
     juvenile_flag = db.Column(db.String(1), nullable=False)
     arrest_count = db.Column(db.Integer)
     arrest_status = db.Column(db.SmallInteger)
@@ -330,25 +344,26 @@ class AsrRaceOffenseSubcat(db.Model):
     prepared_date = db.Column(db.DateTime(True))
     report_date = db.Column(db.DateTime(True))
     ff_line_number = db.Column(db.BigInteger)
-    asr_month_id = db.Column(db.Integer,
-                             db.ForeignKey('asr_month.asr_month_id',
-                                           deferrable=True,
-                                           initially='DEFERRED'),
-                             nullable=False,
-                             index=True)
-    offense_subcat_id = db.Column(db.Integer,
-                                  db.ForeignKey(
-                                      'asr_offense_subcat.offense_subcat_id',
-                                      deferrable=True,
-                                      initially='DEFERRED'),
-                                  nullable=False,
-                                  index=True)
-    race_id = db.Column(db.Integer,
-                        db.ForeignKey('ref_race.race_id',
-                                      deferrable=True,
-                                      initially='DEFERRED'),
-                        nullable=False,
-                        index=True)
+    asr_month_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'asr_month.asr_month_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    offense_subcat_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'asr_offense_subcat.offense_subcat_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    race_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_race.race_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     asr_month = db.relationship('AsrMonth')
     offense_subcat = db.relationship('AsrOffenseSubcat')
@@ -370,22 +385,24 @@ class CtArrestee(db.Model):
     arrestee_id = db.Column(db.BigInteger, primary_key=True)
     age = db.Column(db.SmallInteger)
     sex_code = db.Column(db.String(1))
-    ethnicity_id = db.Column(db.Integer,
-                             db.ForeignKey('nibrs_ethnicity.ethnicity_id',
-                                           deferrable=True,
-                                           initially='DEFERRED'),
-                             index=True)
-    incident_id = db.Column(db.Integer,
-                            db.ForeignKey('ct_incident.incident_id',
-                                          deferrable=True,
-                                          initially='DEFERRED'),
-                            nullable=False,
-                            index=True)
-    race_id = db.Column(db.Integer,
-                        db.ForeignKey('ref_race.race_id',
-                                      deferrable=True,
-                                      initially='DEFERRED'),
-                        index=True)
+    ethnicity_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_ethnicity.ethnicity_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        index=True)
+    incident_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ct_incident.incident_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    race_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_race.race_id', deferrable=True, initially='DEFERRED'),
+        index=True)
 
     ethnicity = db.relationship('NibrsEthnicity')
     incident = db.relationship('CtIncident')
@@ -413,18 +430,18 @@ class CtIncident(db.Model):
     unknown_offender = db.Column(db.String(1))
     did = db.Column(db.BigInteger)
     nibrs_incident_id = db.Column(db.BigInteger)
-    agency_id = db.Column(db.Integer,
-                          db.ForeignKey('ref_agency.agency_id',
-                                        deferrable=True,
-                                        initially='DEFERRED'),
-                          nullable=False,
-                          index=True)
-    ct_month_id = db.Column(db.Integer,
-                            db.ForeignKey('ct_month.ct_month_id',
-                                          deferrable=True,
-                                          initially='DEFERRED'),
-                            nullable=False,
-                            index=True)
+    agency_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_agency.agency_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    ct_month_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ct_month.ct_month_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     agency = db.relationship('RefAgency')
     ct_month = db.relationship('CtMonth')
@@ -444,12 +461,12 @@ class CtMonth(db.Model):
     did = db.Column(db.BigInteger)
     data_home = db.Column(db.String(1), nullable=False)
     orig_format = db.Column(db.String(1))
-    agency_id = db.Column(db.Integer,
-                          db.ForeignKey('ref_agency.agency_id',
-                                        deferrable=True,
-                                        initially='DEFERRED'),
-                          nullable=False,
-                          index=True)
+    agency_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_agency.agency_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     agency = db.relationship('RefAgency')
 
@@ -460,22 +477,24 @@ class CtOffender(db.Model):
     offender_id = db.Column(db.BigInteger, primary_key=True)
     age = db.Column(db.SmallInteger)
     sex_code = db.Column(db.String(1))
-    ethnicity_id = db.Column(db.Integer,
-                             db.ForeignKey('nibrs_ethnicity.ethnicity_id',
-                                           deferrable=True,
-                                           initially='DEFERRED'),
-                             index=True)
-    incident_id = db.Column(db.Integer,
-                            db.ForeignKey('ct_incident.incident_id',
-                                          deferrable=True,
-                                          initially='DEFERRED'),
-                            nullable=False,
-                            index=True)
-    race_id = db.Column(db.Integer,
-                        db.ForeignKey('ref_race.race_id',
-                                      deferrable=True,
-                                      initially='DEFERRED'),
-                        index=True)
+    ethnicity_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_ethnicity.ethnicity_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        index=True)
+    incident_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ct_incident.incident_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    race_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_race.race_id', deferrable=True, initially='DEFERRED'),
+        index=True)
 
     ethnicity = db.relationship('NibrsEthnicity')
     incident = db.relationship('CtIncident')
@@ -487,25 +506,28 @@ class CtOffense(db.Model):
 
     offense_id = db.Column(db.BigInteger, primary_key=True)
     ct_offense_flag = db.Column(db.String(1))
-    incident_id = db.Column(db.Integer,
-                            db.ForeignKey('ct_incident.incident_id',
-                                          deferrable=True,
-                                          initially='DEFERRED'),
-                            nullable=False,
-                            index=True)
-    location_id = db.Column(db.Integer,
-                            db.ForeignKey('nibrs_location_type.location_id',
-                                          deferrable=True,
-                                          initially='DEFERRED'),
-                            nullable=False,
-                            index=True)
-    offense_type_id = db.Column(db.Integer,
-                                db.ForeignKey(
-                                    'nibrs_offense_type.offense_type_id',
-                                    deferrable=True,
-                                    initially='DEFERRED'),
-                                nullable=False,
-                                index=True)
+    incident_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ct_incident.incident_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    location_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_location_type.location_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    offense_type_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_offense_type.offense_type_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     incident = db.relationship('CtIncident')
     location = db.relationship('NibrsLocationType')
@@ -520,18 +542,20 @@ class CtProperty(db.Model):
     recovered_flag = db.Column(db.String(1))
     date_recovered = db.Column(db.DateTime(True))
     recovered_value = db.Column(db.BigInteger)
-    incident_id = db.Column(db.Integer,
-                            db.ForeignKey('ct_incident.incident_id',
-                                          deferrable=True,
-                                          initially='DEFERRED'),
-                            nullable=False,
-                            index=True)
-    prop_desc_id = db.Column(db.Integer,
-                             db.ForeignKey('nibrs_prop_desc_type.prop_desc_id',
-                                           deferrable=True,
-                                           initially='DEFERRED'),
-                             nullable=False,
-                             index=True)
+    incident_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ct_incident.incident_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    prop_desc_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_prop_desc_type.prop_desc_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     incident = db.relationship('CtIncident')
     prop_desc = db.relationship('NibrsPropDescType')
@@ -545,19 +569,20 @@ class CtVictim(db.Model):
         db.Integer,
         primary_key=True,
         server_default=text("nextval('ct_victim_id_seq'::regclass)"))
-    incident_id = db.Column(db.Integer,
-                            db.ForeignKey('ct_incident.incident_id',
-                                          deferrable=True,
-                                          initially='DEFERRED'),
-                            nullable=False,
-                            index=True)
-    victim_type_id = db.Column(db.Integer,
-                               db.ForeignKey(
-                                   'nibrs_victim_type.victim_type_id',
-                                   deferrable=True,
-                                   initially='DEFERRED'),
-                               nullable=False,
-                               index=True)
+    incident_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ct_incident.incident_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    victim_type_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_victim_type.victim_type_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     incident = db.relationship('CtIncident')
     victim_type = db.relationship('NibrsVictimType')
@@ -567,18 +592,20 @@ class CtWeapon(db.Model):
     __tablename__ = 'ct_weapon'
 
     ct_weapon_id = db.Column(db.BigInteger, primary_key=True)
-    incident_id = db.Column(db.Integer,
-                            db.ForeignKey('ct_incident.incident_id',
-                                          deferrable=True,
-                                          initially='DEFERRED'),
-                            nullable=False,
-                            index=True)
-    weapon_id = db.Column(db.Integer,
-                          db.ForeignKey('nibrs_weapon_type.weapon_id',
-                                        deferrable=True,
-                                        initially='DEFERRED'),
-                          nullable=False,
-                          index=True)
+    incident_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ct_incident.incident_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    weapon_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_weapon_type.weapon_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     incident = db.relationship('CtIncident')
     weapon = db.relationship('NibrsWeaponType')
@@ -592,18 +619,18 @@ class HcBiasMotivation(db.Model):
         db.Integer,
         primary_key=True,
         server_default=text("nextval('hc_bias_motivation_id_seq'::regclass)"))
-    bias_id = db.Column(db.Integer,
-                        db.ForeignKey('nibrs_bias_list.bias_id',
-                                      deferrable=True,
-                                      initially='DEFERRED'),
-                        nullable=False,
-                        index=True)
-    offense_id = db.Column(db.Integer,
-                           db.ForeignKey('hc_offense.offense_id',
-                                         deferrable=True,
-                                         initially='DEFERRED'),
-                           nullable=False,
-                           index=True)
+    bias_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_bias_list.bias_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    offense_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'hc_offense.offense_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     bias = db.relationship('NibrsBiasList')
     offense = db.relationship('HcOffense')
@@ -632,29 +659,30 @@ class HcIncident(db.Model):
     orig_format = db.Column(db.String(1))
     did = db.Column(db.BigInteger)
     nibrs_incident_id = db.Column(db.BigInteger)
-    agency_id = db.Column(db.Integer,
-                          db.ForeignKey('ref_agency.agency_id',
-                                        deferrable=True,
-                                        initially='DEFERRED'),
-                          nullable=False,
-                          index=True)
-    hc_quarter_id = db.Column(db.Integer,
-                              db.ForeignKey('hc_quarter.hc_quarter_id',
-                                            deferrable=True,
-                                            initially='DEFERRED'),
-                              nullable=False,
-                              index=True)
+    agency_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_agency.agency_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    hc_quarter_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'hc_quarter.hc_quarter_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
     offender_ethnicity_id = db.Column(
         db.Integer,
-        db.ForeignKey('nibrs_ethnicity.ethnicity_id',
-                      deferrable=True,
-                      initially='DEFERRED'),
+        db.ForeignKey(
+            'nibrs_ethnicity.ethnicity_id',
+            deferrable=True,
+            initially='DEFERRED'),
         index=True)
-    offender_race_id = db.Column(db.Integer,
-                                 db.ForeignKey('ref_race.race_id',
-                                               deferrable=True,
-                                               initially='DEFERRED'),
-                                 index=True)
+    offender_race_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_race.race_id', deferrable=True, initially='DEFERRED'),
+        index=True)
 
     agency = db.relationship('RefAgency')
     hc_quarter = db.relationship('HcQuarter')
@@ -668,22 +696,25 @@ class HcOffense(db.Model):
     offense_id = db.Column(db.BigInteger, primary_key=True)
     victim_count = db.Column(db.SmallInteger)
     nibrs_offense_id = db.Column(db.BigInteger)
-    incident_id = db.Column(db.Integer,
-                            db.ForeignKey('hc_incident.incident_id',
-                                          deferrable=True,
-                                          initially='DEFERRED'),
-                            nullable=False,
-                            index=True)
-    location_id = db.Column(db.Integer,
-                            db.ForeignKey('nibrs_location_type.location_id',
-                                          deferrable=True,
-                                          initially='DEFERRED'),
-                            index=True)
+    incident_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'hc_incident.incident_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    location_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_location_type.location_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        index=True)
     offense_type_id = db.Column(
         db.Integer,
-        db.ForeignKey('nibrs_offense_type.offense_type_id',
-                      deferrable=True,
-                      initially='DEFERRED'),
+        db.ForeignKey(
+            'nibrs_offense_type.offense_type_id',
+            deferrable=True,
+            initially='DEFERRED'),
         index=True)
 
     incident = db.relationship('HcIncident')
@@ -707,12 +738,12 @@ class HcQuarter(db.Model):
     ddocname = db.Column(db.String(100))
     did = db.Column(db.BigInteger)
     data_home = db.Column(db.String(1), nullable=False)
-    agency_id = db.Column(db.Integer,
-                          db.ForeignKey('ref_agency.agency_id',
-                                        deferrable=True,
-                                        initially='DEFERRED'),
-                          nullable=False,
-                          index=True)
+    agency_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_agency.agency_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     agency = db.relationship('RefAgency')
 
@@ -725,19 +756,20 @@ class HcVictim(db.Model):
         db.Integer,
         primary_key=True,
         server_default=text("nextval('hc_victim_id_seq'::regclass)"))
-    offense_id = db.Column(db.Integer,
-                           db.ForeignKey('hc_offense.offense_id',
-                                         deferrable=True,
-                                         initially='DEFERRED'),
-                           nullable=False,
-                           index=True)
-    victim_type_id = db.Column(db.Integer,
-                               db.ForeignKey(
-                                   'nibrs_victim_type.victim_type_id',
-                                   deferrable=True,
-                                   initially='DEFERRED'),
-                               nullable=False,
-                               index=True)
+    offense_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'hc_offense.offense_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    victim_type_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_victim_type.victim_type_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     offense = db.relationship('HcOffense')
     victim_type = db.relationship('NibrsVictimType')
@@ -768,12 +800,12 @@ class HtMonth(db.Model):
     reported_flag = db.Column(db.String(1))
     did = db.Column(db.BigInteger)
     ff_line_number = db.Column(db.BigInteger)
-    agency_id = db.Column(db.Integer,
-                          db.ForeignKey('ref_agency.agency_id',
-                                        deferrable=True,
-                                        initially='DEFERRED'),
-                          nullable=False,
-                          index=True)
+    agency_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_agency.agency_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     agency = db.relationship('RefAgency')
 
@@ -782,10 +814,11 @@ class HtMonthOffenseSubcat(db.Model):
     __tablename__ = 'ht_month_offense_subcat'
     __table_args__ = (UniqueConstraint('offense_subcat_id', 'ht_month_id'), )
 
-    id = db.Column(db.Integer,
-                   primary_key=True,
-                   server_default=text(
-                       "nextval('ht_month_offense_subcat_id_seq'::regclass)"))
+    id = db.Column(
+        db.Integer,
+        primary_key=True,
+        server_default=text(
+            "nextval('ht_month_offense_subcat_id_seq'::regclass)"))
     reported_count = db.Column(db.Integer)
     reported_status = db.Column(db.SmallInteger)
     unfounded_count = db.Column(db.Integer)
@@ -796,19 +829,20 @@ class HtMonthOffenseSubcat(db.Model):
     cleared_status = db.Column(db.SmallInteger)
     juvenile_cleared_count = db.Column(db.Integer)
     juvenile_cleared_status = db.Column(db.SmallInteger)
-    ht_month_id = db.Column(db.Integer,
-                            db.ForeignKey('ht_month.ht_month_id',
-                                          deferrable=True,
-                                          initially='DEFERRED'),
-                            nullable=False,
-                            index=True)
-    offense_subcat_id = db.Column(db.Integer,
-                                  db.ForeignKey(
-                                      'reta_offense_subcat.offense_subcat_id',
-                                      deferrable=True,
-                                      initially='DEFERRED'),
-                                  nullable=False,
-                                  index=True)
+    ht_month_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ht_month.ht_month_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    offense_subcat_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'reta_offense_subcat.offense_subcat_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     ht_month = db.relationship('HtMonth')
     offense_subcat = db.relationship('RetaOffenseSubcat')
@@ -854,67 +888,81 @@ class NibrsArrestee(db.Model):
     ff_line_number = db.Column(db.BigInteger)
     age_range_low_num = db.Column(db.SmallInteger)
     age_range_high_num = db.Column(db.SmallInteger)
-    age_id = db.Column(db.Integer,
-                       db.ForeignKey('nibrs_age.age_id',
-                                     deferrable=True,
-                                     initially='DEFERRED'),
-                       nullable=False,
-                       index=True)
+    age_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_age.age_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
     arrest_type_id = db.Column(
         db.Integer,
-        db.ForeignKey('nibrs_arrest_type.arrest_type_id',
-                      deferrable=True,
-                      initially='DEFERRED'),
+        db.ForeignKey(
+            'nibrs_arrest_type.arrest_type_id',
+            deferrable=True,
+            initially='DEFERRED'),
         index=True)
-    ethnicity_id = db.Column(db.Integer,
-                             db.ForeignKey('nibrs_ethnicity.ethnicity_id',
-                                           deferrable=True,
-                                           initially='DEFERRED'),
-                             index=True)
-    incident_id = db.Column(db.Integer,
-                            db.ForeignKey('nibrs_incident.incident_id',
-                                          deferrable=True,
-                                          initially='DEFERRED'),
-                            nullable=False,
-                            index=True)
-    offense_type_id = db.Column(db.Integer,
-                                db.ForeignKey(
-                                    'nibrs_offense_type.offense_type_id',
-                                    deferrable=True,
-                                    initially='DEFERRED'),
-                                nullable=False,
-                                index=True)
-    race_id = db.Column(db.Integer,
-                        db.ForeignKey('ref_race.race_id',
-                                      deferrable=True,
-                                      initially='DEFERRED'),
-                        nullable=False,
-                        index=True)
+    ethnicity_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_ethnicity.ethnicity_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        index=True)
+    incident_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_incident.incident_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    offense_type_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_offense_type.offense_type_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    race_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_race.race_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
-    age = db.relationship('NibrsAge', backref='arrestees')
-    arrest_type = db.relationship('NibrsArrestType', backref='arrestees')
-    ethnicity = db.relationship('NibrsEthnicity', backref='arrestees')
-    incident = db.relationship('NibrsIncident', backref='arrestees')
+    age = db.relationship('NibrsAge', backref='arrestees', lazy=False)
+    arrest_type = db.relationship(
+        'NibrsArrestType', lazy=False, backref='arrestees')
+    ethnicity = db.relationship(
+        'NibrsEthnicity', lazy=False, backref='arrestees')
+    incident = db.relationship(
+        'NibrsIncident', backref=backref(
+            'arrestees', lazy=False))
     offense_type = db.relationship('NibrsOffenseType', backref='arrestees')
-    race = db.relationship('RefRace', backref='arrestees')
+    race = db.relationship('RefRace', lazy=False, backref='arrestees')
 
 
 class NibrsArresteeWeapon(db.Model):
     __tablename__ = 'nibrs_arrestee_weapon'
 
     nibrs_arrestee_weapon_id = db.Column(db.BigInteger, primary_key=True)
-    arrestee_id = db.Column(db.Integer,
-                            db.ForeignKey('nibrs_arrestee.arrestee_id',
-                                          deferrable=True,
-                                          initially='DEFERRED'),
-                            nullable=False,
-                            index=True)
-    weapon_id = db.Column(db.Integer,
-                          db.ForeignKey('nibrs_weapon_type.weapon_id',
-                                        deferrable=True,
-                                        initially='DEFERRED'),
-                          nullable=False,
-                          index=True)
+    arrestee_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_arrestee.arrestee_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    weapon_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_weapon_type.weapon_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     arrestee = db.relationship('NibrsArrestee')
     weapon = db.relationship('NibrsWeaponType')
@@ -940,22 +988,23 @@ class NibrsBiasMotivation(db.Model):
     __tablename__ = 'nibrs_bias_motivation'
     __table_args__ = (UniqueConstraint('bias_id', 'offense_id'), )
 
-    id = db.Column(db.Integer,
-                   primary_key=True,
-                   server_default=text(
-                       "nextval('nibrs_bias_motivation_id_seq'::regclass)"))
-    bias_id = db.Column(db.Integer,
-                        db.ForeignKey('nibrs_bias_list.bias_id',
-                                      deferrable=True,
-                                      initially='DEFERRED'),
-                        nullable=False,
-                        index=True)
-    offense_id = db.Column(db.Integer,
-                           db.ForeignKey('nibrs_offense.offense_id',
-                                         deferrable=True,
-                                         initially='DEFERRED'),
-                           nullable=False,
-                           index=True)
+    id = db.Column(
+        db.Integer,
+        primary_key=True,
+        server_default=text(
+            "nextval('nibrs_bias_motivation_id_seq'::regclass)"))
+    bias_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_bias_list.bias_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    offense_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_offense.offense_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     bias = db.relationship('NibrsBiasList')
     offense = db.relationship('NibrsOffense')
@@ -1073,33 +1122,37 @@ class NibrsGrpbArrest(db.Model):
     did = db.Column(db.BigInteger)
     age_range_low_num = db.Column(db.SmallInteger)
     age_range_high_num = db.Column(db.SmallInteger)
-    age_id = db.Column(db.Integer,
-                       db.ForeignKey('nibrs_age.age_id',
-                                     deferrable=True,
-                                     initially='DEFERRED'),
-                       index=True)
-    agency_id = db.Column(db.Integer,
-                          db.ForeignKey('ref_agency.agency_id',
-                                        deferrable=True,
-                                        initially='DEFERRED'),
-                          nullable=False,
-                          index=True)
-    ethnicity_id = db.Column(db.Integer,
-                             db.ForeignKey('nibrs_ethnicity.ethnicity_id',
-                                           deferrable=True,
-                                           initially='DEFERRED'),
-                             index=True)
-    nibrs_month_id = db.Column(db.Integer,
-                               db.ForeignKey('nibrs_month.nibrs_month_id',
-                                             deferrable=True,
-                                             initially='DEFERRED'),
-                               nullable=False,
-                               index=True)
-    race_id = db.Column(db.Integer,
-                        db.ForeignKey('ref_race.race_id',
-                                      deferrable=True,
-                                      initially='DEFERRED'),
-                        index=True)
+    age_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_age.age_id', deferrable=True, initially='DEFERRED'),
+        index=True)
+    agency_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_agency.agency_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    ethnicity_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_ethnicity.ethnicity_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        index=True)
+    nibrs_month_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_month.nibrs_month_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    race_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_race.race_id', deferrable=True, initially='DEFERRED'),
+        index=True)
 
     age = db.relationship('NibrsAge')
     agency = db.relationship('RefAgency')
@@ -1112,19 +1165,22 @@ class NibrsGrpbArrestWeapon(db.Model):
     __tablename__ = 'nibrs_grpb_arrest_weapon'
 
     nibrs_grpb_arrest_weapon_id = db.Column(db.BigInteger, primary_key=True)
-    grpb_arrest_id = db.Column(db.Integer,
-                               db.ForeignKey(
-                                   'nibrs_grpb_arrest.grpb_arrest_id',
-                                   deferrable=True,
-                                   initially='DEFERRED'),
-                               nullable=False,
-                               index=True)
-    weapon_id = db.Column(db.Integer,
-                          db.ForeignKey('nibrs_weapon_type.weapon_id',
-                                        deferrable=True,
-                                        initially='DEFERRED'),
-                          nullable=False,
-                          index=True)
+    grpb_arrest_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_grpb_arrest.grpb_arrest_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    weapon_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_weapon_type.weapon_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     grpb_arrest = db.relationship('NibrsGrpbArrest')
     weapon = db.relationship('NibrsWeaponType')
@@ -1147,28 +1203,31 @@ class NibrsIncident(db.Model):
     orig_format = db.Column(db.String(1))
     ff_line_number = db.Column(db.BigInteger)
     did = db.Column(db.BigInteger)
-    agency_id = db.Column(db.Integer,
-                          db.ForeignKey('ref_agency.agency_id',
-                                        deferrable=True,
-                                        initially='DEFERRED'),
-                          nullable=False,
-                          index=True)
-    cleared_except_id = db.Column(db.Integer,
-                                  db.ForeignKey(
-                                      'nibrs_cleared_except.cleared_except_id',
-                                      deferrable=True,
-                                      initially='DEFERRED'),
-                                  nullable=False,
-                                  index=True)
-    nibrs_month_id = db.Column(db.Integer,
-                               db.ForeignKey('nibrs_month.nibrs_month_id',
-                                             deferrable=True,
-                                             initially='DEFERRED'),
-                               nullable=False,
-                               index=True)
+    agency_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_agency.agency_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    cleared_except_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_cleared_except.cleared_except_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    nibrs_month_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_month.nibrs_month_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     agency = db.relationship('RefAgency')
-    cleared_except = db.relationship('NibrsClearedExcept')
+    cleared_except = db.relationship('NibrsClearedExcept', lazy=False)
     nibrs_month = db.relationship('NibrsMonth')
 
 
@@ -1213,12 +1272,12 @@ class NibrsMonth(db.Model):
     data_home = db.Column(db.String(1))
     ddocname = db.Column(db.String(50))
     did = db.Column(db.BigInteger)
-    agency_id = db.Column(db.Integer,
-                          db.ForeignKey('ref_agency.agency_id',
-                                        deferrable=True,
-                                        initially='DEFERRED'),
-                          nullable=False,
-                          index=True)
+    agency_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_agency.agency_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     agency = db.relationship('RefAgency')
 
@@ -1233,32 +1292,38 @@ class NibrsOffender(db.Model):
     ff_line_number = db.Column(db.BigInteger)
     age_range_low_num = db.Column(db.SmallInteger)
     age_range_high_num = db.Column(db.SmallInteger)
-    age_id = db.Column(db.Integer,
-                       db.ForeignKey('nibrs_age.age_id',
-                                     deferrable=True,
-                                     initially='DEFERRED'),
-                       index=True)
-    ethnicity_id = db.Column(db.Integer,
-                             db.ForeignKey('nibrs_ethnicity.ethnicity_id',
-                                           deferrable=True,
-                                           initially='DEFERRED'),
-                             index=True)
-    incident_id = db.Column(db.Integer,
-                            db.ForeignKey('nibrs_incident.incident_id',
-                                          deferrable=True,
-                                          initially='DEFERRED'),
-                            nullable=False,
-                            index=True)
-    race_id = db.Column(db.Integer,
-                        db.ForeignKey('ref_race.race_id',
-                                      deferrable=True,
-                                      initially='DEFERRED'),
-                        index=True)
+    age_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_age.age_id', deferrable=True, initially='DEFERRED'),
+        index=True)
+    ethnicity_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_ethnicity.ethnicity_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        index=True)
+    incident_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_incident.incident_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    race_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_race.race_id', deferrable=True, initially='DEFERRED'),
+        index=True)
 
-    age = db.relationship('NibrsAge', backref='offenders')
+    age = db.relationship('NibrsAge', backref='offenders', lazy=False)
     ethnicity = db.relationship('NibrsEthnicity', backref='offenders')
-    incident = db.relationship('NibrsIncident', backref='offenders')
-    race = db.relationship('RefRace', backref='offenders')
+    incident = db.relationship(
+        'NibrsIncident', backref=backref(
+            'offenders', lazy=False))
+    race = db.relationship('RefRace', lazy=False, backref='offenders')
 
 
 class NibrsOffense(db.Model):
@@ -1269,29 +1334,38 @@ class NibrsOffense(db.Model):
     num_premises_entered = db.Column(db.SmallInteger)
     method_entry_code = db.Column(db.String(1))
     ff_line_number = db.Column(db.BigInteger)
-    incident_id = db.Column(db.Integer,
-                            db.ForeignKey('nibrs_incident.incident_id',
-                                          deferrable=True,
-                                          initially='DEFERRED'),
-                            nullable=False,
-                            index=True)
-    location_id = db.Column(db.Integer,
-                            db.ForeignKey('nibrs_location_type.location_id',
-                                          deferrable=True,
-                                          initially='DEFERRED'),
-                            nullable=False,
-                            index=True)
-    offense_type_id = db.Column(db.Integer,
-                                db.ForeignKey(
-                                    'nibrs_offense_type.offense_type_id',
-                                    deferrable=True,
-                                    initially='DEFERRED'),
-                                nullable=False,
-                                index=True)
+    incident_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_incident.incident_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    location_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_location_type.location_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    offense_type_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_offense_type.offense_type_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
-    incident = db.relationship('NibrsIncident', backref='offenses')
-    location = db.relationship('NibrsLocationType', backref='offenses')
-    offense_type = db.relationship('NibrsOffenseType', backref='offenses')
+    incident = db.relationship(
+        'NibrsIncident', backref=backref(
+            'offenses', lazy=False))
+    location = db.relationship(
+        'NibrsLocationType', lazy=False, backref='offenses')
+    offense_type = db.relationship(
+        'NibrsOffenseType', lazy=False, backref='offenses')
 
 
 class NibrsOffenseType(db.Model):
@@ -1329,21 +1403,28 @@ class NibrsProperty(db.Model):
     stolen_count = db.Column(db.SmallInteger)
     recovered_count = db.Column(db.SmallInteger)
     ff_line_number = db.Column(db.BigInteger)
-    incident_id = db.Column(db.Integer,
-                            db.ForeignKey('nibrs_incident.incident_id',
-                                          deferrable=True,
-                                          initially='DEFERRED'),
-                            nullable=False,
-                            index=True)
-    prop_loss_id = db.Column(db.Integer,
-                             db.ForeignKey('nibrs_prop_loss_type.prop_loss_id',
-                                           deferrable=True,
-                                           initially='DEFERRED'),
-                             nullable=False,
-                             index=True)
+    incident_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_incident.incident_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    prop_loss_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_prop_loss_type.prop_loss_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
-    incident = db.relationship('NibrsIncident', backref='property')
-    prop_loss = db.relationship('NibrsPropLossType', backref='property')
+    incident = db.relationship(
+        'NibrsIncident', backref=backref(
+            'property', lazy=False))
+    prop_loss = db.relationship(
+        'NibrsPropLossType', lazy=False, backref='property')
 
 
 class NibrsPropertyDesc(db.Model):
@@ -1352,18 +1433,22 @@ class NibrsPropertyDesc(db.Model):
     property_value = db.Column(db.BigInteger)
     date_recovered = db.Column(db.DateTime(True))
     nibrs_prop_desc_id = db.Column(db.BigInteger, primary_key=True)
-    prop_desc_id = db.Column(db.Integer,
-                             db.ForeignKey('nibrs_prop_desc_type.prop_desc_id',
-                                           deferrable=True,
-                                           initially='DEFERRED'),
-                             nullable=False,
-                             index=True)
-    property_id = db.Column(db.Integer,
-                            db.ForeignKey('nibrs_property.property_id',
-                                          deferrable=True,
-                                          initially='DEFERRED'),
-                            nullable=False,
-                            index=True)
+    prop_desc_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_prop_desc_type.prop_desc_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    property_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_property.property_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     prop_desc = db.relationship('NibrsPropDescType')
     property = db.relationship('NibrsProperty')
@@ -1380,10 +1465,11 @@ class NibrsRelationship(db.Model):
 class NibrsSumMonthTemp(db.Model):
     __tablename__ = 'nibrs_sum_month_temp'
 
-    id = db.Column(db.Integer,
-                   primary_key=True,
-                   server_default=text(
-                       "nextval('nibrs_sum_month_temp_id_seq'::regclass)"))
+    id = db.Column(
+        db.Integer,
+        primary_key=True,
+        server_default=text(
+            "nextval('nibrs_sum_month_temp_id_seq'::regclass)"))
     nibrs_month_id = db.Column(db.BigInteger)
     agency_id = db.Column(db.BigInteger)
     month_num = db.Column(db.SmallInteger)
@@ -1411,19 +1497,20 @@ class NibrsSuspectUsing(db.Model):
         db.Integer,
         primary_key=True,
         server_default=text("nextval('nibrs_suspect_using_id_seq'::regclass)"))
-    offense_id = db.Column(db.Integer,
-                           db.ForeignKey('nibrs_offense.offense_id',
-                                         deferrable=True,
-                                         initially='DEFERRED'),
-                           nullable=False,
-                           index=True)
-    suspect_using_id = db.Column(db.Integer,
-                                 db.ForeignKey(
-                                     'nibrs_using_list.suspect_using_id',
-                                     deferrable=True,
-                                     initially='DEFERRED'),
-                                 nullable=False,
-                                 index=True)
+    offense_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_offense.offense_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    suspect_using_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_using_list.suspect_using_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     offense = db.relationship('NibrsOffense')
     suspect_using = db.relationship('NibrsUsingList')
@@ -1436,21 +1523,25 @@ class NibrsSuspectedDrug(db.Model):
     nibrs_suspected_drug_id = db.Column(db.BigInteger, primary_key=True)
     drug_measure_type_id = db.Column(
         db.Integer,
-        db.ForeignKey('nibrs_drug_measure_type.drug_measure_type_id',
-                      deferrable=True,
-                      initially='DEFERRED'),
+        db.ForeignKey(
+            'nibrs_drug_measure_type.drug_measure_type_id',
+            deferrable=True,
+            initially='DEFERRED'),
         index=True)
-    property_id = db.Column(db.Integer,
-                            db.ForeignKey('nibrs_property.property_id',
-                                          deferrable=True,
-                                          initially='DEFERRED'),
-                            nullable=False,
-                            index=True)
+    property_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_property.property_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
     suspected_drug_type_id = db.Column(
         db.Integer,
-        db.ForeignKey('nibrs_suspected_drug_type.suspected_drug_type_id',
-                      deferrable=True,
-                      initially='DEFERRED'),
+        db.ForeignKey(
+            'nibrs_suspected_drug_type.suspected_drug_type_id',
+            deferrable=True,
+            initially='DEFERRED'),
         nullable=False,
         index=True)
 
@@ -1490,52 +1581,62 @@ class NibrsVictim(db.Model):
     age_range_high_num = db.Column(db.SmallInteger)
     activity_type_id = db.Column(
         db.Integer,
-        db.ForeignKey('nibrs_activity_type.activity_type_id',
-                      deferrable=True,
-                      initially='DEFERRED'),
+        db.ForeignKey(
+            'nibrs_activity_type.activity_type_id',
+            deferrable=True,
+            initially='DEFERRED'),
         index=True)
-    age_id = db.Column(db.Integer,
-                       db.ForeignKey('nibrs_age.age_id',
-                                     deferrable=True,
-                                     initially='DEFERRED'),
-                       index=True)
+    age_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_age.age_id', deferrable=True, initially='DEFERRED'),
+        index=True)
     assignment_type_id = db.Column(
         db.Integer,
-        db.ForeignKey('nibrs_assignment_type.assignment_type_id',
-                      deferrable=True,
-                      initially='DEFERRED'),
+        db.ForeignKey(
+            'nibrs_assignment_type.assignment_type_id',
+            deferrable=True,
+            initially='DEFERRED'),
         index=True)
-    ethnicity_id = db.Column(db.Integer,
-                             db.ForeignKey('nibrs_ethnicity.ethnicity_id',
-                                           deferrable=True,
-                                           initially='DEFERRED'),
-                             index=True)
-    incident_id = db.Column(db.Integer,
-                            db.ForeignKey('nibrs_incident.incident_id',
-                                          deferrable=True,
-                                          initially='DEFERRED'),
-                            nullable=False,
-                            index=True)
-    race_id = db.Column(db.Integer,
-                        db.ForeignKey('ref_race.race_id',
-                                      deferrable=True,
-                                      initially='DEFERRED'),
-                        index=True)
-    victim_type_id = db.Column(db.Integer,
-                               db.ForeignKey(
-                                   'nibrs_victim_type.victim_type_id',
-                                   deferrable=True,
-                                   initially='DEFERRED'),
-                               nullable=False,
-                               index=True)
+    ethnicity_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_ethnicity.ethnicity_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        index=True)
+    incident_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_incident.incident_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    race_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_race.race_id', deferrable=True, initially='DEFERRED'),
+        index=True)
+    victim_type_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_victim_type.victim_type_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     activity_type = db.relationship('NibrsActivityType', backref='victims')
-    age = db.relationship('NibrsAge', backref='victims')
+    age = db.relationship('NibrsAge', backref='victims', lazy=False)
     assignment_type = db.relationship('NibrsAssignmentType', backref='victims')
     ethnicity = db.relationship('NibrsEthnicity', backref='victims')
-    incident = db.relationship('NibrsIncident', backref='victims')
-    race = db.relationship('RefRace', backref='victims')
-    victim_type = db.relationship('NibrsVictimType', backref='victims')
+    incident = db.relationship(
+        'NibrsIncident', backref=backref(
+            'victims', lazy=False))
+    race = db.relationship('RefRace', lazy=False, backref='victims')
+    victim_type = db.relationship(
+        'NibrsVictimType', lazy=False, backref='victims')
 
 
 class NibrsVictimCircumstance(db.Model):
@@ -1547,25 +1648,27 @@ class NibrsVictimCircumstance(db.Model):
         primary_key=True,
         server_default=text(
             "nextval('nibrs_victim_circumstances_id_seq'::regclass)"))
-    circumstances_id = db.Column(db.Integer,
-                                 db.ForeignKey(
-                                     'nibrs_circumstances.circumstances_id',
-                                     deferrable=True,
-                                     initially='DEFERRED'),
-                                 nullable=False,
-                                 index=True)
+    circumstances_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_circumstances.circumstances_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
     justifiable_force_id = db.Column(
         db.Integer,
-        db.ForeignKey('nibrs_justifiable_force.justifiable_force_id',
-                      deferrable=True,
-                      initially='DEFERRED'),
+        db.ForeignKey(
+            'nibrs_justifiable_force.justifiable_force_id',
+            deferrable=True,
+            initially='DEFERRED'),
         index=True)
-    victim_id = db.Column(db.Integer,
-                          db.ForeignKey('nibrs_victim.victim_id',
-                                        deferrable=True,
-                                        initially='DEFERRED'),
-                          nullable=False,
-                          index=True)
+    victim_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_victim.victim_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     circumstances = db.relationship('NibrsCircumstance')
     justifiable_force = db.relationship('NibrsJustifiableForce')
@@ -1603,25 +1706,28 @@ class NibrsVictimOffenderRel(db.Model):
     __tablename__ = 'nibrs_victim_offender_rel'
 
     nibrs_victim_offender_id = db.Column(db.BigInteger, primary_key=True)
-    offender_id = db.Column(db.Integer,
-                            db.ForeignKey('nibrs_offender.offender_id',
-                                          deferrable=True,
-                                          initially='DEFERRED'),
-                            nullable=False,
-                            index=True)
-    relationship_id = db.Column(db.Integer,
-                                db.ForeignKey(
-                                    'nibrs_relationship.relationship_id',
-                                    deferrable=True,
-                                    initially='DEFERRED'),
-                                nullable=False,
-                                index=True)
-    victim_id = db.Column(db.Integer,
-                          db.ForeignKey('nibrs_victim.victim_id',
-                                        deferrable=True,
-                                        initially='DEFERRED'),
-                          nullable=False,
-                          index=True)
+    offender_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_offender.offender_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    relationship_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_relationship.relationship_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    victim_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_victim.victim_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     offender = db.relationship('NibrsOffender', backref="relationships")
     relationship_ = db.relationship('NibrsRelationship', backref="relationships")
@@ -1632,22 +1738,23 @@ class NibrsVictimOffense(db.Model):
     __tablename__ = 'nibrs_victim_offense'
     __table_args__ = (UniqueConstraint('victim_id', 'offense_id'), )
 
-    id = db.Column(db.Integer,
-                   primary_key=True,
-                   server_default=text(
-                       "nextval('nibrs_victim_offense_id_seq'::regclass)"))
-    offense_id = db.Column(db.Integer,
-                           db.ForeignKey('nibrs_offense.offense_id',
-                                         deferrable=True,
-                                         initially='DEFERRED'),
-                           nullable=False,
-                           index=True)
-    victim_id = db.Column(db.Integer,
-                          db.ForeignKey('nibrs_victim.victim_id',
-                                        deferrable=True,
-                                        initially='DEFERRED'),
-                          nullable=False,
-                          index=True)
+    id = db.Column(
+        db.Integer,
+        primary_key=True,
+        server_default=text(
+            "nextval('nibrs_victim_offense_id_seq'::regclass)"))
+    offense_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_offense.offense_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    victim_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_victim.victim_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     offense = db.relationship('NibrsOffense')
     victim = db.relationship('NibrsVictim')
@@ -1665,18 +1772,20 @@ class NibrsWeapon(db.Model):
     __tablename__ = 'nibrs_weapon'
 
     nibrs_weapon_id = db.Column(db.BigInteger, primary_key=True)
-    offense_id = db.Column(db.Integer,
-                           db.ForeignKey('nibrs_offense.offense_id',
-                                         deferrable=True,
-                                         initially='DEFERRED'),
-                           nullable=False,
-                           index=True)
-    weapon_id = db.Column(db.Integer,
-                          db.ForeignKey('nibrs_weapon_type.weapon_id',
-                                        deferrable=True,
-                                        initially='DEFERRED'),
-                          nullable=False,
-                          index=True)
+    offense_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_offense.offense_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    weapon_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_weapon_type.weapon_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     weapon = db.relationship('NibrsWeaponType', backref='weapons')
     offense = db.relationship('NibrsOffense', backref='weapons')
@@ -1719,66 +1828,75 @@ class RefAgency(db.Model):
     change_user = db.Column(db.String(100))
     legacy_notify_agency = db.Column(db.String(1))
     dormant_year = db.Column(db.SmallInteger)
-    agency_type_id = db.Column(db.Integer,
-                               db.ForeignKey('ref_agency_type.agency_type_id',
-                                             deferrable=True,
-                                             initially='DEFERRED'),
-                               nullable=False,
-                               index=True)
-    campus_id = db.Column(db.Integer,
-                          db.ForeignKey('ref_university_campus.campus_id',
-                                        deferrable=True,
-                                        initially='DEFERRED'),
-                          index=True)
-    city_id = db.Column(db.Integer,
-                        db.ForeignKey('ref_city.city_id',
-                                      deferrable=True,
-                                      initially='DEFERRED'),
-                        index=True)
-    department_id = db.Column(db.Integer,
-                              db.ForeignKey('ref_department.department_id',
-                                            deferrable=True,
-                                            initially='DEFERRED'),
-                              index=True)
+    agency_type_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_agency_type.agency_type_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    campus_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_university_campus.campus_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        index=True)
+    city_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_city.city_id', deferrable=True, initially='DEFERRED'),
+        index=True)
+    department_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_department.department_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        index=True)
     field_office_id = db.Column(
         db.Integer,
-        db.ForeignKey('ref_field_office.field_office_id',
-                      deferrable=True,
-                      initially='DEFERRED'),
+        db.ForeignKey(
+            'ref_field_office.field_office_id',
+            deferrable=True,
+            initially='DEFERRED'),
         index=True)
     population_family_id = db.Column(
         db.Integer,
-        db.ForeignKey('ref_population_family.population_family_id',
-                      deferrable=True,
-                      initially='DEFERRED'),
+        db.ForeignKey(
+            'ref_population_family.population_family_id',
+            deferrable=True,
+            initially='DEFERRED'),
         nullable=False,
         index=True)
-    state_id = db.Column(db.Integer,
-                         db.ForeignKey('ref_state.state_id',
-                                       deferrable=True,
-                                       initially='DEFERRED'),
-                         nullable=False,
-                         index=True)
+    state_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_state.state_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
     submitting_agency_id = db.Column(
         db.Integer,
-        db.ForeignKey('ref_submitting_agency.agency_id',
-                      deferrable=True,
-                      initially='DEFERRED'),
+        db.ForeignKey(
+            'ref_submitting_agency.agency_id',
+            deferrable=True,
+            initially='DEFERRED'),
         index=True)
-    tribe_id = db.Column(db.Integer,
-                         db.ForeignKey('ref_tribe.tribe_id',
-                                       deferrable=True,
-                                       initially='DEFERRED'),
-                         index=True)
+    tribe_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_tribe.tribe_id', deferrable=True, initially='DEFERRED'),
+        index=True)
 
-    agency_type = db.relationship('RefAgencyType')
+    agency_type = db.relationship('RefAgencyType', lazy=False)
     campus = db.relationship('RefUniversityCampu')
-    city = db.relationship('RefCity')
-    department = db.relationship('RefDepartment')
-    field_office = db.relationship('RefFieldOffice')
-    population_family = db.relationship('RefPopulationFamily')
-    state = db.relationship('RefState')
-    submitting_agency = db.relationship('RefSubmittingAgency')
+    city = db.relationship('RefCity', lazy=False)
+    department = db.relationship('RefDepartment', lazy=False)
+    field_office = db.relationship('RefFieldOffice', lazy=False)
+    population_family = db.relationship('RefPopulationFamily', lazy=False)
+    state = db.relationship('RefState', lazy=False)
+    submitting_agency = db.relationship('RefSubmittingAgency', lazy=False)
     tribe = db.relationship('RefTribe')
 
 
@@ -1800,24 +1918,26 @@ class RefAgencyCounty(db.Model):
     source_flag = db.Column(db.String(1))
     change_timestamp = db.Column(db.DateTime(True))
     change_user = db.Column(db.String(100))
-    agency_id = db.Column(db.Integer,
-                          db.ForeignKey('ref_agency.agency_id',
-                                        deferrable=True,
-                                        initially='DEFERRED'),
-                          nullable=False,
-                          index=True)
-    county_id = db.Column(db.Integer,
-                          db.ForeignKey('ref_county.county_id',
-                                        deferrable=True,
-                                        initially='DEFERRED'),
-                          nullable=False,
-                          index=True)
-    metro_div_id = db.Column(db.Integer,
-                             db.ForeignKey('ref_metro_division.metro_div_id',
-                                           deferrable=True,
-                                           initially='DEFERRED'),
-                             nullable=False,
-                             index=True)
+    agency_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_agency.agency_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    county_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_county.county_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    metro_div_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_metro_division.metro_div_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     agency = db.relationship('RefAgency')
     county = db.relationship('RefCounty')
@@ -1828,41 +1948,43 @@ class RefAgencyCoveredBy(db.Model):
     __tablename__ = 'ref_agency_covered_by'
     __table_args__ = (UniqueConstraint('agency_id', 'data_year'), )
 
-    id = db.Column(db.Integer,
-                   primary_key=True,
-                   server_default=text(
-                       "nextval('ref_agency_covered_by_id_seq'::regclass)"))
+    id = db.Column(
+        db.Integer,
+        primary_key=True,
+        server_default=text(
+            "nextval('ref_agency_covered_by_id_seq'::regclass)"))
     data_year = db.Column(db.SmallInteger, nullable=False)
-    agency_id = db.Column(db.Integer,
-                          db.ForeignKey('ref_agency.agency_id',
-                                        deferrable=True,
-                                        initially='DEFERRED'),
-                          nullable=False,
-                          index=True)
-    covered_by_agency_id = db.Column(db.Integer,
-                                     db.ForeignKey('ref_agency.agency_id',
-                                                   deferrable=True,
-                                                   initially='DEFERRED'),
-                                     nullable=False,
-                                     index=True)
+    agency_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_agency.agency_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    covered_by_agency_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_agency.agency_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     agency = db.relationship(
         'RefAgency',
         primaryjoin='RefAgencyCoveredBy.agency_id == RefAgency.agency_id')
     covered_by_agency = db.relationship(
         'RefAgency',
-        primaryjoin=
-        'RefAgencyCoveredBy.covered_by_agency_id == RefAgency.agency_id')
+        primaryjoin='RefAgencyCoveredBy.covered_by_agency_id == RefAgency.agency_id'
+    )
 
 
 class RefAgencyDataContent(db.Model):
     __tablename__ = 'ref_agency_data_content'
     __table_args__ = (UniqueConstraint('agency_id', 'data_year'), )
 
-    id = db.Column(db.Integer,
-                   primary_key=True,
-                   server_default=text(
-                       "nextval('ref_agency_data_content_id_seq'::regclass)"))
+    id = db.Column(
+        db.Integer,
+        primary_key=True,
+        server_default=text(
+            "nextval('ref_agency_data_content_id_seq'::regclass)"))
     data_year = db.Column(db.SmallInteger, nullable=False)
     reporting_type = db.Column(db.String(1))
     nibrs_ct_flag = db.Column(db.String(1))
@@ -1871,12 +1993,12 @@ class RefAgencyDataContent(db.Model):
     nibrs_arson_flag = db.Column(db.String(1))
     summary_rape_def = db.Column(db.String(1))
     nibrs_ht_flag = db.Column(db.String(1))
-    agency_id = db.Column(db.Integer,
-                          db.ForeignKey('ref_agency.agency_id',
-                                        deferrable=True,
-                                        initially='DEFERRED'),
-                          nullable=False,
-                          index=True)
+    agency_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_agency.agency_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     agency = db.relationship('RefAgency')
 
@@ -1891,12 +2013,12 @@ class RefAgencyPoc(db.Model):
         server_default=text("nextval('ref_agency_poc_id_seq'::regclass)"))
     agency_id = db.Column(db.BigInteger, nullable=False)
     primary_poc_flag = db.Column(db.String(1))
-    poc_id = db.Column(db.Integer,
-                       db.ForeignKey('ref_poc.poc_id',
-                                     deferrable=True,
-                                     initially='DEFERRED'),
-                       nullable=False,
-                       index=True)
+    poc_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_poc.poc_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     poc = db.relationship('RefPoc')
 
@@ -1908,9 +2030,10 @@ class RefAgencyType(db.Model):
     agency_type_name = db.Column(db.String(100))
     default_pop_family_id = db.Column(
         db.Integer,
-        db.ForeignKey('ref_population_family.population_family_id',
-                      deferrable=True,
-                      initially='DEFERRED'),
+        db.ForeignKey(
+            'ref_population_family.population_family_id',
+            deferrable=True,
+            initially='DEFERRED'),
         nullable=False,
         index=True)
 
@@ -1921,10 +2044,11 @@ class RefCampusPopulation(db.Model):
     __tablename__ = 'ref_campus_population'
     __table_args__ = (UniqueConstraint('campus_id', 'data_year'), )
 
-    id = db.Column(db.Integer,
-                   primary_key=True,
-                   server_default=text(
-                       "nextval('ref_campus_population_id_seq'::regclass)"))
+    id = db.Column(
+        db.Integer,
+        primary_key=True,
+        server_default=text(
+            "nextval('ref_campus_population_id_seq'::regclass)"))
     data_year = db.Column(db.SmallInteger, nullable=False)
     population = db.Column(db.BigInteger)
     source_flag = db.Column(db.String(1), nullable=False)
@@ -1932,12 +2056,14 @@ class RefCampusPopulation(db.Model):
     change_timestamp = db.Column(db.DateTime(True))
     change_user = db.Column(db.String(100))
     reporting_population = db.Column(db.BigInteger)
-    campus_id = db.Column(db.Integer,
-                          db.ForeignKey('ref_university_campus.campus_id',
-                                        deferrable=True,
-                                        initially='DEFERRED'),
-                          nullable=False,
-                          index=True)
+    campus_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_university_campus.campus_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     campus = db.relationship('RefUniversityCampu')
 
@@ -1948,12 +2074,12 @@ class RefCity(db.Model):
 
     city_id = db.Column(db.BigInteger, primary_key=True)
     city_name = db.Column(db.String(100))
-    state_id = db.Column(db.Integer,
-                         db.ForeignKey('ref_state.state_id',
-                                       deferrable=True,
-                                       initially='DEFERRED'),
-                         nullable=False,
-                         index=True)
+    state_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_state.state_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     state = db.relationship('RefState')
 
@@ -1970,12 +2096,14 @@ class RefCountry(db.Model):
 
     country_id = db.Column(db.SmallInteger, primary_key=True)
     country_desc = db.Column(db.String(50))
-    continent_id = db.Column(db.Integer,
-                             db.ForeignKey('ref_continent.continent_id',
-                                           deferrable=True,
-                                           initially='DEFERRED'),
-                             nullable=False,
-                             index=True)
+    continent_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_continent.continent_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     continent = db.relationship('RefContinent')
 
@@ -1989,12 +2117,12 @@ class RefCounty(db.Model):
     county_fips_code = db.Column(db.String(5))
     legacy_county_code = db.Column(db.String(5))
     comments = db.Column(db.String(1000))
-    state_id = db.Column(db.Integer,
-                         db.ForeignKey('ref_state.state_id',
-                                       deferrable=True,
-                                       initially='DEFERRED'),
-                         nullable=False,
-                         index=True)
+    state_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_state.state_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     state = db.relationship('RefState')
 
@@ -2003,22 +2131,23 @@ class RefCountyPopulation(db.Model):
     __tablename__ = 'ref_county_population'
     __table_args__ = (UniqueConstraint('county_id', 'data_year'), )
 
-    id = db.Column(db.Integer,
-                   primary_key=True,
-                   server_default=text(
-                       "nextval('ref_county_population_id_seq'::regclass)"))
+    id = db.Column(
+        db.Integer,
+        primary_key=True,
+        server_default=text(
+            "nextval('ref_county_population_id_seq'::regclass)"))
     data_year = db.Column(db.SmallInteger, nullable=False)
     population = db.Column(db.BigInteger)
     source_flag = db.Column(db.String(1), nullable=False)
     change_timestamp = db.Column(db.DateTime(True))
     change_user = db.Column(db.String(100))
     reporting_population = db.Column(db.BigInteger)
-    county_id = db.Column(db.Integer,
-                          db.ForeignKey('ref_county.county_id',
-                                        deferrable=True,
-                                        initially='DEFERRED'),
-                          nullable=False,
-                          index=True)
+    county_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_county.county_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     county = db.relationship('RefCounty')
 
@@ -2039,14 +2168,14 @@ class RefDivision(db.Model):
     division_code = db.Column(db.String(2))
     division_name = db.Column(db.String(100))
     division_desc = db.Column(db.String(100))
-    region_id = db.Column(db.Integer,
-                          db.ForeignKey('ref_region.region_id',
-                                        deferrable=True,
-                                        initially='DEFERRED'),
-                          nullable=False,
-                          index=True)
+    region_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_region.region_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
-    region = db.relationship('RefRegion')
+    region = db.relationship('RefRegion', lazy=False)
 
 
 class RefFieldOffice(db.Model):
@@ -2064,12 +2193,12 @@ class RefGlobalLocation(db.Model):
 
     global_location_id = db.Column(db.BigInteger, primary_key=True)
     global_location_desc = db.Column(db.String(50))
-    country_id = db.Column(db.Integer,
-                           db.ForeignKey('ref_country.country_id',
-                                         deferrable=True,
-                                         initially='DEFERRED'),
-                           nullable=False,
-                           index=True)
+    country_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_country.country_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     country = db.relationship('RefCountry')
 
@@ -2078,10 +2207,11 @@ class RefMetroDivPopulation(db.Model):
     __tablename__ = 'ref_metro_div_population'
     __table_args__ = (UniqueConstraint('metro_div_id', 'data_year'), )
 
-    id = db.Column(db.Integer,
-                   primary_key=True,
-                   server_default=text(
-                       "nextval('ref_metro_div_population_id_seq'::regclass)"))
+    id = db.Column(
+        db.Integer,
+        primary_key=True,
+        server_default=text(
+            "nextval('ref_metro_div_population_id_seq'::regclass)"))
     data_year = db.Column(db.SmallInteger, nullable=False)
     population = db.Column(db.BigInteger)
     source_flag = db.Column(db.String(1), nullable=False)
@@ -2089,12 +2219,14 @@ class RefMetroDivPopulation(db.Model):
     change_timestamp = db.Column(db.DateTime(True))
     change_user = db.Column(db.String(100))
     reporting_population = db.Column(db.BigInteger)
-    metro_div_id = db.Column(db.Integer,
-                             db.ForeignKey('ref_metro_division.metro_div_id',
-                                           deferrable=True,
-                                           initially='DEFERRED'),
-                             nullable=False,
-                             index=True)
+    metro_div_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_metro_division.metro_div_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     metro_div = db.relationship('RefMetroDivision')
 
@@ -2107,12 +2239,12 @@ class RefMetroDivision(db.Model):
     msa_flag = db.Column(db.String(1))
     metro_div_omb_code = db.Column(db.String(5))
     legacy_msa_code = db.Column(db.String(5))
-    msa_id = db.Column(db.Integer,
-                       db.ForeignKey('ref_msa.msa_id',
-                                     deferrable=True,
-                                     initially='DEFERRED'),
-                       nullable=False,
-                       index=True)
+    msa_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_msa.msa_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     msa = db.relationship('RefMsa')
 
@@ -2135,9 +2267,10 @@ class RefParentPopulationGroup(db.Model):
     publication_name = db.Column(db.String(100))
     population_family_id = db.Column(
         db.Integer,
-        db.ForeignKey('ref_population_family.population_family_id',
-                      deferrable=True,
-                      initially='DEFERRED'),
+        db.ForeignKey(
+            'ref_population_family.population_family_id',
+            deferrable=True,
+            initially='DEFERRED'),
         nullable=False,
         index=True)
 
@@ -2161,11 +2294,11 @@ class RefPoc(db.Model):
     city_name = db.Column(db.String(100))
     poc_fax1 = db.Column(db.String(20))
     poc_fax2 = db.Column(db.String(20))
-    state_id = db.Column(db.Integer,
-                         db.ForeignKey('ref_state.state_id',
-                                       deferrable=True,
-                                       initially='DEFERRED'),
-                         index=True)
+    state_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_state.state_id', deferrable=True, initially='DEFERRED'),
+        index=True)
 
     state = db.relationship('RefState')
 
@@ -2185,18 +2318,18 @@ class RefPocRoleAssign(db.Model):
         db.Integer,
         primary_key=True,
         server_default=text("nextval('ref_poc_role_assign_id_seq'::regclass)"))
-    poc_id = db.Column(db.Integer,
-                       db.ForeignKey('ref_poc.poc_id',
-                                     deferrable=True,
-                                     initially='DEFERRED'),
-                       nullable=False,
-                       index=True)
-    poc_role_id = db.Column(db.Integer,
-                            db.ForeignKey('ref_poc_role.poc_role_id',
-                                          deferrable=True,
-                                          initially='DEFERRED'),
-                            nullable=False,
-                            index=True)
+    poc_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_poc.poc_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    poc_role_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_poc_role.poc_role_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     poc = db.relationship('RefPoc')
     poc_role = db.relationship('RefPocRole')
@@ -2220,9 +2353,10 @@ class RefPopulationGroup(db.Model):
     publication_name = db.Column(db.String(100))
     parent_pop_group_id = db.Column(
         db.Integer,
-        db.ForeignKey('ref_parent_population_group.parent_pop_group_id',
-                      deferrable=True,
-                      initially='DEFERRED'),
+        db.ForeignKey(
+            'ref_parent_population_group.parent_pop_group_id',
+            deferrable=True,
+            initially='DEFERRED'),
         nullable=False,
         index=True)
 
@@ -2248,14 +2382,14 @@ class RefState(db.Model):
     state_postal_abbr = db.Column(db.String(2))
     state_fips_code = db.Column(db.String(2))
     state_pub_freq_months = db.Column(db.SmallInteger)
-    division_id = db.Column(db.Integer,
-                            db.ForeignKey('ref_division.division_id',
-                                          deferrable=True,
-                                          initially='DEFERRED'),
-                            nullable=False,
-                            index=True)
+    division_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_division.division_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
-    division = db.relationship('RefDivision')
+    division = db.relationship('RefDivision', lazy=False)
 
 
 class RefSubmittingAgency(db.Model):
@@ -2268,11 +2402,11 @@ class RefSubmittingAgency(db.Model):
     agency_email = db.Column(db.String(200))
     agency_website = db.Column(db.String(2000))
     comments = db.Column(db.String(2000))
-    state_id = db.Column(db.Integer,
-                         db.ForeignKey('ref_state.state_id',
-                                       deferrable=True,
-                                       initially='DEFERRED'),
-                         index=True)
+    state_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_state.state_id', deferrable=True, initially='DEFERRED'),
+        index=True)
 
     state = db.relationship('RefState')
 
@@ -2288,10 +2422,11 @@ class RefTribePopulation(db.Model):
     __tablename__ = 'ref_tribe_population'
     __table_args__ = (UniqueConstraint('tribe_id', 'data_year'), )
 
-    id = db.Column(db.Integer,
-                   primary_key=True,
-                   server_default=text(
-                       "nextval('ref_tribe_population_id_seq'::regclass)"))
+    id = db.Column(
+        db.Integer,
+        primary_key=True,
+        server_default=text(
+            "nextval('ref_tribe_population_id_seq'::regclass)"))
     data_year = db.Column(db.SmallInteger, nullable=False)
     population = db.Column(db.BigInteger)
     source_flag = db.Column(db.String(1), nullable=False)
@@ -2299,12 +2434,12 @@ class RefTribePopulation(db.Model):
     change_timestamp = db.Column(db.DateTime(True))
     change_user = db.Column(db.String(100))
     reporting_population = db.Column(db.BigInteger)
-    tribe_id = db.Column(db.Integer,
-                         db.ForeignKey('ref_tribe.tribe_id',
-                                       deferrable=True,
-                                       initially='DEFERRED'),
-                         nullable=False,
-                         index=True)
+    tribe_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_tribe.tribe_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     tribe = db.relationship('RefTribe')
 
@@ -2322,12 +2457,14 @@ class RefUniversityCampu(db.Model):
 
     campus_id = db.Column(db.BigInteger, primary_key=True)
     campus_name = db.Column(db.String(100))
-    university_id = db.Column(db.Integer,
-                              db.ForeignKey('ref_university.university_id',
-                                            deferrable=True,
-                                            initially='DEFERRED'),
-                              nullable=False,
-                              index=True)
+    university_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_university.university_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     university = db.relationship('RefUniversity')
 
@@ -2362,12 +2499,12 @@ class RetaMonth(db.Model):
     update_flag = db.Column(db.String(1))
     did = db.Column(db.BigInteger)
     ff_line_number = db.Column(db.BigInteger)
-    agency_id = db.Column(db.Integer,
-                          db.ForeignKey('ref_agency.agency_id',
-                                        deferrable=True,
-                                        initially='DEFERRED'),
-                          nullable=False,
-                          index=True)
+    agency_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_agency.agency_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     agency = db.relationship('RefAgency')
 
@@ -2391,19 +2528,20 @@ class RetaMonthOffenseSubcat(db.Model):
     cleared_status = db.Column(db.SmallInteger)
     juvenile_cleared_count = db.Column(db.Integer)
     juvenile_cleared_status = db.Column(db.SmallInteger)
-    offense_subcat_id = db.Column(db.Integer,
-                                  db.ForeignKey(
-                                      'reta_offense_subcat.offense_subcat_id',
-                                      deferrable=True,
-                                      initially='DEFERRED'),
-                                  nullable=False,
-                                  index=True)
-    reta_month_id = db.Column(db.Integer,
-                              db.ForeignKey('reta_month.reta_month_id',
-                                            deferrable=True,
-                                            initially='DEFERRED'),
-                              nullable=False,
-                              index=True)
+    offense_subcat_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'reta_offense_subcat.offense_subcat_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    reta_month_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'reta_month.reta_month_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     offense_subcat = db.relationship('RetaOffenseSubcat')
     reta_month = db.relationship('RetaMonth')
@@ -2419,15 +2557,17 @@ class RetaOffense(db.Model):
     offense_sort_order = db.Column(db.BigInteger)
     classification_id = db.Column(
         db.Integer,
-        db.ForeignKey('offense_classification.classification_id',
-                      deferrable=True,
-                      initially='DEFERRED'),
+        db.ForeignKey(
+            'offense_classification.classification_id',
+            deferrable=True,
+            initially='DEFERRED'),
         index=True)
     offense_category_id = db.Column(
         db.Integer,
-        db.ForeignKey('reta_offense_category.offense_category_id',
-                      deferrable=True,
-                      initially='DEFERRED'),
+        db.ForeignKey(
+            'reta_offense_category.offense_category_id',
+            deferrable=True,
+            initially='DEFERRED'),
         nullable=False,
         index=True)
 
@@ -2441,12 +2581,12 @@ class RetaOffenseCategory(db.Model):
     offense_category_id = db.Column(db.SmallInteger, primary_key=True)
     offense_category_name = db.Column(db.String(50))
     offense_category_sort_order = db.Column(db.SmallInteger, nullable=False)
-    crime_type_id = db.Column(db.Integer,
-                              db.ForeignKey('crime_type.crime_type_id',
-                                            deferrable=True,
-                                            initially='DEFERRED'),
-                              nullable=False,
-                              index=True)
+    crime_type_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'crime_type.crime_type_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     crime_type = db.relationship('CrimeType')
 
@@ -2461,12 +2601,12 @@ class RetaOffenseSubcat(db.Model):
     offense_subcat_sort_order = db.Column(db.BigInteger)
     part = db.Column(db.String(1))
     crime_index_flag = db.Column(db.String(1))
-    offense_id = db.Column(db.Integer,
-                           db.ForeignKey('reta_offense.offense_id',
-                                         deferrable=True,
-                                         initially='DEFERRED'),
-                           nullable=False,
-                           index=True)
+    offense_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'reta_offense.offense_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     offense = db.relationship('RetaOffense')
 
@@ -2500,18 +2640,20 @@ class ShrIncident(db.Model):
     orig_format = db.Column(db.String(1))
     did = db.Column(db.BigInteger)
     nibrs_incident_id = db.Column(db.BigInteger)
-    shr_month_id = db.Column(db.Integer,
-                             db.ForeignKey('shr_month.shr_month_id',
-                                           deferrable=True,
-                                           initially='DEFERRED'),
-                             nullable=False,
-                             index=True)
-    situation_id = db.Column(db.Integer,
-                             db.ForeignKey('shr_situation.situation_id',
-                                           deferrable=True,
-                                           initially='DEFERRED'),
-                             nullable=False,
-                             index=True)
+    shr_month_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'shr_month.shr_month_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    situation_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'shr_situation.situation_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     shr_month = db.relationship('ShrMonth')
     situation = db.relationship('ShrSituation')
@@ -2533,12 +2675,12 @@ class ShrMonth(db.Model):
     ff_line_number = db.Column(db.BigInteger)
     ddocname = db.Column(db.String(100))
     did = db.Column(db.BigInteger)
-    agency_id = db.Column(db.Integer,
-                          db.ForeignKey('ref_agency.agency_id',
-                                        deferrable=True,
-                                        initially='DEFERRED'),
-                          nullable=False,
-                          index=True)
+    agency_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_agency.agency_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     agency = db.relationship('RefAgency')
 
@@ -2552,21 +2694,23 @@ class ShrOffender(db.Model):
     sex_code = db.Column(db.String(1))
     nibrs_offense_id = db.Column(db.BigInteger)
     nibrs_offender_id = db.Column(db.BigInteger)
-    age_id = db.Column(db.Integer,
-                       db.ForeignKey('nibrs_age.age_id',
-                                     deferrable=True,
-                                     initially='DEFERRED'),
-                       index=True)
-    ethnicity_id = db.Column(db.Integer,
-                             db.ForeignKey('nibrs_ethnicity.ethnicity_id',
-                                           deferrable=True,
-                                           initially='DEFERRED'),
-                             index=True)
-    race_id = db.Column(db.Integer,
-                        db.ForeignKey('ref_race.race_id',
-                                      deferrable=True,
-                                      initially='DEFERRED'),
-                        index=True)
+    age_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_age.age_id', deferrable=True, initially='DEFERRED'),
+        index=True)
+    ethnicity_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_ethnicity.ethnicity_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        index=True)
+    race_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_race.race_id', deferrable=True, initially='DEFERRED'),
+        index=True)
 
     age = db.relationship('NibrsAge')
     ethnicity = db.relationship('NibrsEthnicity')
@@ -2580,39 +2724,43 @@ class ShrOffense(db.Model):
     nibrs_offense_id = db.Column(db.BigInteger)
     circumstances_id = db.Column(
         db.Integer,
-        db.ForeignKey('shr_circumstances.circumstances_id',
-                      deferrable=True,
-                      initially='DEFERRED'),
+        db.ForeignKey(
+            'shr_circumstances.circumstances_id',
+            deferrable=True,
+            initially='DEFERRED'),
         index=True)
-    incident_id = db.Column(db.Integer,
-                            db.ForeignKey('shr_incident.incident_id',
-                                          deferrable=True,
-                                          initially='DEFERRED'),
-                            nullable=False,
-                            index=True)
-    offender_id = db.Column(db.Integer,
-                            db.ForeignKey('shr_offender.offender_id',
-                                          deferrable=True,
-                                          initially='DEFERRED'),
-                            nullable=False,
-                            index=True)
+    incident_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'shr_incident.incident_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    offender_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'shr_offender.offender_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
     relationship_id = db.Column(
         db.Integer,
-        db.ForeignKey('shr_relationship.relationship_id',
-                      deferrable=True,
-                      initially='DEFERRED'),
+        db.ForeignKey(
+            'shr_relationship.relationship_id',
+            deferrable=True,
+            initially='DEFERRED'),
         index=True)
-    victim_id = db.Column(db.Integer,
-                          db.ForeignKey('shr_victim.victim_id',
-                                        deferrable=True,
-                                        initially='DEFERRED'),
-                          nullable=False,
-                          index=True)
-    weapon_id = db.Column(db.Integer,
-                          db.ForeignKey('nibrs_weapon_type.weapon_id',
-                                        deferrable=True,
-                                        initially='DEFERRED'),
-                          index=True)
+    victim_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'shr_victim.victim_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    weapon_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_weapon_type.weapon_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        index=True)
 
     circumstances = db.relationship('ShrCircumstance')
     incident = db.relationship('ShrIncident')
@@ -2647,21 +2795,23 @@ class ShrVictim(db.Model):
     sex_code = db.Column(db.String(1))
     nibrs_victim_id = db.Column(db.BigInteger)
     nibrs_offense_id = db.Column(db.BigInteger)
-    age_id = db.Column(db.Integer,
-                       db.ForeignKey('nibrs_age.age_id',
-                                     deferrable=True,
-                                     initially='DEFERRED'),
-                       index=True)
-    ethnicity_id = db.Column(db.Integer,
-                             db.ForeignKey('nibrs_ethnicity.ethnicity_id',
-                                           deferrable=True,
-                                           initially='DEFERRED'),
-                             index=True)
-    race_id = db.Column(db.Integer,
-                        db.ForeignKey('ref_race.race_id',
-                                      deferrable=True,
-                                      initially='DEFERRED'),
-                        index=True)
+    age_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_age.age_id', deferrable=True, initially='DEFERRED'),
+        index=True)
+    ethnicity_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'nibrs_ethnicity.ethnicity_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        index=True)
+    race_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_race.race_id', deferrable=True, initially='DEFERRED'),
+        index=True)
 
     age = db.relationship('NibrsAge')
     ethnicity = db.relationship('NibrsEthnicity')
@@ -2700,12 +2850,12 @@ class SuppMonth(db.Model):
     update_flag = db.Column(db.String(1))
     did = db.Column(db.BigInteger)
     ff_line_number = db.Column(db.BigInteger)
-    agency_id = db.Column(db.Integer,
-                          db.ForeignKey('ref_agency.agency_id',
-                                        deferrable=True,
-                                        initially='DEFERRED'),
-                          nullable=False,
-                          index=True)
+    agency_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'ref_agency.agency_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     agency = db.relationship('RefAgency')
 
@@ -2725,12 +2875,12 @@ class SuppOffenseSubcat(db.Model):
     offense_subcat_name = db.Column(db.String(100), nullable=False)
     offense_subcat_code = db.Column(db.String(20), nullable=False)
     offense_subcat_xml_name = db.Column(db.String(100))
-    offense_id = db.Column(db.Integer,
-                           db.ForeignKey('supp_offense.offense_id',
-                                         deferrable=True,
-                                         initially='DEFERRED'),
-                           nullable=False,
-                           index=True)
+    offense_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'supp_offense.offense_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     offense = db.relationship('SuppOffense')
 
@@ -2748,19 +2898,20 @@ class SuppPropByOffenseSubcat(db.Model):
     actual_status = db.Column(db.SmallInteger)
     stolen_value = db.Column(db.BigInteger)
     stolen_value_status = db.Column(db.SmallInteger)
-    offense_subcat_id = db.Column(db.Integer,
-                                  db.ForeignKey(
-                                      'supp_offense_subcat.offense_subcat_id',
-                                      deferrable=True,
-                                      initially='DEFERRED'),
-                                  nullable=False,
-                                  index=True)
-    supp_month_id = db.Column(db.Integer,
-                              db.ForeignKey('supp_month.supp_month_id',
-                                            deferrable=True,
-                                            initially='DEFERRED'),
-                              nullable=False,
-                              index=True)
+    offense_subcat_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'supp_offense_subcat.offense_subcat_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    supp_month_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'supp_month.supp_month_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     offense_subcat = db.relationship('SuppOffenseSubcat')
     supp_month = db.relationship('SuppMonth')
@@ -2779,18 +2930,20 @@ class SuppPropertyByTypeValue(db.Model):
     stolen_value_status = db.Column(db.SmallInteger)
     recovered_value = db.Column(db.BigInteger)
     recovered_value_status = db.Column(db.SmallInteger)
-    prop_type_id = db.Column(db.Integer,
-                             db.ForeignKey('supp_property_type.prop_type_id',
-                                           deferrable=True,
-                                           initially='DEFERRED'),
-                             nullable=False,
-                             index=True)
-    supp_month_id = db.Column(db.Integer,
-                              db.ForeignKey('supp_month.supp_month_id',
-                                            deferrable=True,
-                                            initially='DEFERRED'),
-                              nullable=False,
-                              index=True)
+    prop_type_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'supp_property_type.prop_type_id',
+            deferrable=True,
+            initially='DEFERRED'),
+        nullable=False,
+        index=True)
+    supp_month_id = db.Column(
+        db.Integer,
+        db.ForeignKey(
+            'supp_month.supp_month_id', deferrable=True, initially='DEFERRED'),
+        nullable=False,
+        index=True)
 
     prop_type = db.relationship('SuppPropertyType')
     supp_month = db.relationship('SuppMonth')
