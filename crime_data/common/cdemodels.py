@@ -268,7 +268,6 @@ class CdeCrimeType(models.CrimeType):
 
 
 class CdeRetaOffenseCategory(models.RetaOffenseCategory):
-
     crime_type = db.relationship(CdeCrimeType, backref='categories')
 
 
@@ -332,34 +331,58 @@ class JoinedTable:
 
 
 class TableFamily:
+    """""
+    Base class for Queries on the CDE database.
+    """""
+    
     def __init__(self):
+        self.UNDERLYING_COLUMN_NAMES = {'year': 'data_year',
+                           'month': 'month_num',
+                           'agency_name': 'ucr_agency_name',
+                           'state': 'state_abbr',
+                           'city': 'city_name',
+                           'tribe': 'tribe_name',
+                           'offense': 'offense_name',
+                           'offense_subcat': 'offense_subcat_name',
+                           'offense_category': 'offense_category_name', }
+
+        self.SIMPLIFIED_COLUMN_NAMES = {v: k for (k, v) in self.UNDERLYING_COLUMN_NAMES.items()}
         self._map = {}
 
     @property
     def map(self):
+        """Builds a map of DB column names for Query."""
         if not self._map:
             self._build_map()
         return self._map
 
     def base_query(self):
+        """Gets root Query, based on class's base_table"""
         return db.session.query(self.base_table.table)
 
+    def _is_string(self, col):
+        col0 = list(col.base_columns)[0]
+        return issubclass(col0.type.python_type, str)
+
     def _col(self, col_name):
+        """Gets DB mapped column name."""
         if col_name not in self.map:
             abort(400, message='field {} not found'.format(col_name))
         return self.map[col_name]
 
     def _post_process(self, qry):
+        """Applies any nescessary post-processing to query."""
         return qry
 
     def filtered(self, filters):
+        """Applies requested Query filters. Returns SQLAlchemy Query object."""
         qry = self.base_query()
         self.joined = {self.base_table,
                        }  # Messy way to track what has been joined
         for (col_name, comparitor, values) in filters:
             (joined_tbl, col) = self._col(col_name)
             qry = self.join(qry, joined_tbl)
-            if _is_string(col):
+            if self._is_string(col):
                 col = func.lower(col)
                 values = [val.lower() for val in values]
             operation = getattr(col, comparitor)
@@ -380,13 +403,14 @@ class TableFamily:
         return qry
 
     def group_by(self, qry, group_columns):
+        """Adds GROUP BY statements to Query. """
         for col_name in group_columns:
             (table, col) = self._col(col_name)
             qry = self.join(qry, table)
-            if col_name in UNDERLYING_COLUMN_NAMES:
+            if col_name in self.UNDERLYING_COLUMN_NAMES:
                 col = label(col_name, col)
-            elif col_name in SIMPLIFIED_COLUMN_NAMES:
-                col = label(SIMPLIFIED_COLUMN_NAMES[col_name], col)
+            elif col_name in self.SIMPLIFIED_COLUMN_NAMES:
+                col = label(self.SIMPLIFIED_COLUMN_NAMES[col_name], col)
             qry = qry.add_columns(col)
             qry = qry.group_by(col).order_by(col)
         return qry
@@ -405,6 +429,7 @@ class TableFamily:
         # self.print_map() # - uncomment to generate JSON
 
     def query(self):
+        """Returns a finalized SQLAlchemy Query object"""
         self._build_map()
         # self.print_map() # - uncomment to generate JSON
         qry = self.base_query()
@@ -462,21 +487,23 @@ class TableFamily:
         return agency_tables
 
 
-UNDERLYING_COLUMN_NAMES = {'year': 'data_year',
-                           'month': 'month_num',
-                           'agency_name': 'ucr_agency_name',
-                           'state': 'state_abbr',
-                           'city': 'city_name',
-                           'tribe': 'tribe_name',
-                           'offense': 'offense_name',
-                           'offense_subcat': 'offense_subcat_name',
-                           'offense_category': 'offense_category_name', }
+# UNDERLYING_COLUMN_NAMES = {'year': 'data_year',
+#                            'month': 'month_num',
+#                            'agency_name': 'ucr_agency_name',
+#                            'state': 'state_abbr',
+#                            'city': 'city_name',
+#                            'tribe': 'tribe_name',
+#                            'offense': 'offense_name',
+#                            'offense_subcat': 'offense_subcat_name',
+#                            'offense_category': 'offense_category_name', }
 
-SIMPLIFIED_COLUMN_NAMES = {v: k for (k, v) in UNDERLYING_COLUMN_NAMES.items()}
+# SIMPLIFIED_COLUMN_NAMES = {v: k for (k, v) in UNDERLYING_COLUMN_NAMES.items()}
 
 
 class IncidentTableFamily(TableFamily):
-
+    """""
+    Base Class for Incident table based queries.
+    """""
     base_table = JoinedTable(models.NibrsIncident)
 
     victim_race = aliased(models.RefRace)
@@ -490,6 +517,7 @@ class IncidentTableFamily(TableFamily):
     arrestee_ethnicity = aliased(models.NibrsEthnicity)
 
     def base_query(self):
+        """Gets root Query, based on class's base_table"""
         result = db.session.query(models.NibrsIncident.incident_id)
         return result
 
@@ -604,6 +632,9 @@ class IncidentTableFamily(TableFamily):
 
 
 class IncidentCountTableFamily(TableFamily):
+    """""
+    Base class for any RETA Sumarry data queries.
+    """""
 
     base_table = JoinedTable(models.RetaMonthOffenseSubcat)
 
@@ -631,8 +662,3 @@ class IncidentCountTableFamily(TableFamily):
             label('juvenile_cleared_count',
                   func.sum(
                       models.RetaMonthOffenseSubcat.juvenile_cleared_count), ))
-
-
-def _is_string(col):
-    col0 = list(col.base_columns)[0]
-    return issubclass(col0.type.python_type, str)
