@@ -334,7 +334,6 @@ class TableFamily:
     """""
     Base class for Queries on the CDE database.
     """""
-    
     def __init__(self):
         self.UNDERLYING_COLUMN_NAMES = {'year': 'data_year',
                            'month': 'month_num',
@@ -463,6 +462,7 @@ class TableFamily:
 
     @classmethod
     def agency_tables(cls, parent):
+        """Returns list of all Agency related tables."""
         agency_tables = []
         _agency = JoinedTable(models.RefAgency, parent=parent)
         agency_tables.append(_agency)
@@ -487,25 +487,18 @@ class TableFamily:
         return agency_tables
 
 
-# UNDERLYING_COLUMN_NAMES = {'year': 'data_year',
-#                            'month': 'month_num',
-#                            'agency_name': 'ucr_agency_name',
-#                            'state': 'state_abbr',
-#                            'city': 'city_name',
-#                            'tribe': 'tribe_name',
-#                            'offense': 'offense_name',
-#                            'offense_subcat': 'offense_subcat_name',
-#                            'offense_category': 'offense_category_name', }
-
-# SIMPLIFIED_COLUMN_NAMES = {v: k for (k, v) in UNDERLYING_COLUMN_NAMES.items()}
-
-
 class IncidentTableFamily(TableFamily):
     """""
     Base Class for Incident table based queries.
     """""
+
+    # List of all associated tables.
+    tables = []
+
+    # Root Table => Incidents
     base_table = JoinedTable(models.NibrsIncident)
 
+    # Build Table aliases for Query.
     victim_race = aliased(models.RefRace)
     victim_age = aliased(models.NibrsAge)
     victim_ethnicity = aliased(models.NibrsEthnicity)
@@ -516,64 +509,42 @@ class IncidentTableFamily(TableFamily):
     arrestee_age = aliased(models.NibrsAge)
     arrestee_ethnicity = aliased(models.NibrsEthnicity)
 
-    def base_query(self):
-        """Gets root Query, based on class's base_table"""
-        result = db.session.query(models.NibrsIncident.incident_id)
-        return result
-
-    def _post_process(self, qry):
-        """Apply DISTINCT on incident_id.
-
-        For performance, DISTINCT is applied within a subquery, then an
-        outer query fetches all Incident records."""
-        subq = qry.distinct().subquery()
-        results = self.base_table.table.query.join(
-            subq, self.base_table.table.incident_id == subq.c.incident_id)
-        return results
-
-    tables = []
-
+    # Create JOINs for query.
     offense = JoinedTable(models.NibrsOffense)
-
-    tables.append(offense)
-
-    tables.append(JoinedTable(models.NibrsOffenseType, parent=offense)),
-
-    tables.extend(TableFamily.agency_tables(None))
-    tables.append(JoinedTable(models.NibrsClearedExcept))
     offender = JoinedTable(models.NibrsOffender,
-                           prefix='offender',
-                           parent=offense)
-    tables.append(offender)
-
+                       prefix='offender',
+                       parent=offense)
     victim = JoinedTable(models.NibrsVictim, prefix='victim', parent=offense)
-    tables.append(victim)
-
     victim_injury = JoinedTable(models.NibrsVictimInjury, prefix='victim',parent=victim)
     injury = JoinedTable(models.NibrsInjury, prefix='victim',parent=victim_injury)
-    tables.append(victim_injury)
-    tables.append(injury)
-
     victim_offender_rel = JoinedTable(models.NibrsVictimOffenderRel, prefix='victim', parent=victim)
     relationship_ = JoinedTable(models.NibrsRelationship, prefix='victim', parent=victim_offender_rel)
-    tables.append(victim_offender_rel)
-    tables.append(relationship_)
-    
     offense_weapon = JoinedTable(models.NibrsWeapon, prefix='offense', parent=offense)
     weapon = JoinedTable(models.NibrsWeaponType, prefix='offense', parent=offense_weapon)
-    tables.append(offense_weapon)
-    tables.append(weapon)
-
     criminal_act = JoinedTable(models.NibrsCriminalAct, prefix='offense', parent=offense)
     criminal_act_type = JoinedTable(models.NibrsCriminalActType, prefix='offense', parent=criminal_act)
-    tables.append(criminal_act)
-    tables.append(criminal_act_type)
-
     arrestee = JoinedTable(models.NibrsArrestee,
                            prefix='arrestee',
                            parent=offense,
                            join=(models.NibrsIncident.incident_id ==
                                  models.NibrsArrestee.incident_id))
+    property_ = JoinedTable(models.NibrsProperty)
+
+    # Append all Joined tables to list of table for query.
+    tables.append(offense)
+    tables.append(JoinedTable(models.NibrsOffenseType, parent=offense)),
+    tables.extend(TableFamily.agency_tables(None))
+    tables.append(JoinedTable(models.NibrsClearedExcept))
+    tables.append(offender)    
+    tables.append(victim)
+    tables.append(victim_injury)
+    tables.append(injury)
+    tables.append(victim_offender_rel)
+    tables.append(relationship_)
+    tables.append(offense_weapon)
+    tables.append(weapon)
+    tables.append(criminal_act)
+    tables.append(criminal_act_type)
     tables.append(arrestee)
     tables.append(JoinedTable(offender_age,
                               join=(models.NibrsOffender.age_id ==
@@ -620,14 +591,29 @@ class IncidentTableFamily(TableFamily):
                                     arrestee_ethnicity.ethnicity_id),
                               prefix='arrestee',
                               parent=arrestee))
-    property = JoinedTable(models.NibrsProperty)
-    tables.append(property)
-    tables.append(JoinedTable(models.NibrsPropLossType, parent=property))
+    
+    tables.append(property_)
+    tables.append(JoinedTable(models.NibrsPropLossType, parent=property_))
     # TODO: property_desc, suspected_drug
     tables.append(JoinedTable(models.NibrsLocationType,
                               parent=offense,
                               join=(models.NibrsOffense.location_id ==
                                     models.NibrsLocationType.location_id), ))
+
+    def base_query(self):
+        """Gets root Query, based on class's base_table"""
+        result = db.session.query(models.NibrsIncident.incident_id)
+        return result
+
+    def _post_process(self, qry):
+        """Apply DISTINCT on incident_id.
+
+        For performance, DISTINCT is applied within a subquery, then an
+        outer query fetches all Incident records."""
+        subq = qry.distinct().subquery()
+        results = self.base_table.table.query.join(
+            subq, self.base_table.table.incident_id == subq.c.incident_id)
+        return results
     # TODO: COUNTY, TRIBE
 
 
@@ -636,14 +622,20 @@ class IncidentCountTableFamily(TableFamily):
     Base class for any RETA Sumarry data queries.
     """""
 
+    # List of all associated tables.
+    tables = []
+
+    # Root table => RetaMonthOffenseSubcat
     base_table = JoinedTable(models.RetaMonthOffenseSubcat)
 
-    tables = []
+    # Create JOINs for query.
     month = JoinedTable(models.RetaMonth)
-    tables.append(month)
     subcat = JoinedTable(models.RetaOffenseSubcat)
-    tables.append(subcat)
     offense = JoinedTable(models.RetaOffense, parent=subcat)
+
+    # Append all Joined tables to list of table for query.
+    tables.append(month)
+    tables.append(subcat)
     tables.append(offense)
     tables.append(JoinedTable(models.OffenseClassification, parent=offense))
     tables.append(JoinedTable(models.RetaOffenseCategory, parent=offense))
