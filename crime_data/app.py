@@ -8,6 +8,7 @@ from flask import Flask, render_template
 from flask_cors import CORS, cross_origin
 
 import crime_data.resources.agencies
+import crime_data.resources.arrests
 import crime_data.resources.incidents
 import crime_data.resources.offenses
 import crime_data.resources.codes
@@ -129,3 +130,5 @@ def add_resources(app):
     api.add_resource(crime_data.resources.codes.CodeReferenceList,
                      '/codes/<string:code_table>.<string:output>',
                      '/codes/<string:code_table>')
+    api.add_resource(crime_data.resources.arrests.ArrestsCountByRace,
+                     '/arrests/race/')
