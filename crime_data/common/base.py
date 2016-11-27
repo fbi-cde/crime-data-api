@@ -158,6 +158,30 @@ class CdeResource(Resource):
                  '<': '__le__',
                  '==': '__eq__', }
 
+    is_groupable = False
+
+    def _get(self, args):
+        # TODO: apply "fields" arg
+
+        self.verify_api_key(args)
+        filters = self.filters(args)
+        qry = self.tables.filtered(filters)
+        if self.is_groupable:
+            group_columns = [c.strip() for c in args['by'].split(',')]
+            qry = self.tables.group_by(qry, group_columns)
+        aggregate_many = False
+
+        if args['aggregate_many'] == 'true':
+            aggregate_many = True
+
+        if args['output'] == 'csv':
+            output = make_response(self.output_serialize(
+                self.with_metadata(qry, args), self.schema, 'csv', aggregate_many))
+            output.headers[
+                "Content-Disposition"] = "attachment; filename=incidents.csv"
+            output.headers["Content-type"] = "text/csv"
+            return output
+        return self.with_metadata(qry, args)
 
     def _serialize_dict(self, data, accumulator={}, path=None, aggregate_many = False):
         """ Recursively serializes a nested dict 
@@ -213,7 +237,6 @@ class CdeResource(Resource):
         Either outputs JSON, or CSV. 
         """
         if format is 'json':
-
             return data
         if format is 'csv':
             self.aggregate_many = aggregate_many

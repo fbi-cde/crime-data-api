@@ -1,18 +1,20 @@
-import re
-
-from flask import make_response
 from webargs.flaskparser import use_args
 
-from crime_data.common import cdemodels, marshmallow_schemas, models
+from crime_data.common import cdemodels, marshmallow_schemas
 from crime_data.common.base import CdeResource, tuning_page
-from crime_data.common.marshmallow_schemas import (ArgumentsSchema,
-                                                   IncidentCountArgsSchema)
 
-from .incidents import IncidentsCount
 
-class ArrestsCountByRace(IncidentsCount):
+class ArrestsCountByRace(CdeResource):
 
     tables = cdemodels.ArrestsByRaceTableFamily()
+
+    is_groupable = True
+
+    @use_args(marshmallow_schemas.GroupableArgsSchema)
+    @tuning_page
+    def get(self, args):
+        return self._get(args)
+
 
 """
 Big (?) problem here: whole different set of classification codes
