@@ -4,9 +4,7 @@ from crime_data.common import cdemodels, marshmallow_schemas
 from crime_data.common.base import CdeResource, tuning_page
 
 
-class ArrestsCountByRace(CdeResource):
-
-    tables = cdemodels.ArrestsByRaceTableFamily()
+class ArrestsCountResource(CdeResource):
 
     is_groupable = True
 
@@ -14,6 +12,16 @@ class ArrestsCountByRace(CdeResource):
     @tuning_page
     def get(self, args):
         return self._get(args)
+
+
+class ArrestsCountByRace(ArrestsCountResource):
+
+    tables = cdemodels.ArrestsByRaceTableFamily()
+
+
+class ArrestsCountByEthnicity(ArrestsCountResource):
+
+    tables = cdemodels.ArrestsByEthnicityTableFamily()
 
 
 """

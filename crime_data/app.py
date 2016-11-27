@@ -132,3 +132,5 @@ def add_resources(app):
                      '/codes/<string:code_table>')
     api.add_resource(crime_data.resources.arrests.ArrestsCountByRace,
                      '/arrests/race/')
+    api.add_resource(crime_data.resources.arrests.ArrestsCountByEthnicity,
+                     '/arrests/ethnicity/')
