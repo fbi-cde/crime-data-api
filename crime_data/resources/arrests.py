@@ -24,6 +24,11 @@ class ArrestsCountByEthnicity(ArrestsCountResource):
     tables = cdemodels.ArrestsByEthnicityTableFamily()
 
 
+class ArrestsCountByAgeSex(ArrestsCountResource):
+
+    tables = cdemodels.ArrestsByAgeSexTableFamily()
+
+
 """
 Big (?) problem here: whole different set of classification codes
 for different domains.

@@ -473,6 +473,7 @@ class AgencyTableFamily(TableFamily):
         tables.append(_state),
         tables.append(JoinedTable(models.RefCity, parent=_agency))
         _division = JoinedTable(models.RefDivision, parent=_state)
+<<<<<<< bbdba4d573eef5e11af976159e058cede125a350
         tables.append(_division)
         tables.append(JoinedTable(models.RefRegion, parent=_division))
         tables.append(JoinedTable(models.RefSubmittingAgency, # prefix?
@@ -486,6 +487,47 @@ class AgencyTableFamily(TableFamily):
             join=(models.RefAgency.population_family_id ==
                   models.RefPopulationFamily.population_family_id), ))
         return tables
+=======
+        agency_tables.append(_division)
+        agency_tables.append(JoinedTable(models.RefRegion, parent=_division))
+        agency_tables.append(
+            JoinedTable(
+                models.RefSubmittingAgency,  # prefix?
+                join=(models.RefAgency.agency_id ==
+                      models.RefSubmittingAgency.agency_id)))
+        agency_tables.append(
+            JoinedTable(
+                models.RefFieldOffice, parent=_agency))
+        agency_tables.append(
+            JoinedTable(
+                models.RefPopulationFamily,
+                parent=_agency,
+                join=(models.RefAgency.population_family_id ==
+                      models.RefPopulationFamily.population_family_id), ))
+        return agency_tables
+
+
+UNDERLYING_COLUMN_NAMES = {
+    'year': 'data_year',
+    'month': 'month_num',
+    'agency_name': 'ucr_agency_name',
+    'state': 'state_abbr',
+    'city': 'city_name',
+    'tribe': 'tribe_name',
+    'offense': 'offense_name',
+    'offense_subcat': 'offense_subcat_name',
+    'offense_category': 'offense_category_name',
+    # except in ASR it's offense_cat_name
+    'race': 'race_code',
+    'ethnicity': 'ethnicity_code',
+    'juvenile': 'juvenile_flag',
+    'age': 'age_range_code',
+    'sex': 'age_sex',
+}
+
+SIMPLIFIED_COLUMN_NAMES = {v: k for (k, v) in UNDERLYING_COLUMN_NAMES.items()}
+
+>>>>>>> Added /arrests/age_sex/
 
 class IncidentTableFamily(TableFamily):
     """""
@@ -553,21 +595,6 @@ class IncidentTableFamily(TableFamily):
         models.NibrsCriminalActType, prefix='offense', parent=criminal_act)
     tables.append(criminal_act)
     tables.append(criminal_act_type)
-
-    # def base_query(self):
-    #     """Gets root Query, based on class's base_table"""
-    #     result = db.session.query(models.NibrsIncident.incident_id)
-    #     return result
-
-    # def _post_process(self, qry):
-    #     """Apply DISTINCT on incident_id.
-
-    #     For performance, DISTINCT is applied within a subquery, then an
-    #     outer query fetches all Incident records."""
-    #     subq = qry.distinct().subquery()
-    #     results = self.base_table.table.query.join(
-    #         subq, self.base_table.table.incident_id == subq.c.incident_id)
-    #     return results
 
     arrestee = JoinedTable(
         models.NibrsArrestee,
@@ -689,6 +716,15 @@ class IncidentCountTableFamily(TableFamily):
 # ASR_MONTH is not broken down by race or crime and should have
 # its own endpoint
 
+# This tree of subcategory-offense-category is shared by the following three families
+category_tables = []
+_subcat = JoinedTable(models.AsrOffenseSubcat)
+category_tables.append(_subcat)
+_offense = JoinedTable(models.AsrOffense, parent=_subcat)
+category_tables.append(_offense)
+_category = JoinedTable(models.AsrOffenseCategory, parent=_offense)
+category_tables.append(_category)
+
 
 class ArrestsByRaceTableFamily(TableFamily):
 
@@ -699,14 +735,10 @@ class ArrestsByRaceTableFamily(TableFamily):
     tables.append(month)
     race = JoinedTable(models.RefRace)
     tables.append(race)
-    subcat = JoinedTable(models.AsrOffenseSubcat)
-    tables.append(subcat)
-    offense = JoinedTable(models.AsrOffense, parent=subcat)
-    tables.append(offense)
-    category = JoinedTable(models.AsrOffenseCategory, parent=offense)
-    tables.append(category)
 
+    tables.extend(category_tables)
     tables.extend(AgencyTableFamily.get_tables(month))
+
 
     def base_query(self):
         return db.session.query(
@@ -723,19 +755,34 @@ class ArrestsByEthnicityTableFamily(TableFamily):
     tables.append(month)
     ethnicity = JoinedTable(models.AsrEthnicity)
     tables.append(ethnicity)
-    subcat = JoinedTable(models.AsrOffenseSubcat)
-    tables.append(subcat)
-    offense = JoinedTable(models.AsrOffense, parent=subcat)
-    tables.append(offense)
-    category = JoinedTable(models.AsrOffenseCategory, parent=offense)
-    tables.append(category)
 
+    tables.extend(category_tables)
     tables.extend(AgencyTableFamily.get_tables(month))
+
 
     def base_query(self):
         return db.session.query(
             label('arrest_count',
                   func.sum(models.AsrEthnicityOffense.arrest_count)))
+
+
+class ArrestsByAgeSexTableFamily(TableFamily):
+
+    base_table = JoinedTable(models.AsrAgeSexSubcat)
+
+    tables = []
+    month = JoinedTable(models.AsrMonth)
+    tables.append(month)
+    age_range = JoinedTable(models.AsrAgeRange)
+    tables.append(age_range)
+
+    tables.extend(category_tables)
+    tables.extend(TableFamily.agency_tables(month))
+
+    def base_query(self):
+        return db.session.query(
+            label('arrest_count',
+                  func.sum(models.AsrAgeSexSubcat.arrest_count)))
 
 
 def _is_string(col):

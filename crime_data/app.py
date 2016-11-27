@@ -134,3 +134,5 @@ def add_resources(app):
                      '/arrests/race/')
     api.add_resource(crime_data.resources.arrests.ArrestsCountByEthnicity,
                      '/arrests/ethnicity/')
+    api.add_resource(crime_data.resources.arrests.ArrestsCountByAgeSex,
+                     '/arrests/age_sex/')
