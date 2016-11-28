@@ -613,7 +613,7 @@ class IncidentTableFamily(TableFamily):
 
 class IncidentCountTableFamily(TableFamily):
     """""
-    Base class for any RETA Sumarry data queries.
+    Base class for any RETA Summary data queries.
     """""
 
     # List of all associated tables.
