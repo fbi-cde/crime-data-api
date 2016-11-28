@@ -473,7 +473,6 @@ class AgencyTableFamily(TableFamily):
         tables.append(_state),
         tables.append(JoinedTable(models.RefCity, parent=_agency))
         _division = JoinedTable(models.RefDivision, parent=_state)
-<<<<<<< bbdba4d573eef5e11af976159e058cede125a350
         tables.append(_division)
         tables.append(JoinedTable(models.RefRegion, parent=_division))
         tables.append(JoinedTable(models.RefSubmittingAgency, # prefix?
@@ -487,47 +486,7 @@ class AgencyTableFamily(TableFamily):
             join=(models.RefAgency.population_family_id ==
                   models.RefPopulationFamily.population_family_id), ))
         return tables
-=======
-        agency_tables.append(_division)
-        agency_tables.append(JoinedTable(models.RefRegion, parent=_division))
-        agency_tables.append(
-            JoinedTable(
-                models.RefSubmittingAgency,  # prefix?
-                join=(models.RefAgency.agency_id ==
-                      models.RefSubmittingAgency.agency_id)))
-        agency_tables.append(
-            JoinedTable(
-                models.RefFieldOffice, parent=_agency))
-        agency_tables.append(
-            JoinedTable(
-                models.RefPopulationFamily,
-                parent=_agency,
-                join=(models.RefAgency.population_family_id ==
-                      models.RefPopulationFamily.population_family_id), ))
-        return agency_tables
 
-
-UNDERLYING_COLUMN_NAMES = {
-    'year': 'data_year',
-    'month': 'month_num',
-    'agency_name': 'ucr_agency_name',
-    'state': 'state_abbr',
-    'city': 'city_name',
-    'tribe': 'tribe_name',
-    'offense': 'offense_name',
-    'offense_subcat': 'offense_subcat_name',
-    'offense_category': 'offense_category_name',
-    # except in ASR it's offense_cat_name
-    'race': 'race_code',
-    'ethnicity': 'ethnicity_code',
-    'juvenile': 'juvenile_flag',
-    'age': 'age_range_code',
-    'sex': 'age_sex',
-}
-
-SIMPLIFIED_COLUMN_NAMES = {v: k for (k, v) in UNDERLYING_COLUMN_NAMES.items()}
-
->>>>>>> Added /arrests/age_sex/
 
 class IncidentTableFamily(TableFamily):
     """""
@@ -783,6 +742,39 @@ class ArrestsByAgeSexTableFamily(TableFamily):
         return db.session.query(
             label('arrest_count',
                   func.sum(models.AsrAgeSexSubcat.arrest_count)))
+
+
+class ArsonTableFamily(TableFamily):
+
+    base_table = JoinedTable(models.ArsonMonthBySubcat)
+
+    tables = []
+    month = JoinedTable(models.ArsonMonth)
+    tables.append(month)
+    subcategory = JoinedTable(models.ArsonSubcategory)
+    tables.append(subcategory)
+    tables.append(
+        JoinedTable(
+            models.ArsonSubclassification, parent=subcategory))
+
+    tables.extend(TableFamily.agency_tables(month))
+
+    def base_query(self):
+        return db.session.query(
+            label('reported_count',
+                  func.sum(models.ArsonMonthBySubcat.reported_count)),
+            label('unfounded_count',
+                  func.sum(models.ArsonMonthBySubcat.unfounded_count)),
+            label('actual_count',
+                  func.sum(models.ArsonMonthBySubcat.actual_count)),
+            label('cleared_count',
+                  func.sum(models.ArsonMonthBySubcat.cleared_count)),
+            label('juvenile_cleared_count',
+                  func.sum(models.ArsonMonthBySubcat.juvenile_cleared_count)),
+            label('uninhabited_count',
+                  func.sum(models.ArsonMonthBySubcat.uninhabited_count)),
+            label('est_damage_value',
+                  func.sum(models.ArsonMonthBySubcat.est_damage_value)))
 
 
 def _is_string(col):

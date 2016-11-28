@@ -1,3 +1,4 @@
+from decimal import Decimal
 import json
 import math
 import os
@@ -109,8 +110,8 @@ class QueryTraits(object):
                 if _is_string(col):
                     col = func.lower(col)
                     values = [val.lower() for val in values]
-                    query = query.filter(or_(col.ilike('%' + val + '%')
-                                             for val in values))
+                    query = query.filter(
+                        or_(col.ilike('%' + val + '%') for val in values))
                 else:
                     operation = getattr(col, comparitor)
                     query = query.filter(or_(operation(val) for val in values))
@@ -151,12 +152,14 @@ class CdeResource(Resource):
     __abstract__ = True
     schema = None
 
-    OPERATORS = {'!=': '__ne__',
-                 '>=': '__ge__',
-                 '<=': '__le__',
-                 '>': '__gt__',
-                 '<': '__le__',
-                 '==': '__eq__', }
+    OPERATORS = {
+        '!=': '__ne__',
+        '>=': '__ge__',
+        '<=': '__le__',
+        '>': '__gt__',
+        '<': '__le__',
+        '==': '__eq__',
+    }
 
     is_groupable = False
 
@@ -268,11 +271,18 @@ class CdeResource(Resource):
                 csvwriter.writerow(list(cs.values()))
             return si.getvalue().strip('\r\n')
 
+    def _jsonable(self, val):
+        if isinstance(val, Decimal):
+            return eval(str(val))
+        elif hasattr(val, '__pow__'):  # is numeric 
+            return val
+        return str(val)
+
     def _stringify(self, data):
         """Avoid JSON serialization errors
         by converting values in list of dicts
         into strings."""
-        return [{k: (d[k] if hasattr(d[k], '__pow__') else str(d[k]))
+        return [{k: self._jsonable(d[k])
                  for k in d} for d in (r._asdict() for r in data)]
 
     def _as_dict(self, fieldTuple, res):
@@ -281,8 +291,8 @@ class CdeResource(Resource):
     def with_metadata(self, results, args):
         """Paginates results and wraps them in metadata."""
 
-        paginated = results.limit(args['per_page']).offset((args['page'] - 1) *
-                                                           args['per_page'])
+        paginated = results.limit(args['per_page']).offset(
+            (args['page'] - 1) * args['per_page'])
         if hasattr(paginated, 'data'):
             paginated = paginated.data
         # count = results.count()
@@ -291,13 +301,15 @@ class CdeResource(Resource):
             serialized = self.schema.dump(paginated).data
         else:
             serialized = self._stringify(paginated)
-        return {'results': serialized,
-                'pagination': {
-                    'count': count,
-                    'page': args['page'],
-                    'pages': math.ceil(count / args['per_page']),
-                    'per_page': args['per_page'],
-                }, }
+        return {
+            'results': serialized,
+            'pagination': {
+                'count': count,
+                'page': args['page'],
+                'pages': math.ceil(count / args['per_page']),
+                'per_page': args['per_page'],
+            },
+        }
 
     def as_csv_response(self, results, filename, args):
         """Returns the data as a CSV"""
@@ -313,9 +325,10 @@ class CdeResource(Resource):
         if os.getenv('VCAP_SERVICES'):
             service_env = json.loads(os.getenv('VCAP_SERVICES'))
             cups_name = 'crime-data-api-creds'
-            creds = [u['credentials']
-                     for u in service_env['user-provided']
-                     if 'credentials' in u]
+            creds = [
+                u['credentials'] for u in service_env['user-provided']
+                if 'credentials' in u
+            ]
             key = creds[0]['API_KEY']
             if args.get('api_key') != key:
                 abort(401, message='Use correct `api_key` argument')

@@ -11,7 +11,11 @@ import crime_data.resources.agencies
 import crime_data.resources.arrests
 import crime_data.resources.incidents
 import crime_data.resources.offenses
+<<<<<<< 57623891731c52d2d56b743496fa5bb1a7977329
 import crime_data.resources.codes
+=======
+import crime_data.resources.arson
+>>>>>>> Added /arson/ endpoint
 from crime_data import commands, public, user
 from crime_data.assets import assets
 from crime_data.common.marshmallow_schemas import ma
@@ -136,3 +140,4 @@ def add_resources(app):
                      '/arrests/ethnicity/')
     api.add_resource(crime_data.resources.arrests.ArrestsCountByAgeSex,
                      '/arrests/age_sex/')
+    api.add_resource(crime_data.resources.arson.ArsonCountResource, '/arson/')
