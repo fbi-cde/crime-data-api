@@ -8,8 +8,6 @@ from crime_data.app import create_app
 from crime_data.database import db as _db
 from crime_data.settings import TestConfig
 
-from .factories import UserFactory
-
 
 @pytest.yield_fixture(scope='function')
 def app():
@@ -41,11 +39,3 @@ def db(app):
     # Explicitly close DB connection
     _db.session.close()
     _db.drop_all()
-
-
-@pytest.fixture
-def user(db):
-    """A user for the tests."""
-    user = UserFactory(password='myprecious')
-    db.session.commit()
-    return user
