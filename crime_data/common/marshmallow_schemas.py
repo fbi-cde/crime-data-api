@@ -93,6 +93,12 @@ class NibrsCriminalActSchema(ma.ModelSchema):
     criminal_act = ma.Nested(NibrsCriminalActTypeSchema)
 
 
+class NibrsUsingListSchema(ma.ModelSchema):
+    class Meta:
+        model = models.NibrsUsingList
+        exclude = ('suspect_using_id', )
+
+
 class NibrsWeaponTypeSchema(ma.ModelSchema):
     class Meta:
         model = models.NibrsWeaponType
@@ -170,6 +176,7 @@ class RefCountySchema(ma.ModelSchema):
 
     state = ma.Nested(RefStateSchema)
 
+
 class RefCountrySchema(ma.ModelSchema):
     class Meta:
         model = models.RefCounty
@@ -187,10 +194,17 @@ class RefMsaSchema(ma.ModelSchema):
 
     state = ma.Nested(RefContinentSchema)
 
+
 class RefPopulationFamilySchema(ma.ModelSchema):
     class Meta:
         model = models.RefPopulationFamily
         exclude = ('population_family_id', )
+
+
+class RefPopulationGroupSchema(ma.ModelSchema):
+    class Meta:
+        model = models.RefPopulationGroup
+        exclude = ('population_group_id', 'parent_pop_group', )
 
 
 class RefFieldOfficeSchema(ma.ModelSchema):
