@@ -233,7 +233,7 @@ class CdeResource(Resource):
             # Fill in any missing keys.
             empty = dict.fromkeys(set().union(*to_csv), 0)
             to_csv = [dict(empty, **d) for d in to_csv]
-            # exit(1)
+
             # Generate CSV.
             # TODO: Sort by columns.
             count = 0
