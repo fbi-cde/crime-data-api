@@ -1,0 +1,890 @@
+A review of all columns in the database to determine which ones should be
+excluded from a small data dump under version control to eliminate risk of
+PII exposure.  Most of the "unsafe" columns should also be deleted from the
+database itself before the API is made available.
+
+./scrub_private.sql performs the decisions made here.
+
+ safe  |         table_name          |         column_name          |          data_type          | max_length |      column_default       |   tuples    |            table_comment            |                                                                                                                                                                         column_comment
+-------+-----------------------------+------------------------------+-----------------------------+------------+---------------------------+-------------+-------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ - [x] | arson_month                 | arson_month_id               | bigint                      |            |                           |      534408 |                                     |
+ - [x] | arson_month                 | agency_id                    | bigint                      |            |                           |      534408 |                                     |
+ - [x] | arson_month                 | data_year                    | smallint                    |            |                           |      534408 |                                     |
+ - [x] | arson_month                 | month_num                    | smallint                    |            |                           |      534408 |                                     |
+ - [x] | arson_month                 | data_home                    | character                   |          1 | 'T'::bpchar               |      534408 |                                     |
+ - [x] | arson_month                 | source_flag                  | character                   |          1 |                           |      534408 |                                     | This field indicates the source of the data.  R came into the system as a report, I means the data was derived from NIBRS data.
+ - [x] | arson_month                 | reported_flag                | character                   |          1 |                           |      534408 |                                     |
+ - [ ] | arson_month                 | ddocname                     | character varying           |        100 |                           |      534408 |                                     |
+ - [x] | arson_month                 | month_included_in            | smallint                    |            |                           |      534408 |                                     |
+ - [x] | arson_month                 | report_date                  | timestamp without time zone |            |                           |      534408 |                                     |
+ - [x] | arson_month                 | prepared_date                | timestamp without time zone |            |                           |      534408 |                                     |
+ - [x] | arson_month                 | orig_format                  | character                   |          1 |                           |      534408 |                                     |
+ - [x] | arson_month                 | update_flag                  | character                   |          1 |                           |      534408 |                                     |
+ - [x] | arson_month                 | did                          | bigint                      |            |                           |      534408 |                                     |
+ - [x] | arson_month                 | ff_line_number               | bigint                      |            |                           |      534408 |                                     |
+ - [x] | arson_month_by_subcat       | arson_month_id               | bigint                      |            |                           |  6.9473e+06 |                                     |
+ - [x] | arson_month_by_subcat       | subcategory_id               | bigint                      |            |                           |  6.9473e+06 |                                     |
+ - [x] | arson_month_by_subcat       | reported_count               | integer                     |            |                           |  6.9473e+06 |                                     |
+ - [x] | arson_month_by_subcat       | reported_status              | smallint                    |            |                           |  6.9473e+06 |                                     |
+ - [x] | arson_month_by_subcat       | unfounded_count              | integer                     |            |                           |  6.9473e+06 |                                     |
+ - [x] | arson_month_by_subcat       | unfounded_status             | smallint                    |            |                           |  6.9473e+06 |                                     |
+ - [x] | arson_month_by_subcat       | actual_count                 | integer                     |            |                           |  6.9473e+06 |                                     |
+ - [x] | arson_month_by_subcat       | actual_status                | smallint                    |            |                           |  6.9473e+06 |                                     |
+ - [x] | arson_month_by_subcat       | cleared_count                | integer                     |            |                           |  6.9473e+06 |                                     |
+ - [x] | arson_month_by_subcat       | cleared_status               | smallint                    |            |                           |  6.9473e+06 |                                     |
+ - [x] | arson_month_by_subcat       | juvenile_cleared_count       | integer                     |            |                           |  6.9473e+06 |                                     |
+ - [x] | arson_month_by_subcat       | juvenile_cleared_status      | smallint                    |            |                           |  6.9473e+06 |                                     |
+ - [x] | arson_month_by_subcat       | uninhabited_count            | integer                     |            |                           |  6.9473e+06 |                                     |
+ - [x] | arson_month_by_subcat       | uninhabited_status           | smallint                    |            |                           |  6.9473e+06 |                                     |
+ - [x] | arson_month_by_subcat       | est_damage_value             | bigint                      |            |                           |  6.9473e+06 |                                     |
+ - [x] | arson_month_by_subcat       | est_damage_value_status      | smallint                    |            |                           |  6.9473e+06 |                                     |
+ - [x] | arson_subcategory           | subcategory_id               | bigint                      |            |                           |          13 |                                     |
+ - [x] | arson_subcategory           | subcategory_name             | character varying           |        100 |                           |          13 |                                     |
+ - [x] | arson_subcategory           | subcategory_code             | character varying           |         20 |                           |          13 |                                     |
+ - [x] | arson_subcategory           | subclass_id                  | integer                     |            |                           |          13 |                                     |
+ - [x] | arson_subcategory           | subcat_xml_path              | character varying           |       4000 |                           |          13 |                                     |
+ - [x] | arson_subclassification     | subclass_id                  | smallint                    |            |                           |           3 |                                     |
+ - [x] | arson_subclassification     | subclass_name                | character varying           |        100 |                           |           3 |                                     |
+ - [x] | arson_subclassification     | subclass_code                | character varying           |         20 |                           |           3 |                                     |
+ - [x] | arson_subclassification     | subclass_xml_path            | character varying           |       4000 |                           |           3 |                                     |
+ - [x] | asr_age_range               | age_range_id                 | bigint                      |            |                           |          52 |                                     |
+ - [x] | asr_age_range               | age_range_name               | character varying           |         20 |                           |          52 |                                     |
+ - [x] | asr_age_range               | age_range_code               | character varying           |         20 |                           |          52 |                                     |
+ - [x] | asr_age_range               | juvenile_flag                | character                   |          1 |                           |          52 |                                     |
+ - [x] | asr_age_range               | ff_sort_order                | character varying           |          3 |                           |          52 |                                     |
+ - [x] | asr_age_range               | age_sex                      | character varying           |          1 |                           |          52 |                                     |
+ - [x] | asr_age_range               | xml_code                     | character varying           |       2001 |                           |          52 |                                     |
+ - [x] | asr_age_sex_subcat          | asr_month_id                 | bigint                      |            |                           | 1.19373e+07 |                                     |
+ - [x] | asr_age_sex_subcat          | offense_subcat_id            | bigint                      |            |                           | 1.19373e+07 |                                     |
+ - [x] | asr_age_sex_subcat          | age_range_id                 | bigint                      |            |                           | 1.19373e+07 |                                     |
+ - [x] | asr_age_sex_subcat          | arrest_count                 | integer                     |            |                           | 1.19373e+07 |                                     |
+ - [x] | asr_age_sex_subcat          | arrest_status                | smallint                    |            |                           | 1.19373e+07 |                                     |
+ - [x] | asr_age_sex_subcat          | active_flag                  | character                   |          1 |                           | 1.19373e+07 |                                     |
+ - [x] | asr_age_sex_subcat          | prepared_date                | timestamp without time zone |            |                           | 1.19373e+07 |                                     |
+ - [x] | asr_age_sex_subcat          | report_date                  | timestamp without time zone |            |                           | 1.19373e+07 |                                     |
+ - [x] | asr_age_sex_subcat          | ff_line_number               | bigint                      |            |                           | 1.19373e+07 |                                     |
+ - [x] | asr_ethnicity               | ethnicity_id                 | bigint                      |            |                           |           3 |                                     |
+ - [x] | asr_ethnicity               | ethnicity_name               | character varying           |        100 |                           |           3 |                                     |
+ - [x] | asr_ethnicity               | ethnicity_code               | character varying           |         20 |                           |           3 |                                     |
+ - [x] | asr_ethnicity               | ff_sort_order                | character varying           |          3 |                           |           3 |                                     |
+ - [x] | asr_ethnicity_offense       | asr_month_id                 | bigint                      |            |                           |           0 |                                     |
+ - [x] | asr_ethnicity_offense       | offense_subcat_id            | bigint                      |            |                           |           0 |                                     |
+ - [x] | asr_ethnicity_offense       | ethnicity_id                 | bigint                      |            |                           |           0 |                                     |
+ - [x] | asr_ethnicity_offense       | juvenile_flag                | character                   |          1 |                           |           0 |                                     |
+ - [x] | asr_ethnicity_offense       | arrest_count                 | integer                     |            |                           |           0 |                                     |
+ - [x] | asr_ethnicity_offense       | arrest_status                | smallint                    |            |                           |           0 |                                     |
+ - [x] | asr_ethnicity_offense       | prepared_date                | timestamp without time zone |            |                           |           0 |                                     |
+ - [x] | asr_ethnicity_offense       | report_date                  | timestamp without time zone |            |                           |           0 |                                     |
+ - [x] | asr_ethnicity_offense       | ff_line_number               | bigint                      |            |                           |           0 |                                     |
+ - [x] | asr_juvenile_disposition    | asr_month_id                 | bigint                      |            |                           |       41915 |                                     |
+ - [x] | asr_juvenile_disposition    | report_date                  | timestamp without time zone |            |                           |       41915 |                                     |
+ - [x] | asr_juvenile_disposition    | prepared_date                | timestamp without time zone |            |                           |       41915 |                                     |
+ - [x] | asr_juvenile_disposition    | handled_within_dept          | integer                     |            |                           |       41915 |                                     |
+ - [x] | asr_juvenile_disposition    | juvenile_court               | integer                     |            |                           |       41915 |                                     |
+ - [x] | asr_juvenile_disposition    | welfare_agency               | integer                     |            |                           |       41915 |                                     |
+ - [x] | asr_juvenile_disposition    | other_police                 | integer                     |            |                           |       41915 |                                     |
+ - [x] | asr_juvenile_disposition    | adult_court                  | integer                     |            |                           |       41915 |                                     |
+ - [x] | asr_juvenile_disposition    | ff_line_number               | bigint                      |            |                           |       41915 |                                     |
+ - [x] | asr_month                   | asr_month_id                 | bigint                      |            |                           |      336463 |                                     |
+ - [x] | asr_month                   | agency_id                    | bigint                      |            |                           |      336463 |                                     |
+ - [x] | asr_month                   | data_year                    | smallint                    |            |                           |      336463 |                                     |
+ - [x] | asr_month                   | month_num                    | smallint                    |            |                           |      336463 |                                     |
+ - [x] | asr_month                   | source_flag                  | character                   |          1 |                           |      336463 |                                     |
+ - [x] | asr_month                   | reported_flag                | character                   |          1 |                           |      336463 |                                     |
+ - [x] | asr_month                   | orig_format                  | character                   |          1 |                           |      336463 |                                     | This is the format the report was in when it was first submitted to the system.  F for Flat File, W for Web Form, U for IEPDXML Upload, S for IEPDXML Service, B for BPEL, N for null or unavailable, and M for Multiple. When summarizing NIBRS data into the _month tables, a single months data could come from multiple sources.  If so the entry will be M
+ - [x] | asr_month                   | update_flag                  | character                   |          1 |                           |      336463 |                                     |
+ - [x] | asr_month                   | ff_line_number               | bigint                      |            |                           |      336463 |                                     |
+ - [ ] | asr_month                   | ddocname                     | character varying           |        100 | 'NULL'::character varying |      336463 |                                     |
+ - [ ] | asr_month                   | did                          | bigint                      |            |                           |      336463 |                                     |
+ - [x] | asr_month                   | data_home                    | character                   |          1 | 'T'::bpchar               |      336463 |                                     |
+ - [x] | asr_offense                 | offense_id                   | bigint                      |            |                           |          35 |                                     |
+ - [x] | asr_offense                 | offense_cat_id               | bigint                      |            |                           |          35 |                                     |
+ - [x] | asr_offense                 | offense_name                 | character varying           |        100 |                           |          35 |                                     |
+ - [x] | asr_offense                 | offense_code                 | character varying           |         20 |                           |          35 |                                     |
+ - [x] | asr_offense                 | total_flag                   | character                   |          1 |                           |          35 |                                     |
+ - [x] | asr_offense_category        | offense_cat_id               | bigint                      |            |                           |          30 |                                     |
+ - [x] | asr_offense_category        | offense_cat_name             | character varying           |        100 |                           |          30 |                                     |
+ - [x] | asr_offense_category        | offense_cat_code             | character varying           |         20 |                           |          30 |                                     |
+ - [x] | asr_offense_subcat          | offense_subcat_id            | bigint                      |            |                           |          50 |                                     |
+ - [x] | asr_offense_subcat          | offense_id                   | bigint                      |            |                           |          50 |                                     |
+ - [x] | asr_offense_subcat          | offense_subcat_name          | character varying           |        100 |                           |          50 |                                     |
+ - [x] | asr_offense_subcat          | offense_subcat_code          | character varying           |         20 |                           |          50 |                                     |
+ - [x] | asr_offense_subcat          | srs_offense_code             | character                   |          3 |                           |          50 |                                     |
+ - [x] | asr_offense_subcat          | master_offense_code          | smallint                    |            |                           |          50 |                                     |
+ - [x] | asr_offense_subcat          | total_flag                   | character                   |          1 |                           |          50 |                                     |
+ - [x] | asr_offense_subcat          | adult_juv_flag               | character                   |          1 |                           |          50 |                                     |
+ - [x] | asr_race_offense_subcat     | asr_month_id                 | bigint                      |            |                           | 4.37763e+06 |                                     |
+ - [x] | asr_race_offense_subcat     | offense_subcat_id            | bigint                      |            |                           | 4.37763e+06 |                                     |
+ - [x] | asr_race_offense_subcat     | race_id                      | bigint                      |            |                           | 4.37763e+06 |                                     |
+ - [x] | asr_race_offense_subcat     | juvenile_flag                | character                   |          1 |                           | 4.37763e+06 |                                     |
+ - [x] | asr_race_offense_subcat     | arrest_count                 | integer                     |            |                           | 4.37763e+06 |                                     |
+ - [x] | asr_race_offense_subcat     | arrest_status                | smallint                    |            |                           | 4.37763e+06 |                                     |
+ - [x] | asr_race_offense_subcat     | active_flag                  | character                   |          1 |                           | 4.37763e+06 |                                     |
+ - [x] | asr_race_offense_subcat     | prepared_date                | timestamp without time zone |            |                           | 4.37763e+06 |                                     |
+ - [x] | asr_race_offense_subcat     | report_date                  | timestamp without time zone |            |                           | 4.37763e+06 |                                     |
+ - [ ] | asr_race_offense_subcat     | ff_line_number               | bigint                      |            |                           | 4.37763e+06 |                                     |
+ - [x] | crime_type                  | crime_type_id                | smallint                    |            |                           |           4 |                                     |
+ - [x] | crime_type                  | crime_type_name              | character varying           |         50 |                           |           4 |                                     |
+ - [x] | crime_type                  | crime_type_sort_order        | smallint                    |            |                           |           4 |                                     |
+ - [x] | crime_type                  | crime_flag                   | character                   |          1 |                           |           4 |                                     |
+ - [x] | ct_arrestee                 | arrestee_id                  | bigint                      |            |                           |         537 |                                     |
+ - [x] | ct_arrestee                 | incident_id                  | bigint                      |            |                           |         537 |                                     |
+ - [x] | ct_arrestee                 | age                          | smallint                    |            |                           |         537 |                                     |
+ - [x] | ct_arrestee                 | sex_code                     | character                   |          1 |                           |         537 |                                     |
+ - [x] | ct_arrestee                 | ethnicity_id                 | smallint                    |            |                           |         537 |                                     |
+ - [x] | ct_arrestee                 | race_id                      | smallint                    |            |                           |         537 |                                     |
+ - [x] | ct_incident                 | incident_id                  | bigint                      |            |                           |        4052 |                                     |
+ - [x] | ct_incident                 | agency_id                    | bigint                      |            |                           |        4052 |                                     |
+ - [x] | ct_incident                 | data_year                    | smallint                    |            |                           |        4052 |                                     |
+ - [ ] | ct_incident                 | incident_number              | character varying           |         15 |                           |        4052 |                                     |
+ - [x] | ct_incident                 | incident_date                | timestamp without time zone |            |                           |        4052 |                                     |
+ - [x] | ct_incident                 | source_flag                  | character                   |          1 |                           |        4052 |                                     | This field indicates the source of the data.  R came into the system as a report, I means the data was derived from NIBRS data.
+ - [ ] | ct_incident                 | ddocname                     | character varying           |        100 |                           |        4052 |                                     |
+ - [x] | ct_incident                 | report_date                  | timestamp without time zone |            |                           |        4052 |                                     |
+ - [x] | ct_incident                 | prepared_date                | timestamp without time zone |            |                           |        4052 |                                     |
+ - [x] | ct_incident                 | report_date_flag             | character                   |          1 |                           |        4052 |                                     |
+ - [x] | ct_incident                 | incident_hour                | smallint                    |            |                           |        4052 |                                     |
+ - [x] | ct_incident                 | cleared_except_flag          | character                   |          1 |                           |        4052 |                                     |
+ - [x] | ct_incident                 | update_flag                  | character                   |          1 |                           |        4052 |                                     |
+ - [x] | ct_incident                 | ct_month_id                  | bigint                      |            |                           |        4052 |                                     |
+ - [ ] | ct_incident                 | ff_line_number               | bigint                      |            |                           |        4052 |                                     |
+ - [x] | ct_incident                 | data_home                    | character                   |          1 | 'T'::bpchar               |        4052 |                                     |
+ - [x] | ct_incident                 | orig_format                  | character                   |          1 |                           |        4052 |                                     |
+ - [x] | ct_incident                 | unknown_offender             | character                   |          1 |                           |        4052 |                                     |
+ - [ ] | ct_incident                 | did                          | bigint                      |            |                           |        4052 |                                     |
+ - [x] | ct_incident                 | nibrs_incident_id            | bigint                      |            |                           |        4052 |                                     |
+ - [x] | ct_month                    | ct_month_id                  | bigint                      |            |                           |      534408 |                                     |
+ - [x] | ct_month                    | agency_id                    | bigint                      |            |                           |      534408 |                                     |
+ - [x] | ct_month                    | month_num                    | smallint                    |            |                           |      534408 |                                     |
+ - [x] | ct_month                    | data_year                    | smallint                    |            |                           |      534408 |                                     |
+ - [x] | ct_month                    | reported_status              | character varying           |          1 |                           |      534408 |                                     |
+ - [x] | ct_month                    | reported_count               | integer                     |            |                           |      534408 |                                     |
+ - [x] | ct_month                    | update_flag                  | character                   |          1 | 'Y'::bpchar               |      534408 |                                     |
+ - [ ] | ct_month                    | ff_line_number               | bigint                      |            |                           |      534408 |                                     |
+ - [ ] | ct_month                    | ddocname                     | character varying           |        100 | 'NULL'::character varying |      534408 |                                     |
+ - [ ] | ct_month                    | did                          | bigint                      |            |                           |      534408 |                                     |
+ - [x] | ct_month                    | data_home                    | character                   |          1 | 'T'::bpchar               |      534408 |                                     |
+ - [x] | ct_month                    | orig_format                  | character                   |          1 |                           |      534408 |                                     |
+ - [x] | ct_offender                 | offender_id                  | bigint                      |            |                           |        2690 |                                     |
+ - [x] | ct_offender                 | incident_id                  | bigint                      |            |                           |        2690 |                                     |
+ - [x] | ct_offender                 | age                          | smallint                    |            |                           |        2690 |                                     |
+ - [x] | ct_offender                 | sex_code                     | character                   |          1 |                           |        2690 |                                     |
+ - [x] | ct_offender                 | ethnicity_id                 | smallint                    |            |                           |        2690 |                                     |
+ - [x] | ct_offender                 | race_id                      | smallint                    |            |                           |        2690 |                                     |
+ - [x] | ct_offense                  | offense_id                   | bigint                      |            |                           |        4620 |                                     |
+ - [x] | ct_offense                  | incident_id                  | bigint                      |            |                           |        4620 |                                     |
+ - [x] | ct_offense                  | offense_type_id              | bigint                      |            |                           |        4620 |                                     |
+ - [x] | ct_offense                  | location_id                  | bigint                      |            |                           |        4620 |                                     |
+ - [x] | ct_offense                  | ct_offense_flag              | character                   |          1 |                           |        4620 |                                     |
+ - [x] | ct_property                 | property_id                  | bigint                      |            |                           |        6374 |                                     |
+ - [x] | ct_property                 | prop_desc_id                 | smallint                    |            |                           |        6374 |                                     |
+ - [x] | ct_property                 | incident_id                  | bigint                      |            |                           |        6374 |                                     |
+ - [x] | ct_property                 | stolen_value                 | bigint                      |            |                           |        6374 |                                     |
+ - [x] | ct_property                 | recovered_flag               | character                   |          1 |                           |        6374 |                                     |
+ - [x] | ct_property                 | date_recovered               | timestamp without time zone |            |                           |        6374 |                                     |
+ - [x] | ct_property                 | recovered_value              | bigint                      |            |                           |        6374 |                                     |
+ - [x] | ct_victim                   | incident_id                  | bigint                      |            |                           |        4217 |                                     |
+ - [x] | ct_victim                   | victim_type_id               | smallint                    |            |                           |        4217 |                                     |
+ - [x] | ct_weapon                   | incident_id                  | bigint                      |            |                           |         137 |                                     |
+ - [x] | ct_weapon                   | weapon_id                    | smallint                    |            |                           |         137 |                                     |
+ - [x] | ct_weapon                   | ct_weapon_id                 | bigint                      |            |                           |         137 |                                     |
+ - [x] | hc_bias_motivation          | offense_id                   | bigint                      |            |                           |       11768 |                                     |
+ - [x] | hc_bias_motivation          | bias_id                      | smallint                    |            |                           |       11768 |                                     |
+ - [x] | hc_incident                 | incident_id                  | bigint                      |            |                           |       11392 |                                     |
+ - [x] | hc_incident                 | agency_id                    | bigint                      |            |                           |       11392 |                                     |
+ - [ ] | hc_incident                 | incident_no                  | character varying           |         20 |                           |       11392 |                                     |
+ - [x] | hc_incident                 | incident_date                | timestamp without time zone |            |                           |       11392 |                                     |
+ - [ ] | hc_incident                 | data_home                    | character                   |          1 |                           |       11392 |                                     |
+ - [x] | hc_incident                 | source_flag                  | character                   |          1 |                           |       11392 |                                     | This field indicates the source of the data.  R came into the system as a report, I means the data was derived from NIBRS data.
+ - [ ] | hc_incident                 | ddocname                     | character varying           |        100 |                           |       11392 |                                     |
+ - [x] | hc_incident                 | report_date                  | timestamp without time zone |            |                           |       11392 |                                     |
+ - [x] | hc_incident                 | prepared_date                | timestamp without time zone |            |                           |       11392 |                                     |
+ - [x] | hc_incident                 | victim_count                 | smallint                    |            |                           |       11392 |                                     |
+ - [x] | hc_incident                 | adult_victim_count           | smallint                    |            |                           |       11392 |                                     |
+ - [x] | hc_incident                 | incident_status              | smallint                    |            |                           |       11392 |                                     |
+ - [x] | hc_incident                 | juvenile_victim_count        | smallint                    |            |                           |       11392 |                                     |
+ - [x] | hc_incident                 | offender_count               | smallint                    |            |                           |       11392 |                                     |
+ - [x] | hc_incident                 | adult_offender_count         | smallint                    |            |                           |       11392 |                                     |
+ - [x] | hc_incident                 | juvenile_offender_count      | smallint                    |            |                           |       11392 |                                     |
+ - [x] | hc_incident                 | offender_race_id             | smallint                    |            |                           |       11392 |                                     |
+ - [x] | hc_incident                 | offender_ethnicity_id        | smallint                    |            |                           |       11392 |                                     |
+ - [x] | hc_incident                 | update_flag                  | character                   |          1 |                           |       11392 |                                     |
+ - [x] | hc_incident                 | hc_quarter_id                | bigint                      |            |                           |       11392 |                                     |
+ - [ ] | hc_incident                 | ff_line_number               | bigint                      |            |                           |       11392 |                                     |
+ - [ ] | hc_incident                 | orig_format                  | character                   |          1 |                           |       11392 |                                     |
+ - [ ] | hc_incident                 | did                          | bigint                      |            |                           |       11392 |                                     |
+ - [x] | hc_incident                 | nibrs_incident_id            | bigint                      |            |                           |       11392 |                                     |
+ - [x] | hc_offense                  | offense_id                   | bigint                      |            |                           |       11768 |                                     |
+ - [x] | hc_offense                  | incident_id                  | bigint                      |            |                           |       11768 |                                     |
+ - [x] | hc_offense                  | offense_type_id              | bigint                      |            |                           |       11768 |                                     |
+ - [x] | hc_offense                  | victim_count                 | smallint                    |            |                           |       11768 |                                     |
+ - [x] | hc_offense                  | location_id                  | bigint                      |            |                           |       11768 |                                     |
+ - [x] | hc_offense                  | nibrs_offense_id             | bigint                      |            |                           |       11768 |                                     |
+ - [x] | hc_quarter                  | agency_id                    | bigint                      |            |                           |      178128 |                                     |
+ - [x] | hc_quarter                  | quarter_num                  | smallint                    |            |                           |      178128 |                                     |
+ - [x] | hc_quarter                  | data_year                    | smallint                    |            |                           |      178128 |                                     |
+ - [x] | hc_quarter                  | reported_status              | character varying           |          1 |                           |      178128 |                                     |
+ - [x] | hc_quarter                  | reported_count               | bigint                      |            |                           |      178128 |                                     |
+ - [x] | hc_quarter                  | hc_quarter_id                | bigint                      |            |                           |      178128 |                                     |
+ - [x] | hc_quarter                  | update_flag                  | character                   |          1 | 'Y'::bpchar               |      178128 |                                     |
+ - [x] | hc_quarter                  | orig_format                  | character                   |          1 |                           |      178128 |                                     |
+ - [ ] | hc_quarter                  | ff_line_number               | bigint                      |            |                           |      178128 |                                     |
+ - [ ] | hc_quarter                  | ddocname                     | character varying           |        100 |                           |      178128 |                                     |
+ - [ ] | hc_quarter                  | did                          | bigint                      |            |                           |      178128 |                                     |
+ - [x] | hc_quarter                  | data_home                    | character                   |          1 | 'T'::bpchar               |      178128 |                                     |
+ - [x] | hc_victim                   | offense_id                   | bigint                      |            |                           |       11848 |                                     |
+ - [x] | hc_victim                   | victim_type_id               | smallint                    |            |                           |       11848 |                                     |
+ - [x] | ht_month                    | ht_month_id                  | bigint                      |            |                           |          16 |                                     |
+ - [x] | ht_month                    | agency_id                    | bigint                      |            |                           |          16 |                                     |
+ - [x] | ht_month                    | data_year                    | smallint                    |            |                           |          16 |                                     |
+ - [x] | ht_month                    | month_num                    | smallint                    |            |                           |          16 |                                     |
+ - [x] | ht_month                    | data_home                    | character                   |          1 | 'T'::bpchar               |          16 |                                     |
+ - [x] | ht_month                    | source_flag                  | character                   |          1 |                           |          16 |                                     | This field indicates the source of the data.  R came into the system as a report, I means the data was derived from NIBRS data.
+ - [ ] | ht_month                    | ddocname                     | character varying           |        100 |                           |          16 |                                     |
+ - [x] | ht_month                    | report_date                  | timestamp without time zone |            |                           |          16 |                                     |
+ - [x] | ht_month                    | prepared_date                | timestamp without time zone |            |                           |          16 |                                     |
+ - [ ] | ht_month                    | prepared_by_user             | character varying           |        100 |                           |          16 |                                     |
+ - [ ] | ht_month                    | prepared_by_email            | character varying           |        200 |                           |          16 |                                     |
+ - [x] | ht_month                    | orig_format                  | character                   |          1 |                           |          16 |                                     |
+ - [x] | ht_month                    | total_reported_count         | integer                     |            |                           |          16 |                                     |
+ - [x] | ht_month                    | total_unfounded_count        | integer                     |            |                           |          16 |                                     |
+ - [x] | ht_month                    | total_actual_count           | integer                     |            |                           |          16 |                                     |
+ - [x] | ht_month                    | total_cleared_count          | integer                     |            |                           |          16 |                                     |
+ - [x] | ht_month                    | total_juvenile_cleared_count | integer                     |            |                           |          16 |                                     |
+ - [x] | ht_month                    | update_flag                  | character                   |          1 |                           |          16 |                                     |
+ - [x] | ht_month                    | reported_flag                | character varying           |          1 |                           |          16 |                                     |
+ - [ ] | ht_month                    | did                          | bigint                      |            |                           |          16 |                                     |
+ - [ ] | ht_month                    | ff_line_number               | bigint                      |            |                           |          16 |                                     |
+ - [x] | ht_month_offense_subcat     | ht_month_id                  | bigint                      |            |                           |          32 |                                     |
+ - [x] | ht_month_offense_subcat     | offense_subcat_id            | bigint                      |            |                           |          32 |                                     |
+ - [x] | ht_month_offense_subcat     | reported_count               | integer                     |            |                           |          32 |                                     |
+ - [x] | ht_month_offense_subcat     | reported_status              | smallint                    |            |                           |          32 |                                     |
+ - [x] | ht_month_offense_subcat     | unfounded_count              | integer                     |            |                           |          32 |                                     |
+ - [x] | ht_month_offense_subcat     | unfounded_status             | smallint                    |            |                           |          32 |                                     |
+ - [x] | ht_month_offense_subcat     | actual_count                 | integer                     |            |                           |          32 |                                     |
+ - [x] | ht_month_offense_subcat     | actual_status                | smallint                    |            |                           |          32 |                                     |
+ - [x] | ht_month_offense_subcat     | cleared_count                | integer                     |            |                           |          32 |                                     |
+ - [x] | ht_month_offense_subcat     | cleared_status               | smallint                    |            |                           |          32 |                                     |
+ - [x] | ht_month_offense_subcat     | juvenile_cleared_count       | integer                     |            |                           |          32 |                                     |
+ - [x] | ht_month_offense_subcat     | juvenile_cleared_status      | smallint                    |            |                           |          32 |                                     |
+ - [x] | nibrs_activity_type         | activity_type_id             | smallint                    |            |                           |          11 |                                     |
+ - [x] | nibrs_activity_type         | activity_type_code           | character                   |          2 |                           |          11 |                                     |
+ - [x] | nibrs_activity_type         | activity_type_name           | character varying           |        100 |                           |          11 |                                     |
+ - [x] | nibrs_age                   | age_id                       | smallint                    |            |                           |           6 |                                     |
+ - [x] | nibrs_age                   | age_code                     | character                   |          2 |                           |           6 |                                     |
+ - [x] | nibrs_age                   | age_name                     | character varying           |        100 |                           |           6 |                                     |
+ - [x] | nibrs_arrest_type           | arrest_type_id               | smallint                    |            |                           |           3 |                                     |
+ - [x] | nibrs_arrest_type           | arrest_type_code             | character                   |          1 |                           |           3 |                                     |
+ - [x] | nibrs_arrest_type           | arrest_type_name             | character varying           |        100 |                           |           3 |                                     |
+ - [x] | nibrs_arrestee              | arrestee_id                  | bigint                      |            |                           | 3.23014e+06 |                                     |
+ - [x] | nibrs_arrestee              | incident_id                  | bigint                      |            |                           | 3.23014e+06 |                                     |
+ - [x] | nibrs_arrestee              | arrestee_seq_num             | bigint                      |            |                           | 3.23014e+06 |                                     |
+ - [ ] | nibrs_arrestee              | arrest_num                   | character varying           |         12 |                           | 3.23014e+06 |                                     |
+ - [x] | nibrs_arrestee              | arrest_date                  | timestamp without time zone |            |                           | 3.23014e+06 |                                     |
+ - [x] | nibrs_arrestee              | arrest_type_id               | smallint                    |            |                           | 3.23014e+06 |                                     |
+ - [x] | nibrs_arrestee              | multiple_indicator           | character                   |          1 |                           | 3.23014e+06 |                                     |
+ - [x] | nibrs_arrestee              | offense_type_id              | bigint                      |            |                           | 3.23014e+06 |                                     |
+ - [x] | nibrs_arrestee              | age_id                       | smallint                    |            |                           | 3.23014e+06 |                                     |
+ - [x] | nibrs_arrestee              | age_num                      | smallint                    |            |                           | 3.23014e+06 |                                     |
+ - [x] | nibrs_arrestee              | sex_code                     | character                   |          1 |                           | 3.23014e+06 |                                     |
+ - [x] | nibrs_arrestee              | race_id                      | smallint                    |            |                           | 3.23014e+06 |                                     |
+ - [x] | nibrs_arrestee              | ethnicity_id                 | smallint                    |            |                           | 3.23014e+06 |                                     |
+ - [x] | nibrs_arrestee              | resident_code                | character                   |          1 |                           | 3.23014e+06 |                                     |
+ - [x] | nibrs_arrestee              | under_18_disposition_code    | character                   |          1 |                           | 3.23014e+06 |                                     |
+ - [x] | nibrs_arrestee              | clearance_ind                | character                   |          1 |                           | 3.23014e+06 |                                     |
+ - [ ] | nibrs_arrestee              | ff_line_number               | bigint                      |            |                           | 3.23014e+06 |                                     |
+ - [x] | nibrs_arrestee              | age_range_low_num            | smallint                    |            |                           | 3.23014e+06 |                                     |
+ - [x] | nibrs_arrestee              | age_range_high_num           | smallint                    |            |                           | 3.23014e+06 |                                     |
+ - [x] | nibrs_arrestee_weapon       | arrestee_id                  | bigint                      |            |                           | 3.23344e+06 |                                     |
+ - [x] | nibrs_arrestee_weapon       | weapon_id                    | smallint                    |            |                           | 3.23344e+06 |                                     |
+ - [x] | nibrs_arrestee_weapon       | nibrs_arrestee_weapon_id     | bigint                      |            |                           | 3.23344e+06 |                                     |
+ - [x] | nibrs_assignment_type       | assignment_type_id           | smallint                    |            |                           |           7 |                                     |
+ - [x] | nibrs_assignment_type       | assignment_type_code         | character                   |          1 |                           |           7 |                                     |
+ - [x] | nibrs_assignment_type       | assignment_type_name         | character varying           |        100 |                           |           7 |                                     |
+ - [x] | nibrs_bias_list             | bias_id                      | smallint                    |            |                           |          36 |                                     |
+ - [x] | nibrs_bias_list             | bias_code                    | character                   |          2 |                           |          36 |                                     |
+ - [x] | nibrs_bias_list             | bias_name                    | character varying           |        100 |                           |          36 |                                     |
+ - [x] | nibrs_bias_motivation       | bias_id                      | smallint                    |            |                           | 1.10743e+07 |                                     |
+ - [x] | nibrs_bias_motivation       | offense_id                   | bigint                      |            |                           | 1.10743e+07 |                                     |
+ - [x] | nibrs_circumstances         | circumstances_id             | smallint                    |            |                           |          17 |                                     |
+ - [x] | nibrs_circumstances         | circumstances_type           | character                   |          1 |                           |          17 |                                     |
+ - [x] | nibrs_circumstances         | circumstances_code           | smallint                    |            |                           |          17 |                                     |
+ - [x] | nibrs_circumstances         | circumstances_name           | character varying           |        100 |                           |          17 |                                     |
+ - [x] | nibrs_cleared_except        | cleared_except_id            | smallint                    |            |                           |           6 |                                     |
+ - [x] | nibrs_cleared_except        | cleared_except_code          | character                   |          1 |                           |           6 |                                     |
+ - [x] | nibrs_cleared_except        | cleared_except_name          | character varying           |        100 |                           |           6 |                                     |
+ - [x] | nibrs_criminal_act          | criminal_act_id              | smallint                    |            |                           | 3.17709e+06 |                                     |
+ - [x] | nibrs_criminal_act          | offense_id                   | bigint                      |            |                           | 3.17709e+06 |                                     |
+ - [x] | nibrs_criminal_act_type     | criminal_act_id              | smallint                    |            |                           |          15 |                                     |
+ - [x] | nibrs_criminal_act_type     | criminal_act_code            | character                   |          1 |                           |          15 |                                     |
+ - [x] | nibrs_criminal_act_type     | criminal_act_name            | character varying           |        100 |                           |          15 |                                     |
+ - [x] | nibrs_drug_measure_type     | drug_measure_type_id         | smallint                    |            |                           |          11 |                                     |
+ - [x] | nibrs_drug_measure_type     | drug_measure_code            | character                   |          2 |                           |          11 |                                     |
+ - [x] | nibrs_drug_measure_type     | drug_measure_name            | character varying           |        100 |                           |          11 |                                     |
+ - [ ] | nibrs_eds                   | ddocname                     | character varying           |        100 |                           |           0 |                                     |
+ - [x] | nibrs_eds                   | data_year                    | smallint                    |            |                           |           0 |                                     |
+ - [x] | nibrs_eds                   | month_num                    | smallint                    |            |                           |           0 |                                     |
+ - [x] | nibrs_eds                   | relative_rec_num             | integer                     |            |                           |           0 |                                     |
+ - [x] | nibrs_eds                   | segment_action_type          | character                   |          1 |                           |           0 |                                     |
+ - [x] | nibrs_eds                   | ori                          | character                   |          9 |                           |           0 |                                     |
+ - [ ] | nibrs_eds                   | incident_num                 | character                   |         12 |                           |           0 |                                     |
+ - [x] | nibrs_eds                   | level                        | character                   |          1 |                           |           0 |                                     |
+ - [x] | nibrs_eds                   | offense_code                 | character                   |          3 |                           |           0 |                                     |
+ - [x] | nibrs_eds                   | person_seq_num               | character                   |          3 |                           |           0 |                                     |
+ - [x] | nibrs_eds                   | type_prop_loss               | character                   |          1 |                           |           0 |                                     |
+ - [x] | nibrs_eds                   | data_element_num             | character                   |          3 |                           |           0 |                                     |
+ - [x] | nibrs_eds                   | error_num                    | smallint                    |            |                           |           0 |                                     |
+ - [ ] | nibrs_eds                   | data_field                   | character                   |         12 |                           |           0 |                                     |
+ - [ ] | nibrs_eds                   | error_msg                    | character                   |         79 |                           |           0 |                                     |
+ - [x] | nibrs_eds                   | submission_ser_num           | integer                     |            |                           |           0 |                                     |
+ - [x] | nibrs_ethnicity             | ethnicity_id                 | smallint                    |            |                           |           4 | Ethnicity reporting may have ceased |
+ - [x] | nibrs_ethnicity             | ethnicity_code               | character                   |          1 |                           |           4 | Ethnicity reporting may have ceased |
+ - [x] | nibrs_ethnicity             | ethnicity_name               | character varying           |        100 |                           |           4 | Ethnicity reporting may have ceased |
+ - [x] | nibrs_ethnicity             | hc_flag                      | character varying           |          1 | 'Y'::character varying    |           4 | Ethnicity reporting may have ceased |
+ - [x] | nibrs_grpb_arrest           | grpb_arrest_id               | bigint                      |            |                           |           0 |                                     |
+ - [x] | nibrs_grpb_arrest           | agency_id                    | bigint                      |            |                           |           0 |                                     |
+ - [ ] | nibrs_grpb_arrest           | arrest_num                   | character varying           |         15 |                           |           0 |                                     |
+ - [x] | nibrs_grpb_arrest           | arrest_date                  | timestamp without time zone |            |                           |           0 |                                     |
+ - [x] | nibrs_grpb_arrest           | arrest_seq_num               | smallint                    |            |                           |           0 |                                     |
+ - [x] | nibrs_grpb_arrest           | city                         | character varying           |          4 |                           |           0 |                                     |
+ - [x] | nibrs_grpb_arrest           | arrest_type_id               | smallint                    |            |                           |           0 |                                     |
+ - [x] | nibrs_grpb_arrest           | offense_type_id              | bigint                      |            |                           |           0 |                                     |
+ - [x] | nibrs_grpb_arrest           | age_id                       | smallint                    |            |                           |           0 |                                     |
+ - [x] | nibrs_grpb_arrest           | sex_code                     | character                   |          1 |                           |           0 |                                     |
+ - [x] | nibrs_grpb_arrest           | race_id                      | smallint                    |            |                           |           0 |                                     |
+ - [x] | nibrs_grpb_arrest           | ethnicity_id                 | smallint                    |            |                           |           0 |                                     |
+ - [x] | nibrs_grpb_arrest           | resident_code                | character                   |          1 |                           |           0 |                                     |
+ - [x] | nibrs_grpb_arrest           | under_18_disposition_code    | character                   |          1 |                           |           0 |                                     |
+ - [x] | nibrs_grpb_arrest           | age_num                      | smallint                    |            |                           |           0 |                                     |
+ - [x] | nibrs_grpb_arrest           | arrest_year                  | smallint                    |            |                           |           0 |                                     |
+ - [ ] | nibrs_grpb_arrest           | ff_line_number               | bigint                      |            |                           |           0 |                                     |
+ - [x] | nibrs_grpb_arrest           | data_home                    | character varying           |          1 |                           |           0 |                                     |
+ - [ ] | nibrs_grpb_arrest           | ddocname                     | character varying           |        100 |                           |           0 |                                     |
+ - [ ] | nibrs_grpb_arrest           | did                          | bigint                      |            |                           |           0 |                                     |
+ - [x] | nibrs_grpb_arrest           | nibrs_month_id               | bigint                      |            |                           |           0 |                                     |
+ - [x] | nibrs_grpb_arrest           | age_range_low_num            | smallint                    |            |                           |           0 |                                     |
+ - [x] | nibrs_grpb_arrest           | age_range_high_num           | smallint                    |            |                           |           0 |                                     |
+ - [x] | nibrs_grpb_arrest_weapon    | grpb_arrest_id               | bigint                      |            |                           |           0 |                                     |
+ - [x] | nibrs_grpb_arrest_weapon    | weapon_id                    | smallint                    |            |                           |           0 |                                     |
+ - [x] | nibrs_grpb_arrest_weapon    | nibrs_grpb_arrest_weapon_id  | bigint                      |            |                           |           0 |                                     |
+ - [x] | nibrs_incident              | agency_id                    | bigint                      |            |                           | 9.91856e+06 |                                     |
+ - [x] | nibrs_incident              | incident_id                  | bigint                      |            |                           | 9.91856e+06 |                                     |
+ - [x] | nibrs_incident              | nibrs_month_id               | bigint                      |            |                           | 9.91856e+06 |                                     |
+ - [x] | nibrs_incident              | incident_number              | character varying           |         15 |                           | 9.91856e+06 |                                     |
+ - [x] | nibrs_incident              | cargo_theft_flag             | character                   |          1 |                           | 9.91856e+06 |                                     |
+ - [x] | nibrs_incident              | submission_date              | timestamp without time zone |            |                           | 9.91856e+06 |                                     |
+ - [x] | nibrs_incident              | incident_date                | timestamp without time zone |            |                           | 9.91856e+06 |                                     |
+ - [x] | nibrs_incident              | report_date_flag             | character                   |          1 |                           | 9.91856e+06 |                                     |
+ - [x] | nibrs_incident              | incident_hour                | smallint                    |            |                           | 9.91856e+06 |                                     |
+ - [x] | nibrs_incident              | cleared_except_id            | smallint                    |            |                           | 9.91856e+06 |                                     |
+ - [x] | nibrs_incident              | cleared_except_date          | timestamp without time zone |            |                           | 9.91856e+06 |                                     |
+ - [x] | nibrs_incident              | incident_status              | smallint                    |            |                           | 9.91856e+06 |                                     |
+ - [x] | nibrs_incident              | data_home                    | character                   |          1 |                           | 9.91856e+06 |                                     |
+ - [ ] | nibrs_incident              | ddocname                     | character varying           |        100 |                           | 9.91856e+06 |                                     |
+ - [x] | nibrs_incident              | orig_format                  | character                   |          1 |                           | 9.91856e+06 |                                     | This is the format the report was in when it was first submitted to the system.  F for Flat File, W for Web Form, U for IEPDXML Upload, S for IEPDXML Service, B for BPEL, N for null or unavailable.
+ - [ ] | nibrs_incident              | ff_line_number               | bigint                      |            |                           | 9.91856e+06 |                                     |
+ - [ ] | nibrs_incident              | did                          | bigint                      |            |                           | 9.91856e+06 |                                     |
+ - [x] | nibrs_injury                | injury_id                    | smallint                    |            |                           |           8 |                                     |
+ - [x] | nibrs_injury                | injury_code                  | character                   |          1 |                           |           8 |                                     |
+ - [x] | nibrs_injury                | injury_name                  | character varying           |        100 |                           |           8 |                                     |
+ - [x] | nibrs_justifiable_force     | justifiable_force_id         | smallint                    |            |                           |           8 |                                     |
+ - [x] | nibrs_justifiable_force     | justifiable_force_code       | character                   |          1 |                           |           8 |                                     |
+ - [x] | nibrs_justifiable_force     | justifiable_force_name       | character varying           |        100 |                           |           8 |                                     |
+ - [x] | nibrs_location_type         | location_id                  | bigint                      |            |                           |          47 |                                     |
+ - [x] | nibrs_location_type         | location_code                | character                   |          2 |                           |          47 |                                     |
+ - [x] | nibrs_location_type         | location_name                | character varying           |        100 |                           |          47 |                                     |
+ - [x] | nibrs_month                 | nibrs_month_id               | bigint                      |            |                           |      537396 |                                     |
+ - [x] | nibrs_month                 | agency_id                    | bigint                      |            |                           |      537396 |                                     |
+ - [x] | nibrs_month                 | month_num                    | smallint                    |            |                           |      537396 |                                     |
+ - [x] | nibrs_month                 | data_year                    | smallint                    |            |                           |      537396 |                                     |
+ - [x] | nibrs_month                 | reported_status              | character varying           |          1 |                           |      537396 |                                     |
+ - [x] | nibrs_month                 | report_date                  | timestamp without time zone |            |                           |      537396 |                                     |
+ - [x] | nibrs_month                 | prepared_date                | timestamp without time zone |            |                           |      537396 |                                     |
+ - [x] | nibrs_month                 | update_flag                  | character                   |          1 | 'NULL'::bpchar            |      537396 |                                     |
+ - [x] | nibrs_month                 | orig_format                  | character                   |          1 | 'NULL'::bpchar            |      537396 |                                     | This is the format the report was in when it was first submitted to the system.  F for Flat File, W for Web Form, U for IEPDXML Upload, S for IEPDXML Service, B for BPEL, N for null or unavailable, and M for Multiple. When summarizing NIBRS data into the _month tables, a single months data could come from multiple sources.  If so the entry will be M
+ - [ ] | nibrs_month                 | ff_line_number               | bigint                      |            |                           |      537396 |                                     |
+ - [x] | nibrs_month                 | data_home                    | character varying           |          1 |                           |      537396 |                                     |
+ - [ ] | nibrs_month                 | ddocname                     | character varying           |         50 |                           |      537396 |                                     |
+ - [ ] | nibrs_month                 | did                          | bigint                      |            |                           |      537396 |                                     |
+ - [x] | nibrs_offender              | offender_id                  | bigint                      |            |                           | 1.13211e+07 |                                     |
+ - [x] | nibrs_offender              | incident_id                  | bigint                      |            |                           | 1.13211e+07 |                                     |
+ - [x] | nibrs_offender              | offender_seq_num             | smallint                    |            |                           | 1.13211e+07 |                                     |
+ - [x] | nibrs_offender              | age_id                       | smallint                    |            |                           | 1.13211e+07 |                                     |
+ - [x] | nibrs_offender              | age_num                      | smallint                    |            |                           | 1.13211e+07 |                                     |
+ - [x] | nibrs_offender              | sex_code                     | character                   |          1 |                           | 1.13211e+07 |                                     |
+ - [x] | nibrs_offender              | race_id                      | smallint                    |            |                           | 1.13211e+07 |                                     |
+ - [x] | nibrs_offender              | ethnicity_id                 | smallint                    |            |                           | 1.13211e+07 |                                     |
+ - [ ] | nibrs_offender              | ff_line_number               | bigint                      |            |                           | 1.13211e+07 |                                     |
+ - [x] | nibrs_offender              | age_range_low_num            | smallint                    |            |                           | 1.13211e+07 |                                     |
+ - [x] | nibrs_offender              | age_range_high_num           | smallint                    |            |                           | 1.13211e+07 |                                     |
+ - [x] | nibrs_offense               | offense_id                   | bigint                      |            |                           | 1.10743e+07 |                                     |
+ - [x] | nibrs_offense               | incident_id                  | bigint                      |            |                           | 1.10743e+07 |                                     |
+ - [x] | nibrs_offense               | offense_type_id              | bigint                      |            |                           | 1.10743e+07 |                                     |
+ - [x] | nibrs_offense               | attempt_complete_flag        | character                   |          1 |                           | 1.10743e+07 |                                     |
+ - [x] | nibrs_offense               | location_id                  | bigint                      |            |                           | 1.10743e+07 |                                     |
+ - [x] | nibrs_offense               | num_premises_entered         | smallint                    |            |                           | 1.10743e+07 |                                     |
+ - [x] | nibrs_offense               | method_entry_code            | character                   |          1 |                           | 1.10743e+07 |                                     |
+ - [ ] | nibrs_offense               | ff_line_number               | bigint                      |            |                           | 1.10743e+07 |                                     |
+ - [x] | nibrs_offense_type          | offense_type_id              | bigint                      |            |                           |          64 |                                     |
+ - [x] | nibrs_offense_type          | offense_code                 | character varying           |          5 |                           |          64 |                                     |
+ - [x] | nibrs_offense_type          | offense_name                 | character varying           |        100 |                           |          64 |                                     |
+ - [x] | nibrs_offense_type          | crime_against                | character varying           |        100 |                           |          64 |                                     |
+ - [x] | nibrs_offense_type          | ct_flag                      | character                   |          1 |                           |          64 |                                     |
+ - [x] | nibrs_offense_type          | hc_flag                      | character                   |          1 |                           |          64 |                                     |
+ - [x] | nibrs_offense_type          | hc_code                      | character varying           |          5 |                           |          64 |                                     |
+ - [x] | nibrs_offense_type          | offense_category_name        | character varying           |        100 |                           |          64 |                                     |
+ - [x] | nibrs_prop_desc_type        | prop_desc_id                 | smallint                    |            |                           |          68 |                                     |
+ - [x] | nibrs_prop_desc_type        | prop_desc_code               | character                   |          2 |                           |          68 |                                     |
+ - [x] | nibrs_prop_desc_type        | prop_desc_name               | character varying           |        100 |                           |          68 |                                     |
+ - [x] | nibrs_prop_loss_type        | prop_loss_id                 | smallint                    |            |                           |           8 |                                     |
+ - [x] | nibrs_prop_loss_type        | prop_loss_name               | character varying           |        100 |                           |           8 |                                     |
+ - [x] | nibrs_property              | property_id                  | bigint                      |            |                           |  1.2164e+07 |                                     |
+ - [x] | nibrs_property              | incident_id                  | bigint                      |            |                           |  1.2164e+07 |                                     |
+ - [x] | nibrs_property              | prop_loss_id                 | smallint                    |            |                           |  1.2164e+07 |                                     |
+ - [x] | nibrs_property              | stolen_count                 | smallint                    |            |                           |  1.2164e+07 |                                     |
+ - [x] | nibrs_property              | recovered_count              | smallint                    |            |                           |  1.2164e+07 |                                     |
+ - [ ] | nibrs_property              | ff_line_number               | bigint                      |            |                           |  1.2164e+07 |                                     |
+ - [x] | nibrs_property_desc         | property_id                  | bigint                      |            |                           |  1.2164e+07 |                                     |
+ - [x] | nibrs_property_desc         | prop_desc_id                 | smallint                    |            |                           |  1.2164e+07 |                                     |
+ - [x] | nibrs_property_desc         | property_value               | bigint                      |            |                           |  1.2164e+07 |                                     |
+ - [x] | nibrs_property_desc         | date_recovered               | timestamp without time zone |            |                           |  1.2164e+07 |                                     |
+ - [x] | nibrs_property_desc         | nibrs_prop_desc_id           | bigint                      |            |                           |  1.2164e+07 |                                     |
+ - [x] | nibrs_relationship          | relationship_id              | smallint                    |            |                           |          26 |                                     |
+ - [x] | nibrs_relationship          | relationship_code            | character                   |          2 |                           |          26 |                                     |
+ - [x] | nibrs_relationship          | relationship_name            | character varying           |        100 |                           |          26 |                                     |
+ - [x] | nibrs_sum_month_temp        | nibrs_month_id               | bigint                      |            |                           |           0 |                                     |
+ - [x] | nibrs_sum_month_temp        | agency_id                    | bigint                      |            |                           |           0 |                                     |
+ - [x] | nibrs_sum_month_temp        | month_num                    | smallint                    |            |                           |           0 |                                     |
+ - [x] | nibrs_sum_month_temp        | data_year                    | smallint                    |            |                           |           0 |                                     |
+ - [x] | nibrs_sum_month_temp        | reported_status              | character                   |          1 |                           |           0 |                                     |
+ - [x] | nibrs_sum_month_temp        | report_date                  | timestamp without time zone |            |                           |           0 |                                     |
+ - [x] | nibrs_sum_month_temp        | prepared_date                | timestamp without time zone |            |                           |           0 |                                     |
+ - [x] | nibrs_sum_month_temp        | orig_format                  | character                   |          1 |                           |           0 |                                     |
+ - [ ] | nibrs_sum_month_temp        | ff_line_number               | bigint                      |            |                           |           0 |                                     |
+ - [x] | nibrs_sum_month_temp        | data_home                    | character                   |          1 |                           |           0 |                                     |
+ - [ ] | nibrs_sum_month_temp        | ddocname                     | character varying           |         50 |                           |           0 |                                     |
+ - [ ] | nibrs_sum_month_temp        | did                          | bigint                      |            |                           |           0 |                                     |
+ - [x] | nibrs_sum_month_temp        | nibrs_ct_flag                | character                   |          1 |                           |           0 |                                     |
+ - [x] | nibrs_sum_month_temp        | nibrs_hc_flag                | character                   |          1 |                           |           0 |                                     |
+ - [x] | nibrs_sum_month_temp        | nibrs_leoka_flag             | character                   |          1 |                           |           0 |                                     |
+ - [x] | nibrs_sum_month_temp        | nibrs_arson_flag             | character                   |          1 |                           |           0 |                                     |
+ - [x] | nibrs_sum_month_temp        | nibrs_ht_flag                | character                   |          1 |                           |           0 |                                     |
+ - [x] | nibrs_suspect_using         | suspect_using_id             | smallint                    |            |                           | 1.11578e+07 |                                     |
+ - [x] | nibrs_suspect_using         | offense_id                   | bigint                      |            |                           | 1.11578e+07 |                                     |
+ - [x] | nibrs_suspected_drug        | suspected_drug_type_id       | smallint                    |            |                           | 1.04359e+06 |                                     |
+ - [x] | nibrs_suspected_drug        | property_id                  | bigint                      |            |                           | 1.04359e+06 |                                     |
+ - [x] | nibrs_suspected_drug        | est_drug_qty                 | double precision            |            |                           | 1.04359e+06 |                                     |
+ - [x] | nibrs_suspected_drug        | drug_measure_type_id         | smallint                    |            |                           | 1.04359e+06 |                                     |
+ - [x] | nibrs_suspected_drug        | nibrs_suspected_drug_id      | bigint                      |            |                           | 1.04359e+06 |                                     |
+ - [x] | nibrs_suspected_drug_type   | suspected_drug_type_id       | smallint                    |            |                           |          18 |                                     |
+ - [x] | nibrs_suspected_drug_type   | suspected_drug_code          | character                   |          1 |                           |          18 |                                     |
+ - [x] | nibrs_suspected_drug_type   | suspected_drug_name          | character varying           |        100 |                           |          18 |                                     |
+ - [x] | nibrs_using_list            | suspect_using_id             | smallint                    |            |                           |           4 |                                     |
+ - [x] | nibrs_using_list            | suspect_using_code           | character                   |          1 |                           |           4 |                                     |
+ - [x] | nibrs_using_list            | suspect_using_name           | character varying           |        100 |                           |           4 |                                     |
+ - [x] | nibrs_victim                | victim_id                    | bigint                      |            |                           | 1.10982e+07 |                                     |
+ - [x] | nibrs_victim                | incident_id                  | bigint                      |            |                           | 1.10982e+07 |                                     |
+ - [x] | nibrs_victim                | victim_seq_num               | smallint                    |            |                           | 1.10982e+07 |                                     |
+ - [x] | nibrs_victim                | victim_type_id               | smallint                    |            |                           | 1.10982e+07 |                                     |
+ - [x] | nibrs_victim                | assignment_type_id           | smallint                    |            |                           | 1.10982e+07 |                                     |
+ - [x] | nibrs_victim                | activity_type_id             | smallint                    |            |                           | 1.10982e+07 |                                     |
+ - [x] | nibrs_victim                | outside_agency_id            | bigint                      |            |                           | 1.10982e+07 |                                     |
+ - [x] | nibrs_victim                | age_id                       | smallint                    |            |                           | 1.10982e+07 |                                     |
+ - [x] | nibrs_victim                | age_num                      | smallint                    |            |                           | 1.10982e+07 |                                     |
+ - [x] | nibrs_victim                | sex_code                     | character                   |          1 |                           | 1.10982e+07 |                                     |
+ - [x] | nibrs_victim                | race_id                      | smallint                    |            |                           | 1.10982e+07 |                                     |
+ - [x] | nibrs_victim                | ethnicity_id                 | smallint                    |            |                           | 1.10982e+07 |                                     |
+ - [x] | nibrs_victim                | resident_status_code         | character                   |          1 |                           | 1.10982e+07 |                                     |
+ - [x] | nibrs_victim                | agency_data_year             | smallint                    |            |                           | 1.10982e+07 |                                     |
+ - [ ] | nibrs_victim                | ff_line_number               | bigint                      |            |                           | 1.10982e+07 |                                     |
+ - [x] | nibrs_victim                | age_range_low_num            | smallint                    |            |                           | 1.10982e+07 |                                     |
+ - [x] | nibrs_victim                | age_range_high_num           | smallint                    |            |                           | 1.10982e+07 |                                     |
+ - [x] | nibrs_victim_circumstances  | victim_id                    | bigint                      |            |                           |      414839 |                                     |
+ - [x] | nibrs_victim_circumstances  | circumstances_id             | smallint                    |            |                           |      414839 |                                     |
+ - [x] | nibrs_victim_circumstances  | justifiable_force_id         | smallint                    |            |                           |      414839 |                                     |
+ - [x] | nibrs_victim_injury         | victim_id                    | bigint                      |            |                           |  2.2814e+06 |                                     |
+ - [x] | nibrs_victim_injury         | injury_id                    | smallint                    |            |                           |  2.2814e+06 |                                     |
+ - [x] | nibrs_victim_offender_rel   | victim_id                    | bigint                      |            |                           |  3.2777e+06 |                                     |
+ - [x] | nibrs_victim_offender_rel   | offender_id                  | bigint                      |            |                           |  3.2777e+06 |                                     |
+ - [x] | nibrs_victim_offender_rel   | relationship_id              | smallint                    |            |                           |  3.2777e+06 |                                     |
+ - [x] | nibrs_victim_offender_rel   | nibrs_victim_offender_id     | bigint                      |            |                           |  3.2777e+06 |                                     |
+ - [x] | nibrs_victim_offense        | victim_id                    | bigint                      |            |                           | 1.20517e+07 |                                     |
+ - [x] | nibrs_victim_offense        | offense_id                   | bigint                      |            |                           | 1.20517e+07 |                                     |
+ - [x] | nibrs_victim_type           | victim_type_id               | smallint                    |            |                           |           9 |                                     |
+ - [x] | nibrs_victim_type           | victim_type_code             | character                   |          1 |                           |           9 |                                     |
+ - [x] | nibrs_victim_type           | victim_type_name             | character varying           |        100 |                           |           9 |                                     |
+ - [x] | nibrs_weapon                | weapon_id                    | smallint                    |            |                           | 2.17076e+06 |                                     |
+ - [x] | nibrs_weapon                | offense_id                   | bigint                      |            |                           | 2.17076e+06 |                                     |
+ - [x] | nibrs_weapon                | nibrs_weapon_id              | bigint                      |            |                           | 2.17076e+06 |                                     |
+ - [x] | nibrs_weapon_type           | weapon_id                    | smallint                    |            |                           |          28 |                                     |
+ - [x] | nibrs_weapon_type           | weapon_code                  | character varying           |          3 |                           |          28 |                                     |
+ - [x] | nibrs_weapon_type           | weapon_name                  | character varying           |        100 |                           |          28 |                                     |
+ - [x] | nibrs_weapon_type           | shr_flag                     | character                   |          1 |                           |          28 |                                     |
+ - [x] | offense_classification      | classification_id            | smallint                    |            |                           |           5 |                                     |
+ - [x] | offense_classification      | classification_name          | character varying           |         50 |                           |           5 |                                     |
+ - [x] | offense_classification      | class_sort_order             | smallint                    |            |                           |           5 |                                     |
+ - [x] | ref_agency                  | agency_id                    | bigint                      |            |                           |       23663 |                                     |
+ - [x] | ref_agency                  | ori                          | character                   |          9 |                           |       23663 |                                     |
+ - [x] | ref_agency                  | legacy_ori                   | character                   |          9 |                           |       23663 |                                     |
+ - [x] | ref_agency                  | ucr_agency_name              | character varying           |        100 |                           |       23663 |                                     |
+ - [x] | ref_agency                  | ncic_agency_name             | character varying           |        100 |                           |       23663 |                                     |
+ - [x] | ref_agency                  | pub_agency_name              | character varying           |        100 |                           |       23663 |                                     |
+ - [x] | ref_agency                  | agency_type_id               | smallint                    |            |                           |       23663 |                                     |
+ - [ ] | ref_agency                  | special_mailing_group        | character                   |          1 |                           |       23663 |                                     |
+ - [ ] | ref_agency                  | special_mailing_address      | character                   |          1 |                           |       23663 |                                     |
+ - [x] | ref_agency                  | tribe_id                     | bigint                      |            |                           |       23663 |                                     |
+ - [x] | ref_agency                  | city_id                      | bigint                      |            |                           |       23663 |                                     |
+ - [x] | ref_agency                  | state_id                     | smallint                    |            |                           |       23663 |                                     |
+ - [x] | ref_agency                  | campus_id                    | bigint                      |            |                           |       23663 |                                     |
+ - [x] | ref_agency                  | agency_status                | character                   |          1 |                           |       23663 |                                     |
+ - [x] | ref_agency                  | judicial_dist_code           | character varying           |          4 |                           |       23663 |                                     |
+ - [x] | ref_agency                  | submitting_agency_id         | bigint                      |            |                           |       23663 |                                     |
+ - [x] | ref_agency                  | fid_code                     | character                   |          2 |                           |       23663 |                                     |
+ - [x] | ref_agency                  | department_id                | smallint                    |            |                           |       23663 |                                     |
+ - [x] | ref_agency                  | added_date                   | timestamp without time zone |            |                           |       23663 |                                     |
+ - [x] | ref_agency                  | change_timestamp             | timestamp without time zone |            |                           |       23663 |                                     |
+ - [ ] | ref_agency                  | change_user                  | character varying           |        100 |                           |       23663 |                                     |
+ - [x] | ref_agency                  | legacy_notify_agency         | character                   |          1 |                           |       23663 |                                     |
+ - [x] | ref_agency                  | dormant_year                 | smallint                    |            |                           |       23663 |                                     |
+ - [x] | ref_agency                  | population_family_id         | smallint                    |            | 0                         |       23663 |                                     |
+ - [x] | ref_agency                  | field_office_id              | bigint                      |            |                           |       23663 |                                     |
+ - [x] | ref_agency_county           | agency_id                    | bigint                      |            |                           |       45936 |                                     |
+ - [x] | ref_agency_county           | county_id                    | bigint                      |            |                           |       45936 |                                     |
+ - [x] | ref_agency_county           | metro_div_id                 | bigint                      |            |                           |       45936 |                                     |
+ - [x] | ref_agency_county           | core_city_flag               | character                   |          1 |                           |       45936 |                                     |
+ - [x] | ref_agency_county           | data_year                    | smallint                    |            |                           |       45936 |                                     |
+ - [x] | ref_agency_county           | population                   | bigint                      |            |                           |       45936 |                                     |
+ - [x] | ref_agency_county           | census                       | bigint                      |            |                           |       45936 |                                     |
+ - [x] | ref_agency_county           | legacy_county_code           | character varying           |         20 |                           |       45936 |                                     |
+ - [x] | ref_agency_county           | legacy_msa_code              | character varying           |         20 |                           |       45936 |                                     |
+ - [x] | ref_agency_county           | source_flag                  | character                   |          1 |                           |       45936 |                                     |
+ - [x] | ref_agency_county           | change_timestamp             | timestamp without time zone |            |                           |       45936 |                                     |
+ - [ ] | ref_agency_county           | change_user                  | character varying           |        100 |                           |       45936 |                                     |
+ - [x] | ref_agency_covered_by       | agency_id                    | bigint                      |            |                           |        7605 |                                     |
+ - [x] | ref_agency_covered_by       | data_year                    | smallint                    |            |                           |        7605 |                                     |
+ - [x] | ref_agency_covered_by       | covered_by_agency_id         | bigint                      |            |                           |        7605 |                                     |
+ - [x] | ref_agency_data_content     | agency_id                    | bigint                      |            |                           |       45745 |                                     |
+ - [x] | ref_agency_data_content     | data_year                    | smallint                    |            |                           |       45745 |                                     |
+ - [x] | ref_agency_data_content     | reporting_type               | character                   |          1 |                           |       45745 |                                     |
+ - [x] | ref_agency_data_content     | nibrs_ct_flag                | character                   |          1 |                           |       45745 |                                     |
+ - [x] | ref_agency_data_content     | nibrs_hc_flag                | character                   |          1 |                           |       45745 |                                     |
+ - [x] | ref_agency_data_content     | nibrs_leoka_flag             | character                   |          1 |                           |       45745 |                                     |
+ - [x] | ref_agency_data_content     | nibrs_arson_flag             | character                   |          1 |                           |       45745 |                                     |
+ - [x] | ref_agency_data_content     | summary_rape_def             | character                   |          1 |                           |       45745 |                                     |
+ - [x] | ref_agency_data_content     | nibrs_ht_flag                | character                   |          1 |                           |       45745 |                                     |
+ - [x] | ref_agency_poc              | poc_id                       | bigint                      |            |                           |       22873 |                                     |
+ - [x] | ref_agency_poc              | agency_id                    | bigint                      |            |                           |       22873 |                                     |
+ - [x] | ref_agency_poc              | primary_poc_flag             | character                   |          1 |                           |       22873 |                                     |
+ - [x] | ref_agency_type             | agency_type_id               | smallint                    |            |                           |           9 |                                     |
+ - [x] | ref_agency_type             | agency_type_name             | character varying           |        100 |                           |           9 |                                     |
+ - [x] | ref_agency_type             | default_pop_family_id        | smallint                    |            | 0                         |           9 |                                     |
+ - [x] | ref_campus_population       | campus_id                    | bigint                      |            |                           |        1808 |                                     |
+ - [x] | ref_campus_population       | data_year                    | smallint                    |            |                           |        1808 |                                     |
+ - [x] | ref_campus_population       | population                   | bigint                      |            |                           |        1808 |                                     |
+ - [x] | ref_campus_population       | source_flag                  | character                   |          1 |                           |        1808 |                                     |
+ - [x] | ref_campus_population       | census                       | bigint                      |            |                           |        1808 |                                     |
+ - [x] | ref_campus_population       | change_timestamp             | timestamp without time zone |            |                           |        1808 |                                     |
+ - [ ] | ref_campus_population       | change_user                  | character varying           |        100 |                           |        1808 |                                     |
+ - [x] | ref_campus_population       | reporting_population         | bigint                      |            |                           |        1808 |                                     |
+ - [x] | ref_city                    | city_id                      | bigint                      |            |                           |       12212 |                                     |
+ - [x] | ref_city                    | state_id                     | smallint                    |            |                           |       12212 |                                     |
+ - [x] | ref_city                    | city_name                    | character varying           |        100 |                           |       12212 |                                     |
+ - [x] | ref_continent               | continent_id                 | smallint                    |            |                           |           8 |                                     |
+ - [x] | ref_continent               | continent_desc               | character varying           |         50 |                           |           8 |                                     |
+ - [x] | ref_country                 | country_id                   | smallint                    |            |                           |         292 |                                     |
+ - [x] | ref_country                 | continent_id                 | smallint                    |            |                           |         292 |                                     |
+ - [x] | ref_country                 | country_desc                 | character varying           |         50 |                           |         292 |                                     |
+ - [x] | ref_county                  | county_id                    | bigint                      |            |                           |        3695 |                                     |
+ - [x] | ref_county                  | state_id                     | smallint                    |            |                           |        3695 |                                     |
+ - [x] | ref_county                  | county_name                  | character varying           |        100 |                           |        3695 |                                     |
+ - [x] | ref_county                  | county_ansi_code             | character varying           |          5 |                           |        3695 |                                     |
+ - [x] | ref_county                  | county_fips_code             | character varying           |          5 |                           |        3695 |                                     |
+ - [x] | ref_county                  | legacy_county_code           | character varying           |          5 |                           |        3695 |                                     |
+ - [ ] | ref_county                  | comments                     | character varying           |       1000 |                           |        3695 |                                     |
+ - [x] | ref_county_population       | county_id                    | bigint                      |            |                           |        6280 |                                     |
+ - [x] | ref_county_population       | data_year                    | smallint                    |            |                           |        6280 |                                     |
+ - [x] | ref_county_population       | population                   | bigint                      |            |                           |        6280 |                                     |
+ - [x] | ref_county_population       | source_flag                  | character                   |          1 |                           |        6280 |                                     |
+ - [x] | ref_county_population       | change_timestamp             | timestamp without time zone |            |                           |        6280 |                                     |
+ - [ ] | ref_county_population       | change_user                  | character varying           |        100 |                           |        6280 |                                     |
+ - [x] | ref_county_population       | reporting_population         | bigint                      |            |                           |        6280 |                                     |
+ - [x] | ref_department              | department_id                | smallint                    |            |                           |           7 |                                     |
+ - [x] | ref_department              | department_name              | character varying           |        100 |                           |           7 |                                     |
+ - [x] | ref_department              | active_flag                  | character                   |          1 |                           |           7 |                                     |
+ - [x] | ref_department              | sort_order                   | smallint                    |            |                           |           7 |                                     |
+ - [x] | ref_division                | division_id                  | smallint                    |            |                           |          11 |                                     |
+ - [x] | ref_division                | region_id                    | smallint                    |            |                           |          11 |                                     |
+ - [x] | ref_division                | division_code                | character varying           |          2 |                           |          11 |                                     |
+ - [x] | ref_division                | division_name                | character varying           |        100 |                           |          11 |                                     |
+ - [x] | ref_division                | division_desc                | character varying           |        100 |                           |          11 |                                     |
+ - [x] | ref_field_office            | field_office_id              | bigint                      |            |                           |          56 |                                     |
+ - [x] | ref_field_office            | field_office_code            | character varying           |         10 |                           |          56 |                                     |
+ - [x] | ref_field_office            | field_office_name            | character varying           |        100 |                           |          56 |                                     |
+ - [x] | ref_field_office            | field_office_alpha_code      | character varying           |          2 |                           |          56 |                                     |
+ - [x] | ref_field_office            | field_office_numeric_code    | character varying           |         10 |                           |          56 |                                     |
+ - [x] | ref_global_location         | global_location_id           | bigint                      |            |                           |         400 |                                     |
+ - [x] | ref_global_location         | country_id                   | smallint                    |            |                           |         400 |                                     |
+ - [x] | ref_global_location         | global_location_desc         | character varying           |         50 |                           |         400 |                                     |
+ - [x] | ref_metro_div_population    | metro_div_id                 | bigint                      |            |                           |         402 |                                     |
+ - [x] | ref_metro_div_population    | data_year                    | smallint                    |            |                           |         402 |                                     |
+ - [x] | ref_metro_div_population    | population                   | bigint                      |            |                           |         402 |                                     |
+ - [x] | ref_metro_div_population    | source_flag                  | character                   |          1 |                           |         402 |                                     |
+ - [x] | ref_metro_div_population    | census                       | bigint                      |            |                           |         402 |                                     |
+ - [x] | ref_metro_div_population    | change_timestamp             | timestamp without time zone |            |                           |         402 |                                     |
+ - [ ] | ref_metro_div_population    | change_user                  | character varying           |        100 |                           |         402 |                                     |
+ - [x] | ref_metro_div_population    | reporting_population         | bigint                      |            |                           |         402 |                                     |
+ - [x] | ref_metro_division          | metro_div_id                 | bigint                      |            |                           |         504 |                                     |
+ - [x] | ref_metro_division          | msa_id                       | bigint                      |            |                           |         504 |                                     |
+ - [x] | ref_metro_division          | metro_div_name               | character varying           |        100 |                           |         504 |                                     |
+ - [x] | ref_metro_division          | msa_flag                     | character                   |          1 |                           |         504 |                                     |
+ - [x] | ref_metro_division          | metro_div_omb_code           | character varying           |          5 |                           |         504 |                                     |
+ - [x] | ref_metro_division          | legacy_msa_code              | character varying           |          5 |                           |         504 |                                     |
+ - [x] | ref_msa                     | msa_id                       | bigint                      |            |                           |         391 |                                     |
+ - [x] | ref_msa                     | msa_name                     | character varying           |        100 |                           |         391 |                                     |
+ - [x] | ref_msa                     | msa_omb_code                 | character varying           |          5 |                           |         391 |                                     |
+ - [x] | ref_parent_population_group | parent_pop_group_id          | bigint                      |            |                           |          10 |                                     |
+ - [x] | ref_parent_population_group | parent_pop_group_code        | character varying           |          2 |                           |          10 |                                     |
+ - [x] | ref_parent_population_group | parent_pop_group_desc        | character varying           |        100 |                           |          10 |                                     |
+ - [x] | ref_parent_population_group | publication_name             | character varying           |        100 |                           |          10 |                                     |
+ - [x] | ref_parent_population_group | population_family_id         | smallint                    |            | 0                         |          10 |                                     |
+ - [x] | ref_poc                     | poc_id                       | bigint                      |            |                           |       22873 |                                     |
+ - [ ] | ref_poc                     | poc_name                     | character varying           |        200 |                           |       22873 |                                     |
+ - [ ] | ref_poc                     | poc_title                    | character varying           |        200 |                           |       22873 |                                     |
+ - [ ] | ref_poc                     | poc_email                    | character varying           |        200 |                           |       22873 |                                     |
+ - [ ] | ref_poc                     | poc_phone1                   | character varying           |         50 |                           |       22873 |                                     |
+ - [ ] | ref_poc                     | poc_phone2                   | character varying           |         50 |                           |       22873 |                                     |
+ - [ ] | ref_poc                     | mailing_address_1            | character varying           |        150 |                           |       22873 |                                     |
+ - [ ] | ref_poc                     | mailing_address_2            | character varying           |        150 |                           |       22873 |                                     |
+ - [ ] | ref_poc                     | mailing_address_3            | character varying           |        150 |                           |       22873 |                                     |
+ - [ ] | ref_poc                     | mailing_address_4            | character varying           |        150 |                           |       22873 |                                     |
+ - [ ] | ref_poc                     | state_id                     | smallint                    |            |                           |       22873 |                                     |
+ - [ ] | ref_poc                     | zip_code                     | character varying           |         10 |                           |       22873 |                                     |
+ - [ ] | ref_poc                     | city_name                    | character varying           |        100 |                           |       22873 |                                     |
+ - [ ] | ref_poc                     | poc_fax1                     | character varying           |         20 |                           |       22873 |                                     |
+ - [ ] | ref_poc                     | poc_fax2                     | character varying           |         20 |                           |       22873 |                                     |
+ - [x] | ref_poc_role                | poc_role_id                  | smallint                    |            |                           |           4 |                                     |
+ - [x] | ref_poc_role                | poc_role_name                | character varying           |        100 |                           |           4 |                                     |
+ - [x] | ref_poc_role_assign         | poc_id                       | bigint                      |            |                           |       22498 |                                     |
+ - [x] | ref_poc_role_assign         | poc_role_id                  | smallint                    |            |                           |       22498 |                                     |
+ - [x] | ref_population_family       | population_family_id         | smallint                    |            |                           |           4 |                                     |
+ - [x] | ref_population_family       | population_family_name       | character varying           |        100 |                           |           4 |                                     |
+ - [x] | ref_population_family       | population_family_desc       | character varying           |        200 |                           |           4 |                                     |
+ - [x] | ref_population_family       | sort_order                   | smallint                    |            |                           |           4 |                                     |
+ - [x] | ref_population_group        | population_group_id          | bigint                      |            |                           |          23 |                                     |
+ - [x] | ref_population_group        | population_group_code        | character varying           |          2 |                           |          23 |                                     |
+ - [x] | ref_population_group        | population_group_desc        | character varying           |        150 |                           |          23 |                                     |
+ - [x] | ref_population_group        | parent_pop_group_id          | bigint                      |            |                           |          23 |                                     |
+ - [x] | ref_population_group        | publication_name             | character varying           |        100 |                           |          23 |                                     |
+ - [x] | ref_race                    | race_id                      | smallint                    |            |                           |          12 |                                     |
+ - [x] | ref_race                    | race_code                    | character varying           |          2 |                           |          12 |                                     |
+ - [x] | ref_race                    | race_desc                    | character varying           |        100 |                           |          12 |                                     |
+ - [x] | ref_race                    | sort_order                   | smallint                    |            |                           |          12 |                                     |
+ - [x] | ref_race                    | start_year                   | smallint                    |            |                           |          12 |                                     |
+ - [x] | ref_race                    | end_year                     | smallint                    |            |                           |          12 |                                     |
+ - [ ] | ref_race                    | notes                        | character varying           |       1000 |                           |          12 |                                     |
+ - [x] | ref_region                  | region_id                    | smallint                    |            |                           |           6 |                                     |
+ - [x] | ref_region                  | region_code                  | character varying           |          2 |                           |           6 |                                     |
+ - [x] | ref_region                  | region_name                  | character varying           |        100 |                           |           6 |                                     |
+ - [x] | ref_region                  | region_desc                  | character varying           |        100 |                           |           6 |                                     |
+ - [x] | ref_state                   | state_id                     | smallint                    |            |                           |          58 |                                     |
+ - [x] | ref_state                   | division_id                  | smallint                    |            |                           |          58 |                                     |
+ - [x] | ref_state                   | state_name                   | character varying           |        100 |                           |          58 |                                     |
+ - [x] | ref_state                   | state_code                   | character varying           |          2 |                           |          58 |                                     |
+ - [x] | ref_state                   | state_abbr                   | character varying           |          2 |                           |          58 |                                     |
+ - [x] | ref_state                   | state_postal_abbr            | character varying           |          2 |                           |          58 |                                     |
+ - [x] | ref_state                   | state_fips_code              | character varying           |          2 |                           |          58 |                                     |
+ - [x] | ref_state                   | state_pub_freq_months        | smallint                    |            |                           |          58 |                                     |
+ - [x] | ref_submitting_agency       | agency_id                    | bigint                      |            |                           |        1133 |                                     |
+ - [x] | ref_submitting_agency       | sai                          | character                   |          9 |                           |        1133 |                                     |
+ - [x] | ref_submitting_agency       | agency_name                  | character varying           |        150 |                           |        1133 |                                     |
+ - [x] | ref_submitting_agency       | state_id                     | smallint                    |            |                           |        1133 |                                     |
+ - [x] | ref_submitting_agency       | notify_agency                | character                   |          1 |                           |        1133 |                                     |
+ - [x] | ref_submitting_agency       | agency_email                 | character varying           |        200 |                           |        1133 |                                     |
+ - [x] | ref_submitting_agency       | agency_website               | character varying           |       2000 |                           |        1133 |                                     |
+ - [ ] | ref_submitting_agency       | comments                     | character varying           |       2000 |                           |        1133 |                                     |
+ - [x] | ref_tribe                   | tribe_id                     | bigint                      |            |                           |         215 |                                     |
+ - [x] | ref_tribe                   | tribe_name                   | character varying           |        100 |                           |         215 |                                     |
+ - [x] | ref_tribe_population        | tribe_id                     | bigint                      |            |                           |         400 |                                     |
+ - [x] | ref_tribe_population        | data_year                    | smallint                    |            |                           |         400 |                                     |
+ - [x] | ref_tribe_population        | population                   | bigint                      |            |                           |         400 |                                     |
+ - [x] | ref_tribe_population        | source_flag                  | character                   |          1 |                           |         400 |                                     |
+ - [x] | ref_tribe_population        | census                       | bigint                      |            |                           |         400 |                                     |
+ - [x] | ref_tribe_population        | change_timestamp             | timestamp without time zone |            |                           |         400 |                                     |
+ - [ ] | ref_tribe_population        | change_user                  | character varying           |        100 |                           |         400 |                                     |
+ - [x] | ref_tribe_population        | reporting_population         | bigint                      |            |                           |         400 |                                     |
+ - [x] | ref_university              | university_id                | bigint                      |            |                           |         727 |                                     |
+ - [x] | ref_university              | university_abbr              | character varying           |         20 |                           |         727 |                                     |
+ - [x] | ref_university              | university_name              | character varying           |        100 |                           |         727 |                                     |
+ - [x] | ref_university_campus       | campus_id                    | bigint                      |            |                           |         965 |                                     |
+ - [x] | ref_university_campus       | university_id                | bigint                      |            |                           |         965 |                                     |
+ - [x] | ref_university_campus       | campus_name                  | character varying           |        100 |                           |         965 |                                     |
+ - [x] | reta_month                  | reta_month_id                | bigint                      |            |                           |      534408 |                                     |
+ - [x] | reta_month                  | agency_id                    | bigint                      |            |                           |      534408 |                                     |
+ - [x] | reta_month                  | data_year                    | smallint                    |            |                           |      534408 |                                     |
+ - [x] | reta_month                  | month_num                    | smallint                    |            |                           |      534408 |                                     |
+ - [x] | reta_month                  | data_home                    | character                   |          1 |                           |      534408 |                                     |
+ - [x] | reta_month                  | source_flag                  | character                   |          1 |                           |      534408 |                                     | This field indicates the source of the data.  R came into the system as a report, I means the data was derived from NIBRS data.
+ - [x] | reta_month                  | reported_flag                | character                   |          1 |                           |      534408 |                                     |
+ - [ ] | reta_month                  | ddocname                     | character varying           |        100 |                           |      534408 |                                     |
+ - [x] | reta_month                  | month_included_in            | smallint                    |            |                           |      534408 |                                     |
+ - [x] | reta_month                  | report_date                  | timestamp without time zone |            |                           |      534408 |                                     |
+ - [x] | reta_month                  | prepared_date                | timestamp without time zone |            |                           |      534408 |                                     |
+ - [ ] | reta_month                  | prepared_by_user             | character varying           |        100 |                           |      534408 |                                     |
+ - [ ] | reta_month                  | prepared_by_email            | character varying           |        200 |                           |      534408 |                                     |
+ - [x] | reta_month                  | orig_format                  | character                   |          1 |                           |      534408 |                                     |
+ - [x] | reta_month                  | total_reported_count         | integer                     |            |                           |      534408 |                                     |
+ - [x] | reta_month                  | total_unfounded_count        | integer                     |            |                           |      534408 |                                     |
+ - [x] | reta_month                  | total_actual_count           | integer                     |            |                           |      534408 |                                     |
+ - [x] | reta_month                  | total_cleared_count          | integer                     |            |                           |      534408 |                                     |
+ - [x] | reta_month                  | total_juvenile_cleared_count | integer                     |            |                           |      534408 |                                     |
+ - [x] | reta_month                  | leoka_felony                 | smallint                    |            |                           |      534408 |                                     |
+ - [x] | reta_month                  | leoka_accident               | smallint                    |            |                           |      534408 |                                     |
+ - [x] | reta_month                  | leoka_assault                | integer                     |            |                           |      534408 |                                     |
+ - [x] | reta_month                  | leoka_status                 | smallint                    |            |                           |      534408 |                                     |
+ - [x] | reta_month                  | update_flag                  | character                   |          1 |                           |      534408 |                                     |
+ - [ ] | reta_month                  | did                          | bigint                      |            |                           |      534408 |                                     |
+ - [ ] | reta_month                  | ff_line_number               | bigint                      |            |                           |      534408 |                                     |
+ - [x] | reta_month_offense_subcat   | reta_month_id                | bigint                      |            |                           | 1.33602e+07 |                                     |
+ - [x] | reta_month_offense_subcat   | offense_subcat_id            | bigint                      |            |                           | 1.33602e+07 |                                     |
+ - [x] | reta_month_offense_subcat   | reported_count               | integer                     |            |                           | 1.33602e+07 |                                     |
+ - [x] | reta_month_offense_subcat   | reported_status              | smallint                    |            |                           | 1.33602e+07 |                                     |
+ - [x] | reta_month_offense_subcat   | unfounded_count              | integer                     |            |                           | 1.33602e+07 |                                     |
+ - [x] | reta_month_offense_subcat   | unfounded_status             | smallint                    |            |                           | 1.33602e+07 |                                     |
+ - [x] | reta_month_offense_subcat   | actual_count                 | integer                     |            |                           | 1.33602e+07 |                                     |
+ - [x] | reta_month_offense_subcat   | actual_status                | smallint                    |            |                           | 1.33602e+07 |                                     | 0 is for considering data completely, 2 for dont calculate, but do publish, 3 for dont calculate and dont publish, 4 for legacy rape data submitted by an agency that reports using the new rape definitions, 6 for legacy rape data for reporting but not calculation, 7 for legacy rape data not for reporting or calculation
+ - [x] | reta_month_offense_subcat   | cleared_count                | integer                     |            |                           | 1.33602e+07 |                                     |
+ - [x] | reta_month_offense_subcat   | cleared_status               | smallint                    |            |                           | 1.33602e+07 |                                     |
+ - [x] | reta_month_offense_subcat   | juvenile_cleared_count       | integer                     |            |                           | 1.33602e+07 |                                     |
+ - [x] | reta_month_offense_subcat   | juvenile_cleared_status      | smallint                    |            |                           | 1.33602e+07 |                                     |
+ - [x] | reta_offense                | offense_id                   | bigint                      |            |                           |          11 |                                     |
+ - [x] | reta_offense                | offense_name                 | character varying           |        100 |                           |          11 |                                     |
+ - [x] | reta_offense                | offense_code                 | character varying           |         20 |                           |          11 |                                     |
+ - [x] | reta_offense                | offense_xml_path             | character varying           |       1000 |                           |          11 |                                     |
+ - [x] | reta_offense                | offense_category_id          | smallint                    |            |                           |          11 |                                     |
+ - [x] | reta_offense                | classification_id            | smallint                    |            |                           |          11 |                                     |
+ - [x] | reta_offense                | offense_sort_order           | bigint                      |            |                           |          11 |                                     |
+ - [x] | reta_offense_category       | offense_category_id          | smallint                    |            |                           |           9 |                                     |
+ - [x] | reta_offense_category       | crime_type_id                | smallint                    |            |                           |           9 |                                     |
+ - [x] | reta_offense_category       | offense_category_name        | character varying           |         50 |                           |           9 |                                     |
+ - [x] | reta_offense_category       | offense_category_sort_order  | smallint                    |            |                           |           9 |                                     |
+ - [x] | reta_offense_subcat         | offense_subcat_id            | bigint                      |            |                           |          32 |                                     |
+ - [x] | reta_offense_subcat         | offense_id                   | bigint                      |            |                           |          32 |                                     |
+ - [x] | reta_offense_subcat         | offense_subcat_name          | character varying           |        100 |                           |          32 |                                     |
+ - [x] | reta_offense_subcat         | offense_subcat_code          | character varying           |         20 |                           |          32 |                                     |
+ - [x] | reta_offense_subcat         | offense_subcat_xml_path      | character varying           |       1000 |                           |          32 |                                     |
+ - [x] | reta_offense_subcat         | offense_subcat_sort_order    | bigint                      |            |                           |          32 |                                     |
+ - [x] | reta_offense_subcat         | part                         | character                   |          1 |                           |          32 |                                     |
+ - [x] | reta_offense_subcat         | crime_index_flag             | character                   |          1 |                           |          32 |                                     |
+ - [x] | shr_circumstances           | circumstances_id             | smallint                    |            |                           |          48 |                                     |
+ - [x] | shr_circumstances           | circumstances_code           | character                   |          2 |                           |          48 |                                     |
+ - [x] | shr_circumstances           | sub_code                     | character                   |          1 |                           |          48 |                                     |
+ - [x] | shr_circumstances           | circumstances_name           | character varying           |        100 |                           |          48 |                                     |
+ - [x] | shr_circumstances           | sub_name                     | character varying           |        100 |                           |          48 |                                     |
+ - [x] | shr_circumstances           | current_flag                 | character                   |          1 |                           |          48 |                                     |
+ - [x] | shr_incident                | incident_id                  | bigint                      |            |                           |       25065 |                                     |
+ - [x] | shr_incident                | shr_month_id                 | bigint                      |            |                           |       25065 |                                     |
+ - [x] | shr_incident                | homicide_code                | character                   |          1 |                           |       25065 |                                     |
+ - [x] | shr_incident                | situation_id                 | smallint                    |            |                           |       25065 |                                     |
+ - [x] | shr_incident                | incident_num                 | character varying           |          3 |                           |       25065 |                                     |
+ - [x] | shr_incident                | incident_status              | smallint                    |            |                           |       25065 |                                     |
+ - [x] | shr_incident                | update_flag                  | character                   |          1 |                           |       25065 |                                     |
+ - [x] | shr_incident                | data_home                    | character varying           |          1 |                           |       25065 |                                     |
+ - [x] | shr_incident                | prepared_date                | timestamp without time zone |            |                           |       25065 |                                     |
+ - [x] | shr_incident                | report_date                  | timestamp without time zone |            |                           |       25065 |                                     |
+ - [ ] | shr_incident                | ddocname                     | character varying           |        100 |                           |       25065 |                                     |
+ - [ ] | shr_incident                | ff_line_number               | bigint                      |            |                           |       25065 |                                     |
+ - [x] | shr_incident                | orig_format                  | character                   |          1 |                           |       25065 |                                     |
+ - [ ] | shr_incident                | did                          | bigint                      |            |                           |       25065 |                                     |
+ - [x] | shr_incident                | nibrs_incident_id            | bigint                      |            |                           |       25065 |                                     |
+ - [x] | shr_month                   | shr_month_id                 | bigint                      |            |                           |       12363 |                                     |
+ - [x] | shr_month                   | agency_id                    | bigint                      |            |                           |       12363 |                                     |
+ - [x] | shr_month                   | data_year                    | smallint                    |            |                           |       12363 |                                     |
+ - [x] | shr_month                   | month_num                    | smallint                    |            |                           |       12363 |                                     |
+ - [x] | shr_month                   | data_home                    | character                   |          1 | 'T'::bpchar               |       12363 |                                     |
+ - [x] | shr_month                   | source_flag                  | character                   |          1 |                           |       12363 |                                     |
+ - [x] | shr_month                   | reported_flag                | character                   |          1 |                           |       12363 |                                     |
+ - [x] | shr_month                   | orig_format                  | character                   |          1 |                           |       12363 |                                     | This is the format the report was in when it was first submitted to the system.  F for Flat File, W for Web Form, U for IEPDXML Upload, S for IEPDXML Service, B for BPEL, N for null or unavailable, and M for Multiple. When summarizing NIBRS data into the _month tables, a single months data could come from multiple sources.  If so the entry will be M
+ - [x] | shr_month                   | update_flag                  | character varying           |          1 |                           |       12363 |                                     |
+ - [ ] | shr_month                   | ff_line_number               | bigint                      |            |                           |       12363 |                                     |
+ - [ ] | shr_month                   | ddocname                     | character varying           |        100 |                           |       12363 |                                     |
+ - [ ] | shr_month                   | did                          | bigint                      |            |                           |       12363 |                                     |
+ - [x] | shr_offender                | offender_id                  | bigint                      |            |                           |      959020 |                                     |
+ - [ ] | shr_offender                | offender_num                 | character varying           |         20 |                           |      959020 |                                     | The XML may send this field as something like 'OFFENDER1'
+ - [x] | shr_offender                | age_id                       | smallint                    |            |                           |      959020 |                                     |
+ - [x] | shr_offender                | age_num                      | smallint                    |            |                           |      959020 |                                     |
+ - [x] | shr_offender                | sex_code                     | character                   |          1 |                           |      959020 |                                     |
+ - [x] | shr_offender                | race_id                      | bigint                      |            |                           |      959020 |                                     |
+ - [x] | shr_offender                | ethnicity_id                 | smallint                    |            |                           |      959020 |                                     |
+ - [x] | shr_offender                | nibrs_offense_id             | bigint                      |            |                           |      959020 |                                     |
+ - [x] | shr_offender                | nibrs_offender_id            | bigint                      |            |                           |      959020 |                                     |
+ - [x] | shr_offense                 | offense_id                   | bigint                      |            |                           |       33115 |                                     |
+ - [x] | shr_offense                 | incident_id                  | bigint                      |            |                           |       33115 |                                     |
+ - [x] | shr_offense                 | weapon_id                    | smallint                    |            |                           |       33115 |                                     |
+ - [x] | shr_offense                 | relationship_id              | smallint                    |            |                           |       33115 |                                     |
+ - [x] | shr_offense                 | circumstances_id             | smallint                    |            |                           |       33115 |                                     |
+ - [x] | shr_offense                 | victim_id                    | bigint                      |            |                           |       33115 |                                     |
+ - [x] | shr_offense                 | offender_id                  | bigint                      |            |                           |       33115 |                                     |
+ - [x] | shr_offense                 | nibrs_offense_id             | bigint                      |            |                           |       33115 |                                     |
+ - [x] | shr_relationship            | relationship_id              | smallint                    |            |                           |          29 |                                     |
+ - [x] | shr_relationship            | relationship_code            | character                   |          2 |                           |          29 |                                     |
+ - [x] | shr_relationship            | relationship_name            | character varying           |        100 |                           |          29 |                                     |
+ - [x] | shr_situation               | situation_id                 | smallint                    |            |                           |           6 |                                     |
+ - [x] | shr_situation               | situation_code               | character                   |          1 |                           |           6 |                                     |
+ - [x] | shr_situation               | situation_name               | character varying           |        100 |                           |           6 |                                     |
+ - [x] | shr_victim                  | victim_id                    | bigint                      |            |                           |      875588 |                                     |
+ - [ ] | shr_victim                  | victim_num                   | character varying           |         20 |                           |      875588 |                                     | This field may come as 'VICTIM1', so it needed to be a VARCHAR
+ - [x] | shr_victim                  | age_id                       | smallint                    |            |                           |      875588 |                                     |
+ - [x] | shr_victim                  | age_num                      | smallint                    |            |                           |      875588 |                                     |
+ - [x] | shr_victim                  | sex_code                     | character                   |          1 |                           |      875588 |                                     |
+ - [x] | shr_victim                  | race_id                      | bigint                      |            |                           |      875588 |                                     |
+ - [x] | shr_victim                  | ethnicity_id                 | smallint                    |            |                           |      875588 |                                     |
+ - [x] | shr_victim                  | nibrs_victim_id              | bigint                      |            |                           |      875588 |                                     |
+ - [x] | shr_victim                  | nibrs_offense_id             | bigint                      |            |                           |      875588 |                                     |
+ - [x] | supp_larceny_type           | larceny_type_id              | bigint                      |            |                           |          10 |                                     |
+ - [x] | supp_larceny_type           | larceny_type_name            | character varying           |        100 |                           |          10 |                                     |
+ - [x] | supp_larceny_type           | larceny_type_code            | character varying           |         20 |                           |          10 |                                     |
+ - [x] | supp_larceny_type           | larceny_xml_name             | character varying           |        100 |                           |          10 |                                     |
+ - [x] | supp_month                  | supp_month_id                | bigint                      |            |                           |      443076 |                                     |
+ - [x] | supp_month                  | agency_id                    | bigint                      |            |                           |      443076 |                                     |
+ - [x] | supp_month                  | data_year                    | smallint                    |            |                           |      443076 |                                     |
+ - [x] | supp_month                  | month_num                    | smallint                    |            |                           |      443076 |                                     |
+ - [x] | supp_month                  | data_home                    | character                   |          1 |                           |      443076 |                                     |
+ - [x] | supp_month                  | source_flag                  | character                   |          1 |                           |      443076 |                                     | This field indicates the source of the data.  R came into the system as a report, I means the data was derived from NIBRS data.
+ - [x] | supp_month                  | reported_flag                | character                   |          1 |                           |      443076 |                                     |
+ - [x] | supp_month                  | report_date                  | timestamp without time zone |            |                           |      443076 |                                     |
+ - [x] | supp_month                  | prepared_date                | timestamp without time zone |            |                           |      443076 |                                     |
+ - [ ] | supp_month                  | ddocname                     | character varying           |        100 |                           |      443076 |                                     |
+ - [x] | supp_month                  | orig_format                  | character                   |          1 |                           |      443076 |                                     |
+ - [x] | supp_month                  | mv_stolen_local_rec_local    | bigint                      |            |                           |      443076 |                                     |
+ - [x] | supp_month                  | mv_stolen_local_rec_other    | bigint                      |            |                           |      443076 |                                     |
+ - [x] | supp_month                  | mv_tot_local_stolen_rec      | bigint                      |            |                           |      443076 |                                     |
+ - [x] | supp_month                  | mv_stolen_other_rec_local    | bigint                      |            |                           |      443076 |                                     |
+ - [x] | supp_month                  | mv_stolen_status             | smallint                    |            |                           |      443076 |                                     |
+ - [x] | supp_month                  | update_flag                  | character                   |          1 |                           |      443076 |                                     |
+ - [ ] | supp_month                  | did                          | bigint                      |            |                           |      443076 |                                     |
+ - [ ] | supp_month                  | ff_line_number               | bigint                      |            |                           |      443076 |                                     |
+ - [x] | supp_offense                | offense_id                   | bigint                      |            |                           |           7 |                                     |
+ - [x] | supp_offense                | offense_name                 | character varying           |        100 |                           |           7 |                                     |
+ - [x] | supp_offense                | offense_code                 | character varying           |         20 |                           |           7 |                                     |
+ - [x] | supp_offense_subcat         | offense_subcat_id            | bigint                      |            |                           |          23 |                                     |
+ - [x] | supp_offense_subcat         | offense_id                   | bigint                      |            |                           |          23 |                                     |
+ - [x] | supp_offense_subcat         | offense_subcat_name          | character varying           |        100 |                           |          23 |                                     |
+ - [x] | supp_offense_subcat         | offense_subcat_code          | character varying           |         20 |                           |          23 |                                     |
+ - [x] | supp_offense_subcat         | offense_subcat_xml_name      | character varying           |        100 |                           |          23 |                                     |
+ - [x] | supp_prop_by_offense_subcat | supp_month_id                | bigint                      |            |                           |  8.4268e+06 |                                     |
+ - [x] | supp_prop_by_offense_subcat | offense_subcat_id            | bigint                      |            |                           |  8.4268e+06 |                                     |
+ - [x] | supp_prop_by_offense_subcat | actual_count                 | integer                     |            |                           |  8.4268e+06 |                                     |
+ - [x] | supp_prop_by_offense_subcat | actual_status                | smallint                    |            |                           |  8.4268e+06 |                                     |
+ - [x] | supp_prop_by_offense_subcat | stolen_value                 | bigint                      |            |                           |  8.4268e+06 |                                     |
+ - [x] | supp_prop_by_offense_subcat | stolen_value_status          | smallint                    |            |                           |  8.4268e+06 |                                     |
+ - [x] | supp_property_by_type_value | supp_month_id                | bigint                      |            |                           | 4.87394e+06 |                                     |
+ - [x] | supp_property_by_type_value | prop_type_id                 | bigint                      |            |                           | 4.87394e+06 |                                     |
+ - [x] | supp_property_by_type_value | stolen_value                 | bigint                      |            |                           | 4.87394e+06 |                                     |
+ - [x] | supp_property_by_type_value | stolen_value_status          | smallint                    |            |                           | 4.87394e+06 |                                     |
+ - [x] | supp_property_by_type_value | recovered_value              | bigint                      |            |                           | 4.87394e+06 |                                     |
+ - [x] | supp_property_by_type_value | recovered_value_status       | smallint                    |            |                           | 4.87394e+06 |                                     |
+ - [x] | supp_property_type          | prop_type_id                 | bigint                      |            |                           |          12 |                                     |
+ - [x] | supp_property_type          | prop_type_name               | character varying           |        100 |                           |          12 |                                     |
+ - [x] | supp_property_type          | prop_type_code               | character varying           |         20 |                           |          12 |                                     |
+ - [x] | supp_property_type          | prop_type_code_num           | smallint                    |            |                           |          12 |                                     |
+(880 rows)
