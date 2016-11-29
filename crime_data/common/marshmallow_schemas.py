@@ -93,6 +93,12 @@ class NibrsCriminalActSchema(ma.ModelSchema):
     criminal_act = ma.Nested(NibrsCriminalActTypeSchema)
 
 
+class NibrsUsingListSchema(ma.ModelSchema):
+    class Meta:
+        model = models.NibrsUsingList
+        exclude = ('suspect_using_id', )
+
+
 class NibrsWeaponTypeSchema(ma.ModelSchema):
     class Meta:
         model = models.NibrsWeaponType
@@ -150,15 +156,55 @@ class RefStateSchema(ma.ModelSchema):
 class RefCitySchema(ma.ModelSchema):
     class Meta:
         model = models.RefCity
-        exclude = ('city_id', )
+        exclude = ('city_id', 'state', )
+        ordered = True
 
-    # state = ma.Nested(RefStateSchema)
+#    state = ma.Nested(RefStateSchema)
+
+class RefContinentSchema(ma.ModelSchema):
+    class Meta:
+        model = models.RefContinent
+        exclude = ('continent_id', )
+        ordered = True
+
+
+class RefCountySchema(ma.ModelSchema):
+    class Meta:
+        model = models.RefCounty
+        exclude = ('county_id', 'state', )
+        ordered = True
+
+    state = ma.Nested(RefStateSchema)
+
+
+class RefCountrySchema(ma.ModelSchema):
+    class Meta:
+        model = models.RefCounty
+        exclude = ('country_id', 'continent', )
+        ordered = True
+
+    state = ma.Nested(RefContinentSchema)
+
+
+class RefMsaSchema(ma.ModelSchema):
+    class Meta:
+        model = models.RefMsa
+        exclude = ('msa_id', )
+        ordered = True
+
+    state = ma.Nested(RefContinentSchema)
 
 
 class RefPopulationFamilySchema(ma.ModelSchema):
     class Meta:
         model = models.RefPopulationFamily
         exclude = ('population_family_id', )
+
+
+class RefPopulationGroupSchema(ma.ModelSchema):
+    class Meta:
+        model = models.RefPopulationGroup
+        exclude = ('population_group_id', 'parent_pop_group', )
 
 
 class RefFieldOfficeSchema(ma.ModelSchema):
@@ -193,6 +239,12 @@ class RefTribeSchema(ma.ModelSchema):
         exclude = ('tribe_id', )
 
 
+class RefUniversitySchema(ma.ModelSchema):
+    class Meta:
+        model = models.RefUniversity
+        exclude = ('university_id', )
+
+        
 class RefAgencySchema(ma.ModelSchema, ArgumentsSchema):
     class Meta:
         model = models.RefAgency
@@ -225,16 +277,46 @@ class RefRaceSchema(ma.ModelSchema):
                    'sort_order', )
 
 
+class AsrAgeRangeSchema(ma.ModelSchema):
+    class Meta:
+        model = models.AsrAgeRange
+        exclude = ('age_range_id', )
+        ordered = True
+
+        
+class AsrEthnicitySchema(ma.ModelSchema):
+    class Meta:
+        model = models.AsrEthnicity
+        exclude = ('ethnicity_id', )
+        ordered = True
+
+
+class AsrOffenseSchema(ma.ModelSchema):
+    class Meta:
+        model = models.AsrOffense
+        exclude = ('offense_id', )
+        ordered = True
+
+
+class AsrOffenseCategorySchema(ma.ModelSchema):
+    class Meta:
+        model = models.AsrOffenseCategory
+        exclude = ('offense_cat_id', )
+        ordered = True
+
+
 class NibrsLocationTypeSchema(ma.ModelSchema):
     class Meta:
         model = models.NibrsLocationType
         exclude = ('offenses', 'location_id')
+        ordered = True
 
 
 class NibrsOffenseTypeSchema(ma.ModelSchema):
     class Meta:
         model = models.NibrsOffenseType
         exclude = ('arrestees', 'offenses', 'offense_type_id', )
+        ordered = True
 
 
 class NibrsOffenseSchema(ma.ModelSchema):
@@ -255,6 +337,12 @@ class NibrsClearedExceptSchema(ma.ModelSchema):
         exclude = ('cleared_except_id', )
 
 
+class NibrsPropDescTypeSchema(ma.ModelSchema):
+    class Meta:
+        model = models.NibrsPropDescType
+        exclude = ('prop_desc_id', )
+
+        
 class NibrsPropLossTypeSchema(ma.ModelSchema):
     class Meta:
         model = models.NibrsPropLossType
@@ -281,16 +369,31 @@ class NibrsEthnicitySchema(ma.ModelSchema):
         exclude = ('ethnicity_id', 'arrestees', 'offenders', 'victims', )
 
 
+class NibrsInjurySchema(ma.ModelSchema):
+    class Meta:
+        model = models.NibrsInjury
+        exclude = ('injury_id', )
+        ordered = True
+
+
 class NibrsVictimTypeSchema(ma.ModelSchema):
     class Meta:
         model = models.NibrsVictimType
         exclude = ('victim_type_id', 'victims', )
 
 
+class NibrsWeaponTypeSchema(ma.ModelSchema):
+    class Meta:
+        model = models.NibrsWeaponType
+        exclude = ('weapon_id', )
+        ordered = True
+
+
 class NibrsActivityTypeSchema(ma.ModelSchema):
     class Meta:
         model = models.NibrsActivityType
         exclude = ('activity_type_id', 'victims', )
+        ordered = True
 
 
 class NibrsInjurySchema(ma.ModelSchema):
@@ -349,6 +452,13 @@ class NibrsArresteeSchema(ma.ModelSchema, SchemaFormater):
         return out_data
 
 
+class NibrsArrestTypeSchema(ma.ModelSchema):
+    class Meta:
+        model = models.NibrsArrestType
+        exclude = ('arrest_type_id', )
+        ordered = True
+
+
 class NibrsOffenderSchema(ma.ModelSchema, SchemaFormater):
     class Meta:
         model = models.NibrsOffender
@@ -384,6 +494,69 @@ class NibrsIncidentSchema(ma.ModelSchema):
     victims = ma.Nested(NibrsVictimSchema, many=True)
     arrestees = ma.Nested(NibrsArresteeSchema, many=True)
     offenders = ma.Nested(NibrsOffenderSchema, many=True)
+
+
+class NibrsAssignmentTypeSchema(ma.ModelSchema):
+    class Meta:
+        model = models.NibrsAssignmentType
+        exclude = ('assignment_type_id', )
+        ordered = True
+
+    
+class NibrsBiasListSchema(ma.ModelSchema):
+    class Meta:
+        model = models.NibrsBiasList
+        exclude = ('bias_id', )
+        ordered = True
+
+
+class NibrsCircumstanceSchema(ma.ModelSchema):
+    class Meta:
+        model = models.NibrsCircumstance
+        exclude = ('circumstances_id', )
+        ordered = True
+
+
+class NibrsCriminalActTypeSchema(ma.ModelSchema):
+    class Meta:
+        model = models.NibrsCriminalActType
+        exclude = ('criminal_act_id', )
+        ordered = True
+
+
+class NibrsDrugMeasureTypeSchema(ma.ModelSchema):
+    class Meta:
+        model = models.NibrsDrugMeasureType
+        exclude = ('drug_measure_type_id', )
+        ordered = True
+
+
+class NibrsJustifiableForceSchema(ma.ModelSchema):
+    class Meta:
+        model = models.NibrsJustifiableForce
+        exclude = ('justifiable_force_id', )
+        ordered = True
+
+
+class NibrsRelationshipSchema(ma.ModelSchema):
+    class Meta:
+        model = models.NibrsRelationship
+        exclude = ('relationship_id', )
+        ordered = True
+
+
+class NibrsSuspectedDrugTypeSchema(ma.ModelSchema):
+    class Meta:
+        model = models.NibrsSuspectedDrugType
+        exclude = ('suspected_drug_type_id', )
+        ordered = True
+
+
+class OffenseClassificationSchema(ma.ModelSchema):
+    class Meta:
+        model = models.OffenseClassification
+        exclude = ('classification_id', )
+        ordered = True
 
 
 class RetaOffenseSubcatSchema(ma.ModelSchema):
@@ -426,3 +599,17 @@ class CrimeTypeSchema(ma.ModelSchema):
         exclude = ('crime_type_sort_order', )
 
     categories = ma.Nested(RetaOffenseCategorySchema, many=True)
+
+
+class SuppLarcenyTypeSchema(ma.ModelSchema):
+    class Meta:
+        model = models.SuppLarcenyType
+        exclude = ('larceny_type_id', )
+        ordered = True
+
+
+class SuppPropertyTypeSchema(ma.ModelSchema):
+    class Meta:
+        model = models.SuppPropertyType
+        exclude = ('property_type_id', )
+        ordered = True
