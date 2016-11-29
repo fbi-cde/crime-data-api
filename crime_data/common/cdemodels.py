@@ -5,7 +5,7 @@ from sqlalchemy.orm import aliased
 from sqlalchemy.sql import label
 
 from crime_data.common import models
-from crime_data.common.base import QueryTraits
+from crime_data.common.base import QueryTraits, Fields
 from crime_data.extensions import db
 
 session = db.session
@@ -268,7 +268,6 @@ class CdeCrimeType(models.CrimeType):
 
 
 class CdeRetaOffenseCategory(models.RetaOffenseCategory):
-
     crime_type = db.relationship(CdeCrimeType, backref='categories')
 
 
@@ -320,8 +319,8 @@ class JoinedTable:
 
         for col in self.columns():
             column_names = [col.key, ]
-            if col.key in SIMPLIFIED_COLUMN_NAMES:
-                column_names.append(SIMPLIFIED_COLUMN_NAMES[col.key])
+            if col.key in Fields.get_simplified_column_names():
+                column_names.append(Fields.get_simplified_column_names()[col.key])
             for column_name in column_names:
                 if self.prefix:
                     alias = '{}{}{}'.format(self.prefix, self.PREFIX_SEPARATOR,
@@ -332,34 +331,50 @@ class JoinedTable:
 
 
 class TableFamily:
+    """""
+    Base class for Queries on the CDE database.
+    """""
     def __init__(self):
         self._map = {}
 
+    @classmethod
+    def get_tables(cls, parent):
+        return tables
+
     @property
     def map(self):
+        """Builds a map of DB column names for Query."""
         if not self._map:
             self._build_map()
         return self._map
 
     def base_query(self):
+        """Gets root Query, based on class's base_table"""
         return db.session.query(self.base_table.table)
 
+    def _is_string(self, col):
+        col0 = list(col.base_columns)[0]
+        return issubclass(col0.type.python_type, str)
+
     def _col(self, col_name):
+        """Gets DB mapped column name."""
         if col_name not in self.map:
             abort(400, message='field {} not found'.format(col_name))
         return self.map[col_name]
 
     def _post_process(self, qry):
+        """Applies any nescessary post-processing to query."""
         return qry
 
     def filtered(self, filters):
+        """Applies requested Query filters. Returns SQLAlchemy Query object."""
         qry = self.base_query()
         self.joined = {self.base_table,
                        }  # Messy way to track what has been joined
         for (col_name, comparitor, values) in filters:
             (joined_tbl, col) = self._col(col_name)
             qry = self.join(qry, joined_tbl)
-            if _is_string(col):
+            if self._is_string(col):
                 col = func.lower(col)
                 values = [val.lower() for val in values]
             operation = getattr(col, comparitor)
@@ -380,13 +395,14 @@ class TableFamily:
         return qry
 
     def group_by(self, qry, group_columns):
+        """Adds GROUP BY statements to Query. """
         for col_name in group_columns:
             (table, col) = self._col(col_name)
             qry = self.join(qry, table)
-            if col_name in UNDERLYING_COLUMN_NAMES:
+            if col_name in Fields.get_db_column_names():
                 col = label(col_name, col)
-            elif col_name in SIMPLIFIED_COLUMN_NAMES:
-                col = label(SIMPLIFIED_COLUMN_NAMES[col_name], col)
+            elif col_name in Fields.get_simplified_column_names():
+                col = label(Fields.get_simplified_column_names()[col_name], col)
             qry = qry.add_columns(col)
             qry = qry.group_by(col).order_by(col)
         return qry
@@ -405,6 +421,7 @@ class TableFamily:
         # self.print_map() # - uncomment to generate JSON
 
     def query(self):
+        """Returns a finalized SQLAlchemy Query object"""
         self._build_map()
         # self.print_map() # - uncomment to generate JSON
         qry = self.base_query()
@@ -436,49 +453,46 @@ class TableFamily:
             typ = types.get(sqla_col.type.python_type, 'string')
             print(template.format(name=name, type=typ))
 
+
+class AgencyTableFamily(TableFamily):
     @classmethod
-    def agency_tables(cls, parent):
-        agency_tables = []
+    def get_tables(cls, parent):
+        tables = []
         _agency = JoinedTable(models.RefAgency, parent=parent)
-        agency_tables.append(_agency)
-        agency_tables.append(JoinedTable(models.RefAgencyType,
+        tables.append(_agency)
+        tables.append(JoinedTable(models.RefAgencyType,
                                          parent=_agency)),
         _state = JoinedTable(models.RefState, parent=_agency)
-        agency_tables.append(_state),
-        agency_tables.append(JoinedTable(models.RefCity, parent=_agency))
+        tables.append(_state),
+        tables.append(JoinedTable(models.RefCity, parent=_agency))
         _division = JoinedTable(models.RefDivision, parent=_state)
-        agency_tables.append(_division)
-        agency_tables.append(JoinedTable(models.RefRegion, parent=_division))
-        agency_tables.append(JoinedTable(models.RefSubmittingAgency, # prefix?
+        tables.append(_division)
+        tables.append(JoinedTable(models.RefRegion, parent=_division))
+        tables.append(JoinedTable(models.RefSubmittingAgency, # prefix?
                         join=(models.RefAgency.agency_id ==
                               models.RefSubmittingAgency.agency_id)))
-        agency_tables.append(JoinedTable(models.RefFieldOffice,
+        tables.append(JoinedTable(models.RefFieldOffice,
                                          parent=_agency))
-        agency_tables.append(JoinedTable(
+        tables.append(JoinedTable(
             models.RefPopulationFamily,
             parent=_agency,
             join=(models.RefAgency.population_family_id ==
                   models.RefPopulationFamily.population_family_id), ))
-        return agency_tables
-
-
-UNDERLYING_COLUMN_NAMES = {'year': 'data_year',
-                           'month': 'month_num',
-                           'agency_name': 'ucr_agency_name',
-                           'state': 'state_abbr',
-                           'city': 'city_name',
-                           'tribe': 'tribe_name',
-                           'offense': 'offense_name',
-                           'offense_subcat': 'offense_subcat_name',
-                           'offense_category': 'offense_category_name', }
-
-SIMPLIFIED_COLUMN_NAMES = {v: k for (k, v) in UNDERLYING_COLUMN_NAMES.items()}
+        return tables
 
 
 class IncidentTableFamily(TableFamily):
+    """""
+    Base Class for Incident table based queries.
+    """""
 
+    # List of all associated tables.
+    tables = []
+
+    # Root Table => Incidents
     base_table = JoinedTable(models.NibrsIncident)
 
+    # Build Table aliases for Query.
     victim_race = aliased(models.RefRace)
     victim_age = aliased(models.NibrsAge)
     victim_ethnicity = aliased(models.NibrsEthnicity)
@@ -489,63 +503,42 @@ class IncidentTableFamily(TableFamily):
     arrestee_age = aliased(models.NibrsAge)
     arrestee_ethnicity = aliased(models.NibrsEthnicity)
 
-    def base_query(self):
-        result = db.session.query(models.NibrsIncident.incident_id)
-        return result
-
-    def _post_process(self, qry):
-        """Apply DISTINCT on incident_id.
-
-        For performance, DISTINCT is applied within a subquery, then an
-        outer query fetches all Incident records."""
-        subq = qry.distinct().subquery()
-        results = self.base_table.table.query.join(
-            subq, self.base_table.table.incident_id == subq.c.incident_id)
-        return results
-
-    tables = []
-
+    # Create JOINs for query.
     offense = JoinedTable(models.NibrsOffense)
-
-    tables.append(offense)
-
-    tables.append(JoinedTable(models.NibrsOffenseType, parent=offense)),
-
-    tables.extend(TableFamily.agency_tables(None))
-    tables.append(JoinedTable(models.NibrsClearedExcept))
     offender = JoinedTable(models.NibrsOffender,
-                           prefix='offender',
-                           parent=offense)
-    tables.append(offender)
-
+                       prefix='offender',
+                       parent=offense)
     victim = JoinedTable(models.NibrsVictim, prefix='victim', parent=offense)
-    tables.append(victim)
-
     victim_injury = JoinedTable(models.NibrsVictimInjury, prefix='victim',parent=victim)
     injury = JoinedTable(models.NibrsInjury, prefix='victim',parent=victim_injury)
-    tables.append(victim_injury)
-    tables.append(injury)
-
     victim_offender_rel = JoinedTable(models.NibrsVictimOffenderRel, prefix='victim', parent=victim)
     relationship_ = JoinedTable(models.NibrsRelationship, prefix='victim', parent=victim_offender_rel)
-    tables.append(victim_offender_rel)
-    tables.append(relationship_)
-    
     offense_weapon = JoinedTable(models.NibrsWeapon, prefix='offense', parent=offense)
     weapon = JoinedTable(models.NibrsWeaponType, prefix='offense', parent=offense_weapon)
-    tables.append(offense_weapon)
-    tables.append(weapon)
-
     criminal_act = JoinedTable(models.NibrsCriminalAct, prefix='offense', parent=offense)
     criminal_act_type = JoinedTable(models.NibrsCriminalActType, prefix='offense', parent=criminal_act)
-    tables.append(criminal_act)
-    tables.append(criminal_act_type)
-
     arrestee = JoinedTable(models.NibrsArrestee,
                            prefix='arrestee',
                            parent=offense,
                            join=(models.NibrsIncident.incident_id ==
                                  models.NibrsArrestee.incident_id))
+    property_ = JoinedTable(models.NibrsProperty)
+
+    # Append all Joined tables to list of table for query.
+    tables.append(offense)
+    tables.append(JoinedTable(models.NibrsOffenseType, parent=offense)),
+    tables.extend(AgencyTableFamily.get_tables(None))
+    tables.append(JoinedTable(models.NibrsClearedExcept))
+    tables.append(offender)    
+    tables.append(victim)
+    tables.append(victim_injury)
+    tables.append(injury)
+    tables.append(victim_offender_rel)
+    tables.append(relationship_)
+    tables.append(offense_weapon)
+    tables.append(weapon)
+    tables.append(criminal_act)
+    tables.append(criminal_act_type)
     tables.append(arrestee)
     tables.append(JoinedTable(offender_age,
                               join=(models.NibrsOffender.age_id ==
@@ -592,31 +585,55 @@ class IncidentTableFamily(TableFamily):
                                     arrestee_ethnicity.ethnicity_id),
                               prefix='arrestee',
                               parent=arrestee))
-    property = JoinedTable(models.NibrsProperty)
-    tables.append(property)
-    tables.append(JoinedTable(models.NibrsPropLossType, parent=property))
+    
+    tables.append(property_)
+    tables.append(JoinedTable(models.NibrsPropLossType, parent=property_))
     # TODO: property_desc, suspected_drug
     tables.append(JoinedTable(models.NibrsLocationType,
                               parent=offense,
                               join=(models.NibrsOffense.location_id ==
                                     models.NibrsLocationType.location_id), ))
+
+    def base_query(self):
+        """Gets root Query, based on class's base_table"""
+        result = db.session.query(models.NibrsIncident.incident_id)
+        return result
+
+    def _post_process(self, qry):
+        """Apply DISTINCT on incident_id.
+
+        For performance, DISTINCT is applied within a subquery, then an
+        outer query fetches all Incident records."""
+        subq = qry.distinct().subquery()
+        results = self.base_table.table.query.join(
+            subq, self.base_table.table.incident_id == subq.c.incident_id)
+        return results
     # TODO: COUNTY, TRIBE
 
 
 class IncidentCountTableFamily(TableFamily):
+    """""
+    Base class for any RETA Summary data queries.
+    """""
 
+    # List of all associated tables.
+    tables = []
+
+    # Root table => RetaMonthOffenseSubcat
     base_table = JoinedTable(models.RetaMonthOffenseSubcat)
 
-    tables = []
+    # Create JOINs for query.
     month = JoinedTable(models.RetaMonth)
-    tables.append(month)
     subcat = JoinedTable(models.RetaOffenseSubcat)
-    tables.append(subcat)
     offense = JoinedTable(models.RetaOffense, parent=subcat)
+
+    # Append all Joined tables to list of table for query.
+    tables.append(month)
+    tables.append(subcat)
     tables.append(offense)
     tables.append(JoinedTable(models.OffenseClassification, parent=offense))
     tables.append(JoinedTable(models.RetaOffenseCategory, parent=offense))
-    tables.extend(TableFamily.agency_tables(month))
+    tables.extend(AgencyTableFamily.get_tables(month))
 
     def base_query(self):
         return db.session.query(
@@ -631,8 +648,3 @@ class IncidentCountTableFamily(TableFamily):
             label('juvenile_cleared_count',
                   func.sum(
                       models.RetaMonthOffenseSubcat.juvenile_cleared_count), ))
-
-
-def _is_string(col):
-    col0 = list(col.base_columns)[0]
-    return issubclass(col0.type.python_type, str)
