@@ -7,12 +7,18 @@ machine:
     CF_ORGANIZATION: fbi-crime-explorer
     CF_SPACE: prototype
     CF_APP: crime-data-api
+    DATABASE_URL: "postgres://ubuntu@localhost/circle_test"
 dependencies:
   override:
     - pip install -r requirements/dev.txt
+database:
+  override:
+    - psql --username=ubuntu circle_test < dba/crime_data_api_test.sql
 test:
   override:
-    - echo "No tests for now"
+    - py.test --cov=crime_data tests/
+  post:
+    - codeclimate-test-reporter
 deployment:
   production:
     branch: master

@@ -45,6 +45,6 @@ class TestConfig(Config):
 
     TESTING = True
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'postgres:///crime_data_api_test'
+    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', 'postgres:///crime_data_api_test')
     BCRYPT_LOG_ROUNDS = 4  # For faster tests; needs at least 4 to avoid "ValueError: Invalid rounds"
     WTF_CSRF_ENABLED = False  # Allows form testing
