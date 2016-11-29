@@ -159,24 +159,56 @@ class CdeResource(Resource):
                  '==': '__eq__', }
 
 
-    def _serialize_dict(self, data, accumulator={}):
+    def _serialize_dict(self, data, accumulator={}, path=None, aggregate_many = False):
         """ Recursively serializes a nested dict 
         into a flat dict. Replaces lists with their 
         length as an integer of any lists in nested dict. 
         """
-        for k,v in data.items():
+
+        # is_list_iter is false if not iterating over list.
+        is_list_iter = False
+        if isinstance(data, list):
+            iterator = enumerate(data)
+            # True if currently serializing list of dicts.
+            is_list_iter = True
+        if isinstance(data, dict):
+            iterator = data.items()
+
+
+        key_path = "" # The full attribute path.
+
+        for k,v in iterator:
+            # Append path ie: offense _ {key}
+            if path:
+                if is_list_iter:
+                    # Indicates an object in a list.
+                    # ie. offenses_0, offenses_1
+                    key_path = path + '_' + str(k)
+                else:
+                    # Indicates an attribute of an object.
+                    # ie. offenses_0.crime_name,
+                    # victims.victim_1.location.location_name
+                    key_path = path + '.' + str(k)
+            else:
+                key_path = k
+            
             if isinstance(v, dict):
-                # Recurse.
-                self._serialize_dict(v, accumulator)
+                # For dicts, the key path is preserved completely.
+                self._serialize_dict(v, accumulator, key_path)
             elif isinstance(v, list):
-                # Base case: No more nesting => List.
-                accumulator[k] = len(v)
+                # For lists, the key path is shortened to
+                # the list's index key: offenses, arrestees, etc.
+                if self.aggregate_many:
+                    accumulator[key_path] = len(v)
+                else:
+                    self._serialize_dict(v, accumulator, k)
             else:
                 # Base case: No more nesting => Value.
-                accumulator[k] = v
+                accumulator[key_path] = v
+
         return accumulator
 
-    def output_serialize(self, data, schema=None, format='csv'):
+    def output_serialize(self, data, schema=None, format='csv', aggregate_many = False):
         """ Parses results. 
         Either outputs JSON, or CSV. 
         """
@@ -184,6 +216,7 @@ class CdeResource(Resource):
 
             return data
         if format is 'csv':
+            self.aggregate_many = aggregate_many
 
             import csv
             from io import StringIO
@@ -200,7 +233,7 @@ class CdeResource(Resource):
             # Fill in any missing keys.
             empty = dict.fromkeys(set().union(*to_csv), 0)
             to_csv = [dict(empty, **d) for d in to_csv]
-
+            # exit(1)
             # Generate CSV.
             # TODO: Sort by columns.
             count = 0
@@ -210,8 +243,7 @@ class CdeResource(Resource):
                     csvwriter.writerow(list(header))
                     count += 1
                 csvwriter.writerow(list(cs.values()))
-
-        return si.getvalue().strip('\r\n')
+            return si.getvalue().strip('\r\n')
 
     def _stringify(self, data):
         """Avoid JSON serialization errors
