@@ -29,6 +29,7 @@ class SchemaFormater(object):
 # Schemas for request parsing
 class ArgumentsSchema(Schema):
     output = marsh_fields.String(missing='json')
+    aggregate_many = marsh_fields.String(missing='false')
     page = marsh_fields.Integer(missing=1)
     per_page = marsh_fields.Integer(missing=10)
     fields = marsh_fields.String()
