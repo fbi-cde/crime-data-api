@@ -231,7 +231,7 @@ class CdeResource(Resource):
                 to_csv.append(self._serialize_dict(d, {}))
 
             # Fill in any missing keys.
-            empty = dict.fromkeys(set().union(*to_csv), 0)
+            empty = dict.fromkeys(set().union(*to_csv), "")
             to_csv = [dict(empty, **d) for d in to_csv]
 
             # Generate CSV.
