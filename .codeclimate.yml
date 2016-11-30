@@ -22,5 +22,6 @@ ratings:
     - "**.rb"
 exclude_paths:
   - tests/
-  - static/
+  - crime_data/static/
   - migrations/
+  - dba/
