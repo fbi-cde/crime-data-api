@@ -46,8 +46,10 @@ class CdeRetaMonthOffenseSubcat(models.RetaMonthOffenseSubcat):
 class CdeRefAgency(models.RefAgency, QueryTraits):
     @staticmethod
     def get_filter_map():
-        return {'state': CdeRefState.state_abbr.label('state'),
-                'city': CdeRefCity.city_name.label('city')}
+        return {
+            'state': CdeRefState.state_abbr.label('state'),
+            'city': CdeRefCity.city_name.label('city')
+        }
 
     def get(ori=None, filters=None, args=None):
         # Base Query
@@ -215,8 +217,8 @@ class CdeRetaMonth(models.RetaMonth, QueryTraits):
             'offense': CdeRetaOffense.offense_name,
             'ori': CdeRefAgency.ori,
             'subcategory': CdeRetaOffenseSubcat.offense_subcat_name,
-            'agency_name':
-            CdeRefAgency.pub_agency_name,  # Assuming Public Agency Name is the best one.
+            'agency_name': CdeRefAgency.
+            pub_agency_name,  # Assuming Public Agency Name is the best one.
             'city': CdeRefCity.city_name.label('city'),
             'year': CdeRetaMonth.data_year,
             'month': CdeRetaMonth.month_num
@@ -447,7 +449,10 @@ class TableFamily:
                     }}, """
 
         print('\n\nmappings for {}\n\n'.format(self))
-        types = {int: 'integer', bool: 'boolean', }
+        types = {
+            int: 'integer',
+            bool: 'boolean',
+        }
         for (name, (table, col)) in sorted(self.map.items()):
             sqla_col = list(col.base_columns)[0]
             typ = types.get(sqla_col.type.python_type, 'string')
@@ -460,8 +465,10 @@ class AgencyTableFamily(TableFamily):
         tables = []
         _agency = JoinedTable(models.RefAgency, parent=parent)
         tables.append(_agency)
-        tables.append(JoinedTable(models.RefAgencyType,
-                                         parent=_agency)),
+        tables.append(
+            JoinedTable(
+                models.RefAgencyType, parent=_agency)),
+
         _state = JoinedTable(models.RefState, parent=_agency)
         tables.append(_state),
         tables.append(JoinedTable(models.RefCity, parent=_agency))
@@ -505,109 +512,123 @@ class IncidentTableFamily(TableFamily):
 
     # Create JOINs for query.
     offense = JoinedTable(models.NibrsOffense)
-    offender = JoinedTable(models.NibrsOffender,
-                       prefix='offender',
-                       parent=offense)
-    victim = JoinedTable(models.NibrsVictim, prefix='victim', parent=offense)
-    victim_injury = JoinedTable(models.NibrsVictimInjury, prefix='victim',parent=victim)
-    injury = JoinedTable(models.NibrsInjury, prefix='victim',parent=victim_injury)
-    victim_offender_rel = JoinedTable(models.NibrsVictimOffenderRel, prefix='victim', parent=victim)
-    relationship_ = JoinedTable(models.NibrsRelationship, prefix='victim', parent=victim_offender_rel)
-    offense_weapon = JoinedTable(models.NibrsWeapon, prefix='offense', parent=offense)
-    weapon = JoinedTable(models.NibrsWeaponType, prefix='offense', parent=offense_weapon)
-    criminal_act = JoinedTable(models.NibrsCriminalAct, prefix='offense', parent=offense)
-    criminal_act_type = JoinedTable(models.NibrsCriminalActType, prefix='offense', parent=criminal_act)
-    arrestee = JoinedTable(models.NibrsArrestee,
-                           prefix='arrestee',
-                           parent=offense,
-                           join=(models.NibrsIncident.incident_id ==
-                                 models.NibrsArrestee.incident_id))
-    property_ = JoinedTable(models.NibrsProperty)
 
-    # Append all Joined tables to list of table for query.
     tables.append(offense)
+
     tables.append(JoinedTable(models.NibrsOffenseType, parent=offense)),
+
     tables.extend(AgencyTableFamily.get_tables(None))
     tables.append(JoinedTable(models.NibrsClearedExcept))
-    tables.append(offender)    
+    offender = JoinedTable(
+        models.NibrsOffender, prefix='offender', parent=offense)
+    tables.append(offender)
+
+    victim = JoinedTable(models.NibrsVictim, prefix='victim', parent=offense)
+    
     tables.append(victim)
+
+    victim_injury = JoinedTable(
+        models.NibrsVictimInjury, prefix='victim', parent=victim)
+    injury = JoinedTable(
+        models.NibrsInjury, prefix='victim', parent=victim_injury)
     tables.append(victim_injury)
     tables.append(injury)
+
+    victim_offender_rel = JoinedTable(
+        models.NibrsVictimOffenderRel, prefix='victim', parent=victim)
+    relationship_ = JoinedTable(
+        models.NibrsRelationship, prefix='victim', parent=victim_offender_rel)
     tables.append(victim_offender_rel)
     tables.append(relationship_)
+
+    offense_weapon = JoinedTable(
+        models.NibrsWeapon, prefix='offense', parent=offense)
+    weapon = JoinedTable(
+        models.NibrsWeaponType, prefix='offense', parent=offense_weapon)
     tables.append(offense_weapon)
     tables.append(weapon)
+
+    criminal_act = JoinedTable(
+        models.NibrsCriminalAct, prefix='offense', parent=offense)
+    criminal_act_type = JoinedTable(
+        models.NibrsCriminalActType, prefix='offense', parent=criminal_act)
     tables.append(criminal_act)
     tables.append(criminal_act_type)
+
+    arrestee = JoinedTable(
+        models.NibrsArrestee,
+        prefix='arrestee',
+        parent=offense,
+        join=(models.NibrsIncident.incident_id ==
+              models.NibrsArrestee.incident_id))
     tables.append(arrestee)
-    tables.append(JoinedTable(offender_age,
-                              join=(models.NibrsOffender.age_id ==
-                                    offender_age.age_id),
-                              prefix='offender',
-                              parent=offender))
-    tables.append(JoinedTable(offender_race,
-                              join=(models.NibrsOffender.race_id ==
-                                    offender_race.race_id),
-                              prefix='offender',
-                              parent=offender))
-    tables.append(JoinedTable(offender_ethnicity,
-                              join=(models.NibrsOffender.ethnicity_id ==
-                                    offender_ethnicity.ethnicity_id),
-                              prefix='offender',
-                              parent=offender))
-    tables.append(JoinedTable(victim_age,
-                              join=(models.NibrsVictim.age_id ==
-                                    victim_age.age_id),
-                              prefix='victim',
-                              parent=victim))
-    tables.append(JoinedTable(victim_race,
-                              join=(models.NibrsVictim.race_id ==
-                                    victim_race.race_id),
-                              prefix='victim',
-                              parent=victim))
-    tables.append(JoinedTable(victim_ethnicity,
-                              join=(models.NibrsVictim.ethnicity_id ==
-                                    victim_ethnicity.ethnicity_id),
-                              prefix='victim',
-                              parent=victim))
-    tables.append(JoinedTable(arrestee_age,
-                              join=(models.NibrsArrestee.age_id ==
-                                    arrestee_age.age_id),
-                              prefix='arrestee',
-                              parent=arrestee))
-    tables.append(JoinedTable(arrestee_race,
-                              join=(models.NibrsArrestee.race_id ==
-                                    arrestee_race.race_id),
-                              prefix='arrestee',
-                              parent=arrestee))
-    tables.append(JoinedTable(arrestee_ethnicity,
-                              join=(models.NibrsArrestee.ethnicity_id ==
-                                    arrestee_ethnicity.ethnicity_id),
-                              prefix='arrestee',
-                              parent=arrestee))
-    
+    tables.append(
+        JoinedTable(
+            offender_age,
+            join=(models.NibrsOffender.age_id == offender_age.age_id),
+            prefix='offender',
+            parent=offender))
+    tables.append(
+        JoinedTable(
+            offender_race,
+            join=(models.NibrsOffender.race_id == offender_race.race_id),
+            prefix='offender',
+            parent=offender))
+    tables.append(
+        JoinedTable(
+            offender_ethnicity,
+            join=(models.NibrsOffender.ethnicity_id ==
+                  offender_ethnicity.ethnicity_id),
+            prefix='offender',
+            parent=offender))
+    tables.append(
+        JoinedTable(
+            victim_age,
+            join=(models.NibrsVictim.age_id == victim_age.age_id),
+            prefix='victim',
+            parent=victim))
+    tables.append(
+        JoinedTable(
+            victim_race,
+            join=(models.NibrsVictim.race_id == victim_race.race_id),
+            prefix='victim',
+            parent=victim))
+    tables.append(
+        JoinedTable(
+            victim_ethnicity,
+            join=(models.NibrsVictim.ethnicity_id ==
+                  victim_ethnicity.ethnicity_id),
+            prefix='victim',
+            parent=victim))
+    tables.append(
+        JoinedTable(
+            arrestee_age,
+            join=(models.NibrsArrestee.age_id == arrestee_age.age_id),
+            prefix='arrestee',
+            parent=arrestee))
+    tables.append(
+        JoinedTable(
+            arrestee_race,
+            join=(models.NibrsArrestee.race_id == arrestee_race.race_id),
+            prefix='arrestee',
+            parent=arrestee))
+    tables.append(
+        JoinedTable(
+            arrestee_ethnicity,
+            join=(models.NibrsArrestee.ethnicity_id ==
+                  arrestee_ethnicity.ethnicity_id),
+            prefix='arrestee',
+            parent=arrestee))
+    property_ = JoinedTable(models.NibrsProperty)
     tables.append(property_)
-    tables.append(JoinedTable(models.NibrsPropLossType, parent=property_))
+    tables.append(JoinedTable(models.NibrsPropLossType, parent=property))
     # TODO: property_desc, suspected_drug
-    tables.append(JoinedTable(models.NibrsLocationType,
-                              parent=offense,
-                              join=(models.NibrsOffense.location_id ==
-                                    models.NibrsLocationType.location_id), ))
-
-    def base_query(self):
-        """Gets root Query, based on class's base_table"""
-        result = db.session.query(models.NibrsIncident.incident_id)
-        return result
-
-    def _post_process(self, qry):
-        """Apply DISTINCT on incident_id.
-
-        For performance, DISTINCT is applied within a subquery, then an
-        outer query fetches all Incident records."""
-        subq = qry.distinct().subquery()
-        results = self.base_table.table.query.join(
-            subq, self.base_table.table.incident_id == subq.c.incident_id)
-        return results
+    tables.append(
+        JoinedTable(
+            models.NibrsLocationType,
+            parent=offense,
+            join=(models.NibrsOffense.location_id ==
+                  models.NibrsLocationType.location_id), ))
     # TODO: COUNTY, TRIBE
 
 
@@ -638,13 +659,124 @@ class IncidentCountTableFamily(TableFamily):
     def base_query(self):
         return db.session.query(
             label('actual_count',
-                  func.sum(models.RetaMonthOffenseSubcat.actual_count)), label(
-                      'reported_count',
-                      func.sum(models.RetaMonthOffenseSubcat.reported_count)),
+                  func.sum(models.RetaMonthOffenseSubcat.actual_count)),
+            label('reported_count',
+                  func.sum(models.RetaMonthOffenseSubcat.reported_count)),
             label('unfounded_count',
                   func.sum(models.RetaMonthOffenseSubcat.unfounded_count)),
             label('cleared_count',
                   func.sum(models.RetaMonthOffenseSubcat.cleared_count)),
+            label(
+                'juvenile_cleared_count',
+                func.sum(models.RetaMonthOffenseSubcat.juvenile_cleared_count),
+            ))
+
+
+# ASR_MONTH is not broken down by race or crime and should have
+# its own endpoint
+
+# This tree of subcategory-offense-category is shared by the following three families
+category_tables = []
+_subcat = JoinedTable(models.AsrOffenseSubcat)
+category_tables.append(_subcat)
+_offense = JoinedTable(models.AsrOffense, parent=_subcat)
+category_tables.append(_offense)
+_category = JoinedTable(models.AsrOffenseCategory, parent=_offense)
+category_tables.append(_category)
+
+
+class ArrestsByRaceTableFamily(TableFamily):
+
+    base_table = JoinedTable(models.AsrRaceOffenseSubcat)
+
+    tables = []
+    month = JoinedTable(models.AsrMonth)
+    tables.append(month)
+    race = JoinedTable(models.RefRace)
+    tables.append(race)
+
+    tables.extend(category_tables)
+    tables.extend(AgencyTableFamily.get_tables(month))
+
+
+    def base_query(self):
+        return db.session.query(
+            label('arrest_count',
+                  func.sum(models.AsrRaceOffenseSubcat.arrest_count)))
+
+
+class ArrestsByEthnicityTableFamily(TableFamily):
+
+    base_table = JoinedTable(models.AsrEthnicityOffense)
+
+    tables = []
+    month = JoinedTable(models.AsrMonth)
+    tables.append(month)
+    ethnicity = JoinedTable(models.AsrEthnicity)
+    tables.append(ethnicity)
+
+    tables.extend(category_tables)
+    tables.extend(AgencyTableFamily.get_tables(month))
+
+
+    def base_query(self):
+        return db.session.query(
+            label('arrest_count',
+                  func.sum(models.AsrEthnicityOffense.arrest_count)))
+
+
+class ArrestsByAgeSexTableFamily(TableFamily):
+
+    base_table = JoinedTable(models.AsrAgeSexSubcat)
+
+    tables = []
+    month = JoinedTable(models.AsrMonth)
+    tables.append(month)
+    age_range = JoinedTable(models.AsrAgeRange)
+    tables.append(age_range)
+
+    tables.extend(category_tables)
+    tables.extend(AgencyTableFamily.get_tables(month))
+
+    def base_query(self):
+        return db.session.query(
+            label('arrest_count',
+                  func.sum(models.AsrAgeSexSubcat.arrest_count)))
+
+
+class ArsonTableFamily(TableFamily):
+
+    base_table = JoinedTable(models.ArsonMonthBySubcat)
+
+    tables = []
+    month = JoinedTable(models.ArsonMonth)
+    tables.append(month)
+    subcategory = JoinedTable(models.ArsonSubcategory)
+    tables.append(subcategory)
+    tables.append(
+        JoinedTable(
+            models.ArsonSubclassification, parent=subcategory))
+
+    tables.extend(AgencyTableFamily.get_tables(month))
+
+    def base_query(self):
+        return db.session.query(
+            label('reported_count',
+                  func.sum(models.ArsonMonthBySubcat.reported_count)),
+            label('unfounded_count',
+                  func.sum(models.ArsonMonthBySubcat.unfounded_count)),
+            label('actual_count',
+                  func.sum(models.ArsonMonthBySubcat.actual_count)),
+            label('cleared_count',
+                  func.sum(models.ArsonMonthBySubcat.cleared_count)),
             label('juvenile_cleared_count',
-                  func.sum(
-                      models.RetaMonthOffenseSubcat.juvenile_cleared_count), ))
+                  func.sum(models.ArsonMonthBySubcat.juvenile_cleared_count)),
+            label('uninhabited_count',
+                  func.sum(models.ArsonMonthBySubcat.uninhabited_count)),
+            label('est_damage_value',
+                  func.sum(models.ArsonMonthBySubcat.est_damage_value)))
+
+
+def _is_string(col):
+    col0 = list(col.base_columns)[0]
+    return issubclass(col0.type.python_type, str)

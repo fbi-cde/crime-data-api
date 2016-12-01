@@ -8,9 +8,12 @@ from flask import Flask, render_template
 from flask_cors import CORS, cross_origin
 
 import crime_data.resources.agencies
+import crime_data.resources.arrests
 import crime_data.resources.incidents
 import crime_data.resources.offenses
 import crime_data.resources.codes
+import crime_data.resources.arson
+
 from crime_data import commands, public, user
 from crime_data.assets import assets
 from crime_data.common.marshmallow_schemas import ma
@@ -129,3 +132,10 @@ def add_resources(app):
     api.add_resource(crime_data.resources.codes.CodeReferenceList,
                      '/codes/<string:code_table>.<string:output>',
                      '/codes/<string:code_table>')
+    api.add_resource(crime_data.resources.arrests.ArrestsCountByRace,
+                     '/arrests/race/')
+    api.add_resource(crime_data.resources.arrests.ArrestsCountByEthnicity,
+                     '/arrests/ethnicity/')
+    api.add_resource(crime_data.resources.arrests.ArrestsCountByAgeSex,
+                     '/arrests/age_sex/')
+    api.add_resource(crime_data.resources.arson.ArsonCountResource, '/arson/')

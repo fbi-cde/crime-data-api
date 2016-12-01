@@ -1,3 +1,4 @@
+from decimal import Decimal
 import json
 import math
 import os
@@ -109,8 +110,8 @@ class QueryTraits(object):
                 if _is_string(col):
                     col = func.lower(col)
                     values = [val.lower() for val in values]
-                    query = query.filter(or_(col.ilike('%' + val + '%')
-                                             for val in values))
+                    query = query.filter(
+                        or_(col.ilike('%' + val + '%') for val in values))
                 else:
                     operation = getattr(col, comparitor)
                     query = query.filter(or_(operation(val) for val in values))
@@ -127,14 +128,23 @@ class Fields(object):
     @staticmethod
     def get_db_column_names():
         return {'year': 'data_year',
-               'month': 'month_num',
-               'agency_name': 'ucr_agency_name',
-               'state': 'state_abbr',
-               'city': 'city_name',
-               'tribe': 'tribe_name',
-               'offense': 'offense_name',
-               'offense_subcat': 'offense_subcat_name',
-               'offense_category': 'offense_category_name', }
+             'month': 'month_num',
+             'agency_name': 'ucr_agency_name',
+             'state': 'state_abbr',
+             'city': 'city_name',
+             'tribe': 'tribe_name',
+             'offense': 'offense_name',
+             'offense_subcat': 'offense_subcat_name',
+             'offense_category': 'offense_category_name',
+             # except in ASR it's offense_cat_name
+             'race': 'race_code',
+             'ethnicity': 'ethnicity_code',
+             'juvenile': 'juvenile_flag',
+             'age': 'age_range_code',
+             'sex': 'age_sex',
+             'subclass': 'subclass_code',
+             'subcategory': 'subcategory_code'
+            }
 
     @staticmethod
     def get_simplified_column_names():
@@ -151,13 +161,39 @@ class CdeResource(Resource):
     __abstract__ = True
     schema = None
 
-    OPERATORS = {'!=': '__ne__',
-                 '>=': '__ge__',
-                 '<=': '__le__',
-                 '>': '__gt__',
-                 '<': '__le__',
-                 '==': '__eq__', }
+    OPERATORS = {
+        '!=': '__ne__',
+        '>=': '__ge__',
+        '<=': '__le__',
+        '>': '__gt__',
+        '<': '__le__',
+        '==': '__eq__',
+    }
 
+    is_groupable = False
+
+    def _get(self, args):
+        # TODO: apply "fields" arg
+
+        self.verify_api_key(args)
+        filters = self.filters(args)
+        qry = self.tables.filtered(filters)
+        if self.is_groupable:
+            group_columns = [c.strip() for c in args['by'].split(',')]
+            qry = self.tables.group_by(qry, group_columns)
+        aggregate_many = False
+
+        if args['aggregate_many'] == 'true':
+            aggregate_many = True
+
+        if args['output'] == 'csv':
+            output = make_response(self.output_serialize(
+                self.with_metadata(qry, args), self.schema, 'csv', aggregate_many))
+            output.headers[
+                "Content-Disposition"] = "attachment; filename=incidents.csv"
+            output.headers["Content-type"] = "text/csv"
+            return output
+        return self.with_metadata(qry, args)
 
     def _serialize_dict(self, data, accumulator={}, path=None, aggregate_many = False):
         """ Recursively serializes a nested dict 
@@ -213,7 +249,6 @@ class CdeResource(Resource):
         Either outputs JSON, or CSV. 
         """
         if format is 'json':
-
             return data
         if format is 'csv':
             self.aggregate_many = aggregate_many
@@ -245,11 +280,18 @@ class CdeResource(Resource):
                 csvwriter.writerow(list(cs.values()))
             return si.getvalue().strip('\r\n')
 
+    def _jsonable(self, val):
+        if isinstance(val, Decimal):
+            return eval(str(val))
+        elif hasattr(val, '__pow__'):  # is numeric 
+            return val
+        return str(val)
+
     def _stringify(self, data):
         """Avoid JSON serialization errors
         by converting values in list of dicts
         into strings."""
-        return [{k: (d[k] if hasattr(d[k], '__pow__') else str(d[k]))
+        return [{k: self._jsonable(d[k])
                  for k in d} for d in (r._asdict() for r in data)]
 
     def _as_dict(self, fieldTuple, res):
@@ -258,8 +300,8 @@ class CdeResource(Resource):
     def with_metadata(self, results, args):
         """Paginates results and wraps them in metadata."""
 
-        paginated = results.limit(args['per_page']).offset((args['page'] - 1) *
-                                                           args['per_page'])
+        paginated = results.limit(args['per_page']).offset(
+            (args['page'] - 1) * args['per_page'])
         if hasattr(paginated, 'data'):
             paginated = paginated.data
         # count = results.count()
@@ -268,13 +310,15 @@ class CdeResource(Resource):
             serialized = self.schema.dump(paginated).data
         else:
             serialized = self._stringify(paginated)
-        return {'results': serialized,
-                'pagination': {
-                    'count': count,
-                    'page': args['page'],
-                    'pages': math.ceil(count / args['per_page']),
-                    'per_page': args['per_page'],
-                }, }
+        return {
+            'results': serialized,
+            'pagination': {
+                'count': count,
+                'page': args['page'],
+                'pages': math.ceil(count / args['per_page']),
+                'per_page': args['per_page'],
+            },
+        }
 
     def as_csv_response(self, results, filename, args):
         """Returns the data as a CSV"""
@@ -290,9 +334,10 @@ class CdeResource(Resource):
         if os.getenv('VCAP_SERVICES'):
             service_env = json.loads(os.getenv('VCAP_SERVICES'))
             cups_name = 'crime-data-api-creds'
-            creds = [u['credentials']
-                     for u in service_env['user-provided']
-                     if 'credentials' in u]
+            creds = [
+                u['credentials'] for u in service_env['user-provided']
+                if 'credentials' in u
+            ]
             key = creds[0]['API_KEY']
             if args.get('api_key') != key:
                 abort(401, message='Use correct `api_key` argument')

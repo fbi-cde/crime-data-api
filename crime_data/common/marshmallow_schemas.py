@@ -40,6 +40,10 @@ class ArgumentsSchema(Schema):
             error_messages={'required': 'Get API key from Catherine'})
 
 
+class GroupableArgsSchema(ArgumentsSchema):
+    by = marsh_fields.String(missing='year')
+
+
 class AgenciesIncidentArgsSchema(ArgumentsSchema):
     incident_hour = marsh_fields.Integer()
     crime_against = marsh_fields.String()
@@ -60,11 +64,7 @@ class AgenciesRetaArgsSchema(ArgumentsSchema):
     offender_ethnicity = marsh_fields.String()
     by = marsh_fields.String(missing='ori')
 
-
-class IncidentCountArgsSchema(ArgumentsSchema):
-    by = marsh_fields.String(missing='year')
-
-    # Schemas for data serialization
+# Schemas for data serialization
 
 
 class NibrsRelationshipSchema(ma.ModelSchema):
