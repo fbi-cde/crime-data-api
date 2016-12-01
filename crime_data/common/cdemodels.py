@@ -736,7 +736,7 @@ class ArrestsByAgeSexTableFamily(TableFamily):
     tables.append(age_range)
 
     tables.extend(category_tables)
-    tables.extend(AgencyTableFamily.get_tables(month)))
+    tables.extend(AgencyTableFamily.get_tables(month))
 
     def base_query(self):
         return db.session.query(
@@ -757,7 +757,7 @@ class ArsonTableFamily(TableFamily):
         JoinedTable(
             models.ArsonSubclassification, parent=subcategory))
 
-    tables.extend(AgencyTableFamily.get_tables(month)))
+    tables.extend(AgencyTableFamily.get_tables(month))
 
     def base_query(self):
         return db.session.query(
