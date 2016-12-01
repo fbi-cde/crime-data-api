@@ -1,6 +1,8 @@
 # Everything the developer needs in addition to the production requirements
 -r prod.txt
 
+flask-shell-ipython
+
 # Testing
 pytest==2.9.0
 WebTest==2.0.20
