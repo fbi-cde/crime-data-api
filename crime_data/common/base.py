@@ -128,14 +128,21 @@ class Fields(object):
     @staticmethod
     def get_db_column_names():
         return {'year': 'data_year',
-               'month': 'month_num',
-               'agency_name': 'ucr_agency_name',
-               'state': 'state_abbr',
-               'city': 'city_name',
-               'tribe': 'tribe_name',
-               'offense': 'offense_name',
-               'offense_subcat': 'offense_subcat_name',
-               'offense_category': 'offense_category_name', }
+             'month': 'month_num',
+             'agency_name': 'ucr_agency_name',
+             'state': 'state_abbr',
+             'city': 'city_name',
+             'tribe': 'tribe_name',
+             'offense': 'offense_name',
+             'offense_subcat': 'offense_subcat_name',
+             'offense_category': 'offense_category_name',
+             # except in ASR it's offense_cat_name
+             'race': 'race_code',
+             'ethnicity': 'ethnicity_code',
+             'juvenile': 'juvenile_flag',
+             'age': 'age_range_code',
+             'sex': 'age_sex',
+            }
 
     @staticmethod
     def get_simplified_column_names():
