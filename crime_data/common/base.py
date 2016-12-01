@@ -143,7 +143,7 @@ class Fields(object):
              'age': 'age_range_code',
              'sex': 'age_sex',
              'subclass': 'subclass_code',
-             'subcategory': 'subcategory_name'
+             'subcategory': 'subcategory_code'
             }
 
     @staticmethod
