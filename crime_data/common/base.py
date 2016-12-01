@@ -142,6 +142,8 @@ class Fields(object):
              'juvenile': 'juvenile_flag',
              'age': 'age_range_code',
              'sex': 'age_sex',
+             'subclass': 'subclass_code',
+             'subcategory': 'subcategory_name'
             }
 
     @staticmethod
