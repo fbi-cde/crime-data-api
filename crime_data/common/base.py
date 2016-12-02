@@ -133,6 +133,7 @@ class Fields(object):
              'agency_name': 'ucr_agency_name',
              'state': 'state_abbr',
              'city': 'city_name',
+             'county': 'county_name',
              'tribe': 'tribe_name',
              'offense': 'offense_name',
              'offense_subcat': 'offense_subcat_name',
