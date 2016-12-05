@@ -354,7 +354,8 @@ class TableFamily:
 
     def base_query(self):
         """Gets root Query, based on class's base_table"""
-        return db.session.query(self.base_table.table)
+        from sqlalchemy import func
+        return db.session.query(self.base_table.table, func.count().over().label('count'))
 
     def _is_string(self, col):
         col0 = list(col.base_columns)[0]

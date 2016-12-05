@@ -306,8 +306,15 @@ class CdeResource(Resource):
             (args['page'] - 1) * args['per_page'])
         if hasattr(paginated, 'data'):
             paginated = paginated.data
-        # count = results.count()
-        count = 10000
+
+        count = 0
+
+        # WINDOW FUNCTION COUNT(*) OVER () returns count in every row.
+        # Any row will give the correct count. 
+        if paginated:
+            count = paginated[0][1] # Just select the first row.
+            paginated = [i[0] for i in paginated]
+
         if self.schema:
             serialized = self.schema.dump(paginated).data
         else:
