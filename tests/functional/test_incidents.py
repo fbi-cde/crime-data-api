@@ -109,7 +109,7 @@ class TestIncidentsEndpoint:
         assert len(res1.json['results']) == len(res0.json)
 
     @pytest.mark.xfail  # TODO
-    def test_incidents_endpoint_filters_null_method_entry_code(self, user,
+    def test_incidents_endpoint_filters_null_method_entry_code(self,
                                                                testapp):
         res = testapp.get('/incidents/?method_entry_code=None')
         assert len(res.json['results']) > 0
@@ -228,7 +228,7 @@ class TestIncidentsEndpoint:
         for incident in results.json['results']:
             assert incident['agency']['state']['state_abbr'] == 'OH'
 
-    def test_incidents_endpoint_filter_county(self, user, testapp):
+    def test_incidents_endpoint_filter_county(self, testapp):
         results = testapp.get('/incidents/?county=warren')
         for incident in results.json['results']:
             county_names = [c['county'].lower() for c in incident['agency']['counties']]

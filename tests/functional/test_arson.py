@@ -8,7 +8,7 @@ import pytest
 
 
 class TestTuningPage:
-    def test_tuning_page_exists(self, user, testapp):
+    def test_tuning_page_exists(self, testapp):
         res = testapp.get('/arson/?tuning=1')
         assert res.status_code == 200
         assert b'<!DOCTYPE html>' in res.body
@@ -19,7 +19,7 @@ class TestArsonCountEndpoint:
         res = testapp.get('/arson/')
         assert res.status_code == 200
 
-    def test_incidents_endpoint_includes_metadata(self, user, testapp):
+    def test_incidents_endpoint_includes_metadata(self, testapp):
         res = testapp.get('/arson/')
         assert 'pagination' in res.json
 
