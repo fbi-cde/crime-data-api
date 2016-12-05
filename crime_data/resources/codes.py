@@ -1,3 +1,4 @@
+from flask import url_for, jsonify
 from webargs.flaskparser import use_args
 
 from crime_data.common import marshmallow_schemas, models
@@ -91,6 +92,14 @@ CODE_SCHEMAS = {
     'supp_larceny_type': marshmallow_schemas.SuppLarcenyTypeSchema,
     'supp_property_type': marshmallow_schemas.SuppPropertyTypeSchema
 }
+
+
+class CodeReferenceIndex(CdeResource):
+    @use_args(ArgumentsSchema)
+    def get(self, args):
+        endpoints = {key: url_for('codereferencelist', code_table=key)
+                     for key in CODE_SCHEMAS}
+        return jsonify(endpoints)
 
 
 class CodeReferenceList(CdeResource):
