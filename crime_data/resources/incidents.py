@@ -17,7 +17,8 @@ class IncidentsList(CdeResource):
     @use_args(marshmallow_schemas.ArgumentsSchema)
     @tuning_page
     def get(self, args):
-        return self._get(args)
+        over_count = True
+        return self._get(args, True)
 
 
 class IncidentsDetail(CdeResource):

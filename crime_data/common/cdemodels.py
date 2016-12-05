@@ -354,8 +354,8 @@ class TableFamily:
 
     def base_query(self):
         """Gets root Query, based on class's base_table"""
-        from sqlalchemy import func
-        return db.session.query(self.base_table.table, func.count().over().label('count'))
+        #from sqlalchemy import func
+        return db.session.query(self.base_table.table)
 
     def _is_string(self, col):
         col0 = list(col.base_columns)[0]
@@ -661,6 +661,10 @@ class IncidentTableFamily(TableFamily):
                   models.NibrsLocationType.location_id), ))
     # TODO: COUNTY, TRIBE
 
+    def base_query(self):
+        """Gets root Query, based on class's base_table"""
+        from sqlalchemy import func
+        return db.session.query(self.base_table.table, func.count().over().label('count'))
 
 class IncidentCountTableFamily(TableFamily):
     """""
