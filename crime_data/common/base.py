@@ -124,6 +124,7 @@ class QueryTraits(object):
 
         return query
 
+
 class Fields(object):
     @staticmethod
     def get_db_column_names():
@@ -132,6 +133,7 @@ class Fields(object):
              'agency_name': 'ucr_agency_name',
              'state': 'state_abbr',
              'city': 'city_name',
+             'county': 'county_name',
              'tribe': 'tribe_name',
              'offense': 'offense_name',
              'offense_subcat': 'offense_subcat_name',
@@ -146,10 +148,10 @@ class Fields(object):
              'subcategory': 'subcategory_code'
             }
 
+
     @staticmethod
     def get_simplified_column_names():
         return {v: k for (k, v) in Fields.get_db_column_names().items()}
-
 
 
 class RoutingSQLAlchemy(SQLAlchemy):
@@ -322,11 +324,11 @@ class CdeResource(Resource):
 
     def as_csv_response(self, results, filename, args):
         """Returns the data as a CSV"""
-        output = make_response(
-            self.output_serialize(
-                self.with_metadata(results, args),
-                self.schema))
-        output.headers['Content-Disposition'] = 'attachment; filename={0}.csv'.format(filename)
+        output = make_response(self.output_serialize(
+            self.with_metadata(results, args), self.schema))
+        output.headers[
+            'Content-Disposition'] = 'attachment; filename={0}.csv'.format(
+                filename)
         output.headers['Content-type'] = 'text/csv'
         return output
 
