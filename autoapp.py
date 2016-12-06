@@ -8,3 +8,8 @@ from crime_data.settings import DevConfig, ProdConfig
 CONFIG = DevConfig if get_debug_flag() else ProdConfig
 
 app = create_app(CONFIG)
+
+# This lets you see the /__sqltap__ debugging console on develop
+if get_debug_flag():
+    import sqltap.wsgi
+    app.wsgi_app = sqltap.wsgi.SQLTapMiddleware(app.wsgi_app)
