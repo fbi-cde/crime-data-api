@@ -14,7 +14,7 @@ import crime_data.resources.offenses
 import crime_data.resources.codes
 import crime_data.resources.arson
 
-from crime_data import commands, public, user
+from crime_data import commands
 from crime_data.assets import assets
 from crime_data.common.marshmallow_schemas import ma
 from crime_data.common.models import db
@@ -60,8 +60,6 @@ def register_extensions(app):
 
 def register_blueprints(app):
     """Register Flask blueprints."""
-    app.register_blueprint(public.views.blueprint)
-    app.register_blueprint(user.views.blueprint)
     return None
 
 
@@ -84,7 +82,7 @@ def register_shellcontext(app):
 
     def shell_context():
         """Shell context objects."""
-        return {'db': db, 'User': user.models.User}
+        return {'db': db}
 
     app.shell_context_processor(shell_context)
 

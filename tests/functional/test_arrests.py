@@ -8,7 +8,7 @@ import pytest
 
 
 class TestTuningPage:
-    def test_tuning_page_exists(self, user, testapp):
+    def test_tuning_page_exists(self, testapp):
         res = testapp.get('/arrests/race/?tuning=1')
         assert res.status_code == 200
         assert b'<!DOCTYPE html>' in res.body
@@ -19,7 +19,7 @@ class TestArrestsCountByRaceEndpoint:
         res = testapp.get('/arrests/race/')
         assert res.status_code == 200
 
-    def test_incidents_endpoint_includes_metadata(self, user, testapp):
+    def test_incidents_endpoint_includes_metadata(self, testapp):
         res = testapp.get('/arrests/race/')
         assert 'pagination' in res.json
 
@@ -171,7 +171,7 @@ class TestArrestsCountByEthnicityEndpoint:
         res = testapp.get('/arrests/ethnicity/')
         assert res.status_code == 200
 
-    def test_incidents_endpoint_includes_metadata(self, user, testapp):
+    def test_incidents_endpoint_includes_metadata(self, testapp):
         res = testapp.get('/arrests/ethnicity/')
         assert 'pagination' in res.json
 
@@ -342,7 +342,7 @@ class TestArrestsCountByAgeSexEndpoint:
         res = testapp.get('/arrests/age_sex/')
         assert res.status_code == 200
 
-    def test_incidents_endpoint_includes_metadata(self, user, testapp):
+    def test_incidents_endpoint_includes_metadata(self, testapp):
         res = testapp.get('/arrests/age_sex/')
         assert 'pagination' in res.json
 
