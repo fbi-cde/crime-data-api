@@ -20,8 +20,7 @@ class AgenciesList(AgenciesResource):
     @use_args(marshmallow_schemas.RefAgencySchema)
     def get(self, args):
         self.verify_api_key(args)
-        filters = self.filters(args)
-        result = models.CdeRefAgency.get(None, filters, args)
+        result = models.CdeRefAgency.get()
         return self.with_metadata(result, args)
 
 
@@ -29,48 +28,5 @@ class AgenciesDetail(AgenciesResource):
     @use_args(marshmallow_schemas.ArgumentsSchema)
     def get(self, args, nbr):
         self.verify_api_key(args)
-        filters = self.filters(args)
-        agency = models.CdeRefAgency.get(nbr, filters, args)
+        agency = models.CdeRefAgency.get(nbr)
         return self.with_metadata(agency, args)
-
-
-class AgenciesNibrsCount(CdeResource):
-
-    SPLITTER = re.compile(r"\s*,\s*")
-
-    @use_args(AgenciesIncidentArgsSchema)
-    def get(self, args, ori=None):
-        '''''
-        Get Incident Count by Agency ID/ORI.
-        ''' ''
-        self.verify_api_key(args)
-        by = []
-
-        by = self.SPLITTER.split(
-            args['by'].lower())  # TODO: can post-process in schema?
-
-        filters = self.filters(args)
-        query = models.CdeNibrsIncident.get_nibrs_incident_by_ori(ori, filters,
-                                                                  by, args)
-        return self.with_metadata(query, args)
-
-
-class AgenciesRetaCount(CdeResource):
-
-    SPLITTER = re.compile(r"\s*,\s*")
-
-    @use_args(AgenciesRetaArgsSchema)
-    def get(self, args, ori=None):
-        '''''
-        Get Incident Count by Agency ID/ORI.
-        ''' ''
-        self.verify_api_key(args)
-        by = []
-
-        by = self.SPLITTER.split(
-            args['by'].lower())  # TODO: can post-process in schema?
-
-        filters = self.filters(args)
-        query = models.CdeRetaMonth.get_reta_by_ori(ori, filters, by, args)
-        result = self.with_metadata(query, args)
-        return result
