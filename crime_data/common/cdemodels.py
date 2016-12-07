@@ -345,6 +345,12 @@ class TableFamily:
             self._build_map()
         return self._map
 
+    @property
+    def input_args(self):
+        """Returns a hash of names: type for Swagger"""
+        out = {key: pair[1].type for key, pair in self.map.items()}
+        return out
+
     def base_query(self):
         """Gets root Query, based on class's base_table"""
         return db.session.query(self.base_table.table)

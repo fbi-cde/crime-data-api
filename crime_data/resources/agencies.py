@@ -2,6 +2,7 @@ import re
 
 from flask_restful import fields, marshal_with, reqparse
 from webargs.flaskparser import use_args
+from flask_apispec import marshal_with
 
 from crime_data.common import cdemodels as models
 from crime_data.common import marshmallow_schemas
@@ -18,6 +19,7 @@ class AgenciesResource(CdeResource):
 
 class AgenciesList(AgenciesResource):
     @use_args(marshmallow_schemas.RefAgencySchema)
+    @marshal_with(marshmallow_schemas.AgenciesListResponseSchema)
     def get(self, args):
         self.verify_api_key(args)
         result = models.CdeRefAgency.get()
@@ -26,6 +28,7 @@ class AgenciesList(AgenciesResource):
 
 class AgenciesDetail(AgenciesResource):
     @use_args(marshmallow_schemas.ArgumentsSchema)
+    @marshal_with(marshmallow_schemas.AgenciesDetailResponseSchema)
     def get(self, args, nbr):
         self.verify_api_key(args)
         agency = models.CdeRefAgency.get(nbr)

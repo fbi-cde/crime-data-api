@@ -20,6 +20,7 @@ from crime_data.common.marshmallow_schemas import ma
 from crime_data.common.models import db
 from crime_data.extensions import (bcrypt, cache, csrf_protect, debug_toolbar,
                                    login_manager, migrate)
+from flask_apispec.extension import FlaskApiSpec
 from crime_data.settings import ProdConfig
 
 if __name__ == '__main__':
@@ -133,3 +134,11 @@ def add_resources(app):
     api.add_resource(crime_data.resources.arrests.ArrestsCountByAgeSex,
                      '/arrests/age_sex/')
     api.add_resource(crime_data.resources.arson.ArsonCountResource, '/arson/')
+
+
+    docs = FlaskApiSpec(app)
+    docs.register(crime_data.resources.agencies.AgenciesDetail)
+    docs.register(crime_data.resources.agencies.AgenciesList)
+    docs.register(crime_data.resources.incidents.IncidentsCount)
+    docs.register(crime_data.resources.incidents.IncidentsDetail)
+    docs.register(crime_data.resources.incidents.IncidentsList)

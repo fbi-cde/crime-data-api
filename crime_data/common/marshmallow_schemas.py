@@ -5,7 +5,6 @@ import os
 from flask_marshmallow import Marshmallow
 from marshmallow import fields as marsh_fields
 from marshmallow import Schema, post_dump
-
 from . import cdemodels, models
 
 ma = Marshmallow()
@@ -63,6 +62,17 @@ class AgenciesRetaArgsSchema(ArgumentsSchema):
     victim_ethnicity = marsh_fields.String()
     offender_ethnicity = marsh_fields.String()
     by = marsh_fields.String(missing='ori')
+
+
+# Schema for pagination
+
+class PaginationSchema(Schema):
+    count = marsh_fields.Integer(dumpOnly=True)
+    page = marsh_fields.Integer(dumpOnly=True)
+    pages = marsh_fields.Integer(dumpOnly=True)
+    per_page = marsh_fields.Integer(dumpOnly=True)
+
+
 
 # Schemas for data serialization
 
@@ -508,6 +518,7 @@ class NibrsIncidentSchema(ma.ModelSchema):
     offenders = ma.Nested(NibrsOffenderSchema, many=True)
 
 
+
 class NibrsAssignmentTypeSchema(ma.ModelSchema):
     class Meta:
         model = models.NibrsAssignmentType
@@ -625,3 +636,34 @@ class SuppPropertyTypeSchema(ma.ModelSchema):
         model = models.SuppPropertyType
         exclude = ('property_type_id', )
         ordered = True
+
+
+### Count schemas
+class IncidentCountSchema(Schema):
+    class Meta:
+        ordered = True
+
+    actual_count = marsh_fields.Integer()
+    reported_count = marsh_fields.Integer()
+    unfounded_count = marsh_fields.Integer()
+    cleared_count = marsh_fields.Integer()
+    juvenile_cleared_count = marsh_fields.Integer()
+
+### response schemas
+class PaginatedResponseSchema(Schema):
+    class Meta:
+        ordered = True
+
+    pagination = ma.Nested(PaginationSchema)
+
+class AgenciesListResponseSchema(PaginatedResponseSchema):
+    results = ma.Nested(RefAgencySchema, many=True)
+
+class AgenciesDetailResponseSchema(PaginatedResponseSchema):
+    results = ma.Nested(RefAgencySchema)
+
+class IncidentsDetailResponseSchema(PaginatedResponseSchema):
+    results = ma.Nested(NibrsIncidentSchema)
+
+class IncidentsListResponseSchema(PaginatedResponseSchema):
+    results = ma.Nested(NibrsIncidentSchema, many=True)

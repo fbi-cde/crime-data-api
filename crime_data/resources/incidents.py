@@ -1,7 +1,8 @@
 from webargs.flaskparser import use_args
+from flask_apispec import marshal_with, use_kwargs
 
 from crime_data.common import cdemodels, marshmallow_schemas, models
-from crime_data.common.base import CdeResource, tuning_page
+from crime_data.common.base import CdeResource, tuning_page, tuning_page_kwargs
 
 
 def _is_string(col):
@@ -17,6 +18,7 @@ class IncidentsList(CdeResource):
     fast_count = True
 
     @use_args(marshmallow_schemas.ArgumentsSchema)
+    @marshal_with(marshmallow_schemas.IncidentsListResponseSchema)
     @tuning_page
     def get(self, args):
         return self._get(args)
@@ -29,6 +31,7 @@ class IncidentsDetail(CdeResource):
     fast_count = True
 
     @use_args(marshmallow_schemas.ArgumentsSchema)
+    @marshal_with(marshmallow_schemas.IncidentsDetailResponseSchema)
     @tuning_page
     def get(self, args, nbr):
         self.verify_api_key(args)
@@ -37,11 +40,11 @@ class IncidentsDetail(CdeResource):
 
 
 class IncidentsCount(CdeResource):
-
     tables = cdemodels.IncidentCountTableFamily()
     is_groupable = True
 
     @use_args(marshmallow_schemas.GroupableArgsSchema)
+    @marshal_with(marshmallow_schemas.IncidentCountSchema)
     @tuning_page
     def get(self, args):
         return self._get(args)
