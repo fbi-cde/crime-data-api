@@ -43,24 +43,15 @@ class CdeRetaMonthOffenseSubcat(models.RetaMonthOffenseSubcat):
     pass
 
 
-class CdeRefAgency(models.RefAgency, QueryTraits):
-    @staticmethod
-    def get_filter_map():
-        return {
-            'state': CdeRefState.state_abbr.label('state'),
-            'city': CdeRefCity.city_name.label('city')
-        }
+class CdeRefAgency(models.RefAgency):
 
-    def get(ori=None, filters=None, args=None):
+    def get(ori=None):
         # Base Query
         query = CdeRefAgency.query
 
         # Get ONE ORI.
         if ori:
             query = query.filter(CdeRefAgency.ori == ori)
-
-        # Apply all filters
-        query = CdeRefAgency.apply_filters(query, filters, args)
 
         return query
 

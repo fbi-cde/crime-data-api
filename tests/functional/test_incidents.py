@@ -8,26 +8,27 @@ import pytest
 
 
 class TestTuningPage:
-    def test_tuning_page_exists(self, user, testapp):
+    def test_tuning_page_exists(self, testapp):
         res = testapp.get('/incidents/?tuning=1')
         assert res.status_code == 200
         assert b'<!DOCTYPE html>' in res.body
 
+
 class TestIncidentsEndpoint:
-    def test_incidents_endpoint_exists(self, user, testapp):
+    def test_incidents_endpoint_exists(self, testapp):
         res = testapp.get('/incidents/')
         assert res.status_code == 200
 
-    def test_incidents_endpoint_includes_metadata(self, user, testapp):
+    def test_incidents_endpoint_includes_metadata(self, testapp):
         res = testapp.get('/incidents/')
         assert 'pagination' in res.json
 
-    def test_incidents_endpoint_returns_incidents(self, user, testapp):
+    def test_incidents_endpoint_returns_incidents(self, testapp):
         res = testapp.get('/incidents/')
         assert len(res.json['results']) > 0
         assert 'incident_number' in res.json['results'][0]
 
-    def test_incidents_endpoint_includes_offenses(self, user, testapp):
+    def test_incidents_endpoint_includes_offenses(self, testapp):
         res = testapp.get('/incidents/')
         for incident in res.json['results']:
             assert 'offenses' in incident
@@ -35,19 +36,19 @@ class TestIncidentsEndpoint:
                 assert 'offense_type' in offense
                 assert 'offense_name' in offense['offense_type']
 
-    def test_incidents_endpoint_includes_ori(self, user, testapp):
+    def test_incidents_endpoint_includes_ori(self, testapp):
         res = testapp.get('/incidents/')
         for incident in res.json['results']:
             assert 'agency' in incident
             assert 'ori' in incident['agency']
 
-    def test_incidents_endpoint_includes_counties(self, user, testapp):
+    def test_incidents_endpoint_includes_counties(self, testapp):
         res = testapp.get('/incidents/')
         for incident in res.json['results']:
             agency = incident['agency']
             assert 'counties' in agency
 
-    def test_incidents_endpoint_includes_locations(self, user, testapp):
+    def test_incidents_endpoint_includes_locations(self, testapp):
         res = testapp.get('/incidents/')
         for incident in res.json['results']:
             assert 'offenses' in incident
@@ -55,7 +56,7 @@ class TestIncidentsEndpoint:
                 assert 'location' in offense
                 assert 'location_name' in offense['location']
 
-    def test_incidents_endpoint_filters_offense_code(self, user, testapp):
+    def test_incidents_endpoint_filters_offense_code(self, testapp):
         res = testapp.get('/incidents/?offense_code=35A')
         for incident in res.json['results']:
             assert 'offenses' in incident
@@ -63,7 +64,7 @@ class TestIncidentsEndpoint:
                     if o['offense_type']['offense_code'] == '35A']
             assert len(hits) > 0
 
-    def test_incidents_endpoint_filters_method_entry_code(self, user, testapp):
+    def test_incidents_endpoint_filters_method_entry_code(self, testapp):
         res = testapp.get('/incidents/?method_entry_code=N')
         for incident in res.json['results']:
             assert 'offenses' in incident
@@ -72,7 +73,7 @@ class TestIncidentsEndpoint:
             assert len(hits) > 0
 
     def test_incidents_endpoint_filters_offense_code_plus_method_entry_code(
-            self, user, testapp):
+            self, testapp):
         res = testapp.get('/incidents/?offense_code=220&method_entry_code=F')
         for incident in res.json['results']:
             assert 'offenses' in incident
@@ -81,7 +82,7 @@ class TestIncidentsEndpoint:
                         'method_entry_code'] == 'F']
             assert len(hits) > 0
 
-    def test_incidents_endpoint_filters_location_code(self, user, testapp):
+    def test_incidents_endpoint_filters_location_code(self, testapp):
         res = testapp.get('/incidents/?location_code=22')
         for incident in res.json['results']:
             assert 'offenses' in incident
@@ -90,7 +91,7 @@ class TestIncidentsEndpoint:
             assert len(hits) > 0
 
     def test_incidents_endpoint_filters_location_code_plus_offense_code(
-            self, user, testapp):
+            self, testapp):
         res = testapp.get('/incidents/?location_code=22&offense_code=13C')
         for incident in res.json['results']:
             assert 'offenses' in incident
@@ -101,14 +102,14 @@ class TestIncidentsEndpoint:
 
     @pytest.mark.xfail  # TODO
     def test_incidents_endpoint_filters_offense_name_case_insensitive(
-            self, user, testapp):
+            self, testapp):
         res0 = testapp.get('/incidents/?offense_name=Intimidation')
         assert len(res0.json['results']) > 0
         res1 = testapp.get('/incidents/?offense_name=intimidation')
         assert len(res1.json['results']) == len(res0.json)
 
     @pytest.mark.xfail  # TODO
-    def test_incidents_endpoint_filters_null_method_entry_code(self, user,
+    def test_incidents_endpoint_filters_null_method_entry_code(self,
                                                                testapp):
         res = testapp.get('/incidents/?method_entry_code=None')
         assert len(res.json['results']) > 0
@@ -123,25 +124,25 @@ class TestIncidentsEndpoint:
         assert res.status_code == 400
         assert res.json['message'] == 'field llamas not found'
 
-    def test_incidents_endpoint_filter_names_case_insensitive(self, user, testapp):
+    def test_incidents_endpoint_filter_names_case_insensitive(self, testapp):
         res0 = testapp.get('/incidents/?Incident_Hour=22')
         assert res0.json['pagination']['count'] > 0
         res1 = testapp.get('/incidents/?incident_hour=22')
         assert res0.json['pagination']['count'] == res1.json['pagination']['count']
 
-    def test_incidents_endpoint_filters_incident_hour(self, user, testapp):
+    def test_incidents_endpoint_filters_incident_hour(self, testapp):
         res = testapp.get('/incidents/?incident_hour=22')
         assert len(res.json['results']) > 0
         for incident in res.json['results']:
             assert incident['incident_hour'] == 22
 
-    def test_incidents_endpoint_filters_incident_hour_greater_than(self, user, testapp):
+    def test_incidents_endpoint_filters_incident_hour_greater_than(self, testapp):
         res = testapp.get('/incidents/?incident_hour>16')
         assert len(res.json['results']) > 0
         for incident in res.json['results']:
             assert incident['incident_hour'] > 16
 
-    def test_incidents_endpoint_filters_location_name(self, user, testapp):
+    def test_incidents_endpoint_filters_location_name(self, testapp):
         res = testapp.get('/incidents/?location_name=Parking+Lot/Garage')
         assert len(res.json['results']) > 0
         for incident in res.json['results']:
@@ -149,7 +150,7 @@ class TestIncidentsEndpoint:
             hits = [o for o in incident['offenses'] if o['location']['location_name'] == 'Parking Lot/Garage']
             assert len(hits) > 0
 
-    def test_incidents_endpoint_filters_victim_race_code(self, user, testapp):
+    def test_incidents_endpoint_filters_victim_race_code(self, testapp):
         res = testapp.get('/incidents/?victim.race_code=B')
         assert len(res.json['results']) > 0
         for incident in res.json['results']:
@@ -158,7 +159,7 @@ class TestIncidentsEndpoint:
             race_codes = [r['race_code'] for r in races if r]
             assert 'B' in race_codes
 
-    def test_incidents_endpoint_filters_victim_sex_code(self, user, testapp):
+    def test_incidents_endpoint_filters_victim_sex_code(self, testapp):
         res = testapp.get('/incidents/?victim.sex_code=F')
         assert len(res.json['results']) > 0
         for incident in res.json['results']:
@@ -166,7 +167,7 @@ class TestIncidentsEndpoint:
             hits = [v for v in incident['victims'] if v['sex_code'] == 'F']
             assert len(hits) > 0
 
-    def test_incidents_endpoint_filters_offender_age_num(self, user, testapp):
+    def test_incidents_endpoint_filters_offender_age_num(self, testapp):
         res = testapp.get('/incidents/?offender.age_num>30')
         assert len(res.json['results']) > 0
         for incident in res.json['results']:
@@ -174,7 +175,7 @@ class TestIncidentsEndpoint:
             hits = [o for o in incident['offenders'] if o['age_num'] > 30]
             assert len(hits) > 0
 
-    def test_incidents_endpoint_filters_arrestee_resident_code(self, user, testapp):
+    def test_incidents_endpoint_filters_arrestee_resident_code(self, testapp):
         res = testapp.get('/incidents/?arrestee.resident_code!=R')
         assert len(res.json['results']) > 0
         for incident in res.json['results']:
@@ -183,7 +184,7 @@ class TestIncidentsEndpoint:
             assert len(hits) > 0
 
     @pytest.mark.xfail
-    def test_incidents_endpoint_filters_incident_date(self, user, testapp):
+    def test_incidents_endpoint_filters_incident_date(self, testapp):
         res = testapp.get('/incidents/?incident_date>2014-06-01&incident_date<2014-06-30')
         assert len(res.json['results']) > 0
         for incident in res.json['results']:
@@ -191,7 +192,7 @@ class TestIncidentsEndpoint:
             assert dt > dateutil.parser.parse('2014-06-01T00:00+00:00')
             assert dt <= dateutil.parser.parse('2014-07-01T00:00+00:00')
 
-    def test_incidents_endpoint_filters_on_multiple_values(self, user, testapp):
+    def test_incidents_endpoint_filters_on_multiple_values(self, testapp):
         res = testapp.get('/incidents/?victim.race_code=A,I,P')
         assert len(res.json['results']) > 0
         for incident in res.json['results']:
@@ -200,14 +201,14 @@ class TestIncidentsEndpoint:
 
     # TODO: escaped commas
 
-    def test_incidents_endpoint_filters_on_multiple_values_with_brackets(self, user, testapp):
+    def test_incidents_endpoint_filters_on_multiple_values_with_brackets(self, testapp):
         res = testapp.get('/incidents/?victim.race_code={A,I,P}')
         assert len(res.json['results']) > 0
         for incident in res.json['results']:
             races = [v['race']['race_code'] for v in incident['victims']]
             assert ('A' in races) or ('I' in races) or ('P' in races)
 
-    def test_incidents_endpoint_filter_with_spaces(self, user, testapp):
+    def test_incidents_endpoint_filter_with_spaces(self, testapp):
         for category_name in ('Larceny/Theft Offenses', 'Larceny/Theft+Offenses', 'Larceny/Theft%20Offenses'):
             res = testapp.get('/incidents/?offense_category_name=' + category_name)
             assert len(res.json['results']) > 0
@@ -215,19 +216,19 @@ class TestIncidentsEndpoint:
                 offense_names = [o['offense_type']['offense_category_name'] for o in incident['offenses']]
                 assert ('Larceny/Theft Offenses') in offense_names
 
-    def test_incidents_endpoint_filter_with_parens(self, user, testapp):
+    def test_incidents_endpoint_filter_with_parens(self, testapp):
         for population_family_desc in ('City (1-7)', 'City+(1-7)'):
             res = testapp.get('/incidents/?population_family_desc=' + population_family_desc)
             assert len(res.json['results']) > 0
             for incident in res.json['results']:
                 assert incident['agency']['population_family']['population_family_desc'] == 'City (1-7)'
 
-    def test_incidents_endpoint_filter_state(self, user, testapp):
+    def test_incidents_endpoint_filter_state(self, testapp):
         results = testapp.get('/incidents/?state=oh')
         for incident in results.json['results']:
             assert incident['agency']['state']['state_abbr'] == 'OH'
 
-    def test_incidents_endpoint_filter_county(self, user, testapp):
+    def test_incidents_endpoint_filter_county(self, testapp):
         results = testapp.get('/incidents/?county=warren')
         for incident in results.json['results']:
             county_names = [c['county'].lower() for c in incident['agency']['counties']]
@@ -236,18 +237,18 @@ class TestIncidentsEndpoint:
     # End filter tests
 
     @pytest.mark.xfail  # TODO
-    def test_incidents_endpoint_filters_for_nulls(self, user, testapp):
+    def test_incidents_endpoint_filters_for_nulls(self, testapp):
         pass
 
     @pytest.mark.xfail   #TODO: this has messed up the paginator
-    def test_incidents_paginate(self, user, testapp):
+    def test_incidents_paginate(self, testapp):
         page1 = testapp.get('/incidents/?page=1')
         page2 = testapp.get('/incidents/?page=2')
         assert len(page1.json['results']) == 10
         assert len(page2.json['results']) == 10
         assert page2.json['results'][0] not in page1.json['results']
 
-    def test_incidents_pagination_data_in_metadata(self, user, testapp):
+    def test_incidents_pagination_data_in_metadata(self, testapp):
         page = testapp.get('/incidents/?page=3&per_page=7')
         assert page.json['pagination']['page'] == 3
         assert page.json['pagination']['per_page'] == 7
@@ -256,12 +257,12 @@ class TestIncidentsEndpoint:
         assert page.json['pagination']['pages'] > 1
 
     @pytest.mark.xfail  # TODO
-    def test_incidents_pagination_beyond_end_fails_gracefully(self, user, testapp):
+    def test_incidents_pagination_beyond_end_fails_gracefully(self, testapp):
         page = testapp.get('/incidents/?state=DE&page=100000&per_page=1000')
         assert False
 
     @pytest.mark.xfail   #TODO: this has messed up the paginator
-    def test_incidents_page_size(self, user, testapp):
+    def test_incidents_page_size(self, testapp):
         res = testapp.get('/incidents/?per_page=5')
         assert len(res.json['results']) == 5
 
@@ -269,7 +270,7 @@ class TestIncidentsEndpoint:
         res = testapp.get('/incidents/')
         return res.json['results'][0]['incident_number']
 
-    def test_incidents_endpoint_single_record_works(self, user, testapp):
+    def test_incidents_endpoint_single_record_works(self, testapp):
         id_no = self._single_incident_number(testapp)
         res = testapp.get('/incidents/{}/'.format(id_no))
         assert res.status_code == 200
@@ -280,7 +281,7 @@ class TestIncidentsCountEndpoint:
         res = testapp.get('/incidents/count/')
         assert res.status_code == 200
 
-    def test_incidents_endpoint_includes_metadata(self, user, testapp):
+    def test_incidents_endpoint_includes_metadata(self, testapp):
         res = testapp.get('/incidents/count/')
         assert 'pagination' in res.json
 
