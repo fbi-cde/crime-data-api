@@ -1,9 +1,14 @@
 engines:
   duplication:
     enabled: true
+    exclude_paths:
+      - crime_data/common/models.py
+      - crime_data/common/cdemodels.py
+      - crime_data/common/marshmallow_schemas.py
     config:
       languages:
-        - python
+        python:
+          python_version: 3
   fixme:
     enabled: true
   pep8:
