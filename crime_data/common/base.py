@@ -311,9 +311,12 @@ class CdeResource(Resource):
 
         # WINDOW FUNCTION COUNT(*) OVER () returns count in every row.
         # Any row will give the correct count. 
-        if paginated and over_count:
-            count = paginated[0][1] # Just select the first row.
-            paginated = [i[0] for i in paginated]
+        try:
+            if over_count:
+                count = paginated[0][1] # Just select the first row.
+                paginated = [i[0] for i in paginated]
+        except:
+            pass
 
         if self.schema:
             serialized = self.schema.dump(paginated).data
