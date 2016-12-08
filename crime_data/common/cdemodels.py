@@ -84,6 +84,8 @@ class CdeNibrsLocationType(models.NibrsLocationType):
 
 class CdeNibrsIncident(models.NibrsIncident, QueryTraits):
 
+    over_count = True
+
     offender_ethnicity = aliased(CdeNibrsEthnicity, name='offender_ethnicity')
     victim_ethnicity = aliased(CdeNibrsEthnicity, name='victim_ethnicity')
     victim_race = aliased(CdeRefRace, name='victim_race')
@@ -345,7 +347,6 @@ class TableFamily:
 
     def base_query(self):
         """Gets root Query, based on class's base_table"""
-        #from sqlalchemy import func
         return db.session.query(self.base_table.table)
 
     def _is_string(self, col):
@@ -655,7 +656,9 @@ class IncidentTableFamily(TableFamily):
     def base_query(self):
         """Gets root Query, based on class's base_table"""
         from sqlalchemy import func
-        return db.session.query(self.base_table.table, func.count().over().label('count'))
+        return db.session.query(self.base_table.table, 
+            func.count().over().label('count'))
+
 
 class IncidentCountTableFamily(TableFamily):
     """""

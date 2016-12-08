@@ -13,17 +13,20 @@ class IncidentsList(CdeResource):
 
     schema = marshmallow_schemas.NibrsIncidentSchema(many=True)
     tables = cdemodels.IncidentTableFamily()
+    # Enable fast counting.
+    fast_count = True
 
     @use_args(marshmallow_schemas.ArgumentsSchema)
     @tuning_page
     def get(self, args):
-        over_count = True
-        return self._get(args, True)
+        return self._get(args)
 
 
 class IncidentsDetail(CdeResource):
 
     schema = marshmallow_schemas.NibrsIncidentSchema(many=True)
+    # Enable fast counting.
+    fast_count = True
 
     @use_args(marshmallow_schemas.ArgumentsSchema)
     @tuning_page
@@ -36,7 +39,6 @@ class IncidentsDetail(CdeResource):
 class IncidentsCount(CdeResource):
 
     tables = cdemodels.IncidentCountTableFamily()
-
     is_groupable = True
 
     @use_args(marshmallow_schemas.GroupableArgsSchema)

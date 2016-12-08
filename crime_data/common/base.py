@@ -162,6 +162,8 @@ class RoutingSQLAlchemy(SQLAlchemy):
 class CdeResource(Resource):
     __abstract__ = True
     schema = None
+    # Enable fast counting.
+    fast_count = False
 
     OPERATORS = {
         '!=': '__ne__',
@@ -174,7 +176,7 @@ class CdeResource(Resource):
 
     is_groupable = False
 
-    def _get(self, args, over_count=False):
+    def _get(self, args):
         # TODO: apply "fields" arg
 
         self.verify_api_key(args)
@@ -190,12 +192,12 @@ class CdeResource(Resource):
 
         if args['output'] == 'csv':
             output = make_response(self.output_serialize(
-                self.with_metadata(qry, args, over_count), self.schema, 'csv', aggregate_many))
+                self.with_metadata(qry, args), self.schema, 'csv', aggregate_many))
             output.headers[
                 "Content-Disposition"] = "attachment; filename=incidents.csv"
             output.headers["Content-type"] = "text/csv"
             return output
-        return self.with_metadata(qry, args, over_count)
+        return self.with_metadata(qry, args)
 
     def _serialize_dict(self, data, accumulator={}, path=None, aggregate_many = False):
         """ Recursively serializes a nested dict 
@@ -299,7 +301,7 @@ class CdeResource(Resource):
     def _as_dict(self, fieldTuple, res):
         return dict(zip(fieldTuple, res))
 
-    def with_metadata(self, results, args, over_count=False):
+    def with_metadata(self, results, args):
         """Paginates results and wraps them in metadata."""
 
         paginated = results.limit(args['per_page']).offset(
@@ -312,10 +314,13 @@ class CdeResource(Resource):
         # WINDOW FUNCTION COUNT(*) OVER () returns count in every row.
         # Any row will give the correct count. 
         try:
-            if over_count:
-                count = paginated[0][1] # Just select the first row.
+            if self.fast_count:
+                count = paginated[0][1]  # Just select the first row.
                 paginated = [i[0] for i in paginated]
+                
         except:
+            # Fallback to counting results with extra query.
+            count = paginated.count()
             pass
 
         if self.schema:
