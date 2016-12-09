@@ -1,8 +1,8 @@
 from webargs.flaskparser import use_args
-from flask_apispec import marshal_with, use_kwargs
+from flask_apispec import marshal_with, doc
 
 from crime_data.common import cdemodels, marshmallow_schemas, models
-from crime_data.common.base import CdeResource, tuning_page, tuning_page_kwargs
+from crime_data.common.base import CdeResource, tuning_page
 
 
 def _is_string(col):
@@ -18,6 +18,8 @@ class IncidentsList(CdeResource):
     fast_count = True
 
     @use_args(marshmallow_schemas.ArgumentsSchema)
+    @doc(tags=['incidents'],
+         description="Return all matching incidents. Queries can drill down on specific values for fields within the incidents record.")
     @marshal_with(marshmallow_schemas.IncidentsListResponseSchema)
     @tuning_page
     def get(self, args):
@@ -32,6 +34,8 @@ class IncidentsDetail(CdeResource):
 
     @use_args(marshmallow_schemas.ArgumentsSchema)
     @marshal_with(marshmallow_schemas.IncidentsDetailResponseSchema)
+    @doc(tags=['incidents'],
+         description="Return the specific record for a single incident")
     @tuning_page
     def get(self, args, nbr):
         self.verify_api_key(args)
@@ -45,6 +49,8 @@ class IncidentsCount(CdeResource):
 
     @use_args(marshmallow_schemas.GroupableArgsSchema)
     @marshal_with(marshmallow_schemas.IncidentCountSchema)
+    @doc(tags=['incidents'],
+         description="Returns counts by year for incidents. Incidents can be grouped for counting with the `by` parameter")
     @tuning_page
     def get(self, args):
         return self._get(args)

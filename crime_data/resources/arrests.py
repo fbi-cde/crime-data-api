@@ -1,4 +1,5 @@
 from webargs.flaskparser import use_args
+from flask_apispec import marshal_with
 
 from crime_data.common import cdemodels, marshmallow_schemas
 from crime_data.common.base import CdeResource, tuning_page

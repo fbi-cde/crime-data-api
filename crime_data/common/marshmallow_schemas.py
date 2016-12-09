@@ -667,3 +667,6 @@ class IncidentsDetailResponseSchema(PaginatedResponseSchema):
 
 class IncidentsListResponseSchema(PaginatedResponseSchema):
     results = ma.Nested(NibrsIncidentSchema, many=True)
+
+class OffensesListResponseSchema(PaginatedResponseSchema):
+    results = ma.Nested(CrimeTypeSchema, many=True)

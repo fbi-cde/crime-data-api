@@ -164,3 +164,4 @@ def add_resources(app):
     docs.register(crime_data.resources.incidents.IncidentsCount)
     docs.register(crime_data.resources.incidents.IncidentsDetail)
     docs.register(crime_data.resources.incidents.IncidentsList)
+    docs.register(crime_data.resources.offenses.OffensesList)
