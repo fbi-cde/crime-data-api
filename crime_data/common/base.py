@@ -12,6 +12,9 @@ from flask_restful import Resource, abort, current_app
 from flask_sqlalchemy import SignallingSession, SQLAlchemy
 from sqlalchemy import func, or_
 
+from crime_data.extensions import db
+
+session = db.session
 
 def tuning_page(f):
     @wraps(f)
@@ -301,6 +304,27 @@ class CdeResource(Resource):
     def _as_dict(self, fieldTuple, res):
         return dict(zip(fieldTuple, res))
 
+
+
+    def _compile_query(self, query):
+        """
+        Gets String representation of an SQLAlchemy query.
+        """
+        from sqlalchemy.sql import compiler
+        from psycopg2.extensions import adapt as sqlescape
+        # or use the appropiate escape function from your db driver
+        dialect = query.session.bind.dialect
+        statement = query.statement
+        comp = compiler.SQLCompiler(dialect, statement)
+        comp.compile()
+        enc = dialect.encoding
+        params = {}
+        for k,v in comp.params.items():
+            #if isinstance(v, unicode):
+            #v = v.encode(enc)
+            params[k] = sqlescape(v)
+        return (comp.string % params)
+
     def with_metadata(self, results, args):
         """Paginates results and wraps them in metadata."""
 
@@ -310,18 +334,29 @@ class CdeResource(Resource):
             paginated = paginated.data
 
         count = 0
+        from sqlalchemy import select
+
+        try:
+            if self.fast_count:
+                count_est_query = select([func.count_estimate(self.compile_query(results))])
+                count_est_query_results = session.execute(count_est_query).fetchall()
+                count = count_est_query_results[0][0]
+        except:
+            # Fallback to counting results with extra query.
+            #count = paginated.count()
+            pass
 
         # WINDOW FUNCTION COUNT(*) OVER () returns count in every row.
         # Any row will give the correct count. 
-        try:
-            if self.fast_count:
-                count = paginated[0][1]  # Just select the first row.
-                paginated = [i[0] for i in paginated]
+        # try:
+        #     if self.fast_count:
+        #         count = paginated[0][1]  # Just select the first row.
+        #         paginated = [i[0] for i in paginated]
                 
-        except:
-            # Fallback to counting results with extra query.
-            count = paginated.count()
-            pass
+        # except:
+        #     # Fallback to counting results with extra query.
+        #     count = paginated.count()
+        #     pass
 
         if self.schema:
             serialized = self.schema.dump(paginated).data
