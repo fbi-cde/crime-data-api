@@ -38,7 +38,7 @@ Vagrant.configure(2) do |config|
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
-  # config.vm.synced_folder "../data", "/vagrant_data"
+  config.vm.synced_folder "..", "/home/ubuntu/crime-data-api"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -70,7 +70,6 @@ Vagrant.configure(2) do |config|
     apt-get upgrade -y
     apt-get install -y python3-dev python3-pip postgresql postgresql-server-dev-all postgresql-client
     pip3 install --upgrade pip
-    git clone https://github.com/18F/crime-data-api.git
     pip3 install -r crime-data-api/requirements/dev.txt
     su - postgres -c "/usr/bin/createuser --superuser ubuntu"
     su - ubuntu -c "
@@ -81,6 +80,7 @@ Vagrant.configure(2) do |config|
     ln -s /vagrant/run.sh /home/ubuntu/run.sh
     echo 'export FLASK_APP=/home/ubuntu/crime-data-api/autoapp.py
           export FLASK_DEBUG=1' >> /home/ubuntu/.bashrc
+    find crime-data-api -name \*.pyc -delete
     "
   SHELL
 end
