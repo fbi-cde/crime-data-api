@@ -320,8 +320,6 @@ class CdeResource(Resource):
         enc = dialect.encoding
         params = {}
         for k,v in comp.params.items():
-            #if isinstance(v, unicode):
-            #v = v.encode(enc)
             params[k] = sqlescape(v)
         return (comp.string % params)
 
