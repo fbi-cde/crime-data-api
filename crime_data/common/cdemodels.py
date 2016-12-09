@@ -658,6 +658,7 @@ class IncidentTableFamily(TableFamily):
         return db.session.query(self.base_table.table)
 
 
+
 class IncidentCountTableFamily(TableFamily):
     """""
     Base class for any RETA Summary data queries.
