@@ -14,7 +14,6 @@ dependencies:
 database:
   override:
     - psql --username=ubuntu circle_test < dba/crime_data_api_test.sql
-    - psql --username=ubuntu circle_test < sql/functions.sql
 test:
   override:
     - py.test --cov=crime_data tests/
