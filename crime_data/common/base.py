@@ -12,6 +12,9 @@ from flask_restful import Resource, abort, current_app
 from flask_sqlalchemy import SignallingSession, SQLAlchemy
 from sqlalchemy import func, or_
 
+from crime_data.extensions import db
+
+session = db.session
 
 def tuning_page(f):
     @wraps(f)
