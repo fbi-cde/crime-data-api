@@ -12,9 +12,6 @@ from flask_restful import Resource, abort, current_app
 from flask_sqlalchemy import SignallingSession, SQLAlchemy
 from sqlalchemy import func, or_
 
-from crime_data.extensions import db
-
-session = db.session
 
 def tuning_page(f):
     @wraps(f)
@@ -334,16 +331,17 @@ class CdeResource(Resource):
             paginated = paginated.data
 
         count = 0
-        from sqlalchemy import select
+        
 
         try:
             if self.fast_count:
-                count_est_query = select([func.count_estimate(self.compile_query(results))])
+                from sqlalchemy import select
+                count_est_query = select([func.count_estimate(self._compile_query(results))])
                 count_est_query_results = session.execute(count_est_query).fetchall()
                 count = count_est_query_results[0][0]
         except:
             # Fallback to counting results with extra query.
-            #count = paginated.count()
+            count = paginated.count()
             pass
 
         # WINDOW FUNCTION COUNT(*) OVER () returns count in every row.
