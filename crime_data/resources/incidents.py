@@ -48,7 +48,6 @@ class IncidentsCount(CdeResource):
     is_groupable = True
 
     @use_args(marshmallow_schemas.GroupableArgsSchema)
-    @marshal_with(marshmallow_schemas.IncidentCountSchema)
     @doc(tags=['incidents'],
          description="Returns counts by year for incidents. Incidents can be grouped for counting with the `by` parameter")
     @tuning_page

@@ -648,6 +648,7 @@ class IncidentCountSchema(Schema):
     unfounded_count = marsh_fields.Integer()
     cleared_count = marsh_fields.Integer()
     juvenile_cleared_count = marsh_fields.Integer()
+    year = marsh_fields.Integer()
 
 ### response schemas
 class PaginatedResponseSchema(Schema):
@@ -661,6 +662,9 @@ class AgenciesListResponseSchema(PaginatedResponseSchema):
 
 class AgenciesDetailResponseSchema(PaginatedResponseSchema):
     results = ma.Nested(RefAgencySchema)
+
+class IncidentsCountResponseSchema(PaginatedResponseSchema):
+    results = ma.Nested(IncidentCountSchema, many=True)
 
 class IncidentsDetailResponseSchema(PaginatedResponseSchema):
     results = ma.Nested(NibrsIncidentSchema)

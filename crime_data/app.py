@@ -165,3 +165,6 @@ def add_resources(app):
     docs.register(crime_data.resources.incidents.IncidentsDetail)
     docs.register(crime_data.resources.incidents.IncidentsList)
     docs.register(crime_data.resources.offenses.OffensesList)
+    docs.register(crime_data.resources.arrests.ArrestsCountByRace)
+    docs.register(crime_data.resources.arrests.ArrestsCountByEthnicity)
+    docs.register(crime_data.resources.arrests.ArrestsCountByAgeSex)
