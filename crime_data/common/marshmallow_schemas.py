@@ -5,7 +5,6 @@ import os
 from flask_marshmallow import Marshmallow
 from marshmallow import fields as marsh_fields
 from marshmallow import Schema, post_dump
-
 from . import cdemodels, models
 
 ma = Marshmallow()
@@ -15,11 +14,13 @@ AGE_CODES = {'BB': 0, 'NB': 0, 'NN': 0, '99': 99, }
 
 
 class SchemaFormater(object):
+    """Useful methods for schema transformations"""
+
+
     @classmethod
     def format_age(cls, data):
-        """Turns the age_num field into
-        something a little more useful.
-        """
+        """Turns the age_num field into something a little more useful."""
+
         if 'age_num' in data and data['age']:
             if data['age']['age_code'] in AGE_CODES:
                 data['age_num'] = AGE_CODES[data['age']['age_code']]
@@ -28,6 +29,8 @@ class SchemaFormater(object):
 
 # Schemas for request parsing
 class ArgumentsSchema(Schema):
+    """Input arguments for many API methods"""
+
     output = marsh_fields.String(missing='json')
     aggregate_many = marsh_fields.String(missing='false')
     page = marsh_fields.Integer(missing=1)
@@ -41,10 +44,17 @@ class ArgumentsSchema(Schema):
 
 
 class GroupableArgsSchema(ArgumentsSchema):
+    """
+    Groupable queries can be grouped by one or more fields found in the
+    tables separated by commas
+    """
+
     by = marsh_fields.String(missing='year')
 
 
 class AgenciesIncidentArgsSchema(ArgumentsSchema):
+    """Extra parameters apply to queries against the incidents table."""
+
     incident_hour = marsh_fields.Integer()
     crime_against = marsh_fields.String()
     offense_code = marsh_fields.String()
@@ -58,15 +68,25 @@ class AgenciesIncidentArgsSchema(ArgumentsSchema):
 
 
 class AgenciesRetaArgsSchema(ArgumentsSchema):
+    """RET A Agencies can be queried with additional arguments."""
+
     state = marsh_fields.String()
     ori = marsh_fields.String()
     victim_ethnicity = marsh_fields.String()
     offender_ethnicity = marsh_fields.String()
     by = marsh_fields.String(missing='ori')
 
+
+class PaginationSchema(Schema):
+    """Many API methods include a Pagination record in their responses."""
+
+    count = marsh_fields.Integer(dumpOnly=True)
+    page = marsh_fields.Integer(dumpOnly=True)
+    pages = marsh_fields.Integer(dumpOnly=True)
+    per_page = marsh_fields.Integer(dumpOnly=True)
+
+
 # Schemas for data serialization
-
-
 class NibrsRelationshipSchema(ma.ModelSchema):
     class Meta:
         model = models.NibrsRelationship
@@ -160,7 +180,7 @@ class RefCitySchema(ma.ModelSchema):
         exclude = ('city_id', 'state', )
         ordered = True
 
-#    state = ma.Nested(RefStateSchema)
+    state = ma.Nested(RefStateSchema)
 
 
 class RefContinentSchema(ma.ModelSchema):
@@ -508,6 +528,7 @@ class NibrsIncidentSchema(ma.ModelSchema):
     offenders = ma.Nested(NibrsOffenderSchema, many=True)
 
 
+
 class NibrsAssignmentTypeSchema(ma.ModelSchema):
     class Meta:
         model = models.NibrsAssignmentType
@@ -625,3 +646,87 @@ class SuppPropertyTypeSchema(ma.ModelSchema):
         model = models.SuppPropertyType
         exclude = ('property_type_id', )
         ordered = True
+
+
+### Count schemas
+class IncidentCountSchema(Schema):
+    """
+    The basic response fields for an incident count query. There might
+    be additional fields in each record if more detailed groupings are
+    specified using the `by` parameter.
+    """
+
+    class Meta:
+        ordered = True
+
+    actual_count = marsh_fields.Integer(dump_only=True)
+    reported_count = marsh_fields.Integer(dump_only=True)
+    unfounded_count = marsh_fields.Integer(dump_only=True)
+    cleared_count = marsh_fields.Integer(dump_only=True)
+    juvenile_cleared_count = marsh_fields.Integer(dump_only=True)
+    year = marsh_fields.Integer(dump_only=True)
+
+
+class ArsonCountSchema(Schema):
+    """
+    The basic response for an arson count response. These records might
+    contain additional information depending on what fields are specified
+    for the `by` parameter
+    """
+
+    class Meta:
+        ordered = True
+
+    actual_count = marsh_fields.Integer(dump_only=True)
+    cleared_count = marsh_fields.Integer(dump_only=True)
+    est_damage_value = marsh_fields.Integer(dump_only=True)
+    juvenile_cleared_count = marsh_fields.Integer(dump_only=True)
+    reported_count = marsh_fields.Integer(dump_only=True)
+    unfounded_count = marsh_fields.Integer(dump_only=True)
+    uninhabited_count = marsh_fields.Integer(dump_only=True)
+    year = marsh_fields.Integer(dump_only=True)
+
+
+# response schemas
+class PaginatedResponseSchema(Schema):
+    """
+    Many endpoints return paginated responses with both pagination and
+    results subrecords
+    """
+
+    class Meta:
+        ordered = True
+
+    pagination = ma.Nested(PaginationSchema)
+
+
+class AgenciesListResponseSchema(PaginatedResponseSchema):
+    results = ma.Nested(RefAgencySchema, many=True)
+
+
+class AgenciesDetailResponseSchema(PaginatedResponseSchema):
+    results = ma.Nested(RefAgencySchema)
+
+
+class IncidentsCountResponseSchema(PaginatedResponseSchema):
+    results = ma.Nested(IncidentCountSchema, many=True)
+
+
+class IncidentsDetailResponseSchema(PaginatedResponseSchema):
+    results = ma.Nested(NibrsIncidentSchema)
+
+
+class IncidentsListResponseSchema(PaginatedResponseSchema):
+    results = ma.Nested(NibrsIncidentSchema, many=True)
+
+
+class OffensesListResponseSchema(PaginatedResponseSchema):
+    results = ma.Nested(CrimeTypeSchema, many=True)
+
+
+class ArsonCountResponseSchema(PaginatedResponseSchema):
+    results = ma.Nested(ArsonCountSchema, many=True)
+
+
+class CodeIndexResponseSchema(Schema):
+    key = marsh_fields.String()

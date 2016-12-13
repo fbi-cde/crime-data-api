@@ -9,6 +9,7 @@ Werkzeug==0.11.4
 Jinja2==2.8
 itsdangerous==0.24
 click>=5.0
+flask-httpauth
 
 # Database
 Flask-SQLAlchemy==2.1
@@ -50,3 +51,5 @@ sqltap==0.3.10
 flask-marshmallow==0.7.0
 marshmallow-sqlalchemy==0.12.0
 webargs==1.4.0
+
+flask-apispec

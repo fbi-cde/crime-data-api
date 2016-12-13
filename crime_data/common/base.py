@@ -7,7 +7,8 @@ from functools import wraps
 
 import sqltap
 from flask import make_response, request
-from flask_restful import Resource, abort, current_app
+from flask_restful import abort, current_app
+from flask_apispec.views import MethodResource
 # import celery
 from flask_sqlalchemy import SignallingSession, SQLAlchemy
 from sqlalchemy import func, or_
@@ -20,6 +21,23 @@ def tuning_page(f):
     @wraps(f)
     def decorated_get(*args, **kwargs):
         if 'tuning' in args[1] and args[1]['tuning']:
+            if not current_app.config['DEBUG']:
+                abort(403, message="`DEBUG` must be on for tuning page")
+            profiler = sqltap.start()
+            result = f(*args, **kwargs)
+            profiler.stop()
+            stats = profiler.collect()
+            return make_response(sqltap.report(stats, 'tuning.html'))
+        result = f(*args, **kwargs)
+        return result
+
+    return decorated_get
+
+
+def tuning_page_kwargs(f):
+    @wraps(f)
+    def decorated_get(*args, **kwargs):
+        if 'tuning' in kwargs and kwargs['tuning']:
             if not current_app.config['DEBUG']:
                 abort(403, message="`DEBUG` must be on for tuning page")
             profiler = sqltap.start()
@@ -162,7 +180,7 @@ class RoutingSQLAlchemy(SQLAlchemy):
         return RoutingSession(self, **options)
 
 
-class CdeResource(Resource):
+class CdeResource(MethodResource):
     __abstract__ = True
     schema = None
     # Enable fast counting.

@@ -2,6 +2,7 @@
 """The app module, containing the app factory function."""
 import csv
 import io
+from os import getenv
 
 import flask_restful as restful
 from flask import Flask, render_template
@@ -20,6 +21,7 @@ from crime_data.common.marshmallow_schemas import ma
 from crime_data.common.models import db
 from crime_data.extensions import (bcrypt, cache, csrf_protect, debug_toolbar,
                                    login_manager, migrate)
+from flask_apispec.extension import FlaskApiSpec
 from crime_data.settings import ProdConfig
 
 if __name__ == '__main__':
@@ -96,6 +98,7 @@ def register_commands(app):
 
 
 def add_resources(app):
+    """Register API routes and Swagger endpoints"""
     api = restful.Api(app)
 
     @api.representation('text/csv')
@@ -133,3 +136,35 @@ def add_resources(app):
     api.add_resource(crime_data.resources.arrests.ArrestsCountByAgeSex,
                      '/arrests/age_sex/')
     api.add_resource(crime_data.resources.arson.ArsonCountResource, '/arson/')
+
+    # Wrap swagger in HTTP Auth. Can be removed after ATO
+    from flask_httpauth import HTTPBasicAuth
+    auth = HTTPBasicAuth()
+
+    @auth.get_password
+    def get_pw(username):
+        target_username = getenv('HTTP_USERNAME')
+        target_password = getenv('HTTP_PASSWORD')
+
+        if target_username is None or target_password is None:
+            return None
+
+        if username == target_username:
+            return target_password
+
+        return None
+
+    FlaskApiSpec.swagger_json = auth.login_required(FlaskApiSpec.swagger_json)
+    FlaskApiSpec.swagger_ui = auth.login_required(FlaskApiSpec.swagger_ui)
+    # end of HTTP Auth protection for Swagger endpoints
+
+    docs = FlaskApiSpec(app)
+    docs.register(crime_data.resources.agencies.AgenciesDetail)
+    docs.register(crime_data.resources.agencies.AgenciesList)
+    docs.register(crime_data.resources.incidents.IncidentsCount)
+    docs.register(crime_data.resources.incidents.IncidentsDetail)
+    docs.register(crime_data.resources.incidents.IncidentsList)
+    docs.register(crime_data.resources.offenses.OffensesList)
+    docs.register(crime_data.resources.arrests.ArrestsCountByRace)
+    docs.register(crime_data.resources.arrests.ArrestsCountByEthnicity)
+    docs.register(crime_data.resources.arrests.ArrestsCountByAgeSex)

@@ -281,7 +281,7 @@ class TestIncidentsCountEndpoint:
         res = testapp.get('/incidents/count/')
         assert res.status_code == 200
 
-    def test_incidents_endpoint_includes_metadata(self, testapp):
+    def test_incidents_count_endpoint_includes_metadata(self, testapp):
         res = testapp.get('/incidents/count/')
         assert 'pagination' in res.json
 
