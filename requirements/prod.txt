@@ -19,10 +19,6 @@ SQLAlchemy==1.0.12
 # Migrations
 Flask-Migrate==2.0.0
 
-# Forms
-Flask-WTF==0.12
-WTForms==2.1
-
 # Deployment
 gunicorn>=19.1.1
 Flask-Cors==3.0.2
@@ -31,10 +27,6 @@ Flask-Cors==3.0.2
 Flask-Assets==0.12
 cssmin>=0.2.0
 jsmin>=2.0.11
-
-# Auth
-Flask-Login==0.3.2
-Flask-Bcrypt==0.7.1
 
 # Caching
 Flask-Caching>=1.0.0
