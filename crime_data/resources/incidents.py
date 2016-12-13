@@ -1,5 +1,5 @@
 from webargs.flaskparser import use_args
-from flask_apispec import marshal_with, doc
+import flask_apispec as swagger
 
 from crime_data.common import cdemodels, marshmallow_schemas, models
 from crime_data.common.base import CdeResource, tuning_page
@@ -18,9 +18,12 @@ class IncidentsList(CdeResource):
     fast_count = True
 
     @use_args(marshmallow_schemas.ArgumentsSchema)
-    @doc(tags=['incidents'],
-         description="Return all matching incidents. Queries can drill down on specific values for fields within the incidents record.")
-    @marshal_with(marshmallow_schemas.IncidentsListResponseSchema)
+    @swagger.doc(tags=['incidents'],
+                 description=('Return all matching incidents. Queries can drill down '
+                              'on specific values for fields within the incidents record.')
+    )
+    @swagger.use_kwargs(marshmallow_schemas.ArgumentsSchema, apply=False, locations=['query'])
+    @swagger.marshal_with(marshmallow_schemas.IncidentsListResponseSchema, apply=False)
     @tuning_page
     def get(self, args):
         return self._get(args)
@@ -33,9 +36,10 @@ class IncidentsDetail(CdeResource):
     fast_count = True
 
     @use_args(marshmallow_schemas.ArgumentsSchema)
-    @marshal_with(marshmallow_schemas.IncidentsDetailResponseSchema)
-    @doc(tags=['incidents'],
-         description="Return the specific record for a single incident")
+    @swagger.use_kwargs(marshmallow_schemas.ArgumentsSchema, apply=False, locations=['query'])
+    @swagger.marshal_with(marshmallow_schemas.IncidentsDetailResponseSchema, apply=False)
+    @swagger.doc(tags=['incidents'],
+                 description='Return the specific record for a single incident')
     @tuning_page
     def get(self, args, nbr):
         self.verify_api_key(args)
@@ -48,8 +52,14 @@ class IncidentsCount(CdeResource):
     is_groupable = True
 
     @use_args(marshmallow_schemas.GroupableArgsSchema)
-    @doc(tags=['incidents'],
-         description="Returns counts by year for incidents. Incidents can be grouped for counting with the `by` parameter")
+    @swagger.use_kwargs(marshmallow_schemas.GroupableArgsSchema,
+                        locations=["query"],
+                        apply=False)
+    @swagger.doc(tags=['incidents'],
+                 description=('Returns counts by year for incidents. '
+                              'Incidents can be grouped for counting with the `by` parameter')
+    )
+    @swagger.marshal_with(marshmallow_schemas.IncidentCountSchema, apply=False)
     @tuning_page
     def get(self, args):
         return self._get(args)

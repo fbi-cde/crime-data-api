@@ -1,5 +1,5 @@
 from webargs.flaskparser import use_args
-from flask_apispec import doc
+import flask_apispec as swagger
 
 from crime_data.common import cdemodels, marshmallow_schemas
 from crime_data.common.base import CdeResource, tuning_page
@@ -10,8 +10,9 @@ class ArrestsCountResource(CdeResource):
     is_groupable = True
 
     @use_args(marshmallow_schemas.GroupableArgsSchema)
-    @doc(tags=['arrests'],
-         description="Returns counts of arrests. These can be grouped further with the by column.")
+    @swagger.use_kwargs(marshmallow_schemas.GroupableArgsSchema, apply=False, locations=['query'])
+    @swagger.doc(tags=['arrests'],
+                 description='Returns counts of arrests. These can be grouped further with the by column.')
     @tuning_page
     def get(self, args):
         return self._get(args)
@@ -22,8 +23,9 @@ class ArrestsCountByRace(ArrestsCountResource):
     tables = cdemodels.ArrestsByRaceTableFamily()
 
     @use_args(marshmallow_schemas.GroupableArgsSchema)
-    @doc(tags=['arrests'],
-         description="Returns counts of arrests. These can be grouped further with the by column.")
+    @swagger.use_kwargs(marshmallow_schemas.GroupableArgsSchema, apply=False, locations=['query'])
+    @swagger.doc(tags=['arrests'],
+                 description='Returns counts of arrests. These can be grouped further with the by column.')
     @tuning_page
     def get(self, args):
         return self._get(args)
@@ -34,8 +36,9 @@ class ArrestsCountByEthnicity(ArrestsCountResource):
     tables = cdemodels.ArrestsByEthnicityTableFamily()
 
     @use_args(marshmallow_schemas.GroupableArgsSchema)
-    @doc(tags=['arrests'],
-         description="Returns counts of arrests. These can be grouped further with the by column.")
+    @swagger.use_kwargs(marshmallow_schemas.GroupableArgsSchema, apply=False, locations=['query'])
+    @swagger.doc(tags=['arrests'],
+                 description='Returns counts of arrests. These can be grouped further with the by column.')
     @tuning_page
     def get(self, args):
         return self._get(args)
@@ -46,8 +49,9 @@ class ArrestsCountByAgeSex(ArrestsCountResource):
     tables = cdemodels.ArrestsByAgeSexTableFamily()
 
     @use_args(marshmallow_schemas.GroupableArgsSchema)
-    @doc(tags=['arrests'],
-         description="Returns counts of arrests. These can be grouped further with the by column.")
+    @swagger.use_kwargs(marshmallow_schemas.GroupableArgsSchema, apply=False, locations=['query'])
+    @swagger.doc(tags=['arrests'],
+                 description='Returns counts of arrests. These can be grouped further with the by column.')
     @tuning_page
     def get(self, args):
         return self._get(args)
