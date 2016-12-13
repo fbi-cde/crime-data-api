@@ -221,9 +221,9 @@ class CdeResource(MethodResource):
         return self.with_metadata(qry, args)
 
     def _serialize_dict(self, data, accumulator={}, path=None, aggregate_many = False):
-        """ Recursively serializes a nested dict 
-        into a flat dict. Replaces lists with their 
-        length as an integer of any lists in nested dict. 
+        """ Recursively serializes a nested dict
+        into a flat dict. Replaces lists with their
+        length as an integer of any lists in nested dict.
         """
 
         # is_list_iter is false if not iterating over list.
@@ -252,7 +252,7 @@ class CdeResource(MethodResource):
                     key_path = path + '.' + str(k)
             else:
                 key_path = k
-            
+
             if isinstance(v, dict):
                 # For dicts, the key path is preserved completely.
                 self._serialize_dict(v, accumulator, key_path)
@@ -270,8 +270,8 @@ class CdeResource(MethodResource):
         return accumulator
 
     def output_serialize(self, data, schema=None, format='csv', aggregate_many = False):
-        """ Parses results. 
-        Either outputs JSON, or CSV. 
+        """ Parses results.
+        Either outputs JSON, or CSV.
         """
         if format is 'json':
             return data
@@ -308,7 +308,7 @@ class CdeResource(MethodResource):
     def _jsonable(self, val):
         if isinstance(val, Decimal):
             return eval(str(val))
-        elif hasattr(val, '__pow__'):  # is numeric 
+        elif hasattr(val, '__pow__'):  # is numeric
             return val
         return str(val)
 
@@ -350,17 +350,21 @@ class CdeResource(MethodResource):
             paginated = paginated.data
 
         count = 0
-        
+
         try:
             if self.fast_count:
                 from sqlalchemy import select
                 count_est_query = select([func.count_estimate(self._compile_query(results))])
                 count_est_query_results = session.execute(count_est_query).fetchall()
                 count = count_est_query_results[0][0]
-        except:
+        except Exception as count_exception:
             # Fallback to counting results with extra query.
+            current_app.logger.warning('Failed to fast_count rows:')
+            current_app.logger.warning(str(count_exception))
+            current_app.logger.warning('Falling back to full count')
+            session.rollback()
             count = paginated.count()
-            pass
+
 
         if self.schema:
             serialized = self.schema.dump(paginated).data
