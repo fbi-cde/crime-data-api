@@ -2,6 +2,7 @@
 """The app module, containing the app factory function."""
 import csv
 import io
+import json
 from os import getenv
 
 import flask_restful as restful
@@ -143,8 +144,20 @@ def add_resources(app):
 
     @auth.get_password
     def get_pw(username):
-        target_username = getenv('HTTP_USERNAME')
-        target_password = getenv('HTTP_PASSWORD')
+        target_username = None
+        target_password = None
+
+        if getenv('VCAP_SERVICES'):
+            service_env = json.loads(getenv('VCAP_SERVICES'))
+            creds = [
+                u['credentials'] for u in service_env['user-provided']
+                if 'credentials' in u
+            ]
+            target_username = creds[0]['HTTP_BASIC_USERNAME']
+            target_password = creds[0]['HTTP_BASIC_PASSWORD']
+        else:
+            target_username = getenv('HTTP_USERNAME')
+            target_password = getenv('HTTP_PASSWORD')
 
         if target_username is None or target_password is None:
             return None
