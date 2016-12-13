@@ -18,7 +18,12 @@ export HTTP_USERNAME=username
 export HTTP_PASSWORD=password
 ```
 
-Similarly, to use these endpoints on CloudFoundry, you will have to do the following
+Similarly, to use these endpoints on CloudFoundry, you can do one of
+two things. One option is to set the values for `HTTP_BASIC_USERNAME`
+or `HTTP_BASIC_PASSWORD` in the
+`VCAP_SERVICES.user-services.credentials` sections. Alternatively, you
+can explicitly define environment variables if those aren't available.
+
 
 ``` shell
 cf set-env crime-data-api HTTP_USERNAME username
