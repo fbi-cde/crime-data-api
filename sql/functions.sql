@@ -1,8 +1,9 @@
-CREATE FUNCTION count_estimate(query text) RETURNS INTEGER AS
+DROP FUNCTION IF EXISTS count_estimate(query text);
+CREATE FUNCTION count_estimate(query text) RETURNS BIGINT AS
 $func$
 DECLARE
     rec   record;
-    ROWS  INTEGER;
+    ROWS  BIGINT;
 BEGIN
     FOR rec IN EXECUTE 'EXPLAIN ' || query LOOP
         ROWS := SUBSTRING(rec."QUERY PLAN" FROM ' rows=([[:digit:]]+)');
