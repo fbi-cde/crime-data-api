@@ -278,7 +278,7 @@ class RefUniversitySchema(ma.ModelSchema):
 class RefAgencySchema(ma.ModelSchema, ArgumentsSchema):
     class Meta:
         model = models.RefAgency
-        exclude = ('county_associations', )
+        exclude = ('county_associations', 'special_mailing_group', 'special_mailing_address', 'change_user', )
 
     city = ma.Nested(RefCitySchema)
     state = ma.Nested(RefStateSchema)
@@ -294,7 +294,7 @@ class RefAgencySchema(ma.ModelSchema, ArgumentsSchema):
 class RetaMonthSchema(ma.ModelSchema):
     class Meta:
         model = models.RetaMonth
-        exclude = ('reta_month_id', )
+        exclude = ('reta_month_id', 'prepared_by_user', 'prepared_by_email', 'did', 'ff_line_number', )
 
     agency = ma.Nested(RefAgencySchema)
 
@@ -354,7 +354,7 @@ class NibrsOffenseTypeSchema(ma.ModelSchema):
 class NibrsOffenseSchema(ma.ModelSchema):
     class Meta:
         model = models.NibrsOffense
-        exclude = ('incident', 'offense_id', )
+        exclude = ('incident', 'offense_id', 'ff_line_number', )
 
     criminal_acts = ma.Nested(NibrsCriminalActSchema, many=True)
     weapons = ma.Nested(NibrsWeaponSchema, many=True)
@@ -447,7 +447,7 @@ class NibrsVictimInjurySchema(ma.ModelSchema):
 class NibrsVictimSchema(ma.ModelSchema, SchemaFormater):
     class Meta:
         model = models.NibrsVictim
-        exclude = ('victim_seq_num', 'victim_id', )
+        exclude = ('victim_seq_num', 'victim_id', 'ff_line_number', )
 
     injuries = ma.Nested(NibrsVictimInjurySchema, many=True)
     relationships = ma.Nested(NibrsVictimOffenderRelSchema, many=True)
@@ -470,6 +470,8 @@ class NibrsArresteeSchema(ma.ModelSchema, SchemaFormater):
         model = models.NibrsArrestee
         exclude = ('arrestee_id',
                    'arrestee_seq_num',
+                   'arrest_num',
+                   'ff_line_number',
                    'incident',
                    'offense_type', )
 
@@ -496,6 +498,7 @@ class NibrsOffenderSchema(ma.ModelSchema, SchemaFormater):
         model = models.NibrsOffender
         exclude = ('offender_id',
                    'incident',
+                   'ff_line_number',
                    'offender_seq_num',
                    'relationships', )
 
@@ -515,6 +518,8 @@ class NibrsIncidentSchema(ma.ModelSchema):
         model = models.NibrsIncident
         exclude = ('data_home',
                    'ddocname',
+                   'ff_line_number',
+                   'did',
                    'nibrs_month',
                    'orig_format',
                    'incident_id', )
