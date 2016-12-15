@@ -33,8 +33,7 @@ class DevConfig(Config):
 
     ENV = 'dev'
     DEBUG = True
-    # SQLALCHEMY_DATABASE_URI = 'postgres:///crime_data_api_dev'
-    SQLALCHEMY_DATABASE_URI = 'postgres://uy2hnzmwb1dk5tui:qqe3202ibc95omcxm1lylwnj8@localhost:65432/cgawsbrokerprod5rmk9lscom9ax70'
+    SQLALCHEMY_DATABASE_URI = 'postgres:///crime_data_api_dev'
     DEBUG_TB_ENABLED = True
     ASSETS_DEBUG = True  # Don't bundle/minify static assets
     CACHE_TYPE = 'simple'  # Can be "memcached", "redis", etc.
