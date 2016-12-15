@@ -127,7 +127,8 @@ class NibrsUsingListSchema(ma.ModelSchema):
 class NibrsWeaponTypeSchema(ma.ModelSchema):
     class Meta:
         model = models.NibrsWeaponType
-        exclude = ('weapons', )
+        exclude = ('weapon_id', 'weapons', )
+        ordered = True
 
 
 class NibrsWeaponSchema(ma.ModelSchema):
@@ -463,13 +464,6 @@ class NibrsVictimTypeSchema(ma.ModelSchema):
             'victims', )
 
 
-class NibrsWeaponTypeSchema(ma.ModelSchema):
-    class Meta:
-        model = models.NibrsWeaponType
-        exclude = ('weapon_id', )
-        ordered = True
-
-
 class NibrsActivityTypeSchema(ma.ModelSchema):
     class Meta:
         model = models.NibrsActivityType
@@ -544,7 +538,7 @@ class NibrsArresteeSchema(ma.ModelSchema, SchemaFormater):
 class NibrsArrestTypeSchema(ma.ModelSchema):
     class Meta:
         model = models.NibrsArrestType
-        exclude = ('arrest_type_id', )
+        exclude = ('arrest_type_id', 'arrestees', )
         ordered = True
 
 
@@ -593,7 +587,7 @@ class NibrsIncidentSchema(ma.ModelSchema):
 class NibrsAssignmentTypeSchema(ma.ModelSchema):
     class Meta:
         model = models.NibrsAssignmentType
-        exclude = ('assignment_type_id', )
+        exclude = ('assignment_type_id', 'victims', )
         ordered = True
 
 
@@ -614,7 +608,7 @@ class NibrsCircumstanceSchema(ma.ModelSchema):
 class NibrsCriminalActTypeSchema(ma.ModelSchema):
     class Meta:
         model = models.NibrsCriminalActType
-        exclude = ('criminal_act_id', )
+        exclude = ('criminal_act_id', 'criminal_acts', )
         ordered = True
 
 
@@ -635,7 +629,7 @@ class NibrsJustifiableForceSchema(ma.ModelSchema):
 class NibrsRelationshipSchema(ma.ModelSchema):
     class Meta:
         model = models.NibrsRelationship
-        exclude = ('relationship_id', )
+        exclude = ('relationship_id', 'relationships', )
         ordered = True
 
 
