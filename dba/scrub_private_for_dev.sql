@@ -1,3 +1,9 @@
+-- NULLs out database fields with potentially sensitive information
+-- erring on the side of caution!
+-- Slightly stricter than `scrub_private_for_prod.sql`
+-- so that the resulting datafile can be completely uncontrolled
+-- See https://github.com/18F/crime-data-api/issues/113
+
 UPDATE arson_month
 SET    ddocname = NULL;
 
@@ -103,11 +109,6 @@ UPDATE ref_campus_population
 SET
        change_user = NULL;
 
--- OK in API
-UPDATE ref_county
-SET
-       comments = NULL;
-
 
 
 UPDATE ref_county_population
@@ -137,14 +138,10 @@ city_name        = NULL,
 poc_fax1         = NULL,
 poc_fax2         = NULL;
 
--- OK in API
-UPDATE ref_race
-SET    notes = NULL;
 
--- OK in API
+-- Some name and address information 
 UPDATE ref_submitting_agency
 SET    comments = NULL;
-
 
 
 UPDATE ref_tribe_population
