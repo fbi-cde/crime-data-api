@@ -1,8 +1,11 @@
+import datetime
+
 from flask_restful import abort
 from sqlalchemy import and_, func, or_
 from sqlalchemy.exc import ArgumentError
 from sqlalchemy.orm import aliased
 from sqlalchemy.sql import label
+from sqlalchemy.sql import sqltypes as st
 
 from crime_data.common import models
 from crime_data.common.base import QueryTraits, Fields
@@ -345,6 +348,31 @@ class TableFamily:
             self._build_map()
         return self._map
 
+
+    @property
+    def filter_columns(self):
+        out = []
+        type_map = {
+            st.Integer: {'type': 'integer'},
+            st.BigInteger: {'type': 'integer'},
+            st.SmallInteger: {'type': 'integer'},
+            st.Boolean: {'type': 'boolean'},
+            st.DateTime: {'type': 'string', 'format': 'date-time'},
+            st.String: {'type': 'string'}
+        }
+        for (name, (table, col)) in self.map.items():
+            sqla_col = list(col.base_columns)[0]
+            sql_type = sqla_col.type.__class__
+            field = type_map[sql_type].copy()
+            field['name'] = name
+
+            if hasattr(sqla_col.type, 'length'):
+                field['maxLength'] = sqla_col.type.length
+
+            out.append(field)
+        return out
+
+    
     @property
     def input_args(self):
         """Returns a hash of names: type for Swagger"""

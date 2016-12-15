@@ -15,6 +15,7 @@ import crime_data.resources.incidents
 import crime_data.resources.offenses
 import crime_data.resources.codes
 import crime_data.resources.arson
+import crime_data.resources.meta
 
 from crime_data import commands
 from crime_data.assets import assets
@@ -133,6 +134,7 @@ def add_resources(app):
     api.add_resource(crime_data.resources.arrests.ArrestsCountByAgeSex,
                      '/arrests/age_sex/')
     api.add_resource(crime_data.resources.arson.ArsonCountResource, '/arson/')
+    api.add_resource(crime_data.resources.meta.MetaDetail, '/meta/<path:endpoint>')
 
     # Wrap swagger in HTTP Auth. Can be removed after ATO
     from flask_httpauth import HTTPBasicAuth
