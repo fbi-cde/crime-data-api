@@ -17,6 +17,9 @@ from crime_data.extensions import db
 
 session = db.session
 
+
+COUNT_QUERY_THRESHOLD = 1000
+
 def tuning_page(f):
     @wraps(f)
     def decorated_get(*args, **kwargs):
@@ -357,13 +360,16 @@ class CdeResource(MethodResource):
                 count_est_query = select([func.count_estimate(self._compile_query(results))])
                 count_est_query_results = session.execute(count_est_query).fetchall()
                 count = count_est_query_results[0][0]
+                if count < COUNT_QUERY_THRESHOLD:
+                    # If the count is less than 
+                    count = results.count()
         except Exception as count_exception:
             # Fallback to counting results with extra query.
             current_app.logger.warning('Failed to fast_count rows:')
             current_app.logger.warning(str(count_exception))
             current_app.logger.warning('Falling back to full count')
             session.rollback()
-            count = paginated.count()
+            count = results.count()
 
 
         if self.schema:
