@@ -182,9 +182,7 @@ class RefStateSchema(ma.ModelSchema):
 class RefCitySchema(ma.ModelSchema):
     class Meta:
         model = models.RefCity
-        exclude = (
-            'city_id',
-            'state', )
+        exclude = ('state', )
         ordered = True
 
     state = ma.Nested(RefStateSchema)
@@ -193,7 +191,6 @@ class RefCitySchema(ma.ModelSchema):
 class RefContinentSchema(ma.ModelSchema):
     class Meta:
         model = models.RefContinent
-        exclude = ('continent_id', )
         ordered = True
 
 
@@ -201,7 +198,6 @@ class RefCountySchema(ma.ModelSchema):
     class Meta:
         model = models.RefCounty
         exclude = (
-            'county_id',
             'state',
             'agencies',
             'agency_associations', )
@@ -212,10 +208,7 @@ class RefCountySchema(ma.ModelSchema):
 
 class RefCountrySchema(ma.ModelSchema):
     class Meta:
-        model = models.RefCounty
-        exclude = (
-            'country_id',
-            'continent', )
+        model = models.RefCountry
         ordered = True
 
     state = ma.Nested(RefContinentSchema)
@@ -224,10 +217,15 @@ class RefCountrySchema(ma.ModelSchema):
 class RefMsaSchema(ma.ModelSchema):
     class Meta:
         model = models.RefMsa
-        exclude = ('msa_id', )
         ordered = True
 
     state = ma.Nested(RefContinentSchema)
+
+
+class RefMetroDivision(ma.ModelSchema):
+    class Meta:
+        model = models.RefMetroDivision
+        ordered = True
 
 
 class RefPopulationFamilySchema(ma.ModelSchema):
@@ -253,9 +251,7 @@ class RefFieldOfficeSchema(ma.ModelSchema):
 class RefAgencyTypeSchema(ma.ModelSchema):
     class Meta:
         model = models.RefAgencyType
-        exclude = (
-            'agency_type_id',
-            'default_pop_family_id', )
+        exclude = ('default_pop_family_id', )
 
 
 class RefDepartmentSchema(ma.ModelSchema):
@@ -275,7 +271,6 @@ class RefSubmittingAgencySchema(ma.ModelSchema):
 class RefTribeSchema(ma.ModelSchema):
     class Meta:
         model = models.RefTribe
-        exclude = ('tribe_id', )
 
 
 class RefAgencyCountySchema(ma.ModelSchema):
@@ -292,7 +287,6 @@ class RefAgencyCountySchema(ma.ModelSchema):
 class RefUniversitySchema(ma.ModelSchema):
     class Meta:
         model = models.RefUniversity
-        exclude = ('university_id', )
 
 
 class RefAgencySchema(ma.ModelSchema, ArgumentsSchema):
@@ -414,9 +408,7 @@ class NibrsPropDescTypeSchema(ma.ModelSchema):
 class NibrsPropLossTypeSchema(ma.ModelSchema):
     class Meta:
         model = models.NibrsPropLossType
-        exclude = (
-            'prop_loss_id',
-            'property', )
+        exclude = ('property', )
 
 
 class NibrsPropertySchema(ma.ModelSchema):
@@ -426,7 +418,7 @@ class NibrsPropertySchema(ma.ModelSchema):
             'incident',
             'property_id', )
 
-    prop_loss = ma.Nested(NibrsPropLossTypeSchema)
+    prop_loss = ma.Nested(NibrsPropLossTypeSchema, exclude=('prop_loss_id', ))
 
 
 class NibrsAgeSchema(ma.ModelSchema):
@@ -643,7 +635,6 @@ class NibrsSuspectedDrugTypeSchema(ma.ModelSchema):
 class OffenseClassificationSchema(ma.ModelSchema):
     class Meta:
         model = models.OffenseClassification
-        exclude = ('classification_id', )
         ordered = True
 
 
