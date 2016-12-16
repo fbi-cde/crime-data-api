@@ -36,10 +36,10 @@ CODE_MODELS = {
     'nibrs_weapon_type': models.NibrsWeaponType,
     'offense_classification': models.OffenseClassification,
     'ref_agency_type': models.RefAgencyType,
-    'ref_city': models.RefCity,
     'ref_continent': models.RefContinent,
     'ref_county': models.RefCounty,
     'ref_country': models.RefCountry,
+    'ref_metro_division': models.RefMetroDivision,
     'ref_msa': models.RefMsa,
     'ref_population_group': models.RefPopulationGroup,
     'ref_race': models.RefRace,
@@ -80,10 +80,10 @@ CODE_SCHEMAS = {
     'nibrs_weapon_type': marshmallow_schemas.NibrsWeaponTypeSchema,
     'offense_classification': marshmallow_schemas.OffenseClassificationSchema,
     'ref_agency_type': marshmallow_schemas.RefAgencyTypeSchema,
-    'ref_city': marshmallow_schemas.RefCitySchema,
     'ref_continent': marshmallow_schemas.RefContinentSchema,
     'ref_county': marshmallow_schemas.RefCountySchema,
     'ref_country': marshmallow_schemas.RefCountrySchema,
+    'ref_metro_division': marshmallow_schemas.RefMetroDivision,
     'ref_msa': marshmallow_schemas.RefMsaSchema,
     'ref_population_group': marshmallow_schemas.RefPopulationGroupSchema,
     'ref_race': marshmallow_schemas.RefRaceSchema,
@@ -120,4 +120,4 @@ class CodeReferenceList(CdeResource):
         if output == 'csv':
             return self.as_csv_response(codes, code_table, args)
         else:
-            return self.with_metadata(codes, args)
+            return jsonify(self.schema.dump(codes).data)
