@@ -363,6 +363,8 @@ class CdeResource(MethodResource):
                 if count < COUNT_QUERY_THRESHOLD:
                     # If the count is less than 
                     count = results.count()
+            else:
+                count = results.count()
         except Exception as count_exception:
             # Fallback to counting results with extra query.
             current_app.logger.warning('Failed to fast_count rows:')
