@@ -120,4 +120,4 @@ class CodeReferenceList(CdeResource):
         if output == 'csv':
             return self.as_csv_response(codes, code_table, args)
         else:
-            return self.with_metadata(codes, args)
+            return jsonify(self.schema.dump(codes).data)
