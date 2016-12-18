@@ -1,7 +1,7 @@
-from webargs.flaskparser import use_args
 import flask_apispec as swagger
+from webargs.flaskparser import use_args
 
-from crime_data.common import cdemodels, marshmallow_schemas, models, newmodels
+from crime_data.common import cdemodels, marshmallow_schemas, models
 from crime_data.common.base import CdeResource, tuning_page
 
 

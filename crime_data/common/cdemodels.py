@@ -1,16 +1,13 @@
-import datetime
-
 from flask_restful import abort
 from sqlalchemy import and_, func, or_
 from sqlalchemy.exc import ArgumentError
 from sqlalchemy.orm import aliased
-from sqlalchemy.sql import label
 from sqlalchemy.sql import sqltypes as st
+from sqlalchemy.sql import label
 
 from crime_data.common import models, newmodels
-from crime_data.common.base import QueryTraits, Fields
+from crime_data.common.base import Fields, QueryTraits
 from crime_data.extensions import db
-from sqlalchemy.dialects.postgresql import JSON
 
 session = db.session
 
