@@ -7,9 +7,10 @@ from sqlalchemy.orm import aliased
 from sqlalchemy.sql import label
 from sqlalchemy.sql import sqltypes as st
 
-from crime_data.common import models
+from crime_data.common import models, newmodels
 from crime_data.common.base import QueryTraits, Fields
 from crime_data.extensions import db
+from sqlalchemy.dialects.postgresql import JSON
 
 session = db.session
 
@@ -372,7 +373,7 @@ class TableFamily:
             out.append(field)
         return out
 
-    
+
     @property
     def input_args(self):
         """Returns a hash of names: type for Swagger"""
@@ -581,6 +582,9 @@ class IncidentTableFamily(TableFamily):
                                  models.NibrsArrestee.incident_id))
     property_ = JoinedTable(models.NibrsProperty)
 
+    representation = JoinedTable(newmodels.NibrsIncidentRepresentation)
+    tables.append(representation)
+
     tables.append(offense)
 
     tables.append(JoinedTable(models.NibrsOffenseType, parent=offense)),
@@ -592,7 +596,7 @@ class IncidentTableFamily(TableFamily):
     tables.append(offender)
 
     victim = JoinedTable(models.NibrsVictim, prefix='victim', parent=offense)
-    
+
     tables.append(victim)
 
     victim_injury = JoinedTable(
@@ -686,11 +690,6 @@ class IncidentTableFamily(TableFamily):
             join=(models.NibrsOffense.location_id ==
                   models.NibrsLocationType.location_id), ))
     # TODO: COUNTY, TRIBE
-
-    def base_query(self):
-        """Gets root Query, based on class's base_table"""
-        return db.session.query(self.base_table.table)
-
 
 
 class IncidentCountTableFamily(TableFamily):

@@ -315,17 +315,26 @@ class CdeResource(MethodResource):
             return val
         return str(val)
 
-    def _stringify(self, data):
+    def _serialize(self, data):
         """Avoid JSON serialization errors
         by converting values in list of dicts
-        into strings."""
-        return [{k: self._jsonable(d[k])
-                 for k in d} for d in (r._asdict() for r in data)]
+        into strings.
+
+        Many resources will override this with more specific ways to serialize.
+        """
+        if self.schema:
+            return self.schema.dump(data).data
+        else:
+            return [{k: self._jsonable(d[k])
+                     for k in d} for d in (r._asdict() for r in data)]
+
+    def _serialize_from_representation(self, data):
+        """Get from cache in an associated `representation` record"""
+
+        return [i.representation.representation for i in data]
 
     def _as_dict(self, fieldTuple, res):
         return dict(zip(fieldTuple, res))
-
-
 
     def _compile_query(self, query):
         """
@@ -361,7 +370,7 @@ class CdeResource(MethodResource):
                 count_est_query_results = session.execute(count_est_query).fetchall()
                 count = count_est_query_results[0][0]
                 if count < COUNT_QUERY_THRESHOLD:
-                    # If the count is less than 
+                    # If the count is less than
                     count = results.count()
         except Exception as count_exception:
             # Fallback to counting results with extra query.
@@ -371,11 +380,8 @@ class CdeResource(MethodResource):
             session.rollback()
             count = results.count()
 
+        serialized = self._serialize(paginated)
 
-        if self.schema:
-            serialized = self.schema.dump(paginated).data
-        else:
-            serialized = self._stringify(paginated)
         return {
             'results': serialized,
             'pagination': {

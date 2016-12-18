@@ -5,7 +5,7 @@ import os
 from flask_marshmallow import Marshmallow
 from marshmallow import fields as marsh_fields
 from marshmallow import Schema, post_dump
-from . import cdemodels, models
+from . import cdemodels, models, newmodels
 
 ma = Marshmallow()
 
@@ -588,6 +588,19 @@ class NibrsIncidentSchema(ma.ModelSchema):
     victims = ma.Nested(NibrsVictimSchema, many=True)
     arrestees = ma.Nested(NibrsArresteeSchema, many=True)
     offenders = ma.Nested(NibrsOffenderSchema, many=True)
+
+
+class NibrsIncidentRepresentationSchema(ma.ModelSchema):
+    class Meta:
+        models = newmodels.NibrsIncidentRepresentation
+        fields = ('representation', )
+
+class CachedNibrsIncidentSchema(ma.ModelSchema):
+    class Meta:
+        model = models.NibrsIncident
+        fields = ('incident_id', 'representation', )
+
+    representation = ma.Nested(NibrsIncidentRepresentationSchema)
 
 
 class NibrsAssignmentTypeSchema(ma.ModelSchema):

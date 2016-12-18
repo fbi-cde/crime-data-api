@@ -1,7 +1,7 @@
 from webargs.flaskparser import use_args
 import flask_apispec as swagger
 
-from crime_data.common import cdemodels, marshmallow_schemas, models
+from crime_data.common import cdemodels, marshmallow_schemas, models, newmodels
 from crime_data.common.base import CdeResource, tuning_page
 
 
@@ -29,9 +29,17 @@ class IncidentsList(CdeResource):
         return self._get(args)
 
 
+class CachedIncidentsList(IncidentsList):
+
+    schema = None
+    _serialize = CdeResource._serialize_from_representation
+
+
+
 class IncidentsDetail(CdeResource):
 
     schema = marshmallow_schemas.NibrsIncidentSchema(many=True)
+
     # Enable fast counting.
     fast_count = True
 
