@@ -117,8 +117,6 @@ def add_resources(app):
 
     api.add_resource(crime_data.resources.incidents.IncidentsList,
                      '/incidents/')
-    api.add_resource(crime_data.resources.incidents.CachedIncidentsList,
-                     '/cached_incidents/')
     api.add_resource(crime_data.resources.incidents.IncidentsCount,
                      '/incidents/count/')
     api.add_resource(crime_data.resources.incidents.IncidentsDetail,
@@ -177,7 +175,6 @@ def add_resources(app):
     docs.register(crime_data.resources.incidents.IncidentsCount)
     docs.register(crime_data.resources.incidents.IncidentsDetail)
     docs.register(crime_data.resources.incidents.IncidentsList)
-    docs.register(crime_data.resources.incidents.CachedIncidentsList)
     docs.register(crime_data.resources.offenses.OffensesList)
     docs.register(crime_data.resources.arrests.ArrestsCountByRace)
     docs.register(crime_data.resources.arrests.ArrestsCountByEthnicity)

@@ -4,13 +4,13 @@
 itself; `cdemodels.py` extends those model classes.  *These* models, on
 the other hand, must actually be generated in our system.
 """
+import logging
 from psycopg2 import ProgrammingError
 from sqlalchemy.dialects.postgresql import JSON
 from sqlalchemy.orm import backref
 
 from crime_data.common import models
 from crime_data.extensions import db
-
 
 class NibrsIncidentRepresentation(db.Model):
     __tablename__ = 'nibrs_incident_representation'
@@ -31,17 +31,35 @@ class NibrsIncidentRepresentation(db.Model):
             cls.__table__.create(db.session.bind)
         except ProgrammingError:
             pass
-        cls.fill()
 
     @classmethod
-    def fill(cls):
-        """Generates and caches output for all NibrsIncidents."""
+    def regenerate(cls):
+        """Generates or replaces cached representations for all records."""
 
         for incident in models.NibrsIncident.query:
             if not incident.representation:
                 incident.representation = cls(incident=incident)
             incident.representation.generate()
         models.NibrsIncident.query.session.commit()
+
+    @classmethod
+    def fill(cls, batch_size=None):
+        """Generates cached representations for records that lack them.
+
+        Using a `batch_size` helps for large operations that may fail."""
+
+        finished = False
+        batch_no = 0
+        while not finished:
+            finished = True
+            qry = models.NibrsIncident.query.filter(models.NibrsIncident.representation == None).limit(batch_size)
+            for incident in qry:
+                finished = False  # until the query comes back empty
+                incident.representation = cls(incident=incident)
+                incident.representation.generate()
+            models.NibrsIncident.query.session.commit()
+            logging.warning("Batch #{batch_no} of #{batch_size} complete".format(batch_no=batch_no, batch_size=batch_size))
+            batch_no += 1
 
     def generate(self):
         """Generates and caches output for a single NibrsIncident."""

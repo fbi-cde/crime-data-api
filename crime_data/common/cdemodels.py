@@ -5,7 +5,7 @@ from sqlalchemy.orm import aliased
 from sqlalchemy.sql import sqltypes as st
 from sqlalchemy.sql import label
 
-from crime_data.common import models, newmodels
+from crime_data.common import models
 from crime_data.common.base import Fields, QueryTraits
 from crime_data.extensions import db
 
@@ -578,9 +578,6 @@ class IncidentTableFamily(TableFamily):
                            join=(models.NibrsIncident.incident_id ==
                                  models.NibrsArrestee.incident_id))
     property_ = JoinedTable(models.NibrsProperty)
-
-    representation = JoinedTable(newmodels.NibrsIncidentRepresentation)
-    tables.append(representation)
 
     tables.append(offense)
 

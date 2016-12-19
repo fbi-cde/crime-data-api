@@ -12,7 +12,8 @@ def _is_string(col):
 
 class IncidentsList(CdeResource):
 
-    schema = marshmallow_schemas.NibrsIncidentSchema(many=True)
+    schema = None
+    _serialize = CdeResource._serialize_from_representation
     tables = cdemodels.IncidentTableFamily()
     # Enable fast counting.
     fast_count = True
@@ -27,13 +28,6 @@ class IncidentsList(CdeResource):
     @tuning_page
     def get(self, args):
         return self._get(args)
-
-
-class CachedIncidentsList(IncidentsList):
-
-    schema = None
-    _serialize = CdeResource._serialize_from_representation
-
 
 
 class IncidentsDetail(CdeResource):
