@@ -211,15 +211,13 @@ class RefCountrySchema(ma.ModelSchema):
         model = models.RefCountry
         ordered = True
 
-    state = ma.Nested(RefContinentSchema)
+    continent = ma.Nested(RefContinentSchema)
 
 
 class RefMsaSchema(ma.ModelSchema):
     class Meta:
         model = models.RefMsa
         ordered = True
-
-    state = ma.Nested(RefContinentSchema)
 
 
 class RefMetroDivision(ma.ModelSchema):
