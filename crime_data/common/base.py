@@ -3,6 +3,7 @@ import json
 import math
 import os
 import random
+from ast import literal_eval
 from functools import wraps
 
 import sqltap
@@ -87,7 +88,7 @@ class RoutingSession(SignallingSession):
 
     def get_bind(self, mapper=None, clause=None):
         if self.use_follower:
-            return random.choice(self.followers)
+            return random.choice(self.followers) #nosec
 
         return super().get_bind(mapper=mapper, clause=clause)
 
@@ -310,7 +311,7 @@ class CdeResource(MethodResource):
 
     def _jsonable(self, val):
         if isinstance(val, Decimal):
-            return eval(str(val))
+            return literal_eval(str(val))
         elif hasattr(val, '__pow__'):  # is numeric
             return val
         return str(val)
@@ -324,8 +325,6 @@ class CdeResource(MethodResource):
 
     def _as_dict(self, fieldTuple, res):
         return dict(zip(fieldTuple, res))
-
-
 
     def _compile_query(self, query):
         """
