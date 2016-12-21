@@ -17,8 +17,8 @@ from crime_data.extensions import db
 
 session = db.session
 
-
 COUNT_QUERY_THRESHOLD = 1000
+
 
 def tuning_page(f):
     @wraps(f)
@@ -134,8 +134,8 @@ class QueryTraits(object):
                 if _is_string(col):
                     col = func.lower(col)
                     values = [val.lower() for val in values]
-                    query = query.filter(
-                        or_(col.ilike('%' + val + '%') for val in values))
+                    query = query.filter(or_(col.ilike('%' + val + '%')
+                                             for val in values))
                 else:
                     operation = getattr(col, comparitor)
                     query = query.filter(or_(operation(val) for val in values))
@@ -153,25 +153,23 @@ class Fields(object):
     @staticmethod
     def get_db_column_names():
         return {'year': 'data_year',
-             'month': 'month_num',
-             'agency_name': 'ucr_agency_name',
-             'state': 'state_abbr',
-             'city': 'city_name',
-             'county': 'county_name',
-             'tribe': 'tribe_name',
-             'offense': 'offense_name',
-             'offense_subcat': 'offense_subcat_name',
-             'offense_category': 'offense_category_name',
-             # except in ASR it's offense_cat_name
-             'race': 'race_code',
-             'ethnicity': 'ethnicity_code',
-             'juvenile': 'juvenile_flag',
-             'age': 'age_range_code',
-             'sex': 'age_sex',
-             'subclass': 'subclass_code',
-             'subcategory': 'subcategory_code'
-            }
-
+                'month': 'month_num',
+                'agency_name': 'ucr_agency_name',
+                'state': 'state_abbr',
+                'city': 'city_name',
+                'county': 'county_name',
+                'tribe': 'tribe_name',
+                'offense': 'offense_name',
+                'offense_subcat': 'offense_subcat_name',
+                'offense_category': 'offense_category_name',
+                # except in ASR it's offense_cat_name
+                'race': 'race_code',
+                'ethnicity': 'ethnicity_code',
+                'juvenile': 'juvenile_flag',
+                'age': 'age_range_code',
+                'sex': 'age_sex',
+                'subclass': 'subclass_code',
+                'subcategory': 'subcategory_code'}
 
     @staticmethod
     def get_simplified_column_names():
@@ -200,11 +198,22 @@ class CdeResource(MethodResource):
 
     is_groupable = False
 
+    def use_filters(self, filters):
+        "Hook for use of filters _aside from_ applying to query"
+        pass
+
+    def postprocess_filters(self, filters, args):
+        "Hook for edits to filters"
+        return filters
+
     def _get(self, args):
         # TODO: apply "fields" arg
 
         self.verify_api_key(args)
-        filters = self.filters(args)
+        filters = list(self.filters(args))
+        filters = self.postprocess_filters(filters, args)
+        self.use_filters(filters)
+
         qry = self.tables.filtered(filters)
         if self.is_groupable:
             group_columns = [c.strip() for c in args['by'].split(',')]
@@ -216,14 +225,19 @@ class CdeResource(MethodResource):
 
         if args['output'] == 'csv':
             output = make_response(self.output_serialize(
-                self.with_metadata(qry, args), self.schema, 'csv', aggregate_many))
+                self.with_metadata(qry,
+                                   args), self.schema, 'csv', aggregate_many))
             output.headers[
                 "Content-Disposition"] = "attachment; filename=incidents.csv"
             output.headers["Content-type"] = "text/csv"
             return output
         return self.with_metadata(qry, args)
 
-    def _serialize_dict(self, data, accumulator={}, path=None, aggregate_many = False):
+    def _serialize_dict(self,
+                        data,
+                        accumulator={},
+                        path=None,
+                        aggregate_many=False):
         """ Recursively serializes a nested dict
         into a flat dict. Replaces lists with their
         length as an integer of any lists in nested dict.
@@ -238,10 +252,9 @@ class CdeResource(MethodResource):
         if isinstance(data, dict):
             iterator = data.items()
 
+        key_path = ""  # The full attribute path.
 
-        key_path = "" # The full attribute path.
-
-        for k,v in iterator:
+        for k, v in iterator:
             # Append path ie: offense _ {key}
             if path:
                 if is_list_iter:
@@ -272,7 +285,11 @@ class CdeResource(MethodResource):
 
         return accumulator
 
-    def output_serialize(self, data, schema=None, format='csv', aggregate_many = False):
+    def output_serialize(self,
+                         data,
+                         schema=None,
+                         format='csv',
+                         aggregate_many=False):
         """ Parses results.
         Either outputs JSON, or CSV.
         """
@@ -325,8 +342,6 @@ class CdeResource(MethodResource):
     def _as_dict(self, fieldTuple, res):
         return dict(zip(fieldTuple, res))
 
-
-
     def _compile_query(self, query):
         """
         Gets String representation of an SQLAlchemy query.
@@ -340,15 +355,15 @@ class CdeResource(MethodResource):
         comp.compile()
         enc = dialect.encoding
         params = {}
-        for k,v in comp.params.items():
+        for k, v in comp.params.items():
             params[k] = sqlescape(v)
         return (comp.string % params)
 
     def with_metadata(self, results, args):
         """Paginates results and wraps them in metadata."""
 
-        paginated = results.limit(args['per_page']).offset(
-            (args['page'] - 1) * args['per_page'])
+        paginated = results.limit(args['per_page']).offset((args['page'] - 1) *
+                                                           args['per_page'])
         if hasattr(paginated, 'data'):
             paginated = paginated.data
 
@@ -357,11 +372,13 @@ class CdeResource(MethodResource):
         try:
             if self.fast_count:
                 from sqlalchemy import select
-                count_est_query = select([func.count_estimate(self._compile_query(results))])
-                count_est_query_results = session.execute(count_est_query).fetchall()
+                count_est_query = select([func.count_estimate(
+                    self._compile_query(results))])
+                count_est_query_results = session.execute(
+                    count_est_query).fetchall()
                 count = count_est_query_results[0][0]
                 if count < COUNT_QUERY_THRESHOLD:
-                    # If the count is less than 
+                    # If the count is less than
                     count = results.count()
             else:
                 count = results.count()
@@ -372,7 +389,6 @@ class CdeResource(MethodResource):
             current_app.logger.warning('Falling back to full count')
             session.rollback()
             count = results.count()
-
 
         if self.schema:
             serialized = self.schema.dump(paginated).data
@@ -403,8 +419,8 @@ class CdeResource(MethodResource):
             service_env = json.loads(os.getenv('VCAP_SERVICES'))
             cups_name = 'crime-data-api-creds'
             creds = [
-                u['credentials'] for u in service_env['user-provided']
-                if 'credentials' in u
+                u['credentials']
+                for u in service_env['user-provided'] if 'credentials' in u
             ]
             key = creds[0]['API_KEY']
             if args.get('api_key') != key:

@@ -18,12 +18,16 @@ class IncidentsList(CdeResource):
     fast_count = True
 
     @use_args(marshmallow_schemas.ArgumentsSchema)
-    @swagger.doc(tags=['incidents'],
-                 description=('Return all matching incidents. Queries can drill down '
-                              'on specific values for fields within the incidents record.')
-    )
-    @swagger.use_kwargs(marshmallow_schemas.ArgumentsSchema, apply=False, locations=['query'])
-    @swagger.marshal_with(marshmallow_schemas.IncidentsListResponseSchema, apply=False)
+    @swagger.doc(
+        tags=['incidents'],
+        description=(
+            'Return all matching incidents. Queries can drill down '
+            'on specific values for fields within the incidents record.'))
+    @swagger.use_kwargs(marshmallow_schemas.ArgumentsSchema,
+                        apply=False,
+                        locations=['query'])
+    @swagger.marshal_with(marshmallow_schemas.IncidentsListResponseSchema,
+                          apply=False)
     @tuning_page
     def get(self, args):
         return self._get(args)
@@ -36,10 +40,14 @@ class IncidentsDetail(CdeResource):
     fast_count = True
 
     @use_args(marshmallow_schemas.ArgumentsSchema)
-    @swagger.use_kwargs(marshmallow_schemas.ArgumentsSchema, apply=False, locations=['query'])
-    @swagger.marshal_with(marshmallow_schemas.IncidentsDetailResponseSchema, apply=False)
-    @swagger.doc(tags=['incidents'],
-                 description='Return the specific record for a single incident')
+    @swagger.use_kwargs(marshmallow_schemas.ArgumentsSchema,
+                        apply=False,
+                        locations=['query'])
+    @swagger.marshal_with(marshmallow_schemas.IncidentsDetailResponseSchema,
+                          apply=False)
+    @swagger.doc(
+        tags=['incidents'],
+        description='Return the specific record for a single incident')
     @tuning_page
     def get(self, args, nbr):
         self.verify_api_key(args)
@@ -55,20 +63,37 @@ class IncidentsCount(CdeResource):
     @swagger.use_kwargs(marshmallow_schemas.GroupableArgsSchema,
                         locations=["query"],
                         apply=False)
-    @swagger.doc(tags=['incidents'],
-                 description=('Returns counts by year for incidents. '
-                              'Incidents can be grouped for counting with the `by` parameter')
-    )
+    @swagger.doc(
+        tags=['incidents'],
+        description=(
+            'Returns counts by year for incidents. '
+            'Incidents can be grouped for counting with the `by` parameter'))
     @swagger.marshal_with(marshmallow_schemas.IncidentCountSchema, apply=False)
     @tuning_page
     def get(self, args):
         return self._get(args)
+
 
 class CachedIncidentsCount(CdeResource):
 
     tables = newmodels.RetaMonthOffenseSubcatSummary
     schema = marshmallow_schemas.CachedIncidentCountSchema(many=True)
 
-    @use_args(marshmallow_schemas.IncidentCountArgumentsSchema)
+    def postprocess_filters(self, filters, args):
+        "Grouping by is equivalent to filterning on IS NOT NULL"
+
+        group_by_column_names = [c.strip() for c in args.get('by').split(',')]
+        filters = newmodels.RetaMonthOffenseSubcatSummary.add_groupings_to_filters(
+            filters, group_by_column_names)
+        return filters
+
+    def use_filters(self, filters):
+        "Ensure that filtered fields appear in serialization"
+        filtered_names = [f[0] for f in filters]
+        for (field_name, field) in self.schema.fields.items():
+            if field_name in newmodels.RetaMonthOffenseSubcatSummary.grouping_sets:
+                field.load_only = field_name not in filtered_names
+
+    @use_args(marshmallow_schemas.GroupableArgsSchema)
     def get(self, args):
         return self._get(args)
