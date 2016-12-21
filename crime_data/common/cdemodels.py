@@ -7,7 +7,7 @@ from sqlalchemy.orm import aliased
 from sqlalchemy.sql import label
 from sqlalchemy.sql import sqltypes as st
 
-from crime_data.common import models
+from crime_data.common import models, newmodels
 from crime_data.common.base import QueryTraits, Fields
 from crime_data.extensions import db
 
@@ -372,7 +372,7 @@ class TableFamily:
             out.append(field)
         return out
 
-    
+
     @property
     def input_args(self):
         """Returns a hash of names: type for Swagger"""
@@ -592,7 +592,7 @@ class IncidentTableFamily(TableFamily):
     tables.append(offender)
 
     victim = JoinedTable(models.NibrsVictim, prefix='victim', parent=offense)
-    
+
     tables.append(victim)
 
     victim_injury = JoinedTable(
@@ -691,6 +691,11 @@ class IncidentTableFamily(TableFamily):
         """Gets root Query, based on class's base_table"""
         return db.session.query(self.base_table.table)
 
+
+class CachedIncidentCountTableFamily(TableFamily):
+
+    base_table = JoinedTable(newmodels.RetaMonthOffenseSubcatSummary)
+    tables = []
 
 
 class IncidentCountTableFamily(TableFamily):

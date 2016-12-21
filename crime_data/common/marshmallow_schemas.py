@@ -5,7 +5,7 @@ import os
 from flask_marshmallow import Marshmallow
 from marshmallow import fields as marsh_fields
 from marshmallow import Schema, post_dump
-from . import cdemodels, models
+from . import cdemodels, models, newmodels
 
 ma = Marshmallow()
 
@@ -45,6 +45,15 @@ class ArgumentsSchema(Schema):
         api_key = marsh_fields.String(
             required=True,
             error_messages={'required': 'Get API key from Catherine'})
+
+
+class IncidentCountArgumentsSchema(ArgumentsSchema):
+
+    data_year = marsh_fields.Integer()
+    month_num = marsh_fields.Integer()
+    ori = marsh_fields.String()
+    ucr_agency_name = marsh_fields.String()
+    ncic_agency_name = marsh_fields.String()
 
 
 class GroupableArgsSchema(ArgumentsSchema):
@@ -91,6 +100,17 @@ class PaginationSchema(Schema):
 
 
 # Schemas for data serialization
+
+class CachedIncidentCountSchema(Schema):
+    class Meta:
+        model = newmodels.RetaMonthOffenseSubcatSummary
+
+    reported = marsh_fields.Integer()
+    unfounded = marsh_fields.Integer()
+    actual = marsh_fields.Integer()
+    cleared = marsh_fields.Integer()
+    juvenile_cleared = marsh_fields.Integer()
+
 class NibrsRelationshipSchema(ma.ModelSchema):
     class Meta:
         model = models.NibrsRelationship

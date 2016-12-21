@@ -1,7 +1,7 @@
 from webargs.flaskparser import use_args
 import flask_apispec as swagger
 
-from crime_data.common import cdemodels, marshmallow_schemas, models
+from crime_data.common import cdemodels, marshmallow_schemas, models, newmodels
 from crime_data.common.base import CdeResource, tuning_page
 
 
@@ -61,5 +61,14 @@ class IncidentsCount(CdeResource):
     )
     @swagger.marshal_with(marshmallow_schemas.IncidentCountSchema, apply=False)
     @tuning_page
+    def get(self, args):
+        return self._get(args)
+
+class CachedIncidentsCount(CdeResource):
+
+    tables = newmodels.RetaMonthOffenseSubcatSummary
+    schema = marshmallow_schemas.CachedIncidentCountSchema(many=True)
+
+    @use_args(marshmallow_schemas.IncidentCountArgumentsSchema)
     def get(self, args):
         return self._get(args)
