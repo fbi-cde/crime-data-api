@@ -1,0 +1,61 @@
+---
+name: FBI Crime Data Explorer
+risk-acceptance: forthcoming #Needs to be signed ATO github link.
+uniqueID: MB18F16FBI01
+version: 0.0.1
+phase: alpha
+information-types:
+- D26 Civilian Operations
+confidentiality: low
+integrity: low
+availability: low
+security-baseline: low
+system-type: minor
+level-of-identity-assurance: 0
+staff:
+    authorizing-official:
+        name: Noah Kunin
+        title: TTS Infrastructure Director
+        org: General Services Administration
+        unit: TTS
+        email: devops@gsa.gov
+    system-owner:
+        name: Larry Bafundo
+        title: System Owner
+        org: General Services Administration
+        unit: 18F
+        email: laurence.bafundo@gsa.gov
+    system-management:
+        name: Colin Craig
+        title: Engineer
+        org: General Services Administration
+        unit: 18F
+        email: colin.craig@gsa.gov
+    system-security-officer:
+        name: Noah Kunin
+        title: 18F Infrastructure Director
+        org: General Services Administration
+        unit: 18F
+        email: devops@gsa.gov
+    technical-lead:
+        name: Colin Craig
+        title: Engineer
+        org: General Services Administration
+        unit: 18F
+        email: colin.craig@gsa.gov
+leveraged-authorizations: 
+- https://www.fedramp.gov/marketplace/compliant-systems/amazon-web-services-aws-eastwest-us-public-cloud/
+purpose: https://github.com/18F/crime-data-api
+components: https://github.com/18F/crime-data-api
+diagram: forthcoming
+network-architecture: forthcoming
+environments:
+- Cloud Foundry
+- Amazon Web Services East / West
+user-types:
+    developer:
+        functions: 
+        - deployment
+        - engineering
+controls: [url]
+---
