@@ -19,10 +19,13 @@ class TestCodesEndpoint:
     """Test the /codes/* methods"""
 
     @pytest.mark.parametrize('table,id_col', [
+        ('arson_subcategory', 'subcategory_code'),
+        ('arson_subclassification', 'subclass_code'),
         ('asr_age_range', 'age_range_code'),
         ('asr_ethnicity', 'ethnicity_code'),
         ('asr_offense', 'offense_code'),
         ('asr_offense_category', 'offense_cat_code'),
+        ('asr_offense_subcat', 'offense_subcat_code'),
         ('crime_type', 'crime_type_id'),
         ('nibrs_activity_type', 'activity_type_code'),
         ('nibrs_age', 'age_code'),
@@ -57,7 +60,9 @@ class TestCodesEndpoint:
         ('ref_state', 'state_code'),
         ('ref_tribe', 'tribe_id'),
         ('ref_university', 'university_id'),
+        ('reta_offense', 'offense_code'),
         ('reta_offense_category', 'offense_category_id'),
+        ('reta_offense_subcat', 'offense_subcat_code'),
         ('supp_larceny_type', 'larceny_type_code'),
         ('supp_property_type', 'prop_type_code')
     ])

@@ -87,6 +87,21 @@ class PaginationSchema(Schema):
 
 
 # Schemas for data serialization
+class ArsonSubclassificationSchema(ma.ModelSchema):
+    class Meta:
+        model = models.ArsonSubclassification
+        exclude = ('subclass_xml_path', )
+        ordered = True
+
+
+class ArsonSubcategorySchema(ma.ModelSchema):
+    class Meta:
+        model = models.ArsonSubcategory
+        exclude = ('subcat_xml_path', )
+
+    subclass = ma.Nested(ArsonSubclassificationSchema)
+
+
 class NibrsRelationshipSchema(ma.ModelSchema):
     class Meta:
         model = models.NibrsRelationship
@@ -342,6 +357,15 @@ class AsrOffenseCategorySchema(ma.ModelSchema):
         model = models.AsrOffenseCategory
         exclude = ('offense_cat_id', )
         ordered = True
+
+
+class AsrOffenseSubcatSchema(ma.ModelSchema):
+    class Meta:
+        model = models.AsrOffenseSubcat
+        exclude = ('offense_subcat_id', )
+        ordered = True
+
+    offense = ma.Nested(AsrOffenseSchema)
 
 
 class NibrsLocationTypeSchema(ma.ModelSchema):
