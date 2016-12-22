@@ -19,6 +19,7 @@ test:
     - py.test --cov=crime_data tests/
   post:
     - codeclimate-test-reporter
+    - bandit -r .
 deployment:
   production:
     branch: master
