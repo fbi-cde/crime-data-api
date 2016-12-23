@@ -26,7 +26,7 @@ from flask_apispec.extension import FlaskApiSpec
 from crime_data.settings import ProdConfig
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True) #nosec, this isn't called on production
 
 
 def create_app(config_object=ProdConfig):
