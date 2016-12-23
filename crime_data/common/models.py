@@ -431,7 +431,6 @@ class CtIncident(db.Model):
     agency = db.relationship('RefAgency')
     ct_month = db.relationship('CtMonth')
 
-
 class CtMonth(db.Model):
     __tablename__ = 'ct_month'
 
@@ -1358,7 +1357,7 @@ class NibrsProperty(db.Model):
                                            initially='DEFERRED'),
                              nullable=False,
                              index=True)
-
+    
     incident = db.relationship('NibrsIncident',
                                backref=backref('property',
                                                lazy=False))

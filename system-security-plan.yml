@@ -47,8 +47,8 @@ leveraged-authorizations:
 - https://www.fedramp.gov/marketplace/compliant-systems/amazon-web-services-aws-eastwest-us-public-cloud/
 purpose: https://github.com/18F/crime-data-api
 components: https://github.com/18F/crime-data-api
-diagram: forthcoming
-network-architecture: forthcoming
+system-diagram: https://drive.google.com/drive/u/3/folders/0Bzo0lr4igOKWQUJTbjJ2SGM4SEU
+network-diagram: https://drive.google.com/drive/u/3/folders/0Bzo0lr4igOKWQUJTbjJ2SGM4SEU
 environments:
 - Cloud Foundry
 - Amazon Web Services East / West
