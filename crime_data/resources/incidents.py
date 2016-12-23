@@ -80,11 +80,8 @@ class CachedIncidentsCount(CdeResource):
     schema = marshmallow_schemas.CachedIncidentCountSchema(many=True)
 
     def postprocess_filters(self, filters, args):
-        "Grouping by is equivalent to filterning on IS NOT NULL"
-
         group_by_column_names = [c.strip() for c in args.get('by').split(',')]
-        filters = newmodels.RetaMonthOffenseSubcatSummary.add_groupings_to_filters(
-            filters, group_by_column_names)
+        filters = newmodels.RetaMonthOffenseSubcatSummary.determine_grouping(filters, group_by_column_names, self.schema)
         return filters
 
     def use_filters(self, filters):

@@ -212,7 +212,7 @@ class CdeResource(MethodResource):
         self.verify_api_key(args)
         filters = list(self.filters(args))
         filters = self.postprocess_filters(filters, args)
-        self.use_filters(filters)
+        # self.use_filters(filters)
 
         qry = self.tables.filtered(filters)
         if self.is_groupable:
