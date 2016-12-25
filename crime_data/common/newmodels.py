@@ -9,13 +9,14 @@ import logging
 from psycopg2 import ProgrammingError
 from sqlalchemy.dialects.postgresql import JSON
 from sqlalchemy.orm import backref
+from sqlalchemy.sql.elements import BinaryExpression
 
 from crime_data.common import models, newmodels
 from crime_data.extensions import db
 from sqlalchemy import or_
 
-class CreatableModel:
 
+class CreatableModel:
     @classmethod
     def create(cls):
         """Creates database table for the model, unless it already exists."""
@@ -57,13 +58,17 @@ class NibrsIncidentRepresentation(db.Model, CreatableModel):
         batch_no = 0
         while not finished:
             finished = True
-            qry = models.NibrsIncident.query.filter(models.NibrsIncident.representation == None).limit(batch_size)
+            qry = models.NibrsIncident.query.filter(
+                models.NibrsIncident.representation == None).limit(batch_size)
             for incident in qry:
                 finished = False  # until the query comes back empty
                 incident.representation = cls(incident=incident)
                 incident.representation.generate()
             models.NibrsIncident.query.session.commit()
-            logging.warning("Batch #{batch_no} of #{batch_size} complete".format(batch_no=batch_no, batch_size=batch_size))
+            logging.warning(
+                "Batch #{batch_no} of #{batch_size} complete".format(
+                    batch_no=batch_no,
+                    batch_size=batch_size))
             batch_no += 1
 
     def generate(self):
@@ -73,9 +78,6 @@ class NibrsIncidentRepresentation(db.Model, CreatableModel):
         _schema = marshmallow_schemas.NibrsIncidentSchema()
         self.representation = _schema.dump(self.incident).data
 
-def _array_to_bits(arr):
-    bits = ''.join(('1' if b else '0') for b in arr)
-    return int(bits, 2)
 
 class RetaMonthOffenseSubcatSummary(db.Model, CreatableModel):
 
@@ -153,22 +155,40 @@ class RetaMonthOffenseSubcatSummary(db.Model, CreatableModel):
          population_family_name, population_family_desc)
         {}""".format(__tablename__, sql)
 
-    grouping_sets = {'grouping_bitmap': [], 'year': [], 'month': [],
-        'offense_subcat': ['offense_subcat_code'],
-        'offense_subcat_code': ['offense_subcat'],
-        'offense': ['offense_code'],
-        'offense_code': ['offense'],
-        'offense_category': [],
-        'classification': [],
-        'ori': ['ucr_agency_name', 'ncic_agency_name'],
-        'ucr_agency_name': ['ori', 'ncic_agency_name'],
-        'ncic_agency_name': ['ori', 'ucr_agency_name'],
-        'city': [],
-        'state_name': ['state'],
-        'state': ['state_name'],
-        'population_family_name': ['population_family_desc'],
-        'population_family_desc': ['population_family_name'],
-        }
+    grouping_sets = {'grouping_bitmap': [],
+                     'year': [],
+                     'month': [],
+                     'offense_subcat': ['offense_subcat_code'],
+                     'offense_subcat_code': ['offense_subcat'],
+                     'offense': ['offense_code'],
+                     'offense_code': ['offense'],
+                     'offense_category': [],
+                     'classification': [],
+                     'ori': ['ucr_agency_name', 'ncic_agency_name'],
+                     'ucr_agency_name': ['ori', 'ncic_agency_name'],
+                     'ncic_agency_name': ['ori', 'ucr_agency_name'],
+                     'city': [],
+                     'state_name': ['state'],
+                     'state': ['state_name'],
+                     'population_family_name': ['population_family_desc'],
+                     'population_family_desc': ['population_family_name'], }
+
+    filterables = ['year',
+                   'month',
+                   'offense_subcat',
+                   'offense_subcat_code',
+                   'offense',
+                   'offense_code',
+                   'offense_category',
+                   'classification',
+                   'ori',
+                   'ucr_agency_name',
+                   'ncic_agency_name',
+                   'city',
+                   'state_name',
+                   'state',
+                   'population_family_name',
+                   'population_family_desc', ]
 
     @classmethod
     def regenerate(cls):
@@ -213,28 +233,31 @@ class RetaMonthOffenseSubcatSummary(db.Model, CreatableModel):
         Return: (filters, )
         Side effect: sets visibility of fields in schema
         """
-        
-        # adjust the displayability of the schema
-        filtered_names = [f[0] for f in filters]
-        # now add the grouped
-        for (field_name, field) in schema.fields.items():
-            if field_name in newmodels.RetaMonthOffenseSubcatSummary.grouping_sets:
-                field.load_only = (field_name not in filtered_names) and (field_name not in group_by_column_names)
 
-        for col in group_by_column_names[:]:
+        # columns in grouping sets must be grouped together
+        group_columns = group_by_column_names[:]
+        for col in group_by_column_names:
             for sibling in cls.grouping_sets[col]:
-                if sibling not in group_by_column_names:
-                    group_by_column_names.append(sibling)
+                if sibling not in group_columns:
+                    group_columns.append(sibling)
 
-        filterable = list(cls.__table__.c)[7:]
-        bits = [(c.name in filters) or (c.name in group_by_column_names)
-                for c in filterable]
-        bits = _array_to_bits(reversed(bits))
-        filters.append(('grouping_bitmap', '__eq__', [bits, ]))
+        filtered_names = [f[0] for f in filters]
+        field_names = reversed(cls.filterables)
+        for (idx, field_name) in enumerate(field_names):
+            show_field = (field_name in filtered_names) or (
+                field_name in group_columns)
+            marshmallow_field = schema.fields[field_name]
+            marshmallow_field.load_only = not show_field
+            bit_val = 2**idx
+            if show_field:
+                filters.append(cls.grouping_bitmap.op('&')(bit_val) == 0)
+            else:
+                filters.append(cls.grouping_bitmap.op('&')(bit_val) == bit_val)
+            # make filtered accept this
 
         return filters
 
-
+    '''
     @classmethod
     def add_groupings_to_filters(cls, filters, group_by_column_names):
         "Convert `by` arguments to bitwise grouping filters"
@@ -245,12 +268,18 @@ class RetaMonthOffenseSubcatSummary(db.Model, CreatableModel):
                     if sibling_col not in [f[0] for f in filters]:
                         filters.append((sibling_col, '__ne__', [None, ]))
         return filters
+    '''
 
     @classmethod
     def filtered(cls, filters):
         qry = cls.query
-        for (col_name, comparitor, values) in filters:
-            col = getattr(cls, col_name)
-            operation = getattr(col, comparitor)
-            qry = qry.filter(or_(operation(v) for v in values)).order_by(col)
+        for filter in filters:
+            if isinstance(filter, BinaryExpression):
+                qry = qry.filter(filter)
+            else:
+                (col_name, comparitor, values) = filter
+                col = getattr(cls, col_name)
+                operation = getattr(col, comparitor)
+                qry = qry.filter(or_(operation(v) for v in values)).order_by(
+                    col)
         return qry
