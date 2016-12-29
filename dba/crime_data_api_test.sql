@@ -8,12 +8,17 @@
 -- ./safe_columns.txt and ./scrub_private.sql.
 -- The dumpfle has also been visually reviewed.
 
+-- Dumped from database version 9.6.1
+-- Dumped by pg_dump version 9.6.1
+
 SET statement_timeout = 0;
 SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
+SET row_security = off;
 
 --
 -- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
@@ -57,7 +62,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: arson_month; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: arson_month; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE arson_month (
@@ -87,7 +92,7 @@ COMMENT ON COLUMN arson_month.source_flag IS 'This field indicates the source of
 
 
 --
--- Name: arson_month_by_subcat; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: arson_month_by_subcat; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE arson_month_by_subcat (
@@ -111,7 +116,7 @@ CREATE TABLE arson_month_by_subcat (
 
 
 --
--- Name: arson_subcategory; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: arson_subcategory; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE arson_subcategory (
@@ -124,7 +129,7 @@ CREATE TABLE arson_subcategory (
 
 
 --
--- Name: arson_subclassification; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: arson_subclassification; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE arson_subclassification (
@@ -136,7 +141,7 @@ CREATE TABLE arson_subclassification (
 
 
 --
--- Name: asr_age_range; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: asr_age_range; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE asr_age_range (
@@ -151,7 +156,7 @@ CREATE TABLE asr_age_range (
 
 
 --
--- Name: asr_age_sex_subcat; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: asr_age_sex_subcat; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE asr_age_sex_subcat (
@@ -168,7 +173,7 @@ CREATE TABLE asr_age_sex_subcat (
 
 
 --
--- Name: asr_ethnicity; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: asr_ethnicity; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE asr_ethnicity (
@@ -180,7 +185,7 @@ CREATE TABLE asr_ethnicity (
 
 
 --
--- Name: asr_ethnicity_offense; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: asr_ethnicity_offense; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE asr_ethnicity_offense (
@@ -197,7 +202,7 @@ CREATE TABLE asr_ethnicity_offense (
 
 
 --
--- Name: asr_juvenile_disposition; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: asr_juvenile_disposition; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE asr_juvenile_disposition (
@@ -214,7 +219,7 @@ CREATE TABLE asr_juvenile_disposition (
 
 
 --
--- Name: asr_month; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: asr_month; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE asr_month (
@@ -241,7 +246,7 @@ COMMENT ON COLUMN asr_month.orig_format IS 'This is the format the report was in
 
 
 --
--- Name: asr_offense; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: asr_offense; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE asr_offense (
@@ -254,7 +259,7 @@ CREATE TABLE asr_offense (
 
 
 --
--- Name: asr_offense_category; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: asr_offense_category; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE asr_offense_category (
@@ -265,7 +270,7 @@ CREATE TABLE asr_offense_category (
 
 
 --
--- Name: asr_offense_subcat; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: asr_offense_subcat; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE asr_offense_subcat (
@@ -281,7 +286,7 @@ CREATE TABLE asr_offense_subcat (
 
 
 --
--- Name: asr_race_offense_subcat; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: asr_race_offense_subcat; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE asr_race_offense_subcat (
@@ -299,7 +304,7 @@ CREATE TABLE asr_race_offense_subcat (
 
 
 --
--- Name: crime_type; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: crime_type; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE crime_type (
@@ -311,7 +316,7 @@ CREATE TABLE crime_type (
 
 
 --
--- Name: ct_arrestee; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ct_arrestee; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ct_arrestee (
@@ -325,7 +330,7 @@ CREATE TABLE ct_arrestee (
 
 
 --
--- Name: ct_incident; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ct_incident; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ct_incident (
@@ -360,7 +365,7 @@ COMMENT ON COLUMN ct_incident.source_flag IS 'This field indicates the source of
 
 
 --
--- Name: ct_month; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ct_month; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ct_month (
@@ -380,7 +385,7 @@ CREATE TABLE ct_month (
 
 
 --
--- Name: ct_offender; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ct_offender; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ct_offender (
@@ -394,7 +399,7 @@ CREATE TABLE ct_offender (
 
 
 --
--- Name: ct_offense; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ct_offense; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ct_offense (
@@ -407,7 +412,7 @@ CREATE TABLE ct_offense (
 
 
 --
--- Name: ct_property; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ct_property; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ct_property (
@@ -422,7 +427,7 @@ CREATE TABLE ct_property (
 
 
 --
--- Name: ct_victim; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ct_victim; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ct_victim (
@@ -432,7 +437,7 @@ CREATE TABLE ct_victim (
 
 
 --
--- Name: ct_weapon; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ct_weapon; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ct_weapon (
@@ -443,7 +448,7 @@ CREATE TABLE ct_weapon (
 
 
 --
--- Name: hc_bias_motivation; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: hc_bias_motivation; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE hc_bias_motivation (
@@ -453,7 +458,7 @@ CREATE TABLE hc_bias_motivation (
 
 
 --
--- Name: hc_incident; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: hc_incident; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE hc_incident (
@@ -492,7 +497,7 @@ COMMENT ON COLUMN hc_incident.source_flag IS 'This field indicates the source of
 
 
 --
--- Name: hc_offense; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: hc_offense; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE hc_offense (
@@ -506,7 +511,7 @@ CREATE TABLE hc_offense (
 
 
 --
--- Name: hc_quarter; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: hc_quarter; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE hc_quarter (
@@ -526,7 +531,7 @@ CREATE TABLE hc_quarter (
 
 
 --
--- Name: hc_victim; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: hc_victim; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE hc_victim (
@@ -536,7 +541,7 @@ CREATE TABLE hc_victim (
 
 
 --
--- Name: ht_month; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ht_month; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ht_month (
@@ -572,7 +577,7 @@ COMMENT ON COLUMN ht_month.source_flag IS 'This field indicates the source of th
 
 
 --
--- Name: ht_month_offense_subcat; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ht_month_offense_subcat; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ht_month_offense_subcat (
@@ -592,7 +597,7 @@ CREATE TABLE ht_month_offense_subcat (
 
 
 --
--- Name: nibrs_activity_type; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_activity_type; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE nibrs_activity_type (
@@ -603,7 +608,7 @@ CREATE TABLE nibrs_activity_type (
 
 
 --
--- Name: nibrs_age; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_age; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE nibrs_age (
@@ -614,7 +619,7 @@ CREATE TABLE nibrs_age (
 
 
 --
--- Name: nibrs_arrest_type; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_arrest_type; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE nibrs_arrest_type (
@@ -625,7 +630,7 @@ CREATE TABLE nibrs_arrest_type (
 
 
 --
--- Name: nibrs_arrestee; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_arrestee; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE nibrs_arrestee (
@@ -652,7 +657,7 @@ CREATE TABLE nibrs_arrestee (
 
 
 --
--- Name: nibrs_arrestee_weapon; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_arrestee_weapon; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE nibrs_arrestee_weapon (
@@ -663,7 +668,7 @@ CREATE TABLE nibrs_arrestee_weapon (
 
 
 --
--- Name: nibrs_assignment_type; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_assignment_type; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE nibrs_assignment_type (
@@ -674,7 +679,7 @@ CREATE TABLE nibrs_assignment_type (
 
 
 --
--- Name: nibrs_bias_list; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_bias_list; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE nibrs_bias_list (
@@ -685,7 +690,7 @@ CREATE TABLE nibrs_bias_list (
 
 
 --
--- Name: nibrs_bias_motivation; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_bias_motivation; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE nibrs_bias_motivation (
@@ -695,7 +700,7 @@ CREATE TABLE nibrs_bias_motivation (
 
 
 --
--- Name: nibrs_circumstances; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_circumstances; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE nibrs_circumstances (
@@ -707,7 +712,7 @@ CREATE TABLE nibrs_circumstances (
 
 
 --
--- Name: nibrs_cleared_except; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_cleared_except; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE nibrs_cleared_except (
@@ -718,7 +723,7 @@ CREATE TABLE nibrs_cleared_except (
 
 
 --
--- Name: nibrs_criminal_act; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_criminal_act; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE nibrs_criminal_act (
@@ -728,7 +733,7 @@ CREATE TABLE nibrs_criminal_act (
 
 
 --
--- Name: nibrs_criminal_act_type; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_criminal_act_type; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE nibrs_criminal_act_type (
@@ -739,7 +744,7 @@ CREATE TABLE nibrs_criminal_act_type (
 
 
 --
--- Name: nibrs_drug_measure_type; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_drug_measure_type; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE nibrs_drug_measure_type (
@@ -750,7 +755,7 @@ CREATE TABLE nibrs_drug_measure_type (
 
 
 --
--- Name: nibrs_eds; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_eds; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE nibrs_eds (
@@ -774,7 +779,7 @@ CREATE TABLE nibrs_eds (
 
 
 --
--- Name: nibrs_ethnicity; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_ethnicity; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE nibrs_ethnicity (
@@ -786,7 +791,7 @@ CREATE TABLE nibrs_ethnicity (
 
 
 --
--- Name: nibrs_grpb_arrest; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_grpb_arrest; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE nibrs_grpb_arrest (
@@ -817,7 +822,7 @@ CREATE TABLE nibrs_grpb_arrest (
 
 
 --
--- Name: nibrs_grpb_arrest_weapon; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_grpb_arrest_weapon; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE nibrs_grpb_arrest_weapon (
@@ -828,7 +833,7 @@ CREATE TABLE nibrs_grpb_arrest_weapon (
 
 
 --
--- Name: nibrs_incident; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_incident; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE nibrs_incident (
@@ -860,7 +865,7 @@ COMMENT ON COLUMN nibrs_incident.orig_format IS 'This is the format the report w
 
 
 --
--- Name: nibrs_injury; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_injury; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE nibrs_injury (
@@ -871,7 +876,7 @@ CREATE TABLE nibrs_injury (
 
 
 --
--- Name: nibrs_justifiable_force; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_justifiable_force; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE nibrs_justifiable_force (
@@ -882,7 +887,7 @@ CREATE TABLE nibrs_justifiable_force (
 
 
 --
--- Name: nibrs_location_type; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_location_type; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE nibrs_location_type (
@@ -893,7 +898,7 @@ CREATE TABLE nibrs_location_type (
 
 
 --
--- Name: nibrs_month; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_month; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE nibrs_month (
@@ -921,7 +926,7 @@ COMMENT ON COLUMN nibrs_month.orig_format IS 'This is the format the report was 
 
 
 --
--- Name: nibrs_offender; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_offender; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE nibrs_offender (
@@ -940,7 +945,7 @@ CREATE TABLE nibrs_offender (
 
 
 --
--- Name: nibrs_offense; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_offense; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE nibrs_offense (
@@ -956,7 +961,7 @@ CREATE TABLE nibrs_offense (
 
 
 --
--- Name: nibrs_offense_type; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_offense_type; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE nibrs_offense_type (
@@ -972,7 +977,7 @@ CREATE TABLE nibrs_offense_type (
 
 
 --
--- Name: nibrs_prop_desc_type; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_prop_desc_type; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE nibrs_prop_desc_type (
@@ -983,7 +988,7 @@ CREATE TABLE nibrs_prop_desc_type (
 
 
 --
--- Name: nibrs_prop_loss_type; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_prop_loss_type; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE nibrs_prop_loss_type (
@@ -993,7 +998,7 @@ CREATE TABLE nibrs_prop_loss_type (
 
 
 --
--- Name: nibrs_property; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_property; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE nibrs_property (
@@ -1007,7 +1012,7 @@ CREATE TABLE nibrs_property (
 
 
 --
--- Name: nibrs_property_desc; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_property_desc; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE nibrs_property_desc (
@@ -1020,7 +1025,7 @@ CREATE TABLE nibrs_property_desc (
 
 
 --
--- Name: nibrs_relationship; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_relationship; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE nibrs_relationship (
@@ -1031,7 +1036,7 @@ CREATE TABLE nibrs_relationship (
 
 
 --
--- Name: nibrs_suspect_using; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_suspect_using; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE nibrs_suspect_using (
@@ -1041,7 +1046,7 @@ CREATE TABLE nibrs_suspect_using (
 
 
 --
--- Name: nibrs_suspected_drug; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_suspected_drug; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE nibrs_suspected_drug (
@@ -1054,7 +1059,7 @@ CREATE TABLE nibrs_suspected_drug (
 
 
 --
--- Name: nibrs_suspected_drug_type; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_suspected_drug_type; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE nibrs_suspected_drug_type (
@@ -1065,7 +1070,7 @@ CREATE TABLE nibrs_suspected_drug_type (
 
 
 --
--- Name: nibrs_using_list; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_using_list; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE nibrs_using_list (
@@ -1076,7 +1081,7 @@ CREATE TABLE nibrs_using_list (
 
 
 --
--- Name: nibrs_victim; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_victim; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE nibrs_victim (
@@ -1101,7 +1106,7 @@ CREATE TABLE nibrs_victim (
 
 
 --
--- Name: nibrs_victim_circumstances; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_victim_circumstances; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE nibrs_victim_circumstances (
@@ -1112,7 +1117,7 @@ CREATE TABLE nibrs_victim_circumstances (
 
 
 --
--- Name: nibrs_victim_injury; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_victim_injury; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE nibrs_victim_injury (
@@ -1122,7 +1127,7 @@ CREATE TABLE nibrs_victim_injury (
 
 
 --
--- Name: nibrs_victim_offender_rel; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_victim_offender_rel; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE nibrs_victim_offender_rel (
@@ -1134,7 +1139,7 @@ CREATE TABLE nibrs_victim_offender_rel (
 
 
 --
--- Name: nibrs_victim_offense; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_victim_offense; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE nibrs_victim_offense (
@@ -1144,7 +1149,7 @@ CREATE TABLE nibrs_victim_offense (
 
 
 --
--- Name: nibrs_victim_type; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_victim_type; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE nibrs_victim_type (
@@ -1155,7 +1160,7 @@ CREATE TABLE nibrs_victim_type (
 
 
 --
--- Name: nibrs_weapon; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_weapon; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE nibrs_weapon (
@@ -1166,7 +1171,7 @@ CREATE TABLE nibrs_weapon (
 
 
 --
--- Name: nibrs_weapon_type; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_weapon_type; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE nibrs_weapon_type (
@@ -1178,7 +1183,7 @@ CREATE TABLE nibrs_weapon_type (
 
 
 --
--- Name: offense_classification; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: offense_classification; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE offense_classification (
@@ -1189,7 +1194,7 @@ CREATE TABLE offense_classification (
 
 
 --
--- Name: ref_agency; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_agency; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ref_agency (
@@ -1222,7 +1227,7 @@ CREATE TABLE ref_agency (
 
 
 --
--- Name: ref_agency_county; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_agency_county; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ref_agency_county (
@@ -1242,7 +1247,7 @@ CREATE TABLE ref_agency_county (
 
 
 --
--- Name: ref_agency_covered_by; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_agency_covered_by; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ref_agency_covered_by (
@@ -1253,7 +1258,7 @@ CREATE TABLE ref_agency_covered_by (
 
 
 --
--- Name: ref_agency_data_content; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_agency_data_content; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ref_agency_data_content (
@@ -1270,7 +1275,7 @@ CREATE TABLE ref_agency_data_content (
 
 
 --
--- Name: ref_agency_poc; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_agency_poc; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ref_agency_poc (
@@ -1281,7 +1286,7 @@ CREATE TABLE ref_agency_poc (
 
 
 --
--- Name: ref_agency_type; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_agency_type; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ref_agency_type (
@@ -1292,7 +1297,7 @@ CREATE TABLE ref_agency_type (
 
 
 --
--- Name: ref_campus_population; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_campus_population; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ref_campus_population (
@@ -1308,7 +1313,7 @@ CREATE TABLE ref_campus_population (
 
 
 --
--- Name: ref_city; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_city; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ref_city (
@@ -1319,7 +1324,7 @@ CREATE TABLE ref_city (
 
 
 --
--- Name: ref_continent; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_continent; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ref_continent (
@@ -1329,7 +1334,7 @@ CREATE TABLE ref_continent (
 
 
 --
--- Name: ref_country; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_country; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ref_country (
@@ -1340,7 +1345,7 @@ CREATE TABLE ref_country (
 
 
 --
--- Name: ref_county; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_county; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ref_county (
@@ -1355,7 +1360,7 @@ CREATE TABLE ref_county (
 
 
 --
--- Name: ref_county_population; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_county_population; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ref_county_population (
@@ -1370,7 +1375,7 @@ CREATE TABLE ref_county_population (
 
 
 --
--- Name: ref_department; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_department; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ref_department (
@@ -1382,7 +1387,7 @@ CREATE TABLE ref_department (
 
 
 --
--- Name: ref_division; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_division; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ref_division (
@@ -1395,7 +1400,7 @@ CREATE TABLE ref_division (
 
 
 --
--- Name: ref_field_office; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_field_office; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ref_field_office (
@@ -1408,7 +1413,7 @@ CREATE TABLE ref_field_office (
 
 
 --
--- Name: ref_global_location; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_global_location; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ref_global_location (
@@ -1419,7 +1424,7 @@ CREATE TABLE ref_global_location (
 
 
 --
--- Name: ref_metro_div_population; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_metro_div_population; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ref_metro_div_population (
@@ -1435,7 +1440,7 @@ CREATE TABLE ref_metro_div_population (
 
 
 --
--- Name: ref_metro_division; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_metro_division; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ref_metro_division (
@@ -1449,7 +1454,7 @@ CREATE TABLE ref_metro_division (
 
 
 --
--- Name: ref_msa; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_msa; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ref_msa (
@@ -1460,7 +1465,7 @@ CREATE TABLE ref_msa (
 
 
 --
--- Name: ref_parent_population_group; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_parent_population_group; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ref_parent_population_group (
@@ -1473,7 +1478,7 @@ CREATE TABLE ref_parent_population_group (
 
 
 --
--- Name: ref_poc; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_poc; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ref_poc (
@@ -1496,7 +1501,7 @@ CREATE TABLE ref_poc (
 
 
 --
--- Name: ref_poc_role; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_poc_role; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ref_poc_role (
@@ -1506,7 +1511,7 @@ CREATE TABLE ref_poc_role (
 
 
 --
--- Name: ref_poc_role_assign; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_poc_role_assign; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ref_poc_role_assign (
@@ -1516,7 +1521,7 @@ CREATE TABLE ref_poc_role_assign (
 
 
 --
--- Name: ref_population_family; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_population_family; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ref_population_family (
@@ -1528,7 +1533,7 @@ CREATE TABLE ref_population_family (
 
 
 --
--- Name: ref_population_group; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_population_group; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ref_population_group (
@@ -1541,7 +1546,7 @@ CREATE TABLE ref_population_group (
 
 
 --
--- Name: ref_race; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_race; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ref_race (
@@ -1556,7 +1561,7 @@ CREATE TABLE ref_race (
 
 
 --
--- Name: ref_region; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_region; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ref_region (
@@ -1568,7 +1573,7 @@ CREATE TABLE ref_region (
 
 
 --
--- Name: ref_state; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_state; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ref_state (
@@ -1584,7 +1589,7 @@ CREATE TABLE ref_state (
 
 
 --
--- Name: ref_submitting_agency; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_submitting_agency; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ref_submitting_agency (
@@ -1600,7 +1605,7 @@ CREATE TABLE ref_submitting_agency (
 
 
 --
--- Name: ref_tribe; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_tribe; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ref_tribe (
@@ -1610,7 +1615,7 @@ CREATE TABLE ref_tribe (
 
 
 --
--- Name: ref_tribe_population; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_tribe_population; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ref_tribe_population (
@@ -1626,7 +1631,7 @@ CREATE TABLE ref_tribe_population (
 
 
 --
--- Name: ref_university; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_university; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ref_university (
@@ -1637,7 +1642,7 @@ CREATE TABLE ref_university (
 
 
 --
--- Name: ref_university_campus; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_university_campus; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ref_university_campus (
@@ -1648,7 +1653,7 @@ CREATE TABLE ref_university_campus (
 
 
 --
--- Name: reta_month; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: reta_month; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE reta_month (
@@ -1689,7 +1694,7 @@ COMMENT ON COLUMN reta_month.source_flag IS 'This field indicates the source of 
 
 
 --
--- Name: reta_month_offense_subcat; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: reta_month_offense_subcat; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE reta_month_offense_subcat (
@@ -1716,7 +1721,7 @@ COMMENT ON COLUMN reta_month_offense_subcat.actual_status IS '0 is for consideri
 
 
 --
--- Name: reta_offense; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: reta_offense; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE reta_offense (
@@ -1731,7 +1736,7 @@ CREATE TABLE reta_offense (
 
 
 --
--- Name: reta_offense_category; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: reta_offense_category; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE reta_offense_category (
@@ -1743,7 +1748,7 @@ CREATE TABLE reta_offense_category (
 
 
 --
--- Name: reta_offense_subcat; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: reta_offense_subcat; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE reta_offense_subcat (
@@ -1759,7 +1764,7 @@ CREATE TABLE reta_offense_subcat (
 
 
 --
--- Name: shr_circumstances; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: shr_circumstances; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE shr_circumstances (
@@ -1773,7 +1778,7 @@ CREATE TABLE shr_circumstances (
 
 
 --
--- Name: shr_incident; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: shr_incident; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE shr_incident (
@@ -1796,7 +1801,7 @@ CREATE TABLE shr_incident (
 
 
 --
--- Name: shr_month; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: shr_month; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE shr_month (
@@ -1823,7 +1828,7 @@ COMMENT ON COLUMN shr_month.orig_format IS 'This is the format the report was in
 
 
 --
--- Name: shr_offender; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: shr_offender; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE shr_offender (
@@ -1847,7 +1852,7 @@ COMMENT ON COLUMN shr_offender.offender_num IS 'The XML may send this field as s
 
 
 --
--- Name: shr_offense; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: shr_offense; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE shr_offense (
@@ -1863,7 +1868,7 @@ CREATE TABLE shr_offense (
 
 
 --
--- Name: shr_relationship; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: shr_relationship; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE shr_relationship (
@@ -1874,7 +1879,7 @@ CREATE TABLE shr_relationship (
 
 
 --
--- Name: shr_situation; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: shr_situation; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE shr_situation (
@@ -1885,7 +1890,7 @@ CREATE TABLE shr_situation (
 
 
 --
--- Name: shr_victim; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: shr_victim; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE shr_victim (
@@ -1909,7 +1914,7 @@ COMMENT ON COLUMN shr_victim.victim_num IS 'This field may come as ''VICTIM1'', 
 
 
 --
--- Name: supp_larceny_type; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: supp_larceny_type; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE supp_larceny_type (
@@ -1921,7 +1926,7 @@ CREATE TABLE supp_larceny_type (
 
 
 --
--- Name: supp_month; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: supp_month; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE supp_month (
@@ -1955,7 +1960,7 @@ COMMENT ON COLUMN supp_month.source_flag IS 'This field indicates the source of 
 
 
 --
--- Name: supp_offense; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: supp_offense; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE supp_offense (
@@ -1966,7 +1971,7 @@ CREATE TABLE supp_offense (
 
 
 --
--- Name: supp_offense_subcat; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: supp_offense_subcat; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE supp_offense_subcat (
@@ -1979,7 +1984,7 @@ CREATE TABLE supp_offense_subcat (
 
 
 --
--- Name: supp_prop_by_offense_subcat; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: supp_prop_by_offense_subcat; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE supp_prop_by_offense_subcat (
@@ -1993,7 +1998,7 @@ CREATE TABLE supp_prop_by_offense_subcat (
 
 
 --
--- Name: supp_property_by_type_value; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: supp_property_by_type_value; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE supp_property_by_type_value (
@@ -2007,7 +2012,7 @@ CREATE TABLE supp_property_by_type_value (
 
 
 --
--- Name: supp_property_type; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: supp_property_type; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE supp_property_type (
@@ -22602,2696 +22607,2696 @@ COPY nibrs_grpb_arrest_weapon (grpb_arrest_id, weapon_id, nibrs_grpb_arrest_weap
 --
 
 COPY nibrs_incident (agency_id, incident_id, nibrs_month_id, incident_number, cargo_theft_flag, submission_date, incident_date, report_date_flag, incident_hour, cleared_except_id, cleared_except_date, incident_status, data_home, ddocname, orig_format, ff_line_number, did) FROM stdin;
-748	68942522	6115739	201300001600	\N	\N	2013-01-22 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-570	69919767	6115561	2013-0021	\N	\N	2013-01-04 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-8350	68466530	6123331	130013000008	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-17527	70846364	6177131	-	N	\N	2013-03-07 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-8346	68438755	6123327	130500000005	\N	\N	2013-01-03 00:00:00	R	17	6	\N	0	C	\N	\N	\N	\N
-14594	76023157	6507812	201401110	\N	\N	2014-03-06 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
-1962	75911446	6674828	14046065	N	\N	2014-11-06 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-18608	69664894	6379200	2013-003995	\N	\N	2013-12-29 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-9049	71174417	6235690	131306260174	N	\N	2013-06-27 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-17615	68653311	6221883	2001305-0154	\N	\N	2013-05-07 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-2090	72711239	6295735	13W31589	\N	\N	2013-09-16 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-4548	71423653	6164200	022013-01220	\N	\N	2013-03-01 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-6270	67932272	6143590	APD13010	\N	\N	2013-02-12 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-8683	67865163	6123664	130001301330	\N	\N	2013-01-27 00:00:00	R	15	6	\N	0	C	\N	\N	\N	\N
-6270	67932273	6165922	APD13011	\N	\N	2013-03-15 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-17687	68505319	6266619	012013113694	\N	\N	2013-07-21 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-8808	69609970	6123789	130013000120	N	\N	2013-01-06 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-8084	70387800	6123065	12-2725-AR	\N	\N	2013-01-22 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-8467	69090137	6123448	130130000928	N	\N	2013-01-05 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-18166	71643471	6222434	1302934	\N	\N	2013-05-31 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-9048	69144538	6124029	130130000540	N	\N	2013-01-10 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-8826	72924597	6659234	140140009693	\N	\N	2014-10-09 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-8808	69609216	6123789	130013000006	\N	\N	2013-01-01 00:00:00	R	19	6	\N	0	C	\N	\N	\N	\N
-570	69921462	6115561	2013-0957	\N	\N	2013-01-01 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-6266	67923521	6121254	13001	\N	\N	2013-01-01 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-14200	70950135	6129141	201300010	\N	\N	2013-01-04 00:00:00	R	18	6	\N	0	C	\N	\N	\N	\N
-7583	67943920	6368222	13-4193-AR	\N	\N	2013-12-03 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-18608	69663273	6356868	2013-003560	\N	\N	2013-11-17 00:00:00	\N	1	4	2014-04-09 00:00:00	0	C	\N	\N	\N	\N
-4532	71371513	6342840	012013-03199	\N	\N	2013-11-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-749	68987807	6294396	13004960100	\N	\N	2013-09-23 00:00:00	R	16	6	\N	0	C	\N	\N	\N	\N
-4548	71424471	6164200	022013-01476	\N	\N	2013-03-13 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-18513	71685095	6155785	13005326	N	\N	2013-02-23 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-748	68942480	6115739	201300000004	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-18271	75991814	6533938	20140405099	\N	\N	2014-04-28 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-6956	70010905	6121943	01852793	\N	\N	2013-01-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-6176	67798017	6232824	A13131610165	\N	\N	2013-06-09 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-19209	73545607	6579775	140009797	\N	\N	2014-06-15 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-9049	71224560	6235690	131307230277	\N	\N	2013-06-14 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-20129	69511187	6380720	20133620174	\N	\N	2013-12-28 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-20769	71674079	6336696	131724	\N	\N	2013-10-24 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-2249	72316327	6117238	5813000878	N	\N	2013-01-17 00:00:00	R	17	6	\N	0	C	\N	\N	\N	\N
-18189	71310607	6133129	13000005	\N	\N	2013-01-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-15024	77147930	6642942	2014-075	\N	\N	2014-09-12 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-7599	68001984	6122586	13-18-OF	\N	\N	2013-01-14 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-15024	77147931	6665392	2014-079	\N	\N	2014-10-02 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-21768	70317034	6293031	WCSO13010858	\N	\N	2013-08-02 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-8377	68909274	6123358	130000092813	N	\N	2013-01-30 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-6314	67977821	6121302	20131251	\N	\N	2013-01-01 00:00:00	\N	0	2	2013-05-29 00:00:00	0	C	\N	\N	\N	\N
-7599	68001064	6122586	13-10-OF	\N	\N	2013-01-06 00:00:00	R	21	6	\N	0	C	\N	\N	\N	\N
-15020	71914179	6375613	0002-14	\N	\N	2013-12-31 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-14599	70661470	6129540	1301996	\N	\N	2013-01-18 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-7599	68001065	6301242	13-1008-AR	\N	\N	2013-09-28 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-8377	68908434	6123358	130000000613	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-6314	67976863	6210630	130917	\N	\N	2013-05-08 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-15314	71366378	6241915	13-1007-OF	\N	\N	2013-06-26 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-7599	68004944	6301242	13-931-AR	\N	\N	2013-09-17 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-15314	71366379	6130255	13-101-OF	\N	\N	2013-01-19 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-17793	69840918	6132733	1300010	\N	\N	2013-01-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-21805	68058690	6136744	511056636	\N	\N	2013-01-04 00:00:00	\N	0	1	2013-01-10 00:00:00	0	C	\N	\N	\N	\N
-11967	68752937	6238590	13-118-OF	\N	\N	2013-06-24 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-11983	68775062	6126946	0441838	\N	\N	2013-01-02 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-21805	68058679	6136744	511056589	\N	\N	2013-01-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-8297	68366672	6123278	131300000020	Y	\N	2013-01-29 00:00:00	R	10	6	\N	0	C	\N	\N	\N	\N
-18607	69653611	6379199	2013-003075	\N	\N	2013-12-03 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-17687	68454609	6132627	012013040094	N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-2092	72716396	6184077	13G29414	\N	\N	2013-04-30 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-2092	72716395	6184077	13G29398	\N	\N	2013-04-29 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-17793	69842643	6132733	1303614	N	\N	2013-01-01 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-9049	69309305	6124030	131304030264	N	\N	2013-01-15 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-18607	69653606	6379199	2013-003052	\N	\N	2013-12-01 00:00:00	\N	0	1	2013-12-01 00:00:00	0	C	\N	\N	\N	\N
-8898	72089942	6123879	130001040008	N	\N	2013-01-04 00:00:00	R	10	6	\N	0	C	\N	\N	\N	\N
-6616	68311036	6166268	01731547	\N	\N	2013-03-01 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-11967	68752957	6126930	13-3-OF	\N	\N	2013-01-23 00:00:00	R	14	6	\N	0	C	\N	\N	\N	\N
-8898	72089928	6123879	130001010016	\N	\N	2013-01-01 00:00:00	R	3	6	\N	0	C	\N	\N	\N	\N
-8898	72089941	6123879	130001040007	N	\N	2013-01-04 00:00:00	R	13	6	\N	0	C	\N	\N	\N	\N
-18198	71349962	6222466	13-00023034	\N	\N	2013-05-01 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-6615	68304496	6121603	01836136	\N	\N	2013-01-20 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-726	69322572	6115717	2013001357	\N	\N	2013-01-17 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-21331	77514849	6649247	142660041	\N	\N	2014-09-20 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-18512	71651810	6133452	0213000003	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-7630	68036208	6122613	201300000060	\N	\N	2013-01-02 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-4573	77070325	6565188	N14-22205	\N	\N	2014-06-23 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-17687	68497557	6266619	012013104139	\N	\N	2013-07-03 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-8683	67862392	6123664	130001300014	N	\N	2013-01-01 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
-14594	76023268	6507812	201401377	\N	\N	2014-03-25 00:00:00	R	13	6	\N	0	C	\N	\N	\N	\N
-18512	71658452	6133452	13004479	N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-21555	70213743	6136494	2013010003	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-17759	69692064	6289023	13-31052	\N	\N	2013-08-21 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-18341	72121969	6311937	2013	\N	\N	2013-09-26 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-7599	68003901	6122586	13-55-AR	\N	\N	2013-01-21 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-14455	68398206	6129396	13-000400	\N	\N	2013-01-02 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-7677	72103561	6234320	13-12316-OF	\N	\N	2013-06-26 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-15314	71366377	6241915	13-1006-OF	\N	\N	2013-06-26 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-18633	69833649	6133572	1212001097SH	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-2157	73973068	6697473	1400011187	\N	\N	2014-12-17 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-18341	72124530	6311937	2013-52725	N	\N	2013-09-16 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-7677	72102835	6234320	13-12109-AR	\N	\N	2013-06-25 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-8856	71994612	6190833	130140020536	N	\N	2013-04-28 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-14931	73623733	6530599	150329898	\N	\N	2014-04-20 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-18190	71334336	6378782	13002048	N	\N	2013-12-20 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-18341	72125313	6311937	2013-55802	N	\N	2013-09-11 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-18190	71327927	6133130	13000005	\N	\N	2013-01-01 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-2316	71198131	6139636	Z613000051	\N	\N	2013-02-01 00:00:00	R	19	2	2013-04-01 00:00:00	0	C	\N	\N	\N	\N
-2272	72340584	6273585	3212095913	N	\N	2013-08-26 00:00:00	R	21	6	\N	0	C	\N	\N	\N	\N
-8814	69655043	6123795	130130079994	N	\N	2013-01-01 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-2272	72412868	6318249	3213116242	\N	\N	2013-10-16 00:00:00	R	22	6	\N	0	C	\N	\N	\N	\N
-10494	72397573	6125474	213CR0000039	\N	\N	2013-01-08 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-18633	69877008	6334560	1312000222SH	N	\N	2013-10-24 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-2272	72413777	6318249	3213117581	N	\N	2013-10-19 00:00:00	R	16	6	\N	0	C	\N	\N	\N	\N
-18633	69833746	6133572	1301000282SH	N	\N	2013-01-08 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
-15314	71369901	6241915	13-834-OF	\N	\N	2013-06-02 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-18633	69870830	6334560	1310001014SH	N	\N	2013-10-24 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-8814	69626592	6123795	130130000004	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-15020	71917718	6219289	1557-13	\N	\N	2013-05-01 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-2249	72315537	6117238	5813000037	\N	\N	2013-01-01 00:00:00	R	16	6	\N	0	C	\N	\N	\N	\N
-18189	71310577	6311785	DUPLICATED	\N	\N	2013-09-01 00:00:00	\N	9	2	2013-09-05 00:00:00	0	C	\N	\N	\N	\N
-7599	68001063	6122586	13-1-OF	\N	\N	2013-01-02 00:00:00	R	11	6	\N	0	C	\N	\N	\N	\N
-2275	72445939	6139596	3012008513	N	\N	2013-02-06 00:00:00	R	10	6	\N	0	C	\N	\N	\N	\N
-10494	72397582	6214802	213CR0000584	\N	\N	2013-05-08 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-15024	77147929	6642942	2014-064	\N	\N	2014-09-05 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-4548	71423668	6164200	022013-01293	\N	\N	2013-03-04 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-7647	71962167	6323618	1306880	\N	\N	2013-10-09 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-2272	72342400	6117261	3213000438	\N	\N	2013-01-02 00:00:00	R	3	6	\N	0	C	\N	\N	\N	\N
-2120	72751003	6117109	1300000010	\N	\N	2013-01-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-15020	71914177	6219289	DUPLICATED	\N	\N	2013-05-20 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-21768	70317033	6293031	WCSO13000150	\N	\N	2013-08-02 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-18190	71328772	6133130	13000169	\N	\N	2013-01-31 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-17687	68559557	6378279	012013192664	N	\N	2013-12-04 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-18190	71334289	6378782	13001953	N	\N	2013-12-04 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-8856	71990316	6190833	130130005744	\N	\N	2013-04-08 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-10494	72397587	6214802	213CR0000642	\N	\N	2013-05-21 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-8771	69482030	6123752	130000000001	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-23259	71902164	6137086	13-SPD-00032	\N	\N	2013-01-10 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-6589	68278895	6166241	201300000871	\N	\N	2013-03-22 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-2090	72711247	6295735	13W31767	\N	\N	2013-09-18 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-17793	69840917	6132733	1300004	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-6807	69819040	6121795	8013000061	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-7114	71851388	6122101	01663303	\N	\N	2013-01-03 00:00:00	\N	18	3	2013-01-07 00:00:00	0	C	\N	\N	\N	\N
-17891	69724055	6289155	1308831722	N	\N	2013-08-21 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-9073	70471496	6124054	130001300438	N	\N	2013-01-31 00:00:00	R	20	6	\N	0	C	\N	\N	\N	\N
-8893	72041290	6146206	131290000030	\N	\N	2013-02-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-6036	70985829	6366676	14ISPC000109	N	\N	2013-12-04 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-11983	68779248	6350266	0457069	N	\N	2013-11-01 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-11967	68752936	6283254	13-108-OF	\N	\N	2013-08-01 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-9073	70479730	6302710	130001304107	\N	\N	2013-09-27 00:00:00	R	19	6	\N	0	C	\N	\N	\N	\N
-8893	72041220	6146206	130600000232	\N	\N	2013-02-13 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-8297	68366670	6123278	131300000004	\N	\N	2013-01-08 00:00:00	R	11	6	\N	0	C	\N	\N	\N	\N
-6589	68278105	6166241	201300000810	\N	\N	2013-03-18 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-6767	69783668	6121755	01661508	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-11983	68779279	6350266	0457627	\N	\N	2013-11-16 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-8854	71961653	6123835	130130000001	N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-2092	72713691	6117081	13G08689	\N	\N	2013-01-31 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-6589	68278902	6188573	201300001003	\N	\N	2013-04-01 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-8893	72041271	6123874	131290000003	\N	\N	2013-01-03 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-17793	69842754	6132733	1305208	\N	\N	2013-01-28 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-2092	72716394	6184077	13G29379	\N	\N	2013-04-30 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-7115	71855915	6122102	01663464	\N	\N	2013-01-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-17687	68498393	6311283	012013104930	N	\N	2013-09-20 00:00:00	R	23	2	2013-09-20 00:00:00	0	C	\N	\N	\N	\N
-7114	71852331	6122101	01712613	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-9073	70478904	6302710	130001303971	\N	\N	2013-09-19 00:00:00	R	20	6	\N	0	C	\N	\N	\N	\N
-21790	68033350	6203725	433011253	\N	\N	2013-04-23 00:00:00	\N	16	3	2013-04-23 00:00:00	0	C	\N	\N	\N	\N
-2092	72713167	6117081	13G06173	\N	\N	2013-01-26 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-19944	69085408	6313539	13-156132	\N	\N	2013-09-27 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-11967	68752956	6126930	13-28-AR	\N	\N	2013-01-15 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-8854	71962495	6123835	130130001808	\N	\N	2013-01-17 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-8854	71963379	6146167	130130004468	\N	\N	2013-02-11 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-8854	71963343	6146167	130130003924	\N	\N	2013-02-06 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-2090	72711413	6295735	13W31870	\N	\N	2013-09-19 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-6022	70985820	6232670	14ISPC002033	\N	\N	2013-06-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-9073	70470568	6124054	130001300003	\N	\N	2013-01-01 00:00:00	R	2	6	\N	0	C	\N	\N	\N	\N
-6767	69784549	6121755	01753845	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-6589	68278916	6188573	201300001263	\N	\N	2013-04-18 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-2092	72712198	6184077	TEST123	\N	\N	2013-04-11 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-8898	72089927	6123879	130001010009	\N	\N	2013-01-01 00:00:00	R	3	6	\N	0	C	\N	\N	\N	\N
-6584	68265848	6143904	01681947	\N	\N	2013-02-03 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-17687	68559567	6311283	012013192763	\N	\N	2013-09-01 00:00:00	\N	8	2	2013-12-09 00:00:00	0	C	\N	\N	\N	\N
-8898	72089940	6123879	130001030022	N	\N	2013-01-03 00:00:00	R	15	6	\N	0	C	\N	\N	\N	\N
-6404	71549205	6121392	13S000133	\N	\N	2013-01-05 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-6764	69783611	6121752	01758376	\N	\N	2013-01-29 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-8150	71573154	6123131	13-100-OF	N	\N	2013-01-25 00:00:00	R	6	6	\N	0	C	\N	\N	\N	\N
-21790	68034237	6337717	433011440	\N	\N	2013-10-29 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
-6774	73015588	6567389	02078656	\N	\N	2014-06-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-21788	68028607	6136727	412030000	\N	\N	2013-01-08 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-2092	72713034	6117081	13G04366	\N	\N	2013-01-19 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-6958	70015665	6144277	01686340	\N	\N	2013-02-14 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-6956	69966349	6121943	01670205	\N	\N	2013-01-01 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
-7120	68105806	6122107	01662135	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-8157	71603801	6123138	13-1-OF	N	\N	2013-01-01 00:00:00	R	16	6	\N	0	C	\N	\N	\N	\N
-7469	71775296	6234116	13-2946-AR	\N	\N	2013-06-27 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-21790	68033308	6337717	431011363	\N	\N	2013-10-24 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-18608	69664899	6379200	2013-004002	\N	\N	2013-12-30 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-8157	71604677	6123138	13-26-AR	\N	\N	2013-01-21 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-6589	68278057	6121577	201300000027	\N	\N	2013-01-04 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-8856	71994602	6123837	130140000536	N	\N	2013-01-01 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-20129	69295705	6135068	20130180014	\N	\N	2013-01-18 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-6958	70015697	6322933	01834068	\N	\N	2013-10-24 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-21790	68033336	6203725	433011224	\N	\N	2013-04-02 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-6407	74135229	6544572	14C031918	\N	\N	2014-05-04 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-6958	70015686	6322933	01823634	\N	\N	2013-10-04 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-6407	71643311	6277719	13C055668	\N	\N	2013-08-24 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-8856	71988641	6123837	130130000032	\N	\N	2013-01-01 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-21788	68028604	6337715	4120-30723	\N	\N	2013-10-21 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-6407	71668055	6277719	13C067192	\N	\N	2013-08-09 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
-17759	69694627	6289023	13-34626	N	\N	2013-08-25 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-6589	68278974	6255569	201300002239	\N	\N	2013-07-13 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-19258	69078601	6134197	201300000001	\N	\N	2013-01-01 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-6404	71549183	6121392	13S000007	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-17759	69679040	6132699	13-08584	N	\N	2013-01-14 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-7469	71777995	6122456	13-342-AR	\N	\N	2013-01-24 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-20129	69280180	6246728	19766667633	\N	\N	2013-06-24 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-7658	72034168	6368293	13-173-AR	\N	\N	2013-12-03 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-20132	69528219	6135071	2013-000068	\N	\N	2013-01-02 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-7469	71778012	6234116	13-3440-OF	\N	\N	2013-06-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-7658	72034178	6368293	13-191-AR	\N	\N	2013-12-29 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-7469	71764062	6122456	13-C80003-OF	\N	\N	2013-01-03 00:00:00	R	18	6	\N	0	C	\N	\N	\N	\N
-20132	69528297	6157403	2013-003597	\N	\N	2013-02-19 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-20132	69528234	6135071	2013-001388	\N	\N	2013-01-23 00:00:00	\N	12	2	2013-01-23 00:00:00	0	C	\N	\N	\N	\N
-8150	71576773	6123131	13-85-OF	N	\N	2013-01-22 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-11983	68775825	6126946	0443008	\N	\N	2013-01-22 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-17759	69674695	6132699	13-00043	\N	\N	2013-01-01 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
-20132	69528301	6157403	2013-003687	N	\N	2013-02-21 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-11983	68775060	6126946	0441803	\N	\N	2013-01-01 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-8771	69482095	6123752	130000000757	\N	\N	2013-01-15 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-10438	72269306	6147750	201320160	\N	\N	2013-02-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-7611	68022176	6345918	13-1197-OF	\N	\N	2013-11-09 00:00:00	R	6	6	\N	0	C	\N	\N	\N	\N
-18965	68913366	6133904	13000035	\N	\N	2013-01-01 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
-18380	72191394	6155652	130208105421	\N	\N	2013-02-07 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-11983	68778494	6327934	0456300	\N	\N	2013-10-14 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-18965	68914111	6133904	13000446	\N	\N	2013-01-04 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-10485	72394853	6326453	SO13000403	\N	\N	2013-10-04 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-7057	70088105	6122044	01663956	\N	\N	2013-01-03 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-18082	71707340	6267014	2013-0009606	\N	\N	2013-07-25 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-6564	68242151	6121552	01722611	\N	\N	2013-01-28 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-10486	72394866	6326454	D13OFF001004	\N	\N	2013-10-29 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-10486	72395800	6281790	PD13000456	\N	\N	2013-08-02 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-10438	72263705	6147750	201235035	\N	\N	2013-02-22 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-14116	70807118	6129057	13-0151-7	\N	\N	2013-01-08 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-10438	72265561	6125418	201306589	\N	\N	2013-01-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-18633	69871775	6334560	1310001353SH	N	\N	2013-10-27 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-7057	70089024	6122044	01724835	\N	\N	2013-01-07 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-7056	70087131	6122043	01662690	\N	\N	2013-01-03 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-2275	72453153	6139596	3013009129	N	\N	2013-02-09 00:00:00	R	9	6	\N	0	C	\N	\N	\N	\N
-2092	72712860	6117081	13G04056	\N	\N	2013-01-17 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-6407	71571933	6121395	13C020021	\N	\N	2013-01-24 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-11983	68779240	6327934	0456908	N	\N	2013-10-29 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-7611	68022185	6345918	13-1207-OF	\N	\N	2013-11-12 00:00:00	\N	11	2	2013-11-27 00:00:00	0	C	\N	\N	\N	\N
-18608	69657028	6200544	2013-001031	N	\N	2013-04-12 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-18082	71708255	6267014	201300009975	\N	\N	2013-07-31 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-7677	72103595	6211988	13-13245-OF	\N	\N	2013-05-11 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-2157	73973060	6697473	1400010752	\N	\N	2014-12-02 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-7472	71803729	6122459	13-1-AR	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-18085	71711111	6133025	201300000659	\N	\N	2013-01-23 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-9079	70541330	6124060	130130000037	N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-9070	70462264	6124051	130000130001	\N	\N	2013-01-01 00:00:00	R	1	4	2013-01-07 00:00:00	0	C	\N	\N	\N	\N
-17759	69687635	6244359	13-22569	\N	\N	2013-06-01 00:00:00	\N	8	2	2013-10-11 00:00:00	0	C	\N	\N	\N	\N
-15023	71119214	6353284	02243-13	\N	\N	2013-11-06 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-18085	71711252	6200021	201300003174	\N	\N	2013-04-15 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-15023	71921313	6129964	00003-13	\N	\N	2013-01-01 00:00:00	\N	22	4	2013-01-04 00:00:00	0	C	\N	\N	\N	\N
-15023	71119229	6353284	02269-13	\N	\N	2013-11-11 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-21550	70211774	6136489	130000008	\N	\N	2013-01-01 00:00:00	R	12	6	\N	0	C	\N	\N	\N	\N
-18608	69657060	6200544	2013-001103	\N	\N	2013-04-18 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-2090	72710832	6206407	13W24232	\N	\N	2013-05-12 00:00:00	\N	12	4	2013-07-16 00:00:00	0	C	\N	\N	\N	\N
-6564	68241227	6121552	01667893	\N	\N	2013-01-12 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-18082	71707364	6133022	201300002675	\N	\N	2013-01-02 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-2157	70014994	6117146	1300000207	\N	\N	2013-01-08 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-6958	70015666	6121945	01686615	\N	\N	2013-01-31 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-18085	71710285	6133025	201300000007	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-7677	72102744	6211988	13-10015-OF	\N	\N	2013-05-20 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-18085	71711246	6200021	201300003019	\N	\N	2013-04-10 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-7472	71825049	6122459	13-219-OF	\N	\N	2013-01-07 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-9079	70541364	6124060	130130000658	\N	\N	2013-01-11 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-7611	68022079	6122598	13-10-AR	\N	\N	2013-01-08 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
-2157	70014208	6117146	1300000091	\N	\N	2013-01-03 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-14116	70806355	6129057	13-0013-7	\N	\N	2013-01-01 00:00:00	R	21	6	\N	0	C	\N	\N	\N	\N
-10485	72393961	6326453	O13OFF001010	\N	\N	2013-10-30 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-7611	68023071	6122598	13-17-AR	\N	\N	2013-01-14 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-7658	72034117	6122641	13-10-AR	\N	\N	2013-01-25 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-21550	70212713	6136489	130002678	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-17759	69685959	6244359	13-20080	N	\N	2013-06-01 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-2090	72710253	6206407	13W16565	\N	\N	2013-05-15 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-2249	72316326	6117238	5813000861	N	\N	2013-01-17 00:00:00	R	8	6	\N	0	C	\N	\N	\N	\N
-6176	67801722	6188160	131120119	\N	\N	2013-04-08 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-6189	67831120	6232837	1301944	\N	\N	2013-06-02 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-6176	67800899	6188160	131040038	\N	\N	2013-04-07 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-2051	72673608	6117040	13005210	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-6585	68265854	6121573	01665938	\N	\N	2013-01-01 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-15480	67792804	6130421	201300002787	\N	\N	2013-01-24 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-631	70533872	6338942	13-11177-1	\N	\N	2013-11-14 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-21331	72126897	6270262	C48979711060	\N	\N	2013-07-09 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-6189	67831143	6232837	1302338	\N	\N	2013-06-28 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-15480	67790861	6130421	201300000036	\N	\N	2013-01-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-8679	67853684	6123660	130012003772	\N	\N	2013-01-07 00:00:00	R	23	6	\N	0	C	\N	\N	\N	\N
-2051	72666383	6117040	13000002	\N	\N	2013-01-01 00:00:00	\N	0	2	2013-01-25 00:00:00	0	C	\N	\N	\N	\N
-8626	75508315	6591684	140014132383	\N	\N	2014-07-23 00:00:00	R	8	6	\N	0	C	\N	\N	\N	\N
-6189	67830275	6121177	1300008	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-4573	71499970	6119561	N13-02250	\N	\N	2013-01-18 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-634	70571395	6160289	00-00216-1	\N	\N	2013-03-13 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-14455	68399103	6129396	13-048800	\N	\N	2013-01-07 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-2050	72666256	6273363	14S000790	\N	\N	2013-08-31 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-7583	67919147	6368222	13-16956-OF	\N	\N	2013-12-02 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-15480	67808961	6286745	201300029772	\N	\N	2013-08-19 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-23242	69637329	6226397	DEU-11-211	\N	\N	2013-05-29 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-21331	70385772	6270262	C48968211267	\N	\N	2013-07-01 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-6585	68265863	6143905	01691850	\N	\N	2013-02-06 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-6175	67795218	6121163	13-1	\N	\N	2013-01-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-6487	71844152	6210803	20131404	\N	\N	2013-05-02 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-7583	67882094	6122570	13-1-AR	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-19944	69086261	6313539	13-156861	\N	\N	2013-09-28 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-17729	68714900	6155001	13000345	\N	\N	2013-02-03 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-6175	67796053	6121163	13-118	\N	\N	2013-01-26 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-8625	68811232	6212934	131130000069	\N	\N	2013-05-13 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-6176	67805512	6232824	132360063	\N	\N	2013-06-26 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-15480	67807066	6286745	201300027047	\N	\N	2013-08-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-8666	67845155	6324635	130100000825	\N	\N	2013-10-01 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-6585	68265864	6143905	01691851	\N	\N	2013-02-20 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-18380	72191395	6133320	130208113724	\N	\N	2013-01-11 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-2050	72657790	6273363	13SF008	\N	\N	2013-08-23 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-10485	72393983	6125465	SO13000016	\N	\N	2013-01-16 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
-6277	67953126	6121265	130006	\N	\N	2013-01-01 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
-15479	67785096	6130420	13000004	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-2287	72514098	6117275	7213000005	\N	\N	2013-01-03 00:00:00	R	15	6	\N	0	C	\N	\N	\N	\N
-21331	72931288	6649247	C48923111140	\N	\N	2014-09-06 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-4573	71500046	6119561	N13-02991	\N	\N	2013-01-27 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
-7583	67886745	6122570	13-1074-OF	\N	\N	2013-01-23 00:00:00	R	15	6	\N	0	C	\N	\N	\N	\N
-6178	73706586	6589243	141870002	\N	\N	2014-07-06 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-554	69867841	6115545	13-00003-1	\N	\N	2013-01-05 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-8626	75505601	6591684	140014128922	N	\N	2014-07-02 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-18513	71670748	6155785	0113004019	\N	\N	2013-02-18 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-23242	69638135	6226397	DEU-13-116	\N	\N	2013-05-03 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-8666	67847080	6123647	130140003934	N	\N	2013-01-13 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-8679	67853763	6123660	130013002035	\N	\N	2013-01-16 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-631	70528336	6338942	00-16813-1	\N	\N	2013-11-19 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-17759	69690347	6289023	13-28250	\N	\N	2013-08-01 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
-15479	67785155	6130420	13000109	\N	\N	2013-01-26 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-631	70529223	6115622	13-01420-1	\N	\N	2013-01-17 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-8666	67847122	6324635	130140004445	\N	\N	2013-10-02 00:00:00	\N	\N	4	2013-10-02 00:00:00	0	C	\N	\N	\N	\N
-6487	71843219	6210803	13050144	\N	\N	2013-05-03 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-8625	68809556	6212934	130310003518	N	\N	2013-05-13 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-17693	68642600	6221961	062013005465	\N	\N	2013-05-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-8436	69036859	6123417	130013000002	\N	\N	2013-01-01 00:00:00	\N	6	2	2013-01-07 00:00:00	0	C	\N	\N	\N	\N
-23253	68645931	6137080	130005	\N	\N	2013-01-07 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-2195	70225943	6161848	1303190220	\N	\N	2013-03-19 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-14796	68484336	6129737	008130000301	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-18513	71666930	6133453	0113001466	\N	\N	2013-01-19 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-10486	72395711	6214794	PD13000233	\N	\N	2013-05-01 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-20599	72598346	6135538	1300002	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-8717	68134896	6123698	130130009767	N	\N	2013-01-23 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-17728	68701707	6199664	13010084	\N	\N	2013-04-24 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
-14284	71037644	6129225	1-13-000448	\N	\N	2013-01-24 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
-20601	72635643	6180204	1303523	\N	\N	2013-03-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-14886	71810463	6129827	02013000001	\N	\N	2013-01-01 00:00:00	R	1	6	\N	0	C	\N	\N	\N	\N
-18513	71664181	6133453	0113000012	N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-2315	71196417	6117303	9513000001	N	\N	2013-01-01 00:00:00	R	10	6	\N	0	C	\N	\N	\N	\N
-8950	72225948	6123931	130013000002	\N	\N	2013-01-01 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-4548	71422775	6119536	022013-00012	\N	\N	2013-01-01 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-20599	72598466	6135538	1301635	\N	\N	2013-01-30 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-14806	71669763	6129747	21301017	\N	\N	2013-01-07 00:00:00	R	20	6	\N	0	C	\N	\N	\N	\N
-17495	70908814	6132435	1993-096362	\N	\N	2013-01-06 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-17733	69625232	6244333	2013-15205	\N	\N	2013-06-26 00:00:00	\N	2	4	2013-06-26 00:00:00	0	C	\N	\N	\N	\N
-2195	70225067	6117184	1303140233	\N	\N	2013-01-15 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-10480	72361735	6259452	201300008793	\N	\N	2013-07-10 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-2195	70219179	6161848	F1303290002	\N	\N	2013-03-29 00:00:00	R	13	6	\N	0	C	\N	\N	\N	\N
-18608	69663252	6356868	2013-003508	\N	\N	2013-11-12 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-8626	68812847	6123607	130013000005	\N	\N	2013-01-03 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-20601	72636501	6180204	1304856	\N	\N	2013-03-21 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-2247	72287099	6117236	5013000021	\N	\N	2013-01-01 00:00:00	R	4	6	\N	0	C	\N	\N	\N	\N
-8436	69036945	6279741	130013001150	\N	\N	2013-08-01 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-8717	68129367	6123698	130130000005	N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-2090	72711241	6295735	13W31653	\N	\N	2013-09-17 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-2315	71197183	6117303	9513000022	N	\N	2013-01-11 00:00:00	R	19	6	\N	0	C	\N	\N	\N	\N
-7043	70065287	6323018	01918419	\N	\N	2013-10-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-19944	69086256	6313539	13-156834	\N	\N	2013-09-28 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-20601	72639305	6135540	1310867	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-20356	76518156	6603372	2014007028	\N	\N	2014-07-27 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-14886	71816974	6129827	02014000427	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-17693	68642614	6221961	062013005772	N	\N	2013-05-09 00:00:00	\N	19	4	2013-05-13 00:00:00	0	C	\N	\N	\N	\N
-20356	69512783	6135295	2014004877	N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-8346	68444031	6123327	131200000014	\N	\N	2013-01-18 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-17693	68641691	6132633	062013000026	\N	\N	2013-01-01 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-10480	72356406	6125460	201300000612	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-10480	72359105	6259452	201300004152	\N	\N	2013-07-09 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-10480	72357322	6125460	201300002223	\N	\N	2013-01-07 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-8436	69036956	6279741	130013001233	N	\N	2013-08-12 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-20356	76516291	6603372	2014006297	\N	\N	2014-07-06 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
-17733	69616543	6244333	2011-18677	\N	\N	2013-06-10 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-20601	72633797	6135540	1300018	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-20356	69477712	6135295	2013000001	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-14796	68493446	6129737	064130022201	\N	\N	2013-01-15 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-17728	68714897	6199664	2014010928	N	\N	2013-04-23 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-14284	71036743	6129225	1-13-000004	\N	\N	2013-01-01 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-8626	68813677	6123607	130013000495	N	\N	2013-01-01 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-2124	72752787	6117113	201300000045	\N	\N	2013-01-02 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-1826	69430138	6116815	11CN13000003	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-18633	69871712	6334560	1310001252SH	N	\N	2013-10-11 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
-17516	77255772	6533183	20140426090	\N	\N	2014-04-26 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-8826	69738683	6123807	130130000004	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-1826	69431787	6116815	11CN13000452	\N	\N	2013-01-14 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-18608	69663201	6356868	2013-003371	\N	\N	2013-11-01 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
-7042	70065276	6122029	01886584	\N	\N	2013-01-18 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-18271	76045516	6533938	20140552368	N	\N	2014-04-08 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-17759	69691107	6289023	13-28640	\N	\N	2013-08-03 00:00:00	\N	22	2	2013-08-03 00:00:00	0	C	\N	\N	\N	\N
-8432	69024061	6257405	130800000177	\N	\N	2013-07-04 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-18608	69654408	6133548	2013-000001	\N	\N	2013-01-01 00:00:00	\N	1	4	2013-01-31 00:00:00	0	C	\N	\N	\N	\N
-4532	71366883	6119520	012013-00004	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-1965	70188606	6273278	CR2013-0321	\N	\N	2013-08-25 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-8432	69025892	6257405	131270000154	\N	\N	2013-07-09 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-8350	68466567	6123331	130013000173	\N	\N	2013-01-07 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-14594	70641931	6129535	201300133	\N	\N	2013-01-08 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-8826	69738726	6123807	130130000542	\N	\N	2013-01-18 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-5998	70985804	6344306	14ISPC000037	N	\N	2013-11-23 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-7611	68022183	6345918	13-1204-OF	\N	\N	2013-11-10 00:00:00	\N	21	4	2013-11-12 00:00:00	0	C	\N	\N	\N	\N
-18166	71643428	6267098	11303994	\N	\N	2013-07-20 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-18608	69654516	6133548	2013-000263	N	\N	2013-01-27 00:00:00	\N	16	4	2013-03-14 00:00:00	0	C	\N	\N	\N	\N
-18633	69872526	6334560	1310001367SH	\N	\N	2013-10-31 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-749	68948148	6115740	13000088500	\N	\N	2013-01-06 00:00:00	R	9	6	\N	0	C	\N	\N	\N	\N
-4532	71372431	6119520	012013-20002	\N	\N	2013-01-17 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-8459	69074392	6190436	130120002855	\N	\N	2013-04-07 00:00:00	\N	19	2	2013-09-30 00:00:00	0	C	\N	\N	\N	\N
-1831	69592778	6116820	201301435	\N	\N	2013-01-09 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-7042	70062466	6122029	01669979	\N	\N	2013-01-17 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-4573	77070237	6565188	N14-21491	\N	\N	2014-06-18 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-14594	70641886	6129535	201300002	\N	\N	2013-01-01 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
-18271	71946564	6334199	20130982237	\N	\N	2013-10-21 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-18438	68606265	6267370	1207290626	\N	\N	2013-07-29 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
-4573	71498987	6119561	N13-00007	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-18166	71643462	6222434	1302424	\N	\N	2013-05-09 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-8432	69025873	6123413	130850000463	N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-1831	69591010	6116820	201300004	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-18608	69664071	6379200	2013-003759	N	\N	2013-12-04 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-4532	71372459	6342840	012013-20050	\N	\N	2013-11-12 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-749	68988664	6294396	13005029400	\N	\N	2013-09-27 00:00:00	R	10	6	\N	0	C	\N	\N	\N	\N
-9048	69144467	6124029	130130000001	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-8459	69076258	6190436	130350003021	\N	\N	2013-04-01 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-749	68948020	6115740	13000002500	\N	\N	2013-01-01 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
-8332	68404602	6190309	130310007524	\N	\N	2013-04-25 00:00:00	\N	0	4	2013-09-18 00:00:00	0	C	\N	\N	\N	\N
-19637	67760718	6134576	201300008826	\N	\N	2013-01-25 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-15629	68014678	6130570	YCT13006	\N	\N	2013-01-23 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-8791	69517146	6235432	130610008637	N	\N	2013-06-01 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-2121	72751998	6117110	1300000039	\N	\N	2013-01-02 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-9049	69328224	6235690	131304140198	N	\N	2013-06-19 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-17440	68055307	6311036	13K1111AR	\N	\N	2013-09-12 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-17730	68714956	6378322	11095209	\N	\N	2013-12-02 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-17440	68055309	6132380	13K115AR	\N	\N	2013-01-31 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-8369	68897549	6324338	130540010626	N	\N	2013-10-25 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-8548	68494038	6123529	130100000015	\N	\N	2013-01-07 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-19944	69112885	6313539	13-190726	\N	\N	2013-09-27 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-19944	69042139	6134883	13-10030	\N	\N	2013-01-20 00:00:00	\N	11	2	2013-02-20 00:00:00	0	C	\N	\N	\N	\N
-17529	70852726	6132469	2013-0005	\N	\N	2013-01-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-6607	68299741	6166259	01697273	\N	\N	2013-03-03 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-2123	72752488	6251104	201300014854	\N	\N	2013-07-01 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-8369	68893097	6279674	130130005486	\N	\N	2013-08-23 00:00:00	R	\N	2	2014-02-26 00:00:00	0	C	\N	\N	\N	\N
-19637	67762628	6268568	201300016594	\N	\N	2013-07-19 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-15535	67950815	6130476	201300000004	\N	\N	2013-01-01 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-6607	68299729	6121595	01668118	\N	\N	2013-01-08 00:00:00	R	8	6	\N	0	C	\N	\N	\N	\N
-20789	67746804	6135728	13-00005	\N	\N	2013-01-01 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-8548	68494861	6123529	130110001436	\N	\N	2013-01-01 00:00:00	\N	\N	2	2013-11-04 00:00:00	0	C	\N	\N	\N	\N
-8554	68586336	6123535	130014003247	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-9049	69294587	6168694	131303260014	N	\N	2013-03-26 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-8369	68897558	6279674	131200000192	\N	\N	2013-08-06 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-19637	67757985	6134576	201300000078	\N	\N	2013-01-01 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-8799	69570492	6123780	130000000108	N	\N	2013-01-11 00:00:00	R	17	6	\N	0	C	\N	\N	\N	\N
-2123	72752511	6251104	201300016294	\N	\N	2013-07-17 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-2090	72710538	6228739	13W20035	\N	\N	2013-06-13 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-2090	72710821	6228739	13W23868	\N	\N	2013-06-30 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
-20289	69325649	6202224	13300233	N	\N	2013-04-06 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-8417	69010098	6279722	130100000645	\N	\N	2013-08-01 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-8459	69075290	6123440	130350000547	\N	\N	2013-01-13 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-19944	69042100	6134883	13-10001	\N	\N	2013-01-20 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-2123	72752218	6117112	201300000029	\N	\N	2013-01-01 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
-20841	67869505	6135780	13B07215	\N	\N	2013-01-07 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-8335	68431324	6123316	131423901257	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-8554	68577949	6123535	130013000007	N	\N	2013-01-02 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-17559	68555813	6132499	1301-0010	N	\N	2013-01-11 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-8335	68415662	6123316	131323900005	N	\N	2013-01-01 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
-8791	69517215	6123772	130610009776	\N	\N	2013-01-01 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-8791	69513669	6235432	130600000619	\N	\N	2013-06-25 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-6607	68299728	6121595	01668117	\N	\N	2013-01-09 00:00:00	R	8	6	\N	0	C	\N	\N	\N	\N
-17529	70853611	6132469	2013-0380	\N	\N	2013-01-30 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-20841	67867474	6158112	13B04246	\N	\N	2013-02-03 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-20841	67863699	6135780	13B00012	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-20967	77689602	6648883	201400321694	\N	\N	2014-09-29 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-8369	68896686	6324338	130540008756	\N	\N	2013-10-30 00:00:00	\N	17	2	2013-11-26 00:00:00	0	C	\N	\N	\N	\N
-8335	68429579	6301972	131323904623	N	\N	2013-09-16 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-17526	70800544	6266458	201300703183	N	\N	2013-07-06 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-6654	68392918	6166306	01693814	\N	\N	2013-03-04 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-4479	68645714	6119467	201300000021	\N	\N	2013-01-01 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
-4478	68643171	6119466	201300000229	\N	\N	2013-01-04 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-4479	68646485	6119467	201300001899	\N	\N	2013-01-18 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-17795	69853348	6132735	13-00916	\N	\N	2013-01-13 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
-8765	69449034	6123746	130000000301	\N	\N	2013-01-03 00:00:00	\N	16	4	2013-01-08 00:00:00	0	C	\N	\N	\N	\N
-9029	68989936	6258002	130130060648	N	\N	2013-07-17 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-9029	68969649	6124010	130130001950	N	\N	2013-01-09 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-18747	74233191	6624213	1408001082ME	\N	\N	2014-08-02 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-20289	69229657	6179892	03034842	N	\N	2013-03-02 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-8765	69448986	6123746	130000000001	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-8443	69049688	6235084	132013004074	\N	\N	2013-06-24 00:00:00	R	21	6	\N	0	C	\N	\N	\N	\N
-4479	74574555	6587544	201400019693	\N	\N	2014-07-10 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-9029	68968770	6124010	130130000016	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-17687	68449384	6154959	012013030720	\N	\N	2013-02-26 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-9029	68986270	6258002	130130050974	N	\N	2013-07-08 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-7117	68093919	6122104	01696729	\N	\N	2013-01-05 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-9028	68964139	6146341	130100000179	\N	\N	2013-02-26 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-17687	68492486	6154959	012013097340	N	\N	2013-02-23 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-9043	74975367	6502301	141660000039	\N	\N	2014-03-03 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-9043	69078317	6124024	130120000352	\N	\N	2013-01-14 00:00:00	R	12	2	2013-09-19 00:00:00	0	C	\N	\N	\N	\N
-18747	68378424	6267678	1307000424ME	\N	\N	2013-07-01 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-8442	69039609	6123423	130110000020	\N	\N	2013-01-02 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-9028	68964154	6124009	130120000001	\N	\N	2013-01-01 00:00:00	R	23	6	\N	0	C	\N	\N	\N	\N
-6590	68280917	6143910	01688389	\N	\N	2013-02-23 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-6590	68282722	6143910	01714034	\N	\N	2013-02-08 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-2239	74293512	6540405	1400279823	\N	\N	2014-05-08 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-2239	73812670	6540405	1400545140	\N	\N	2014-05-31 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-7117	68093054	6122104	01661670	\N	\N	2013-01-02 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
-17795	69852453	6132735	13-00004	\N	\N	2013-01-01 00:00:00	\N	3	2	2013-01-01 00:00:00	0	C	\N	\N	\N	\N
-8443	69041483	6168088	132012001762	\N	\N	2013-03-16 00:00:00	R	19	6	\N	0	C	\N	\N	\N	\N
-8443	69047921	6235084	132013003521	\N	\N	2013-06-01 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
-4479	74572812	6587544	201400012852	\N	\N	2014-07-07 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-6590	68288434	6121578	01825799	\N	\N	2013-01-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-6590	68279885	6121578	01660091	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-6654	68396580	6166306	01699718	\N	\N	2013-03-16 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-20289	69289656	6179892	13146396	\N	\N	2013-03-31 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-2239	72749660	6184224	1400277336	\N	\N	2013-04-15 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-9043	69086711	6124024	139430000002	\N	\N	2013-01-04 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-8442	69038812	6123423	130100000101	\N	\N	2013-01-30 00:00:00	\N	16	4	2013-01-31 00:00:00	0	C	\N	\N	\N	\N
-2239	72734544	6184224	1200333864	\N	\N	2013-04-11 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-20704	77359097	6558820	K14011488	\N	\N	2014-05-01 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-20132	69529233	6291395	2013-014659	\N	\N	2013-08-13 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-17687	68567883	6378279	012013204840	\N	\N	2013-12-26 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-18747	68428280	6267678	1307016999ME	\N	\N	2013-07-26 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-20132	69530003	6291395	2013-015105	N	\N	2013-08-19 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-6589	68278969	6255569	201300002194	\N	\N	2013-07-10 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-8469	69170735	6123450	131339902799	N	\N	2013-01-09 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-7126	68141818	6122113	01880293	\N	\N	2013-01-31 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-20967	70042133	6135906	201300007081	\N	\N	2013-01-08 00:00:00	R	17	6	\N	0	C	\N	\N	\N	\N
-6843	69884411	6121831	01725759	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-2090	72711153	6273403	13W28819	\N	\N	2013-08-24 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-2090	72709274	6117079	13W00053	\N	\N	2013-01-01 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-8469	69167130	6123450	131339900001	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-6589	68278909	6188573	201300001131	\N	\N	2013-04-09 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-17891	69743244	6289155	1310828321	N	\N	2013-08-27 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-11714	70257929	6126677	201300000012	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-7509	67693827	6234156	13016834	\N	\N	2013-06-14 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
-6707	69735740	6121695	01671042	\N	\N	2013-01-19 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-17790	69827594	6132730	13-04564	N	\N	2013-01-01 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
-20704	71068261	6135643	K13000002	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-8797	69535280	6123778	130201300002	N	\N	2013-01-01 00:00:00	R	14	6	\N	0	C	\N	\N	\N	\N
-11714	70259878	6126677	201300004399	\N	\N	2013-01-25 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-23224	67839985	6137051	2013-00089	\N	\N	2013-01-09 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-7126	68138124	6122113	01667593	\N	\N	2013-01-01 00:00:00	\N	5	2	2013-03-17 00:00:00	0	C	\N	\N	\N	\N
-17919	69852219	6177523	03030194	\N	\N	2013-03-05 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
-2090	72709618	6117079	13W05459	\N	\N	2013-01-31 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-17920	69934195	6155192	05065213	N	\N	2013-02-08 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-591	70393154	6115582	13-09695	\N	\N	2013-01-17 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-7126	74244378	6545290	01951112	\N	\N	2014-05-07 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-513	69815689	6115504	13010001	\N	\N	2013-01-01 00:00:00	R	5	6	\N	0	C	\N	\N	\N	\N
-513	69815738	6115504	13010139	\N	\N	2013-01-19 00:00:00	R	2	6	\N	0	C	\N	\N	\N	\N
-20967	77689591	6648883	201400287740	\N	\N	2014-09-03 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-20704	73928002	6558820	K14300584	\N	\N	2014-05-28 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-20704	71106920	6135643	K14006729	\N	\N	2013-01-15 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-17790	69823235	6378382	CE-13-00110	\N	\N	2013-12-03 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-17891	69647388	6132831	1211037022	\N	\N	2013-01-14 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-17790	69830234	6378382	13-08098	N	\N	2013-12-04 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-7126	74244292	6545290	01921182	\N	\N	2014-05-03 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-4546	71419114	6119534	012013-00002	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-17920	69924496	6155192	02007613	\N	\N	2013-02-04 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-17919	69882155	6177523	13060616	N	\N	2013-03-01 00:00:00	\N	12	2	2013-06-28 00:00:00	0	C	\N	\N	\N	\N
-17891	69650882	6132831	1301019922	\N	\N	2013-01-22 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-17527	70847303	6177131	13-0499	N	\N	2013-03-13 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-17920	69921810	6132860	01000513	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-591	70373349	6115582	13-00004	\N	\N	2013-01-01 00:00:00	R	1	6	\N	0	C	\N	\N	\N	\N
-8469	73197998	6591527	141439906766	N	\N	2014-07-14 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-17920	69922609	6132860	01010113	\N	\N	2013-01-05 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-15427	72956271	6531095	14001938	\N	\N	2014-04-24 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-20162	71871635	6135101	13110084	N	\N	2013-01-04 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-6374	68025621	6300018	201300022016	\N	\N	2013-09-11 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-14319	68123296	6196256	133193	\N	\N	2013-04-29 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-14826	71687894	6263759	13-095780	\N	\N	2013-07-29 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-6654	68431639	6121642	01767225	\N	\N	2013-01-01 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-8849	71909320	6146162	130130000421	\N	\N	2013-02-01 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-6270	67933088	6344578	APD13036	\N	\N	2013-11-04 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-15427	71475979	6130368	13008001	\N	\N	2013-01-03 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-21808	68069937	6136747	212074350	\N	\N	2013-01-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-726	69320908	6160381	2010026360A	\N	\N	2013-03-21 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-21808	68074291	6337735	212075576	\N	\N	2013-10-26 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-552	69867726	6115543	13-00002-1	\N	\N	2013-01-06 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-7644	68095130	6122627	201300000985	\N	\N	2013-01-19 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-17516	77275739	6533183	20141006502	\N	\N	2014-04-15 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-7644	68095105	6122627	201300000001	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-7512	67707315	6122499	13000001	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-7867	68336221	6145180	13-130-OF	\N	\N	2013-02-23 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-20162	71869059	6135101	13010002	\N	\N	2013-01-01 00:00:00	\N	13	5	2013-01-01 00:00:00	0	C	\N	\N	\N	\N
-21808	68074384	6337735	212075714	\N	\N	2013-10-12 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-550	69859014	6115541	01-27130-1	\N	\N	2013-01-27 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-6654	68376172	6121642	01659930	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-21808	68075188	6248407	212075795	\N	\N	2013-06-24 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-726	69324526	6138049	2013004651	\N	\N	2013-02-28 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-15629	68020372	6309226	13002726	\N	\N	2013-09-09 00:00:00	\N	6	5	2013-09-10 00:00:00	0	C	\N	\N	\N	\N
-730	70434351	6115721	1300669001	\N	\N	2013-01-05 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-7644	71941690	6256619	201300011798	\N	\N	2013-07-24 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-1962	70108220	6161615	12045658	\N	\N	2013-03-18 00:00:00	R	9	6	\N	0	C	\N	\N	\N	\N
-8849	71909321	6146162	130130000433	\N	\N	2013-02-01 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-15427	71468644	6130368	13000003	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-6374	68035082	6121362	201310656	\N	\N	2013-01-03 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-7644	71941632	6256619	201300010436	\N	\N	2013-07-01 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-14319	68122313	6129260	132701	\N	\N	2013-01-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-15629	68020364	6309226	13002704	\N	\N	2013-09-07 00:00:00	\N	21	4	2013-09-21 00:00:00	0	C	\N	\N	\N	\N
-21808	68068045	6248407	210274666	\N	\N	2013-06-15 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-14319	68115854	6129260	130001	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-10161	71300148	6125142	130048177	\N	\N	2013-01-21 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-730	70434394	6115721	1301584001	\N	\N	2013-01-11 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-8849	71909304	6123830	130130000005	\N	\N	2013-01-01 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-730	70434331	6115721	1236789001	\N	\N	2013-01-25 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-17687	68559580	6378279	012013192856	N	\N	2013-12-04 00:00:00	\N	15	2	2014-07-03 00:00:00	0	C	\N	\N	\N	\N
-17516	70736002	6132456	20130227341	N	\N	2013-01-05 00:00:00	\N	9	4	2013-04-15 00:00:00	0	C	\N	\N	\N	\N
-6374	68024627	6300018	01322113	\N	\N	2013-09-12 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-14826	71685854	6129767	13-000038	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-550	69861550	6115541	13-00692-1	\N	\N	2013-01-20 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-10161	71330245	6281466	130068313	\N	\N	2013-08-07 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-17516	70728784	6132456	20120104557	N	\N	2013-01-01 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-20148	69569003	6179751	001658	\N	\N	2013-03-30 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-9066	70432940	6124047	130201300004	N	\N	2013-01-01 00:00:00	R	9	6	\N	0	C	\N	\N	\N	\N
-14826	71689671	6263759	13-127758	\N	\N	2013-07-01 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-10161	70739181	6281466	130057432	\N	\N	2013-08-12 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-20105	69206291	6291368	201308220139	\N	\N	2013-08-22 00:00:00	\N	15	4	2013-08-26 00:00:00	0	C	\N	\N	\N	\N
-7512	67708206	6122499	13001645	\N	\N	2013-01-08 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-20105	69221177	6291368	201310102006	N	\N	2013-08-12 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-6180	67811249	6277492	1129878	\N	\N	2013-08-08 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-6180	67816893	6255160	1314926	\N	\N	2013-07-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-9026	68962376	6124007	130000010085	\N	\N	2013-01-22 00:00:00	R	15	6	\N	0	C	\N	\N	\N	\N
-9013	68936329	6123994	130510000642	N	\N	2013-01-31 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-14826	71686833	6129767	13-04400	\N	\N	2013-01-12 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-20308	69361421	6135247	201300000080	\N	\N	2013-01-03 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-9026	68963289	6347327	130000111169	N	\N	2013-11-23 00:00:00	R	9	6	\N	0	C	\N	\N	\N	\N
-6179	67811188	6344487	2013FO1229	\N	\N	2013-11-01 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
-20308	69360655	6135247	201300000024	\N	\N	2013-01-02 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-7576	67844802	6122563	13-173-AR	\N	\N	2013-01-22 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-20308	69360656	6135247	201300000057	\N	\N	2013-01-02 00:00:00	\N	7	2	2013-02-21 00:00:00	0	C	\N	\N	\N	\N
-19209	73544704	6579775	140009297	\N	\N	2014-06-07 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-6002	75296427	6454367	14ISPC000536	\N	\N	2014-01-22 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-6180	67816902	6255160	1315145	\N	\N	2013-07-03 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-8677	67852818	6123658	130000000026	\N	\N	2013-01-06 00:00:00	R	22	6	\N	0	C	\N	\N	\N	\N
-6002	75296429	6499267	14ISPC002223	N	\N	2014-03-18 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-9065	70403256	6124046	130130000029	\N	\N	2013-01-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-9065	70403310	6124046	130130000439	\N	\N	2013-01-05 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-6373	68021818	6121361	20131231	\N	\N	2013-01-29 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-9026	68963285	6347327	130000111101	\N	\N	2013-11-02 00:00:00	R	22	6	\N	0	C	\N	\N	\N	\N
-20308	69365142	6135247	201400003328	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-7576	67840087	6122563	13-10-AR	\N	\N	2013-01-03 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-9026	68962365	6124007	130000010022	N	\N	2013-01-07 00:00:00	R	14	6	\N	0	C	\N	\N	\N	\N
-6374	68025622	6300018	201300022018	\N	\N	2013-09-11 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-18295	72038306	6334223	13--9013	\N	\N	2013-10-26 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-7853	68242816	6122835	12-22755-AR	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-1962	70123467	6161615	13011268	\N	\N	2013-03-17 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-6373	68020913	6121361	2012352	\N	\N	2013-01-09 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-7813	68154546	6122795	13-24-OF	\N	\N	2013-01-24 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-7853	68247539	6122835	13-661-OF	\N	\N	2013-01-13 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-7576	67844788	6256555	13-1719-AR	\N	\N	2013-07-14 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-6179	67811189	6344487	2013FO1232	\N	\N	2013-11-01 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-19209	69033600	6134148	130000011	\N	\N	2013-01-01 00:00:00	R	2	6	\N	0	C	\N	\N	\N	\N
-1962	70110172	6116951	13001436	\N	\N	2013-01-11 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-1962	70108279	6116951	13000009	\N	\N	2013-01-01 00:00:00	\N	1	4	2013-01-10 00:00:00	0	C	\N	\N	\N	\N
-6180	67818743	6277492	1320045	\N	\N	2013-08-23 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-6270	67933085	6344578	APD13033	\N	\N	2013-11-03 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-7576	67844803	6256555	13-1731-AR	\N	\N	2013-07-15 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-6176	67799913	6165828	130670142	\N	\N	2013-03-08 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-6176	67801719	6165828	131120114	\N	\N	2013-03-29 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-19209	69035409	6134148	130001021	\N	\N	2013-01-18 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-6002	75296428	6476817	14ISPC001298	\N	\N	2014-02-18 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-9013	68935405	6123994	130500000001	\N	\N	2013-01-02 00:00:00	R	9	6	\N	0	C	\N	\N	\N	\N
-1962	70108280	6116951	13000011	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-6179	67809427	6121167	2013FO0017	\N	\N	2013-01-02 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-7813	68154525	6234455	13-104-OF	\N	\N	2013-06-26 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-726	69324527	6138049	2013004659	\N	\N	2013-02-28 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-14319	68115855	6129260	130007	\N	\N	2013-01-01 00:00:00	R	3	6	\N	0	C	\N	\N	\N	\N
-7647	71963067	6345950	1307935	\N	\N	2013-11-18 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-7647	71963990	6345950	1400111	\N	\N	2013-11-29 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-6180	67812220	6121168	1303011	\N	\N	2013-01-09 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-1962	75911447	6674828	14046067	N	\N	2014-11-06 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-7647	71964002	6122630	1400771	\N	\N	2013-01-31 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-7647	71954493	6122630	1300009	\N	\N	2013-01-01 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
-7512	67707317	6122499	13000051	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-17516	77271396	6533183	20140902249	N	\N	2014-04-14 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-17516	70729674	6244116	20130000360	N	\N	2013-06-20 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
-18166	71643477	6267098	1303768	\N	\N	2013-07-09 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-15427	71468645	6130368	13000006	\N	\N	2013-01-01 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-15427	72956272	6531095	14001939	\N	\N	2014-04-26 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-726	69320909	6316705	2011021392A	\N	\N	2013-10-13 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-15427	71468646	6130368	13000007	\N	\N	2013-01-01 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-1966	75937649	6450332	14-0006	N	\N	2014-01-14 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-726	69320912	6316705	2012020493A	\N	\N	2013-10-23 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-19944	69086238	6313539	13-156741	\N	\N	2013-09-28 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-14319	68119501	6196256	131570	\N	\N	2013-04-27 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-20148	69570766	6135087	13000231	N	\N	2013-01-13 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-1962	75911449	6674828	14046071	\N	\N	2014-11-06 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-20148	69569908	6135087	13000004	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-17516	70754191	6244116	20130719604	N	\N	2013-06-01 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-20148	69569909	6135087	13000005	\N	\N	2013-01-01 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
-14775	68432769	6129716	13-000882	\N	\N	2013-01-31 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-20841	67867580	6158112	13B04971	\N	\N	2013-02-08 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-7867	68336222	6145180	13-133-OF	\N	\N	2013-02-25 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-9066	70432941	6124047	130201300005	N	\N	2013-01-01 00:00:00	R	14	6	\N	0	C	\N	\N	\N	\N
-9066	70432942	6124047	130201300007	N	\N	2013-01-01 00:00:00	R	21	6	\N	0	C	\N	\N	\N	\N
-7867	68336223	6145180	13-140-OF	\N	\N	2013-02-26 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-6374	68025623	6300018	201300022021	\N	\N	2013-09-10 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-14319	68115856	6129260	130011	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-14775	68431823	6241376	11-011535	\N	\N	2013-06-02 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-17516	70728785	6132456	20120125881	\N	\N	2013-01-25 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-17516	77272327	6533183	20140911477	N	\N	2014-04-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-14319	68119506	6196256	131581	\N	\N	2013-04-18 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-726	69322733	6138049	2013002486	\N	\N	2013-02-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-7512	67707316	6122499	13000002	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-1967	75937747	6450333	14-0148	\N	\N	2014-01-13 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-20105	69208110	6135044	201308290118	N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-15427	72956281	6531095	14001951	\N	\N	2014-04-29 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-8469	73197999	6591527	141439906767	N	\N	2014-07-14 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-18633	69860337	6289896	1308000538SH	N	\N	2013-08-14 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-20841	67868565	6158112	13B06082	\N	\N	2013-02-17 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-18001	71654888	6132941	13AP100	\N	\N	2013-01-09 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-726	69328022	6182713	2013009081	\N	\N	2013-04-25 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-18198	71346205	6133138	13-00000020	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-18198	71349949	6177802	13-00022559	N	\N	2013-03-29 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-6190	67832072	6322166	1010329	\N	\N	2013-10-11 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-18608	69662307	6334536	2013-003050	\N	\N	2013-10-02 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-18582	71923914	6133522	2013-01-6674	\N	\N	2013-01-02 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
-18582	71924708	6133522	2013-03-6955	N	\N	2013-01-31 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-726	69327167	6182713	2013008044	\N	\N	2013-04-12 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-6190	67834087	6188174	1303447	\N	\N	2013-04-10 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-8469	73198000	6591527	141439906771	\N	\N	2014-07-14 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-17919	69890123	6132859	13071273	N	\N	2013-01-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-591	70373350	6115582	13-00005	\N	\N	2013-01-01 00:00:00	R	1	6	\N	0	C	\N	\N	\N	\N
-18198	71348977	6177802	13-00015471	N	\N	2013-03-11 00:00:00	\N	12	2	2014-04-16 00:00:00	0	C	\N	\N	\N	\N
-17891	69648210	6132831	1301000110	N	\N	2013-01-09 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-591	70373351	6115582	13-00006	\N	\N	2013-01-01 00:00:00	R	1	6	\N	0	C	\N	\N	\N	\N
-18000	71653938	6177604	13BC1220	\N	\N	2013-03-13 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-17654	68790552	6132594	13-000003	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-18001	71658669	6289265	13AP19931	\N	\N	2013-08-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-6013	70985817	6366653	14ISPC000153	N	\N	2013-12-14 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-6190	67833024	6121178	1301216	\N	\N	2013-01-26 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-8469	69167131	6123450	131339900002	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-8469	69167132	6123450	131339900005	\N	\N	2013-01-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-18414	68544823	6133354	HC01130002	\N	\N	2013-01-01 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-17585	68586882	6132525	13-0459	\N	\N	2013-01-01 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-18001	71656861	6289265	13AP16489	\N	\N	2013-08-19 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-6190	67834920	6188174	1303847	\N	\N	2013-04-20 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-18198	71347198	6133138	13-00007805	N	\N	2013-01-01 00:00:00	\N	0	4	2013-07-10 00:00:00	0	C	\N	\N	\N	\N
-7509	67693828	6234156	13016860	\N	\N	2013-06-14 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-18001	71660639	6132941	13AP257	\N	\N	2013-01-11 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-7509	67693829	6234156	13016879	\N	\N	2013-06-14 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-18414	68546320	6133354	HC05130567	\N	\N	2013-01-03 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-17585	68585963	6132525	13-0003	\N	\N	2013-01-01 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-6005	75297297	6476820	14ISPC000877	\N	\N	2014-02-02 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-18000	71653933	6177604	13BC1070	\N	\N	2013-03-06 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-18608	69663186	6334536	2013-003339	\N	\N	2013-10-29 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-6654	68376173	6121642	01659949	\N	\N	2013-01-01 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
-18000	71653944	6132940	13BC1376	\N	\N	2013-01-07 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-6654	68376174	6121642	01659970	\N	\N	2013-01-01 00:00:00	\N	2	2	2013-02-07 00:00:00	0	C	\N	\N	\N	\N
-17891	69648209	6132831	1301000104	N	\N	2013-01-03 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-18555	71842984	6133495	W2013-07700	N	\N	2013-01-28 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-20181	71947834	6135120	130512088	N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-20967	70042135	6135906	201300012253	\N	\N	2013-01-14 00:00:00	R	11	6	\N	0	C	\N	\N	\N	\N
-17527	70846370	6132467	13-0006	\N	\N	2013-01-02 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-20181	71975101	6291444	130816166	\N	\N	2013-08-16 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-8713	68018700	6213022	130130000001	\N	\N	2013-05-24 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-7071	70100388	6122058	01669682	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-2090	72710847	6251071	13W24655	\N	\N	2013-07-19 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-11714	70257931	6126677	201300000015	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-17859	69954854	6132799	0113000002	N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-18633	69878697	6289896	1312000533SH	\N	\N	2013-08-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-2090	72711154	6273403	13W28847	\N	\N	2013-08-25 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-8713	68025229	6213022	130130017308	\N	\N	2013-05-27 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-18633	69872590	6356892	1311000107SH	N	\N	2013-11-01 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-14593	70641050	6129534	13-034396	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-17527	70846369	6132467	13-0004	N	\N	2013-01-02 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-2090	72709276	6117079	13W00096	\N	\N	2013-01-01 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-17891	69733559	6289155	1309827616	N	\N	2013-08-23 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-17859	69986947	6132799	0113009827	N	\N	2013-01-29 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-8713	68022441	6123694	130130010297	N	\N	2013-01-19 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-4530	71295839	6119518	201300093995	\N	\N	2013-01-27 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-20181	72009706	6179784	140129051	N	\N	2013-03-08 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-4546	71419116	6119534	012013-00023	\N	\N	2013-01-02 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-18088	71716882	6267020	2013-1422	\N	\N	2013-07-05 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-2090	72711213	6295735	13W30264	\N	\N	2013-09-06 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-17891	69733560	6289155	1309827716	N	\N	2013-08-07 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-20967	77689593	6648883	201400295877	\N	\N	2014-09-09 00:00:00	R	11	6	\N	0	C	\N	\N	\N	\N
-18064	71693114	6133004	H13-00003	\N	\N	2013-01-02 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-20967	70042134	6135906	201300007808	\N	\N	2013-01-09 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-18555	71819809	6133495	W2013-00018	\N	\N	2013-01-02 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-18633	69878716	6356892	1312000562SH	N	\N	2013-11-12 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-18554	71806845	6133494	0113000005	\N	\N	2013-01-01 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
-18554	71818879	6133494	0114000228	N	\N	2013-01-19 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-11714	70257930	6126677	201300000014	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-4530	71287755	6275842	201300000002	\N	\N	2013-08-30 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-20181	71972620	6291444	130809148	\N	\N	2013-08-09 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-2090	72711155	6273403	13W28878	\N	\N	2013-08-25 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-4571	71474844	6119559	C13-00011	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-2090	72710809	6251071	13W23576	\N	\N	2013-07-10 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-14593	70632127	6129534	13-000019	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-2090	72709275	6117079	13W00084	\N	\N	2013-01-01 00:00:00	\N	15	4	2013-02-27 00:00:00	0	C	\N	\N	\N	\N
-4530	71288502	6275842	201300000023	\N	\N	2013-08-31 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-513	69815690	6115504	13010003	\N	\N	2013-01-01 00:00:00	R	15	6	\N	0	C	\N	\N	\N	\N
-17527	70846376	6132467	13-0028	\N	\N	2013-01-05 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-4546	71419115	6119534	012013-00011	\N	\N	2013-01-01 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-513	69815691	6115504	13010004	\N	\N	2013-01-01 00:00:00	R	21	6	\N	0	C	\N	\N	\N	\N
-20967	77689592	6648883	201400292593	\N	\N	2014-09-06 00:00:00	R	20	6	\N	0	C	\N	\N	\N	\N
-20181	71915430	6179784	121216269	N	\N	2013-03-25 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-9043	69078319	6168688	130120003996	\N	\N	2013-03-28 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-18112	71749781	6133052	201300036888	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-18110	71726496	6133050	201300013014	\N	\N	2013-01-25 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-9043	69086716	6168688	139430000018	N	\N	2013-03-11 00:00:00	\N	\N	2	2013-04-11 00:00:00	0	C	\N	\N	\N	\N
-19637	67757986	6134576	201300000110	\N	\N	2013-01-01 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-18748	71261155	6133687	2139	\N	\N	2013-01-10 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-9043	69086718	6191020	139430000027	N	\N	2013-04-12 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-7646	71945886	6144961	0568122	\N	\N	2013-02-05 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-9043	74975371	6502301	141660000049	\N	\N	2014-03-19 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-21808	77517862	6694624	212078018	N	\N	2014-11-27 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-17687	68567884	6378279	012013204841	\N	\N	2013-12-26 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-9049	69328123	6235690	131304140035	N	\N	2013-06-24 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-9049	69281679	6235690	131303180151	N	\N	2013-06-16 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-20289	69229659	6179892	03048942	\N	\N	2013-03-24 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-8765	69448988	6123746	130000000008	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-14770	68428226	6129711	13-03964	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-9049	69294588	6191026	131303260016	N	\N	2013-04-07 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-14770	68418974	6129711	13-00002	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-17687	68449386	6154959	012013030736	N	\N	2013-02-27 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-7646	71945964	6144961	0569450	\N	\N	2013-02-22 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-8443	69041543	6123424	132013000261	N	\N	2013-01-10 00:00:00	R	16	6	\N	0	C	\N	\N	\N	\N
-14769	68416146	6129710	13-000010	\N	\N	2013-01-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-8332	68400925	6190309	130300000333	N	\N	2013-04-10 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-7646	71945016	6122629	0565217	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-20289	69325651	6202224	13300237	\N	\N	2013-04-02 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-18112	71728303	6133052	201300000010	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-18110	71722709	6133050	201300000069	\N	\N	2013-01-02 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-18088	71716859	6133028	2013-0210	\N	\N	2013-01-30 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-17526	70800545	6132466	201301000002	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-9049	69294589	6168694	131303260017	N	\N	2013-03-26 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-7646	71945096	6122629	0566424	\N	\N	2013-01-15 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-19637	67757987	6134576	201300000124	\N	\N	2013-01-02 00:00:00	\N	1	4	2013-01-09 00:00:00	0	C	\N	\N	\N	\N
-18748	71262025	6133687	2559	\N	\N	2013-01-29 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-21808	77516260	6694624	212077706	\N	\N	2014-11-05 00:00:00	\N	20	4	2014-11-05 00:00:00	0	C	\N	\N	\N	\N
-9043	74975370	6502301	141660000048	\N	\N	2014-03-13 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-18607	69650060	6133547	2013-000003	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-17795	69852455	6132735	13-00008	\N	\N	2013-01-01 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-17687	68567885	6378279	012013204845	N	\N	2013-12-13 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-20289	69229658	6179892	03048052	\N	\N	2013-03-18 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-8765	69448987	6123746	130000000002	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-17687	68449385	6154959	012013030726	N	\N	2013-02-26 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-19637	67762629	6268568	201300016610	\N	\N	2013-07-19 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-7177	70236294	6122164	201300085139	\N	\N	2013-01-11 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-20289	69325650	6202224	13300234	N	\N	2013-04-07 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-2239	72735228	6117228	1300001857	\N	\N	2013-01-02 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-9043	69078318	6191020	130120002928	N	\N	2013-04-04 00:00:00	\N	13	4	2013-09-10 00:00:00	0	C	\N	\N	\N	\N
-17795	69852454	6132735	13-00005	\N	\N	2013-01-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-20841	67863701	6135780	13B00049	\N	\N	2013-01-01 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-15480	67802198	6219749	201300017825	\N	\N	2013-05-24 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-17730	68718433	6132670	13004864	\N	\N	2013-01-16 00:00:00	\N	0	4	2013-01-16 00:00:00	0	C	\N	\N	\N	\N
-19944	69112828	6313539	13-190280	\N	\N	2013-09-25 00:00:00	\N	0	4	2014-01-14 00:00:00	0	C	\N	\N	\N	\N
-6589	68278946	6233237	201300001842	\N	\N	2013-06-09 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-6529	68184201	6121517	01673827	\N	\N	2013-01-24 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
-17955	71531294	6132895	20130000023	N	\N	2013-01-07 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-19711	69297008	6313306	130092407	\N	\N	2013-09-17 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-19944	69105547	6313539	13-181165	\N	\N	2013-09-30 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-6531	68198438	6121519	01660104	\N	\N	2013-01-01 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
-6979	70025164	6166630	01703468	\N	\N	2013-03-13 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-6979	70026098	6322954	01824486	\N	\N	2013-10-06 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-8417	69010099	6123398	130110000241	N	\N	2013-01-23 00:00:00	\N	6	4	2013-05-03 00:00:00	0	C	\N	\N	\N	\N
-17730	68714969	6132670	12100552	\N	\N	2013-01-28 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-19944	69042101	6246543	13-100012	\N	\N	2013-06-28 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-19941	68918848	6224208	13-136767	\N	\N	2013-05-06 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-8369	68893915	6123350	130540000653	N	\N	2013-01-26 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-18747	68090753	6133686	1301013350ME	N	\N	2013-01-16 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-8332	68400926	6190309	130300000337	\N	\N	2013-04-10 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-6607	68299743	6166259	01700689	\N	\N	2013-03-11 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-17952	71517620	6132892	2013-000226	\N	\N	2013-01-24 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-20841	67867475	6158112	13B04287	\N	\N	2013-02-04 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
-6529	68183316	6121517	01660252	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-8335	68415663	6123316	131323900006	N	\N	2013-01-01 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-15480	67800443	6219749	201300016040	\N	\N	2013-05-10 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-18295	72038307	6133235	13-0079	N	\N	2013-01-06 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-17730	68715721	6132670	12108167	\N	\N	2013-01-05 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-19944	69042132	6246543	13-100270	\N	\N	2013-06-28 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-6979	70026111	6322954	01831985	\N	\N	2013-10-08 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-8335	68415664	6123316	131323900007	N	\N	2013-01-01 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-19711	69297009	6313306	130092410	\N	\N	2013-09-17 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-7177	70216972	6122164	201300000005	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-19941	68899187	6134880	13-10771	\N	\N	2013-01-20 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-6531	68198580	6121519	01673951	\N	\N	2013-01-18 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-6979	70025144	6166630	01696629	\N	\N	2013-03-09 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-19944	69042102	6246543	13-100025	\N	\N	2013-06-27 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-6607	68299742	6166259	01700688	\N	\N	2013-03-04 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-19941	68893753	6224208	R9176704-0	\N	\N	2013-05-22 00:00:00	R	13	6	\N	0	C	\N	\N	\N	\N
-8335	68431326	6301972	131423901929	N	\N	2013-09-07 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-8335	68426695	6301972	131323903548	N	\N	2013-09-13 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
-6607	68299730	6121595	01668119	\N	\N	2013-01-09 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-20841	67863700	6135780	13B00027	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-17952	71516729	6132892	2013-000001	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-20841	67867476	6158112	13B04293	\N	\N	2013-02-04 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-7640	68062613	6122623	13000004	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-6589	68278944	6233237	201300001782	\N	\N	2013-06-03 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-8826	69738685	6123807	130130000033	N	\N	2013-01-01 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-19711	68047203	6134650	130074467	\N	\N	2013-01-30 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-20600	72605717	6135539	1300010	\N	\N	2013-01-01 00:00:00	\N	0	2	2013-01-16 00:00:00	0	C	\N	\N	\N	\N
-20840	73423625	6469156	14A01671	\N	\N	2014-01-26 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-8332	68405567	6190309	131020000147	\N	\N	2013-04-05 00:00:00	\N	13	2	2013-07-12 00:00:00	0	C	\N	\N	\N	\N
-6627	68336651	6300271	01806763	\N	\N	2013-09-03 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-10562	72505842	6125542	0213000014	\N	\N	2013-01-03 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-10563	72511220	6192539	0113001971	\N	\N	2013-04-30 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-8712	68005263	6123693	130130000059	\N	\N	2013-01-01 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-6979	70025152	6121966	01698866	\N	\N	2013-01-25 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-9048	69144539	6124029	130130000541	\N	\N	2013-01-10 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-17811	69863030	6132751	2013000497	N	\N	2013-01-31 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-8826	72924599	6659234	140140009709	N	\N	2014-10-10 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-8826	69738684	6123807	130130000029	N	\N	2013-01-01 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-20840	73422763	6469156	14A00011	\N	\N	2014-01-01 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
-8332	68405574	6212641	131020000192	\N	\N	2013-05-13 00:00:00	\N	19	2	2013-07-24 00:00:00	0	C	\N	\N	\N	\N
-8712	68007121	6146025	130130003561	\N	\N	2013-02-21 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-19711	67878611	6134650	130009675	\N	\N	2013-01-30 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-9048	69144468	6124029	130130000007	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-8335	68430421	6368968	131323904737	\N	\N	2013-12-06 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-10563	72517585	6192539	0113005546	\N	\N	2013-04-01 00:00:00	\N	0	2	2014-01-24 00:00:00	0	C	\N	\N	\N	\N
-10563	72508476	6125543	0113000016	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-8332	68404605	6190309	130310007594	\N	\N	2013-04-01 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-2092	72712867	6117081	13G04175	\N	\N	2013-01-17 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-20600	72632894	6135539	1400127	\N	\N	2013-01-01 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-6627	68336574	6121615	01667353	\N	\N	2013-01-04 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-8335	68429578	6368968	131323904622	N	\N	2013-12-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-9048	69144469	6124029	130130000013	N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-590	70359115	6115581	13000006	\N	\N	2013-01-01 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
-590	70359259	6115581	13000382	\N	\N	2013-01-25 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-17811	69862232	6132751	2012-00-2296	\N	\N	2013-01-02 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-8826	72924598	6659234	140140009704	N	\N	2014-10-10 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-9048	69144540	6124029	130130000545	N	\N	2013-01-10 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-637	70571459	6115628	13-00009-1	\N	\N	2013-01-02 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-8712	68006249	6146025	130130002693	\N	\N	2013-02-09 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-6979	70025092	6121966	01662089	\N	\N	2013-01-03 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-8332	68400927	6212641	130300000451	\N	\N	2013-05-11 00:00:00	\N	12	2	2013-08-14 00:00:00	0	C	\N	\N	\N	\N
-6627	68336657	6300271	01819044	\N	\N	2013-09-26 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-8712	68005259	6123693	130130000003	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-7640	68062612	6122623	13000003	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-635	70571438	6115626	13-00001-1	\N	\N	2013-01-03 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-14652	68208239	6263585	13-00316	\N	\N	2013-07-02 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-4407	72583912	6119395	201300136	\N	\N	2013-01-02 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-6547	68232635	6121535	01669660	\N	\N	2013-01-04 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
-17539	70875042	6132479	13-106	\N	\N	2013-01-30 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-8712	68007116	6146025	130130003533	\N	\N	2013-02-21 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-14612	70679166	6129553	13-003	\N	\N	2013-01-01 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-18608	69654409	6133548	2013-000003	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-18438	68607035	6133378	1301301346	N	\N	2013-01-23 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-14652	68208240	6263585	13-00317	\N	\N	2013-07-04 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-17788	69759153	6132728	13000005	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-14652	68208204	6129593	13-00257	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-18438	68606267	6133378	1301011646	\N	\N	2013-01-01 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-14624	70691213	6129565	13SO00005	\N	\N	2013-01-01 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
-14612	70680115	6330541	13-1320	\N	\N	2013-10-19 00:00:00	R	12	6	\N	0	C	\N	\N	\N	\N
-14612	70679951	6129553	13-044	\N	\N	2013-01-16 00:00:00	R	16	6	\N	0	C	\N	\N	\N	\N
-14624	70692917	6129565	13SO03914	\N	\N	2013-01-22 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-17615	68654070	6132555	201301-0001	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-21808	68074369	6360067	212075695	\N	\N	2013-11-16 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-20129	69501250	6380720	20133460234	N	\N	2013-12-12 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-7305	70329576	6189288	A13-03685-1	\N	\N	2013-04-06 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-18271	71946565	6334199	20130982238	\N	\N	2013-10-21 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-17615	68655711	6132555	201301-0537	N	\N	2013-01-12 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-4282	75324906	6475097	2014013476	\N	\N	2014-02-24 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-18271	71946566	6334199	20130982253	N	\N	2013-10-21 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-18608	69664057	6379200	2013-003715	\N	\N	2013-12-01 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-7656	72013842	6122639	13000005	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-18608	69664056	6379200	2013-003714	\N	\N	2013-12-01 00:00:00	\N	15	2	2014-01-11 00:00:00	0	C	\N	\N	\N	\N
-8704	67965103	6123685	130130000808	\N	\N	2013-01-22 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-18438	68606266	6133378	1301010906	\N	\N	2013-01-01 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-9049	71325792	6302686	131309170133	N	\N	2013-09-17 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-17733	69625249	6132673	2013-15350	N	\N	2013-01-04 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-8704	67964260	6123685	130130000003	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-18608	69654410	6133548	2013-000005	N	\N	2013-01-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-18271	76071077	6533938	20140624334	N	\N	2014-04-03 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-21808	68074316	6360067	212075621	\N	\N	2013-11-02 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-14634	70724043	6129575	130000684	\N	\N	2013-01-21 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-7656	72018956	6234299	13002785	\N	\N	2013-06-14 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-14652	68207282	6129593	13-00001	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-4407	72584653	6119395	201300792	\N	\N	2013-01-06 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-17788	69760088	6132728	13000639	N	\N	2013-01-10 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-7656	72018931	6234299	13002719	\N	\N	2013-06-11 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-17799	69857781	6132739	2013-01-08	N	\N	2013-01-03 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-17615	68653312	6221883	201005-0828	N	\N	2013-05-28 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-7305	70330626	6189288	13-03497-1	\N	\N	2013-04-01 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-17615	68666789	6221883	201306-0406	N	\N	2013-05-20 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-17539	70874181	6132479	13-001	\N	\N	2013-01-01 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-7656	72014544	6122639	13000041	\N	\N	2013-01-03 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-14634	70723078	6129575	130000003	\N	\N	2013-01-01 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
-14612	70680108	6330541	13-1308	\N	\N	2013-10-13 00:00:00	R	19	6	\N	0	C	\N	\N	\N	\N
-9049	69305031	6302686	131304010055	N	\N	2013-09-25 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-18271	76071097	6533938	20140624714	N	\N	2014-04-18 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-7305	70329583	6122292	01282013-1	\N	\N	2013-01-28 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-749	68988666	6294396	13005033100	\N	\N	2013-09-27 00:00:00	R	14	6	\N	0	C	\N	\N	\N	\N
-1828	69534267	6116817	12CN13000007	\N	\N	2013-01-01 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
-745	68937953	6115736	13-00005-1	\N	\N	2013-01-03 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-20769	71676026	6336696	2013001606	\N	\N	2013-10-01 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-570	69920649	6115561	2013-0707	\N	\N	2013-01-01 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-4573	77070238	6565188	N14-21500	\N	\N	2014-06-18 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-19637	67762630	6268568	201300016631	\N	\N	2013-07-20 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-748	68942523	6115739	201300001670	\N	\N	2013-01-23 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-570	69919768	6115561	2013-0027	\N	\N	2013-01-05 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-14594	70641887	6129535	201300005	\N	\N	2013-01-01 00:00:00	R	2	6	\N	0	C	\N	\N	\N	\N
-749	68948021	6115740	13000002700	\N	\N	2013-01-01 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
-8625	68811200	6123606	131130000017	\N	\N	2013-01-29 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-20666	70807649	6157937	13-01286	\N	\N	2013-02-02 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-8084	70387841	6123065	13-10-OF	\N	\N	2013-01-01 00:00:00	R	9	6	\N	0	C	\N	\N	\N	\N
-20666	70800490	6157937	13-E00156	\N	\N	2013-02-08 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-2050	72658359	6117039	13S001563	\N	\N	2013-01-24 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-23242	69637341	6137069	DEU-13-011	\N	\N	2013-01-15 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-20666	70808508	6135605	13-01511	N	\N	2013-01-24 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-20954	72449822	6135893	130000407	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-1828	69545028	6116817	12CN13005630	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-6487	71844074	6121475	20130786	\N	\N	2013-01-16 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-6176	67799023	6121164	130430137	\N	\N	2013-01-20 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-4573	71498988	6119561	N13-00031	\N	\N	2013-01-01 00:00:00	\N	2	2	2013-01-07 00:00:00	0	C	\N	\N	\N	\N
-20954	72450567	6135893	130003543	\N	\N	2013-01-04 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-748	68942482	6115739	201300000063	\N	\N	2013-01-02 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-749	68988665	6294396	13005031900	\N	\N	2013-09-27 00:00:00	R	13	6	\N	0	C	\N	\N	\N	\N
-14594	70641888	6129535	201300009	\N	\N	2013-01-01 00:00:00	R	5	6	\N	0	C	\N	\N	\N	\N
-748	68942524	6115739	201300001742	\N	\N	2013-01-24 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-745	68937954	6115736	13-00006-1	\N	\N	2013-01-04 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-510	69781128	6115501	13-01-0009	\N	\N	2013-01-01 00:00:00	R	2	6	\N	0	C	\N	\N	\N	\N
-20666	70800391	6135605	12-14397	N	\N	2013-01-11 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-9036	69039783	6124017	130130000012	N	\N	2013-01-01 00:00:00	\N	16	4	2013-01-03 00:00:00	0	C	\N	\N	\N	\N
-570	69919769	6115561	2013-0029	\N	\N	2013-01-05 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-10486	72394880	6125466	PD13000001	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-749	68948022	6115740	13000002800	\N	\N	2013-01-01 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
-8084	70387905	6123065	13-12-OF	N	\N	2013-01-01 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-14594	76023159	6507812	201401116	\N	\N	2014-03-06 00:00:00	R	14	6	\N	0	C	\N	\N	\N	\N
-11712	70253186	6126675	13-001	\N	\N	2013-01-09 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-634	70571396	6115625	13-00004-1	\N	\N	2013-01-01 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-4573	77070239	6565188	N14-21505	\N	\N	2014-06-18 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-748	68942481	6115739	201300000062	\N	\N	2013-01-02 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-8084	70387842	6145397	13-1002-OF	N	\N	2013-02-25 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-4573	71498989	6119561	N13-00032	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-14594	76023160	6507812	201401118	\N	\N	2014-03-06 00:00:00	R	18	6	\N	0	C	\N	\N	\N	\N
-8808	69609217	6123789	130013000009	\N	\N	2013-01-01 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-745	68938735	6115736	13-00047-1	\N	\N	2013-01-22 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-8350	68466532	6123331	130013000013	N	\N	2013-01-01 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
-20769	71674080	6135708	2013000005	\N	\N	2013-01-01 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-17687	68497558	6266619	012013104141	N	\N	2013-07-03 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-8350	68466531	6123331	130013000012	\N	\N	2013-01-01 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
-17687	68497559	6266619	012013104146	N	\N	2013-07-03 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-18428	68584034	6133368	201310071230	\N	\N	2013-01-02 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-18166	71643464	6222434	1302603	\N	\N	2013-05-17 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-6270	67932275	6165922	APD13013	\N	\N	2013-03-03 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-18166	71643529	6133106	1401493	\N	\N	2013-01-06 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-4532	71366884	6119520	012013-00005	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-587	70353495	6316566	13-00264-1	\N	\N	2013-10-02 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-20160	71867207	6336087	2013-02099	\N	\N	2013-10-10 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-4532	71366885	6119520	012013-00007	\N	\N	2013-01-01 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-4532	71372464	6342840	012014-00269	\N	\N	2013-11-13 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-18166	71643430	6378758	121331	\N	\N	2013-12-18 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-18166	71643528	6378758	1401470	\N	\N	2013-12-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-7611	68022220	6368250	13-1289-OF	\N	\N	2013-12-11 00:00:00	\N	20	4	2013-12-12 00:00:00	0	C	\N	\N	\N	\N
-6270	67932274	6165922	APD13012	\N	\N	2013-03-15 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-15629	68022221	6353890	13003506	\N	\N	2013-11-24 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-20160	69596696	6135099	2013-00003	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-8808	69609971	6123789	130013000132	\N	\N	2013-01-10 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-18428	68579053	6155700	020720130800	\N	\N	2013-02-07 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-587	70353497	6316566	13-00268-1	\N	\N	2013-10-08 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-8808	69609972	6123789	130013000150	N	\N	2013-01-11 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-15629	68022234	6353890	13003540	\N	\N	2013-11-28 00:00:00	\N	\N	4	2013-11-29 00:00:00	0	C	\N	\N	\N	\N
-7611	68022209	6368250	13-1261-OF	\N	\N	2013-12-04 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-18428	68585665	6155700	201403010800	N	\N	2013-02-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-8808	69609218	6123789	130013000016	N	\N	2013-01-01 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-21790	68034269	6136729	433011499	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-18166	71643432	6133106	1300105	\N	\N	2013-01-04 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-6266	67923523	6121254	13008	\N	\N	2013-01-05 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-20160	71867305	6336087	2013-02248	N	\N	2013-10-30 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-20160	69597527	6135099	2013-00199	N	\N	2013-01-26 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-18608	69663203	6356868	2013-003374	\N	\N	2013-11-01 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-14308	68070768	6173913	13-019----36	\N	\N	2013-03-31 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-6266	67923522	6121254	13006	\N	\N	2013-01-04 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-18608	69663202	6356868	2013-003373	N	\N	2013-11-01 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-18166	71643463	6222434	1302536	\N	\N	2013-05-11 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-4532	71372461	6342840	012014-00028	\N	\N	2013-11-01 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-745	68938734	6115736	13-00046-1	\N	\N	2013-01-21 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-587	70352550	6115578	12-20057-1	\N	\N	2013-01-11 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-17976	71639730	6333904	20131569	N	\N	2013-10-21 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-17976	71635937	6132916	20130255	N	\N	2013-01-16 00:00:00	R	12	6	\N	0	C	\N	\N	\N	\N
-17972	71543045	6132912	201300000005	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-8467	69089314	6123448	130130000033	N	\N	2013-01-01 00:00:00	\N	22	5	2013-01-02 00:00:00	0	C	\N	\N	\N	\N
-8350	68466568	6123331	130013000175	N	\N	2013-01-07 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-8467	69089315	6123448	130130000083	\N	\N	2013-01-04 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-20144	69555454	6358403	20104-023339	\N	\N	2013-11-01 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-8350	68466569	6123331	130013000178	\N	\N	2013-01-05 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-8346	68438756	6123327	130500000059	\N	\N	2013-01-21 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-2315	71196419	6117303	9513000004	N	\N	2013-01-02 00:00:00	R	11	6	\N	0	C	\N	\N	\N	\N
-8346	68439591	6123327	130530001543	N	\N	2013-01-01 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-8346	68438757	6145659	130500000220	\N	\N	2013-02-27 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-14200	70950136	6129141	201300016	\N	\N	2013-01-05 00:00:00	R	2	6	\N	0	C	\N	\N	\N	\N
-17728	68702473	6132668	2013000017	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-7630	68036209	6122613	201300000063	\N	\N	2013-01-02 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-17728	68701708	6333656	2011013101	N	\N	2013-10-01 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-4548	71423655	6164200	022013-01233	\N	\N	2013-03-01 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-7630	68036210	6122613	201300000195	\N	\N	2013-01-06 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-20144	69556275	6135083	2013-000615	\N	\N	2013-01-06 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-7651	71967284	6122634	201300000015	\N	\N	2013-01-01 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-8683	67866118	6123664	130001301811	\N	\N	2013-01-17 00:00:00	R	5	6	\N	0	C	\N	\N	\N	\N
-8346	68444021	6123327	131170000011	\N	\N	2013-01-30 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-8346	68444032	6145659	131200000024	\N	\N	2013-02-05 00:00:00	\N	\N	2	2014-02-07 00:00:00	0	C	\N	\N	\N	\N
-17728	68714882	6132668	2014000194	\N	\N	2013-01-03 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-8467	69090141	6123448	130130000971	N	\N	2013-01-22 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-17972	71552963	6132912	201300010590	N	\N	2013-01-01 00:00:00	\N	0	2	2013-04-11 00:00:00	0	C	\N	\N	\N	\N
-17728	68712286	6333656	2013026827	N	\N	2013-10-17 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-8683	67863209	6123664	130001300016	N	\N	2013-01-01 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
-17976	71639684	6333904	20131474	\N	\N	2013-10-24 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-8683	67863210	6123664	130001300020	N	\N	2013-01-01 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
-20309	69366021	6135248	201300000005	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-2315	71196418	6117303	9513000003	N	\N	2013-01-02 00:00:00	R	14	6	\N	0	C	\N	\N	\N	\N
-7651	71967339	6144966	201300001615	\N	\N	2013-02-25 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-14200	70950137	6129141	201300028	\N	\N	2013-01-08 00:00:00	R	9	6	\N	0	C	\N	\N	\N	\N
-20144	69563436	6358403	2013-039724	\N	\N	2013-11-02 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
-8683	67866119	6123664	130001301816	N	\N	2013-01-16 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
-7651	71967317	6144966	201300000915	\N	\N	2013-02-01 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-4548	71422776	6119536	022013-00015	\N	\N	2013-01-01 00:00:00	\N	16	4	2013-01-01 00:00:00	0	C	\N	\N	\N	\N
-17976	71635052	6132916	20130001	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-4548	71422777	6119536	022013-00030	\N	\N	2013-01-02 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-4548	71423654	6164200	022013-01230	\N	\N	2013-03-01 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-7583	67882095	6122570	13-1-OF	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-7677	72104480	6122660	13-1701-OF	\N	\N	2013-01-24 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-7043	70077627	6345350	201300032340	\N	\N	2013-11-24 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-21768	70318881	6136707	WSO13000088	\N	\N	2013-01-02 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-7043	70065288	6211358	01934124	\N	\N	2013-05-31 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-18512	71651811	6133452	0213000004	N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-7043	70065289	6345350	01937945	\N	\N	2013-11-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-18512	71651812	6133452	0213000008	N	\N	2013-01-01 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-18512	71658367	6133452	13003992	N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-2090	72711242	6295735	13W31685	\N	\N	2013-09-17 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-2090	72712116	6362731	14W001302	\N	\N	2013-12-30 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-7583	67882096	6122570	13-10-OF	\N	\N	2013-01-01 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
-2090	72711243	6295735	13W31695	\N	\N	2013-09-17 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-18341	72123785	6133281	2013-3773	\N	\N	2013-01-19 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-18235	71440882	6133175	130101-0012	\N	\N	2013-01-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-21331	72126898	6270262	C48979711061	\N	\N	2013-07-17 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-18235	71440996	6133175	130204-0031	N	\N	2013-01-04 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-21331	72126899	6270262	C48979711066	\N	\N	2013-07-23 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-6003	75296438	6454368	14ISPC000031	\N	\N	2014-01-01 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-21331	72931289	6649247	C48923111143	\N	\N	2014-09-18 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-14931	73623734	6642849	150331381	\N	\N	2014-09-25 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-21331	72931290	6649247	C48923111144	\N	\N	2014-09-18 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-14455	68398208	6129396	13-001500	\N	\N	2013-01-04 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-18513	71664182	6133453	0113000014	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-18513	71664183	6133453	0113000018	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-15020	71914178	6129961	0002-13	\N	\N	2013-01-01 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-18513	71670749	6155785	0113004030	N	\N	2013-02-18 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-14455	68399106	6129396	13-050400	\N	\N	2013-01-02 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-15314	71369923	6130255	13-91-OF	\N	\N	2013-01-18 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-18513	71670750	6155785	0113004041	\N	\N	2013-02-19 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
-2090	72711851	6362731	13W40488	\N	\N	2013-12-01 00:00:00	\N	19	4	2013-12-23 00:00:00	0	C	\N	\N	\N	\N
-14931	73623735	6530599	150333069	\N	\N	2014-04-17 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-18189	71314224	6133129	13001830	N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-7043	70072043	6211358	201300019740	\N	\N	2013-05-28 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-7583	67919148	6368222	13-16957-OF	\N	\N	2013-12-02 00:00:00	R	14	6	\N	0	C	\N	\N	\N	\N
-6004	70985808	6232652	14ISPC000722	\N	\N	2013-06-01 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-6003	75296491	6454368	15ISPC002224	N	\N	2014-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-7583	67919149	6368222	13-16958-OF	\N	\N	2013-12-02 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-14931	73623736	6530599	150333640	\N	\N	2014-04-22 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-14455	68398207	6129396	13-000900	\N	\N	2013-01-01 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-18512	71664084	6133452	14000082	\N	\N	2013-01-04 00:00:00	\N	9	4	2014-01-07 00:00:00	0	C	\N	\N	\N	\N
-10494	72397583	6214802	213CR0000621	\N	\N	2013-05-16 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-6165	67783702	6121153	13CR018	\N	\N	2013-01-18 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-8814	69626593	6123795	130130000022	N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-2316	71256535	6117304	0713300504	\N	\N	2013-01-07 00:00:00	R	11	6	\N	0	C	\N	\N	\N	\N
-2275	72453154	6139596	3013009135	N	\N	2013-02-09 00:00:00	R	13	6	\N	0	C	\N	\N	\N	\N
-2275	72453155	6139596	3013009173	\N	\N	2013-02-09 00:00:00	R	17	6	\N	0	C	\N	\N	\N	\N
-15427	72955410	6531095	14001739	\N	\N	2014-04-27 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-2275	72450439	6117264	3013004603	N	\N	2013-01-20 00:00:00	R	15	6	\N	0	C	\N	\N	\N	\N
-6165	67784741	6366805	1432	\N	\N	2013-12-04 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
-2275	72446027	6117264	3012086463	\N	\N	2013-01-12 00:00:00	R	15	6	\N	0	C	\N	\N	\N	\N
-18001	71655911	6132941	13AP1404	\N	\N	2013-01-29 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-21331	70385741	6136270	C48968211183	\N	\N	2013-01-08 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-2316	71198132	6139636	Z713000194	\N	\N	2013-02-14 00:00:00	R	2	2	2013-02-15 00:00:00	0	C	\N	\N	\N	\N
-14455	68399119	6129396	13-10000	\N	\N	2013-01-18 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-2316	71198133	6251296	Z713001072	N	\N	2013-07-23 00:00:00	R	16	6	\N	0	C	\N	\N	\N	\N
-6165	67784731	6121153	1391	\N	\N	2013-01-07 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-2157	70014209	6117146	1300000101	\N	\N	2013-01-04 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-2120	72751004	6117109	1300000011	\N	\N	2013-01-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-2157	70014210	6117146	1300000164	\N	\N	2013-01-07 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-2120	72751005	6117109	1300000018	\N	\N	2013-01-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-2249	72316328	6117238	5813000888	\N	\N	2013-01-17 00:00:00	R	21	2	2013-01-17 00:00:00	0	C	\N	\N	\N	\N
-8814	69630787	6123795	130130012337	N	\N	2013-01-25 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-14931	68283241	6129872	130547370	\N	\N	2013-01-18 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-2157	73973061	6697473	1400010753	\N	\N	2014-12-02 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-10494	72397584	6214802	213CR0000622	\N	\N	2013-05-16 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-2157	73973062	6697473	1400010870	\N	\N	2014-12-06 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-6165	67784674	6366805	134943	\N	\N	2013-12-12 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-2275	72446850	6117264	3012100424	\N	\N	2013-01-03 00:00:00	R	10	6	\N	0	C	\N	\N	\N	\N
-10494	72397575	6170138	213CR0000364	\N	\N	2013-03-21 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-2249	72315538	6117238	5813000114	\N	\N	2013-01-03 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
-2249	72315539	6117238	5813000185	\N	\N	2013-01-03 00:00:00	R	12	6	\N	0	C	\N	\N	\N	\N
-8814	69626594	6123795	130130000033	N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-10494	72397574	6125474	213CR0000093	\N	\N	2013-01-23 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-8771	69482031	6123752	130000000004	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-18341	72125359	6311937	2013-59618	N	\N	2013-09-30 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-21791	68035093	6159062	421011846	\N	\N	2013-02-01 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-21791	68035104	6159062	421011872	\N	\N	2013-02-08 00:00:00	\N	0	2	2013-02-26 00:00:00	0	C	\N	\N	\N	\N
-20681	70964374	6135620	13-0308	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-21791	68034273	6136730	104	\N	\N	2013-01-11 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-20681	70963482	6135620	13-0004	\N	\N	2013-01-01 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-20681	70964375	6157952	13-0310	\N	\N	2013-02-04 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-7043	70065356	6122030	201300001193	\N	\N	2013-01-13 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-8993	68914750	6168638	130000000006	\N	\N	2013-03-22 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-18341	72125318	6311937	2013-56314	N	\N	2013-09-06 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-18341	72121970	6133281	2013-00562	N	\N	2013-01-04 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-18633	69872560	6334560	1311000063SH	\N	\N	2013-10-31 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-7677	72103563	6234320	13-12404-OF	\N	\N	2013-06-28 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-21555	70213744	6136494	2013010007	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-18633	69872561	6334560	1311000064SH	N	\N	2013-10-31 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
-7677	72103564	6234320	13-12461-OF	\N	\N	2013-06-27 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-18633	69833650	6133572	1212001098SH	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-18022	71672141	6155294	SO13-00619	\N	\N	2013-02-06 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-18633	69833651	6133572	1301000008SH	\N	\N	2013-01-07 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-7677	72102745	6211988	13-10034-OF	\N	\N	2013-05-22 00:00:00	R	15	6	\N	0	C	\N	\N	\N	\N
-21791	68035087	6136730	421011827	\N	\N	2013-01-18 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-7677	72102746	6211988	13-10062-OF	\N	\N	2013-05-22 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-20681	70964418	6157952	13-0424	\N	\N	2013-02-20 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-8424	69016588	6123405	130000000002	\N	\N	2013-01-01 00:00:00	\N	1	4	2013-01-05 00:00:00	0	C	\N	\N	\N	\N
-18022	71673923	6132962	201300000023	\N	\N	2013-01-02 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-21791	68035113	6136730	421011888	\N	\N	2013-01-01 00:00:00	\N	8	2	2013-03-07 00:00:00	0	C	\N	\N	\N	\N
-8814	69630788	6123795	130130012346	N	\N	2013-01-25 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-8771	69482032	6123752	130000000013	\N	\N	2013-01-01 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
-21555	70213745	6136494	2013010015	\N	\N	2013-01-01 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-2316	71256537	6139636	0713300534	\N	\N	2013-02-21 00:00:00	R	22	6	\N	0	C	\N	\N	\N	\N
-18341	72121971	6133281	2013-02346	\N	\N	2013-01-12 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-18633	69833747	6133572	1301000284SH	N	\N	2013-01-08 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-18633	69833748	6133572	1301000285SH	\N	\N	2013-01-08 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-15314	71369903	6241915	13-843-OF	\N	\N	2013-06-04 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-18189	71324239	6311785	13006612	N	\N	2013-09-05 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-23259	71902165	6181750	13-SPD-00146	\N	\N	2013-03-04 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-14599	70660704	6129540	1300069	\N	\N	2013-01-01 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-23259	71902166	6181750	13-SPD-00359	N	\N	2013-03-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-14599	76040890	6687417	1442257	\N	\N	2014-11-17 00:00:00	R	2	6	\N	0	C	\N	\N	\N	\N
-14598	70660695	6129539	00113002152	\N	\N	2013-01-06 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
-6317	67983496	6121305	2013L0055	\N	\N	2013-01-17 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-18190	71334290	6378782	13001956	\N	\N	2013-12-04 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-8375	68903957	6123356	132013000040	N	\N	2013-01-07 00:00:00	R	16	6	\N	0	C	\N	\N	\N	\N
-14599	76040126	6687417	1440263	\N	\N	2014-11-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-15020	71915911	6219289	0761-13	\N	\N	2013-05-06 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-8377	68910176	6190354	130000277713	\N	\N	2013-04-03 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-6317	67983500	6165969	2013L0198	\N	\N	2013-03-08 00:00:00	\N	17	4	2013-03-23 00:00:00	0	C	\N	\N	\N	\N
-8700	67903271	6123681	130130006047	N	\N	2013-01-25 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-7599	68003918	6122586	13-57-AR	\N	\N	2013-01-24 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-6314	67979736	6210630	20142026	\N	\N	2013-05-25 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-18189	71310606	6133129	13000003	\N	\N	2013-01-04 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-6317	67983494	6165969	2013I0605	\N	\N	2013-03-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-8377	68910993	6190354	130000353013	N	\N	2013-04-26 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-8700	67901292	6123681	130130000052	\N	\N	2013-01-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-18189	71324231	6311785	13006580	N	\N	2013-09-30 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-21768	70317035	6293031	WCSO13010962	N	\N	2013-08-04 00:00:00	R	9	6	\N	0	C	\N	\N	\N	\N
-18190	71327928	6133130	13000011	\N	\N	2013-01-02 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-18190	71334291	6378782	13001958	\N	\N	2013-12-04 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-15314	71369902	6241915	13-840-OF	\N	\N	2013-06-02 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-18190	71327929	6133130	13000017	N	\N	2013-01-02 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-2092	72712469	6117081	13G00025	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-2272	72395936	6273585	3213088785	N	\N	2013-08-10 00:00:00	R	10	6	\N	0	C	\N	\N	\N	\N
-6807	69819041	6121795	8013000874	\N	\N	2013-01-04 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-8856	71988642	6123837	130130000037	\N	\N	2013-01-01 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-17759	69674696	6132699	13-00047	N	\N	2013-01-01 00:00:00	\N	1	2	2013-01-31 00:00:00	0	C	\N	\N	\N	\N
-8856	71988643	6123837	130130000087	\N	\N	2013-01-02 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-2092	72713699	6117081	13G08843	\N	\N	2013-01-24 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-8771	69482096	6123752	130000000777	\N	\N	2013-01-15 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-8771	69482097	6123752	130000000779	\N	\N	2013-01-14 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-17759	69674700	6132699	13-00068	\N	\N	2013-01-01 00:00:00	\N	11	4	2013-01-02 00:00:00	0	C	\N	\N	\N	\N
-17687	68563803	6333615	012013199475	\N	\N	2013-10-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-18271	71941517	6133211	20130968553	\N	\N	2013-01-16 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-8856	71989592	6190833	130130005311	\N	\N	2013-04-01 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-2272	72341582	6117261	3213000006	\N	\N	2013-01-01 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
-2272	72412869	6318249	3213116275	N	\N	2013-10-16 00:00:00	R	16	6	\N	0	C	\N	\N	\N	\N
-8332	68405558	6123313	131020000011	\N	\N	2013-01-10 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-17687	68567892	6333615	012013204916	N	\N	2013-10-23 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-2272	72341531	6117261	3212139477	N	\N	2013-01-21 00:00:00	R	12	6	\N	0	C	\N	\N	\N	\N
-17759	69694646	6289023	13-34725	N	\N	2013-08-01 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-2272	72342401	6117261	3213000452	N	\N	2013-01-02 00:00:00	R	6	6	\N	0	C	\N	\N	\N	\N
-7121	68110492	6122108	01661464	\N	\N	2013-01-02 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-2272	72342402	6117261	3213000468	N	\N	2013-01-02 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
-2092	72713704	6117081	13G08914	\N	\N	2013-01-28 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-18190	71328773	6133130	13000171	\N	\N	2013-01-31 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-17759	69694638	6289023	13-34679	N	\N	2013-08-10 00:00:00	\N	12	2	2013-12-27 00:00:00	0	C	\N	\N	\N	\N
-2272	72395935	6273585	3213088782	N	\N	2013-08-10 00:00:00	R	8	6	\N	0	C	\N	\N	\N	\N
-7121	68115013	6122108	01848377	\N	\N	2013-01-01 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-6873	69894827	6121860	01785610	\N	\N	2013-01-19 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-18190	71328774	6133130	13000172	\N	\N	2013-01-31 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-6807	69819042	6121795	8013001483	\N	\N	2013-01-06 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-2092	72712468	6117081	13G00021	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-8856	71994606	6190833	130140003940	N	\N	2013-04-17 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-2272	72412870	6318249	3213116276	N	\N	2013-10-16 00:00:00	R	19	6	\N	0	C	\N	\N	\N	\N
-11983	68775061	6126946	0441817	N	\N	2013-01-02 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-17687	68507873	6311283	012013116321	N	\N	2013-09-17 00:00:00	R	16	6	\N	0	C	\N	\N	\N	\N
-17793	69840919	6132733	1300011	\N	\N	2013-01-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-20289	69306941	6135228	13185951	N	\N	2013-01-09 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-21805	68059646	6136744	511056930	\N	\N	2013-01-26 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-17793	69841776	6132733	1302147	N	\N	2013-01-31 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-6036	70985830	6366676	14ISPC000247	\N	\N	2013-12-31 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-11983	68779249	6350266	0457090	\N	\N	2013-11-02 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-6036	70985831	6344344	14ISPC000691	\N	\N	2013-11-09 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-9026	68963286	6347327	130000111124	\N	\N	2013-11-10 00:00:00	R	18	6	\N	0	C	\N	\N	\N	\N
-17516	70746998	6244116	20130601599	\N	\N	2013-06-01 00:00:00	\N	19	2	2013-06-01 00:00:00	0	C	\N	\N	\N	\N
-17707	68692330	6355967	2013-0899	\N	\N	2013-11-08 00:00:00	\N	17	4	2013-11-16 00:00:00	0	C	\N	\N	\N	\N
-1962	70110173	6116951	13001438	\N	\N	2013-01-11 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-6975	70024142	6121962	01680825	\N	\N	2013-01-12 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-20765	71174506	6247364	131680628	\N	\N	2013-06-17 00:00:00	\N	12	4	2013-06-20 00:00:00	0	C	\N	\N	\N	\N
-7668	75269136	6523378	14013087	\N	\N	2014-04-28 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-15397	72899562	6508615	RM14048499	\N	\N	2014-03-22 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-17707	68691537	6132647	2013-0002	\N	\N	2013-01-02 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-7668	72065619	6122651	13003312	\N	\N	2013-01-23 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-8929	72162798	6302566	131371705439	\N	\N	2013-09-07 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-8677	67852820	6145990	130000000094	\N	\N	2013-02-06 00:00:00	R	15	6	\N	0	C	\N	\N	\N	\N
-20765	71121711	6292028	122420752	\N	\N	2013-08-27 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-6975	70024187	6300618	01818888	\N	\N	2013-09-21 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-8350	77506710	6456708	140014000335	N	\N	2014-01-10 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-9026	68963287	6347327	130000111158	\N	\N	2013-11-21 00:00:00	R	9	6	\N	0	C	\N	\N	\N	\N
-6180	67812243	6121168	1303332	\N	\N	2013-01-12 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-17687	68561187	6378279	012013194593	N	\N	2013-12-04 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-9026	68962366	6124007	130000010035	N	\N	2013-01-09 00:00:00	R	18	6	\N	0	C	\N	\N	\N	\N
-9026	68962377	6124007	130000010086	N	\N	2013-01-23 00:00:00	R	15	6	\N	0	C	\N	\N	\N	\N
-20765	71191881	6292028	132209011	\N	\N	2013-08-05 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
-21808	68074279	6337735	212075563	\N	\N	2013-10-12 00:00:00	\N	23	2	2013-11-14 00:00:00	0	C	\N	\N	\N	\N
-9013	68935406	6123994	130500000002	\N	\N	2013-01-02 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-9013	68936345	6123994	130510000786	N	\N	2013-01-31 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-20765	71184602	6247364	132000593	\N	\N	2013-06-05 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-17516	70746997	6244116	20130601582	\N	\N	2013-06-01 00:00:00	\N	18	4	2013-09-16 00:00:00	0	C	\N	\N	\N	\N
-8929	72144251	6146242	130971705279	N	\N	2013-02-27 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-6535	68212855	6121523	01745947	\N	\N	2013-01-13 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-6180	67812226	6121168	1303051	\N	\N	2013-01-27 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-1962	70110174	6116951	13001439	\N	\N	2013-01-11 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-17707	68692329	6355967	2013-0890	\N	\N	2013-11-03 00:00:00	\N	22	4	2013-11-20 00:00:00	0	C	\N	\N	\N	\N
-8350	68467438	6145663	130013001162	N	\N	2013-02-07 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-21808	68074282	6337735	212075566	\N	\N	2013-10-24 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-9013	68938118	6146326	130510002212	N	\N	2013-02-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-8677	67852819	6123658	130000000074	N	\N	2013-01-23 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-2092	72713145	6117081	13G05929	\N	\N	2013-01-25 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-8929	72162772	6302566	131371705394	\N	\N	2013-09-04 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-11983	68779250	6350266	0457145	\N	\N	2013-11-03 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-17687	68571297	6311283	012014072383	N	\N	2013-09-29 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-8854	71963380	6146167	130130004479	\N	\N	2013-02-11 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-8297	68366671	6123278	131300000013	\N	\N	2013-01-17 00:00:00	R	7	6	\N	0	C	\N	\N	\N	\N
-8854	71963381	6146167	130130004481	\N	\N	2013-02-11 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-8854	71962496	6123835	130130001813	\N	\N	2013-01-17 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-8854	71961654	6123835	130130000051	\N	\N	2013-01-01 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-8854	71962497	6123835	130130001834	\N	\N	2013-01-17 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-11967	68752938	6283254	13-119-OF	\N	\N	2013-08-26 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-8854	71961655	6123835	130130000056	N	\N	2013-01-01 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-9029	68981618	6213338	130130036498	N	\N	2013-05-20 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-8893	72041294	6146206	131290000036	\N	\N	2013-02-05 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-6022	75308505	6589087	14ISPC005614	N	\N	2014-07-07 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-9073	70479732	6302710	130001304110	N	\N	2013-09-27 00:00:00	R	23	6	\N	0	C	\N	\N	\N	\N
-9073	70470570	6124054	130001300007	N	\N	2013-01-01 00:00:00	R	2	6	\N	0	C	\N	\N	\N	\N
-17443	70825565	6132383	2012-78	\N	\N	2013-01-04 00:00:00	R	13	6	\N	0	C	\N	\N	\N	\N
-6616	68305404	6121604	01660351	\N	\N	2013-01-02 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-8893	72041221	6168538	130600000324	\N	\N	2013-03-25 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-9073	70470569	6124054	130001300004	\N	\N	2013-01-01 00:00:00	R	6	6	\N	0	C	\N	\N	\N	\N
-9073	70471530	6124054	130001300582	N	\N	2013-01-31 00:00:00	R	8	6	\N	0	C	\N	\N	\N	\N
-7631	68043909	6345934	13029767	\N	\N	2013-11-26 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-11967	68752939	6283254	13-125-OF	N	\N	2013-08-27 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-6589	68278059	6121577	201300000061	\N	\N	2013-01-08 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-8893	72041272	6123874	131290000004	\N	\N	2013-01-06 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-7509	71915733	6122496	13000426	\N	\N	2013-01-05 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-6615	68301729	6121603	01660651	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-8898	72089929	6123879	130001010019	\N	\N	2013-01-01 00:00:00	R	5	6	\N	0	C	\N	\N	\N	\N
-6616	68306302	6121604	01670129	\N	\N	2013-01-17 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-7631	68038215	6122614	13000046	\N	\N	2013-01-01 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-7867	68336230	6122848	13-22-OF	\N	\N	2013-01-16 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-6589	68278897	6166241	201300000892	\N	\N	2013-03-25 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-8893	72041293	6146206	131290000034	\N	\N	2013-02-04 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-6022	75308504	6544187	14ISPC004417	\N	\N	2014-05-28 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-9073	70479731	6302710	130001304108	N	\N	2013-09-27 00:00:00	R	21	6	\N	0	C	\N	\N	\N	\N
-18198	71349978	6222466	13-00023576	\N	\N	2013-05-12 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-9029	68981632	6213338	130130036810	N	\N	2013-05-21 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-9073	70471498	6124054	130001300447	\N	\N	2013-01-29 00:00:00	R	15	6	\N	0	C	\N	\N	\N	\N
-6589	68278903	6188573	201300001006	\N	\N	2013-04-02 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-8893	72041310	6168538	131290000057	\N	\N	2013-03-04 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-6589	68278058	6121577	201300000034	\N	\N	2013-01-05 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-7631	68043845	6345934	13027496	\N	\N	2013-11-01 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-6589	68278896	6166241	201300000891	\N	\N	2013-03-24 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-8893	72041222	6168538	130600000327	\N	\N	2013-03-26 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-6616	68309191	6166268	01705553	\N	\N	2013-03-27 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-17705	68688978	6333633	RECLAIM004	\N	\N	2013-10-14 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-6589	68278904	6188573	201300001033	\N	\N	2013-04-03 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-8893	72041273	6123874	131290000005	\N	\N	2013-01-06 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-6584	68265850	6210900	01743312	\N	\N	2013-05-13 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-21790	68033339	6203725	433011233	\N	\N	2013-04-08 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-4562	71449953	6275874	201309500	\N	\N	2013-08-10 00:00:00	R	21	2	2013-08-15 00:00:00	0	C	\N	\N	\N	\N
-21788	68030460	6337715	412030686	\N	\N	2013-10-01 00:00:00	\N	12	4	2013-10-02 00:00:00	0	C	\N	\N	\N	\N
-21788	68028605	6270719	412029468	\N	\N	2013-07-07 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-7114	71851390	6122101	01664845	\N	\N	2013-01-07 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-7783	68134180	6122765	13-10-OF	\N	\N	2013-01-05 00:00:00	R	9	6	\N	0	C	\N	\N	\N	\N
-6589	68278975	6255569	201300002254	\N	\N	2013-07-15 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-21802	68052080	6337729	127	\N	\N	2013-10-28 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-2052	72700593	6117041	2013CR0001	\N	\N	2013-01-01 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-20099	72650509	6135038	1324250011	\N	\N	2013-01-04 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-7783	68134212	6256757	13-304-OF	\N	\N	2013-07-04 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-21582	70233141	6136521	130100057	\N	\N	2013-01-05 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-7114	71852376	6122101	01729364	\N	\N	2013-01-12 00:00:00	R	0	3	2013-05-09 00:00:00	0	C	\N	\N	\N	\N
-4562	71443574	6119550	201300006	\N	\N	2013-01-01 00:00:00	R	1	6	\N	0	C	\N	\N	\N	\N
-21802	68053943	6315397	222022892	\N	\N	2013-09-10 00:00:00	\N	18	3	2013-09-19 00:00:00	0	C	\N	\N	\N	\N
-21802	68054850	6337729	222023060	\N	\N	2013-10-19 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-7117	68093917	6166768	01696583	\N	\N	2013-03-03 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-7117	68093955	6166768	01704777	\N	\N	2013-03-15 00:00:00	R	8	3	2014-04-04 00:00:00	0	C	\N	\N	\N	\N
-21790	68033310	6315385	431011374	\N	\N	2013-09-23 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-21802	68054852	6315397	222023062	\N	\N	2013-09-15 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-7114	71852394	6122101	01746614	\N	\N	2013-01-31 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-6767	69784455	6121755	01694081	\N	\N	2013-01-14 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-7115	71855917	6122102	01663466	\N	\N	2013-01-06 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-6584	68265849	6166236	01707840	\N	\N	2013-03-23 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-21788	68029588	6270719	412030513	\N	\N	2013-07-19 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-21790	68033338	6203725	433011232	\N	\N	2013-04-07 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-17705	68688981	6132645	WS-13-0009	\N	\N	2013-01-04 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-21788	68030459	6337715	412030685	\N	\N	2013-10-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-21802	68052926	6136741	222022471	\N	\N	2013-01-25 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
-2052	72700898	6117041	2013CR0018	\N	\N	2013-01-15 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-7114	71851389	6122101	01664836	\N	\N	2013-01-04 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-2052	72700990	6251033	2013CR0314	\N	\N	2013-07-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-21788	68028606	6136727	412029998	\N	\N	2013-01-06 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-7783	68134181	6256757	13-104-AR	\N	\N	2013-07-05 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-7631	68039040	6122614	13000981	\N	\N	2013-01-10 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-20097	72651300	6135036	2013-000008	\N	\N	2013-01-01 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
-6767	69783670	6121755	01662180	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-20133	69531866	6358392	2013-016676	\N	\N	2013-11-04 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-6767	69783669	6121755	01661509	\N	\N	2013-01-01 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-6767	69784448	6121755	01691605	\N	\N	2013-01-16 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-20099	72650498	6224366	13-12908	\N	\N	2013-05-02 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-21790	68033309	6337717	431011364	\N	\N	2013-10-24 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-4562	71443624	6119550	201300657	\N	\N	2013-01-17 00:00:00	R	20	6	\N	0	C	\N	\N	\N	\N
-20133	69530947	6135072	2013-000068	\N	\N	2013-01-01 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-20133	69531870	6358392	2013-017052	\N	\N	2013-11-11 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-20099	72650500	6224366	13-12919	\N	\N	2013-05-25 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-7115	71855916	6122102	01663465	\N	\N	2013-01-04 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-4562	71449927	6275874	201309252	\N	\N	2013-08-05 00:00:00	R	15	6	\N	0	C	\N	\N	\N	\N
-2052	72701010	6251033	2013CR0367	\N	\N	2013-07-26 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-6589	68278976	6255569	201300002257	\N	\N	2013-07-15 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-20132	69528303	6157403	2013-003766	\N	\N	2013-02-21 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-4547	71422741	6119535	042013-00032	\N	\N	2013-01-06 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-1829	69546070	6116818	13CN13000005	\N	\N	2013-01-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-10533	72443170	6125513	201300004092	\N	\N	2013-01-27 00:00:00	R	12	6	\N	0	C	\N	\N	\N	\N
-6764	69783613	6188748	01758378	\N	\N	2013-04-03 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-10533	72440419	6125513	201300000021	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-8150	71573156	6301787	13-1004-OF	\N	\N	2013-09-04 00:00:00	R	8	6	\N	0	C	\N	\N	\N	\N
-21790	68034239	6337717	433011443	\N	\N	2013-10-24 00:00:00	\N	15	4	2013-10-27 00:00:00	0	C	\N	\N	\N	\N
-8150	71576778	6123131	13-86-OF	\N	\N	2013-01-17 00:00:00	\N	16	2	2013-01-22 00:00:00	0	C	\N	\N	\N	\N
-20129	69295706	6135068	20130180018	\N	\N	2013-01-17 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-1829	73871923	6517545	13CN15003185	\N	\N	2014-04-01 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-8157	71604686	6123138	13-27-AR	\N	\N	2013-01-22 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
-20129	69280181	6157400	19892590136	N	\N	2013-02-21 00:00:00	R	22	6	\N	0	C	\N	\N	\N	\N
-21788	68028608	6136727	412030001	\N	\N	2013-01-09 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-8157	71603803	6167802	13-101-AR	\N	\N	2013-03-08 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-20132	69528220	6135071	2013-000168	\N	\N	2013-01-03 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-8150	71576799	6123131	13-91-OF	N	\N	2013-01-23 00:00:00	R	10	6	\N	0	C	\N	\N	\N	\N
-20132	69528235	6135071	2013-001407	N	\N	2013-01-23 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-7120	68105809	6122107	01663312	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-11983	68775826	6126946	0443062	\N	\N	2013-01-23 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-1829	73856979	6517545	13CN14002514	\N	\N	2014-04-18 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-20132	69528302	6157403	2013-003765	N	\N	2013-02-22 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-4547	71422742	6119535	042013-00075	\N	\N	2013-01-19 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-1829	69555873	6116818	13CN13004499	\N	\N	2013-01-01 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-6764	69783612	6166416	01758377	\N	\N	2013-03-17 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-8150	71573155	6301787	13-1002-OF	\N	\N	2013-09-03 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-21790	68034238	6337717	433011441	\N	\N	2013-10-29 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
-8150	71575883	6301787	13-626-AR	\N	\N	2013-09-28 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-20129	69280182	6336056	19923150655	N	\N	2013-10-11 00:00:00	R	1	6	\N	0	C	\N	\N	\N	\N
-7120	68105807	6122107	01662136	\N	\N	2013-01-02 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-8157	71603802	6145470	13-100-OF	\N	\N	2013-02-19 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-10415	71500661	6125395	13-8-OF	\N	\N	2013-01-04 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-18858	72213686	6133797	13000003	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-21788	68028609	6136727	412030004	\N	\N	2013-01-08 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-8157	71603804	6145470	13-102-OF	N	\N	2013-02-20 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-18858	72237058	6133797	14007363	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-20132	69528221	6135071	2013-000472	\N	\N	2013-01-09 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-8157	71604702	6123138	13-29-AR	N	\N	2013-01-24 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-10533	72488580	6371165	201300065627	\N	\N	2013-12-16 00:00:00	R	16	6	\N	0	C	\N	\N	\N	\N
-10533	72489552	6371165	201300067715	\N	\N	2013-12-30 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-20132	69528236	6135071	2013-001482	N	\N	2013-01-24 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-10532	72432455	6125512	201300700021	\N	\N	2013-01-01 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-10415	71499757	6125395	13-1-OF	\N	\N	2013-01-04 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-11983	68775827	6126946	0443091	\N	\N	2013-01-24 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-20129	69306158	6157400	20130350292	N	\N	2013-02-04 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-20129	69300049	6135068	20130250013	\N	\N	2013-01-25 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-1832	69618479	6116821	15CN13000087	\N	\N	2013-01-06 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-7658	72034170	6368293	13-175-AR	\N	\N	2013-12-08 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-7469	71764064	6122456	13-C80012-OF	\N	\N	2013-01-10 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-1866	69284049	6116855	130004134	\N	\N	2013-01-24 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-6407	71660513	6277719	13C063805	\N	\N	2013-08-24 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-17759	69675543	6132699	13-01900	N	\N	2013-01-13 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-1832	69620222	6139153	15CN13000973	\N	\N	2013-02-27 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-6407	74135230	6544572	14C031920	\N	\N	2014-05-18 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-6407	74135231	6544572	14C031921	\N	\N	2014-05-18 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-19258	69078602	6134197	201300000004	\N	\N	2013-01-01 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-6404	71549184	6121392	13S000016	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-19258	69078603	6134197	201300000012	\N	\N	2013-01-03 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-7469	71777996	6122456	13-342-OF	\N	\N	2013-01-14 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-18250	71472155	6133190	13-04-53G	\N	\N	2013-01-28 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-17759	69675544	6132699	13-01921	\N	\N	2013-01-13 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
-7658	72034169	6368293	13-174-AR	\N	\N	2013-12-07 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-8764	69448088	6123745	131620000002	\N	\N	2013-01-02 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-1832	69617743	6139153	15CN12000503	\N	\N	2013-02-02 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-19711	68055616	6223978	130077840	\N	\N	2013-05-16 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-20129	69295707	6135068	20130180024	\N	\N	2013-01-17 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-6404	71549185	6121392	13S000017	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-7469	71771586	6122456	13-220-AR	\N	\N	2013-01-18 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-7469	71778013	6234116	13-3441-OF	\N	\N	2013-06-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-18250	71478568	6334178	13-12-64G	\N	\N	2013-10-15 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-7469	71778014	6234116	13-3442-OF	\N	\N	2013-06-01 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
-6407	71670020	6277719	13C068273	\N	\N	2013-08-19 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-7469	71764063	6122456	13-C80011-OF	\N	\N	2013-01-09 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-18250	71476759	6334178	13-10-141G	N	\N	2013-10-14 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-1866	68933712	6295511	130007642	\N	\N	2013-09-17 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-20129	69418027	6246728	20132130057	N	\N	2013-06-30 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-19711	67977670	6223978	130048179	\N	\N	2013-05-17 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-1866	69291601	6295511	130007244	\N	\N	2013-09-04 00:00:00	R	9	6	\N	0	C	\N	\N	\N	\N
-8856	71994604	6123837	130140001698	N	\N	2013-01-27 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-7658	72034119	6256633	13-104-AR	\N	\N	2013-07-19 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-20129	69418962	6246728	20132140225	N	\N	2013-06-24 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-18250	71469332	6334178	10-13-33G	\N	\N	2013-10-06 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
-8856	71988729	6123837	130130002190	N	\N	2013-01-24 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-7658	72034118	6256633	13-101-AR	\N	\N	2013-07-10 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-6958	70015688	6322933	01823734	\N	\N	2013-10-01 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-6404	71549206	6121392	13S000140	\N	\N	2013-01-05 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
-6404	71549207	6121392	13S000142	\N	\N	2013-01-04 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-7633	68044808	6122616	13-1-OF	\N	\N	2013-01-02 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-18965	68913367	6133904	13000092	\N	\N	2013-01-01 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-7471	71801022	6122458	13-20-OF	\N	\N	2013-01-07 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-6176	67802762	6232824	131650008	\N	\N	2013-06-14 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-7057	70089025	6122044	01724836	\N	\N	2013-01-21 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-18965	68914112	6133904	13000448	\N	\N	2013-01-04 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-9079	70541366	6124060	130130000704	\N	\N	2013-01-12 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-6956	70010957	6121943	01856120	\N	\N	2013-01-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-20408	69890008	6247007	130041591	N	\N	2013-06-30 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-6958	70015667	6121945	01689954	\N	\N	2013-01-30 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-6956	69966350	6121943	01670210	\N	\N	2013-01-03 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-6956	70010036	6121943	01839533	\N	\N	2013-01-01 00:00:00	\N	8	3	2013-10-03 00:00:00	0	C	\N	\N	\N	\N
-6956	69966351	6121943	01670211	\N	\N	2013-01-09 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-8764	69444442	6123745	130100000055	\N	\N	2013-01-18 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-9079	70541365	6124060	130130000660	\N	\N	2013-01-11 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-18965	68913368	6133904	13000146	\N	\N	2013-01-02 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-7633	68045814	6122616	13-5-AR	\N	\N	2013-01-13 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-18965	68914113	6133904	13000458	\N	\N	2013-01-04 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-7057	70088106	6122044	01663957	\N	\N	2013-01-04 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-20408	69847543	6135347	130000003	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-7471	71799171	6122458	13-10-OF	\N	\N	2013-01-03 00:00:00	R	11	6	\N	0	C	\N	\N	\N	\N
-7658	72034142	6122641	13-14-AR	\N	\N	2013-01-27 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-11983	68779241	6327934	0456911	\N	\N	2013-10-29 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-7658	72034134	6122641	13-13-OF	\N	\N	2013-01-08 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-11983	68779242	6327934	0456921	\N	\N	2013-10-29 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-20408	69939269	6247007	130800443	N	\N	2013-06-06 00:00:00	R	19	6	\N	0	C	\N	\N	\N	\N
-7057	70088107	6122044	01663958	\N	\N	2013-01-04 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-6958	70015687	6322933	01823635	\N	\N	2013-10-04 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-20408	69936722	6135347	130083978	N	\N	2013-01-10 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
-6958	70015668	6144277	01690027	\N	\N	2013-02-22 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-9079	70541331	6124060	130130000082	\N	\N	2013-01-02 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-9079	70541332	6124060	130130000106	\N	\N	2013-01-02 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-15023	71119215	6353284	02245-13	\N	\N	2013-11-05 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-6407	71576250	6121395	13C021926	\N	\N	2013-01-17 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
-6564	68242056	6121552	01682551	\N	\N	2013-01-29 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-7611	68022177	6345918	13-1198-OF	\N	\N	2013-11-09 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-17541	70880378	6244141	13-165	N	\N	2013-06-26 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-7611	68022178	6345918	13-1199-OF	\N	\N	2013-11-10 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-17759	69685960	6244359	13-20099	N	\N	2013-06-01 00:00:00	\N	17	2	2013-07-19 00:00:00	0	C	\N	\N	\N	\N
-15023	71119230	6353284	02270-13	\N	\N	2013-11-06 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-17759	69685961	6244359	13-20105	N	\N	2013-06-02 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-9045	69087646	6124026	130201300003	N	\N	2013-01-01 00:00:00	R	20	6	\N	0	C	\N	\N	\N	\N
-15023	71119231	6353284	02271-13	\N	\N	2013-11-10 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-9045	69088442	6124026	130201300033	N	\N	2013-01-02 00:00:00	R	17	6	\N	0	C	\N	\N	\N	\N
-9044	69086732	6124025	130000000103	\N	\N	2013-01-05 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-15023	71119216	6353284	02247-13	\N	\N	2013-11-05 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-7149	70196017	6122136	13-000056-01	\N	\N	2013-01-27 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-6564	68241228	6121552	01667894	\N	\N	2013-01-03 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-6564	68241229	6121552	01670548	\N	\N	2013-01-09 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-17541	70879539	6132481	13-001	N	\N	2013-01-01 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-7611	68023102	6301254	13-203-AR	\N	\N	2013-09-01 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-15023	71923060	6129964	00745-13	\N	\N	2013-01-15 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-7611	68022080	6122598	13-10-OF	\N	\N	2013-01-02 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-7611	68022081	6301254	13-1004-OF	\N	\N	2013-09-26 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-7056	70087133	6122043	01663654	\N	\N	2013-01-03 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-6407	71570088	6121395	13C019000	\N	\N	2013-01-20 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
-7056	70087134	6122043	01663655	\N	\N	2013-01-06 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-9070	70462266	6124051	130000130011	\N	\N	2013-01-04 00:00:00	R	4	6	\N	0	C	\N	\N	\N	\N
-7146	70154116	6122133	201300000021	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-15023	71923039	6129964	00699-14	\N	\N	2013-01-01 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-18608	69657029	6200544	2013-001036	N	\N	2013-04-12 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-18608	69657030	6200544	2013-001039	\N	\N	2013-04-12 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-6564	68242156	6121552	01722978	\N	\N	2013-01-01 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-9044	69087506	6124025	130000000218	\N	\N	2013-01-04 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-7146	70188344	6122133	201400000685	\N	\N	2013-01-06 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
-17541	70879535	6244141	J13-003	\N	\N	2013-06-14 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-17789	69818809	6132729	12-1810	\N	\N	2013-01-21 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-9070	70462265	6124051	130000130005	\N	\N	2013-01-01 00:00:00	R	13	6	\N	0	C	\N	\N	\N	\N
-18082	71708271	6267014	201300011181	\N	\N	2013-07-11 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-18085	71711247	6200021	201300003032	\N	\N	2013-04-05 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-7611	68023099	6122598	13-20-AR	\N	\N	2013-01-18 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-20308	69363261	6157579	201300005718	N	\N	2013-02-14 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-15027	77148872	6508245	2014-0098	\N	\N	2014-03-10 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-7472	71825059	6122459	13-220-AR	\N	\N	2013-01-20 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-7472	71825060	6122459	13-220-OF	\N	\N	2013-01-07 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-14319	76565127	6462637	140002	\N	\N	2014-01-01 00:00:00	R	4	6	\N	0	C	\N	\N	\N	\N
-18380	72191397	6155652	130801083024	\N	\N	2013-02-20 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-1962	75856368	6450328	14005002	N	\N	2014-01-30 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-10485	72394854	6326453	SO13000404	\N	\N	2013-10-06 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-17516	70735980	6154788	20130225599	\N	\N	2013-02-23 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-17516	77278418	6465833	20141241008	\N	\N	2014-01-25 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-10485	72394855	6326453	SO13000408	\N	\N	2013-10-10 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-20308	73755826	6468624	201400000021	N	\N	2014-01-01 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-18082	71707341	6267014	2013-0009839	\N	\N	2013-07-28 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-18380	72191396	6267312	130801081903	N	\N	2013-07-09 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-10486	72394867	6326454	D13OFF001009	\N	\N	2013-10-31 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-18085	71710286	6133025	201300000021	\N	\N	2013-01-01 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-10486	72395801	6281790	PD13000461	\N	\N	2013-08-05 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-10486	72394868	6348786	D13OFF001021	\N	\N	2013-11-05 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-18085	71710287	6133025	201300000064	\N	\N	2013-01-03 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-10486	72395802	6281790	PD13000464	\N	\N	2013-08-07 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
-6979	70026113	6322954	01831987	\N	\N	2013-10-17 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-1962	70123521	6139283	13011452	\N	\N	2013-02-24 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-2090	72710466	6206407	13W17878	\N	\N	2013-05-26 00:00:00	\N	14	4	2013-05-27 00:00:00	0	C	\N	\N	\N	\N
-18082	71707368	6133022	201300003298	\N	\N	2013-01-22 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-20842	67903646	6135781	000201300029	\N	\N	2013-01-05 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-18082	71707369	6133022	201300003385	\N	\N	2013-01-24 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-18082	71707342	6267014	2013-0009860	\N	\N	2013-07-29 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-10485	72393962	6348785	O13OFF001016	\N	\N	2013-11-03 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-18085	71711248	6200021	201300003041	\N	\N	2013-04-04 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-10485	72393963	6348785	O13OFF001019	\N	\N	2013-11-04 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-7611	68023084	6122598	13-18-OF	\N	\N	2013-01-05 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-18082	71708295	6267014	201300012460	\N	\N	2013-07-25 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-7472	71803730	6122459	13-1-OF	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-7472	71803731	6122459	13-100-AR	\N	\N	2013-01-08 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-2090	72711737	6206407	13W36868	\N	\N	2013-05-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-10485	72393984	6125465	SO13000017	\N	\N	2013-01-17 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-14116	70806357	6129057	13-0015-7	\N	\N	2013-01-01 00:00:00	R	23	6	\N	0	C	\N	\N	\N	\N
-10438	72263712	6125418	201300012	\N	\N	2013-01-01 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-10438	72265562	6125418	201306590	\N	\N	2013-01-01 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-18085	71711112	6133025	201300000668	\N	\N	2013-01-24 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-18085	71711113	6133025	201300000672	\N	\N	2013-01-24 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-21550	70211775	6136489	130000010	\N	\N	2013-01-01 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-14319	68121336	6151592	132224	\N	\N	2013-02-07 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-21550	70211776	6136489	130000030	\N	\N	2013-01-02 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-18380	72191398	6133320	130801090928	N	\N	2013-01-08 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-20148	76436657	6468464	14000900	\N	\N	2014-01-30 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-17678	68893900	6311274	13035029	\N	\N	2013-09-01 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-6980	70026189	6121967	01701085	\N	\N	2013-01-14 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-2287	72514099	6117275	7213000006	\N	\N	2013-01-04 00:00:00	R	10	6	\N	0	C	\N	\N	\N	\N
-6980	70026201	6300623	01855352	\N	\N	2013-09-19 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-2287	72514100	6117275	7213000007	N	\N	2013-01-04 00:00:00	R	12	6	\N	0	C	\N	\N	\N	\N
-14116	70807119	6129057	13-0152-7	\N	\N	2013-01-12 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-7867	77389018	6456225	14-10-OF	\N	\N	2014-01-10 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-10438	72274741	6125418	201416564	\N	\N	2013-01-20 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-17678	68882112	6311274	1227411	N	\N	2013-09-03 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-10438	72263707	6170082	201235513	\N	\N	2013-03-19 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-14116	70806356	6129057	13-0014-7	\N	\N	2013-01-01 00:00:00	R	23	6	\N	0	C	\N	\N	\N	\N
-10485	72393985	6125465	SO13000019	\N	\N	2013-01-18 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-10438	72269340	6147750	201320826	\N	\N	2013-02-28 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-6589	68278914	6188573	201300001248	\N	\N	2013-04-17 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-15427	71475997	6152700	13008026	\N	\N	2013-02-01 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-726	73634051	6449094	2014002255	\N	\N	2014-01-27 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-7512	74795020	6455876	14004946	\N	\N	2014-01-23 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-10438	72266527	6170082	201310522	\N	\N	2013-03-27 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-20148	69571690	6157419	13000599	\N	\N	2013-02-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-14116	70807120	6129057	13-0153-7	\N	\N	2013-01-12 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-10438	72265542	6147750	201306117	\N	\N	2013-02-04 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-21331	70385774	6270262	C48968211269	\N	\N	2013-07-09 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-17678	68882962	6132618	13004060	N	\N	2013-01-16 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-21331	70385773	6270262	C48968211268	\N	\N	2013-07-09 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-18380	72191416	6155652	140822093724	\N	\N	2013-02-07 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-2157	70014995	6117146	1300000374	\N	\N	2013-01-14 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-7512	67711005	6144831	13009577	\N	\N	2013-02-11 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-15427	72952569	6463745	14000484	\N	\N	2014-01-24 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-2157	70014996	6117146	1300000385	\N	\N	2013-01-15 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-6587	68272416	6121575	01660847	\N	\N	2013-01-01 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-631	70528342	6115622	12-00756-1	\N	\N	2013-01-24 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-554	69867843	6115545	13-00005-1	\N	\N	2013-01-08 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
-631	70531912	6115622	13-05939-1	\N	\N	2013-01-14 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-634	70571403	6160289	13-00213-1	\N	\N	2013-03-05 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-6608	68300710	6121596	01831091	\N	\N	2013-01-22 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-6654	72860209	6455019	01964740	\N	\N	2014-01-02 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-2051	72673612	6117040	13005216	\N	\N	2013-01-28 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-631	70533874	6338942	13-11216-1	\N	\N	2013-11-16 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-6608	68299854	6121596	01664732	\N	\N	2013-01-07 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-591	70388950	6137914	13-07538	N	\N	2013-02-04 00:00:00	\N	0	4	2014-03-26 00:00:00	0	C	\N	\N	\N	\N
-6589	68278938	6210905	201300001671	\N	\N	2013-05-23 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-6609	68300736	6143929	01685309	\N	\N	2013-02-07 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-554	69867842	6115545	13-00004-1	\N	\N	2013-01-06 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-9066	70433000	6146379	130201300253	N	\N	2013-02-01 00:00:00	R	20	6	\N	0	C	\N	\N	\N	\N
-19943	69017219	6134882	13C000009	\N	\N	2013-01-01 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-20693	71015465	6157964	C20130534	\N	\N	2013-02-23 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-4573	71499972	6119561	N13-02275	\N	\N	2013-01-20 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-7509	74773343	6455873	14002000	\N	\N	2014-01-20 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-634	70571397	6115625	13-00009-1	\N	\N	2013-01-03 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-2051	72666384	6117040	13000006	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-9066	74799430	6457424	140201400416	N	\N	2014-01-26 00:00:00	R	15	6	\N	0	C	\N	\N	\N	\N
-2051	72667473	6117040	13000637	\N	\N	2013-01-11 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-6587	68273388	6210903	01749479	\N	\N	2013-05-06 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-20693	71021101	6358952	201300049340	\N	\N	2013-11-21 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-6587	68273405	6210903	01749498	\N	\N	2013-05-19 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-631	70528337	6115622	12-00221-1	\N	\N	2013-01-07 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-8469	73191650	6456827	141439901853	N	\N	2014-01-22 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-7509	71917565	6144828	13004575	\N	\N	2013-02-14 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-19943	69039360	6134882	13C021224	\N	\N	2013-01-01 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-2050	72657791	6273363	13SF010	\N	\N	2013-08-23 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-634	70571402	6160289	13-00204-1	\N	\N	2013-03-02 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-6585	68265856	6121573	01665940	\N	\N	2013-01-09 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-591	73812811	6448959	14-14647	N	\N	2014-01-01 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-631	70533873	6338942	13-11196-1	\N	\N	2013-11-15 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-631	70529240	6115622	13-01733-1	\N	\N	2013-01-30 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-6589	68278926	6210905	201300001439	\N	\N	2013-05-01 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-6585	68265855	6121573	01665939	\N	\N	2013-01-07 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-6585	68265872	6143905	01696376	\N	\N	2013-02-07 00:00:00	R	1	6	\N	0	C	\N	\N	\N	\N
-4573	71499971	6119561	N13-02272	\N	\N	2013-01-17 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-7583	67886787	6122570	13-1079-OF	\N	\N	2013-01-23 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-20693	71014494	6157964	C20122090	\N	\N	2013-02-16 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-20693	71020265	6358952	201300047574	\N	\N	2013-11-08 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-20693	71022062	6135632	201400000394	\N	\N	2013-01-03 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-7583	67886762	6122570	13-1076-OF	\N	\N	2013-01-23 00:00:00	R	16	6	\N	0	C	\N	\N	\N	\N
-2051	72666385	6117040	13000008	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-6654	68392916	6143974	01693812	\N	\N	2013-02-27 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-14304	68065999	6285569	13-08496	\N	\N	2013-08-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-8625	68809557	6145938	130520000798	\N	\N	2013-02-04 00:00:00	\N	23	4	2013-02-05 00:00:00	0	C	\N	\N	\N	\N
-14304	68054816	6129245	13-03246	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-6176	67801723	6188160	131130116	\N	\N	2013-04-20 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-8625	68809558	6123606	130520001856	N	\N	2013-01-01 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-8625	68811233	6212934	131130000070	\N	\N	2013-05-15 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-6176	67801724	6188160	131130144	\N	\N	2013-04-23 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-8625	68811203	6145938	131130000021	\N	\N	2013-02-05 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-6176	67798051	6121164	130010018	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-8679	67853685	6123660	130012003893	\N	\N	2013-01-08 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-6176	67798052	6121164	130010111	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-2050	72662655	6273363	13S016328	\N	\N	2013-08-08 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-8626	68812848	6123607	130013000006	N	\N	2013-01-04 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-8626	68812849	6123607	130013000008	N	\N	2013-01-03 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-6277	67953127	6121265	130024	\N	\N	2013-01-03 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-14304	68049123	6285569	10-07280	\N	\N	2013-08-23 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-6980	70026190	6166631	01711435	\N	\N	2013-03-25 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-6487	71844154	6210803	20131424	\N	\N	2013-05-03 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-8679	67853686	6123660	130013000028	\N	\N	2013-01-02 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-6980	70026191	6166631	01711436	\N	\N	2013-03-25 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-6979	70026165	6367618	01857215	\N	\N	2013-12-03 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-2050	72662656	6273363	13S016329	\N	\N	2013-08-08 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-6979	70026166	6367618	01857216	\N	\N	2013-12-06 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-8469	69170844	6145782	131339903243	N	\N	2013-02-18 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-8626	75505602	6591684	140014128934	\N	\N	2014-07-02 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-14304	68063325	6285569	13-07448	\N	\N	2013-08-29 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-6277	67953128	6121265	130025	\N	\N	2013-01-02 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-8626	75505603	6591684	140014128935	\N	\N	2014-07-02 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-17891	74424798	6466208	1407812708	\N	\N	2014-01-25 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-6487	71843221	6210803	13050151	\N	\N	2013-05-08 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-11714	70288834	6149009	201300060372	\N	\N	2013-02-03 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-513	77257157	6448881	14020133	N	\N	2014-01-25 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-513	69816482	6137836	13020105	\N	\N	2013-02-15 00:00:00	R	13	6	\N	0	C	\N	\N	\N	\N
-17891	69657809	6155163	1302010108	\N	\N	2013-02-08 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-8625	68811234	6212934	131130000071	\N	\N	2013-05-16 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
-11714	75249849	6460054	201400035942	\N	\N	2014-01-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-6487	71843220	6210803	13050145	\N	\N	2013-05-05 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-15480	67792805	6130421	201300002803	\N	\N	2013-01-25 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-17729	68714901	6177333	13000579	\N	\N	2013-03-03 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-6487	71844155	6210803	20131426	\N	\N	2013-05-02 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-20763	71110870	6135702	13008916	\N	\N	2013-01-22 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-8666	67847139	6168311	130140004621	\N	\N	2013-03-11 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-17527	77341310	6465844	14-0099	N	\N	2014-01-15 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
-15479	67785097	6130420	13000007	\N	\N	2013-01-02 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-8666	67845156	6369299	130100000987	\N	\N	2013-12-19 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-15480	67792806	6130421	201300002827	\N	\N	2013-01-24 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-15480	67790863	6130421	201300000047	\N	\N	2013-01-01 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-20967	70042138	6158238	201300032234	\N	\N	2013-02-04 00:00:00	R	13	6	\N	0	C	\N	\N	\N	\N
-4546	74222912	6452911	012014-00227	\N	\N	2014-01-15 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-15480	67807067	6286745	201300027049	\N	\N	2013-08-01 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
-17729	68714908	6177333	13001011	\N	\N	2013-03-29 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-6175	67796023	6277487	13-1088	\N	\N	2013-08-30 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-15480	67807069	6286745	201300027076	\N	\N	2013-08-01 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
-8333	68406376	6145646	131210903746	\N	\N	2013-02-01 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-18608	69657066	6200544	2013-001122	\N	\N	2013-04-20 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-6189	67830277	6121177	1300064	\N	\N	2013-01-02 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-20768	71666448	6135707	2013000296	\N	\N	2013-01-19 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-8666	67845163	6123647	130140000014	\N	\N	2013-01-01 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-6189	67831121	6232837	1301948	\N	\N	2013-06-02 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-20768	71672172	6336695	2013003883	\N	\N	2013-10-07 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-8666	67847123	6324635	130140004453	\N	\N	2013-10-03 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-17527	70847342	6154799	13-0611	N	\N	2013-02-07 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-8333	68408326	6145646	131310901668	\N	\N	2013-02-28 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-20763	71091541	6135702	13000004	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-17729	68714902	6177333	13000784	\N	\N	2013-03-22 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-15479	67785098	6130420	13000008	\N	\N	2013-01-03 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-8666	67845157	6168311	130120002468	\N	\N	2013-03-25 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-20768	71665584	6225035	131740	\N	\N	2013-05-06 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-4546	71419916	6141866	012013-00577	\N	\N	2013-02-06 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-6178	73706587	6611693	14228002	\N	\N	2014-08-16 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-20967	77689124	6469283	201400000788	\N	\N	2014-01-01 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-8666	67847125	6324635	130140004466	N	\N	2013-10-03 00:00:00	\N	19	4	2013-10-30 00:00:00	0	C	\N	\N	\N	\N
-15480	67790862	6130421	201300000043	\N	\N	2013-01-01 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-6178	73706588	6611693	14237001	\N	\N	2014-08-21 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-20768	71672259	6336695	2013004307	\N	\N	2013-10-31 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-6175	67796062	6121163	13-120	\N	\N	2013-01-28 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-6189	67830276	6121177	1300033	\N	\N	2013-01-04 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-8666	67845162	6123647	130140000008	\N	\N	2013-01-01 00:00:00	R	21	6	\N	0	C	\N	\N	\N	\N
-8333	68414726	6123314	131310905005	N	\N	2013-01-05 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-6189	67831122	6232837	1301950	\N	\N	2013-06-02 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-6175	67795220	6277487	13-1004	\N	\N	2013-08-22 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-6175	67795219	6277487	13-1003	\N	\N	2013-08-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-8666	67848926	6369299	131630000170	\N	\N	2013-12-18 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-7499	71891375	6122486	201300000054	\N	\N	2013-01-01 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-23242	69638138	6226397	DEU-13-120	\N	\N	2013-05-06 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-6176	67803744	6232824	131960060	\N	\N	2013-06-18 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-18608	69661371	6289872	2013-002515	N	\N	2013-08-20 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-8850	71940238	6123831	130140000169	N	\N	2013-01-02 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-2247	72287100	6117236	5013000059	\N	\N	2013-01-01 00:00:00	R	8	6	\N	0	C	\N	\N	\N	\N
-18609	69664919	6133549	13-0002	\N	\N	2013-01-01 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-8850	71911138	6123831	130130000018	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-2247	72287101	6117236	5013000060	\N	\N	2013-01-01 00:00:00	R	13	6	\N	0	C	\N	\N	\N	\N
-8716	68073004	6123697	130130005061	N	\N	2013-01-27 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-8716	68080190	6168361	130130015252	\N	\N	2013-03-20 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-23242	69637348	6159401	DEU-13-024	\N	\N	2013-02-05 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-7043	70074815	6323018	201300026187	\N	\N	2013-10-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-2315	71197184	6117303	9513000024	N	\N	2013-01-14 00:00:00	R	8	6	\N	0	C	\N	\N	\N	\N
-18608	69660585	6289872	2013-002419	\N	\N	2013-08-10 00:00:00	\N	21	4	2013-10-08 00:00:00	0	C	\N	\N	\N	\N
-8716	68069465	6123697	130130000010	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-17733	69625234	6244333	2013-15222	\N	\N	2013-06-26 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
-2090	74196647	6450456	14W038151	\N	\N	2014-01-14 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-6176	67803608	6232824	131760047	\N	\N	2013-06-24 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-18513	71666931	6133453	0113001469	\N	\N	2013-01-19 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-7101	70142414	6122088	01670246	\N	\N	2013-01-16 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-7123	68124313	6122110	01663238	\N	\N	2013-01-02 00:00:00	R	12	6	\N	0	C	\N	\N	\N	\N
-18513	71666932	6133453	0113001500	\N	\N	2013-01-20 00:00:00	\N	6	4	2013-01-25 00:00:00	0	C	\N	\N	\N	\N
-8716	68092559	6168361	130130030969	N	\N	2013-03-03 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-17733	69617306	6132673	2013-00011	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-7043	70074816	6323018	201300026202	\N	\N	2013-10-01 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-8626	68827329	6123607	130013109919	N	\N	2013-01-15 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-7498	71891370	6122485	13-99-OF	\N	\N	2013-01-27 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-2090	72709609	6139411	13W05237	\N	\N	2013-02-12 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-15479	67785156	6130420	13000110	\N	\N	2013-01-28 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-7101	70141599	6122088	01665992	\N	\N	2013-01-02 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-23242	69638122	6248729	DEU-13-100	\N	\N	2013-06-17 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-15479	67785157	6130420	13000111	\N	\N	2013-01-21 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-17733	69617305	6132673	2013-00001	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-7123	68125209	6122110	01697942	\N	\N	2013-01-17 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-17733	69625233	6244333	2013-15207	\N	\N	2013-06-26 00:00:00	\N	2	4	2013-06-26 00:00:00	0	C	\N	\N	\N	\N
-8626	68823010	6123607	130013101551	\N	\N	2013-01-07 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-7498	71888647	6122485	13-10-OF	\N	\N	2013-01-04 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-23242	69637330	6159401	DEU-12-167	\N	\N	2013-02-12 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-23242	69638136	6226397	DEU-13-117	\N	\N	2013-05-07 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-23242	69637331	6248729	DEU-12-183	\N	\N	2013-06-13 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-14886	71811322	6129827	02013001233	\N	\N	2013-01-29 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
-14886	71810464	6129827	02013000002	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-8379	77574140	6591437	140014016470	\N	\N	2014-07-19 00:00:00	R	8	6	\N	0	C	\N	\N	\N	\N
-20135	69534615	6135074	2013000772	N	\N	2013-01-14 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-8950	72225950	6146263	130013000113	\N	\N	2013-02-06 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-18633	69869898	6334560	1310000695SH	N	\N	2013-10-17 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-6589	68279008	6277901	201300002656	\N	\N	2013-08-16 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-14796	68484338	6129737	008130002701	\N	\N	2013-01-03 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-20135	69543704	6358394	2013005893	\N	\N	2013-11-05 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-8717	68129369	6123698	130130000020	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-8846	71893557	6123827	130130000006	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-10486	72395712	6214794	PD13000234	\N	\N	2013-05-01 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-2315	71197185	6117303	9513000025	N	\N	2013-01-07 00:00:00	R	8	6	\N	0	C	\N	\N	\N	\N
-6981	70027011	6121968	01732705	\N	\N	2013-01-10 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-9043	74975390	6457401	141660000103	\N	\N	2014-01-25 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-8765	69452612	6146078	130000004423	\N	\N	2013-02-24 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-14806	71669765	6129747	21301037	\N	\N	2013-01-11 00:00:00	R	14	6	\N	0	C	\N	\N	\N	\N
-14886	71813318	6129827	02013005591	\N	\N	2013-01-14 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-6589	68278993	6277901	201300002470	\N	\N	2013-08-02 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-14796	68493447	6129737	064130025801	\N	\N	2013-01-14 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-6589	68278995	6277901	201300002493	\N	\N	2013-08-04 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-18608	69663214	6356868	2013-003397	\N	\N	2013-11-02 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-8717	68131193	6123698	130130003228	\N	\N	2013-01-25 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-8379	68919098	6123360	130000000008	N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-8379	68919136	6123360	130000000227	N	\N	2013-01-02 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-8717	68131323	6123698	130130004767	\N	\N	2013-01-23 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-20135	69532822	6135074	2013000002	N	\N	2013-01-01 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-14886	71810465	6129827	02013000052	\N	\N	2013-01-03 00:00:00	\N	11	2	2013-01-25 00:00:00	0	C	\N	\N	\N	\N
-6590	68289340	6322566	01836834	\N	\N	2013-10-30 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-8765	73079394	6457123	140000005882	N	\N	2014-01-10 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-1962	75915602	6674828	14048957	\N	\N	2014-11-30 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-18608	69664893	6379200	2013-003994	\N	\N	2013-12-29 00:00:00	\N	13	4	2013-12-29 00:00:00	0	C	\N	\N	\N	\N
-14796	68493448	6129737	064130030001	\N	\N	2013-01-14 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-20135	69543738	6358394	2013006011	N	\N	2013-11-07 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-6981	70027015	6121968	01732709	\N	\N	2013-01-25 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-14796	68484337	6129737	008130000901	\N	\N	2013-01-01 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-8379	77574141	6591437	140014016471	\N	\N	2014-07-19 00:00:00	R	11	2	2014-07-21 00:00:00	0	C	\N	\N	\N	\N
-6175	67797069	6210491	13-566	\N	\N	2013-05-13 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-8717	68129368	6123698	130130000019	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-10486	72395713	6214794	PD13000235	\N	\N	2013-05-02 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-6175	67797084	6210491	13-613	\N	\N	2013-05-28 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-8950	72225949	6146263	130013000103	\N	\N	2013-02-04 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-6981	70026204	6121968	01665831	\N	\N	2013-01-04 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-6577	68253595	6121565	01672034	\N	\N	2013-01-01 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-17687	73695198	6466004	012014012475	N	\N	2014-01-24 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-14806	71669764	6129747	21301028	\N	\N	2013-01-10 00:00:00	R	16	6	\N	0	C	\N	\N	\N	\N
-6590	68288554	6322566	01836328	\N	\N	2013-10-27 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-9043	69086713	6146356	139430000007	N	\N	2013-02-08 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-10480	72361775	6259452	201300008835	\N	\N	2013-07-28 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-2124	72752789	6117113	201300000169	\N	\N	2013-01-05 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-10480	72360006	6259452	201300006161	\N	\N	2013-07-31 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-17728	68706977	6199664	2013013569	N	\N	2013-04-29 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-20356	69478652	6135295	2013000351	N	\N	2013-01-14 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-6979	70026071	6300622	01807149	\N	\N	2013-09-04 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-8847	71904957	6123828	130130027322	N	\N	2013-01-01 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-14284	71036744	6129225	1-13-000026	\N	\N	2013-01-02 00:00:00	R	10	6	\N	0	C	\N	\N	\N	\N
-19637	67760708	6156908	201300008677	\N	\N	2013-02-07 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-14284	71036745	6129225	1-13-000030	\N	\N	2013-01-02 00:00:00	R	13	6	\N	0	C	\N	\N	\N	\N
-2195	70219181	6273508	F1308010030	\N	\N	2013-08-01 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-2195	70226032	6117184	1303270221	\N	\N	2013-01-28 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-2195	70235659	6117184	1307230180	\N	\N	2013-01-04 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-17795	69853350	6155067	13-00923	N	\N	2013-02-17 00:00:00	\N	1	2	2013-08-09 00:00:00	0	C	\N	\N	\N	\N
-9049	74655481	6457407	141412020219	N	\N	2014-01-06 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-14284	71037645	6129225	1-13-000452	\N	\N	2013-01-24 00:00:00	R	17	6	\N	0	C	\N	\N	\N	\N
-2195	70225944	6161848	1303190221	\N	\N	2013-03-19 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-14284	71037646	6129225	1-13-000456	\N	\N	2013-01-24 00:00:00	R	19	6	\N	0	C	\N	\N	\N	\N
-2195	70225945	6161848	1303190239	\N	\N	2013-03-19 00:00:00	R	20	6	\N	0	C	\N	\N	\N	\N
-9049	69280821	6146362	131303170272	\N	\N	2013-02-20 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-8847	71895393	6123828	130130000019	N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-10480	72356407	6125460	201300000613	\N	\N	2013-01-01 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-20289	69305218	6157560	13182494	\N	\N	2013-02-06 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-19637	75992937	6467953	201400005281	N	\N	2014-01-28 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-20356	76516292	6603372	2014006298	N	\N	2014-07-06 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-6979	70026079	6300622	01811097	\N	\N	2013-09-07 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-20356	76516293	6603372	2014006299	N	\N	2014-07-06 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-10480	72357323	6125460	201300002224	\N	\N	2013-01-26 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-17795	74800646	6466112	14-00184	\N	\N	2014-01-16 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-20356	69477713	6135295	2013000002	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-2195	70219180	6273508	F1308010017	\N	\N	2013-08-01 00:00:00	R	10	6	\N	0	C	\N	\N	\N	\N
-17728	68706951	6199664	2013013224	\N	\N	2013-04-15 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-20356	69477714	6135295	2013000003	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-2195	70238509	6273508	1309040260	\N	\N	2013-08-11 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-10480	72356408	6125460	201300000614	\N	\N	2013-01-01 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-10480	72360915	6125460	201300006387	\N	\N	2013-01-27 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-20356	69478653	6135295	2013000354	N	\N	2013-01-14 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-20289	73627108	6468605	PD154009931	\N	\N	2014-01-19 00:00:00	\N	16	2	2015-09-16 00:00:00	0	C	\N	\N	\N	\N
-2124	72752788	6117113	201300000065	\N	\N	2013-01-02 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-20160	71869003	6291423	2014-00755	N	\N	2013-08-24 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-17495	70908815	6132435	1993-096476	\N	\N	2013-01-10 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-2203	74218578	6697519	201400024455	\N	\N	2014-12-05 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-2203	74219425	6697519	201400025693	\N	\N	2014-12-24 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-8436	69036860	6123417	130013000004	N	\N	2013-01-01 00:00:00	R	0	2	2013-05-03 00:00:00	0	C	\N	\N	\N	\N
-14930	71310077	6129871	201308000239	\N	\N	2013-01-17 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-18439	68610568	6133379	1301071605	\N	\N	2013-01-07 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-18750	71263011	6133689	113000006-A	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-8436	69036861	6123417	130013000009	\N	\N	2013-01-02 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-20601	72633799	6135540	1300063	\N	\N	2013-01-01 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-20599	72604837	6135538	1400986	\N	\N	2013-01-22 00:00:00	\N	11	2	2014-03-24 00:00:00	0	C	\N	\N	\N	\N
-20599	72598347	6135538	1300015	\N	\N	2013-01-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-20601	72633830	6135540	1300495	\N	\N	2013-01-09 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-20599	72598348	6135538	1300030	\N	\N	2013-01-01 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-14930	71136807	6241531	201300181160	\N	\N	2013-06-16 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-14930	71316430	6241531	201400300840	\N	\N	2013-06-01 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-20599	72598489	6135538	1302110	\N	\N	2013-01-15 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-14930	75500276	6665298	201400328894	\N	\N	2014-10-15 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-18608	69663247	6356868	2013-003488	\N	\N	2013-11-10 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-20160	71864757	6291423	2013-01552	\N	\N	2013-08-05 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-17693	68641692	6132633	062013000042	\N	\N	2013-01-01 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-2203	70288594	6117192	201300000078	\N	\N	2013-01-02 00:00:00	R	14	6	\N	0	C	\N	\N	\N	\N
-17693	68641693	6132633	062013000068	\N	\N	2013-01-02 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-20601	72635644	6180204	1303534	\N	\N	2013-03-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-18509	71646021	6133449	12-4410A	\N	\N	2013-01-01 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-17693	68642601	6221961	062013005472	\N	\N	2013-05-01 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-18509	71646020	6334437	1034664	N	\N	2013-10-17 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-23253	68645933	6137080	130013	\N	\N	2013-01-09 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-17693	68642602	6221961	062013005474	\N	\N	2013-05-01 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-18750	71268549	6133689	4-1010-IT-13	N	\N	2013-01-02 00:00:00	R	12	6	\N	0	C	\N	\N	\N	\N
-17495	70908816	6132435	1993-096666	\N	\N	2013-01-07 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-20601	72633798	6135540	1300023	\N	\N	2013-01-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-23253	68645932	6137080	130012	\N	\N	2013-01-08 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-20841	73446791	6469157	14B15101	\N	\N	2014-01-06 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-18608	69663250	6356868	2013-003500	\N	\N	2013-11-12 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-2203	70287789	6117192	201300000012	\N	\N	2013-01-01 00:00:00	R	1	6	\N	0	C	\N	\N	\N	\N
-18633	69861236	6289896	1308000806SH	N	\N	2013-08-21 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-8436	69036947	6279741	130013001154	\N	\N	2013-08-01 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-20601	72635645	6180204	1303548	\N	\N	2013-03-01 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-20601	72635641	6135540	1303510	\N	\N	2013-01-24 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-8436	69036948	6279741	130013001169	N	\N	2013-08-03 00:00:00	\N	15	4	2013-08-04 00:00:00	0	C	\N	\N	\N	\N
-18166	71643478	6267098	1303830	\N	\N	2013-07-05 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-18607	69653628	6379199	2013-003178	\N	\N	2013-12-13 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-17616	68684349	6132556	1301-0001	\N	\N	2013-01-01 00:00:00	\N	3	4	2013-01-04 00:00:00	0	C	\N	\N	\N	\N
-18608	69662280	6312204	2013-002991	\N	\N	2013-09-28 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
-4532	71372432	6119520	012013-20003	\N	\N	2013-01-22 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-8432	69024063	6279737	130800000278	\N	\N	2013-08-19 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-8432	69025893	6257405	131270000164	\N	\N	2013-07-15 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-17437	68051366	6333365	13X3611OF	\N	\N	2013-10-01 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-14594	70641933	6129535	201300135	\N	\N	2013-01-04 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-17703	68647704	6132643	12000000286	\N	\N	2013-01-03 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-5998	70985805	6165650	14ISPC000294	\N	\N	2013-03-25 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-17437	68050420	6333365	13X31003AR	\N	\N	2013-10-17 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-1965	70188608	6295610	CR2013-0346	\N	\N	2013-09-14 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-17616	68688513	6132556	1307-0310	N	\N	2013-01-18 00:00:00	R	13	6	\N	0	C	\N	\N	\N	\N
-17759	69698089	6311355	13-39732	N	\N	2013-09-22 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-5998	70985806	6366638	14ISPC000763	N	\N	2013-12-18 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-749	68950864	6115740	13000367600	\N	\N	2013-01-23 00:00:00	R	13	6	\N	0	C	\N	\N	\N	\N
-8432	69024070	6123413	130840000016	\N	\N	2013-01-03 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-749	68950865	6115740	13000368200	\N	\N	2013-01-23 00:00:00	R	14	6	\N	0	C	\N	\N	\N	\N
-15314	71367148	6264247	13-1051-OF	\N	\N	2013-07-03 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-15314	71367175	6264247	13-1129-OF	\N	\N	2013-07-16 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-14594	70641932	6129535	201300134	\N	\N	2013-01-08 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-18607	69653562	6356867	2013-002805	N	\N	2013-11-07 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-17437	68051415	6378029	13X3798OF	\N	\N	2013-12-26 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-17439	68055165	6132379	13X446OF	\N	\N	2013-01-14 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-8432	69024062	6257405	130800000178	\N	\N	2013-07-05 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-17437	68051401	6378029	13X3745OF	\N	\N	2013-12-02 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-18607	69653604	6356867	2013-003038	\N	\N	2013-11-30 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-17439	68053296	6132379	13X41AR	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-17703	68647782	6132643	1300001102	\N	\N	2013-01-08 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-6607	74391052	6454972	01869921	\N	\N	2014-01-09 00:00:00	\N	16	2	2014-02-24 00:00:00	0	C	\N	\N	\N	\N
-8432	69025869	6279737	130840002439	\N	\N	2013-08-15 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-6607	68299736	6143927	01684186	\N	\N	2013-02-02 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-1965	70188607	6273278	CR2013-0328	\N	\N	2013-08-29 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-17617	68691968	6132557	2013-01-185	N	\N	2013-01-15 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-18608	69661505	6312204	2013-002891	\N	\N	2013-09-22 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-17759	69693788	6311355	13-33492	\N	\N	2013-09-08 00:00:00	\N	13	4	2013-09-09 00:00:00	0	C	\N	\N	\N	\N
-8432	69024069	6123413	130840000011	N	\N	2013-01-01 00:00:00	\N	22	2	2013-02-25 00:00:00	0	C	\N	\N	\N	\N
-4573	71507280	6208889	N13-17282	\N	\N	2013-05-18 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-4573	71507179	6208889	N13-16138	\N	\N	2013-05-10 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-4532	71372433	6119520	012013-20005	\N	\N	2013-01-29 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-17617	68691884	6132557	2013-01-007	\N	\N	2013-01-01 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-8432	69025894	6257405	131270000171	\N	\N	2013-07-30 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-6581	68264815	6121569	01857290	\N	\N	2013-01-02 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-6581	68264801	6367221	01854139	\N	\N	2013-12-14 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-1826	69430140	6116815	11CN13000009	\N	\N	2013-01-01 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
-9085	70602952	6124066	130130000020	N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-1831	69591011	6116820	201300006	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-18608	69660580	6289872	2013-002406	\N	\N	2013-08-09 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-1831	69592780	6116820	201301440	\N	\N	2013-01-25 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-8826	69738727	6123807	130130000547	N	\N	2013-01-18 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-1826	69430139	6116815	11CN13000006	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-8852	71958195	6123833	130131000001	\N	\N	2013-01-01 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-8459	69074393	6212768	130120003867	\N	\N	2013-05-19 00:00:00	\N	\N	4	2013-05-19 00:00:00	0	C	\N	\N	\N	\N
-4572	71483034	6119560	13-00044	\N	\N	2013-01-01 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-8459	69075291	6123440	130350000565	\N	\N	2013-01-17 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-18608	69654518	6133548	2013-000265	\N	\N	2013-01-27 00:00:00	\N	17	4	2013-02-06 00:00:00	0	C	\N	\N	\N	\N
-7308	70339251	6122295	201300005090	\N	\N	2013-01-22 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-18438	68608733	6267370	1307010840	N	\N	2013-07-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-8826	69738728	6123807	130130000559	\N	\N	2013-01-18 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-7042	70062467	6122029	01669983	\N	\N	2013-01-02 00:00:00	R	16	6	\N	0	C	\N	\N	\N	\N
-17730	75383786	6466047	14074632	N	\N	2014-01-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-1826	69431788	6116815	11CN13000454	\N	\N	2013-01-14 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-6581	68258341	6121569	01659928	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-7308	70335342	6122295	201300000032	\N	\N	2013-01-01 00:00:00	R	13	6	\N	0	C	\N	\N	\N	\N
-8459	69076217	6168104	130350002461	\N	\N	2013-03-14 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-18438	68608020	6267370	1307010439	N	\N	2013-07-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-19944	75327995	6468260	14-12110	\N	\N	2014-01-21 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-8459	69077142	6212768	130350004350	\N	\N	2013-05-09 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
-8852	71954748	6324821	130130032421	N	\N	2013-10-12 00:00:00	\N	17	3	2013-10-31 00:00:00	0	C	\N	\N	\N	\N
-8459	69076259	6190436	130350003023	\N	\N	2013-04-01 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-7042	70065277	6122029	01894058	\N	\N	2013-01-28 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
-17730	68724332	6155002	13012956	N	\N	2013-02-10 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-8852	71941923	6123833	130130000032	\N	\N	2013-01-01 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
-7308	70348606	6233955	201300016014	\N	\N	2013-06-18 00:00:00	R	14	6	\N	0	C	\N	\N	\N	\N
-7640	68062611	6122623	13000001	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-1831	69591012	6116820	201300011	\N	\N	2013-01-01 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
-18608	69660581	6289872	2013-002407	\N	\N	2013-08-09 00:00:00	\N	23	4	2013-08-28 00:00:00	0	C	\N	\N	\N	\N
-1831	69592779	6116820	201301439	\N	\N	2013-01-24 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-17437	68051355	6132377	13X358OF	\N	\N	2013-01-22 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-8459	69076260	6190436	130350003025	\N	\N	2013-04-01 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-1826	69431789	6116815	11CN13000459	\N	\N	2013-01-13 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-19944	69106457	6157215	13-18245	\N	\N	2013-02-05 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
-6581	68264783	6367221	01850907	\N	\N	2013-12-05 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-8459	69074394	6168104	130130001468	N	\N	2013-03-13 00:00:00	R	\N	4	2013-03-15 00:00:00	0	C	\N	\N	\N	\N
-18608	69654517	6133548	2013-000264	N	\N	2013-01-27 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-6963	70015771	6121950	01664828	\N	\N	2013-01-04 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-8852	71959094	6324821	130131000313	\N	\N	2013-10-27 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-8459	69075292	6123440	130350000574	\N	\N	2013-01-17 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-7042	70065282	6122029	01925787	\N	\N	2013-01-26 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-6580	68256350	6121568	01662208	\N	\N	2013-01-02 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-7042	70062468	6122029	01669984	\N	\N	2013-01-17 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
-7308	70347757	6233955	201300015557	\N	\N	2013-06-13 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-4572	71483961	6119560	13-01817	\N	\N	2013-01-24 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-15527	72884615	6508745	RM14047011	\N	\N	2014-03-18 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-8868	72017466	6123849	130000000513	N	\N	2013-01-23 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-15535	67950816	6130476	201300000005	\N	\N	2013-01-01 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-23201	70557435	6137029	2013-000205	\N	\N	2013-01-15 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-15535	67950817	6130476	201300000010	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-15629	68014679	6152902	YCT13014	\N	\N	2013-02-12 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-8369	68896737	6324338	130540009791	N	\N	2013-10-27 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-4531	71303240	6119519	201300300004	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-8335	68416584	6123316	131323900354	N	\N	2013-01-29 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-15629	68016521	6152902	13000778	\N	\N	2013-02-15 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-18608	69664903	6379200	2013-004006	\N	\N	2013-12-30 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-20473	71837029	6135412	20130000001	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-20473	71841702	6157744	20130003084	\N	\N	2013-02-13 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-17440	68055308	6355700	13K1128AR	\N	\N	2013-11-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-17440	68055316	6132380	13K13AR	\N	\N	2013-01-08 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-8369	68897559	6279674	131200000193	\N	\N	2013-08-06 00:00:00	\N	\N	2	2013-08-07 00:00:00	0	C	\N	\N	\N	\N
-15629	68014680	6152902	YCT13015	\N	\N	2013-02-13 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-15629	68014707	6130570	13000004	\N	\N	2013-01-01 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-4531	71305065	6119519	201300301165	\N	\N	2013-01-16 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-17440	68055319	6132380	13K14AR	\N	\N	2013-01-09 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-15629	68014708	6130570	13000005	\N	\N	2013-01-01 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-20789	67746805	6135728	13-00023	\N	\N	2013-01-02 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-8369	68897560	6279674	131200000194	\N	\N	2013-08-06 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-18608	69664027	6356868	2013-003623	\N	\N	2013-11-21 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-20789	67746806	6135728	13-00054	\N	\N	2013-01-03 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-20473	71841704	6157744	20130003090	\N	\N	2013-02-13 00:00:00	\N	12	2	2013-02-14 00:00:00	0	C	\N	\N	\N	\N
-6881	69895747	6121868	01670097	\N	\N	2013-01-06 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-6881	69896553	6121868	01806057	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-8369	68894926	6302006	130540004873	\N	\N	2013-09-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-8369	68896756	6324338	130540010147	\N	\N	2013-10-28 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-8369	68893098	6168014	130500000236	N	\N	2013-03-05 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-8369	68893099	6302006	130500001027	\N	\N	2013-09-17 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-19711	68030161	6156982	130067956	\N	\N	2013-02-27 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-8335	68416585	6123316	131323900357	N	\N	2013-01-31 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-8369	68893970	6168014	130540001616	\N	\N	2013-03-01 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-8560	68587181	6168205	130000130170	\N	\N	2013-03-13 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-19711	76093878	6468027	110060168	\N	\N	2014-01-10 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-6511	68167150	6121499	01663551	\N	\N	2013-01-02 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-8868	72017465	6280173	130000000095	N	\N	2013-08-24 00:00:00	R	22	6	\N	0	C	\N	\N	\N	\N
-20473	71837862	6135412	20130000155	N	\N	2013-01-03 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-9064	70387183	6168709	130001302510	\N	\N	2013-03-17 00:00:00	R	1	6	\N	0	C	\N	\N	\N	\N
-17516	70738774	6177120	20130325891	\N	\N	2013-03-25 00:00:00	\N	22	2	2013-03-25 00:00:00	0	C	\N	\N	\N	\N
-9064	70384509	6124045	130001300933	N	\N	2013-01-26 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
-18295	72038308	6133235	13-0080	N	\N	2013-01-11 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-2121	72751999	6117110	1300000068	\N	\N	2013-01-03 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-17559	68555815	6132499	1301-0013	N	\N	2013-01-14 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-2121	72752000	6117110	1300000095	\N	\N	2013-01-04 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-8332	77449819	6456690	141020000025	\N	\N	2014-01-24 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-8863	72010662	6302500	130610006817	\N	\N	2013-09-02 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-7640	68066315	6144955	13001227	\N	\N	2013-02-20 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-2090	72710834	6228739	13W24279	\N	\N	2013-06-26 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-8863	72010663	6123844	130620000102	N	\N	2013-01-11 00:00:00	R	\N	4	2013-04-01 00:00:00	0	C	\N	\N	\N	\N
-18608	69657051	6200544	2013-001080	\N	\N	2013-04-16 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-8335	68416654	6145648	131323900559	\N	\N	2013-02-16 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-9064	70387161	6168709	130001302384	\N	\N	2013-03-12 00:00:00	R	18	6	\N	0	C	\N	\N	\N	\N
-17516	70743285	6177120	20130501643	\N	\N	2013-03-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-9064	70383552	6124045	130001300004	N	\N	2013-01-01 00:00:00	R	2	6	\N	0	C	\N	\N	\N	\N
-2123	72752219	6117112	201300000031	\N	\N	2013-01-01 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
-18295	72039937	6334223	13-8739	N	\N	2013-10-11 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-2123	72752220	6117112	201300000036	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-18295	72039938	6334223	13-8800	N	\N	2013-10-11 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-8554	68578738	6123535	130013000333	N	\N	2013-01-31 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-8554	68577950	6123535	130013000009	\N	\N	2013-01-03 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-2123	72752489	6251104	201300014872	\N	\N	2013-07-01 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-8554	68577951	6123535	130013000016	N	\N	2013-01-03 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-7640	75106855	6456000	14000091	\N	\N	2014-01-05 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-2123	72752491	6251104	201300014898	\N	\N	2013-07-02 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-17440	68056108	6311036	13K140OF	\N	\N	2013-09-25 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-17559	68555814	6132499	1301-0011	N	\N	2013-01-14 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-2090	72710482	6228739	13W18714	\N	\N	2013-06-02 00:00:00	\N	3	4	2013-06-02 00:00:00	0	C	\N	\N	\N	\N
-17440	68056109	6311036	13K141OF	\N	\N	2013-09-30 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-8332	68405560	6145645	131020000049	\N	\N	2013-02-04 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-17730	68793491	6378322	13117985	\N	\N	2013-12-21 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-8335	77459054	6456693	141423900437	\N	\N	2014-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-8554	68585465	6123535	130013003815	N	\N	2013-01-01 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-17730	68793492	6378322	13118010	\N	\N	2013-12-21 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-19944	69042159	6134883	13-10044	\N	\N	2013-01-14 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-8548	68494781	6123529	130110000029	\N	\N	2013-01-04 00:00:00	R	\N	4	2013-03-26 00:00:00	0	C	\N	\N	\N	\N
-8711	67976612	6123692	130130000001	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-8417	69010111	6279722	130110003335	\N	\N	2013-08-16 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-8791	69517130	6302428	130610008209	N	\N	2013-09-21 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-6986	70027109	6121973	01666266	\N	\N	2013-01-04 00:00:00	\N	16	3	2013-02-11 00:00:00	0	C	\N	\N	\N	\N
-20900	74332876	6514116	14-100074	\N	\N	2014-03-29 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-18608	69663256	6356868	2013-003523	\N	\N	2013-11-13 00:00:00	\N	10	4	2013-11-27 00:00:00	0	C	\N	\N	\N	\N
-6986	70027162	6188969	01715446	\N	\N	2013-04-16 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-8799	69570496	6123780	130201300001	\N	\N	2013-01-01 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
-19944	69042166	6134883	13-10056	\N	\N	2013-01-20 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-20900	72125084	6135839	13-12848	\N	\N	2013-01-11 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-6986	70028125	6121973	01882466	\N	\N	2013-01-24 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-18199	71387011	6133139	2013-4622-6	N	\N	2013-01-17 00:00:00	\N	10	4	2013-02-20 00:00:00	0	C	\N	\N	\N	\N
-18199	71376120	6133139	2013-3209	N	\N	2013-01-20 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-8826	72918359	6457184	140140000018	N	\N	2014-01-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-8791	69513670	6280096	130600000743	\N	\N	2013-08-06 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-8711	68005201	6190688	130140007313	N	\N	2013-04-09 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-17529	70853612	6132469	2013-0382	N	\N	2013-01-25 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-17529	70853613	6132469	2013-0383	\N	\N	2013-01-30 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-6607	68299731	6121595	01673527	\N	\N	2013-01-03 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-8799	69570493	6168444	130020130539	N	\N	2013-03-01 00:00:00	R	16	6	\N	0	C	\N	\N	\N	\N
-8791	69517114	6280096	130610007936	N	\N	2013-08-01 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-6986	70028128	6188969	01912695	\N	\N	2013-04-14 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-6799	69816472	6121787	01665812	\N	\N	2013-01-06 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-8791	69516193	6235432	130610005174	\N	\N	2013-06-25 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-8799	69572250	6168444	130201300565	\N	\N	2013-03-03 00:00:00	R	13	6	\N	0	C	\N	\N	\N	\N
-8548	68494039	6123529	130100000017	\N	\N	2013-01-07 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-8711	67986045	6190688	130130008080	\N	\N	2013-04-29 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-6587	68275208	6367227	01848822	\N	\N	2013-12-02 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-8548	68494782	6123529	130110000037	\N	\N	2013-01-04 00:00:00	\N	23	2	2013-02-19 00:00:00	0	C	\N	\N	\N	\N
-8799	69570494	6168444	130020130599	N	\N	2013-03-06 00:00:00	R	16	6	\N	0	C	\N	\N	\N	\N
-8417	69010112	6279722	130110003338	N	\N	2013-08-11 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-8711	67976615	6123692	130130000026	\N	\N	2013-01-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-8548	68494040	6123529	130100000071	\N	\N	2013-01-23 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-8826	69738766	6146139	130130000978	\N	\N	2013-02-01 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-20900	76457241	6514116	14-902271	\N	\N	2014-03-29 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-8417	69010100	6123398	130110000324	N	\N	2013-01-30 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-18199	71360640	6133139	13-2485	N	\N	2013-01-22 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-8799	69570497	6123780	130201300002	\N	\N	2013-01-01 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
-17529	70852727	6132469	2013-0013	\N	\N	2013-01-02 00:00:00	\N	0	2	2013-01-06 00:00:00	0	C	\N	\N	\N	\N
-8791	69514473	6123772	130610000908	\N	\N	2013-01-19 00:00:00	\N	\N	2	2013-02-20 00:00:00	0	C	\N	\N	\N	\N
-8799	69572356	6168444	130201300812	\N	\N	2013-03-26 00:00:00	R	5	6	\N	0	C	\N	\N	\N	\N
-7583	67941061	6167234	13-3793-OF	\N	\N	2013-03-18 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-8791	69513671	6302428	130600000878	\N	\N	2013-09-18 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-7583	67931629	6167234	13-2653-OF	\N	\N	2013-03-02 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-17529	70852728	6132469	2013-0017	N	\N	2013-01-02 00:00:00	\N	14	4	2013-01-08 00:00:00	0	C	\N	\N	\N	\N
-6587	68275219	6367227	01853580	\N	\N	2013-12-12 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-17759	69685886	6222027	13-19208	N	\N	2013-05-18 00:00:00	\N	7	4	2013-05-28 00:00:00	0	C	\N	\N	\N	\N
-18747	68428282	6267678	1307017001ME	\N	\N	2013-07-26 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-20289	69325653	6179892	13300239	\N	\N	2013-03-28 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-18747	74233192	6624213	1408001083ME	N	\N	2014-08-03 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-19941	68924209	6313536	13-144144	\N	\N	2013-09-12 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-9028	68964188	6146341	130120001008	\N	\N	2013-02-01 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-6590	68287548	6143910	01816952	\N	\N	2013-02-10 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-6861	69893205	6121848	01678753	\N	\N	2013-01-17 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-9029	68989946	6258002	130130060857	N	\N	2013-07-09 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-17795	69853384	6132735	13-01145	\N	\N	2013-01-14 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-9048	74449461	6457406	140140021883	\N	\N	2014-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-9049	69294590	6168694	131303260019	\N	\N	2013-03-26 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-6590	68283787	6143910	01755624	\N	\N	2013-02-26 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-20841	67864753	6135780	13B01935	\N	\N	2013-01-17 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-9048	69157260	6146361	130130014533	N	\N	2013-02-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-20841	67864754	6135780	13B01936	\N	\N	2013-01-17 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-9029	68968772	6124010	130130000029	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-750	69001651	6115741	13-00001-1	\N	\N	2013-01-01 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
-6590	68279886	6121578	01660093	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-9029	68989940	6258002	130130060727	N	\N	2013-07-11 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-6590	68279887	6121578	01661109	\N	\N	2013-01-01 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-6809	69820789	6121797	01662905	\N	\N	2013-01-01 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-572	69934776	6115563	13-00007-1	\N	\N	2013-01-01 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-9028	68964189	6146341	130120001081	\N	\N	2013-02-03 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-6590	68290332	6121578	01867488	\N	\N	2013-01-10 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-19637	67758007	6134576	201300000777	\N	\N	2013-01-11 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-17759	69685004	6222027	13-17618	\N	\N	2013-05-14 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-17795	69852456	6132735	13-00011	\N	\N	2013-01-01 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-9029	68968771	6124010	130130000027	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-6590	68290334	6121578	01868454	\N	\N	2013-01-11 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-18747	74233193	6624213	1408001084ME	\N	\N	2014-08-03 00:00:00	\N	4	4	2014-08-05 00:00:00	0	C	\N	\N	\N	\N
-572	69935566	6115563	13-00478-1	\N	\N	2013-01-26 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-571	69925893	6115562	2013-0002	\N	\N	2013-01-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-18271	75962539	6466588	20140314585	N	\N	2014-01-30 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-9028	68964140	6168673	130100000227	\N	\N	2013-03-18 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-8791	69514476	6123772	130610000944	\N	\N	2013-01-01 00:00:00	\N	\N	2	2013-09-30 00:00:00	0	C	\N	\N	\N	\N
-9028	68964141	6168673	130100000277	\N	\N	2013-03-27 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-19637	67758008	6134576	201300000783	\N	\N	2013-01-11 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-571	69927635	6115562	2013-0843	\N	\N	2013-01-18 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-19941	68918894	6313536	13-137213	\N	\N	2013-09-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-18747	68428281	6267678	1307017000ME	\N	\N	2013-07-26 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-20289	69325652	6179892	13300238	N	\N	2013-03-31 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-18271	72008521	6155543	20131170520	\N	\N	2013-02-17 00:00:00	\N	3	2	2014-01-14 00:00:00	0	C	\N	\N	\N	\N
-2239	72734869	6117228	1200616887	\N	\N	2013-01-10 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-9028	68964155	6124009	130120000004	\N	\N	2013-01-01 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-6559	68241148	6255539	01798046	\N	\N	2013-07-06 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-20514	77301704	6491280	14ES00768	\N	\N	2014-02-08 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-20132	69530005	6291395	2013-015204	N	\N	2013-08-20 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-8443	69047922	6235084	132013003528	\N	\N	2013-06-01 00:00:00	R	9	6	\N	0	C	\N	\N	\N	\N
-12048	70177482	6372663	13-2248-AR	\N	\N	2013-12-21 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-20475	72008331	6336402	2013046219	\N	\N	2013-10-09 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-2239	72741425	6184224	1300233187	\N	\N	2013-04-16 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-2239	72741426	6184224	1300233204	\N	\N	2013-04-16 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-12048	70183143	6127011	13-428-OF	N	\N	2013-01-27 00:00:00	R	10	6	\N	0	C	\N	\N	\N	\N
-2239	73807090	6540405	1400453540	\N	\N	2014-05-30 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-9029	68969651	6124010	130130002003	\N	\N	2013-01-09 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-20475	71971125	6269406	2013032501	N	\N	2013-07-21 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-6559	68241142	6121547	01798000	\N	\N	2013-01-14 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-8791	69517185	6324760	130610009243	N	\N	2013-10-21 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-8725	69380202	6302362	130810002241	\N	\N	2013-09-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-20512	72362569	6381103	13CCSD005109	\N	\N	2013-12-13 00:00:00	\N	13	5	2013-12-20 00:00:00	0	C	\N	\N	\N	\N
-20475	72016691	6336402	2013049198	\N	\N	2013-10-30 00:00:00	\N	18	2	2013-11-30 00:00:00	0	C	\N	\N	\N	\N
-6654	68392925	6166306	01693853	\N	\N	2013-03-04 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-12048	70172732	6127011	13-10-AR	\N	\N	2013-01-02 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-2239	74295326	6540405	1400308079	\N	\N	2014-05-20 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-21808	68074318	6360067	212075625	\N	\N	2013-11-02 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-20514	72378591	6135453	13ES00018	N	\N	2013-01-02 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-8725	69378410	6123706	130810000184	N	\N	2013-01-20 00:00:00	\N	14	4	2013-01-21 00:00:00	0	C	\N	\N	\N	\N
-11997	68787793	6126960	13-39-OF	\N	\N	2013-01-30 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-20514	77301688	6491280	14ES00624	\N	\N	2014-02-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-20132	69530004	6291395	2013-015135	N	\N	2013-08-19 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-8725	69379247	6190702	130810000839	\N	\N	2013-04-04 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-9028	68964156	6124009	130120000005	\N	\N	2013-01-01 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-18607	69653591	6356867	2013-002954	\N	\N	2013-11-21 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-9043	69082978	6124024	131540000026	\N	\N	2013-01-16 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-512	69806973	6249495	201300003571	\N	\N	2013-07-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-2239	72734600	6117228	1200478175	\N	\N	2013-01-07 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-17526	70800547	6132466	201301000017	N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-20475	71974601	6135414	2013033956	N	\N	2013-01-15 00:00:00	\N	8	2	2013-09-18 00:00:00	0	C	\N	\N	\N	\N
-6559	68241124	6188543	01796473	\N	\N	2013-04-02 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-512	69798399	6115503	201300000008	\N	\N	2013-01-01 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-8791	69517104	6324760	130610007679	\N	\N	2013-10-03 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-8443	69041484	6123424	132013000009	\N	\N	2013-01-01 00:00:00	R	10	6	\N	0	C	\N	\N	\N	\N
-8725	69378377	6302362	130350009789	\N	\N	2013-09-08 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-20475	71880743	6336402	1302050112	\N	\N	2013-10-15 00:00:00	\N	14	4	2013-11-30 00:00:00	0	C	\N	\N	\N	\N
-9029	68969650	6124010	130130001982	\N	\N	2013-01-09 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-17687	68451149	6154959	012013033890	N	\N	2013-02-25 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-512	69807832	6249495	201300003989	\N	\N	2013-07-20 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-12048	70176627	6372663	13-2173-AR	\N	\N	2013-12-07 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-8443	69041485	6123424	132013000013	\N	\N	2013-01-01 00:00:00	R	12	6	\N	0	C	\N	\N	\N	\N
-11997	68787764	6171624	13-137-OF	\N	\N	2013-03-06 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-512	69806977	6115503	201300003581	\N	\N	2013-01-07 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
-6654	68392926	6166306	01693873	\N	\N	2013-03-02 00:00:00	\N	23	2	2013-04-10 00:00:00	0	C	\N	\N	\N	\N
-20475	71980395	6269406	2013035928	\N	\N	2013-07-11 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-8725	69379244	6190702	130810000830	\N	\N	2013-04-03 00:00:00	\N	20	2	2013-05-07 00:00:00	0	C	\N	\N	\N	\N
-9043	69086712	6124024	139430000005	N	\N	2013-01-24 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-20514	72378643	6135453	13ES00468	N	\N	2013-01-25 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-746	68939694	6115737	13-01001-1	\N	\N	2013-01-28 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-8442	69039610	6123423	130110000048	\N	\N	2013-01-05 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-18119	71791592	6334047	CR13-134308	\N	\N	2013-10-14 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-4479	68646486	6119467	201300001904	\N	\N	2013-01-27 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-8083	70375905	6123064	13-1-OF	N	\N	2013-01-01 00:00:00	R	1	6	\N	0	C	\N	\N	\N	\N
-18120	71797884	6356380	CR13-134854	\N	\N	2013-11-18 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-20704	71068263	6135643	K13000011	\N	\N	2013-01-01 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
-18438	75631690	6466755	150104-1151	N	\N	2014-01-04 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-4478	68643173	6119466	201300000382	\N	\N	2013-01-07 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-8442	69039600	6190419	130100000337	N	\N	2013-04-23 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-4479	74574475	6587544	201400017854	\N	\N	2014-07-25 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-8807	69608230	6235448	130620003442	N	\N	2013-06-07 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-8765	69449036	6123746	130000000343	\N	\N	2013-01-05 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-6590	68279911	6121578	01663178	\N	\N	2013-01-06 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-18001	71656755	6266933	13AP14894	\N	\N	2013-07-31 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-8807	69605721	6123788	130620000233	N	\N	2013-01-19 00:00:00	\N	17	4	2013-01-20 00:00:00	0	C	\N	\N	\N	\N
-8442	69039732	6212751	130110002477	N	\N	2013-05-01 00:00:00	\N	\N	2	2014-01-21 00:00:00	0	C	\N	\N	\N	\N
-4479	74572826	6587544	201400013248	\N	\N	2014-07-12 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-17615	73434998	6465932	201401-0288	N	\N	2014-01-10 00:00:00	R	12	6	\N	0	C	\N	\N	\N	\N
-4573	77070364	6452938	N14-22612	\N	\N	2014-01-26 00:00:00	\N	0	2	2014-10-23 00:00:00	0	C	\N	\N	\N	\N
-8443	69043394	6168088	132013001393	\N	\N	2013-03-01 00:00:00	R	9	6	\N	0	C	\N	\N	\N	\N
-18120	71828476	6133060	201300276811	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-18120	71818256	6222388	201300241718	\N	\N	2013-05-18 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-20704	73927851	6558820	K14300404	\N	\N	2014-05-29 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
-18119	71791569	6334047	CR13-134130	\N	\N	2013-10-15 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-4479	68645715	6119467	201300000162	\N	\N	2013-01-03 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-18107	71722606	6133047	13-0026	\N	\N	2013-01-08 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-17526	70826837	6266458	201307034295	N	\N	2013-07-28 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-7117	68093920	6122104	01696730	\N	\N	2013-01-08 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-8442	69039611	6123423	130110000080	\N	\N	2013-01-08 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-18608	76209569	6466925	2014-000222	N	\N	2014-01-21 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-18438	68607036	6155710	1302021129	N	\N	2013-02-01 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-4479	68646487	6119467	201300001954	\N	\N	2013-01-29 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-7117	68093941	6122104	01702485	\N	\N	2013-01-01 00:00:00	R	8	6	\N	0	C	\N	\N	\N	\N
-4478	68643172	6119466	201300000264	\N	\N	2013-01-05 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-18120	71830410	6222388	201300284807	\N	\N	2013-05-25 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-18608	69655333	6155880	2013-000464	\N	\N	2013-02-16 00:00:00	\N	2	4	2013-02-23 00:00:00	0	C	\N	\N	\N	\N
-17615	68656688	6154887	201302-0223	\N	\N	2013-02-08 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-18119	71797067	6133059	201300131108	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-20704	71068262	6135643	K13000009	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-8442	69039601	6212751	130100000347	\N	\N	2013-05-06 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-8443	69047923	6235084	132013003529	\N	\N	2013-06-01 00:00:00	R	10	6	\N	0	C	\N	\N	\N	\N
-18271	72421338	6155543	20130130406	\N	\N	2013-02-09 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-8442	69039733	6190419	130110002516	N	\N	2013-04-01 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-7117	68093056	6122104	01663528	\N	\N	2013-01-05 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-18120	71798939	6356380	CR13-291682	\N	\N	2013-11-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-8807	69605697	6235448	130600000570	\N	\N	2013-06-15 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-7117	68093058	6122104	01664227	\N	\N	2013-01-03 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-8443	69043395	6168088	132013001394	N	\N	2013-03-01 00:00:00	R	9	6	\N	0	C	\N	\N	\N	\N
-18001	71655902	6266933	13AP13816	\N	\N	2013-07-18 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-20704	73927850	6558820	K14300403	\N	\N	2014-05-29 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-8083	70385937	6123064	13-63-AR	\N	\N	2013-01-11 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-8765	69449035	6123746	130000000307	N	\N	2013-01-04 00:00:00	R	15	6	\N	0	C	\N	\N	\N	\N
-4479	68645716	6119467	201300000163	\N	\N	2013-01-04 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-17526	70826836	6266458	201307034291	\N	\N	2013-07-28 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-6212	67849338	6121200	1301006	\N	\N	2013-01-15 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-20704	71106865	6135643	K14000852	\N	\N	2013-01-25 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-6843	69884412	6121831	01725760	\N	\N	2013-01-01 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-22851	71698861	6136887	HP13000024	\N	\N	2013-01-02 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-17527	70847304	6177131	13-0501	\N	\N	2013-03-14 00:00:00	\N	10	4	2013-03-14 00:00:00	0	C	\N	\N	\N	\N
-6211	67849225	6121199	131448	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-7583	67973284	6167234	13-970-AR	\N	\N	2013-03-31 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-6211	67848383	6299855	131004	\N	\N	2013-09-14 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-20152	69568038	6135091	13-9696	\N	\N	2013-01-16 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-20152	69568945	6291415	1382051597	\N	\N	2013-08-02 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-23224	67839986	6159383	2013-00538	\N	\N	2013-02-28 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-7126	68138125	6122113	01667594	\N	\N	2013-01-01 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-2090	72709462	6117079	13W00843	\N	\N	2013-01-08 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-7126	68138203	6122113	01701034	\N	\N	2013-01-30 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-15150	71213441	6130091	13-0490	\N	\N	2013-01-01 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-23224	67839987	6204047	2013-00712	\N	\N	2013-04-08 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-8797	69535281	6123778	130201300003	\N	\N	2013-01-01 00:00:00	R	14	6	\N	0	C	\N	\N	\N	\N
-20152	69568910	6202087	1382050742	\N	\N	2013-04-03 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-6211	67849311	6299855	13943	\N	\N	2013-09-02 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-7126	74244294	6545290	01921967	\N	\N	2014-05-03 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-15150	71212524	6130091	13-0007	\N	\N	2013-01-02 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-15150	71214381	6286415	13-1083	\N	\N	2013-08-01 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-20152	69568954	6291415	1382051768	\N	\N	2013-08-30 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-2090	72709463	6117079	13W00855	\N	\N	2013-01-08 00:00:00	\N	13	4	2013-03-12 00:00:00	0	C	\N	\N	\N	\N
-6843	69884413	6121831	01725761	\N	\N	2013-01-07 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-11951	68668296	6238574	13008567	N	\N	2013-06-10 00:00:00	R	19	6	\N	0	C	\N	\N	\N	\N
-14594	70648099	6151867	201302439	\N	\N	2013-02-22 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-17527	70847305	6177131	13-0503	\N	\N	2013-03-14 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-22851	71701669	6226215	HP13002051	\N	\N	2013-05-29 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-15150	71214256	6286415	13-0719	\N	\N	2013-08-12 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-8797	69535282	6123778	130201300028	\N	\N	2013-01-10 00:00:00	R	19	6	\N	0	C	\N	\N	\N	\N
-22851	71701619	6226215	HP13001834	\N	\N	2013-05-16 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-7126	68138126	6122113	01667595	\N	\N	2013-01-02 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-6212	67850292	6188196	131421	\N	\N	2013-04-26 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-14594	76020597	6462912	201400100	\N	\N	2014-01-06 00:00:00	R	18	6	\N	0	C	\N	\N	\N	\N
-20152	69568027	6202087	13-16152	N	\N	2013-04-27 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-6212	67857793	6121200	1344	\N	\N	2013-01-05 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-4573	71502621	6141893	N13-07361	\N	\N	2013-02-28 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-6212	67851203	6188196	131758	\N	\N	2013-04-16 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-6176	67800809	6165828	130840189	\N	\N	2013-03-25 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-7126	74244293	6545290	01921183	\N	\N	2014-05-03 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-11951	68645456	6126914	13000007	N	\N	2013-01-01 00:00:00	R	2	6	\N	0	C	\N	\N	\N	\N
-7126	68138220	6122113	01704291	\N	\N	2013-01-30 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-11951	68646316	6126914	13000360	\N	\N	2013-01-08 00:00:00	R	9	6	\N	0	C	\N	\N	\N	\N
-20704	71101358	6135643	K13012289	\N	\N	2013-01-01 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-11951	68670777	6238574	13009298	\N	\N	2013-06-23 00:00:00	R	21	6	\N	0	C	\N	\N	\N	\N
-6589	68278996	6277901	201300002510	\N	\N	2013-08-05 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-513	69815739	6115504	13010146	\N	\N	2013-01-20 00:00:00	R	13	6	\N	0	C	\N	\N	\N	\N
-10466	72332412	6125446	201300000286	\N	\N	2013-01-01 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-6268	67932194	6143588	JV13026	\N	\N	2013-02-18 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-6707	69735741	6121695	01671043	\N	\N	2013-01-16 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-6268	67932196	6121256	13001	\N	\N	2013-01-03 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-17920	69943785	6155192	08082213	N	\N	2013-02-05 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-10467	75829324	6503724	201400000792	\N	\N	2014-03-16 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-17790	69823236	6266722	RECLAIM013	\N	\N	2013-07-09 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-17919	69853134	6378511	12131278	\N	\N	2013-12-31 00:00:00	\N	1	4	2014-01-02 00:00:00	0	C	\N	\N	\N	\N
-2090	72711796	6340399	13W38797	\N	\N	2013-11-17 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-10557	72504858	6237197	2013000511	\N	\N	2013-06-08 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-17790	69830235	6378382	13-08100	\N	\N	2013-12-06 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-17790	69830237	6378382	13-08102	\N	\N	2013-12-05 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-513	69815740	6115504	13010154	\N	\N	2013-01-22 00:00:00	R	10	6	\N	0	C	\N	\N	\N	\N
-17920	69926222	6155192	02061013	\N	\N	2013-02-27 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-17891	69650884	6132831	1301020018	N	\N	2013-01-17 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-17759	69691116	6289023	13-28695	\N	\N	2013-08-04 00:00:00	\N	8	2	2013-08-04 00:00:00	0	C	\N	\N	\N	\N
-17790	69823239	6132730	13-00091	\N	\N	2013-01-04 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-10467	72338706	6125447	201300000222	\N	\N	2013-01-31 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-17920	69921812	6132860	01000713	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-21331	72210876	6225598	131210123	\N	\N	2013-05-01 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-17919	69878653	6177523	13051236	N	\N	2013-03-25 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-10557	72503176	6125537	2013000006	\N	\N	2013-01-02 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-6707	69735742	6121695	01677138	\N	\N	2013-01-01 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
-21331	70385764	6225598	C48968211241	\N	\N	2013-05-06 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-10467	72337804	6125447	201300000020	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-11714	70259879	6126677	201300004402	\N	\N	2013-01-25 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-17920	69922610	6132860	01010213	N	\N	2013-01-05 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-6267	67928435	6121255	132026	\N	\N	2013-01-01 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-18608	69655386	6155880	2013-000565	\N	\N	2013-02-25 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-6267	67924507	6121255	13002	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-2090	72711734	6340399	13W36825	\N	\N	2013-11-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-6176	67800823	6165828	130860148	\N	\N	2013-03-27 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-10467	75839490	6503724	201500000669	N	\N	2014-03-11 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-11714	70259880	6126677	201300004406	\N	\N	2013-01-24 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-17891	69650883	6132831	1301019928	N	\N	2013-01-28 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-17919	69879529	6177523	13051464	N	\N	2013-03-01 00:00:00	\N	12	2	2013-06-03 00:00:00	0	C	\N	\N	\N	\N
-17790	69826820	6266722	13-04305	N	\N	2013-07-01 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-6176	67801770	6210492	131220171	\N	\N	2013-05-02 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-6176	67805520	6210492	132380074	\N	\N	2013-05-24 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-17790	69823238	6132730	13-00056	N	\N	2013-01-02 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-10557	72504849	6237197	2013000477	\N	\N	2013-06-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-17919	69852242	6132859	12070322	\N	\N	2013-01-07 00:00:00	\N	22	2	2013-01-08 00:00:00	0	C	\N	\N	\N	\N
-17920	69921811	6132860	01000613	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-10481	72376047	6237121	201300005375	\N	\N	2013-06-29 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-20955	69998395	6292218	201300254630	\N	\N	2013-08-17 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-2119	68836669	6295764	13-000464985	\N	\N	2013-09-27 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
-20900	74350695	6536566	14-122042	\N	\N	2014-04-03 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-20955	69987561	6247554	201300177450	\N	\N	2013-06-16 00:00:00	R	2	6	\N	0	C	\N	\N	\N	\N
-748	68942540	6138071	201300002316	\N	\N	2013-02-01 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-17891	69724007	6266823	1308821015	\N	\N	2013-07-11 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-20955	69984913	6247554	201300161173	\N	\N	2013-06-02 00:00:00	R	14	6	\N	0	C	\N	\N	\N	\N
-1831	73893144	6607347	201414236	\N	\N	2014-08-18 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-17920	69922611	6132860	01010313	\N	\N	2013-01-05 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-10481	72365389	6125461	201300001512	\N	\N	2013-01-23 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-730	70434395	6115721	1301621001	\N	\N	2013-01-12 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-6988	70032819	6211303	01932763	\N	\N	2013-05-30 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-730	70434334	6115721	1300211001	\N	\N	2013-01-02 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-2119	69280452	6295764	13-000463991	\N	\N	2013-09-26 00:00:00	\N	7	4	2013-10-07 00:00:00	0	C	\N	\N	\N	\N
-7117	68095839	6323092	01832010	\N	\N	2013-10-23 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-18747	68313296	6223014	1305017184ME	\N	\N	2013-05-28 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-749	76244907	6449117	14000402100	\N	\N	2014-01-26 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-8716	68079302	6168361	130130014242	\N	\N	2013-03-15 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
-8347	68444077	6123328	130013100002	\N	\N	2013-01-01 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-748	76238713	6449116	201400006259	N	\N	2014-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-20900	74332870	6536566	14-100000	\N	\N	2014-04-02 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-7512	67708207	6122499	13001739	\N	\N	2013-01-08 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-10481	72362709	6125461	201300000448	\N	\N	2013-01-01 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
-1831	73892192	6607347	201413194	\N	\N	2014-08-02 00:00:00	\N	1	2	2014-09-02 00:00:00	0	C	\N	\N	\N	\N
-17687	73684475	6578254	012013085381	N	\N	2014-06-02 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-6988	70029974	6211303	01750017	\N	\N	2013-05-22 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-20955	70000983	6292218	201300266663	\N	\N	2013-08-27 00:00:00	R	8	6	\N	0	C	\N	\N	\N	\N
-550	69859018	6115541	13-00001-1	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-2001	74022992	6607517	14-00047429	N	\N	2014-08-29 00:00:00	R	10	6	\N	0	C	\N	\N	\N	\N
-552	69867728	6115543	13-00005-1	\N	\N	2013-01-01 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-2001	70303934	6116990	13-00010187	\N	\N	2013-01-30 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-17687	75095652	6578254	012014085427	\N	\N	2014-06-02 00:00:00	\N	6	2	2014-06-02 00:00:00	0	C	\N	\N	\N	\N
-18747	68266111	6223014	1305002693ME	\N	\N	2013-05-02 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-7512	67708208	6122499	13001798	\N	\N	2013-01-08 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-10481	72372555	6237121	201300003909	\N	\N	2013-06-03 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-7117	68095922	6323092	01865509	\N	\N	2013-10-13 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-591	70391373	6115582	13-08394	N	\N	2013-01-21 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-6654	68392923	6121642	01693851	\N	\N	2013-01-14 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-6988	70028942	6121975	01660382	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-552	69867727	6115543	13-00004-1	\N	\N	2013-01-20 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-570	69920656	6137893	2013-0719	\N	\N	2013-02-09 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-6654	68392924	6121642	01693852	\N	\N	2013-01-25 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-2001	70299099	6116990	12-00001037	\N	\N	2013-01-08 00:00:00	R	16	6	\N	0	C	\N	\N	\N	\N
-730	70434333	6115721	1300204001	\N	\N	2013-01-02 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-730	70434396	6115721	1301647001	\N	\N	2013-01-11 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-2119	69380035	6295764	13-005003195	\N	\N	2013-09-21 00:00:00	\N	10	2	2014-01-02 00:00:00	0	C	\N	\N	\N	\N
-2050	72657792	6273363	13SF011	\N	\N	2013-08-23 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-18607	69653609	6379199	2013-003061	\N	\N	2013-12-02 00:00:00	\N	14	4	2013-12-02 00:00:00	0	C	\N	\N	\N	\N
-749	68953604	6138072	13000657000	\N	\N	2013-02-08 00:00:00	R	17	6	\N	0	C	\N	\N	\N	\N
-2001	74022186	6607517	14-00046640	\N	\N	2014-08-25 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-570	77380549	6448938	2014-1003	\N	\N	2014-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-8347	68445008	6123328	131300001096	N	\N	2013-01-31 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-17891	69738769	6266823	1310026814	N	\N	2013-07-16 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-6988	70032812	6121975	01907264	\N	\N	2013-01-01 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-550	69859015	6115541	11-10045-1	\N	\N	2013-01-17 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-8469	69167133	6123450	131339900024	\N	\N	2013-01-01 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-591	70387129	6115582	13-06738	N	\N	2013-01-01 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-727	69345903	6115718	13-00564	\N	\N	2013-01-08 00:00:00	R	14	6	\N	0	C	\N	\N	\N	\N
-20105	69206293	6291368	201308220147	\N	\N	2013-08-14 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-17625	68713632	6132565	2013-3475	\N	\N	2013-01-01 00:00:00	R	10	6	\N	0	C	\N	\N	\N	\N
-20162	71869827	6135101	13010070	\N	\N	2013-01-26 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-21808	68075208	6248407	212075818	\N	\N	2013-06-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-2000	70286500	6116989	12-127	\N	\N	2013-01-02 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
-9049	74669375	6637007	141406060106	N	\N	2014-09-10 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-8849	71909322	6146162	130130000439	\N	\N	2013-02-01 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-727	69344997	6115718	13-00002	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-726	69324528	6160381	2013004673	\N	\N	2013-03-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-15427	71475981	6130368	13008003	\N	\N	2013-01-04 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-21808	68068046	6293071	210275111	\N	\N	2013-08-21 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-550	69859814	6115541	13-00143-1	\N	\N	2013-01-31 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-21808	68072604	6293071	212075280	\N	\N	2013-08-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-10161	73696387	6548319	140031798	\N	\N	2014-05-10 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-2000	70291333	6116989	13-2254	\N	\N	2013-01-23 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-20148	69574432	6179751	13001622	N	\N	2013-03-28 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-20162	71869061	6135101	13010012	\N	\N	2013-01-05 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-9049	69236422	6146362	131302150126	\N	\N	2013-02-12 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-20105	69206292	6291368	201308220141	\N	\N	2013-08-22 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-8849	71909306	6123830	130130000124	\N	\N	2013-01-10 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-550	69861600	6115541	13-00810-1	\N	\N	2013-01-14 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-20148	69574433	6179751	13001623	N	\N	2013-03-28 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-17625	68715299	6221893	2014-0163	\N	\N	2013-05-06 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-9049	74820899	6637007	141409180362	\N	\N	2014-09-18 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-17625	68707428	6221893	2013-1620	\N	\N	2013-05-06 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-2239	72744880	6273552	1300413605	\N	\N	2013-08-07 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-21808	68069067	6136747	212074143	\N	\N	2013-01-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-17625	68703846	6266557	RECLAIM006	\N	\N	2013-07-20 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-726	69324529	6160381	2013004674	\N	\N	2013-03-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-15427	71475980	6130368	13008002	\N	\N	2013-01-03 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-20955	70038311	6135894	201400004697	\N	\N	2013-01-05 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-8348	68453583	6123329	131300000010	N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-21808	68072603	6315403	212075274	\N	\N	2013-09-14 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-20900	72382785	6292163	13-277397	\N	\N	2013-08-03 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-21792	68036060	6136731	311031541	\N	\N	2013-01-16 00:00:00	\N	14	5	2013-01-16 00:00:00	0	C	\N	\N	\N	\N
-2239	72746498	6273552	1300545182	\N	\N	2013-08-30 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
-20162	71869060	6135101	13010011	\N	\N	2013-01-04 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-20900	72376607	6292163	13-268198	\N	\N	2013-08-09 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-21808	68075178	6337735	212075779	\N	\N	2013-10-12 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-2119	69427435	6117108	13-008000129	\N	\N	2013-01-02 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
-10161	73706257	6548319	140035777	\N	\N	2014-05-25 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-20162	71869826	6135101	13010069	N	\N	2013-01-21 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-17625	68715296	6266557	2013-8897	N	\N	2013-07-26 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-21808	68074388	6337735	212075719	\N	\N	2013-10-21 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-8084	73351752	6456442	14-58-OF	N	\N	2014-01-06 00:00:00	\N	4	4	2014-01-06 00:00:00	0	C	\N	\N	\N	\N
-21808	68068047	6315403	210275254	\N	\N	2013-09-10 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-8849	71909305	6123830	130130000105	\N	\N	2013-01-09 00:00:00	R	13	6	\N	0	C	\N	\N	\N	\N
-21808	68068070	6136747	212073599	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-10161	70739183	6281466	130057436	\N	\N	2013-08-12 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
-21343	70069792	6136282	82000464E	\N	\N	2013-01-25 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-6374	68026465	6255354	201300022422	\N	\N	2013-07-16 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-745	76233506	6449113	14-00052-1	N	\N	2014-01-10 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-8682	67859468	6123663	130120005167	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-6374	68045411	6255354	201318841	\N	\N	2013-07-26 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-10161	71305535	6125142	130049950	\N	\N	2013-01-16 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-8808	72797361	6457166	140014000071	\N	\N	2014-01-07 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-1962	70123468	6161615	13011273	\N	\N	2013-03-21 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-15629	68020365	6309226	13002706	\N	\N	2013-09-08 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-7644	71941634	6256619	201300010474	\N	\N	2013-07-02 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-14319	68117683	6129260	130875	\N	\N	2013-01-14 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-6374	68035981	6121362	2013114	\N	\N	2013-01-02 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-20105	69221209	6291368	201310110221	N	\N	2013-08-22 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-21787	68025743	6136726	211038409	\N	\N	2013-01-07 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-10161	71322906	6281466	130056224	\N	\N	2013-08-07 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-6374	68024629	6121362	201211001022	\N	\N	2013-01-02 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-14319	68121307	6129260	132168	\N	\N	2013-01-28 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-7644	71941633	6256619	201300010467	\N	\N	2013-07-02 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-7644	68095132	6122627	201300001004	\N	\N	2013-01-19 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-7644	68095107	6122627	201300000030	\N	\N	2013-01-01 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-17516	70731422	6132456	20130113311	\N	\N	2013-01-07 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-21787	68026692	6226054	211038781	\N	\N	2013-05-19 00:00:00	\N	3	5	2013-06-30 00:00:00	0	C	\N	\N	\N	\N
-8682	67857497	6369315	130100001002	\N	\N	2013-12-27 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-4424	72651857	6119412	13000007	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-21787	68027565	6136726	211038950	\N	\N	2013-01-28 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-10161	70739182	6281466	130057435	\N	\N	2013-08-11 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-7644	68095106	6122627	201300000028	\N	\N	2013-01-01 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-21787	68026650	6226054	211038723	\N	\N	2013-05-02 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-4423	74317704	6452788	14000029	\N	\N	2014-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-21792	68036041	6136731	311031493	\N	\N	2013-01-01 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-6374	68045412	6255354	201318842	\N	\N	2013-07-30 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-4423	74317733	6452788	14010970	\N	\N	2014-01-01 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
-21343	70070668	6136282	82000907A	\N	\N	2013-01-16 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-7644	68095131	6122627	201300000986	\N	\N	2013-01-19 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-4424	72652749	6186408	13006026	\N	\N	2013-04-17 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-15629	68020366	6309226	13002708	\N	\N	2013-09-08 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-8808	69610905	6146121	130013001574	\N	\N	2013-02-01 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-6374	68024628	6121362	20121048	\N	\N	2013-01-14 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-10161	71322907	6281466	130056226	\N	\N	2013-08-07 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-10161	71315575	6125142	130053603	\N	\N	2013-01-31 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-4424	72653570	6186408	13012064	\N	\N	2013-04-25 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-17516	70731423	6132456	20130113339	\N	\N	2013-01-13 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-6374	68035974	6121362	20131136	\N	\N	2013-01-15 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-745	68938754	6138068	13-00103-1	\N	\N	2013-02-22 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-20105	69207122	6291368	201308240210	\N	\N	2013-08-24 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-8682	67862253	6369315	130120009531	\N	\N	2013-12-01 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-14826	71685871	6129767	13-004014	\N	\N	2013-01-11 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
-6589	68279866	6367229	201300003786	\N	\N	2013-12-02 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-6179	67809429	6121167	2013FO0024	\N	\N	2013-01-03 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-14826	71685856	6129767	13-000736	\N	\N	2013-01-02 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-6179	67809430	6121167	2013FO0030	\N	\N	2013-01-06 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-20605	71359223	6381196	13C12955	\N	\N	2013-12-03 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-7853	68242819	6167499	12-8769B-AR	\N	\N	2013-03-19 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-19209	73545608	6579775	140009801	\N	\N	2014-06-12 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-20605	72650997	6135544	13C00316	N	\N	2013-01-10 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-20607	71360073	6135546	13W00094	N	\N	2013-01-03 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-18166	71643438	6155438	1300770	\N	\N	2013-02-09 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-7853	68246591	6167499	13-3382-OF	\N	\N	2013-03-03 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-6270	74227338	6454635	APD14001	\N	\N	2014-01-19 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-14826	71685872	6129767	13-004521	\N	\N	2013-01-12 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-7813	68154526	6234455	13-105-OF	\N	\N	2013-06-26 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
-19209	73545609	6579775	140009803	N	\N	2014-06-15 00:00:00	\N	2	4	2014-08-06 00:00:00	0	C	\N	\N	\N	\N
-6270	67933087	6344578	APD13035	\N	\N	2013-11-09 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-1962	70123469	6161615	13011278	\N	\N	2013-03-22 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-20607	71371044	6336534	13W17383	\N	\N	2013-10-20 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-4532	74181390	6452897	012014-20003	\N	\N	2014-01-16 00:00:00	\N	19	2	2014-03-07 00:00:00	0	C	\N	\N	\N	\N
-6373	68024591	6300017	20139530	\N	\N	2013-09-05 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-9064	74761818	6569672	140001405056	\N	\N	2014-06-01 00:00:00	R	18	6	\N	0	C	\N	\N	\N	\N
-20607	71369269	6336534	13W15040	\N	\N	2013-10-05 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-6176	67801720	6165828	131120115	\N	\N	2013-03-29 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-6373	68020918	6121361	201300086	\N	\N	2013-01-03 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-7853	68242817	6122835	12-6374A-AR	\N	\N	2013-01-31 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-6373	68020919	6300017	201310044	\N	\N	2013-09-04 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-19209	69033602	6134148	130000017	\N	\N	2013-01-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-19209	69033601	6134148	130000015	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-6373	68021827	6121361	20131253	\N	\N	2013-01-28 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-6270	67933086	6344578	APD13034	\N	\N	2013-11-08 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-6373	68021828	6121361	20131254	\N	\N	2013-01-29 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-14826	71685855	6129767	13-000695	\N	\N	2013-01-02 00:00:00	R	19	6	\N	0	C	\N	\N	\N	\N
-6179	67811191	6344487	2013FO1241	\N	\N	2013-11-03 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-20605	71360005	6381196	13C13334	\N	\N	2013-12-16 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
-14826	71688811	6263759	13-118218	\N	\N	2013-07-20 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
-20607	71360057	6135546	13W00013	\N	\N	2013-01-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-14826	71690695	6263759	14-005498	\N	\N	2013-07-29 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-4532	71372434	6141852	012013-20009	\N	\N	2013-02-13 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
-2272	72409325	6318249	3213110574	\N	\N	2013-10-01 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
-9064	74762734	6569672	140001406271	\N	\N	2014-06-27 00:00:00	R	21	6	\N	0	C	\N	\N	\N	\N
-6176	67801721	6165828	131120116	\N	\N	2013-03-29 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-9065	70403311	6124046	130130000445	\N	\N	2013-01-05 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-9065	70403258	6124046	130130000072	N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-17891	69724064	6289155	1308832822	\N	\N	2013-08-22 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-2119	76568150	6630085	14-000468116	N	\N	2014-09-01 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-6981	70027030	6233628	01760488	\N	\N	2013-06-10 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-7647	71962237	6323618	1307204	\N	\N	2013-10-21 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-7576	67844808	6256555	13-1736-AR	\N	\N	2013-07-15 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-17891	69725769	6311487	1309009208	N	\N	2013-09-08 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
-20445	76774015	6581011	140604000092	\N	\N	2014-06-04 00:00:00	\N	15	2	2014-09-10 00:00:00	0	C	\N	\N	\N	\N
-6180	67811274	6121168	1300021	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-20445	70403045	6135384	010103485101	\N	\N	2013-01-02 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-6266	74220832	6454631	14002	\N	\N	2014-01-02 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-6180	67816905	6255160	1315186	\N	\N	2013-07-03 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-7813	68154572	6122795	13-7-OF	\N	\N	2013-01-05 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-19209	69035411	6134148	130001031	\N	\N	2013-01-19 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-7576	67840088	6122563	13-10-OF	\N	\N	2013-01-01 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-6180	67811251	6121168	1202127	\N	\N	2013-01-26 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-7576	67844807	6256555	13-1735-AR	\N	\N	2013-07-15 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-7576	67840089	6122563	13-100-AR	\N	\N	2013-01-13 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-7853	68247540	6122835	13-662-OF	\N	\N	2013-01-13 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-7576	67844824	6122563	13-175-AR	\N	\N	2013-01-22 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-20445	76773174	6581011	140602000081	\N	\N	2014-06-02 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-6981	70027063	6233628	01857481	\N	\N	2013-06-05 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
-7813	68154547	6122795	13-27-OF	\N	\N	2013-01-29 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-2119	73704229	6630085	14-006010072	N	\N	2014-09-25 00:00:00	\N	16	2	2014-10-31 00:00:00	0	C	\N	\N	\N	\N
-7576	67844814	6122563	13-174-AR	\N	\N	2013-01-22 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-7813	68154527	6234455	13-107-OF	\N	\N	2013-06-27 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-7853	68247543	6122835	13-667-OF	\N	\N	2013-01-13 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-17891	69743238	6311487	1310827621	N	\N	2013-09-09 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-6180	67816903	6255160	1315166	\N	\N	2013-07-03 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-19209	69035410	6134148	130001030	\N	\N	2013-01-19 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
-6266	67923552	6143586	13073	\N	\N	2013-02-01 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-6180	67818744	6277492	1320067	\N	\N	2013-08-10 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-20445	70470291	6135384	130608000104	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-9065	70403257	6124046	130130000034	\N	\N	2013-01-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-6180	67818745	6277492	1320077	\N	\N	2013-08-24 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
-9013	68935407	6146326	130500000190	\N	\N	2013-02-15 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-6975	70024186	6300618	01817394	\N	\N	2013-09-03 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-9013	68936352	6123994	130510000849	\N	\N	2013-01-23 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
-8929	72147771	6146242	131371701210	\N	\N	2013-02-28 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
-17891	69724886	6289155	1308849731	\N	\N	2013-08-29 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-6975	70024163	6121962	01701656	\N	\N	2013-01-28 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
-9026	68962367	6124007	130000010041	N	\N	2013-01-11 00:00:00	R	18	6	\N	0	C	\N	\N	\N	\N
-9026	68962378	6124007	130000010096	\N	\N	2013-01-27 00:00:00	R	20	6	\N	0	C	\N	\N	\N	\N
-9065	70403312	6124046	130130000448	N	\N	2013-01-04 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
-7668	75269115	6523378	14012659	\N	\N	2014-04-24 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-7668	72064781	6122651	13000022	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
-6535	68212814	6121523	01662101	\N	\N	2013-01-02 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-18438	68607034	6133378	1301292258	\N	\N	2013-01-29 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-745	68938773	6115736	13-00165-1	\N	\N	2013-01-09 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
-17687	68451150	6154959	012013033892	N	\N	2013-02-19 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-745	68937952	6115736	13-00002-1	\N	\N	2013-01-02 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-8467	69089313	6123448	130130000030	\N	\N	2013-01-01 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-18166	76309880	6466483	051410	\N	\N	2014-01-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
-19711	69297007	6313306	130092405	\N	\N	2013-09-17 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-20289	69259066	6202224	13067784	\N	\N	2013-04-11 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-6607	68299744	6166259	01704741	\N	\N	2013-03-06 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
-726	69324374	6138049	2013003606	\N	\N	2013-02-14 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
-8826	72924641	6659234	140140010128	N	\N	2014-10-22 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-17891	69724030	6289155	1308826119	N	\N	2013-08-14 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
-14319	68118601	6196256	131234	\N	\N	2013-04-08 00:00:00	R	18	6	\N	0	C	\N	\N	\N	\N
-17687	68566309	6378279	012013203537	\N	\N	2013-12-23 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
-726	69323568	6138049	2013003109	\N	\N	2013-02-08 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
-20841	67867494	6158112	13B04406	\N	\N	2013-02-04 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-4546	71419121	6119534	012013-00132	\N	\N	2013-01-09 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
-726	69323570	6138049	2013003125	\N	\N	2013-02-08 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
-726	69324402	6138049	2013003780	\N	\N	2013-02-16 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
-9043	74976216	6502301	141700000223	\N	\N	2014-03-15 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
-2090	72711129	6273403	13W27974	\N	\N	2013-08-16 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
-8469	73197974	6591527	141439906670	N	\N	2014-07-11 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
-8335	68425842	6301972	131323903428	N	\N	2013-09-05 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+2121	72751998	6117110	\N	\N	\N	2013-01-02 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+20765	71121711	6292028	\N	\N	\N	2013-08-27 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+20473	71837862	6135412	\N	N	\N	2013-01-03 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+6587	68275219	6367227	\N	\N	\N	2013-12-12 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+15150	71212524	6130091	\N	\N	\N	2013-01-02 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+748	68942522	6115739	\N	\N	\N	2013-01-22 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+570	69919767	6115561	\N	\N	\N	2013-01-04 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+8350	68466530	6123331	\N	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+17527	70846364	6177131	\N	N	\N	2013-03-07 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+8346	68438755	6123327	\N	\N	\N	2013-01-03 00:00:00	R	17	6	\N	0	C	\N	\N	\N	\N
+14594	76023157	6507812	\N	\N	\N	2014-03-06 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
+1962	75911446	6674828	\N	N	\N	2014-11-06 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+18608	69664894	6379200	\N	\N	\N	2013-12-29 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+9049	71174417	6235690	\N	N	\N	2013-06-27 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+17615	68653311	6221883	\N	\N	\N	2013-05-07 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+2090	72711239	6295735	\N	\N	\N	2013-09-16 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+4548	71423653	6164200	\N	\N	\N	2013-03-01 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+6270	67932272	6143590	\N	\N	\N	2013-02-12 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+8683	67865163	6123664	\N	\N	\N	2013-01-27 00:00:00	R	15	6	\N	0	C	\N	\N	\N	\N
+6270	67932273	6165922	\N	\N	\N	2013-03-15 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+17687	68505319	6266619	\N	\N	\N	2013-07-21 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+8808	69609970	6123789	\N	N	\N	2013-01-06 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+8084	70387800	6123065	\N	\N	\N	2013-01-22 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+8467	69090137	6123448	\N	N	\N	2013-01-05 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+18166	71643471	6222434	\N	\N	\N	2013-05-31 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+9048	69144538	6124029	\N	N	\N	2013-01-10 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+8826	72924597	6659234	\N	\N	\N	2014-10-09 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+8808	69609216	6123789	\N	\N	\N	2013-01-01 00:00:00	R	19	6	\N	0	C	\N	\N	\N	\N
+570	69921462	6115561	\N	\N	\N	2013-01-01 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+6266	67923521	6121254	\N	\N	\N	2013-01-01 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+14200	70950135	6129141	\N	\N	\N	2013-01-04 00:00:00	R	18	6	\N	0	C	\N	\N	\N	\N
+7583	67943920	6368222	\N	\N	\N	2013-12-03 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+18608	69663273	6356868	\N	\N	\N	2013-11-17 00:00:00	\N	1	4	2014-04-09 00:00:00	0	C	\N	\N	\N	\N
+4532	71371513	6342840	\N	\N	\N	2013-11-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+749	68987807	6294396	\N	\N	\N	2013-09-23 00:00:00	R	16	6	\N	0	C	\N	\N	\N	\N
+4548	71424471	6164200	\N	\N	\N	2013-03-13 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+18513	71685095	6155785	\N	N	\N	2013-02-23 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+748	68942480	6115739	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+18271	75991814	6533938	\N	\N	\N	2014-04-28 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+6956	70010905	6121943	\N	\N	\N	2013-01-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+6176	67798017	6232824	\N	\N	\N	2013-06-09 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+19209	73545607	6579775	\N	\N	\N	2014-06-15 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+9049	71224560	6235690	\N	\N	\N	2013-06-14 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+20129	69511187	6380720	\N	\N	\N	2013-12-28 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+20769	71674079	6336696	\N	\N	\N	2013-10-24 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+2249	72316327	6117238	\N	N	\N	2013-01-17 00:00:00	R	17	6	\N	0	C	\N	\N	\N	\N
+18189	71310607	6133129	\N	\N	\N	2013-01-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+15024	77147930	6642942	\N	\N	\N	2014-09-12 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+7599	68001984	6122586	\N	\N	\N	2013-01-14 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+15024	77147931	6665392	\N	\N	\N	2014-10-02 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+21768	70317034	6293031	\N	\N	\N	2013-08-02 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+8377	68909274	6123358	\N	N	\N	2013-01-30 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+6314	67977821	6121302	\N	\N	\N	2013-01-01 00:00:00	\N	0	2	2013-05-29 00:00:00	0	C	\N	\N	\N	\N
+7599	68001064	6122586	\N	\N	\N	2013-01-06 00:00:00	R	21	6	\N	0	C	\N	\N	\N	\N
+15020	71914179	6375613	\N	\N	\N	2013-12-31 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+14599	70661470	6129540	\N	\N	\N	2013-01-18 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+7599	68001065	6301242	\N	\N	\N	2013-09-28 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+8377	68908434	6123358	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+6314	67976863	6210630	\N	\N	\N	2013-05-08 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+15314	71366378	6241915	\N	\N	\N	2013-06-26 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+7599	68004944	6301242	\N	\N	\N	2013-09-17 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+15314	71366379	6130255	\N	\N	\N	2013-01-19 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+17793	69840918	6132733	\N	\N	\N	2013-01-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+21805	68058690	6136744	\N	\N	\N	2013-01-04 00:00:00	\N	0	1	2013-01-10 00:00:00	0	C	\N	\N	\N	\N
+11967	68752937	6238590	\N	\N	\N	2013-06-24 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+11983	68775062	6126946	\N	\N	\N	2013-01-02 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+21805	68058679	6136744	\N	\N	\N	2013-01-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+8297	68366672	6123278	\N	Y	\N	2013-01-29 00:00:00	R	10	6	\N	0	C	\N	\N	\N	\N
+18607	69653611	6379199	\N	\N	\N	2013-12-03 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+17687	68454609	6132627	\N	N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+2092	72716396	6184077	\N	\N	\N	2013-04-30 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+2092	72716395	6184077	\N	\N	\N	2013-04-29 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+17793	69842643	6132733	\N	N	\N	2013-01-01 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+9049	69309305	6124030	\N	N	\N	2013-01-15 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+18607	69653606	6379199	\N	\N	\N	2013-12-01 00:00:00	\N	0	1	2013-12-01 00:00:00	0	C	\N	\N	\N	\N
+8898	72089942	6123879	\N	N	\N	2013-01-04 00:00:00	R	10	6	\N	0	C	\N	\N	\N	\N
+6616	68311036	6166268	\N	\N	\N	2013-03-01 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+11967	68752957	6126930	\N	\N	\N	2013-01-23 00:00:00	R	14	6	\N	0	C	\N	\N	\N	\N
+8898	72089928	6123879	\N	\N	\N	2013-01-01 00:00:00	R	3	6	\N	0	C	\N	\N	\N	\N
+8898	72089941	6123879	\N	N	\N	2013-01-04 00:00:00	R	13	6	\N	0	C	\N	\N	\N	\N
+18198	71349962	6222466	\N	\N	\N	2013-05-01 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+6615	68304496	6121603	\N	\N	\N	2013-01-20 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+726	69322572	6115717	\N	\N	\N	2013-01-17 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+21331	77514849	6649247	\N	\N	\N	2014-09-20 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+18512	71651810	6133452	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+7630	68036208	6122613	\N	\N	\N	2013-01-02 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+4573	77070325	6565188	\N	\N	\N	2014-06-23 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+17687	68497557	6266619	\N	\N	\N	2013-07-03 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+8683	67862392	6123664	\N	N	\N	2013-01-01 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
+14594	76023268	6507812	\N	\N	\N	2014-03-25 00:00:00	R	13	6	\N	0	C	\N	\N	\N	\N
+18512	71658452	6133452	\N	N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+21555	70213743	6136494	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+17759	69692064	6289023	\N	\N	\N	2013-08-21 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+18341	72121969	6311937	\N	\N	\N	2013-09-26 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+7599	68003901	6122586	\N	\N	\N	2013-01-21 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+14455	68398206	6129396	\N	\N	\N	2013-01-02 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+7677	72103561	6234320	\N	\N	\N	2013-06-26 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+15314	71366377	6241915	\N	\N	\N	2013-06-26 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+18633	69833649	6133572	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+2157	73973068	6697473	\N	\N	\N	2014-12-17 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+18341	72124530	6311937	\N	N	\N	2013-09-16 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+7677	72102835	6234320	\N	\N	\N	2013-06-25 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+8856	71994612	6190833	\N	N	\N	2013-04-28 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+14931	73623733	6530599	\N	\N	\N	2014-04-20 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+18190	71334336	6378782	\N	N	\N	2013-12-20 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+18341	72125313	6311937	\N	N	\N	2013-09-11 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+18190	71327927	6133130	\N	\N	\N	2013-01-01 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+2316	71198131	6139636	\N	\N	\N	2013-02-01 00:00:00	R	19	2	2013-04-01 00:00:00	0	C	\N	\N	\N	\N
+2272	72340584	6273585	\N	N	\N	2013-08-26 00:00:00	R	21	6	\N	0	C	\N	\N	\N	\N
+8814	69655043	6123795	\N	N	\N	2013-01-01 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+2272	72412868	6318249	\N	\N	\N	2013-10-16 00:00:00	R	22	6	\N	0	C	\N	\N	\N	\N
+10494	72397573	6125474	\N	\N	\N	2013-01-08 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+18633	69877008	6334560	\N	N	\N	2013-10-24 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+2272	72413777	6318249	\N	N	\N	2013-10-19 00:00:00	R	16	6	\N	0	C	\N	\N	\N	\N
+18633	69833746	6133572	\N	N	\N	2013-01-08 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
+15314	71369901	6241915	\N	\N	\N	2013-06-02 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+18633	69870830	6334560	\N	N	\N	2013-10-24 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+8814	69626592	6123795	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+15020	71917718	6219289	\N	\N	\N	2013-05-01 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+2249	72315537	6117238	\N	\N	\N	2013-01-01 00:00:00	R	16	6	\N	0	C	\N	\N	\N	\N
+18189	71310577	6311785	\N	\N	\N	2013-09-01 00:00:00	\N	9	2	2013-09-05 00:00:00	0	C	\N	\N	\N	\N
+7599	68001063	6122586	\N	\N	\N	2013-01-02 00:00:00	R	11	6	\N	0	C	\N	\N	\N	\N
+2275	72445939	6139596	\N	N	\N	2013-02-06 00:00:00	R	10	6	\N	0	C	\N	\N	\N	\N
+10494	72397582	6214802	\N	\N	\N	2013-05-08 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+15024	77147929	6642942	\N	\N	\N	2014-09-05 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+4548	71423668	6164200	\N	\N	\N	2013-03-04 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+7647	71962167	6323618	\N	\N	\N	2013-10-09 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+2272	72342400	6117261	\N	\N	\N	2013-01-02 00:00:00	R	3	6	\N	0	C	\N	\N	\N	\N
+2120	72751003	6117109	\N	\N	\N	2013-01-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+15020	71914177	6219289	\N	\N	\N	2013-05-20 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+21768	70317033	6293031	\N	\N	\N	2013-08-02 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+18190	71328772	6133130	\N	\N	\N	2013-01-31 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+17687	68559557	6378279	\N	N	\N	2013-12-04 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+18190	71334289	6378782	\N	N	\N	2013-12-04 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+8856	71990316	6190833	\N	\N	\N	2013-04-08 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+10494	72397587	6214802	\N	\N	\N	2013-05-21 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+8771	69482030	6123752	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+23259	71902164	6137086	\N	\N	\N	2013-01-10 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+6589	68278895	6166241	\N	\N	\N	2013-03-22 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+2090	72711247	6295735	\N	\N	\N	2013-09-18 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+17793	69840917	6132733	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+6807	69819040	6121795	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+7114	71851388	6122101	\N	\N	\N	2013-01-03 00:00:00	\N	18	3	2013-01-07 00:00:00	0	C	\N	\N	\N	\N
+17891	69724055	6289155	\N	N	\N	2013-08-21 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+9073	70471496	6124054	\N	N	\N	2013-01-31 00:00:00	R	20	6	\N	0	C	\N	\N	\N	\N
+8893	72041290	6146206	\N	\N	\N	2013-02-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+6036	70985829	6366676	\N	N	\N	2013-12-04 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+11983	68779248	6350266	\N	N	\N	2013-11-01 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+11967	68752936	6283254	\N	\N	\N	2013-08-01 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+9073	70479730	6302710	\N	\N	\N	2013-09-27 00:00:00	R	19	6	\N	0	C	\N	\N	\N	\N
+8893	72041220	6146206	\N	\N	\N	2013-02-13 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+8297	68366670	6123278	\N	\N	\N	2013-01-08 00:00:00	R	11	6	\N	0	C	\N	\N	\N	\N
+6589	68278105	6166241	\N	\N	\N	2013-03-18 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+6767	69783668	6121755	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+11983	68779279	6350266	\N	\N	\N	2013-11-16 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+8854	71961653	6123835	\N	N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+2092	72713691	6117081	\N	\N	\N	2013-01-31 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+6589	68278902	6188573	\N	\N	\N	2013-04-01 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+8893	72041271	6123874	\N	\N	\N	2013-01-03 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+17793	69842754	6132733	\N	\N	\N	2013-01-28 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+2092	72716394	6184077	\N	\N	\N	2013-04-30 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+7115	71855915	6122102	\N	\N	\N	2013-01-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+17687	68498393	6311283	\N	N	\N	2013-09-20 00:00:00	R	23	2	2013-09-20 00:00:00	0	C	\N	\N	\N	\N
+7114	71852331	6122101	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+9073	70478904	6302710	\N	\N	\N	2013-09-19 00:00:00	R	20	6	\N	0	C	\N	\N	\N	\N
+21790	68033350	6203725	\N	\N	\N	2013-04-23 00:00:00	\N	16	3	2013-04-23 00:00:00	0	C	\N	\N	\N	\N
+2092	72713167	6117081	\N	\N	\N	2013-01-26 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+19944	69085408	6313539	\N	\N	\N	2013-09-27 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+11967	68752956	6126930	\N	\N	\N	2013-01-15 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+8854	71962495	6123835	\N	\N	\N	2013-01-17 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+8854	71963379	6146167	\N	\N	\N	2013-02-11 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+8854	71963343	6146167	\N	\N	\N	2013-02-06 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+2090	72711413	6295735	\N	\N	\N	2013-09-19 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+6022	70985820	6232670	\N	\N	\N	2013-06-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+9073	70470568	6124054	\N	\N	\N	2013-01-01 00:00:00	R	2	6	\N	0	C	\N	\N	\N	\N
+6767	69784549	6121755	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+6589	68278916	6188573	\N	\N	\N	2013-04-18 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+2092	72712198	6184077	\N	\N	\N	2013-04-11 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+8898	72089927	6123879	\N	\N	\N	2013-01-01 00:00:00	R	3	6	\N	0	C	\N	\N	\N	\N
+6584	68265848	6143904	\N	\N	\N	2013-02-03 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+17687	68559567	6311283	\N	\N	\N	2013-09-01 00:00:00	\N	8	2	2013-12-09 00:00:00	0	C	\N	\N	\N	\N
+8898	72089940	6123879	\N	N	\N	2013-01-03 00:00:00	R	15	6	\N	0	C	\N	\N	\N	\N
+6404	71549205	6121392	\N	\N	\N	2013-01-05 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+6764	69783611	6121752	\N	\N	\N	2013-01-29 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+8150	71573154	6123131	\N	N	\N	2013-01-25 00:00:00	R	6	6	\N	0	C	\N	\N	\N	\N
+21790	68034237	6337717	\N	\N	\N	2013-10-29 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
+6774	73015588	6567389	\N	\N	\N	2014-06-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+21788	68028607	6136727	\N	\N	\N	2013-01-08 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+2092	72713034	6117081	\N	\N	\N	2013-01-19 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+6958	70015665	6144277	\N	\N	\N	2013-02-14 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+6956	69966349	6121943	\N	\N	\N	2013-01-01 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
+7120	68105806	6122107	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+8157	71603801	6123138	\N	N	\N	2013-01-01 00:00:00	R	16	6	\N	0	C	\N	\N	\N	\N
+7469	71775296	6234116	\N	\N	\N	2013-06-27 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+21790	68033308	6337717	\N	\N	\N	2013-10-24 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+18608	69664899	6379200	\N	\N	\N	2013-12-30 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+8157	71604677	6123138	\N	\N	\N	2013-01-21 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+6589	68278057	6121577	\N	\N	\N	2013-01-04 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+8856	71994602	6123837	\N	N	\N	2013-01-01 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+20129	69295705	6135068	\N	\N	\N	2013-01-18 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+6958	70015697	6322933	\N	\N	\N	2013-10-24 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+21790	68033336	6203725	\N	\N	\N	2013-04-02 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+6407	74135229	6544572	\N	\N	\N	2014-05-04 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+6958	70015686	6322933	\N	\N	\N	2013-10-04 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+6407	71643311	6277719	\N	\N	\N	2013-08-24 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+8856	71988641	6123837	\N	\N	\N	2013-01-01 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+21788	68028604	6337715	\N	\N	\N	2013-10-21 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+6407	71668055	6277719	\N	\N	\N	2013-08-09 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
+17759	69694627	6289023	\N	N	\N	2013-08-25 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+6589	68278974	6255569	\N	\N	\N	2013-07-13 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+19258	69078601	6134197	\N	\N	\N	2013-01-01 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+6404	71549183	6121392	\N	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+17759	69679040	6132699	\N	N	\N	2013-01-14 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+7469	71777995	6122456	\N	\N	\N	2013-01-24 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+20129	69280180	6246728	\N	\N	\N	2013-06-24 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+7658	72034168	6368293	\N	\N	\N	2013-12-03 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+20132	69528219	6135071	\N	\N	\N	2013-01-02 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+7469	71778012	6234116	\N	\N	\N	2013-06-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+7658	72034178	6368293	\N	\N	\N	2013-12-29 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+7469	71764062	6122456	\N	\N	\N	2013-01-03 00:00:00	R	18	6	\N	0	C	\N	\N	\N	\N
+20132	69528297	6157403	\N	\N	\N	2013-02-19 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+20132	69528234	6135071	\N	\N	\N	2013-01-23 00:00:00	\N	12	2	2013-01-23 00:00:00	0	C	\N	\N	\N	\N
+8150	71576773	6123131	\N	N	\N	2013-01-22 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+11983	68775825	6126946	\N	\N	\N	2013-01-22 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+17759	69674695	6132699	\N	\N	\N	2013-01-01 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
+20132	69528301	6157403	\N	N	\N	2013-02-21 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+11983	68775060	6126946	\N	\N	\N	2013-01-01 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+8771	69482095	6123752	\N	\N	\N	2013-01-15 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+10438	72269306	6147750	\N	\N	\N	2013-02-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+7611	68022176	6345918	\N	\N	\N	2013-11-09 00:00:00	R	6	6	\N	0	C	\N	\N	\N	\N
+18965	68913366	6133904	\N	\N	\N	2013-01-01 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
+18380	72191394	6155652	\N	\N	\N	2013-02-07 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+11983	68778494	6327934	\N	\N	\N	2013-10-14 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+18965	68914111	6133904	\N	\N	\N	2013-01-04 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+10485	72394853	6326453	\N	\N	\N	2013-10-04 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+7057	70088105	6122044	\N	\N	\N	2013-01-03 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+18082	71707340	6267014	\N	\N	\N	2013-07-25 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+6564	68242151	6121552	\N	\N	\N	2013-01-28 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+10486	72394866	6326454	\N	\N	\N	2013-10-29 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+10486	72395800	6281790	\N	\N	\N	2013-08-02 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+10438	72263705	6147750	\N	\N	\N	2013-02-22 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+14116	70807118	6129057	\N	\N	\N	2013-01-08 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+10438	72265561	6125418	\N	\N	\N	2013-01-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+18633	69871775	6334560	\N	N	\N	2013-10-27 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+7057	70089024	6122044	\N	\N	\N	2013-01-07 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+7056	70087131	6122043	\N	\N	\N	2013-01-03 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+2275	72453153	6139596	\N	N	\N	2013-02-09 00:00:00	R	9	6	\N	0	C	\N	\N	\N	\N
+2092	72712860	6117081	\N	\N	\N	2013-01-17 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+6407	71571933	6121395	\N	\N	\N	2013-01-24 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+11983	68779240	6327934	\N	N	\N	2013-10-29 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+7611	68022185	6345918	\N	\N	\N	2013-11-12 00:00:00	\N	11	2	2013-11-27 00:00:00	0	C	\N	\N	\N	\N
+18608	69657028	6200544	\N	N	\N	2013-04-12 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+18082	71708255	6267014	\N	\N	\N	2013-07-31 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+7677	72103595	6211988	\N	\N	\N	2013-05-11 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+2157	73973060	6697473	\N	\N	\N	2014-12-02 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+7472	71803729	6122459	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+18085	71711111	6133025	\N	\N	\N	2013-01-23 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+9079	70541330	6124060	\N	N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+9070	70462264	6124051	\N	\N	\N	2013-01-01 00:00:00	R	1	4	2013-01-07 00:00:00	0	C	\N	\N	\N	\N
+17759	69687635	6244359	\N	\N	\N	2013-06-01 00:00:00	\N	8	2	2013-10-11 00:00:00	0	C	\N	\N	\N	\N
+15023	71119214	6353284	\N	\N	\N	2013-11-06 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+18085	71711252	6200021	\N	\N	\N	2013-04-15 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+15023	71921313	6129964	\N	\N	\N	2013-01-01 00:00:00	\N	22	4	2013-01-04 00:00:00	0	C	\N	\N	\N	\N
+15023	71119229	6353284	\N	\N	\N	2013-11-11 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+21550	70211774	6136489	\N	\N	\N	2013-01-01 00:00:00	R	12	6	\N	0	C	\N	\N	\N	\N
+18608	69657060	6200544	\N	\N	\N	2013-04-18 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+2090	72710832	6206407	\N	\N	\N	2013-05-12 00:00:00	\N	12	4	2013-07-16 00:00:00	0	C	\N	\N	\N	\N
+6564	68241227	6121552	\N	\N	\N	2013-01-12 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+18082	71707364	6133022	\N	\N	\N	2013-01-02 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+2157	70014994	6117146	\N	\N	\N	2013-01-08 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+6958	70015666	6121945	\N	\N	\N	2013-01-31 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+18085	71710285	6133025	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+7677	72102744	6211988	\N	\N	\N	2013-05-20 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+18085	71711246	6200021	\N	\N	\N	2013-04-10 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+7472	71825049	6122459	\N	\N	\N	2013-01-07 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+9079	70541364	6124060	\N	\N	\N	2013-01-11 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+7611	68022079	6122598	\N	\N	\N	2013-01-08 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
+2157	70014208	6117146	\N	\N	\N	2013-01-03 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+14116	70806355	6129057	\N	\N	\N	2013-01-01 00:00:00	R	21	6	\N	0	C	\N	\N	\N	\N
+10485	72393961	6326453	\N	\N	\N	2013-10-30 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+7611	68023071	6122598	\N	\N	\N	2013-01-14 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+7658	72034117	6122641	\N	\N	\N	2013-01-25 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+21550	70212713	6136489	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+17759	69685959	6244359	\N	N	\N	2013-06-01 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+2090	72710253	6206407	\N	\N	\N	2013-05-15 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+2249	72316326	6117238	\N	N	\N	2013-01-17 00:00:00	R	8	6	\N	0	C	\N	\N	\N	\N
+6176	67801722	6188160	\N	\N	\N	2013-04-08 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+6189	67831120	6232837	\N	\N	\N	2013-06-02 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+6176	67800899	6188160	\N	\N	\N	2013-04-07 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+2051	72673608	6117040	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+6585	68265854	6121573	\N	\N	\N	2013-01-01 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+15480	67792804	6130421	\N	\N	\N	2013-01-24 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+631	70533872	6338942	\N	\N	\N	2013-11-14 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+21331	72126897	6270262	\N	\N	\N	2013-07-09 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+6189	67831143	6232837	\N	\N	\N	2013-06-28 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+15480	67790861	6130421	\N	\N	\N	2013-01-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+8679	67853684	6123660	\N	\N	\N	2013-01-07 00:00:00	R	23	6	\N	0	C	\N	\N	\N	\N
+2051	72666383	6117040	\N	\N	\N	2013-01-01 00:00:00	\N	0	2	2013-01-25 00:00:00	0	C	\N	\N	\N	\N
+8626	75508315	6591684	\N	\N	\N	2014-07-23 00:00:00	R	8	6	\N	0	C	\N	\N	\N	\N
+6189	67830275	6121177	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+4573	71499970	6119561	\N	\N	\N	2013-01-18 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+634	70571395	6160289	\N	\N	\N	2013-03-13 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+14455	68399103	6129396	\N	\N	\N	2013-01-07 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+2050	72666256	6273363	\N	\N	\N	2013-08-31 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+7583	67919147	6368222	\N	\N	\N	2013-12-02 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+15480	67808961	6286745	\N	\N	\N	2013-08-19 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+23242	69637329	6226397	\N	\N	\N	2013-05-29 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+21331	70385772	6270262	\N	\N	\N	2013-07-01 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+6585	68265863	6143905	\N	\N	\N	2013-02-06 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+6175	67795218	6121163	\N	\N	\N	2013-01-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+6487	71844152	6210803	\N	\N	\N	2013-05-02 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+7583	67882094	6122570	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+19944	69086261	6313539	\N	\N	\N	2013-09-28 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+17729	68714900	6155001	\N	\N	\N	2013-02-03 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+6175	67796053	6121163	\N	\N	\N	2013-01-26 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+8625	68811232	6212934	\N	\N	\N	2013-05-13 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+6176	67805512	6232824	\N	\N	\N	2013-06-26 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+15480	67807066	6286745	\N	\N	\N	2013-08-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+8666	67845155	6324635	\N	\N	\N	2013-10-01 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+6585	68265864	6143905	\N	\N	\N	2013-02-20 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+18380	72191395	6133320	\N	\N	\N	2013-01-11 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+2050	72657790	6273363	\N	\N	\N	2013-08-23 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+10485	72393983	6125465	\N	\N	\N	2013-01-16 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
+6277	67953126	6121265	\N	\N	\N	2013-01-01 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
+15479	67785096	6130420	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+2287	72514098	6117275	\N	\N	\N	2013-01-03 00:00:00	R	15	6	\N	0	C	\N	\N	\N	\N
+21331	72931288	6649247	\N	\N	\N	2014-09-06 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+4573	71500046	6119561	\N	\N	\N	2013-01-27 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
+7583	67886745	6122570	\N	\N	\N	2013-01-23 00:00:00	R	15	6	\N	0	C	\N	\N	\N	\N
+6178	73706586	6589243	\N	\N	\N	2014-07-06 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+554	69867841	6115545	\N	\N	\N	2013-01-05 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+8626	75505601	6591684	\N	N	\N	2014-07-02 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+18513	71670748	6155785	\N	\N	\N	2013-02-18 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+23242	69638135	6226397	\N	\N	\N	2013-05-03 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+8666	67847080	6123647	\N	N	\N	2013-01-13 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+8679	67853763	6123660	\N	\N	\N	2013-01-16 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+631	70528336	6338942	\N	\N	\N	2013-11-19 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+17759	69690347	6289023	\N	\N	\N	2013-08-01 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
+15479	67785155	6130420	\N	\N	\N	2013-01-26 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+631	70529223	6115622	\N	\N	\N	2013-01-17 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+8666	67847122	6324635	\N	\N	\N	2013-10-02 00:00:00	\N	\N	4	2013-10-02 00:00:00	0	C	\N	\N	\N	\N
+6487	71843219	6210803	\N	\N	\N	2013-05-03 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+8625	68809556	6212934	\N	N	\N	2013-05-13 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+17693	68642600	6221961	\N	\N	\N	2013-05-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+8436	69036859	6123417	\N	\N	\N	2013-01-01 00:00:00	\N	6	2	2013-01-07 00:00:00	0	C	\N	\N	\N	\N
+23253	68645931	6137080	\N	\N	\N	2013-01-07 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+2195	70225943	6161848	\N	\N	\N	2013-03-19 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+14796	68484336	6129737	\N	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+18513	71666930	6133453	\N	\N	\N	2013-01-19 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+10486	72395711	6214794	\N	\N	\N	2013-05-01 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+20599	72598346	6135538	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+8717	68134896	6123698	\N	N	\N	2013-01-23 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+17728	68701707	6199664	\N	\N	\N	2013-04-24 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
+14284	71037644	6129225	\N	\N	\N	2013-01-24 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
+20601	72635643	6180204	\N	\N	\N	2013-03-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+14886	71810463	6129827	\N	\N	\N	2013-01-01 00:00:00	R	1	6	\N	0	C	\N	\N	\N	\N
+18513	71664181	6133453	\N	N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+2315	71196417	6117303	\N	N	\N	2013-01-01 00:00:00	R	10	6	\N	0	C	\N	\N	\N	\N
+8950	72225948	6123931	\N	\N	\N	2013-01-01 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+4548	71422775	6119536	\N	\N	\N	2013-01-01 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+20599	72598466	6135538	\N	\N	\N	2013-01-30 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+14806	71669763	6129747	\N	\N	\N	2013-01-07 00:00:00	R	20	6	\N	0	C	\N	\N	\N	\N
+17495	70908814	6132435	\N	\N	\N	2013-01-06 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+17733	69625232	6244333	\N	\N	\N	2013-06-26 00:00:00	\N	2	4	2013-06-26 00:00:00	0	C	\N	\N	\N	\N
+2195	70225067	6117184	\N	\N	\N	2013-01-15 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+10480	72361735	6259452	\N	\N	\N	2013-07-10 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+2195	70219179	6161848	\N	\N	\N	2013-03-29 00:00:00	R	13	6	\N	0	C	\N	\N	\N	\N
+18608	69663252	6356868	\N	\N	\N	2013-11-12 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+8626	68812847	6123607	\N	\N	\N	2013-01-03 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+20601	72636501	6180204	\N	\N	\N	2013-03-21 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+2247	72287099	6117236	\N	\N	\N	2013-01-01 00:00:00	R	4	6	\N	0	C	\N	\N	\N	\N
+8436	69036945	6279741	\N	\N	\N	2013-08-01 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+8717	68129367	6123698	\N	N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+2090	72711241	6295735	\N	\N	\N	2013-09-17 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+2315	71197183	6117303	\N	N	\N	2013-01-11 00:00:00	R	19	6	\N	0	C	\N	\N	\N	\N
+7043	70065287	6323018	\N	\N	\N	2013-10-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+19944	69086256	6313539	\N	\N	\N	2013-09-28 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+20601	72639305	6135540	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+20356	76518156	6603372	\N	\N	\N	2014-07-27 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+14886	71816974	6129827	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+17693	68642614	6221961	\N	N	\N	2013-05-09 00:00:00	\N	19	4	2013-05-13 00:00:00	0	C	\N	\N	\N	\N
+20356	69512783	6135295	\N	N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+8346	68444031	6123327	\N	\N	\N	2013-01-18 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+17693	68641691	6132633	\N	\N	\N	2013-01-01 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+10480	72356406	6125460	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+10480	72359105	6259452	\N	\N	\N	2013-07-09 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+10480	72357322	6125460	\N	\N	\N	2013-01-07 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+8436	69036956	6279741	\N	N	\N	2013-08-12 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+20356	76516291	6603372	\N	\N	\N	2014-07-06 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
+17733	69616543	6244333	\N	\N	\N	2013-06-10 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+20601	72633797	6135540	\N	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+20356	69477712	6135295	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+14796	68493446	6129737	\N	\N	\N	2013-01-15 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+17728	68714897	6199664	\N	N	\N	2013-04-23 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+14284	71036743	6129225	\N	\N	\N	2013-01-01 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+8626	68813677	6123607	\N	N	\N	2013-01-01 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+2124	72752787	6117113	\N	\N	\N	2013-01-02 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+1826	69430138	6116815	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+18633	69871712	6334560	\N	N	\N	2013-10-11 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
+17516	77255772	6533183	\N	\N	\N	2014-04-26 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+8826	69738683	6123807	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+1826	69431787	6116815	\N	\N	\N	2013-01-14 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+18608	69663201	6356868	\N	\N	\N	2013-11-01 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
+7042	70065276	6122029	\N	\N	\N	2013-01-18 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+18271	76045516	6533938	\N	N	\N	2014-04-08 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+17759	69691107	6289023	\N	\N	\N	2013-08-03 00:00:00	\N	22	2	2013-08-03 00:00:00	0	C	\N	\N	\N	\N
+8432	69024061	6257405	\N	\N	\N	2013-07-04 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+18608	69654408	6133548	\N	\N	\N	2013-01-01 00:00:00	\N	1	4	2013-01-31 00:00:00	0	C	\N	\N	\N	\N
+4532	71366883	6119520	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+1965	70188606	6273278	\N	\N	\N	2013-08-25 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+8432	69025892	6257405	\N	\N	\N	2013-07-09 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+8350	68466567	6123331	\N	\N	\N	2013-01-07 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+14594	70641931	6129535	\N	\N	\N	2013-01-08 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+8826	69738726	6123807	\N	\N	\N	2013-01-18 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+5998	70985804	6344306	\N	N	\N	2013-11-23 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+7611	68022183	6345918	\N	\N	\N	2013-11-10 00:00:00	\N	21	4	2013-11-12 00:00:00	0	C	\N	\N	\N	\N
+18166	71643428	6267098	\N	\N	\N	2013-07-20 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+18608	69654516	6133548	\N	N	\N	2013-01-27 00:00:00	\N	16	4	2013-03-14 00:00:00	0	C	\N	\N	\N	\N
+18633	69872526	6334560	\N	\N	\N	2013-10-31 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+749	68948148	6115740	\N	\N	\N	2013-01-06 00:00:00	R	9	6	\N	0	C	\N	\N	\N	\N
+4532	71372431	6119520	\N	\N	\N	2013-01-17 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+8459	69074392	6190436	\N	\N	\N	2013-04-07 00:00:00	\N	19	2	2013-09-30 00:00:00	0	C	\N	\N	\N	\N
+1831	69592778	6116820	\N	\N	\N	2013-01-09 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+7042	70062466	6122029	\N	\N	\N	2013-01-17 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+4573	77070237	6565188	\N	\N	\N	2014-06-18 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+14594	70641886	6129535	\N	\N	\N	2013-01-01 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
+18271	71946564	6334199	\N	\N	\N	2013-10-21 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+18438	68606265	6267370	\N	\N	\N	2013-07-29 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
+4573	71498987	6119561	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+18166	71643462	6222434	\N	\N	\N	2013-05-09 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+8432	69025873	6123413	\N	N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+1831	69591010	6116820	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+18608	69664071	6379200	\N	N	\N	2013-12-04 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+4532	71372459	6342840	\N	\N	\N	2013-11-12 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+749	68988664	6294396	\N	\N	\N	2013-09-27 00:00:00	R	10	6	\N	0	C	\N	\N	\N	\N
+9048	69144467	6124029	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+8459	69076258	6190436	\N	\N	\N	2013-04-01 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+749	68948020	6115740	\N	\N	\N	2013-01-01 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
+8332	68404602	6190309	\N	\N	\N	2013-04-25 00:00:00	\N	0	4	2013-09-18 00:00:00	0	C	\N	\N	\N	\N
+19637	67760718	6134576	\N	\N	\N	2013-01-25 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+15629	68014678	6130570	\N	\N	\N	2013-01-23 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+8791	69517146	6235432	\N	N	\N	2013-06-01 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+9049	69328224	6235690	\N	N	\N	2013-06-19 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+17440	68055307	6311036	\N	\N	\N	2013-09-12 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+17730	68714956	6378322	\N	\N	\N	2013-12-02 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+17440	68055309	6132380	\N	\N	\N	2013-01-31 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+8369	68897549	6324338	\N	N	\N	2013-10-25 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+8548	68494038	6123529	\N	\N	\N	2013-01-07 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+19944	69112885	6313539	\N	\N	\N	2013-09-27 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+19944	69042139	6134883	\N	\N	\N	2013-01-20 00:00:00	\N	11	2	2013-02-20 00:00:00	0	C	\N	\N	\N	\N
+17529	70852726	6132469	\N	\N	\N	2013-01-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+6607	68299741	6166259	\N	\N	\N	2013-03-03 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+2123	72752488	6251104	\N	\N	\N	2013-07-01 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+8369	68893097	6279674	\N	\N	\N	2013-08-23 00:00:00	R	\N	2	2014-02-26 00:00:00	0	C	\N	\N	\N	\N
+19637	67762628	6268568	\N	\N	\N	2013-07-19 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+15535	67950815	6130476	\N	\N	\N	2013-01-01 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+6607	68299729	6121595	\N	\N	\N	2013-01-08 00:00:00	R	8	6	\N	0	C	\N	\N	\N	\N
+20789	67746804	6135728	\N	\N	\N	2013-01-01 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+8548	68494861	6123529	\N	\N	\N	2013-01-01 00:00:00	\N	\N	2	2013-11-04 00:00:00	0	C	\N	\N	\N	\N
+8554	68586336	6123535	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+9049	69294587	6168694	\N	N	\N	2013-03-26 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+8369	68897558	6279674	\N	\N	\N	2013-08-06 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+19637	67757985	6134576	\N	\N	\N	2013-01-01 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+8799	69570492	6123780	\N	N	\N	2013-01-11 00:00:00	R	17	6	\N	0	C	\N	\N	\N	\N
+2123	72752511	6251104	\N	\N	\N	2013-07-17 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+2090	72710538	6228739	\N	\N	\N	2013-06-13 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+2090	72710821	6228739	\N	\N	\N	2013-06-30 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
+20289	69325649	6202224	\N	N	\N	2013-04-06 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+8417	69010098	6279722	\N	\N	\N	2013-08-01 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+8459	69075290	6123440	\N	\N	\N	2013-01-13 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+19944	69042100	6134883	\N	\N	\N	2013-01-20 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+2123	72752218	6117112	\N	\N	\N	2013-01-01 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
+20841	67869505	6135780	\N	\N	\N	2013-01-07 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+8335	68431324	6123316	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+8554	68577949	6123535	\N	N	\N	2013-01-02 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+17559	68555813	6132499	\N	N	\N	2013-01-11 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+8335	68415662	6123316	\N	N	\N	2013-01-01 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
+8791	69517215	6123772	\N	\N	\N	2013-01-01 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+8791	69513669	6235432	\N	\N	\N	2013-06-25 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+6607	68299728	6121595	\N	\N	\N	2013-01-09 00:00:00	R	8	6	\N	0	C	\N	\N	\N	\N
+17529	70853611	6132469	\N	\N	\N	2013-01-30 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+20841	67867474	6158112	\N	\N	\N	2013-02-03 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+20841	67863699	6135780	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+20967	77689602	6648883	\N	\N	\N	2014-09-29 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+8369	68896686	6324338	\N	\N	\N	2013-10-30 00:00:00	\N	17	2	2013-11-26 00:00:00	0	C	\N	\N	\N	\N
+8335	68429579	6301972	\N	N	\N	2013-09-16 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+17526	70800544	6266458	\N	N	\N	2013-07-06 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+6654	68392918	6166306	\N	\N	\N	2013-03-04 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+4479	68645714	6119467	\N	\N	\N	2013-01-01 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
+4478	68643171	6119466	\N	\N	\N	2013-01-04 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+4479	68646485	6119467	\N	\N	\N	2013-01-18 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+17795	69853348	6132735	\N	\N	\N	2013-01-13 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
+8765	69449034	6123746	\N	\N	\N	2013-01-03 00:00:00	\N	16	4	2013-01-08 00:00:00	0	C	\N	\N	\N	\N
+9029	68989936	6258002	\N	N	\N	2013-07-17 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+9029	68969649	6124010	\N	N	\N	2013-01-09 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+18747	74233191	6624213	\N	\N	\N	2014-08-02 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+20289	69229657	6179892	\N	N	\N	2013-03-02 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+8765	69448986	6123746	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+8443	69049688	6235084	\N	\N	\N	2013-06-24 00:00:00	R	21	6	\N	0	C	\N	\N	\N	\N
+4479	74574555	6587544	\N	\N	\N	2014-07-10 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+9029	68968770	6124010	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+17687	68449384	6154959	\N	\N	\N	2013-02-26 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+9029	68986270	6258002	\N	N	\N	2013-07-08 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+7117	68093919	6122104	\N	\N	\N	2013-01-05 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+9028	68964139	6146341	\N	\N	\N	2013-02-26 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+17687	68492486	6154959	\N	N	\N	2013-02-23 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+9043	74975367	6502301	\N	\N	\N	2014-03-03 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+9043	69078317	6124024	\N	\N	\N	2013-01-14 00:00:00	R	12	2	2013-09-19 00:00:00	0	C	\N	\N	\N	\N
+18747	68378424	6267678	\N	\N	\N	2013-07-01 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+8442	69039609	6123423	\N	\N	\N	2013-01-02 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+9028	68964154	6124009	\N	\N	\N	2013-01-01 00:00:00	R	23	6	\N	0	C	\N	\N	\N	\N
+6590	68280917	6143910	\N	\N	\N	2013-02-23 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+6590	68282722	6143910	\N	\N	\N	2013-02-08 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+2239	74293512	6540405	\N	\N	\N	2014-05-08 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+2239	73812670	6540405	\N	\N	\N	2014-05-31 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+7117	68093054	6122104	\N	\N	\N	2013-01-02 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
+17795	69852453	6132735	\N	\N	\N	2013-01-01 00:00:00	\N	3	2	2013-01-01 00:00:00	0	C	\N	\N	\N	\N
+8443	69041483	6168088	\N	\N	\N	2013-03-16 00:00:00	R	19	6	\N	0	C	\N	\N	\N	\N
+8443	69047921	6235084	\N	\N	\N	2013-06-01 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
+4479	74572812	6587544	\N	\N	\N	2014-07-07 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+6590	68288434	6121578	\N	\N	\N	2013-01-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+6590	68279885	6121578	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+6654	68396580	6166306	\N	\N	\N	2013-03-16 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+20289	69289656	6179892	\N	\N	\N	2013-03-31 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+2239	72749660	6184224	\N	\N	\N	2013-04-15 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+9043	69086711	6124024	\N	\N	\N	2013-01-04 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+8442	69038812	6123423	\N	\N	\N	2013-01-30 00:00:00	\N	16	4	2013-01-31 00:00:00	0	C	\N	\N	\N	\N
+2239	72734544	6184224	\N	\N	\N	2013-04-11 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+20704	77359097	6558820	\N	\N	\N	2014-05-01 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+20132	69529233	6291395	\N	\N	\N	2013-08-13 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+17687	68567883	6378279	\N	\N	\N	2013-12-26 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+18747	68428280	6267678	\N	\N	\N	2013-07-26 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+20132	69530003	6291395	\N	N	\N	2013-08-19 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+6589	68278969	6255569	\N	\N	\N	2013-07-10 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+8469	69170735	6123450	\N	N	\N	2013-01-09 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+7126	68141818	6122113	\N	\N	\N	2013-01-31 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+20967	70042133	6135906	\N	\N	\N	2013-01-08 00:00:00	R	17	6	\N	0	C	\N	\N	\N	\N
+6843	69884411	6121831	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+2090	72711153	6273403	\N	\N	\N	2013-08-24 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+2090	72709274	6117079	\N	\N	\N	2013-01-01 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+8469	69167130	6123450	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+6589	68278909	6188573	\N	\N	\N	2013-04-09 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+17891	69743244	6289155	\N	N	\N	2013-08-27 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+11714	70257929	6126677	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+7509	67693827	6234156	\N	\N	\N	2013-06-14 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
+6707	69735740	6121695	\N	\N	\N	2013-01-19 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+17790	69827594	6132730	\N	N	\N	2013-01-01 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
+20704	71068261	6135643	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+8797	69535280	6123778	\N	N	\N	2013-01-01 00:00:00	R	14	6	\N	0	C	\N	\N	\N	\N
+11714	70259878	6126677	\N	\N	\N	2013-01-25 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+23224	67839985	6137051	\N	\N	\N	2013-01-09 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+7126	68138124	6122113	\N	\N	\N	2013-01-01 00:00:00	\N	5	2	2013-03-17 00:00:00	0	C	\N	\N	\N	\N
+17919	69852219	6177523	\N	\N	\N	2013-03-05 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
+2090	72709618	6117079	\N	\N	\N	2013-01-31 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+17920	69934195	6155192	\N	N	\N	2013-02-08 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+591	70393154	6115582	\N	\N	\N	2013-01-17 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+7126	74244378	6545290	\N	\N	\N	2014-05-07 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+513	69815689	6115504	\N	\N	\N	2013-01-01 00:00:00	R	5	6	\N	0	C	\N	\N	\N	\N
+513	69815738	6115504	\N	\N	\N	2013-01-19 00:00:00	R	2	6	\N	0	C	\N	\N	\N	\N
+20967	77689591	6648883	\N	\N	\N	2014-09-03 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+20704	73928002	6558820	\N	\N	\N	2014-05-28 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+20704	71106920	6135643	\N	\N	\N	2013-01-15 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+17790	69823235	6378382	\N	\N	\N	2013-12-03 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+17891	69647388	6132831	\N	\N	\N	2013-01-14 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+17790	69830234	6378382	\N	N	\N	2013-12-04 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+7126	74244292	6545290	\N	\N	\N	2014-05-03 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+4546	71419114	6119534	\N	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+17920	69924496	6155192	\N	\N	\N	2013-02-04 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+17919	69882155	6177523	\N	N	\N	2013-03-01 00:00:00	\N	12	2	2013-06-28 00:00:00	0	C	\N	\N	\N	\N
+17891	69650882	6132831	\N	\N	\N	2013-01-22 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+17527	70847303	6177131	\N	N	\N	2013-03-13 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+17920	69921810	6132860	\N	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+591	70373349	6115582	\N	\N	\N	2013-01-01 00:00:00	R	1	6	\N	0	C	\N	\N	\N	\N
+8469	73197998	6591527	\N	N	\N	2014-07-14 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+17920	69922609	6132860	\N	\N	\N	2013-01-05 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+15427	72956271	6531095	\N	\N	\N	2014-04-24 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+20162	71871635	6135101	\N	N	\N	2013-01-04 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+6374	68025621	6300018	\N	\N	\N	2013-09-11 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+14319	68123296	6196256	\N	\N	\N	2013-04-29 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+14826	71687894	6263759	\N	\N	\N	2013-07-29 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+6654	68431639	6121642	\N	\N	\N	2013-01-01 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+8849	71909320	6146162	\N	\N	\N	2013-02-01 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+6270	67933088	6344578	\N	\N	\N	2013-11-04 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+15427	71475979	6130368	\N	\N	\N	2013-01-03 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+21808	68069937	6136747	\N	\N	\N	2013-01-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+726	69320908	6160381	\N	\N	\N	2013-03-21 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+21808	68074291	6337735	\N	\N	\N	2013-10-26 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+552	69867726	6115543	\N	\N	\N	2013-01-06 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+7644	68095130	6122627	\N	\N	\N	2013-01-19 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+17516	77275739	6533183	\N	\N	\N	2014-04-15 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+7644	68095105	6122627	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+7512	67707315	6122499	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+7867	68336221	6145180	\N	\N	\N	2013-02-23 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+20162	71869059	6135101	\N	\N	\N	2013-01-01 00:00:00	\N	13	5	2013-01-01 00:00:00	0	C	\N	\N	\N	\N
+21808	68074384	6337735	\N	\N	\N	2013-10-12 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+550	69859014	6115541	\N	\N	\N	2013-01-27 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+6654	68376172	6121642	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+21808	68075188	6248407	\N	\N	\N	2013-06-24 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+726	69324526	6138049	\N	\N	\N	2013-02-28 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+15629	68020372	6309226	\N	\N	\N	2013-09-09 00:00:00	\N	6	5	2013-09-10 00:00:00	0	C	\N	\N	\N	\N
+730	70434351	6115721	\N	\N	\N	2013-01-05 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+7644	71941690	6256619	\N	\N	\N	2013-07-24 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+1962	70108220	6161615	\N	\N	\N	2013-03-18 00:00:00	R	9	6	\N	0	C	\N	\N	\N	\N
+8849	71909321	6146162	\N	\N	\N	2013-02-01 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+15427	71468644	6130368	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+6374	68035082	6121362	\N	\N	\N	2013-01-03 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+7644	71941632	6256619	\N	\N	\N	2013-07-01 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+14319	68122313	6129260	\N	\N	\N	2013-01-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+15629	68020364	6309226	\N	\N	\N	2013-09-07 00:00:00	\N	21	4	2013-09-21 00:00:00	0	C	\N	\N	\N	\N
+21808	68068045	6248407	\N	\N	\N	2013-06-15 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+14319	68115854	6129260	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+10161	71300148	6125142	\N	\N	\N	2013-01-21 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+730	70434394	6115721	\N	\N	\N	2013-01-11 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+8849	71909304	6123830	\N	\N	\N	2013-01-01 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+730	70434331	6115721	\N	\N	\N	2013-01-25 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+17687	68559580	6378279	\N	N	\N	2013-12-04 00:00:00	\N	15	2	2014-07-03 00:00:00	0	C	\N	\N	\N	\N
+17516	70736002	6132456	\N	N	\N	2013-01-05 00:00:00	\N	9	4	2013-04-15 00:00:00	0	C	\N	\N	\N	\N
+6374	68024627	6300018	\N	\N	\N	2013-09-12 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+14826	71685854	6129767	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+550	69861550	6115541	\N	\N	\N	2013-01-20 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+10161	71330245	6281466	\N	\N	\N	2013-08-07 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+17516	70728784	6132456	\N	N	\N	2013-01-01 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+20148	69569003	6179751	\N	\N	\N	2013-03-30 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+9066	70432940	6124047	\N	N	\N	2013-01-01 00:00:00	R	9	6	\N	0	C	\N	\N	\N	\N
+14826	71689671	6263759	\N	\N	\N	2013-07-01 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+10161	70739181	6281466	\N	\N	\N	2013-08-12 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+20105	69206291	6291368	\N	\N	\N	2013-08-22 00:00:00	\N	15	4	2013-08-26 00:00:00	0	C	\N	\N	\N	\N
+7512	67708206	6122499	\N	\N	\N	2013-01-08 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+20105	69221177	6291368	\N	N	\N	2013-08-12 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+6180	67811249	6277492	\N	\N	\N	2013-08-08 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+6180	67816893	6255160	\N	\N	\N	2013-07-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+9026	68962376	6124007	\N	\N	\N	2013-01-22 00:00:00	R	15	6	\N	0	C	\N	\N	\N	\N
+9013	68936329	6123994	\N	N	\N	2013-01-31 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+14826	71686833	6129767	\N	\N	\N	2013-01-12 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+20308	69361421	6135247	\N	\N	\N	2013-01-03 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+9026	68963289	6347327	\N	N	\N	2013-11-23 00:00:00	R	9	6	\N	0	C	\N	\N	\N	\N
+6179	67811188	6344487	\N	\N	\N	2013-11-01 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
+20308	69360655	6135247	\N	\N	\N	2013-01-02 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+7576	67844802	6122563	\N	\N	\N	2013-01-22 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+20308	69360656	6135247	\N	\N	\N	2013-01-02 00:00:00	\N	7	2	2013-02-21 00:00:00	0	C	\N	\N	\N	\N
+19209	73544704	6579775	\N	\N	\N	2014-06-07 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+6002	75296427	6454367	\N	\N	\N	2014-01-22 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+6180	67816902	6255160	\N	\N	\N	2013-07-03 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+8677	67852818	6123658	\N	\N	\N	2013-01-06 00:00:00	R	22	6	\N	0	C	\N	\N	\N	\N
+6002	75296429	6499267	\N	N	\N	2014-03-18 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+9065	70403256	6124046	\N	\N	\N	2013-01-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+9065	70403310	6124046	\N	\N	\N	2013-01-05 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+6373	68021818	6121361	\N	\N	\N	2013-01-29 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+9026	68963285	6347327	\N	\N	\N	2013-11-02 00:00:00	R	22	6	\N	0	C	\N	\N	\N	\N
+20308	69365142	6135247	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+7576	67840087	6122563	\N	\N	\N	2013-01-03 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+9026	68962365	6124007	\N	N	\N	2013-01-07 00:00:00	R	14	6	\N	0	C	\N	\N	\N	\N
+6374	68025622	6300018	\N	\N	\N	2013-09-11 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+18295	72038306	6334223	\N	\N	\N	2013-10-26 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+7853	68242816	6122835	\N	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+1962	70123467	6161615	\N	\N	\N	2013-03-17 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+6373	68020913	6121361	\N	\N	\N	2013-01-09 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+7813	68154546	6122795	\N	\N	\N	2013-01-24 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+7853	68247539	6122835	\N	\N	\N	2013-01-13 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+7576	67844788	6256555	\N	\N	\N	2013-07-14 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+6179	67811189	6344487	\N	\N	\N	2013-11-01 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+19209	69033600	6134148	\N	\N	\N	2013-01-01 00:00:00	R	2	6	\N	0	C	\N	\N	\N	\N
+1962	70110172	6116951	\N	\N	\N	2013-01-11 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+1962	70108279	6116951	\N	\N	\N	2013-01-01 00:00:00	\N	1	4	2013-01-10 00:00:00	0	C	\N	\N	\N	\N
+6180	67818743	6277492	\N	\N	\N	2013-08-23 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+6270	67933085	6344578	\N	\N	\N	2013-11-03 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+7576	67844803	6256555	\N	\N	\N	2013-07-15 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+6176	67799913	6165828	\N	\N	\N	2013-03-08 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+6176	67801719	6165828	\N	\N	\N	2013-03-29 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+19209	69035409	6134148	\N	\N	\N	2013-01-18 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+6002	75296428	6476817	\N	\N	\N	2014-02-18 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+9013	68935405	6123994	\N	\N	\N	2013-01-02 00:00:00	R	9	6	\N	0	C	\N	\N	\N	\N
+1962	70108280	6116951	\N	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+6179	67809427	6121167	\N	\N	\N	2013-01-02 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+7813	68154525	6234455	\N	\N	\N	2013-06-26 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+726	69324527	6138049	\N	\N	\N	2013-02-28 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+14319	68115855	6129260	\N	\N	\N	2013-01-01 00:00:00	R	3	6	\N	0	C	\N	\N	\N	\N
+7647	71963067	6345950	\N	\N	\N	2013-11-18 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+7647	71963990	6345950	\N	\N	\N	2013-11-29 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+6180	67812220	6121168	\N	\N	\N	2013-01-09 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+1962	75911447	6674828	\N	N	\N	2014-11-06 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+7647	71964002	6122630	\N	\N	\N	2013-01-31 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+7647	71954493	6122630	\N	\N	\N	2013-01-01 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
+7512	67707317	6122499	\N	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+17516	77271396	6533183	\N	N	\N	2014-04-14 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+17516	70729674	6244116	\N	N	\N	2013-06-20 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
+18166	71643477	6267098	\N	\N	\N	2013-07-09 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+15427	71468645	6130368	\N	\N	\N	2013-01-01 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+15427	72956272	6531095	\N	\N	\N	2014-04-26 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+726	69320909	6316705	\N	\N	\N	2013-10-13 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+15427	71468646	6130368	\N	\N	\N	2013-01-01 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+1966	75937649	6450332	\N	N	\N	2014-01-14 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+726	69320912	6316705	\N	\N	\N	2013-10-23 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+19944	69086238	6313539	\N	\N	\N	2013-09-28 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+14319	68119501	6196256	\N	\N	\N	2013-04-27 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+20148	69570766	6135087	\N	N	\N	2013-01-13 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+1962	75911449	6674828	\N	\N	\N	2014-11-06 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+20148	69569908	6135087	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+17516	70754191	6244116	\N	N	\N	2013-06-01 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+20148	69569909	6135087	\N	\N	\N	2013-01-01 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
+14775	68432769	6129716	\N	\N	\N	2013-01-31 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+20841	67867580	6158112	\N	\N	\N	2013-02-08 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+7867	68336222	6145180	\N	\N	\N	2013-02-25 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+9066	70432941	6124047	\N	N	\N	2013-01-01 00:00:00	R	14	6	\N	0	C	\N	\N	\N	\N
+9066	70432942	6124047	\N	N	\N	2013-01-01 00:00:00	R	21	6	\N	0	C	\N	\N	\N	\N
+7867	68336223	6145180	\N	\N	\N	2013-02-26 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+6374	68025623	6300018	\N	\N	\N	2013-09-10 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+14319	68115856	6129260	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+14775	68431823	6241376	\N	\N	\N	2013-06-02 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+17516	70728785	6132456	\N	\N	\N	2013-01-25 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+17516	77272327	6533183	\N	N	\N	2014-04-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+14319	68119506	6196256	\N	\N	\N	2013-04-18 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+726	69322733	6138049	\N	\N	\N	2013-02-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+7512	67707316	6122499	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+1967	75937747	6450333	\N	\N	\N	2014-01-13 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+20105	69208110	6135044	\N	N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+15427	72956281	6531095	\N	\N	\N	2014-04-29 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+8469	73197999	6591527	\N	N	\N	2014-07-14 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+18633	69860337	6289896	\N	N	\N	2013-08-14 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+20841	67868565	6158112	\N	\N	\N	2013-02-17 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+18001	71654888	6132941	\N	\N	\N	2013-01-09 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+726	69328022	6182713	\N	\N	\N	2013-04-25 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+18198	71346205	6133138	\N	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+18198	71349949	6177802	\N	N	\N	2013-03-29 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+6190	67832072	6322166	\N	\N	\N	2013-10-11 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+18608	69662307	6334536	\N	\N	\N	2013-10-02 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+18582	71923914	6133522	\N	\N	\N	2013-01-02 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
+18582	71924708	6133522	\N	N	\N	2013-01-31 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+726	69327167	6182713	\N	\N	\N	2013-04-12 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+6190	67834087	6188174	\N	\N	\N	2013-04-10 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+8469	73198000	6591527	\N	\N	\N	2014-07-14 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+17919	69890123	6132859	\N	N	\N	2013-01-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+591	70373350	6115582	\N	\N	\N	2013-01-01 00:00:00	R	1	6	\N	0	C	\N	\N	\N	\N
+18198	71348977	6177802	\N	N	\N	2013-03-11 00:00:00	\N	12	2	2014-04-16 00:00:00	0	C	\N	\N	\N	\N
+17891	69648210	6132831	\N	N	\N	2013-01-09 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+591	70373351	6115582	\N	\N	\N	2013-01-01 00:00:00	R	1	6	\N	0	C	\N	\N	\N	\N
+18000	71653938	6177604	\N	\N	\N	2013-03-13 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+17654	68790552	6132594	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+18001	71658669	6289265	\N	\N	\N	2013-08-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+6013	70985817	6366653	\N	N	\N	2013-12-14 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+6190	67833024	6121178	\N	\N	\N	2013-01-26 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+8469	69167131	6123450	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+8469	69167132	6123450	\N	\N	\N	2013-01-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+18414	68544823	6133354	\N	\N	\N	2013-01-01 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+17585	68586882	6132525	\N	\N	\N	2013-01-01 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+18001	71656861	6289265	\N	\N	\N	2013-08-19 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+6190	67834920	6188174	\N	\N	\N	2013-04-20 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+18198	71347198	6133138	\N	N	\N	2013-01-01 00:00:00	\N	0	4	2013-07-10 00:00:00	0	C	\N	\N	\N	\N
+7509	67693828	6234156	\N	\N	\N	2013-06-14 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+18001	71660639	6132941	\N	\N	\N	2013-01-11 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+7509	67693829	6234156	\N	\N	\N	2013-06-14 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+18414	68546320	6133354	\N	\N	\N	2013-01-03 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+17585	68585963	6132525	\N	\N	\N	2013-01-01 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+6005	75297297	6476820	\N	\N	\N	2014-02-02 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+18000	71653933	6177604	\N	\N	\N	2013-03-06 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+18608	69663186	6334536	\N	\N	\N	2013-10-29 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+6654	68376173	6121642	\N	\N	\N	2013-01-01 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
+18000	71653944	6132940	\N	\N	\N	2013-01-07 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+6654	68376174	6121642	\N	\N	\N	2013-01-01 00:00:00	\N	2	2	2013-02-07 00:00:00	0	C	\N	\N	\N	\N
+17891	69648209	6132831	\N	N	\N	2013-01-03 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+18555	71842984	6133495	\N	N	\N	2013-01-28 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+20181	71947834	6135120	\N	N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+20967	70042135	6135906	\N	\N	\N	2013-01-14 00:00:00	R	11	6	\N	0	C	\N	\N	\N	\N
+17527	70846370	6132467	\N	\N	\N	2013-01-02 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+20181	71975101	6291444	\N	\N	\N	2013-08-16 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+8713	68018700	6213022	\N	\N	\N	2013-05-24 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+7071	70100388	6122058	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+2090	72710847	6251071	\N	\N	\N	2013-07-19 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+11714	70257931	6126677	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+17859	69954854	6132799	\N	N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+18633	69878697	6289896	\N	\N	\N	2013-08-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+2090	72711154	6273403	\N	\N	\N	2013-08-25 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+8713	68025229	6213022	\N	\N	\N	2013-05-27 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+18633	69872590	6356892	\N	N	\N	2013-11-01 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+14593	70641050	6129534	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+17527	70846369	6132467	\N	N	\N	2013-01-02 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+2090	72709276	6117079	\N	\N	\N	2013-01-01 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+17891	69733559	6289155	\N	N	\N	2013-08-23 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+17859	69986947	6132799	\N	N	\N	2013-01-29 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+8713	68022441	6123694	\N	N	\N	2013-01-19 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+4530	71295839	6119518	\N	\N	\N	2013-01-27 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+20181	72009706	6179784	\N	N	\N	2013-03-08 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+4546	71419116	6119534	\N	\N	\N	2013-01-02 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+18088	71716882	6267020	\N	\N	\N	2013-07-05 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+2090	72711213	6295735	\N	\N	\N	2013-09-06 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+17891	69733560	6289155	\N	N	\N	2013-08-07 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+20967	77689593	6648883	\N	\N	\N	2014-09-09 00:00:00	R	11	6	\N	0	C	\N	\N	\N	\N
+18064	71693114	6133004	\N	\N	\N	2013-01-02 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+20967	70042134	6135906	\N	\N	\N	2013-01-09 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+18555	71819809	6133495	\N	\N	\N	2013-01-02 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+18633	69878716	6356892	\N	N	\N	2013-11-12 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+18554	71806845	6133494	\N	\N	\N	2013-01-01 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
+18554	71818879	6133494	\N	N	\N	2013-01-19 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+11714	70257930	6126677	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+4530	71287755	6275842	\N	\N	\N	2013-08-30 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+20181	71972620	6291444	\N	\N	\N	2013-08-09 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+2090	72711155	6273403	\N	\N	\N	2013-08-25 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+4571	71474844	6119559	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+2090	72710809	6251071	\N	\N	\N	2013-07-10 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+14593	70632127	6129534	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+2090	72709275	6117079	\N	\N	\N	2013-01-01 00:00:00	\N	15	4	2013-02-27 00:00:00	0	C	\N	\N	\N	\N
+4530	71288502	6275842	\N	\N	\N	2013-08-31 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+513	69815690	6115504	\N	\N	\N	2013-01-01 00:00:00	R	15	6	\N	0	C	\N	\N	\N	\N
+17527	70846376	6132467	\N	\N	\N	2013-01-05 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+4546	71419115	6119534	\N	\N	\N	2013-01-01 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+513	69815691	6115504	\N	\N	\N	2013-01-01 00:00:00	R	21	6	\N	0	C	\N	\N	\N	\N
+20967	77689592	6648883	\N	\N	\N	2014-09-06 00:00:00	R	20	6	\N	0	C	\N	\N	\N	\N
+20181	71915430	6179784	\N	N	\N	2013-03-25 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+9043	69078319	6168688	\N	\N	\N	2013-03-28 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+18112	71749781	6133052	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+18110	71726496	6133050	\N	\N	\N	2013-01-25 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+9043	69086716	6168688	\N	N	\N	2013-03-11 00:00:00	\N	\N	2	2013-04-11 00:00:00	0	C	\N	\N	\N	\N
+19637	67757986	6134576	\N	\N	\N	2013-01-01 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+18748	71261155	6133687	\N	\N	\N	2013-01-10 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+9043	69086718	6191020	\N	N	\N	2013-04-12 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+7646	71945886	6144961	\N	\N	\N	2013-02-05 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+9043	74975371	6502301	\N	\N	\N	2014-03-19 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+21808	77517862	6694624	\N	N	\N	2014-11-27 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+17687	68567884	6378279	\N	\N	\N	2013-12-26 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+9049	69328123	6235690	\N	N	\N	2013-06-24 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+9049	69281679	6235690	\N	N	\N	2013-06-16 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+20289	69229659	6179892	\N	\N	\N	2013-03-24 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+8765	69448988	6123746	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+14770	68428226	6129711	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+9049	69294588	6191026	\N	N	\N	2013-04-07 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+14770	68418974	6129711	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+17687	68449386	6154959	\N	N	\N	2013-02-27 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+7646	71945964	6144961	\N	\N	\N	2013-02-22 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+8443	69041543	6123424	\N	N	\N	2013-01-10 00:00:00	R	16	6	\N	0	C	\N	\N	\N	\N
+14769	68416146	6129710	\N	\N	\N	2013-01-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+8332	68400925	6190309	\N	N	\N	2013-04-10 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+7646	71945016	6122629	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+20289	69325651	6202224	\N	\N	\N	2013-04-02 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+18112	71728303	6133052	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+18110	71722709	6133050	\N	\N	\N	2013-01-02 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+18088	71716859	6133028	\N	\N	\N	2013-01-30 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+17526	70800545	6132466	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+9049	69294589	6168694	\N	N	\N	2013-03-26 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+7646	71945096	6122629	\N	\N	\N	2013-01-15 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+19637	67757987	6134576	\N	\N	\N	2013-01-02 00:00:00	\N	1	4	2013-01-09 00:00:00	0	C	\N	\N	\N	\N
+18748	71262025	6133687	\N	\N	\N	2013-01-29 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+21808	77516260	6694624	\N	\N	\N	2014-11-05 00:00:00	\N	20	4	2014-11-05 00:00:00	0	C	\N	\N	\N	\N
+9043	74975370	6502301	\N	\N	\N	2014-03-13 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+18607	69650060	6133547	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+17795	69852455	6132735	\N	\N	\N	2013-01-01 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+17687	68567885	6378279	\N	N	\N	2013-12-13 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+20289	69229658	6179892	\N	\N	\N	2013-03-18 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+8765	69448987	6123746	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+17687	68449385	6154959	\N	N	\N	2013-02-26 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+19637	67762629	6268568	\N	\N	\N	2013-07-19 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+7177	70236294	6122164	\N	\N	\N	2013-01-11 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+20289	69325650	6202224	\N	N	\N	2013-04-07 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+2239	72735228	6117228	\N	\N	\N	2013-01-02 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+9043	69078318	6191020	\N	N	\N	2013-04-04 00:00:00	\N	13	4	2013-09-10 00:00:00	0	C	\N	\N	\N	\N
+17795	69852454	6132735	\N	\N	\N	2013-01-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+20841	67863701	6135780	\N	\N	\N	2013-01-01 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+15480	67802198	6219749	\N	\N	\N	2013-05-24 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+17730	68718433	6132670	\N	\N	\N	2013-01-16 00:00:00	\N	0	4	2013-01-16 00:00:00	0	C	\N	\N	\N	\N
+19944	69112828	6313539	\N	\N	\N	2013-09-25 00:00:00	\N	0	4	2014-01-14 00:00:00	0	C	\N	\N	\N	\N
+6589	68278946	6233237	\N	\N	\N	2013-06-09 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+6529	68184201	6121517	\N	\N	\N	2013-01-24 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
+17955	71531294	6132895	\N	N	\N	2013-01-07 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+19711	69297008	6313306	\N	\N	\N	2013-09-17 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+19944	69105547	6313539	\N	\N	\N	2013-09-30 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+6531	68198438	6121519	\N	\N	\N	2013-01-01 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
+6979	70025164	6166630	\N	\N	\N	2013-03-13 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+6979	70026098	6322954	\N	\N	\N	2013-10-06 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+8417	69010099	6123398	\N	N	\N	2013-01-23 00:00:00	\N	6	4	2013-05-03 00:00:00	0	C	\N	\N	\N	\N
+17730	68714969	6132670	\N	\N	\N	2013-01-28 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+19944	69042101	6246543	\N	\N	\N	2013-06-28 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+19941	68918848	6224208	\N	\N	\N	2013-05-06 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+8369	68893915	6123350	\N	N	\N	2013-01-26 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+18747	68090753	6133686	\N	N	\N	2013-01-16 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+8332	68400926	6190309	\N	\N	\N	2013-04-10 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+6607	68299743	6166259	\N	\N	\N	2013-03-11 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+17952	71517620	6132892	\N	\N	\N	2013-01-24 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+20841	67867475	6158112	\N	\N	\N	2013-02-04 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
+6529	68183316	6121517	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+8335	68415663	6123316	\N	N	\N	2013-01-01 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+15480	67800443	6219749	\N	\N	\N	2013-05-10 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+18295	72038307	6133235	\N	N	\N	2013-01-06 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+17730	68715721	6132670	\N	\N	\N	2013-01-05 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+19944	69042132	6246543	\N	\N	\N	2013-06-28 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+6979	70026111	6322954	\N	\N	\N	2013-10-08 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+8335	68415664	6123316	\N	N	\N	2013-01-01 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+19711	69297009	6313306	\N	\N	\N	2013-09-17 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+7177	70216972	6122164	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+19941	68899187	6134880	\N	\N	\N	2013-01-20 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+6531	68198580	6121519	\N	\N	\N	2013-01-18 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+6979	70025144	6166630	\N	\N	\N	2013-03-09 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+19944	69042102	6246543	\N	\N	\N	2013-06-27 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+6607	68299742	6166259	\N	\N	\N	2013-03-04 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+19941	68893753	6224208	\N	\N	\N	2013-05-22 00:00:00	R	13	6	\N	0	C	\N	\N	\N	\N
+8335	68431326	6301972	\N	N	\N	2013-09-07 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+8335	68426695	6301972	\N	N	\N	2013-09-13 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
+6607	68299730	6121595	\N	\N	\N	2013-01-09 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+20841	67863700	6135780	\N	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+17952	71516729	6132892	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+20841	67867476	6158112	\N	\N	\N	2013-02-04 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+7640	68062613	6122623	\N	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+6589	68278944	6233237	\N	\N	\N	2013-06-03 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+8826	69738685	6123807	\N	N	\N	2013-01-01 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+19711	68047203	6134650	\N	\N	\N	2013-01-30 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+20600	72605717	6135539	\N	\N	\N	2013-01-01 00:00:00	\N	0	2	2013-01-16 00:00:00	0	C	\N	\N	\N	\N
+20840	73423625	6469156	\N	\N	\N	2014-01-26 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+8332	68405567	6190309	\N	\N	\N	2013-04-05 00:00:00	\N	13	2	2013-07-12 00:00:00	0	C	\N	\N	\N	\N
+6627	68336651	6300271	\N	\N	\N	2013-09-03 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+10562	72505842	6125542	\N	\N	\N	2013-01-03 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+10563	72511220	6192539	\N	\N	\N	2013-04-30 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+8712	68005263	6123693	\N	\N	\N	2013-01-01 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+6979	70025152	6121966	\N	\N	\N	2013-01-25 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+9048	69144539	6124029	\N	\N	\N	2013-01-10 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+17811	69863030	6132751	\N	N	\N	2013-01-31 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+8826	72924599	6659234	\N	N	\N	2014-10-10 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+8826	69738684	6123807	\N	N	\N	2013-01-01 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+20840	73422763	6469156	\N	\N	\N	2014-01-01 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
+8332	68405574	6212641	\N	\N	\N	2013-05-13 00:00:00	\N	19	2	2013-07-24 00:00:00	0	C	\N	\N	\N	\N
+8712	68007121	6146025	\N	\N	\N	2013-02-21 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+19711	67878611	6134650	\N	\N	\N	2013-01-30 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+9048	69144468	6124029	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+8335	68430421	6368968	\N	\N	\N	2013-12-06 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+10563	72517585	6192539	\N	\N	\N	2013-04-01 00:00:00	\N	0	2	2014-01-24 00:00:00	0	C	\N	\N	\N	\N
+10563	72508476	6125543	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+8332	68404605	6190309	\N	\N	\N	2013-04-01 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+2092	72712867	6117081	\N	\N	\N	2013-01-17 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+20600	72632894	6135539	\N	\N	\N	2013-01-01 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+6627	68336574	6121615	\N	\N	\N	2013-01-04 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+8335	68429578	6368968	\N	N	\N	2013-12-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+9048	69144469	6124029	\N	N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+590	70359115	6115581	\N	\N	\N	2013-01-01 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
+590	70359259	6115581	\N	\N	\N	2013-01-25 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+17811	69862232	6132751	\N	\N	\N	2013-01-02 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+8826	72924598	6659234	\N	N	\N	2014-10-10 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+9048	69144540	6124029	\N	N	\N	2013-01-10 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+637	70571459	6115628	\N	\N	\N	2013-01-02 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+8712	68006249	6146025	\N	\N	\N	2013-02-09 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+6979	70025092	6121966	\N	\N	\N	2013-01-03 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+8332	68400927	6212641	\N	\N	\N	2013-05-11 00:00:00	\N	12	2	2013-08-14 00:00:00	0	C	\N	\N	\N	\N
+6627	68336657	6300271	\N	\N	\N	2013-09-26 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+8712	68005259	6123693	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+7640	68062612	6122623	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+635	70571438	6115626	\N	\N	\N	2013-01-03 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+14652	68208239	6263585	\N	\N	\N	2013-07-02 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+4407	72583912	6119395	\N	\N	\N	2013-01-02 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+6547	68232635	6121535	\N	\N	\N	2013-01-04 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
+17539	70875042	6132479	\N	\N	\N	2013-01-30 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+8712	68007116	6146025	\N	\N	\N	2013-02-21 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+14612	70679166	6129553	\N	\N	\N	2013-01-01 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+18608	69654409	6133548	\N	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+18438	68607035	6133378	\N	N	\N	2013-01-23 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+14652	68208240	6263585	\N	\N	\N	2013-07-04 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+17788	69759153	6132728	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+14652	68208204	6129593	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+18438	68606267	6133378	\N	\N	\N	2013-01-01 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+14624	70691213	6129565	\N	\N	\N	2013-01-01 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
+14612	70680115	6330541	\N	\N	\N	2013-10-19 00:00:00	R	12	6	\N	0	C	\N	\N	\N	\N
+14612	70679951	6129553	\N	\N	\N	2013-01-16 00:00:00	R	16	6	\N	0	C	\N	\N	\N	\N
+14624	70692917	6129565	\N	\N	\N	2013-01-22 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+17615	68654070	6132555	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+21808	68074369	6360067	\N	\N	\N	2013-11-16 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+20129	69501250	6380720	\N	N	\N	2013-12-12 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+7305	70329576	6189288	\N	\N	\N	2013-04-06 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+18271	71946565	6334199	\N	\N	\N	2013-10-21 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+17615	68655711	6132555	\N	N	\N	2013-01-12 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+4282	75324906	6475097	\N	\N	\N	2014-02-24 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+18271	71946566	6334199	\N	N	\N	2013-10-21 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+18608	69664057	6379200	\N	\N	\N	2013-12-01 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+7656	72013842	6122639	\N	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+18608	69664056	6379200	\N	\N	\N	2013-12-01 00:00:00	\N	15	2	2014-01-11 00:00:00	0	C	\N	\N	\N	\N
+8704	67965103	6123685	\N	\N	\N	2013-01-22 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+18438	68606266	6133378	\N	\N	\N	2013-01-01 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+9049	71325792	6302686	\N	N	\N	2013-09-17 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+17733	69625249	6132673	\N	N	\N	2013-01-04 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+8704	67964260	6123685	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+18608	69654410	6133548	\N	N	\N	2013-01-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+18271	76071077	6533938	\N	N	\N	2014-04-03 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+21808	68074316	6360067	\N	\N	\N	2013-11-02 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+14634	70724043	6129575	\N	\N	\N	2013-01-21 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+7656	72018956	6234299	\N	\N	\N	2013-06-14 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+14652	68207282	6129593	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+4407	72584653	6119395	\N	\N	\N	2013-01-06 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+17788	69760088	6132728	\N	N	\N	2013-01-10 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+7656	72018931	6234299	\N	\N	\N	2013-06-11 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+17799	69857781	6132739	\N	N	\N	2013-01-03 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+17615	68653312	6221883	\N	N	\N	2013-05-28 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+7305	70330626	6189288	\N	\N	\N	2013-04-01 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+17615	68666789	6221883	\N	N	\N	2013-05-20 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+17539	70874181	6132479	\N	\N	\N	2013-01-01 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+7656	72014544	6122639	\N	\N	\N	2013-01-03 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+14634	70723078	6129575	\N	\N	\N	2013-01-01 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
+14612	70680108	6330541	\N	\N	\N	2013-10-13 00:00:00	R	19	6	\N	0	C	\N	\N	\N	\N
+9049	69305031	6302686	\N	N	\N	2013-09-25 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+18271	76071097	6533938	\N	N	\N	2014-04-18 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+7305	70329583	6122292	\N	\N	\N	2013-01-28 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+749	68988666	6294396	\N	\N	\N	2013-09-27 00:00:00	R	14	6	\N	0	C	\N	\N	\N	\N
+1828	69534267	6116817	\N	\N	\N	2013-01-01 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
+745	68937953	6115736	\N	\N	\N	2013-01-03 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+20769	71676026	6336696	\N	\N	\N	2013-10-01 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+570	69920649	6115561	\N	\N	\N	2013-01-01 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+4573	77070238	6565188	\N	\N	\N	2014-06-18 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+19637	67762630	6268568	\N	\N	\N	2013-07-20 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+748	68942523	6115739	\N	\N	\N	2013-01-23 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+570	69919768	6115561	\N	\N	\N	2013-01-05 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+14594	70641887	6129535	\N	\N	\N	2013-01-01 00:00:00	R	2	6	\N	0	C	\N	\N	\N	\N
+749	68948021	6115740	\N	\N	\N	2013-01-01 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
+8625	68811200	6123606	\N	\N	\N	2013-01-29 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+20666	70807649	6157937	\N	\N	\N	2013-02-02 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+8084	70387841	6123065	\N	\N	\N	2013-01-01 00:00:00	R	9	6	\N	0	C	\N	\N	\N	\N
+20666	70800490	6157937	\N	\N	\N	2013-02-08 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+2050	72658359	6117039	\N	\N	\N	2013-01-24 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+23242	69637341	6137069	\N	\N	\N	2013-01-15 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+20666	70808508	6135605	\N	N	\N	2013-01-24 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+20954	72449822	6135893	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+1828	69545028	6116817	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+6487	71844074	6121475	\N	\N	\N	2013-01-16 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+6176	67799023	6121164	\N	\N	\N	2013-01-20 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+4573	71498988	6119561	\N	\N	\N	2013-01-01 00:00:00	\N	2	2	2013-01-07 00:00:00	0	C	\N	\N	\N	\N
+20954	72450567	6135893	\N	\N	\N	2013-01-04 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+748	68942482	6115739	\N	\N	\N	2013-01-02 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+749	68988665	6294396	\N	\N	\N	2013-09-27 00:00:00	R	13	6	\N	0	C	\N	\N	\N	\N
+14594	70641888	6129535	\N	\N	\N	2013-01-01 00:00:00	R	5	6	\N	0	C	\N	\N	\N	\N
+748	68942524	6115739	\N	\N	\N	2013-01-24 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+745	68937954	6115736	\N	\N	\N	2013-01-04 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+510	69781128	6115501	\N	\N	\N	2013-01-01 00:00:00	R	2	6	\N	0	C	\N	\N	\N	\N
+20666	70800391	6135605	\N	N	\N	2013-01-11 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+9036	69039783	6124017	\N	N	\N	2013-01-01 00:00:00	\N	16	4	2013-01-03 00:00:00	0	C	\N	\N	\N	\N
+570	69919769	6115561	\N	\N	\N	2013-01-05 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+10486	72394880	6125466	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+749	68948022	6115740	\N	\N	\N	2013-01-01 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
+8084	70387905	6123065	\N	N	\N	2013-01-01 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+14594	76023159	6507812	\N	\N	\N	2014-03-06 00:00:00	R	14	6	\N	0	C	\N	\N	\N	\N
+11712	70253186	6126675	\N	\N	\N	2013-01-09 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+634	70571396	6115625	\N	\N	\N	2013-01-01 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+4573	77070239	6565188	\N	\N	\N	2014-06-18 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+748	68942481	6115739	\N	\N	\N	2013-01-02 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+8084	70387842	6145397	\N	N	\N	2013-02-25 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+4573	71498989	6119561	\N	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+14594	76023160	6507812	\N	\N	\N	2014-03-06 00:00:00	R	18	6	\N	0	C	\N	\N	\N	\N
+8808	69609217	6123789	\N	\N	\N	2013-01-01 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+745	68938735	6115736	\N	\N	\N	2013-01-22 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+8350	68466532	6123331	\N	N	\N	2013-01-01 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
+20769	71674080	6135708	\N	\N	\N	2013-01-01 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+17687	68497558	6266619	\N	N	\N	2013-07-03 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+8350	68466531	6123331	\N	\N	\N	2013-01-01 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
+17687	68497559	6266619	\N	N	\N	2013-07-03 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+18428	68584034	6133368	\N	\N	\N	2013-01-02 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+18166	71643464	6222434	\N	\N	\N	2013-05-17 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+6270	67932275	6165922	\N	\N	\N	2013-03-03 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+18166	71643529	6133106	\N	\N	\N	2013-01-06 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+4532	71366884	6119520	\N	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+587	70353495	6316566	\N	\N	\N	2013-10-02 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+20160	71867207	6336087	\N	\N	\N	2013-10-10 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+4532	71366885	6119520	\N	\N	\N	2013-01-01 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+4532	71372464	6342840	\N	\N	\N	2013-11-13 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+18166	71643430	6378758	\N	\N	\N	2013-12-18 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+18166	71643528	6378758	\N	\N	\N	2013-12-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+7611	68022220	6368250	\N	\N	\N	2013-12-11 00:00:00	\N	20	4	2013-12-12 00:00:00	0	C	\N	\N	\N	\N
+6270	67932274	6165922	\N	\N	\N	2013-03-15 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+15629	68022221	6353890	\N	\N	\N	2013-11-24 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+20160	69596696	6135099	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+8808	69609971	6123789	\N	\N	\N	2013-01-10 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+18428	68579053	6155700	\N	\N	\N	2013-02-07 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+587	70353497	6316566	\N	\N	\N	2013-10-08 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+8808	69609972	6123789	\N	N	\N	2013-01-11 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+15629	68022234	6353890	\N	\N	\N	2013-11-28 00:00:00	\N	\N	4	2013-11-29 00:00:00	0	C	\N	\N	\N	\N
+7611	68022209	6368250	\N	\N	\N	2013-12-04 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+18428	68585665	6155700	\N	N	\N	2013-02-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+8808	69609218	6123789	\N	N	\N	2013-01-01 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+21790	68034269	6136729	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+18166	71643432	6133106	\N	\N	\N	2013-01-04 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+6266	67923523	6121254	\N	\N	\N	2013-01-05 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+20160	71867305	6336087	\N	N	\N	2013-10-30 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+20160	69597527	6135099	\N	N	\N	2013-01-26 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+18608	69663203	6356868	\N	\N	\N	2013-11-01 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+14308	68070768	6173913	\N	\N	\N	2013-03-31 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+6266	67923522	6121254	\N	\N	\N	2013-01-04 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+18608	69663202	6356868	\N	N	\N	2013-11-01 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+18166	71643463	6222434	\N	\N	\N	2013-05-11 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+4532	71372461	6342840	\N	\N	\N	2013-11-01 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+745	68938734	6115736	\N	\N	\N	2013-01-21 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+587	70352550	6115578	\N	\N	\N	2013-01-11 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+17976	71639730	6333904	\N	N	\N	2013-10-21 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+17976	71635937	6132916	\N	N	\N	2013-01-16 00:00:00	R	12	6	\N	0	C	\N	\N	\N	\N
+17972	71543045	6132912	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+8467	69089314	6123448	\N	N	\N	2013-01-01 00:00:00	\N	22	5	2013-01-02 00:00:00	0	C	\N	\N	\N	\N
+8350	68466568	6123331	\N	N	\N	2013-01-07 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+8467	69089315	6123448	\N	\N	\N	2013-01-04 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+20144	69555454	6358403	\N	\N	\N	2013-11-01 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+8350	68466569	6123331	\N	\N	\N	2013-01-05 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+8346	68438756	6123327	\N	\N	\N	2013-01-21 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+2315	71196419	6117303	\N	N	\N	2013-01-02 00:00:00	R	11	6	\N	0	C	\N	\N	\N	\N
+8346	68439591	6123327	\N	N	\N	2013-01-01 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+8346	68438757	6145659	\N	\N	\N	2013-02-27 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+14200	70950136	6129141	\N	\N	\N	2013-01-05 00:00:00	R	2	6	\N	0	C	\N	\N	\N	\N
+17728	68702473	6132668	\N	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+7630	68036209	6122613	\N	\N	\N	2013-01-02 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+17728	68701708	6333656	\N	N	\N	2013-10-01 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+4548	71423655	6164200	\N	\N	\N	2013-03-01 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+7630	68036210	6122613	\N	\N	\N	2013-01-06 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+20144	69556275	6135083	\N	\N	\N	2013-01-06 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+7651	71967284	6122634	\N	\N	\N	2013-01-01 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+8683	67866118	6123664	\N	\N	\N	2013-01-17 00:00:00	R	5	6	\N	0	C	\N	\N	\N	\N
+8346	68444021	6123327	\N	\N	\N	2013-01-30 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+8346	68444032	6145659	\N	\N	\N	2013-02-05 00:00:00	\N	\N	2	2014-02-07 00:00:00	0	C	\N	\N	\N	\N
+17728	68714882	6132668	\N	\N	\N	2013-01-03 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+8467	69090141	6123448	\N	N	\N	2013-01-22 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+17972	71552963	6132912	\N	N	\N	2013-01-01 00:00:00	\N	0	2	2013-04-11 00:00:00	0	C	\N	\N	\N	\N
+17728	68712286	6333656	\N	N	\N	2013-10-17 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+8683	67863209	6123664	\N	N	\N	2013-01-01 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
+17976	71639684	6333904	\N	\N	\N	2013-10-24 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+8683	67863210	6123664	\N	N	\N	2013-01-01 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
+20309	69366021	6135248	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+2315	71196418	6117303	\N	N	\N	2013-01-02 00:00:00	R	14	6	\N	0	C	\N	\N	\N	\N
+7651	71967339	6144966	\N	\N	\N	2013-02-25 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+14200	70950137	6129141	\N	\N	\N	2013-01-08 00:00:00	R	9	6	\N	0	C	\N	\N	\N	\N
+20144	69563436	6358403	\N	\N	\N	2013-11-02 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
+8683	67866119	6123664	\N	N	\N	2013-01-16 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
+7651	71967317	6144966	\N	\N	\N	2013-02-01 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+4548	71422776	6119536	\N	\N	\N	2013-01-01 00:00:00	\N	16	4	2013-01-01 00:00:00	0	C	\N	\N	\N	\N
+17976	71635052	6132916	\N	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+4548	71422777	6119536	\N	\N	\N	2013-01-02 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+4548	71423654	6164200	\N	\N	\N	2013-03-01 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+7583	67882095	6122570	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+7677	72104480	6122660	\N	\N	\N	2013-01-24 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+7043	70077627	6345350	\N	\N	\N	2013-11-24 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+21768	70318881	6136707	\N	\N	\N	2013-01-02 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+7043	70065288	6211358	\N	\N	\N	2013-05-31 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+18512	71651811	6133452	\N	N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+7043	70065289	6345350	\N	\N	\N	2013-11-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+18512	71651812	6133452	\N	N	\N	2013-01-01 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+18512	71658367	6133452	\N	N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+2090	72711242	6295735	\N	\N	\N	2013-09-17 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+2090	72712116	6362731	\N	\N	\N	2013-12-30 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+7583	67882096	6122570	\N	\N	\N	2013-01-01 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
+2090	72711243	6295735	\N	\N	\N	2013-09-17 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+18341	72123785	6133281	\N	\N	\N	2013-01-19 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+18235	71440882	6133175	\N	\N	\N	2013-01-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+21331	72126898	6270262	\N	\N	\N	2013-07-17 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+18235	71440996	6133175	\N	N	\N	2013-01-04 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+21331	72126899	6270262	\N	\N	\N	2013-07-23 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+6003	75296438	6454368	\N	\N	\N	2014-01-01 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+21331	72931289	6649247	\N	\N	\N	2014-09-18 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+14931	73623734	6642849	\N	\N	\N	2014-09-25 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+21331	72931290	6649247	\N	\N	\N	2014-09-18 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+14455	68398208	6129396	\N	\N	\N	2013-01-04 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+18513	71664182	6133453	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+18513	71664183	6133453	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+15020	71914178	6129961	\N	\N	\N	2013-01-01 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+18513	71670749	6155785	\N	N	\N	2013-02-18 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+14455	68399106	6129396	\N	\N	\N	2013-01-02 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+15314	71369923	6130255	\N	\N	\N	2013-01-18 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+18513	71670750	6155785	\N	\N	\N	2013-02-19 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
+2090	72711851	6362731	\N	\N	\N	2013-12-01 00:00:00	\N	19	4	2013-12-23 00:00:00	0	C	\N	\N	\N	\N
+14931	73623735	6530599	\N	\N	\N	2014-04-17 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+18189	71314224	6133129	\N	N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+7043	70072043	6211358	\N	\N	\N	2013-05-28 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+7583	67919148	6368222	\N	\N	\N	2013-12-02 00:00:00	R	14	6	\N	0	C	\N	\N	\N	\N
+6004	70985808	6232652	\N	\N	\N	2013-06-01 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+6003	75296491	6454368	\N	N	\N	2014-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+7583	67919149	6368222	\N	\N	\N	2013-12-02 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+14931	73623736	6530599	\N	\N	\N	2014-04-22 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+14455	68398207	6129396	\N	\N	\N	2013-01-01 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+18512	71664084	6133452	\N	\N	\N	2013-01-04 00:00:00	\N	9	4	2014-01-07 00:00:00	0	C	\N	\N	\N	\N
+10494	72397583	6214802	\N	\N	\N	2013-05-16 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+6165	67783702	6121153	\N	\N	\N	2013-01-18 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+8814	69626593	6123795	\N	N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+2316	71256535	6117304	\N	\N	\N	2013-01-07 00:00:00	R	11	6	\N	0	C	\N	\N	\N	\N
+2275	72453154	6139596	\N	N	\N	2013-02-09 00:00:00	R	13	6	\N	0	C	\N	\N	\N	\N
+2275	72453155	6139596	\N	\N	\N	2013-02-09 00:00:00	R	17	6	\N	0	C	\N	\N	\N	\N
+15427	72955410	6531095	\N	\N	\N	2014-04-27 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+2275	72450439	6117264	\N	N	\N	2013-01-20 00:00:00	R	15	6	\N	0	C	\N	\N	\N	\N
+6165	67784741	6366805	\N	\N	\N	2013-12-04 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
+2275	72446027	6117264	\N	\N	\N	2013-01-12 00:00:00	R	15	6	\N	0	C	\N	\N	\N	\N
+18001	71655911	6132941	\N	\N	\N	2013-01-29 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+21331	70385741	6136270	\N	\N	\N	2013-01-08 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+2316	71198132	6139636	\N	\N	\N	2013-02-14 00:00:00	R	2	2	2013-02-15 00:00:00	0	C	\N	\N	\N	\N
+14455	68399119	6129396	\N	\N	\N	2013-01-18 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+2316	71198133	6251296	\N	N	\N	2013-07-23 00:00:00	R	16	6	\N	0	C	\N	\N	\N	\N
+6165	67784731	6121153	\N	\N	\N	2013-01-07 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+2157	70014209	6117146	\N	\N	\N	2013-01-04 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+2120	72751004	6117109	\N	\N	\N	2013-01-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+2157	70014210	6117146	\N	\N	\N	2013-01-07 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+2120	72751005	6117109	\N	\N	\N	2013-01-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+2249	72316328	6117238	\N	\N	\N	2013-01-17 00:00:00	R	21	2	2013-01-17 00:00:00	0	C	\N	\N	\N	\N
+8814	69630787	6123795	\N	N	\N	2013-01-25 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+14931	68283241	6129872	\N	\N	\N	2013-01-18 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+2157	73973061	6697473	\N	\N	\N	2014-12-02 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+10494	72397584	6214802	\N	\N	\N	2013-05-16 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+2157	73973062	6697473	\N	\N	\N	2014-12-06 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+6165	67784674	6366805	\N	\N	\N	2013-12-12 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+2275	72446850	6117264	\N	\N	\N	2013-01-03 00:00:00	R	10	6	\N	0	C	\N	\N	\N	\N
+10494	72397575	6170138	\N	\N	\N	2013-03-21 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+2249	72315538	6117238	\N	\N	\N	2013-01-03 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
+2249	72315539	6117238	\N	\N	\N	2013-01-03 00:00:00	R	12	6	\N	0	C	\N	\N	\N	\N
+8814	69626594	6123795	\N	N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+10494	72397574	6125474	\N	\N	\N	2013-01-23 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+8771	69482031	6123752	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+18341	72125359	6311937	\N	N	\N	2013-09-30 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+21791	68035093	6159062	\N	\N	\N	2013-02-01 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+21791	68035104	6159062	\N	\N	\N	2013-02-08 00:00:00	\N	0	2	2013-02-26 00:00:00	0	C	\N	\N	\N	\N
+20681	70964374	6135620	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+21791	68034273	6136730	\N	\N	\N	2013-01-11 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+20681	70963482	6135620	\N	\N	\N	2013-01-01 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+20681	70964375	6157952	\N	\N	\N	2013-02-04 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+7043	70065356	6122030	\N	\N	\N	2013-01-13 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+8993	68914750	6168638	\N	\N	\N	2013-03-22 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+18341	72125318	6311937	\N	N	\N	2013-09-06 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+18341	72121970	6133281	\N	N	\N	2013-01-04 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+18633	69872560	6334560	\N	\N	\N	2013-10-31 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+7677	72103563	6234320	\N	\N	\N	2013-06-28 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+21555	70213744	6136494	\N	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+18633	69872561	6334560	\N	N	\N	2013-10-31 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
+7677	72103564	6234320	\N	\N	\N	2013-06-27 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+18633	69833650	6133572	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+18022	71672141	6155294	\N	\N	\N	2013-02-06 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+18633	69833651	6133572	\N	\N	\N	2013-01-07 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+7677	72102745	6211988	\N	\N	\N	2013-05-22 00:00:00	R	15	6	\N	0	C	\N	\N	\N	\N
+21791	68035087	6136730	\N	\N	\N	2013-01-18 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+7677	72102746	6211988	\N	\N	\N	2013-05-22 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+20681	70964418	6157952	\N	\N	\N	2013-02-20 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+8424	69016588	6123405	\N	\N	\N	2013-01-01 00:00:00	\N	1	4	2013-01-05 00:00:00	0	C	\N	\N	\N	\N
+18022	71673923	6132962	\N	\N	\N	2013-01-02 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+21791	68035113	6136730	\N	\N	\N	2013-01-01 00:00:00	\N	8	2	2013-03-07 00:00:00	0	C	\N	\N	\N	\N
+8814	69630788	6123795	\N	N	\N	2013-01-25 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+8771	69482032	6123752	\N	\N	\N	2013-01-01 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
+21555	70213745	6136494	\N	\N	\N	2013-01-01 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+2316	71256537	6139636	\N	\N	\N	2013-02-21 00:00:00	R	22	6	\N	0	C	\N	\N	\N	\N
+18341	72121971	6133281	\N	\N	\N	2013-01-12 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+18633	69833747	6133572	\N	N	\N	2013-01-08 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+18633	69833748	6133572	\N	\N	\N	2013-01-08 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+15314	71369903	6241915	\N	\N	\N	2013-06-04 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+18189	71324239	6311785	\N	N	\N	2013-09-05 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+23259	71902165	6181750	\N	\N	\N	2013-03-04 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+14599	70660704	6129540	\N	\N	\N	2013-01-01 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+23259	71902166	6181750	\N	N	\N	2013-03-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+14599	76040890	6687417	\N	\N	\N	2014-11-17 00:00:00	R	2	6	\N	0	C	\N	\N	\N	\N
+14598	70660695	6129539	\N	\N	\N	2013-01-06 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
+6317	67983496	6121305	\N	\N	\N	2013-01-17 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+18190	71334290	6378782	\N	\N	\N	2013-12-04 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+8375	68903957	6123356	\N	N	\N	2013-01-07 00:00:00	R	16	6	\N	0	C	\N	\N	\N	\N
+14599	76040126	6687417	\N	\N	\N	2014-11-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+15020	71915911	6219289	\N	\N	\N	2013-05-06 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+8377	68910176	6190354	\N	\N	\N	2013-04-03 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+6317	67983500	6165969	\N	\N	\N	2013-03-08 00:00:00	\N	17	4	2013-03-23 00:00:00	0	C	\N	\N	\N	\N
+8700	67903271	6123681	\N	N	\N	2013-01-25 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+7599	68003918	6122586	\N	\N	\N	2013-01-24 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+6314	67979736	6210630	\N	\N	\N	2013-05-25 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+18189	71310606	6133129	\N	\N	\N	2013-01-04 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+6317	67983494	6165969	\N	\N	\N	2013-03-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+8377	68910993	6190354	\N	N	\N	2013-04-26 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+8700	67901292	6123681	\N	\N	\N	2013-01-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+18189	71324231	6311785	\N	N	\N	2013-09-30 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+21768	70317035	6293031	\N	N	\N	2013-08-04 00:00:00	R	9	6	\N	0	C	\N	\N	\N	\N
+18190	71327928	6133130	\N	\N	\N	2013-01-02 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+18190	71334291	6378782	\N	\N	\N	2013-12-04 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+15314	71369902	6241915	\N	\N	\N	2013-06-02 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+18190	71327929	6133130	\N	N	\N	2013-01-02 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+2092	72712469	6117081	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+2272	72395936	6273585	\N	N	\N	2013-08-10 00:00:00	R	10	6	\N	0	C	\N	\N	\N	\N
+6807	69819041	6121795	\N	\N	\N	2013-01-04 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+8856	71988642	6123837	\N	\N	\N	2013-01-01 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+17759	69674696	6132699	\N	N	\N	2013-01-01 00:00:00	\N	1	2	2013-01-31 00:00:00	0	C	\N	\N	\N	\N
+8856	71988643	6123837	\N	\N	\N	2013-01-02 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+2092	72713699	6117081	\N	\N	\N	2013-01-24 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+8771	69482096	6123752	\N	\N	\N	2013-01-15 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+8771	69482097	6123752	\N	\N	\N	2013-01-14 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+17759	69674700	6132699	\N	\N	\N	2013-01-01 00:00:00	\N	11	4	2013-01-02 00:00:00	0	C	\N	\N	\N	\N
+17687	68563803	6333615	\N	\N	\N	2013-10-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+18271	71941517	6133211	\N	\N	\N	2013-01-16 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+8856	71989592	6190833	\N	\N	\N	2013-04-01 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+2272	72341582	6117261	\N	\N	\N	2013-01-01 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
+2272	72412869	6318249	\N	N	\N	2013-10-16 00:00:00	R	16	6	\N	0	C	\N	\N	\N	\N
+8332	68405558	6123313	\N	\N	\N	2013-01-10 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+17687	68567892	6333615	\N	N	\N	2013-10-23 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+2272	72341531	6117261	\N	N	\N	2013-01-21 00:00:00	R	12	6	\N	0	C	\N	\N	\N	\N
+17759	69694646	6289023	\N	N	\N	2013-08-01 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+2272	72342401	6117261	\N	N	\N	2013-01-02 00:00:00	R	6	6	\N	0	C	\N	\N	\N	\N
+7121	68110492	6122108	\N	\N	\N	2013-01-02 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+2272	72342402	6117261	\N	N	\N	2013-01-02 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
+2092	72713704	6117081	\N	\N	\N	2013-01-28 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+18190	71328773	6133130	\N	\N	\N	2013-01-31 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+17759	69694638	6289023	\N	N	\N	2013-08-10 00:00:00	\N	12	2	2013-12-27 00:00:00	0	C	\N	\N	\N	\N
+2272	72395935	6273585	\N	N	\N	2013-08-10 00:00:00	R	8	6	\N	0	C	\N	\N	\N	\N
+7121	68115013	6122108	\N	\N	\N	2013-01-01 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+6873	69894827	6121860	\N	\N	\N	2013-01-19 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+18190	71328774	6133130	\N	\N	\N	2013-01-31 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+6807	69819042	6121795	\N	\N	\N	2013-01-06 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+2092	72712468	6117081	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+8856	71994606	6190833	\N	N	\N	2013-04-17 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+2272	72412870	6318249	\N	N	\N	2013-10-16 00:00:00	R	19	6	\N	0	C	\N	\N	\N	\N
+11983	68775061	6126946	\N	N	\N	2013-01-02 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+17687	68507873	6311283	\N	N	\N	2013-09-17 00:00:00	R	16	6	\N	0	C	\N	\N	\N	\N
+17793	69840919	6132733	\N	\N	\N	2013-01-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+20289	69306941	6135228	\N	N	\N	2013-01-09 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+21805	68059646	6136744	\N	\N	\N	2013-01-26 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+17793	69841776	6132733	\N	N	\N	2013-01-31 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+6036	70985830	6366676	\N	\N	\N	2013-12-31 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+11983	68779249	6350266	\N	\N	\N	2013-11-02 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+6036	70985831	6344344	\N	\N	\N	2013-11-09 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+9026	68963286	6347327	\N	\N	\N	2013-11-10 00:00:00	R	18	6	\N	0	C	\N	\N	\N	\N
+17516	70746998	6244116	\N	\N	\N	2013-06-01 00:00:00	\N	19	2	2013-06-01 00:00:00	0	C	\N	\N	\N	\N
+17707	68692330	6355967	\N	\N	\N	2013-11-08 00:00:00	\N	17	4	2013-11-16 00:00:00	0	C	\N	\N	\N	\N
+1962	70110173	6116951	\N	\N	\N	2013-01-11 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+6975	70024142	6121962	\N	\N	\N	2013-01-12 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+20765	71174506	6247364	\N	\N	\N	2013-06-17 00:00:00	\N	12	4	2013-06-20 00:00:00	0	C	\N	\N	\N	\N
+7668	75269136	6523378	\N	\N	\N	2014-04-28 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+15397	72899562	6508615	\N	\N	\N	2014-03-22 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+17707	68691537	6132647	\N	\N	\N	2013-01-02 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+7668	72065619	6122651	\N	\N	\N	2013-01-23 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+8929	72162798	6302566	\N	\N	\N	2013-09-07 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+8677	67852820	6145990	\N	\N	\N	2013-02-06 00:00:00	R	15	6	\N	0	C	\N	\N	\N	\N
+6975	70024187	6300618	\N	\N	\N	2013-09-21 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+8350	77506710	6456708	\N	N	\N	2014-01-10 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+9026	68963287	6347327	\N	\N	\N	2013-11-21 00:00:00	R	9	6	\N	0	C	\N	\N	\N	\N
+6180	67812243	6121168	\N	\N	\N	2013-01-12 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+17687	68561187	6378279	\N	N	\N	2013-12-04 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+9026	68962366	6124007	\N	N	\N	2013-01-09 00:00:00	R	18	6	\N	0	C	\N	\N	\N	\N
+9026	68962377	6124007	\N	N	\N	2013-01-23 00:00:00	R	15	6	\N	0	C	\N	\N	\N	\N
+20765	71191881	6292028	\N	\N	\N	2013-08-05 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
+21808	68074279	6337735	\N	\N	\N	2013-10-12 00:00:00	\N	23	2	2013-11-14 00:00:00	0	C	\N	\N	\N	\N
+9013	68935406	6123994	\N	\N	\N	2013-01-02 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+9013	68936345	6123994	\N	N	\N	2013-01-31 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+20765	71184602	6247364	\N	\N	\N	2013-06-05 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+17516	70746997	6244116	\N	\N	\N	2013-06-01 00:00:00	\N	18	4	2013-09-16 00:00:00	0	C	\N	\N	\N	\N
+8929	72144251	6146242	\N	N	\N	2013-02-27 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+6535	68212855	6121523	\N	\N	\N	2013-01-13 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+6180	67812226	6121168	\N	\N	\N	2013-01-27 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+1962	70110174	6116951	\N	\N	\N	2013-01-11 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+17707	68692329	6355967	\N	\N	\N	2013-11-03 00:00:00	\N	22	4	2013-11-20 00:00:00	0	C	\N	\N	\N	\N
+8350	68467438	6145663	\N	N	\N	2013-02-07 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+21808	68074282	6337735	\N	\N	\N	2013-10-24 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+9013	68938118	6146326	\N	N	\N	2013-02-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+8677	67852819	6123658	\N	N	\N	2013-01-23 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+2092	72713145	6117081	\N	\N	\N	2013-01-25 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+8929	72162772	6302566	\N	\N	\N	2013-09-04 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+11983	68779250	6350266	\N	\N	\N	2013-11-03 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+17687	68571297	6311283	\N	N	\N	2013-09-29 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+8854	71963380	6146167	\N	\N	\N	2013-02-11 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+8297	68366671	6123278	\N	\N	\N	2013-01-17 00:00:00	R	7	6	\N	0	C	\N	\N	\N	\N
+8854	71963381	6146167	\N	\N	\N	2013-02-11 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+8854	71962496	6123835	\N	\N	\N	2013-01-17 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+8854	71961654	6123835	\N	\N	\N	2013-01-01 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+8854	71962497	6123835	\N	\N	\N	2013-01-17 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+11967	68752938	6283254	\N	\N	\N	2013-08-26 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+8854	71961655	6123835	\N	N	\N	2013-01-01 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+9029	68981618	6213338	\N	N	\N	2013-05-20 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+8893	72041294	6146206	\N	\N	\N	2013-02-05 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+6022	75308505	6589087	\N	N	\N	2014-07-07 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+9073	70479732	6302710	\N	N	\N	2013-09-27 00:00:00	R	23	6	\N	0	C	\N	\N	\N	\N
+9073	70470570	6124054	\N	N	\N	2013-01-01 00:00:00	R	2	6	\N	0	C	\N	\N	\N	\N
+17443	70825565	6132383	\N	\N	\N	2013-01-04 00:00:00	R	13	6	\N	0	C	\N	\N	\N	\N
+6616	68305404	6121604	\N	\N	\N	2013-01-02 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+8893	72041221	6168538	\N	\N	\N	2013-03-25 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+9073	70470569	6124054	\N	\N	\N	2013-01-01 00:00:00	R	6	6	\N	0	C	\N	\N	\N	\N
+9073	70471530	6124054	\N	N	\N	2013-01-31 00:00:00	R	8	6	\N	0	C	\N	\N	\N	\N
+7631	68043909	6345934	\N	\N	\N	2013-11-26 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+11967	68752939	6283254	\N	N	\N	2013-08-27 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+6589	68278059	6121577	\N	\N	\N	2013-01-08 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+8893	72041272	6123874	\N	\N	\N	2013-01-06 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+7509	71915733	6122496	\N	\N	\N	2013-01-05 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+6615	68301729	6121603	\N	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+8898	72089929	6123879	\N	\N	\N	2013-01-01 00:00:00	R	5	6	\N	0	C	\N	\N	\N	\N
+6616	68306302	6121604	\N	\N	\N	2013-01-17 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+7631	68038215	6122614	\N	\N	\N	2013-01-01 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+7867	68336230	6122848	\N	\N	\N	2013-01-16 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+6589	68278897	6166241	\N	\N	\N	2013-03-25 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+8893	72041293	6146206	\N	\N	\N	2013-02-04 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+6022	75308504	6544187	\N	\N	\N	2014-05-28 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+9073	70479731	6302710	\N	N	\N	2013-09-27 00:00:00	R	21	6	\N	0	C	\N	\N	\N	\N
+18198	71349978	6222466	\N	\N	\N	2013-05-12 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+9029	68981632	6213338	\N	N	\N	2013-05-21 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+9073	70471498	6124054	\N	\N	\N	2013-01-29 00:00:00	R	15	6	\N	0	C	\N	\N	\N	\N
+6589	68278903	6188573	\N	\N	\N	2013-04-02 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+8893	72041310	6168538	\N	\N	\N	2013-03-04 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+6589	68278058	6121577	\N	\N	\N	2013-01-05 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+7631	68043845	6345934	\N	\N	\N	2013-11-01 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+6589	68278896	6166241	\N	\N	\N	2013-03-24 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+8893	72041222	6168538	\N	\N	\N	2013-03-26 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+6616	68309191	6166268	\N	\N	\N	2013-03-27 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+17705	68688978	6333633	\N	\N	\N	2013-10-14 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+6589	68278904	6188573	\N	\N	\N	2013-04-03 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+8893	72041273	6123874	\N	\N	\N	2013-01-06 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+6584	68265850	6210900	\N	\N	\N	2013-05-13 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+21790	68033339	6203725	\N	\N	\N	2013-04-08 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+4562	71449953	6275874	\N	\N	\N	2013-08-10 00:00:00	R	21	2	2013-08-15 00:00:00	0	C	\N	\N	\N	\N
+21788	68030460	6337715	\N	\N	\N	2013-10-01 00:00:00	\N	12	4	2013-10-02 00:00:00	0	C	\N	\N	\N	\N
+21788	68028605	6270719	\N	\N	\N	2013-07-07 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+7114	71851390	6122101	\N	\N	\N	2013-01-07 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+7783	68134180	6122765	\N	\N	\N	2013-01-05 00:00:00	R	9	6	\N	0	C	\N	\N	\N	\N
+6589	68278975	6255569	\N	\N	\N	2013-07-15 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+21802	68052080	6337729	\N	\N	\N	2013-10-28 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+2052	72700593	6117041	\N	\N	\N	2013-01-01 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+20099	72650509	6135038	\N	\N	\N	2013-01-04 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+7783	68134212	6256757	\N	\N	\N	2013-07-04 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+21582	70233141	6136521	\N	\N	\N	2013-01-05 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+7114	71852376	6122101	\N	\N	\N	2013-01-12 00:00:00	R	0	3	2013-05-09 00:00:00	0	C	\N	\N	\N	\N
+4562	71443574	6119550	\N	\N	\N	2013-01-01 00:00:00	R	1	6	\N	0	C	\N	\N	\N	\N
+21802	68053943	6315397	\N	\N	\N	2013-09-10 00:00:00	\N	18	3	2013-09-19 00:00:00	0	C	\N	\N	\N	\N
+21802	68054850	6337729	\N	\N	\N	2013-10-19 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+7117	68093917	6166768	\N	\N	\N	2013-03-03 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+7117	68093955	6166768	\N	\N	\N	2013-03-15 00:00:00	R	8	3	2014-04-04 00:00:00	0	C	\N	\N	\N	\N
+21790	68033310	6315385	\N	\N	\N	2013-09-23 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+21802	68054852	6315397	\N	\N	\N	2013-09-15 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+7114	71852394	6122101	\N	\N	\N	2013-01-31 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+6767	69784455	6121755	\N	\N	\N	2013-01-14 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+7115	71855917	6122102	\N	\N	\N	2013-01-06 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+6584	68265849	6166236	\N	\N	\N	2013-03-23 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+21788	68029588	6270719	\N	\N	\N	2013-07-19 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+21790	68033338	6203725	\N	\N	\N	2013-04-07 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+17705	68688981	6132645	\N	\N	\N	2013-01-04 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+21788	68030459	6337715	\N	\N	\N	2013-10-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+21802	68052926	6136741	\N	\N	\N	2013-01-25 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
+2052	72700898	6117041	\N	\N	\N	2013-01-15 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+7114	71851389	6122101	\N	\N	\N	2013-01-04 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+2052	72700990	6251033	\N	\N	\N	2013-07-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+21788	68028606	6136727	\N	\N	\N	2013-01-06 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+7783	68134181	6256757	\N	\N	\N	2013-07-05 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+7631	68039040	6122614	\N	\N	\N	2013-01-10 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+20097	72651300	6135036	\N	\N	\N	2013-01-01 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
+6767	69783670	6121755	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+20133	69531866	6358392	\N	\N	\N	2013-11-04 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+6767	69783669	6121755	\N	\N	\N	2013-01-01 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+6767	69784448	6121755	\N	\N	\N	2013-01-16 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+20099	72650498	6224366	\N	\N	\N	2013-05-02 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+21790	68033309	6337717	\N	\N	\N	2013-10-24 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+4562	71443624	6119550	\N	\N	\N	2013-01-17 00:00:00	R	20	6	\N	0	C	\N	\N	\N	\N
+20133	69530947	6135072	\N	\N	\N	2013-01-01 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+20133	69531870	6358392	\N	\N	\N	2013-11-11 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+20099	72650500	6224366	\N	\N	\N	2013-05-25 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+7115	71855916	6122102	\N	\N	\N	2013-01-04 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+4562	71449927	6275874	\N	\N	\N	2013-08-05 00:00:00	R	15	6	\N	0	C	\N	\N	\N	\N
+2052	72701010	6251033	\N	\N	\N	2013-07-26 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+6589	68278976	6255569	\N	\N	\N	2013-07-15 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+20132	69528303	6157403	\N	\N	\N	2013-02-21 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+4547	71422741	6119535	\N	\N	\N	2013-01-06 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+1829	69546070	6116818	\N	\N	\N	2013-01-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+10533	72443170	6125513	\N	\N	\N	2013-01-27 00:00:00	R	12	6	\N	0	C	\N	\N	\N	\N
+6764	69783613	6188748	\N	\N	\N	2013-04-03 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+10533	72440419	6125513	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+8150	71573156	6301787	\N	\N	\N	2013-09-04 00:00:00	R	8	6	\N	0	C	\N	\N	\N	\N
+21790	68034239	6337717	\N	\N	\N	2013-10-24 00:00:00	\N	15	4	2013-10-27 00:00:00	0	C	\N	\N	\N	\N
+8150	71576778	6123131	\N	\N	\N	2013-01-17 00:00:00	\N	16	2	2013-01-22 00:00:00	0	C	\N	\N	\N	\N
+20129	69295706	6135068	\N	\N	\N	2013-01-17 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+1829	73871923	6517545	\N	\N	\N	2014-04-01 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+8157	71604686	6123138	\N	\N	\N	2013-01-22 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
+20129	69280181	6157400	\N	N	\N	2013-02-21 00:00:00	R	22	6	\N	0	C	\N	\N	\N	\N
+21788	68028608	6136727	\N	\N	\N	2013-01-09 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+8157	71603803	6167802	\N	\N	\N	2013-03-08 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+20132	69528220	6135071	\N	\N	\N	2013-01-03 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+8150	71576799	6123131	\N	N	\N	2013-01-23 00:00:00	R	10	6	\N	0	C	\N	\N	\N	\N
+20132	69528235	6135071	\N	N	\N	2013-01-23 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+7120	68105809	6122107	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+11983	68775826	6126946	\N	\N	\N	2013-01-23 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+1829	73856979	6517545	\N	\N	\N	2014-04-18 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+20132	69528302	6157403	\N	N	\N	2013-02-22 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+4547	71422742	6119535	\N	\N	\N	2013-01-19 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+1829	69555873	6116818	\N	\N	\N	2013-01-01 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+6764	69783612	6166416	\N	\N	\N	2013-03-17 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+8150	71573155	6301787	\N	\N	\N	2013-09-03 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+21790	68034238	6337717	\N	\N	\N	2013-10-29 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
+8150	71575883	6301787	\N	\N	\N	2013-09-28 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+20129	69280182	6336056	\N	N	\N	2013-10-11 00:00:00	R	1	6	\N	0	C	\N	\N	\N	\N
+7120	68105807	6122107	\N	\N	\N	2013-01-02 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+8157	71603802	6145470	\N	\N	\N	2013-02-19 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+10415	71500661	6125395	\N	\N	\N	2013-01-04 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+18858	72213686	6133797	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+21788	68028609	6136727	\N	\N	\N	2013-01-08 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+8157	71603804	6145470	\N	N	\N	2013-02-20 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+18858	72237058	6133797	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+20132	69528221	6135071	\N	\N	\N	2013-01-09 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+8157	71604702	6123138	\N	N	\N	2013-01-24 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+10533	72488580	6371165	\N	\N	\N	2013-12-16 00:00:00	R	16	6	\N	0	C	\N	\N	\N	\N
+10533	72489552	6371165	\N	\N	\N	2013-12-30 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+20132	69528236	6135071	\N	N	\N	2013-01-24 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+10532	72432455	6125512	\N	\N	\N	2013-01-01 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+10415	71499757	6125395	\N	\N	\N	2013-01-04 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+11983	68775827	6126946	\N	\N	\N	2013-01-24 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+20129	69306158	6157400	\N	N	\N	2013-02-04 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+20129	69300049	6135068	\N	\N	\N	2013-01-25 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+1832	69618479	6116821	\N	\N	\N	2013-01-06 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+7658	72034170	6368293	\N	\N	\N	2013-12-08 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+7469	71764064	6122456	\N	\N	\N	2013-01-10 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+1866	69284049	6116855	\N	\N	\N	2013-01-24 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+6407	71660513	6277719	\N	\N	\N	2013-08-24 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+17759	69675543	6132699	\N	N	\N	2013-01-13 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+1832	69620222	6139153	\N	\N	\N	2013-02-27 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+6407	74135230	6544572	\N	\N	\N	2014-05-18 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+6407	74135231	6544572	\N	\N	\N	2014-05-18 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+19258	69078602	6134197	\N	\N	\N	2013-01-01 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+6404	71549184	6121392	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+19258	69078603	6134197	\N	\N	\N	2013-01-03 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+7469	71777996	6122456	\N	\N	\N	2013-01-14 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+18250	71472155	6133190	\N	\N	\N	2013-01-28 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+17759	69675544	6132699	\N	\N	\N	2013-01-13 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
+7658	72034169	6368293	\N	\N	\N	2013-12-07 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+8764	69448088	6123745	\N	\N	\N	2013-01-02 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+1832	69617743	6139153	\N	\N	\N	2013-02-02 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+19711	68055616	6223978	\N	\N	\N	2013-05-16 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+20129	69295707	6135068	\N	\N	\N	2013-01-17 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+6404	71549185	6121392	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+7469	71771586	6122456	\N	\N	\N	2013-01-18 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+7469	71778013	6234116	\N	\N	\N	2013-06-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+18250	71478568	6334178	\N	\N	\N	2013-10-15 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+7469	71778014	6234116	\N	\N	\N	2013-06-01 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
+6407	71670020	6277719	\N	\N	\N	2013-08-19 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+7469	71764063	6122456	\N	\N	\N	2013-01-09 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+18250	71476759	6334178	\N	N	\N	2013-10-14 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+1866	68933712	6295511	\N	\N	\N	2013-09-17 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+20129	69418027	6246728	\N	N	\N	2013-06-30 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+19711	67977670	6223978	\N	\N	\N	2013-05-17 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+1866	69291601	6295511	\N	\N	\N	2013-09-04 00:00:00	R	9	6	\N	0	C	\N	\N	\N	\N
+8856	71994604	6123837	\N	N	\N	2013-01-27 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+7658	72034119	6256633	\N	\N	\N	2013-07-19 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+20129	69418962	6246728	\N	N	\N	2013-06-24 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+18250	71469332	6334178	\N	\N	\N	2013-10-06 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
+8856	71988729	6123837	\N	N	\N	2013-01-24 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+7658	72034118	6256633	\N	\N	\N	2013-07-10 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+6958	70015688	6322933	\N	\N	\N	2013-10-01 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+6404	71549206	6121392	\N	\N	\N	2013-01-05 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
+6404	71549207	6121392	\N	\N	\N	2013-01-04 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+7633	68044808	6122616	\N	\N	\N	2013-01-02 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+18965	68913367	6133904	\N	\N	\N	2013-01-01 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+7471	71801022	6122458	\N	\N	\N	2013-01-07 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+6176	67802762	6232824	\N	\N	\N	2013-06-14 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+7057	70089025	6122044	\N	\N	\N	2013-01-21 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+18965	68914112	6133904	\N	\N	\N	2013-01-04 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+9079	70541366	6124060	\N	\N	\N	2013-01-12 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+6956	70010957	6121943	\N	\N	\N	2013-01-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+20408	69890008	6247007	\N	N	\N	2013-06-30 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+6958	70015667	6121945	\N	\N	\N	2013-01-30 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+6956	69966350	6121943	\N	\N	\N	2013-01-03 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+6956	70010036	6121943	\N	\N	\N	2013-01-01 00:00:00	\N	8	3	2013-10-03 00:00:00	0	C	\N	\N	\N	\N
+6956	69966351	6121943	\N	\N	\N	2013-01-09 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+8764	69444442	6123745	\N	\N	\N	2013-01-18 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+9079	70541365	6124060	\N	\N	\N	2013-01-11 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+18965	68913368	6133904	\N	\N	\N	2013-01-02 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+7633	68045814	6122616	\N	\N	\N	2013-01-13 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+18965	68914113	6133904	\N	\N	\N	2013-01-04 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+7057	70088106	6122044	\N	\N	\N	2013-01-04 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+20408	69847543	6135347	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+7471	71799171	6122458	\N	\N	\N	2013-01-03 00:00:00	R	11	6	\N	0	C	\N	\N	\N	\N
+7658	72034142	6122641	\N	\N	\N	2013-01-27 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+11983	68779241	6327934	\N	\N	\N	2013-10-29 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+7658	72034134	6122641	\N	\N	\N	2013-01-08 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+11983	68779242	6327934	\N	\N	\N	2013-10-29 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+20408	69939269	6247007	\N	N	\N	2013-06-06 00:00:00	R	19	6	\N	0	C	\N	\N	\N	\N
+7057	70088107	6122044	\N	\N	\N	2013-01-04 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+6958	70015687	6322933	\N	\N	\N	2013-10-04 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+20408	69936722	6135347	\N	N	\N	2013-01-10 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
+6958	70015668	6144277	\N	\N	\N	2013-02-22 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+9079	70541331	6124060	\N	\N	\N	2013-01-02 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+9079	70541332	6124060	\N	\N	\N	2013-01-02 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+15023	71119215	6353284	\N	\N	\N	2013-11-05 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+6407	71576250	6121395	\N	\N	\N	2013-01-17 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
+6564	68242056	6121552	\N	\N	\N	2013-01-29 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+7611	68022177	6345918	\N	\N	\N	2013-11-09 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+17541	70880378	6244141	\N	N	\N	2013-06-26 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+7611	68022178	6345918	\N	\N	\N	2013-11-10 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+17759	69685960	6244359	\N	N	\N	2013-06-01 00:00:00	\N	17	2	2013-07-19 00:00:00	0	C	\N	\N	\N	\N
+15023	71119230	6353284	\N	\N	\N	2013-11-06 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+17759	69685961	6244359	\N	N	\N	2013-06-02 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+9045	69087646	6124026	\N	N	\N	2013-01-01 00:00:00	R	20	6	\N	0	C	\N	\N	\N	\N
+15023	71119231	6353284	\N	\N	\N	2013-11-10 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+9045	69088442	6124026	\N	N	\N	2013-01-02 00:00:00	R	17	6	\N	0	C	\N	\N	\N	\N
+9044	69086732	6124025	\N	\N	\N	2013-01-05 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+15023	71119216	6353284	\N	\N	\N	2013-11-05 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+7149	70196017	6122136	\N	\N	\N	2013-01-27 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+6564	68241228	6121552	\N	\N	\N	2013-01-03 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+6564	68241229	6121552	\N	\N	\N	2013-01-09 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+17541	70879539	6132481	\N	N	\N	2013-01-01 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+7611	68023102	6301254	\N	\N	\N	2013-09-01 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+15023	71923060	6129964	\N	\N	\N	2013-01-15 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+7611	68022080	6122598	\N	\N	\N	2013-01-02 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+7611	68022081	6301254	\N	\N	\N	2013-09-26 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+7056	70087133	6122043	\N	\N	\N	2013-01-03 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+6407	71570088	6121395	\N	\N	\N	2013-01-20 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
+7056	70087134	6122043	\N	\N	\N	2013-01-06 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+9070	70462266	6124051	\N	\N	\N	2013-01-04 00:00:00	R	4	6	\N	0	C	\N	\N	\N	\N
+7146	70154116	6122133	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+15023	71923039	6129964	\N	\N	\N	2013-01-01 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+18608	69657029	6200544	\N	N	\N	2013-04-12 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+18608	69657030	6200544	\N	\N	\N	2013-04-12 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+6564	68242156	6121552	\N	\N	\N	2013-01-01 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+9044	69087506	6124025	\N	\N	\N	2013-01-04 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+7146	70188344	6122133	\N	\N	\N	2013-01-06 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
+17541	70879535	6244141	\N	\N	\N	2013-06-14 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+17789	69818809	6132729	\N	\N	\N	2013-01-21 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+9070	70462265	6124051	\N	\N	\N	2013-01-01 00:00:00	R	13	6	\N	0	C	\N	\N	\N	\N
+18082	71708271	6267014	\N	\N	\N	2013-07-11 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+18085	71711247	6200021	\N	\N	\N	2013-04-05 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+7611	68023099	6122598	\N	\N	\N	2013-01-18 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+20308	69363261	6157579	\N	N	\N	2013-02-14 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+15027	77148872	6508245	\N	\N	\N	2014-03-10 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+7472	71825059	6122459	\N	\N	\N	2013-01-20 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+7472	71825060	6122459	\N	\N	\N	2013-01-07 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+14319	76565127	6462637	\N	\N	\N	2014-01-01 00:00:00	R	4	6	\N	0	C	\N	\N	\N	\N
+18380	72191397	6155652	\N	\N	\N	2013-02-20 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+1962	75856368	6450328	\N	N	\N	2014-01-30 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+10485	72394854	6326453	\N	\N	\N	2013-10-06 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+17516	70735980	6154788	\N	\N	\N	2013-02-23 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+17516	77278418	6465833	\N	\N	\N	2014-01-25 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+10485	72394855	6326453	\N	\N	\N	2013-10-10 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+20308	73755826	6468624	\N	N	\N	2014-01-01 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+18082	71707341	6267014	\N	\N	\N	2013-07-28 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+18380	72191396	6267312	\N	N	\N	2013-07-09 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+10486	72394867	6326454	\N	\N	\N	2013-10-31 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+18085	71710286	6133025	\N	\N	\N	2013-01-01 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+10486	72395801	6281790	\N	\N	\N	2013-08-05 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+10486	72394868	6348786	\N	\N	\N	2013-11-05 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+18085	71710287	6133025	\N	\N	\N	2013-01-03 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+10486	72395802	6281790	\N	\N	\N	2013-08-07 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
+6979	70026113	6322954	\N	\N	\N	2013-10-17 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+1962	70123521	6139283	\N	\N	\N	2013-02-24 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+2090	72710466	6206407	\N	\N	\N	2013-05-26 00:00:00	\N	14	4	2013-05-27 00:00:00	0	C	\N	\N	\N	\N
+18082	71707368	6133022	\N	\N	\N	2013-01-22 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+20842	67903646	6135781	\N	\N	\N	2013-01-05 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+18082	71707369	6133022	\N	\N	\N	2013-01-24 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+18082	71707342	6267014	\N	\N	\N	2013-07-29 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+10485	72393962	6348785	\N	\N	\N	2013-11-03 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+18085	71711248	6200021	\N	\N	\N	2013-04-04 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+10485	72393963	6348785	\N	\N	\N	2013-11-04 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+7611	68023084	6122598	\N	\N	\N	2013-01-05 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+18082	71708295	6267014	\N	\N	\N	2013-07-25 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+7472	71803730	6122459	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+7472	71803731	6122459	\N	\N	\N	2013-01-08 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+2090	72711737	6206407	\N	\N	\N	2013-05-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+10485	72393984	6125465	\N	\N	\N	2013-01-17 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+14116	70806357	6129057	\N	\N	\N	2013-01-01 00:00:00	R	23	6	\N	0	C	\N	\N	\N	\N
+10438	72263712	6125418	\N	\N	\N	2013-01-01 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+10438	72265562	6125418	\N	\N	\N	2013-01-01 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+18085	71711112	6133025	\N	\N	\N	2013-01-24 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+18085	71711113	6133025	\N	\N	\N	2013-01-24 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+21550	70211775	6136489	\N	\N	\N	2013-01-01 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+14319	68121336	6151592	\N	\N	\N	2013-02-07 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+21550	70211776	6136489	\N	\N	\N	2013-01-02 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+18380	72191398	6133320	\N	N	\N	2013-01-08 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+20148	76436657	6468464	\N	\N	\N	2014-01-30 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+17678	68893900	6311274	\N	\N	\N	2013-09-01 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+6980	70026189	6121967	\N	\N	\N	2013-01-14 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+2287	72514099	6117275	\N	\N	\N	2013-01-04 00:00:00	R	10	6	\N	0	C	\N	\N	\N	\N
+6980	70026201	6300623	\N	\N	\N	2013-09-19 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+2287	72514100	6117275	\N	N	\N	2013-01-04 00:00:00	R	12	6	\N	0	C	\N	\N	\N	\N
+14116	70807119	6129057	\N	\N	\N	2013-01-12 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+7867	77389018	6456225	\N	\N	\N	2014-01-10 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+10438	72274741	6125418	\N	\N	\N	2013-01-20 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+17678	68882112	6311274	\N	N	\N	2013-09-03 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+10438	72263707	6170082	\N	\N	\N	2013-03-19 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+14116	70806356	6129057	\N	\N	\N	2013-01-01 00:00:00	R	23	6	\N	0	C	\N	\N	\N	\N
+10485	72393985	6125465	\N	\N	\N	2013-01-18 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+10438	72269340	6147750	\N	\N	\N	2013-02-28 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+6589	68278914	6188573	\N	\N	\N	2013-04-17 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+15427	71475997	6152700	\N	\N	\N	2013-02-01 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+726	73634051	6449094	\N	\N	\N	2014-01-27 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+7512	74795020	6455876	\N	\N	\N	2014-01-23 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+10438	72266527	6170082	\N	\N	\N	2013-03-27 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+20148	69571690	6157419	\N	\N	\N	2013-02-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+14116	70807120	6129057	\N	\N	\N	2013-01-12 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+10438	72265542	6147750	\N	\N	\N	2013-02-04 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+21331	70385774	6270262	\N	\N	\N	2013-07-09 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+17678	68882962	6132618	\N	N	\N	2013-01-16 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+21331	70385773	6270262	\N	\N	\N	2013-07-09 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+18380	72191416	6155652	\N	\N	\N	2013-02-07 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+2157	70014995	6117146	\N	\N	\N	2013-01-14 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+7512	67711005	6144831	\N	\N	\N	2013-02-11 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+15427	72952569	6463745	\N	\N	\N	2014-01-24 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+2157	70014996	6117146	\N	\N	\N	2013-01-15 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+6587	68272416	6121575	\N	\N	\N	2013-01-01 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+631	70528342	6115622	\N	\N	\N	2013-01-24 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+554	69867843	6115545	\N	\N	\N	2013-01-08 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
+631	70531912	6115622	\N	\N	\N	2013-01-14 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+634	70571403	6160289	\N	\N	\N	2013-03-05 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+6608	68300710	6121596	\N	\N	\N	2013-01-22 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+6654	72860209	6455019	\N	\N	\N	2014-01-02 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+2051	72673612	6117040	\N	\N	\N	2013-01-28 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+631	70533874	6338942	\N	\N	\N	2013-11-16 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+6608	68299854	6121596	\N	\N	\N	2013-01-07 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+591	70388950	6137914	\N	N	\N	2013-02-04 00:00:00	\N	0	4	2014-03-26 00:00:00	0	C	\N	\N	\N	\N
+6589	68278938	6210905	\N	\N	\N	2013-05-23 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+6609	68300736	6143929	\N	\N	\N	2013-02-07 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+554	69867842	6115545	\N	\N	\N	2013-01-06 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+9066	70433000	6146379	\N	N	\N	2013-02-01 00:00:00	R	20	6	\N	0	C	\N	\N	\N	\N
+19943	69017219	6134882	\N	\N	\N	2013-01-01 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+20693	71015465	6157964	\N	\N	\N	2013-02-23 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+4573	71499972	6119561	\N	\N	\N	2013-01-20 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+7509	74773343	6455873	\N	\N	\N	2014-01-20 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+634	70571397	6115625	\N	\N	\N	2013-01-03 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+2051	72666384	6117040	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+9066	74799430	6457424	\N	N	\N	2014-01-26 00:00:00	R	15	6	\N	0	C	\N	\N	\N	\N
+2051	72667473	6117040	\N	\N	\N	2013-01-11 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+6587	68273388	6210903	\N	\N	\N	2013-05-06 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+20693	71021101	6358952	\N	\N	\N	2013-11-21 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+6587	68273405	6210903	\N	\N	\N	2013-05-19 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+631	70528337	6115622	\N	\N	\N	2013-01-07 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+8469	73191650	6456827	\N	N	\N	2014-01-22 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+7509	71917565	6144828	\N	\N	\N	2013-02-14 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+19943	69039360	6134882	\N	\N	\N	2013-01-01 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+2050	72657791	6273363	\N	\N	\N	2013-08-23 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+634	70571402	6160289	\N	\N	\N	2013-03-02 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+6585	68265856	6121573	\N	\N	\N	2013-01-09 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+591	73812811	6448959	\N	N	\N	2014-01-01 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+631	70533873	6338942	\N	\N	\N	2013-11-15 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+631	70529240	6115622	\N	\N	\N	2013-01-30 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+6589	68278926	6210905	\N	\N	\N	2013-05-01 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+6585	68265855	6121573	\N	\N	\N	2013-01-07 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+6585	68265872	6143905	\N	\N	\N	2013-02-07 00:00:00	R	1	6	\N	0	C	\N	\N	\N	\N
+4573	71499971	6119561	\N	\N	\N	2013-01-17 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+7583	67886787	6122570	\N	\N	\N	2013-01-23 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+20693	71014494	6157964	\N	\N	\N	2013-02-16 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+20693	71020265	6358952	\N	\N	\N	2013-11-08 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+20693	71022062	6135632	\N	\N	\N	2013-01-03 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+7583	67886762	6122570	\N	\N	\N	2013-01-23 00:00:00	R	16	6	\N	0	C	\N	\N	\N	\N
+2051	72666385	6117040	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+6654	68392916	6143974	\N	\N	\N	2013-02-27 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+14304	68065999	6285569	\N	\N	\N	2013-08-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+8625	68809557	6145938	\N	\N	\N	2013-02-04 00:00:00	\N	23	4	2013-02-05 00:00:00	0	C	\N	\N	\N	\N
+14304	68054816	6129245	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+6176	67801723	6188160	\N	\N	\N	2013-04-20 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+8625	68809558	6123606	\N	N	\N	2013-01-01 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+8625	68811233	6212934	\N	\N	\N	2013-05-15 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+6176	67801724	6188160	\N	\N	\N	2013-04-23 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+8625	68811203	6145938	\N	\N	\N	2013-02-05 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+6176	67798051	6121164	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+8679	67853685	6123660	\N	\N	\N	2013-01-08 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+6176	67798052	6121164	\N	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+2050	72662655	6273363	\N	\N	\N	2013-08-08 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+8626	68812848	6123607	\N	N	\N	2013-01-04 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+8626	68812849	6123607	\N	N	\N	2013-01-03 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+6277	67953127	6121265	\N	\N	\N	2013-01-03 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+14304	68049123	6285569	\N	\N	\N	2013-08-23 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+6980	70026190	6166631	\N	\N	\N	2013-03-25 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+6487	71844154	6210803	\N	\N	\N	2013-05-03 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+8679	67853686	6123660	\N	\N	\N	2013-01-02 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+6980	70026191	6166631	\N	\N	\N	2013-03-25 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+6979	70026165	6367618	\N	\N	\N	2013-12-03 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+2050	72662656	6273363	\N	\N	\N	2013-08-08 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+6979	70026166	6367618	\N	\N	\N	2013-12-06 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+8469	69170844	6145782	\N	N	\N	2013-02-18 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+8626	75505602	6591684	\N	\N	\N	2014-07-02 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+14304	68063325	6285569	\N	\N	\N	2013-08-29 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+6277	67953128	6121265	\N	\N	\N	2013-01-02 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+8626	75505603	6591684	\N	\N	\N	2014-07-02 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+17891	74424798	6466208	\N	\N	\N	2014-01-25 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+6487	71843221	6210803	\N	\N	\N	2013-05-08 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+11714	70288834	6149009	\N	\N	\N	2013-02-03 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+513	77257157	6448881	\N	N	\N	2014-01-25 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+513	69816482	6137836	\N	\N	\N	2013-02-15 00:00:00	R	13	6	\N	0	C	\N	\N	\N	\N
+17891	69657809	6155163	\N	\N	\N	2013-02-08 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+8625	68811234	6212934	\N	\N	\N	2013-05-16 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
+11714	75249849	6460054	\N	\N	\N	2014-01-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+6487	71843220	6210803	\N	\N	\N	2013-05-05 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+15480	67792805	6130421	\N	\N	\N	2013-01-25 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+17729	68714901	6177333	\N	\N	\N	2013-03-03 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+6487	71844155	6210803	\N	\N	\N	2013-05-02 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+20763	71110870	6135702	\N	\N	\N	2013-01-22 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+8666	67847139	6168311	\N	\N	\N	2013-03-11 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+17527	77341310	6465844	\N	N	\N	2014-01-15 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
+15479	67785097	6130420	\N	\N	\N	2013-01-02 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+8666	67845156	6369299	\N	\N	\N	2013-12-19 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+15480	67792806	6130421	\N	\N	\N	2013-01-24 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+15480	67790863	6130421	\N	\N	\N	2013-01-01 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+20967	70042138	6158238	\N	\N	\N	2013-02-04 00:00:00	R	13	6	\N	0	C	\N	\N	\N	\N
+4546	74222912	6452911	\N	\N	\N	2014-01-15 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+15480	67807067	6286745	\N	\N	\N	2013-08-01 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
+17729	68714908	6177333	\N	\N	\N	2013-03-29 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+6175	67796023	6277487	\N	\N	\N	2013-08-30 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+15480	67807069	6286745	\N	\N	\N	2013-08-01 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
+8333	68406376	6145646	\N	\N	\N	2013-02-01 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+18608	69657066	6200544	\N	\N	\N	2013-04-20 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+6189	67830277	6121177	\N	\N	\N	2013-01-02 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+20768	71666448	6135707	\N	\N	\N	2013-01-19 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+8666	67845163	6123647	\N	\N	\N	2013-01-01 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+6189	67831121	6232837	\N	\N	\N	2013-06-02 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+20768	71672172	6336695	\N	\N	\N	2013-10-07 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+8666	67847123	6324635	\N	\N	\N	2013-10-03 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+17527	70847342	6154799	\N	N	\N	2013-02-07 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+8333	68408326	6145646	\N	\N	\N	2013-02-28 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+20763	71091541	6135702	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+17729	68714902	6177333	\N	\N	\N	2013-03-22 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+15479	67785098	6130420	\N	\N	\N	2013-01-03 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+8666	67845157	6168311	\N	\N	\N	2013-03-25 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+20768	71665584	6225035	\N	\N	\N	2013-05-06 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+4546	71419916	6141866	\N	\N	\N	2013-02-06 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+6178	73706587	6611693	\N	\N	\N	2014-08-16 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+20967	77689124	6469283	\N	\N	\N	2014-01-01 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+8666	67847125	6324635	\N	N	\N	2013-10-03 00:00:00	\N	19	4	2013-10-30 00:00:00	0	C	\N	\N	\N	\N
+15480	67790862	6130421	\N	\N	\N	2013-01-01 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+6178	73706588	6611693	\N	\N	\N	2014-08-21 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+20768	71672259	6336695	\N	\N	\N	2013-10-31 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+6175	67796062	6121163	\N	\N	\N	2013-01-28 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+6189	67830276	6121177	\N	\N	\N	2013-01-04 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+8666	67845162	6123647	\N	\N	\N	2013-01-01 00:00:00	R	21	6	\N	0	C	\N	\N	\N	\N
+8333	68414726	6123314	\N	N	\N	2013-01-05 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+6189	67831122	6232837	\N	\N	\N	2013-06-02 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+6175	67795220	6277487	\N	\N	\N	2013-08-22 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+6175	67795219	6277487	\N	\N	\N	2013-08-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+8666	67848926	6369299	\N	\N	\N	2013-12-18 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+7499	71891375	6122486	\N	\N	\N	2013-01-01 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+23242	69638138	6226397	\N	\N	\N	2013-05-06 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+6176	67803744	6232824	\N	\N	\N	2013-06-18 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+18608	69661371	6289872	\N	N	\N	2013-08-20 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+8850	71940238	6123831	\N	N	\N	2013-01-02 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+2247	72287100	6117236	\N	\N	\N	2013-01-01 00:00:00	R	8	6	\N	0	C	\N	\N	\N	\N
+18609	69664919	6133549	\N	\N	\N	2013-01-01 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+8850	71911138	6123831	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+2247	72287101	6117236	\N	\N	\N	2013-01-01 00:00:00	R	13	6	\N	0	C	\N	\N	\N	\N
+8716	68073004	6123697	\N	N	\N	2013-01-27 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+8716	68080190	6168361	\N	\N	\N	2013-03-20 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+23242	69637348	6159401	\N	\N	\N	2013-02-05 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+7043	70074815	6323018	\N	\N	\N	2013-10-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+2315	71197184	6117303	\N	N	\N	2013-01-14 00:00:00	R	8	6	\N	0	C	\N	\N	\N	\N
+18608	69660585	6289872	\N	\N	\N	2013-08-10 00:00:00	\N	21	4	2013-10-08 00:00:00	0	C	\N	\N	\N	\N
+8716	68069465	6123697	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+17733	69625234	6244333	\N	\N	\N	2013-06-26 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
+2090	74196647	6450456	\N	\N	\N	2014-01-14 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+6176	67803608	6232824	\N	\N	\N	2013-06-24 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+18513	71666931	6133453	\N	\N	\N	2013-01-19 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+7101	70142414	6122088	\N	\N	\N	2013-01-16 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+7123	68124313	6122110	\N	\N	\N	2013-01-02 00:00:00	R	12	6	\N	0	C	\N	\N	\N	\N
+18513	71666932	6133453	\N	\N	\N	2013-01-20 00:00:00	\N	6	4	2013-01-25 00:00:00	0	C	\N	\N	\N	\N
+8716	68092559	6168361	\N	N	\N	2013-03-03 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+17733	69617306	6132673	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+7043	70074816	6323018	\N	\N	\N	2013-10-01 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+8626	68827329	6123607	\N	N	\N	2013-01-15 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+7498	71891370	6122485	\N	\N	\N	2013-01-27 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+2090	72709609	6139411	\N	\N	\N	2013-02-12 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+15479	67785156	6130420	\N	\N	\N	2013-01-28 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+7101	70141599	6122088	\N	\N	\N	2013-01-02 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+23242	69638122	6248729	\N	\N	\N	2013-06-17 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+15479	67785157	6130420	\N	\N	\N	2013-01-21 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+17733	69617305	6132673	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+7123	68125209	6122110	\N	\N	\N	2013-01-17 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+17733	69625233	6244333	\N	\N	\N	2013-06-26 00:00:00	\N	2	4	2013-06-26 00:00:00	0	C	\N	\N	\N	\N
+8626	68823010	6123607	\N	\N	\N	2013-01-07 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+7498	71888647	6122485	\N	\N	\N	2013-01-04 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+23242	69637330	6159401	\N	\N	\N	2013-02-12 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+23242	69638136	6226397	\N	\N	\N	2013-05-07 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+23242	69637331	6248729	\N	\N	\N	2013-06-13 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+14886	71811322	6129827	\N	\N	\N	2013-01-29 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
+14886	71810464	6129827	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+8379	77574140	6591437	\N	\N	\N	2014-07-19 00:00:00	R	8	6	\N	0	C	\N	\N	\N	\N
+20135	69534615	6135074	\N	N	\N	2013-01-14 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+8950	72225950	6146263	\N	\N	\N	2013-02-06 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+18633	69869898	6334560	\N	N	\N	2013-10-17 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+6589	68279008	6277901	\N	\N	\N	2013-08-16 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+14796	68484338	6129737	\N	\N	\N	2013-01-03 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+20135	69543704	6358394	\N	\N	\N	2013-11-05 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+8717	68129369	6123698	\N	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+8846	71893557	6123827	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+10486	72395712	6214794	\N	\N	\N	2013-05-01 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+2315	71197185	6117303	\N	N	\N	2013-01-07 00:00:00	R	8	6	\N	0	C	\N	\N	\N	\N
+6981	70027011	6121968	\N	\N	\N	2013-01-10 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+9043	74975390	6457401	\N	\N	\N	2014-01-25 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+8765	69452612	6146078	\N	\N	\N	2013-02-24 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+14806	71669765	6129747	\N	\N	\N	2013-01-11 00:00:00	R	14	6	\N	0	C	\N	\N	\N	\N
+14886	71813318	6129827	\N	\N	\N	2013-01-14 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+6589	68278993	6277901	\N	\N	\N	2013-08-02 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+14796	68493447	6129737	\N	\N	\N	2013-01-14 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+6589	68278995	6277901	\N	\N	\N	2013-08-04 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+18608	69663214	6356868	\N	\N	\N	2013-11-02 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+8717	68131193	6123698	\N	\N	\N	2013-01-25 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+8379	68919098	6123360	\N	N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+8379	68919136	6123360	\N	N	\N	2013-01-02 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+8717	68131323	6123698	\N	\N	\N	2013-01-23 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+20135	69532822	6135074	\N	N	\N	2013-01-01 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+14886	71810465	6129827	\N	\N	\N	2013-01-03 00:00:00	\N	11	2	2013-01-25 00:00:00	0	C	\N	\N	\N	\N
+6590	68289340	6322566	\N	\N	\N	2013-10-30 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+8765	73079394	6457123	\N	N	\N	2014-01-10 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+1962	75915602	6674828	\N	\N	\N	2014-11-30 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+18608	69664893	6379200	\N	\N	\N	2013-12-29 00:00:00	\N	13	4	2013-12-29 00:00:00	0	C	\N	\N	\N	\N
+14796	68493448	6129737	\N	\N	\N	2013-01-14 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+20135	69543738	6358394	\N	N	\N	2013-11-07 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+6981	70027015	6121968	\N	\N	\N	2013-01-25 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+14796	68484337	6129737	\N	\N	\N	2013-01-01 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+8379	77574141	6591437	\N	\N	\N	2014-07-19 00:00:00	R	11	2	2014-07-21 00:00:00	0	C	\N	\N	\N	\N
+6175	67797069	6210491	\N	\N	\N	2013-05-13 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+8717	68129368	6123698	\N	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+10486	72395713	6214794	\N	\N	\N	2013-05-02 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+6175	67797084	6210491	\N	\N	\N	2013-05-28 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+8950	72225949	6146263	\N	\N	\N	2013-02-04 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+6981	70026204	6121968	\N	\N	\N	2013-01-04 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+6577	68253595	6121565	\N	\N	\N	2013-01-01 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+17687	73695198	6466004	\N	N	\N	2014-01-24 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+14806	71669764	6129747	\N	\N	\N	2013-01-10 00:00:00	R	16	6	\N	0	C	\N	\N	\N	\N
+6590	68288554	6322566	\N	\N	\N	2013-10-27 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+9043	69086713	6146356	\N	N	\N	2013-02-08 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+10480	72361775	6259452	\N	\N	\N	2013-07-28 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+2124	72752789	6117113	\N	\N	\N	2013-01-05 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+10480	72360006	6259452	\N	\N	\N	2013-07-31 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+17728	68706977	6199664	\N	N	\N	2013-04-29 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+20356	69478652	6135295	\N	N	\N	2013-01-14 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+6979	70026071	6300622	\N	\N	\N	2013-09-04 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+8847	71904957	6123828	\N	N	\N	2013-01-01 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+14284	71036744	6129225	\N	\N	\N	2013-01-02 00:00:00	R	10	6	\N	0	C	\N	\N	\N	\N
+19637	67760708	6156908	\N	\N	\N	2013-02-07 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+14284	71036745	6129225	\N	\N	\N	2013-01-02 00:00:00	R	13	6	\N	0	C	\N	\N	\N	\N
+2195	70219181	6273508	\N	\N	\N	2013-08-01 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+2195	70226032	6117184	\N	\N	\N	2013-01-28 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+2195	70235659	6117184	\N	\N	\N	2013-01-04 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+17795	69853350	6155067	\N	N	\N	2013-02-17 00:00:00	\N	1	2	2013-08-09 00:00:00	0	C	\N	\N	\N	\N
+9049	74655481	6457407	\N	N	\N	2014-01-06 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+14284	71037645	6129225	\N	\N	\N	2013-01-24 00:00:00	R	17	6	\N	0	C	\N	\N	\N	\N
+2195	70225944	6161848	\N	\N	\N	2013-03-19 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+14284	71037646	6129225	\N	\N	\N	2013-01-24 00:00:00	R	19	6	\N	0	C	\N	\N	\N	\N
+2195	70225945	6161848	\N	\N	\N	2013-03-19 00:00:00	R	20	6	\N	0	C	\N	\N	\N	\N
+9049	69280821	6146362	\N	\N	\N	2013-02-20 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+8847	71895393	6123828	\N	N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+10480	72356407	6125460	\N	\N	\N	2013-01-01 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+20289	69305218	6157560	\N	\N	\N	2013-02-06 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+19637	75992937	6467953	\N	N	\N	2014-01-28 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+20356	76516292	6603372	\N	N	\N	2014-07-06 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+6979	70026079	6300622	\N	\N	\N	2013-09-07 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+20356	76516293	6603372	\N	N	\N	2014-07-06 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+10480	72357323	6125460	\N	\N	\N	2013-01-26 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+17795	74800646	6466112	\N	\N	\N	2014-01-16 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+20356	69477713	6135295	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+2195	70219180	6273508	\N	\N	\N	2013-08-01 00:00:00	R	10	6	\N	0	C	\N	\N	\N	\N
+17728	68706951	6199664	\N	\N	\N	2013-04-15 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+20356	69477714	6135295	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+2195	70238509	6273508	\N	\N	\N	2013-08-11 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+10480	72356408	6125460	\N	\N	\N	2013-01-01 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+10480	72360915	6125460	\N	\N	\N	2013-01-27 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+20356	69478653	6135295	\N	N	\N	2013-01-14 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+20289	73627108	6468605	\N	\N	\N	2014-01-19 00:00:00	\N	16	2	2015-09-16 00:00:00	0	C	\N	\N	\N	\N
+2124	72752788	6117113	\N	\N	\N	2013-01-02 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+20160	71869003	6291423	\N	N	\N	2013-08-24 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+17495	70908815	6132435	\N	\N	\N	2013-01-10 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+2203	74218578	6697519	\N	\N	\N	2014-12-05 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+2203	74219425	6697519	\N	\N	\N	2014-12-24 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+8436	69036860	6123417	\N	N	\N	2013-01-01 00:00:00	R	0	2	2013-05-03 00:00:00	0	C	\N	\N	\N	\N
+14930	71310077	6129871	\N	\N	\N	2013-01-17 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+18439	68610568	6133379	\N	\N	\N	2013-01-07 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+18750	71263011	6133689	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+8436	69036861	6123417	\N	\N	\N	2013-01-02 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+20601	72633799	6135540	\N	\N	\N	2013-01-01 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+20599	72604837	6135538	\N	\N	\N	2013-01-22 00:00:00	\N	11	2	2014-03-24 00:00:00	0	C	\N	\N	\N	\N
+20599	72598347	6135538	\N	\N	\N	2013-01-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+20601	72633830	6135540	\N	\N	\N	2013-01-09 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+20599	72598348	6135538	\N	\N	\N	2013-01-01 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+14930	71136807	6241531	\N	\N	\N	2013-06-16 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+14930	71316430	6241531	\N	\N	\N	2013-06-01 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+20599	72598489	6135538	\N	\N	\N	2013-01-15 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+14930	75500276	6665298	\N	\N	\N	2014-10-15 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+18608	69663247	6356868	\N	\N	\N	2013-11-10 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+20160	71864757	6291423	\N	\N	\N	2013-08-05 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+17693	68641692	6132633	\N	\N	\N	2013-01-01 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+2203	70288594	6117192	\N	\N	\N	2013-01-02 00:00:00	R	14	6	\N	0	C	\N	\N	\N	\N
+17693	68641693	6132633	\N	\N	\N	2013-01-02 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+20601	72635644	6180204	\N	\N	\N	2013-03-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+18509	71646021	6133449	\N	\N	\N	2013-01-01 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+17693	68642601	6221961	\N	\N	\N	2013-05-01 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+18509	71646020	6334437	\N	N	\N	2013-10-17 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+23253	68645933	6137080	\N	\N	\N	2013-01-09 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+17693	68642602	6221961	\N	\N	\N	2013-05-01 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+18750	71268549	6133689	\N	N	\N	2013-01-02 00:00:00	R	12	6	\N	0	C	\N	\N	\N	\N
+17495	70908816	6132435	\N	\N	\N	2013-01-07 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+20601	72633798	6135540	\N	\N	\N	2013-01-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+23253	68645932	6137080	\N	\N	\N	2013-01-08 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+20841	73446791	6469157	\N	\N	\N	2014-01-06 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+18608	69663250	6356868	\N	\N	\N	2013-11-12 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+2203	70287789	6117192	\N	\N	\N	2013-01-01 00:00:00	R	1	6	\N	0	C	\N	\N	\N	\N
+18633	69861236	6289896	\N	N	\N	2013-08-21 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+8436	69036947	6279741	\N	\N	\N	2013-08-01 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+20601	72635645	6180204	\N	\N	\N	2013-03-01 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+20601	72635641	6135540	\N	\N	\N	2013-01-24 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+8436	69036948	6279741	\N	N	\N	2013-08-03 00:00:00	\N	15	4	2013-08-04 00:00:00	0	C	\N	\N	\N	\N
+18166	71643478	6267098	\N	\N	\N	2013-07-05 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+18607	69653628	6379199	\N	\N	\N	2013-12-13 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+17616	68684349	6132556	\N	\N	\N	2013-01-01 00:00:00	\N	3	4	2013-01-04 00:00:00	0	C	\N	\N	\N	\N
+18608	69662280	6312204	\N	\N	\N	2013-09-28 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
+4532	71372432	6119520	\N	\N	\N	2013-01-22 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+8432	69024063	6279737	\N	\N	\N	2013-08-19 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+8432	69025893	6257405	\N	\N	\N	2013-07-15 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+17437	68051366	6333365	\N	\N	\N	2013-10-01 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+14594	70641933	6129535	\N	\N	\N	2013-01-04 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+17703	68647704	6132643	\N	\N	\N	2013-01-03 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+5998	70985805	6165650	\N	\N	\N	2013-03-25 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+17437	68050420	6333365	\N	\N	\N	2013-10-17 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+1965	70188608	6295610	\N	\N	\N	2013-09-14 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+17616	68688513	6132556	\N	N	\N	2013-01-18 00:00:00	R	13	6	\N	0	C	\N	\N	\N	\N
+17759	69698089	6311355	\N	N	\N	2013-09-22 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+5998	70985806	6366638	\N	N	\N	2013-12-18 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+749	68950864	6115740	\N	\N	\N	2013-01-23 00:00:00	R	13	6	\N	0	C	\N	\N	\N	\N
+8432	69024070	6123413	\N	\N	\N	2013-01-03 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+749	68950865	6115740	\N	\N	\N	2013-01-23 00:00:00	R	14	6	\N	0	C	\N	\N	\N	\N
+15314	71367148	6264247	\N	\N	\N	2013-07-03 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+15314	71367175	6264247	\N	\N	\N	2013-07-16 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+14594	70641932	6129535	\N	\N	\N	2013-01-08 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+18607	69653562	6356867	\N	N	\N	2013-11-07 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+17437	68051415	6378029	\N	\N	\N	2013-12-26 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+17439	68055165	6132379	\N	\N	\N	2013-01-14 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+8432	69024062	6257405	\N	\N	\N	2013-07-05 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+17437	68051401	6378029	\N	\N	\N	2013-12-02 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+18607	69653604	6356867	\N	\N	\N	2013-11-30 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+17439	68053296	6132379	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+17703	68647782	6132643	\N	\N	\N	2013-01-08 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+6607	74391052	6454972	\N	\N	\N	2014-01-09 00:00:00	\N	16	2	2014-02-24 00:00:00	0	C	\N	\N	\N	\N
+8432	69025869	6279737	\N	\N	\N	2013-08-15 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+6607	68299736	6143927	\N	\N	\N	2013-02-02 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+1965	70188607	6273278	\N	\N	\N	2013-08-29 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+17617	68691968	6132557	\N	N	\N	2013-01-15 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+18608	69661505	6312204	\N	\N	\N	2013-09-22 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+17759	69693788	6311355	\N	\N	\N	2013-09-08 00:00:00	\N	13	4	2013-09-09 00:00:00	0	C	\N	\N	\N	\N
+8432	69024069	6123413	\N	N	\N	2013-01-01 00:00:00	\N	22	2	2013-02-25 00:00:00	0	C	\N	\N	\N	\N
+4573	71507280	6208889	\N	\N	\N	2013-05-18 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+4573	71507179	6208889	\N	\N	\N	2013-05-10 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+4532	71372433	6119520	\N	\N	\N	2013-01-29 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+17617	68691884	6132557	\N	\N	\N	2013-01-01 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+8432	69025894	6257405	\N	\N	\N	2013-07-30 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+6581	68264815	6121569	\N	\N	\N	2013-01-02 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+6581	68264801	6367221	\N	\N	\N	2013-12-14 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+1826	69430140	6116815	\N	\N	\N	2013-01-01 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
+9085	70602952	6124066	\N	N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+1831	69591011	6116820	\N	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+18608	69660580	6289872	\N	\N	\N	2013-08-09 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+1831	69592780	6116820	\N	\N	\N	2013-01-25 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+8826	69738727	6123807	\N	N	\N	2013-01-18 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+1826	69430139	6116815	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+8852	71958195	6123833	\N	\N	\N	2013-01-01 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+8459	69074393	6212768	\N	\N	\N	2013-05-19 00:00:00	\N	\N	4	2013-05-19 00:00:00	0	C	\N	\N	\N	\N
+4572	71483034	6119560	\N	\N	\N	2013-01-01 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+8459	69075291	6123440	\N	\N	\N	2013-01-17 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+18608	69654518	6133548	\N	\N	\N	2013-01-27 00:00:00	\N	17	4	2013-02-06 00:00:00	0	C	\N	\N	\N	\N
+7308	70339251	6122295	\N	\N	\N	2013-01-22 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+18438	68608733	6267370	\N	N	\N	2013-07-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+8826	69738728	6123807	\N	\N	\N	2013-01-18 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+7042	70062467	6122029	\N	\N	\N	2013-01-02 00:00:00	R	16	6	\N	0	C	\N	\N	\N	\N
+17730	75383786	6466047	\N	N	\N	2014-01-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+1826	69431788	6116815	\N	\N	\N	2013-01-14 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+6581	68258341	6121569	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+7308	70335342	6122295	\N	\N	\N	2013-01-01 00:00:00	R	13	6	\N	0	C	\N	\N	\N	\N
+8459	69076217	6168104	\N	\N	\N	2013-03-14 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+18438	68608020	6267370	\N	N	\N	2013-07-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+19944	75327995	6468260	\N	\N	\N	2014-01-21 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+8459	69077142	6212768	\N	\N	\N	2013-05-09 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
+8852	71954748	6324821	\N	N	\N	2013-10-12 00:00:00	\N	17	3	2013-10-31 00:00:00	0	C	\N	\N	\N	\N
+8459	69076259	6190436	\N	\N	\N	2013-04-01 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+7042	70065277	6122029	\N	\N	\N	2013-01-28 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
+17730	68724332	6155002	\N	N	\N	2013-02-10 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+8852	71941923	6123833	\N	\N	\N	2013-01-01 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
+7308	70348606	6233955	\N	\N	\N	2013-06-18 00:00:00	R	14	6	\N	0	C	\N	\N	\N	\N
+7640	68062611	6122623	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+1831	69591012	6116820	\N	\N	\N	2013-01-01 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
+18608	69660581	6289872	\N	\N	\N	2013-08-09 00:00:00	\N	23	4	2013-08-28 00:00:00	0	C	\N	\N	\N	\N
+1831	69592779	6116820	\N	\N	\N	2013-01-24 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+17437	68051355	6132377	\N	\N	\N	2013-01-22 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+8459	69076260	6190436	\N	\N	\N	2013-04-01 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+1826	69431789	6116815	\N	\N	\N	2013-01-13 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+19944	69106457	6157215	\N	\N	\N	2013-02-05 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
+6581	68264783	6367221	\N	\N	\N	2013-12-05 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+8459	69074394	6168104	\N	N	\N	2013-03-13 00:00:00	R	\N	4	2013-03-15 00:00:00	0	C	\N	\N	\N	\N
+18608	69654517	6133548	\N	N	\N	2013-01-27 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+6963	70015771	6121950	\N	\N	\N	2013-01-04 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+8852	71959094	6324821	\N	\N	\N	2013-10-27 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+8459	69075292	6123440	\N	\N	\N	2013-01-17 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+7042	70065282	6122029	\N	\N	\N	2013-01-26 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+6580	68256350	6121568	\N	\N	\N	2013-01-02 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+7042	70062468	6122029	\N	\N	\N	2013-01-17 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
+7308	70347757	6233955	\N	\N	\N	2013-06-13 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+4572	71483961	6119560	\N	\N	\N	2013-01-24 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+15527	72884615	6508745	\N	\N	\N	2014-03-18 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+8868	72017466	6123849	\N	N	\N	2013-01-23 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+15535	67950816	6130476	\N	\N	\N	2013-01-01 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+23201	70557435	6137029	\N	\N	\N	2013-01-15 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+15535	67950817	6130476	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+15629	68014679	6152902	\N	\N	\N	2013-02-12 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+8369	68896737	6324338	\N	N	\N	2013-10-27 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+4531	71303240	6119519	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+8335	68416584	6123316	\N	N	\N	2013-01-29 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+15629	68016521	6152902	\N	\N	\N	2013-02-15 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+18608	69664903	6379200	\N	\N	\N	2013-12-30 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+20473	71837029	6135412	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+20473	71841702	6157744	\N	\N	\N	2013-02-13 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+17440	68055308	6355700	\N	\N	\N	2013-11-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+17440	68055316	6132380	\N	\N	\N	2013-01-08 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+8369	68897559	6279674	\N	\N	\N	2013-08-06 00:00:00	\N	\N	2	2013-08-07 00:00:00	0	C	\N	\N	\N	\N
+15629	68014680	6152902	\N	\N	\N	2013-02-13 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+15629	68014707	6130570	\N	\N	\N	2013-01-01 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+4531	71305065	6119519	\N	\N	\N	2013-01-16 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+17440	68055319	6132380	\N	\N	\N	2013-01-09 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+15629	68014708	6130570	\N	\N	\N	2013-01-01 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+20789	67746805	6135728	\N	\N	\N	2013-01-02 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+8369	68897560	6279674	\N	\N	\N	2013-08-06 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+18608	69664027	6356868	\N	\N	\N	2013-11-21 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+20789	67746806	6135728	\N	\N	\N	2013-01-03 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+20473	71841704	6157744	\N	\N	\N	2013-02-13 00:00:00	\N	12	2	2013-02-14 00:00:00	0	C	\N	\N	\N	\N
+6881	69895747	6121868	\N	\N	\N	2013-01-06 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+6881	69896553	6121868	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+8369	68894926	6302006	\N	\N	\N	2013-09-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+8369	68896756	6324338	\N	\N	\N	2013-10-28 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+8369	68893098	6168014	\N	N	\N	2013-03-05 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+8369	68893099	6302006	\N	\N	\N	2013-09-17 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+19711	68030161	6156982	\N	\N	\N	2013-02-27 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+8335	68416585	6123316	\N	N	\N	2013-01-31 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+8369	68893970	6168014	\N	\N	\N	2013-03-01 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+8560	68587181	6168205	\N	\N	\N	2013-03-13 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+19711	76093878	6468027	\N	\N	\N	2014-01-10 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+6511	68167150	6121499	\N	\N	\N	2013-01-02 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+8868	72017465	6280173	\N	N	\N	2013-08-24 00:00:00	R	22	6	\N	0	C	\N	\N	\N	\N
+9064	70387183	6168709	\N	\N	\N	2013-03-17 00:00:00	R	1	6	\N	0	C	\N	\N	\N	\N
+17516	70738774	6177120	\N	\N	\N	2013-03-25 00:00:00	\N	22	2	2013-03-25 00:00:00	0	C	\N	\N	\N	\N
+9064	70384509	6124045	\N	N	\N	2013-01-26 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
+18295	72038308	6133235	\N	N	\N	2013-01-11 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+2121	72751999	6117110	\N	\N	\N	2013-01-03 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+17559	68555815	6132499	\N	N	\N	2013-01-14 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+2121	72752000	6117110	\N	\N	\N	2013-01-04 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+8332	77449819	6456690	\N	\N	\N	2014-01-24 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+8863	72010662	6302500	\N	\N	\N	2013-09-02 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+7640	68066315	6144955	\N	\N	\N	2013-02-20 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+2090	72710834	6228739	\N	\N	\N	2013-06-26 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+8863	72010663	6123844	\N	N	\N	2013-01-11 00:00:00	R	\N	4	2013-04-01 00:00:00	0	C	\N	\N	\N	\N
+18608	69657051	6200544	\N	\N	\N	2013-04-16 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+8335	68416654	6145648	\N	\N	\N	2013-02-16 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+9064	70387161	6168709	\N	\N	\N	2013-03-12 00:00:00	R	18	6	\N	0	C	\N	\N	\N	\N
+17516	70743285	6177120	\N	\N	\N	2013-03-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+9064	70383552	6124045	\N	N	\N	2013-01-01 00:00:00	R	2	6	\N	0	C	\N	\N	\N	\N
+2123	72752219	6117112	\N	\N	\N	2013-01-01 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
+18295	72039937	6334223	\N	N	\N	2013-10-11 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+2123	72752220	6117112	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+18295	72039938	6334223	\N	N	\N	2013-10-11 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+8554	68578738	6123535	\N	N	\N	2013-01-31 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+8554	68577950	6123535	\N	\N	\N	2013-01-03 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+2123	72752489	6251104	\N	\N	\N	2013-07-01 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+8554	68577951	6123535	\N	N	\N	2013-01-03 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+7640	75106855	6456000	\N	\N	\N	2014-01-05 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+2123	72752491	6251104	\N	\N	\N	2013-07-02 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+17440	68056108	6311036	\N	\N	\N	2013-09-25 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+17559	68555814	6132499	\N	N	\N	2013-01-14 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+2090	72710482	6228739	\N	\N	\N	2013-06-02 00:00:00	\N	3	4	2013-06-02 00:00:00	0	C	\N	\N	\N	\N
+17440	68056109	6311036	\N	\N	\N	2013-09-30 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+8332	68405560	6145645	\N	\N	\N	2013-02-04 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+17730	68793491	6378322	\N	\N	\N	2013-12-21 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+8335	77459054	6456693	\N	\N	\N	2014-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+8554	68585465	6123535	\N	N	\N	2013-01-01 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+17730	68793492	6378322	\N	\N	\N	2013-12-21 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+19944	69042159	6134883	\N	\N	\N	2013-01-14 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+8548	68494781	6123529	\N	\N	\N	2013-01-04 00:00:00	R	\N	4	2013-03-26 00:00:00	0	C	\N	\N	\N	\N
+8711	67976612	6123692	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+8417	69010111	6279722	\N	\N	\N	2013-08-16 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+8791	69517130	6302428	\N	N	\N	2013-09-21 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+6986	70027109	6121973	\N	\N	\N	2013-01-04 00:00:00	\N	16	3	2013-02-11 00:00:00	0	C	\N	\N	\N	\N
+20900	74332876	6514116	\N	\N	\N	2014-03-29 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+18608	69663256	6356868	\N	\N	\N	2013-11-13 00:00:00	\N	10	4	2013-11-27 00:00:00	0	C	\N	\N	\N	\N
+6986	70027162	6188969	\N	\N	\N	2013-04-16 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+8799	69570496	6123780	\N	\N	\N	2013-01-01 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
+19944	69042166	6134883	\N	\N	\N	2013-01-20 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+20900	72125084	6135839	\N	\N	\N	2013-01-11 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+6986	70028125	6121973	\N	\N	\N	2013-01-24 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+18199	71387011	6133139	\N	N	\N	2013-01-17 00:00:00	\N	10	4	2013-02-20 00:00:00	0	C	\N	\N	\N	\N
+18199	71376120	6133139	\N	N	\N	2013-01-20 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+8826	72918359	6457184	\N	N	\N	2014-01-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+8791	69513670	6280096	\N	\N	\N	2013-08-06 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+8711	68005201	6190688	\N	N	\N	2013-04-09 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+17529	70853612	6132469	\N	N	\N	2013-01-25 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+17529	70853613	6132469	\N	\N	\N	2013-01-30 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+6607	68299731	6121595	\N	\N	\N	2013-01-03 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+8799	69570493	6168444	\N	N	\N	2013-03-01 00:00:00	R	16	6	\N	0	C	\N	\N	\N	\N
+8791	69517114	6280096	\N	N	\N	2013-08-01 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+6986	70028128	6188969	\N	\N	\N	2013-04-14 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+6799	69816472	6121787	\N	\N	\N	2013-01-06 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+8791	69516193	6235432	\N	\N	\N	2013-06-25 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+8799	69572250	6168444	\N	\N	\N	2013-03-03 00:00:00	R	13	6	\N	0	C	\N	\N	\N	\N
+8548	68494039	6123529	\N	\N	\N	2013-01-07 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+8711	67986045	6190688	\N	\N	\N	2013-04-29 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+6587	68275208	6367227	\N	\N	\N	2013-12-02 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+8548	68494782	6123529	\N	\N	\N	2013-01-04 00:00:00	\N	23	2	2013-02-19 00:00:00	0	C	\N	\N	\N	\N
+8799	69570494	6168444	\N	N	\N	2013-03-06 00:00:00	R	16	6	\N	0	C	\N	\N	\N	\N
+8417	69010112	6279722	\N	N	\N	2013-08-11 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+8711	67976615	6123692	\N	\N	\N	2013-01-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+8548	68494040	6123529	\N	\N	\N	2013-01-23 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+8826	69738766	6146139	\N	\N	\N	2013-02-01 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+20900	76457241	6514116	\N	\N	\N	2014-03-29 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+8417	69010100	6123398	\N	N	\N	2013-01-30 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+18199	71360640	6133139	\N	N	\N	2013-01-22 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+8799	69570497	6123780	\N	\N	\N	2013-01-01 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
+17529	70852727	6132469	\N	\N	\N	2013-01-02 00:00:00	\N	0	2	2013-01-06 00:00:00	0	C	\N	\N	\N	\N
+8791	69514473	6123772	\N	\N	\N	2013-01-19 00:00:00	\N	\N	2	2013-02-20 00:00:00	0	C	\N	\N	\N	\N
+8799	69572356	6168444	\N	\N	\N	2013-03-26 00:00:00	R	5	6	\N	0	C	\N	\N	\N	\N
+7583	67941061	6167234	\N	\N	\N	2013-03-18 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+8791	69513671	6302428	\N	\N	\N	2013-09-18 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+7583	67931629	6167234	\N	\N	\N	2013-03-02 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+17529	70852728	6132469	\N	N	\N	2013-01-02 00:00:00	\N	14	4	2013-01-08 00:00:00	0	C	\N	\N	\N	\N
+17759	69685886	6222027	\N	N	\N	2013-05-18 00:00:00	\N	7	4	2013-05-28 00:00:00	0	C	\N	\N	\N	\N
+18747	68428282	6267678	\N	\N	\N	2013-07-26 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+20289	69325653	6179892	\N	\N	\N	2013-03-28 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+18747	74233192	6624213	\N	N	\N	2014-08-03 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+19941	68924209	6313536	\N	\N	\N	2013-09-12 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+9028	68964188	6146341	\N	\N	\N	2013-02-01 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+6590	68287548	6143910	\N	\N	\N	2013-02-10 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+6861	69893205	6121848	\N	\N	\N	2013-01-17 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+9029	68989946	6258002	\N	N	\N	2013-07-09 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+17795	69853384	6132735	\N	\N	\N	2013-01-14 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+9048	74449461	6457406	\N	\N	\N	2014-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+9049	69294590	6168694	\N	\N	\N	2013-03-26 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+6590	68283787	6143910	\N	\N	\N	2013-02-26 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+20841	67864753	6135780	\N	\N	\N	2013-01-17 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+9048	69157260	6146361	\N	N	\N	2013-02-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+20841	67864754	6135780	\N	\N	\N	2013-01-17 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+9029	68968772	6124010	\N	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+750	69001651	6115741	\N	\N	\N	2013-01-01 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
+6590	68279886	6121578	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+9029	68989940	6258002	\N	N	\N	2013-07-11 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+6590	68279887	6121578	\N	\N	\N	2013-01-01 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+6809	69820789	6121797	\N	\N	\N	2013-01-01 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+572	69934776	6115563	\N	\N	\N	2013-01-01 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+9028	68964189	6146341	\N	\N	\N	2013-02-03 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+6590	68290332	6121578	\N	\N	\N	2013-01-10 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+19637	67758007	6134576	\N	\N	\N	2013-01-11 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+17759	69685004	6222027	\N	\N	\N	2013-05-14 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+17795	69852456	6132735	\N	\N	\N	2013-01-01 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+9029	68968771	6124010	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+6590	68290334	6121578	\N	\N	\N	2013-01-11 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+18747	74233193	6624213	\N	\N	\N	2014-08-03 00:00:00	\N	4	4	2014-08-05 00:00:00	0	C	\N	\N	\N	\N
+572	69935566	6115563	\N	\N	\N	2013-01-26 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+571	69925893	6115562	\N	\N	\N	2013-01-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+18271	75962539	6466588	\N	N	\N	2014-01-30 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+9028	68964140	6168673	\N	\N	\N	2013-03-18 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+8791	69514476	6123772	\N	\N	\N	2013-01-01 00:00:00	\N	\N	2	2013-09-30 00:00:00	0	C	\N	\N	\N	\N
+9028	68964141	6168673	\N	\N	\N	2013-03-27 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+19637	67758008	6134576	\N	\N	\N	2013-01-11 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+571	69927635	6115562	\N	\N	\N	2013-01-18 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+19941	68918894	6313536	\N	\N	\N	2013-09-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+18747	68428281	6267678	\N	\N	\N	2013-07-26 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+20289	69325652	6179892	\N	N	\N	2013-03-31 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+18271	72008521	6155543	\N	\N	\N	2013-02-17 00:00:00	\N	3	2	2014-01-14 00:00:00	0	C	\N	\N	\N	\N
+2239	72734869	6117228	\N	\N	\N	2013-01-10 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+9028	68964155	6124009	\N	\N	\N	2013-01-01 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+6559	68241148	6255539	\N	\N	\N	2013-07-06 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+20514	77301704	6491280	\N	\N	\N	2014-02-08 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+20132	69530005	6291395	\N	N	\N	2013-08-20 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+8443	69047922	6235084	\N	\N	\N	2013-06-01 00:00:00	R	9	6	\N	0	C	\N	\N	\N	\N
+12048	70177482	6372663	\N	\N	\N	2013-12-21 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+20475	72008331	6336402	\N	\N	\N	2013-10-09 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+2239	72741425	6184224	\N	\N	\N	2013-04-16 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+2239	72741426	6184224	\N	\N	\N	2013-04-16 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+12048	70183143	6127011	\N	N	\N	2013-01-27 00:00:00	R	10	6	\N	0	C	\N	\N	\N	\N
+2239	73807090	6540405	\N	\N	\N	2014-05-30 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+9029	68969651	6124010	\N	\N	\N	2013-01-09 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+20475	71971125	6269406	\N	N	\N	2013-07-21 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+6559	68241142	6121547	\N	\N	\N	2013-01-14 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+8791	69517185	6324760	\N	N	\N	2013-10-21 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+8725	69380202	6302362	\N	\N	\N	2013-09-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+20512	72362569	6381103	\N	\N	\N	2013-12-13 00:00:00	\N	13	5	2013-12-20 00:00:00	0	C	\N	\N	\N	\N
+20475	72016691	6336402	\N	\N	\N	2013-10-30 00:00:00	\N	18	2	2013-11-30 00:00:00	0	C	\N	\N	\N	\N
+6654	68392925	6166306	\N	\N	\N	2013-03-04 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+12048	70172732	6127011	\N	\N	\N	2013-01-02 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+2239	74295326	6540405	\N	\N	\N	2014-05-20 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+21808	68074318	6360067	\N	\N	\N	2013-11-02 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+20514	72378591	6135453	\N	N	\N	2013-01-02 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+8725	69378410	6123706	\N	N	\N	2013-01-20 00:00:00	\N	14	4	2013-01-21 00:00:00	0	C	\N	\N	\N	\N
+11997	68787793	6126960	\N	\N	\N	2013-01-30 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+20514	77301688	6491280	\N	\N	\N	2014-02-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+20132	69530004	6291395	\N	N	\N	2013-08-19 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+8725	69379247	6190702	\N	\N	\N	2013-04-04 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+9028	68964156	6124009	\N	\N	\N	2013-01-01 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+18607	69653591	6356867	\N	\N	\N	2013-11-21 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+9043	69082978	6124024	\N	\N	\N	2013-01-16 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+512	69806973	6249495	\N	\N	\N	2013-07-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+2239	72734600	6117228	\N	\N	\N	2013-01-07 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+17526	70800547	6132466	\N	N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+20475	71974601	6135414	\N	N	\N	2013-01-15 00:00:00	\N	8	2	2013-09-18 00:00:00	0	C	\N	\N	\N	\N
+6559	68241124	6188543	\N	\N	\N	2013-04-02 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+512	69798399	6115503	\N	\N	\N	2013-01-01 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+8791	69517104	6324760	\N	\N	\N	2013-10-03 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+8443	69041484	6123424	\N	\N	\N	2013-01-01 00:00:00	R	10	6	\N	0	C	\N	\N	\N	\N
+8725	69378377	6302362	\N	\N	\N	2013-09-08 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+20475	71880743	6336402	\N	\N	\N	2013-10-15 00:00:00	\N	14	4	2013-11-30 00:00:00	0	C	\N	\N	\N	\N
+9029	68969650	6124010	\N	\N	\N	2013-01-09 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+17687	68451149	6154959	\N	N	\N	2013-02-25 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+512	69807832	6249495	\N	\N	\N	2013-07-20 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+12048	70176627	6372663	\N	\N	\N	2013-12-07 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+8443	69041485	6123424	\N	\N	\N	2013-01-01 00:00:00	R	12	6	\N	0	C	\N	\N	\N	\N
+11997	68787764	6171624	\N	\N	\N	2013-03-06 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+512	69806977	6115503	\N	\N	\N	2013-01-07 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
+6654	68392926	6166306	\N	\N	\N	2013-03-02 00:00:00	\N	23	2	2013-04-10 00:00:00	0	C	\N	\N	\N	\N
+20475	71980395	6269406	\N	\N	\N	2013-07-11 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+8725	69379244	6190702	\N	\N	\N	2013-04-03 00:00:00	\N	20	2	2013-05-07 00:00:00	0	C	\N	\N	\N	\N
+9043	69086712	6124024	\N	N	\N	2013-01-24 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+20514	72378643	6135453	\N	N	\N	2013-01-25 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+746	68939694	6115737	\N	\N	\N	2013-01-28 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+8442	69039610	6123423	\N	\N	\N	2013-01-05 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+18119	71791592	6334047	\N	\N	\N	2013-10-14 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+4479	68646486	6119467	\N	\N	\N	2013-01-27 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+8083	70375905	6123064	\N	N	\N	2013-01-01 00:00:00	R	1	6	\N	0	C	\N	\N	\N	\N
+18120	71797884	6356380	\N	\N	\N	2013-11-18 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+20704	71068263	6135643	\N	\N	\N	2013-01-01 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
+18438	75631690	6466755	\N	N	\N	2014-01-04 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+4478	68643173	6119466	\N	\N	\N	2013-01-07 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+8442	69039600	6190419	\N	N	\N	2013-04-23 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+4479	74574475	6587544	\N	\N	\N	2014-07-25 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+8807	69608230	6235448	\N	N	\N	2013-06-07 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+8765	69449036	6123746	\N	\N	\N	2013-01-05 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+6590	68279911	6121578	\N	\N	\N	2013-01-06 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+18001	71656755	6266933	\N	\N	\N	2013-07-31 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+8807	69605721	6123788	\N	N	\N	2013-01-19 00:00:00	\N	17	4	2013-01-20 00:00:00	0	C	\N	\N	\N	\N
+8442	69039732	6212751	\N	N	\N	2013-05-01 00:00:00	\N	\N	2	2014-01-21 00:00:00	0	C	\N	\N	\N	\N
+4479	74572826	6587544	\N	\N	\N	2014-07-12 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+17615	73434998	6465932	\N	N	\N	2014-01-10 00:00:00	R	12	6	\N	0	C	\N	\N	\N	\N
+4573	77070364	6452938	\N	\N	\N	2014-01-26 00:00:00	\N	0	2	2014-10-23 00:00:00	0	C	\N	\N	\N	\N
+8443	69043394	6168088	\N	\N	\N	2013-03-01 00:00:00	R	9	6	\N	0	C	\N	\N	\N	\N
+18120	71828476	6133060	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+18120	71818256	6222388	\N	\N	\N	2013-05-18 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+20704	73927851	6558820	\N	\N	\N	2014-05-29 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
+18119	71791569	6334047	\N	\N	\N	2013-10-15 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+4479	68645715	6119467	\N	\N	\N	2013-01-03 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+18107	71722606	6133047	\N	\N	\N	2013-01-08 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+17526	70826837	6266458	\N	N	\N	2013-07-28 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+7117	68093920	6122104	\N	\N	\N	2013-01-08 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+8442	69039611	6123423	\N	\N	\N	2013-01-08 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+18608	76209569	6466925	\N	N	\N	2014-01-21 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+18438	68607036	6155710	\N	N	\N	2013-02-01 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+4479	68646487	6119467	\N	\N	\N	2013-01-29 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+7117	68093941	6122104	\N	\N	\N	2013-01-01 00:00:00	R	8	6	\N	0	C	\N	\N	\N	\N
+4478	68643172	6119466	\N	\N	\N	2013-01-05 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+18120	71830410	6222388	\N	\N	\N	2013-05-25 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+18608	69655333	6155880	\N	\N	\N	2013-02-16 00:00:00	\N	2	4	2013-02-23 00:00:00	0	C	\N	\N	\N	\N
+17615	68656688	6154887	\N	\N	\N	2013-02-08 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+18119	71797067	6133059	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+20704	71068262	6135643	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+8442	69039601	6212751	\N	\N	\N	2013-05-06 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+8443	69047923	6235084	\N	\N	\N	2013-06-01 00:00:00	R	10	6	\N	0	C	\N	\N	\N	\N
+18271	72421338	6155543	\N	\N	\N	2013-02-09 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+8442	69039733	6190419	\N	N	\N	2013-04-01 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+7117	68093056	6122104	\N	\N	\N	2013-01-05 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+18120	71798939	6356380	\N	\N	\N	2013-11-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+8807	69605697	6235448	\N	\N	\N	2013-06-15 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+7117	68093058	6122104	\N	\N	\N	2013-01-03 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+8443	69043395	6168088	\N	N	\N	2013-03-01 00:00:00	R	9	6	\N	0	C	\N	\N	\N	\N
+18001	71655902	6266933	\N	\N	\N	2013-07-18 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+20704	73927850	6558820	\N	\N	\N	2014-05-29 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+8083	70385937	6123064	\N	\N	\N	2013-01-11 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+8765	69449035	6123746	\N	N	\N	2013-01-04 00:00:00	R	15	6	\N	0	C	\N	\N	\N	\N
+4479	68645716	6119467	\N	\N	\N	2013-01-04 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+17526	70826836	6266458	\N	\N	\N	2013-07-28 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+6212	67849338	6121200	\N	\N	\N	2013-01-15 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+20704	71106865	6135643	\N	\N	\N	2013-01-25 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+6843	69884412	6121831	\N	\N	\N	2013-01-01 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+22851	71698861	6136887	\N	\N	\N	2013-01-02 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+17527	70847304	6177131	\N	\N	\N	2013-03-14 00:00:00	\N	10	4	2013-03-14 00:00:00	0	C	\N	\N	\N	\N
+6211	67849225	6121199	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+7583	67973284	6167234	\N	\N	\N	2013-03-31 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+6211	67848383	6299855	\N	\N	\N	2013-09-14 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+20152	69568038	6135091	\N	\N	\N	2013-01-16 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+20152	69568945	6291415	\N	\N	\N	2013-08-02 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+23224	67839986	6159383	\N	\N	\N	2013-02-28 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+7126	68138125	6122113	\N	\N	\N	2013-01-01 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+2090	72709462	6117079	\N	\N	\N	2013-01-08 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+7126	68138203	6122113	\N	\N	\N	2013-01-30 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+15150	71213441	6130091	\N	\N	\N	2013-01-01 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+23224	67839987	6204047	\N	\N	\N	2013-04-08 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+8797	69535281	6123778	\N	\N	\N	2013-01-01 00:00:00	R	14	6	\N	0	C	\N	\N	\N	\N
+20152	69568910	6202087	\N	\N	\N	2013-04-03 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+6211	67849311	6299855	\N	\N	\N	2013-09-02 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+7126	74244294	6545290	\N	\N	\N	2014-05-03 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+15150	71214381	6286415	\N	\N	\N	2013-08-01 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+20152	69568954	6291415	\N	\N	\N	2013-08-30 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+2090	72709463	6117079	\N	\N	\N	2013-01-08 00:00:00	\N	13	4	2013-03-12 00:00:00	0	C	\N	\N	\N	\N
+6843	69884413	6121831	\N	\N	\N	2013-01-07 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+11951	68668296	6238574	\N	N	\N	2013-06-10 00:00:00	R	19	6	\N	0	C	\N	\N	\N	\N
+14594	70648099	6151867	\N	\N	\N	2013-02-22 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+17527	70847305	6177131	\N	\N	\N	2013-03-14 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+22851	71701669	6226215	\N	\N	\N	2013-05-29 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+15150	71214256	6286415	\N	\N	\N	2013-08-12 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+8797	69535282	6123778	\N	\N	\N	2013-01-10 00:00:00	R	19	6	\N	0	C	\N	\N	\N	\N
+22851	71701619	6226215	\N	\N	\N	2013-05-16 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+7126	68138126	6122113	\N	\N	\N	2013-01-02 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+6212	67850292	6188196	\N	\N	\N	2013-04-26 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+14594	76020597	6462912	\N	\N	\N	2014-01-06 00:00:00	R	18	6	\N	0	C	\N	\N	\N	\N
+20152	69568027	6202087	\N	N	\N	2013-04-27 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+6212	67857793	6121200	\N	\N	\N	2013-01-05 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+4573	71502621	6141893	\N	\N	\N	2013-02-28 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+6212	67851203	6188196	\N	\N	\N	2013-04-16 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+6176	67800809	6165828	\N	\N	\N	2013-03-25 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+7126	74244293	6545290	\N	\N	\N	2014-05-03 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+11951	68645456	6126914	\N	N	\N	2013-01-01 00:00:00	R	2	6	\N	0	C	\N	\N	\N	\N
+7126	68138220	6122113	\N	\N	\N	2013-01-30 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+11951	68646316	6126914	\N	\N	\N	2013-01-08 00:00:00	R	9	6	\N	0	C	\N	\N	\N	\N
+20704	71101358	6135643	\N	\N	\N	2013-01-01 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+11951	68670777	6238574	\N	\N	\N	2013-06-23 00:00:00	R	21	6	\N	0	C	\N	\N	\N	\N
+6589	68278996	6277901	\N	\N	\N	2013-08-05 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+513	69815739	6115504	\N	\N	\N	2013-01-20 00:00:00	R	13	6	\N	0	C	\N	\N	\N	\N
+10466	72332412	6125446	\N	\N	\N	2013-01-01 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+6268	67932194	6143588	\N	\N	\N	2013-02-18 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+6707	69735741	6121695	\N	\N	\N	2013-01-16 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+6268	67932196	6121256	\N	\N	\N	2013-01-03 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+17920	69943785	6155192	\N	N	\N	2013-02-05 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+10467	75829324	6503724	\N	\N	\N	2014-03-16 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+17790	69823236	6266722	\N	\N	\N	2013-07-09 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+17919	69853134	6378511	\N	\N	\N	2013-12-31 00:00:00	\N	1	4	2014-01-02 00:00:00	0	C	\N	\N	\N	\N
+2090	72711796	6340399	\N	\N	\N	2013-11-17 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+10557	72504858	6237197	\N	\N	\N	2013-06-08 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+17790	69830235	6378382	\N	\N	\N	2013-12-06 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+17790	69830237	6378382	\N	\N	\N	2013-12-05 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+513	69815740	6115504	\N	\N	\N	2013-01-22 00:00:00	R	10	6	\N	0	C	\N	\N	\N	\N
+17920	69926222	6155192	\N	\N	\N	2013-02-27 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+17891	69650884	6132831	\N	N	\N	2013-01-17 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+17759	69691116	6289023	\N	\N	\N	2013-08-04 00:00:00	\N	8	2	2013-08-04 00:00:00	0	C	\N	\N	\N	\N
+17790	69823239	6132730	\N	\N	\N	2013-01-04 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+10467	72338706	6125447	\N	\N	\N	2013-01-31 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+17920	69921812	6132860	\N	\N	\N	2013-01-01 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+21331	72210876	6225598	\N	\N	\N	2013-05-01 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+17919	69878653	6177523	\N	N	\N	2013-03-25 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+10557	72503176	6125537	\N	\N	\N	2013-01-02 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+6707	69735742	6121695	\N	\N	\N	2013-01-01 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
+21331	70385764	6225598	\N	\N	\N	2013-05-06 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+10467	72337804	6125447	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+11714	70259879	6126677	\N	\N	\N	2013-01-25 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+17920	69922610	6132860	\N	N	\N	2013-01-05 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+6267	67928435	6121255	\N	\N	\N	2013-01-01 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+18608	69655386	6155880	\N	\N	\N	2013-02-25 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+6267	67924507	6121255	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+2090	72711734	6340399	\N	\N	\N	2013-11-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+6176	67800823	6165828	\N	\N	\N	2013-03-27 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+10467	75839490	6503724	\N	N	\N	2014-03-11 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+11714	70259880	6126677	\N	\N	\N	2013-01-24 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+17891	69650883	6132831	\N	N	\N	2013-01-28 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+17919	69879529	6177523	\N	N	\N	2013-03-01 00:00:00	\N	12	2	2013-06-03 00:00:00	0	C	\N	\N	\N	\N
+17790	69826820	6266722	\N	N	\N	2013-07-01 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+6176	67801770	6210492	\N	\N	\N	2013-05-02 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+6176	67805520	6210492	\N	\N	\N	2013-05-24 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+17790	69823238	6132730	\N	N	\N	2013-01-02 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+10557	72504849	6237197	\N	\N	\N	2013-06-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+17919	69852242	6132859	\N	\N	\N	2013-01-07 00:00:00	\N	22	2	2013-01-08 00:00:00	0	C	\N	\N	\N	\N
+17920	69921811	6132860	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+10481	72376047	6237121	\N	\N	\N	2013-06-29 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+20955	69998395	6292218	\N	\N	\N	2013-08-17 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+2119	68836669	6295764	\N	\N	\N	2013-09-27 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
+20900	74350695	6536566	\N	\N	\N	2014-04-03 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+20955	69987561	6247554	\N	\N	\N	2013-06-16 00:00:00	R	2	6	\N	0	C	\N	\N	\N	\N
+748	68942540	6138071	\N	\N	\N	2013-02-01 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+17891	69724007	6266823	\N	\N	\N	2013-07-11 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+20955	69984913	6247554	\N	\N	\N	2013-06-02 00:00:00	R	14	6	\N	0	C	\N	\N	\N	\N
+1831	73893144	6607347	\N	\N	\N	2014-08-18 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+17920	69922611	6132860	\N	\N	\N	2013-01-05 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+10481	72365389	6125461	\N	\N	\N	2013-01-23 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+730	70434395	6115721	\N	\N	\N	2013-01-12 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+6988	70032819	6211303	\N	\N	\N	2013-05-30 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+730	70434334	6115721	\N	\N	\N	2013-01-02 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+2119	69280452	6295764	\N	\N	\N	2013-09-26 00:00:00	\N	7	4	2013-10-07 00:00:00	0	C	\N	\N	\N	\N
+7117	68095839	6323092	\N	\N	\N	2013-10-23 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+18747	68313296	6223014	\N	\N	\N	2013-05-28 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+749	76244907	6449117	\N	\N	\N	2014-01-26 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+8716	68079302	6168361	\N	\N	\N	2013-03-15 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
+8347	68444077	6123328	\N	\N	\N	2013-01-01 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+748	76238713	6449116	\N	N	\N	2014-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+20900	74332870	6536566	\N	\N	\N	2014-04-02 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+7512	67708207	6122499	\N	\N	\N	2013-01-08 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+10481	72362709	6125461	\N	\N	\N	2013-01-01 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
+1831	73892192	6607347	\N	\N	\N	2014-08-02 00:00:00	\N	1	2	2014-09-02 00:00:00	0	C	\N	\N	\N	\N
+17687	73684475	6578254	\N	N	\N	2014-06-02 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+6988	70029974	6211303	\N	\N	\N	2013-05-22 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+20955	70000983	6292218	\N	\N	\N	2013-08-27 00:00:00	R	8	6	\N	0	C	\N	\N	\N	\N
+550	69859018	6115541	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+2001	74022992	6607517	\N	N	\N	2014-08-29 00:00:00	R	10	6	\N	0	C	\N	\N	\N	\N
+552	69867728	6115543	\N	\N	\N	2013-01-01 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+2001	70303934	6116990	\N	\N	\N	2013-01-30 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+17687	75095652	6578254	\N	\N	\N	2014-06-02 00:00:00	\N	6	2	2014-06-02 00:00:00	0	C	\N	\N	\N	\N
+18747	68266111	6223014	\N	\N	\N	2013-05-02 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+7512	67708208	6122499	\N	\N	\N	2013-01-08 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+10481	72372555	6237121	\N	\N	\N	2013-06-03 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+7117	68095922	6323092	\N	\N	\N	2013-10-13 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+591	70391373	6115582	\N	N	\N	2013-01-21 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+6654	68392923	6121642	\N	\N	\N	2013-01-14 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+6988	70028942	6121975	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+552	69867727	6115543	\N	\N	\N	2013-01-20 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+570	69920656	6137893	\N	\N	\N	2013-02-09 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+6654	68392924	6121642	\N	\N	\N	2013-01-25 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+2001	70299099	6116990	\N	\N	\N	2013-01-08 00:00:00	R	16	6	\N	0	C	\N	\N	\N	\N
+730	70434333	6115721	\N	\N	\N	2013-01-02 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+730	70434396	6115721	\N	\N	\N	2013-01-11 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+2119	69380035	6295764	\N	\N	\N	2013-09-21 00:00:00	\N	10	2	2014-01-02 00:00:00	0	C	\N	\N	\N	\N
+2050	72657792	6273363	\N	\N	\N	2013-08-23 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+18607	69653609	6379199	\N	\N	\N	2013-12-02 00:00:00	\N	14	4	2013-12-02 00:00:00	0	C	\N	\N	\N	\N
+749	68953604	6138072	\N	\N	\N	2013-02-08 00:00:00	R	17	6	\N	0	C	\N	\N	\N	\N
+2001	74022186	6607517	\N	\N	\N	2014-08-25 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+570	77380549	6448938	\N	\N	\N	2014-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+8347	68445008	6123328	\N	N	\N	2013-01-31 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+17891	69738769	6266823	\N	N	\N	2013-07-16 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+6988	70032812	6121975	\N	\N	\N	2013-01-01 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+550	69859015	6115541	\N	\N	\N	2013-01-17 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+8469	69167133	6123450	\N	\N	\N	2013-01-01 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+591	70387129	6115582	\N	N	\N	2013-01-01 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+727	69345903	6115718	\N	\N	\N	2013-01-08 00:00:00	R	14	6	\N	0	C	\N	\N	\N	\N
+20105	69206293	6291368	\N	\N	\N	2013-08-14 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+17625	68713632	6132565	\N	\N	\N	2013-01-01 00:00:00	R	10	6	\N	0	C	\N	\N	\N	\N
+20162	71869827	6135101	\N	\N	\N	2013-01-26 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+21808	68075208	6248407	\N	\N	\N	2013-06-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+2000	70286500	6116989	\N	\N	\N	2013-01-02 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
+9049	74669375	6637007	\N	N	\N	2014-09-10 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+8849	71909322	6146162	\N	\N	\N	2013-02-01 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+727	69344997	6115718	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+726	69324528	6160381	\N	\N	\N	2013-03-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+15427	71475981	6130368	\N	\N	\N	2013-01-04 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+21808	68068046	6293071	\N	\N	\N	2013-08-21 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+550	69859814	6115541	\N	\N	\N	2013-01-31 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+21808	68072604	6293071	\N	\N	\N	2013-08-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+10161	73696387	6548319	\N	\N	\N	2014-05-10 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+2000	70291333	6116989	\N	\N	\N	2013-01-23 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+20148	69574432	6179751	\N	N	\N	2013-03-28 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+20162	71869061	6135101	\N	\N	\N	2013-01-05 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+9049	69236422	6146362	\N	\N	\N	2013-02-12 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+20105	69206292	6291368	\N	\N	\N	2013-08-22 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+8849	71909306	6123830	\N	\N	\N	2013-01-10 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+550	69861600	6115541	\N	\N	\N	2013-01-14 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+20148	69574433	6179751	\N	N	\N	2013-03-28 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+17625	68715299	6221893	\N	\N	\N	2013-05-06 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+9049	74820899	6637007	\N	\N	\N	2014-09-18 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+17625	68707428	6221893	\N	\N	\N	2013-05-06 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+2239	72744880	6273552	\N	\N	\N	2013-08-07 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+21808	68069067	6136747	\N	\N	\N	2013-01-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+17625	68703846	6266557	\N	\N	\N	2013-07-20 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+726	69324529	6160381	\N	\N	\N	2013-03-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+15427	71475980	6130368	\N	\N	\N	2013-01-03 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+20955	70038311	6135894	\N	\N	\N	2013-01-05 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+8348	68453583	6123329	\N	N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+21808	68072603	6315403	\N	\N	\N	2013-09-14 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+20900	72382785	6292163	\N	\N	\N	2013-08-03 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+21792	68036060	6136731	\N	\N	\N	2013-01-16 00:00:00	\N	14	5	2013-01-16 00:00:00	0	C	\N	\N	\N	\N
+2239	72746498	6273552	\N	\N	\N	2013-08-30 00:00:00	\N	6	6	\N	0	C	\N	\N	\N	\N
+20162	71869060	6135101	\N	\N	\N	2013-01-04 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+20900	72376607	6292163	\N	\N	\N	2013-08-09 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+21808	68075178	6337735	\N	\N	\N	2013-10-12 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+2119	69427435	6117108	\N	\N	\N	2013-01-02 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
+10161	73706257	6548319	\N	\N	\N	2014-05-25 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+20162	71869826	6135101	\N	N	\N	2013-01-21 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+17625	68715296	6266557	\N	N	\N	2013-07-26 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+21808	68074388	6337735	\N	\N	\N	2013-10-21 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+8084	73351752	6456442	\N	N	\N	2014-01-06 00:00:00	\N	4	4	2014-01-06 00:00:00	0	C	\N	\N	\N	\N
+21808	68068047	6315403	\N	\N	\N	2013-09-10 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+8849	71909305	6123830	\N	\N	\N	2013-01-09 00:00:00	R	13	6	\N	0	C	\N	\N	\N	\N
+21808	68068070	6136747	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+10161	70739183	6281466	\N	\N	\N	2013-08-12 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
+21343	70069792	6136282	\N	\N	\N	2013-01-25 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+6374	68026465	6255354	\N	\N	\N	2013-07-16 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+745	76233506	6449113	\N	N	\N	2014-01-10 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+8682	67859468	6123663	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+6374	68045411	6255354	\N	\N	\N	2013-07-26 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+10161	71305535	6125142	\N	\N	\N	2013-01-16 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+8808	72797361	6457166	\N	\N	\N	2014-01-07 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+1962	70123468	6161615	\N	\N	\N	2013-03-21 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+15629	68020365	6309226	\N	\N	\N	2013-09-08 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+7644	71941634	6256619	\N	\N	\N	2013-07-02 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+14319	68117683	6129260	\N	\N	\N	2013-01-14 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+6374	68035981	6121362	\N	\N	\N	2013-01-02 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+20105	69221209	6291368	\N	N	\N	2013-08-22 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+21787	68025743	6136726	\N	\N	\N	2013-01-07 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+10161	71322906	6281466	\N	\N	\N	2013-08-07 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+6374	68024629	6121362	\N	\N	\N	2013-01-02 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+14319	68121307	6129260	\N	\N	\N	2013-01-28 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+7644	71941633	6256619	\N	\N	\N	2013-07-02 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+7644	68095132	6122627	\N	\N	\N	2013-01-19 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+7644	68095107	6122627	\N	\N	\N	2013-01-01 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+17516	70731422	6132456	\N	\N	\N	2013-01-07 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+21787	68026692	6226054	\N	\N	\N	2013-05-19 00:00:00	\N	3	5	2013-06-30 00:00:00	0	C	\N	\N	\N	\N
+8682	67857497	6369315	\N	\N	\N	2013-12-27 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+4424	72651857	6119412	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+21787	68027565	6136726	\N	\N	\N	2013-01-28 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+10161	70739182	6281466	\N	\N	\N	2013-08-11 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+7644	68095106	6122627	\N	\N	\N	2013-01-01 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+21787	68026650	6226054	\N	\N	\N	2013-05-02 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+4423	74317704	6452788	\N	\N	\N	2014-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+21792	68036041	6136731	\N	\N	\N	2013-01-01 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+6374	68045412	6255354	\N	\N	\N	2013-07-30 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+4423	74317733	6452788	\N	\N	\N	2014-01-01 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
+21343	70070668	6136282	\N	\N	\N	2013-01-16 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+7644	68095131	6122627	\N	\N	\N	2013-01-19 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+4424	72652749	6186408	\N	\N	\N	2013-04-17 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+15629	68020366	6309226	\N	\N	\N	2013-09-08 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+8808	69610905	6146121	\N	\N	\N	2013-02-01 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+6374	68024628	6121362	\N	\N	\N	2013-01-14 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+10161	71322907	6281466	\N	\N	\N	2013-08-07 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+10161	71315575	6125142	\N	\N	\N	2013-01-31 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+4424	72653570	6186408	\N	\N	\N	2013-04-25 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+17516	70731423	6132456	\N	\N	\N	2013-01-13 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+6374	68035974	6121362	\N	\N	\N	2013-01-15 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+745	68938754	6138068	\N	\N	\N	2013-02-22 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+20105	69207122	6291368	\N	\N	\N	2013-08-24 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+8682	67862253	6369315	\N	\N	\N	2013-12-01 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+14826	71685871	6129767	\N	\N	\N	2013-01-11 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
+6589	68279866	6367229	\N	\N	\N	2013-12-02 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+6179	67809429	6121167	\N	\N	\N	2013-01-03 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+14826	71685856	6129767	\N	\N	\N	2013-01-02 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+6179	67809430	6121167	\N	\N	\N	2013-01-06 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+20605	71359223	6381196	\N	\N	\N	2013-12-03 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+7853	68242819	6167499	\N	\N	\N	2013-03-19 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+19209	73545608	6579775	\N	\N	\N	2014-06-12 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+20605	72650997	6135544	\N	N	\N	2013-01-10 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+20607	71360073	6135546	\N	N	\N	2013-01-03 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+18166	71643438	6155438	\N	\N	\N	2013-02-09 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+7853	68246591	6167499	\N	\N	\N	2013-03-03 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+6270	74227338	6454635	\N	\N	\N	2014-01-19 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+14826	71685872	6129767	\N	\N	\N	2013-01-12 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+7813	68154526	6234455	\N	\N	\N	2013-06-26 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
+19209	73545609	6579775	\N	N	\N	2014-06-15 00:00:00	\N	2	4	2014-08-06 00:00:00	0	C	\N	\N	\N	\N
+6270	67933087	6344578	\N	\N	\N	2013-11-09 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+1962	70123469	6161615	\N	\N	\N	2013-03-22 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+20607	71371044	6336534	\N	\N	\N	2013-10-20 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+4532	74181390	6452897	\N	\N	\N	2014-01-16 00:00:00	\N	19	2	2014-03-07 00:00:00	0	C	\N	\N	\N	\N
+6373	68024591	6300017	\N	\N	\N	2013-09-05 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+9064	74761818	6569672	\N	\N	\N	2014-06-01 00:00:00	R	18	6	\N	0	C	\N	\N	\N	\N
+20607	71369269	6336534	\N	\N	\N	2013-10-05 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+6176	67801720	6165828	\N	\N	\N	2013-03-29 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+6373	68020918	6121361	\N	\N	\N	2013-01-03 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+7853	68242817	6122835	\N	\N	\N	2013-01-31 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+6373	68020919	6300017	\N	\N	\N	2013-09-04 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+19209	69033602	6134148	\N	\N	\N	2013-01-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+19209	69033601	6134148	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+6373	68021827	6121361	\N	\N	\N	2013-01-28 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+6270	67933086	6344578	\N	\N	\N	2013-11-08 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+6373	68021828	6121361	\N	\N	\N	2013-01-29 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+14826	71685855	6129767	\N	\N	\N	2013-01-02 00:00:00	R	19	6	\N	0	C	\N	\N	\N	\N
+6179	67811191	6344487	\N	\N	\N	2013-11-03 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+20605	71360005	6381196	\N	\N	\N	2013-12-16 00:00:00	\N	10	6	\N	0	C	\N	\N	\N	\N
+14826	71688811	6263759	\N	\N	\N	2013-07-20 00:00:00	\N	5	6	\N	0	C	\N	\N	\N	\N
+20607	71360057	6135546	\N	\N	\N	2013-01-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+14826	71690695	6263759	\N	\N	\N	2013-07-29 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+4532	71372434	6141852	\N	\N	\N	2013-02-13 00:00:00	\N	7	6	\N	0	C	\N	\N	\N	\N
+2272	72409325	6318249	\N	\N	\N	2013-10-01 00:00:00	R	0	6	\N	0	C	\N	\N	\N	\N
+9064	74762734	6569672	\N	\N	\N	2014-06-27 00:00:00	R	21	6	\N	0	C	\N	\N	\N	\N
+6176	67801721	6165828	\N	\N	\N	2013-03-29 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+9065	70403311	6124046	\N	\N	\N	2013-01-05 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+9065	70403258	6124046	\N	N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+17891	69724064	6289155	\N	\N	\N	2013-08-22 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+2119	76568150	6630085	\N	N	\N	2014-09-01 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+6981	70027030	6233628	\N	\N	\N	2013-06-10 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+7647	71962237	6323618	\N	\N	\N	2013-10-21 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+7576	67844808	6256555	\N	\N	\N	2013-07-15 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+17891	69725769	6311487	\N	N	\N	2013-09-08 00:00:00	\N	4	6	\N	0	C	\N	\N	\N	\N
+20445	76774015	6581011	\N	\N	\N	2014-06-04 00:00:00	\N	15	2	2014-09-10 00:00:00	0	C	\N	\N	\N	\N
+6180	67811274	6121168	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+20445	70403045	6135384	\N	\N	\N	2013-01-02 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+6266	74220832	6454631	\N	\N	\N	2014-01-02 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+6180	67816905	6255160	\N	\N	\N	2013-07-03 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+7813	68154572	6122795	\N	\N	\N	2013-01-05 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+19209	69035411	6134148	\N	\N	\N	2013-01-19 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+7576	67840088	6122563	\N	\N	\N	2013-01-01 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+6180	67811251	6121168	\N	\N	\N	2013-01-26 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+7576	67844807	6256555	\N	\N	\N	2013-07-15 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+7576	67840089	6122563	\N	\N	\N	2013-01-13 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+7853	68247540	6122835	\N	\N	\N	2013-01-13 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+7576	67844824	6122563	\N	\N	\N	2013-01-22 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+20445	76773174	6581011	\N	\N	\N	2014-06-02 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+6981	70027063	6233628	\N	\N	\N	2013-06-05 00:00:00	\N	11	6	\N	0	C	\N	\N	\N	\N
+7813	68154547	6122795	\N	\N	\N	2013-01-29 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+2119	73704229	6630085	\N	N	\N	2014-09-25 00:00:00	\N	16	2	2014-10-31 00:00:00	0	C	\N	\N	\N	\N
+7576	67844814	6122563	\N	\N	\N	2013-01-22 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+7813	68154527	6234455	\N	\N	\N	2013-06-27 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+7853	68247543	6122835	\N	\N	\N	2013-01-13 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+17891	69743238	6311487	\N	N	\N	2013-09-09 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+6180	67816903	6255160	\N	\N	\N	2013-07-03 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+19209	69035410	6134148	\N	\N	\N	2013-01-19 00:00:00	\N	2	6	\N	0	C	\N	\N	\N	\N
+6266	67923552	6143586	\N	\N	\N	2013-02-01 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+6180	67818744	6277492	\N	\N	\N	2013-08-10 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+20445	70470291	6135384	\N	\N	\N	2013-01-01 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+9065	70403257	6124046	\N	\N	\N	2013-01-01 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+6180	67818745	6277492	\N	\N	\N	2013-08-24 00:00:00	\N	19	6	\N	0	C	\N	\N	\N	\N
+9013	68935407	6146326	\N	\N	\N	2013-02-15 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+6975	70024186	6300618	\N	\N	\N	2013-09-03 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+9013	68936352	6123994	\N	\N	\N	2013-01-23 00:00:00	\N	\N	6	\N	0	C	\N	\N	\N	\N
+8929	72147771	6146242	\N	\N	\N	2013-02-28 00:00:00	\N	13	6	\N	0	C	\N	\N	\N	\N
+17891	69724886	6289155	\N	\N	\N	2013-08-29 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+6975	70024163	6121962	\N	\N	\N	2013-01-28 00:00:00	\N	14	6	\N	0	C	\N	\N	\N	\N
+9026	68962367	6124007	\N	N	\N	2013-01-11 00:00:00	R	18	6	\N	0	C	\N	\N	\N	\N
+9026	68962378	6124007	\N	\N	\N	2013-01-27 00:00:00	R	20	6	\N	0	C	\N	\N	\N	\N
+9065	70403312	6124046	\N	N	\N	2013-01-04 00:00:00	\N	18	6	\N	0	C	\N	\N	\N	\N
+7668	75269115	6523378	\N	\N	\N	2014-04-24 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+7668	72064781	6122651	\N	\N	\N	2013-01-01 00:00:00	\N	1	6	\N	0	C	\N	\N	\N	\N
+6535	68212814	6121523	\N	\N	\N	2013-01-02 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+18438	68607034	6133378	\N	\N	\N	2013-01-29 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+745	68938773	6115736	\N	\N	\N	2013-01-09 00:00:00	\N	0	6	\N	0	C	\N	\N	\N	\N
+17687	68451150	6154959	\N	N	\N	2013-02-19 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+745	68937952	6115736	\N	\N	\N	2013-01-02 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+8467	69089313	6123448	\N	\N	\N	2013-01-01 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+18166	76309880	6466483	\N	\N	\N	2014-01-01 00:00:00	\N	8	6	\N	0	C	\N	\N	\N	\N
+19711	69297007	6313306	\N	\N	\N	2013-09-17 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+20289	69259066	6202224	\N	\N	\N	2013-04-11 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+6607	68299744	6166259	\N	\N	\N	2013-03-06 00:00:00	\N	3	6	\N	0	C	\N	\N	\N	\N
+726	69324374	6138049	\N	\N	\N	2013-02-14 00:00:00	\N	16	6	\N	0	C	\N	\N	\N	\N
+8826	72924641	6659234	\N	N	\N	2014-10-22 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+17891	69724030	6289155	\N	N	\N	2013-08-14 00:00:00	\N	20	6	\N	0	C	\N	\N	\N	\N
+14319	68118601	6196256	\N	\N	\N	2013-04-08 00:00:00	R	18	6	\N	0	C	\N	\N	\N	\N
+17687	68566309	6378279	\N	\N	\N	2013-12-23 00:00:00	\N	12	6	\N	0	C	\N	\N	\N	\N
+726	69323568	6138049	\N	\N	\N	2013-02-08 00:00:00	\N	15	6	\N	0	C	\N	\N	\N	\N
+20841	67867494	6158112	\N	\N	\N	2013-02-04 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+4546	71419121	6119534	\N	\N	\N	2013-01-09 00:00:00	\N	9	6	\N	0	C	\N	\N	\N	\N
+726	69323570	6138049	\N	\N	\N	2013-02-08 00:00:00	\N	17	6	\N	0	C	\N	\N	\N	\N
+726	69324402	6138049	\N	\N	\N	2013-02-16 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
+9043	74976216	6502301	\N	\N	\N	2014-03-15 00:00:00	\N	23	6	\N	0	C	\N	\N	\N	\N
+2090	72711129	6273403	\N	\N	\N	2013-08-16 00:00:00	\N	22	6	\N	0	C	\N	\N	\N	\N
+8469	73197974	6591527	\N	N	\N	2014-07-11 00:00:00	R	\N	6	\N	0	C	\N	\N	\N	\N
+8335	68425842	6301972	\N	N	\N	2013-09-05 00:00:00	\N	21	6	\N	0	C	\N	\N	\N	\N
 \.
 
 
@@ -64109,7 +64114,7 @@ COPY supp_property_type (prop_type_id, prop_type_name, prop_type_code, prop_type
 
 
 --
--- Name: arson_month_agency_id_data_year_month_num_data_home_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: arson_month arson_month_agency_id_data_year_month_num_data_home_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY arson_month
@@ -64117,7 +64122,7 @@ ALTER TABLE ONLY arson_month
 
 
 --
--- Name: arson_month_by_subcat_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: arson_month_by_subcat arson_month_by_subcat_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY arson_month_by_subcat
@@ -64125,7 +64130,7 @@ ALTER TABLE ONLY arson_month_by_subcat
 
 
 --
--- Name: arson_month_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: arson_month arson_month_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY arson_month
@@ -64133,7 +64138,7 @@ ALTER TABLE ONLY arson_month
 
 
 --
--- Name: arson_subcategory_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: arson_subcategory arson_subcategory_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY arson_subcategory
@@ -64141,7 +64146,7 @@ ALTER TABLE ONLY arson_subcategory
 
 
 --
--- Name: arson_subcategory_subcategory_code_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: arson_subcategory arson_subcategory_subcategory_code_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY arson_subcategory
@@ -64149,7 +64154,7 @@ ALTER TABLE ONLY arson_subcategory
 
 
 --
--- Name: arson_subclassification_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: arson_subclassification arson_subclassification_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY arson_subclassification
@@ -64157,7 +64162,7 @@ ALTER TABLE ONLY arson_subclassification
 
 
 --
--- Name: arson_subclassification_subclass_code_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: arson_subclassification arson_subclassification_subclass_code_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY arson_subclassification
@@ -64165,7 +64170,7 @@ ALTER TABLE ONLY arson_subclassification
 
 
 --
--- Name: asr_age_range_age_range_code_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: asr_age_range asr_age_range_age_range_code_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY asr_age_range
@@ -64173,7 +64178,7 @@ ALTER TABLE ONLY asr_age_range
 
 
 --
--- Name: asr_age_range_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: asr_age_range asr_age_range_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY asr_age_range
@@ -64181,7 +64186,7 @@ ALTER TABLE ONLY asr_age_range
 
 
 --
--- Name: asr_age_sex_subcat_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: asr_age_sex_subcat asr_age_sex_subcat_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY asr_age_sex_subcat
@@ -64189,7 +64194,7 @@ ALTER TABLE ONLY asr_age_sex_subcat
 
 
 --
--- Name: asr_ethnicity_ethnicity_code_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: asr_ethnicity asr_ethnicity_ethnicity_code_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY asr_ethnicity
@@ -64197,7 +64202,7 @@ ALTER TABLE ONLY asr_ethnicity
 
 
 --
--- Name: asr_ethnicity_offense_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: asr_ethnicity_offense asr_ethnicity_offense_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY asr_ethnicity_offense
@@ -64205,7 +64210,7 @@ ALTER TABLE ONLY asr_ethnicity_offense
 
 
 --
--- Name: asr_ethnicity_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: asr_ethnicity asr_ethnicity_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY asr_ethnicity
@@ -64213,7 +64218,7 @@ ALTER TABLE ONLY asr_ethnicity
 
 
 --
--- Name: asr_juvenile_disposition_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: asr_juvenile_disposition asr_juvenile_disposition_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY asr_juvenile_disposition
@@ -64221,7 +64226,7 @@ ALTER TABLE ONLY asr_juvenile_disposition
 
 
 --
--- Name: asr_month_agency_id_data_year_month_num_data_home_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: asr_month asr_month_agency_id_data_year_month_num_data_home_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY asr_month
@@ -64229,7 +64234,7 @@ ALTER TABLE ONLY asr_month
 
 
 --
--- Name: asr_month_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: asr_month asr_month_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY asr_month
@@ -64237,7 +64242,7 @@ ALTER TABLE ONLY asr_month
 
 
 --
--- Name: asr_offense_category_offense_cat_code_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: asr_offense_category asr_offense_category_offense_cat_code_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY asr_offense_category
@@ -64245,7 +64250,7 @@ ALTER TABLE ONLY asr_offense_category
 
 
 --
--- Name: asr_offense_category_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: asr_offense_category asr_offense_category_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY asr_offense_category
@@ -64253,7 +64258,7 @@ ALTER TABLE ONLY asr_offense_category
 
 
 --
--- Name: asr_offense_offense_code_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: asr_offense asr_offense_offense_code_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY asr_offense
@@ -64261,7 +64266,7 @@ ALTER TABLE ONLY asr_offense
 
 
 --
--- Name: asr_offense_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: asr_offense asr_offense_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY asr_offense
@@ -64269,7 +64274,7 @@ ALTER TABLE ONLY asr_offense
 
 
 --
--- Name: asr_offense_subcat_offense_subcat_code_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: asr_offense_subcat asr_offense_subcat_offense_subcat_code_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY asr_offense_subcat
@@ -64277,7 +64282,7 @@ ALTER TABLE ONLY asr_offense_subcat
 
 
 --
--- Name: asr_offense_subcat_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: asr_offense_subcat asr_offense_subcat_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY asr_offense_subcat
@@ -64285,7 +64290,7 @@ ALTER TABLE ONLY asr_offense_subcat
 
 
 --
--- Name: asr_race_offense_subcat_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: asr_race_offense_subcat asr_race_offense_subcat_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY asr_race_offense_subcat
@@ -64293,7 +64298,7 @@ ALTER TABLE ONLY asr_race_offense_subcat
 
 
 --
--- Name: crime_type_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: crime_type crime_type_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY crime_type
@@ -64301,7 +64306,7 @@ ALTER TABLE ONLY crime_type
 
 
 --
--- Name: ct_arrestee_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ct_arrestee ct_arrestee_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ct_arrestee
@@ -64309,7 +64314,7 @@ ALTER TABLE ONLY ct_arrestee
 
 
 --
--- Name: ct_incident_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ct_incident ct_incident_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ct_incident
@@ -64317,7 +64322,7 @@ ALTER TABLE ONLY ct_incident
 
 
 --
--- Name: ct_month_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ct_month ct_month_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ct_month
@@ -64325,7 +64330,7 @@ ALTER TABLE ONLY ct_month
 
 
 --
--- Name: ct_offender_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ct_offender ct_offender_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ct_offender
@@ -64333,7 +64338,7 @@ ALTER TABLE ONLY ct_offender
 
 
 --
--- Name: ct_offense_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ct_offense ct_offense_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ct_offense
@@ -64341,7 +64346,7 @@ ALTER TABLE ONLY ct_offense
 
 
 --
--- Name: ct_property_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ct_property ct_property_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ct_property
@@ -64349,7 +64354,7 @@ ALTER TABLE ONLY ct_property
 
 
 --
--- Name: ct_victim_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ct_victim ct_victim_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ct_victim
@@ -64357,7 +64362,7 @@ ALTER TABLE ONLY ct_victim
 
 
 --
--- Name: ct_weapon_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ct_weapon ct_weapon_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ct_weapon
@@ -64365,7 +64370,7 @@ ALTER TABLE ONLY ct_weapon
 
 
 --
--- Name: hc_bias_motivation_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: hc_bias_motivation hc_bias_motivation_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY hc_bias_motivation
@@ -64373,7 +64378,7 @@ ALTER TABLE ONLY hc_bias_motivation
 
 
 --
--- Name: hc_incident_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: hc_incident hc_incident_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY hc_incident
@@ -64381,7 +64386,7 @@ ALTER TABLE ONLY hc_incident
 
 
 --
--- Name: hc_offense_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: hc_offense hc_offense_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY hc_offense
@@ -64389,7 +64394,7 @@ ALTER TABLE ONLY hc_offense
 
 
 --
--- Name: hc_quarter_agency_id_quarter_num_data_year_data_home_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: hc_quarter hc_quarter_agency_id_quarter_num_data_year_data_home_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY hc_quarter
@@ -64397,7 +64402,7 @@ ALTER TABLE ONLY hc_quarter
 
 
 --
--- Name: hc_quarter_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: hc_quarter hc_quarter_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY hc_quarter
@@ -64405,7 +64410,7 @@ ALTER TABLE ONLY hc_quarter
 
 
 --
--- Name: hc_victim_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: hc_victim hc_victim_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY hc_victim
@@ -64413,7 +64418,7 @@ ALTER TABLE ONLY hc_victim
 
 
 --
--- Name: ht_month_agency_id_data_year_month_num_data_home_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ht_month ht_month_agency_id_data_year_month_num_data_home_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ht_month
@@ -64421,7 +64426,7 @@ ALTER TABLE ONLY ht_month
 
 
 --
--- Name: ht_month_offense_subcat_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ht_month_offense_subcat ht_month_offense_subcat_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ht_month_offense_subcat
@@ -64429,7 +64434,7 @@ ALTER TABLE ONLY ht_month_offense_subcat
 
 
 --
--- Name: ht_month_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ht_month ht_month_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ht_month
@@ -64437,7 +64442,7 @@ ALTER TABLE ONLY ht_month
 
 
 --
--- Name: nibrs_activity_type_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_activity_type nibrs_activity_type_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_activity_type
@@ -64445,7 +64450,7 @@ ALTER TABLE ONLY nibrs_activity_type
 
 
 --
--- Name: nibrs_age_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_age nibrs_age_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_age
@@ -64453,7 +64458,7 @@ ALTER TABLE ONLY nibrs_age
 
 
 --
--- Name: nibrs_arrest_type_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_arrest_type nibrs_arrest_type_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_arrest_type
@@ -64461,7 +64466,7 @@ ALTER TABLE ONLY nibrs_arrest_type
 
 
 --
--- Name: nibrs_arrestee_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_arrestee nibrs_arrestee_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_arrestee
@@ -64469,7 +64474,7 @@ ALTER TABLE ONLY nibrs_arrestee
 
 
 --
--- Name: nibrs_arrestee_weapon_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_arrestee_weapon nibrs_arrestee_weapon_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_arrestee_weapon
@@ -64477,7 +64482,7 @@ ALTER TABLE ONLY nibrs_arrestee_weapon
 
 
 --
--- Name: nibrs_assignment_type_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_assignment_type nibrs_assignment_type_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_assignment_type
@@ -64485,7 +64490,7 @@ ALTER TABLE ONLY nibrs_assignment_type
 
 
 --
--- Name: nibrs_bias_list_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_bias_list nibrs_bias_list_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_bias_list
@@ -64493,7 +64498,7 @@ ALTER TABLE ONLY nibrs_bias_list
 
 
 --
--- Name: nibrs_bias_motivation_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_bias_motivation nibrs_bias_motivation_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_bias_motivation
@@ -64501,7 +64506,7 @@ ALTER TABLE ONLY nibrs_bias_motivation
 
 
 --
--- Name: nibrs_circumstances_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_circumstances nibrs_circumstances_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_circumstances
@@ -64509,7 +64514,7 @@ ALTER TABLE ONLY nibrs_circumstances
 
 
 --
--- Name: nibrs_cleared_except_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_cleared_except nibrs_cleared_except_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_cleared_except
@@ -64517,7 +64522,7 @@ ALTER TABLE ONLY nibrs_cleared_except
 
 
 --
--- Name: nibrs_criminal_act_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_criminal_act nibrs_criminal_act_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_criminal_act
@@ -64525,7 +64530,7 @@ ALTER TABLE ONLY nibrs_criminal_act
 
 
 --
--- Name: nibrs_criminal_act_type_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_criminal_act_type nibrs_criminal_act_type_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_criminal_act_type
@@ -64533,7 +64538,7 @@ ALTER TABLE ONLY nibrs_criminal_act_type
 
 
 --
--- Name: nibrs_drug_measure_type_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_drug_measure_type nibrs_drug_measure_type_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_drug_measure_type
@@ -64541,7 +64546,7 @@ ALTER TABLE ONLY nibrs_drug_measure_type
 
 
 --
--- Name: nibrs_ethnicity_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_ethnicity nibrs_ethnicity_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_ethnicity
@@ -64549,7 +64554,7 @@ ALTER TABLE ONLY nibrs_ethnicity
 
 
 --
--- Name: nibrs_grpb_arrest_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_grpb_arrest nibrs_grpb_arrest_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_grpb_arrest
@@ -64557,7 +64562,7 @@ ALTER TABLE ONLY nibrs_grpb_arrest
 
 
 --
--- Name: nibrs_grpb_arrest_weapon_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_grpb_arrest_weapon nibrs_grpb_arrest_weapon_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_grpb_arrest_weapon
@@ -64565,7 +64570,7 @@ ALTER TABLE ONLY nibrs_grpb_arrest_weapon
 
 
 --
--- Name: nibrs_incident_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_incident nibrs_incident_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_incident
@@ -64573,7 +64578,7 @@ ALTER TABLE ONLY nibrs_incident
 
 
 --
--- Name: nibrs_injury_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_injury nibrs_injury_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_injury
@@ -64581,7 +64586,7 @@ ALTER TABLE ONLY nibrs_injury
 
 
 --
--- Name: nibrs_justifiable_force_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_justifiable_force nibrs_justifiable_force_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_justifiable_force
@@ -64589,7 +64594,7 @@ ALTER TABLE ONLY nibrs_justifiable_force
 
 
 --
--- Name: nibrs_location_type_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_location_type nibrs_location_type_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_location_type
@@ -64597,7 +64602,7 @@ ALTER TABLE ONLY nibrs_location_type
 
 
 --
--- Name: nibrs_month_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_month nibrs_month_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_month
@@ -64605,7 +64610,7 @@ ALTER TABLE ONLY nibrs_month
 
 
 --
--- Name: nibrs_offender_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_offender nibrs_offender_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_offender
@@ -64613,7 +64618,7 @@ ALTER TABLE ONLY nibrs_offender
 
 
 --
--- Name: nibrs_offense_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_offense nibrs_offense_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_offense
@@ -64621,7 +64626,7 @@ ALTER TABLE ONLY nibrs_offense
 
 
 --
--- Name: nibrs_offense_type_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_offense_type nibrs_offense_type_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_offense_type
@@ -64629,7 +64634,7 @@ ALTER TABLE ONLY nibrs_offense_type
 
 
 --
--- Name: nibrs_prop_desc_type_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_prop_desc_type nibrs_prop_desc_type_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_prop_desc_type
@@ -64637,7 +64642,7 @@ ALTER TABLE ONLY nibrs_prop_desc_type
 
 
 --
--- Name: nibrs_prop_loss_type_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_prop_loss_type nibrs_prop_loss_type_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_prop_loss_type
@@ -64645,7 +64650,7 @@ ALTER TABLE ONLY nibrs_prop_loss_type
 
 
 --
--- Name: nibrs_property_desc_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_property_desc nibrs_property_desc_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_property_desc
@@ -64653,7 +64658,7 @@ ALTER TABLE ONLY nibrs_property_desc
 
 
 --
--- Name: nibrs_property_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_property nibrs_property_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_property
@@ -64661,7 +64666,7 @@ ALTER TABLE ONLY nibrs_property
 
 
 --
--- Name: nibrs_relationship_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_relationship nibrs_relationship_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_relationship
@@ -64669,7 +64674,7 @@ ALTER TABLE ONLY nibrs_relationship
 
 
 --
--- Name: nibrs_suspect_using_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_suspect_using nibrs_suspect_using_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_suspect_using
@@ -64677,7 +64682,7 @@ ALTER TABLE ONLY nibrs_suspect_using
 
 
 --
--- Name: nibrs_suspected_drug_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_suspected_drug nibrs_suspected_drug_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_suspected_drug
@@ -64685,7 +64690,7 @@ ALTER TABLE ONLY nibrs_suspected_drug
 
 
 --
--- Name: nibrs_suspected_drug_type_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_suspected_drug_type nibrs_suspected_drug_type_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_suspected_drug_type
@@ -64693,7 +64698,7 @@ ALTER TABLE ONLY nibrs_suspected_drug_type
 
 
 --
--- Name: nibrs_using_list_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_using_list nibrs_using_list_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_using_list
@@ -64701,7 +64706,7 @@ ALTER TABLE ONLY nibrs_using_list
 
 
 --
--- Name: nibrs_victim_circumstances_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_victim_circumstances nibrs_victim_circumstances_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_victim_circumstances
@@ -64709,7 +64714,7 @@ ALTER TABLE ONLY nibrs_victim_circumstances
 
 
 --
--- Name: nibrs_victim_injury_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_victim_injury nibrs_victim_injury_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_victim_injury
@@ -64717,7 +64722,7 @@ ALTER TABLE ONLY nibrs_victim_injury
 
 
 --
--- Name: nibrs_victim_offender_rel_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_victim_offender_rel nibrs_victim_offender_rel_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_victim_offender_rel
@@ -64725,7 +64730,7 @@ ALTER TABLE ONLY nibrs_victim_offender_rel
 
 
 --
--- Name: nibrs_victim_offense_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_victim_offense nibrs_victim_offense_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_victim_offense
@@ -64733,7 +64738,7 @@ ALTER TABLE ONLY nibrs_victim_offense
 
 
 --
--- Name: nibrs_victim_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_victim nibrs_victim_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_victim
@@ -64741,7 +64746,7 @@ ALTER TABLE ONLY nibrs_victim
 
 
 --
--- Name: nibrs_victim_type_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_victim_type nibrs_victim_type_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_victim_type
@@ -64749,7 +64754,7 @@ ALTER TABLE ONLY nibrs_victim_type
 
 
 --
--- Name: nibrs_weapon_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_weapon nibrs_weapon_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_weapon
@@ -64757,7 +64762,7 @@ ALTER TABLE ONLY nibrs_weapon
 
 
 --
--- Name: nibrs_weapon_type_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_weapon_type nibrs_weapon_type_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_weapon_type
@@ -64765,7 +64770,7 @@ ALTER TABLE ONLY nibrs_weapon_type
 
 
 --
--- Name: offense_classification_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: offense_classification offense_classification_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY offense_classification
@@ -64773,7 +64778,7 @@ ALTER TABLE ONLY offense_classification
 
 
 --
--- Name: ref_agency_county_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_agency_county ref_agency_county_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_agency_county
@@ -64781,7 +64786,7 @@ ALTER TABLE ONLY ref_agency_county
 
 
 --
--- Name: ref_agency_covered_by_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_agency_covered_by ref_agency_covered_by_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_agency_covered_by
@@ -64789,7 +64794,7 @@ ALTER TABLE ONLY ref_agency_covered_by
 
 
 --
--- Name: ref_agency_data_content_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_agency_data_content ref_agency_data_content_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_agency_data_content
@@ -64797,7 +64802,7 @@ ALTER TABLE ONLY ref_agency_data_content
 
 
 --
--- Name: ref_agency_ori_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_agency ref_agency_ori_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_agency
@@ -64805,7 +64810,7 @@ ALTER TABLE ONLY ref_agency
 
 
 --
--- Name: ref_agency_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_agency ref_agency_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_agency
@@ -64813,7 +64818,7 @@ ALTER TABLE ONLY ref_agency
 
 
 --
--- Name: ref_agency_poc_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_agency_poc ref_agency_poc_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_agency_poc
@@ -64821,7 +64826,7 @@ ALTER TABLE ONLY ref_agency_poc
 
 
 --
--- Name: ref_agency_type_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_agency_type ref_agency_type_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_agency_type
@@ -64829,7 +64834,7 @@ ALTER TABLE ONLY ref_agency_type
 
 
 --
--- Name: ref_campus_population_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_campus_population ref_campus_population_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_campus_population
@@ -64837,7 +64842,7 @@ ALTER TABLE ONLY ref_campus_population
 
 
 --
--- Name: ref_city_city_name_state_id_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_city ref_city_city_name_state_id_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_city
@@ -64845,7 +64850,7 @@ ALTER TABLE ONLY ref_city
 
 
 --
--- Name: ref_city_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_city ref_city_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_city
@@ -64853,7 +64858,7 @@ ALTER TABLE ONLY ref_city
 
 
 --
--- Name: ref_continent_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_continent ref_continent_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_continent
@@ -64861,7 +64866,7 @@ ALTER TABLE ONLY ref_continent
 
 
 --
--- Name: ref_country_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_country ref_country_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_country
@@ -64869,7 +64874,7 @@ ALTER TABLE ONLY ref_country
 
 
 --
--- Name: ref_county_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_county ref_county_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_county
@@ -64877,7 +64882,7 @@ ALTER TABLE ONLY ref_county
 
 
 --
--- Name: ref_county_population_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_county_population ref_county_population_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_county_population
@@ -64885,7 +64890,7 @@ ALTER TABLE ONLY ref_county_population
 
 
 --
--- Name: ref_department_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_department ref_department_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_department
@@ -64893,7 +64898,7 @@ ALTER TABLE ONLY ref_department
 
 
 --
--- Name: ref_division_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_division ref_division_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_division
@@ -64901,7 +64906,7 @@ ALTER TABLE ONLY ref_division
 
 
 --
--- Name: ref_field_office_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_field_office ref_field_office_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_field_office
@@ -64909,7 +64914,7 @@ ALTER TABLE ONLY ref_field_office
 
 
 --
--- Name: ref_global_location_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_global_location ref_global_location_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_global_location
@@ -64917,7 +64922,7 @@ ALTER TABLE ONLY ref_global_location
 
 
 --
--- Name: ref_metro_div_population_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_metro_div_population ref_metro_div_population_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_metro_div_population
@@ -64925,7 +64930,7 @@ ALTER TABLE ONLY ref_metro_div_population
 
 
 --
--- Name: ref_metro_division_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_metro_division ref_metro_division_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_metro_division
@@ -64933,7 +64938,7 @@ ALTER TABLE ONLY ref_metro_division
 
 
 --
--- Name: ref_msa_msa_name_msa_omb_code_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_msa ref_msa_msa_name_msa_omb_code_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_msa
@@ -64941,7 +64946,7 @@ ALTER TABLE ONLY ref_msa
 
 
 --
--- Name: ref_msa_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_msa ref_msa_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_msa
@@ -64949,7 +64954,7 @@ ALTER TABLE ONLY ref_msa
 
 
 --
--- Name: ref_parent_population_group_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_parent_population_group ref_parent_population_group_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_parent_population_group
@@ -64957,7 +64962,7 @@ ALTER TABLE ONLY ref_parent_population_group
 
 
 --
--- Name: ref_poc_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_poc ref_poc_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_poc
@@ -64965,7 +64970,7 @@ ALTER TABLE ONLY ref_poc
 
 
 --
--- Name: ref_poc_role_assign_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_poc_role_assign ref_poc_role_assign_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_poc_role_assign
@@ -64973,7 +64978,7 @@ ALTER TABLE ONLY ref_poc_role_assign
 
 
 --
--- Name: ref_poc_role_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_poc_role ref_poc_role_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_poc_role
@@ -64981,7 +64986,7 @@ ALTER TABLE ONLY ref_poc_role
 
 
 --
--- Name: ref_population_family_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_population_family ref_population_family_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_population_family
@@ -64989,7 +64994,7 @@ ALTER TABLE ONLY ref_population_family
 
 
 --
--- Name: ref_population_group_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_population_group ref_population_group_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_population_group
@@ -64997,7 +65002,7 @@ ALTER TABLE ONLY ref_population_group
 
 
 --
--- Name: ref_race_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_race ref_race_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_race
@@ -65005,7 +65010,7 @@ ALTER TABLE ONLY ref_race
 
 
 --
--- Name: ref_region_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_region ref_region_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_region
@@ -65013,7 +65018,7 @@ ALTER TABLE ONLY ref_region
 
 
 --
--- Name: ref_state_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_state ref_state_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_state
@@ -65021,7 +65026,7 @@ ALTER TABLE ONLY ref_state
 
 
 --
--- Name: ref_submitting_agency_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_submitting_agency ref_submitting_agency_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_submitting_agency
@@ -65029,7 +65034,7 @@ ALTER TABLE ONLY ref_submitting_agency
 
 
 --
--- Name: ref_tribe_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_tribe ref_tribe_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_tribe
@@ -65037,7 +65042,7 @@ ALTER TABLE ONLY ref_tribe
 
 
 --
--- Name: ref_tribe_population_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_tribe_population ref_tribe_population_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_tribe_population
@@ -65045,7 +65050,7 @@ ALTER TABLE ONLY ref_tribe_population
 
 
 --
--- Name: ref_tribe_tribe_name_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_tribe ref_tribe_tribe_name_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_tribe
@@ -65053,7 +65058,7 @@ ALTER TABLE ONLY ref_tribe
 
 
 --
--- Name: ref_university_campus_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_university_campus ref_university_campus_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_university_campus
@@ -65061,7 +65066,7 @@ ALTER TABLE ONLY ref_university_campus
 
 
 --
--- Name: ref_university_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_university ref_university_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_university
@@ -65069,7 +65074,7 @@ ALTER TABLE ONLY ref_university
 
 
 --
--- Name: ref_university_university_name_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_university ref_university_university_name_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_university
@@ -65077,7 +65082,7 @@ ALTER TABLE ONLY ref_university
 
 
 --
--- Name: reta_month_agency_id_data_year_month_num_data_home_source_f_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: reta_month reta_month_agency_id_data_year_month_num_data_home_source_f_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY reta_month
@@ -65085,7 +65090,7 @@ ALTER TABLE ONLY reta_month
 
 
 --
--- Name: reta_month_offense_subcat_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: reta_month_offense_subcat reta_month_offense_subcat_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY reta_month_offense_subcat
@@ -65093,7 +65098,7 @@ ALTER TABLE ONLY reta_month_offense_subcat
 
 
 --
--- Name: reta_month_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: reta_month reta_month_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY reta_month
@@ -65101,7 +65106,7 @@ ALTER TABLE ONLY reta_month
 
 
 --
--- Name: reta_offense_category_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: reta_offense_category reta_offense_category_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY reta_offense_category
@@ -65109,7 +65114,7 @@ ALTER TABLE ONLY reta_offense_category
 
 
 --
--- Name: reta_offense_offense_code_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: reta_offense reta_offense_offense_code_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY reta_offense
@@ -65117,7 +65122,7 @@ ALTER TABLE ONLY reta_offense
 
 
 --
--- Name: reta_offense_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: reta_offense reta_offense_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY reta_offense
@@ -65125,7 +65130,7 @@ ALTER TABLE ONLY reta_offense
 
 
 --
--- Name: reta_offense_subcat_offense_subcat_code_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: reta_offense_subcat reta_offense_subcat_offense_subcat_code_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY reta_offense_subcat
@@ -65133,7 +65138,7 @@ ALTER TABLE ONLY reta_offense_subcat
 
 
 --
--- Name: reta_offense_subcat_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: reta_offense_subcat reta_offense_subcat_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY reta_offense_subcat
@@ -65141,7 +65146,7 @@ ALTER TABLE ONLY reta_offense_subcat
 
 
 --
--- Name: shr_circumstances_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: shr_circumstances shr_circumstances_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY shr_circumstances
@@ -65149,7 +65154,7 @@ ALTER TABLE ONLY shr_circumstances
 
 
 --
--- Name: shr_incident_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: shr_incident shr_incident_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY shr_incident
@@ -65157,7 +65162,7 @@ ALTER TABLE ONLY shr_incident
 
 
 --
--- Name: shr_incident_shr_month_id_incident_num_data_home_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: shr_incident shr_incident_shr_month_id_incident_num_data_home_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY shr_incident
@@ -65165,7 +65170,7 @@ ALTER TABLE ONLY shr_incident
 
 
 --
--- Name: shr_month_agency_id_data_year_month_num_data_home_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: shr_month shr_month_agency_id_data_year_month_num_data_home_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY shr_month
@@ -65173,7 +65178,7 @@ ALTER TABLE ONLY shr_month
 
 
 --
--- Name: shr_month_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: shr_month shr_month_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY shr_month
@@ -65181,7 +65186,7 @@ ALTER TABLE ONLY shr_month
 
 
 --
--- Name: shr_offender_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: shr_offender shr_offender_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY shr_offender
@@ -65189,7 +65194,7 @@ ALTER TABLE ONLY shr_offender
 
 
 --
--- Name: shr_offense_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: shr_offense shr_offense_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY shr_offense
@@ -65197,7 +65202,7 @@ ALTER TABLE ONLY shr_offense
 
 
 --
--- Name: shr_relationship_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: shr_relationship shr_relationship_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY shr_relationship
@@ -65205,7 +65210,7 @@ ALTER TABLE ONLY shr_relationship
 
 
 --
--- Name: shr_situation_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: shr_situation shr_situation_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY shr_situation
@@ -65213,7 +65218,7 @@ ALTER TABLE ONLY shr_situation
 
 
 --
--- Name: shr_victim_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: shr_victim shr_victim_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY shr_victim
@@ -65221,7 +65226,7 @@ ALTER TABLE ONLY shr_victim
 
 
 --
--- Name: supp_larceny_type_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: supp_larceny_type supp_larceny_type_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY supp_larceny_type
@@ -65229,7 +65234,7 @@ ALTER TABLE ONLY supp_larceny_type
 
 
 --
--- Name: supp_month_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: supp_month supp_month_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY supp_month
@@ -65237,7 +65242,7 @@ ALTER TABLE ONLY supp_month
 
 
 --
--- Name: supp_offense_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: supp_offense supp_offense_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY supp_offense
@@ -65245,7 +65250,7 @@ ALTER TABLE ONLY supp_offense
 
 
 --
--- Name: supp_offense_subcat_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: supp_offense_subcat supp_offense_subcat_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY supp_offense_subcat
@@ -65253,7 +65258,7 @@ ALTER TABLE ONLY supp_offense_subcat
 
 
 --
--- Name: supp_prop_by_offense_subcat_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: supp_prop_by_offense_subcat supp_prop_by_offense_subcat_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY supp_prop_by_offense_subcat
@@ -65261,7 +65266,7 @@ ALTER TABLE ONLY supp_prop_by_offense_subcat
 
 
 --
--- Name: supp_property_by_type_value_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: supp_property_by_type_value supp_property_by_type_value_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY supp_property_by_type_value
@@ -65269,7 +65274,7 @@ ALTER TABLE ONLY supp_property_by_type_value
 
 
 --
--- Name: supp_property_type_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: supp_property_type supp_property_type_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY supp_property_type
@@ -65277,1407 +65282,1407 @@ ALTER TABLE ONLY supp_property_type
 
 
 --
--- Name: aass_month; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: aass_month; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX aass_month ON asr_age_sex_subcat USING btree (asr_month_id);
 
 
 --
--- Name: agency_county_county_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: agency_county_county_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX agency_county_county_ix ON ref_agency_county USING btree (county_id);
 
 
 --
--- Name: agency_uni_campus_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: agency_uni_campus_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX agency_uni_campus_ix ON ref_agency USING btree (campus_id);
 
 
 --
--- Name: arson_mon_subcat_ami_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: arson_mon_subcat_ami_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX arson_mon_subcat_ami_idx ON arson_month_by_subcat USING btree (arson_month_id);
 
 
 --
--- Name: arson_month_by_subcat_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: arson_month_by_subcat_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX arson_month_by_subcat_idx ON arson_month_by_subcat USING btree (subcategory_id);
 
 
 --
--- Name: arson_month_ddocname_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: arson_month_ddocname_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX arson_month_ddocname_idx ON arson_month USING btree (ddocname);
 
 
 --
--- Name: arson_month_did_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: arson_month_did_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX arson_month_did_idx ON arson_month USING btree (did);
 
 
 --
--- Name: arson_month_update_flag_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: arson_month_update_flag_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX arson_month_update_flag_idx ON arson_month USING btree (update_flag);
 
 
 --
--- Name: arson_subcategory_subclass_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: arson_subcategory_subclass_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX arson_subcategory_subclass_ix ON arson_subcategory USING btree (subclass_id);
 
 
 --
--- Name: asr_age_range_index1; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: asr_age_range_index1; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX asr_age_range_index1 ON asr_age_range USING btree (age_range_name);
 
 
 --
--- Name: asr_age_sex_sub_off_sub_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: asr_age_sex_sub_off_sub_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX asr_age_sex_sub_off_sub_ix ON asr_age_sex_subcat USING btree (offense_subcat_id);
 
 
 --
--- Name: asr_age_sex_subcat_index1; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: asr_age_sex_subcat_index1; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX asr_age_sex_subcat_index1 ON asr_age_sex_subcat USING btree (asr_month_id, offense_subcat_id);
 
 
 --
--- Name: asr_age_sex_subcat_status; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: asr_age_sex_subcat_status; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX asr_age_sex_subcat_status ON asr_age_sex_subcat USING btree (arrest_status);
 
 
 --
--- Name: asr_age_sexv1_asr_age_range_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: asr_age_sexv1_asr_age_range_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX asr_age_sexv1_asr_age_range_ix ON asr_age_sex_subcat USING btree (age_range_id);
 
 
 --
--- Name: asr_eth_off_eth_type_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: asr_eth_off_eth_type_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX asr_eth_off_eth_type_ix ON asr_ethnicity_offense USING btree (ethnicity_id);
 
 
 --
--- Name: asr_eth_off_subcat_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: asr_eth_off_subcat_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX asr_eth_off_subcat_ix ON asr_ethnicity_offense USING btree (offense_subcat_id);
 
 
 --
--- Name: asr_month_data_year; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: asr_month_data_year; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX asr_month_data_year ON asr_month USING btree (data_year);
 
 
 --
--- Name: asr_month_ddoc_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: asr_month_ddoc_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX asr_month_ddoc_idx ON asr_month USING btree (ddocname);
 
 
 --
--- Name: asr_month_did_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: asr_month_did_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX asr_month_did_idx ON asr_month USING btree (did);
 
 
 --
--- Name: asr_off_subcat_offense_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: asr_off_subcat_offense_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX asr_off_subcat_offense_ix ON asr_offense_subcat USING btree (offense_id);
 
 
 --
--- Name: asr_offense_cat_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: asr_offense_cat_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX asr_offense_cat_ix ON asr_offense USING btree (offense_cat_id);
 
 
 --
--- Name: asr_offense_subcat_master_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: asr_offense_subcat_master_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX asr_offense_subcat_master_idx ON asr_offense_subcat USING btree (master_offense_code);
 
 
 --
--- Name: asr_offense_subcat_srs_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: asr_offense_subcat_srs_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX asr_offense_subcat_srs_idx ON asr_offense_subcat USING btree (srs_offense_code);
 
 
 --
--- Name: asr_race_off_sub_off_sub_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: asr_race_off_sub_off_sub_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX asr_race_off_sub_off_sub_ix ON asr_race_offense_subcat USING btree (offense_subcat_id);
 
 
 --
--- Name: asr_race_off_sub_ref_race_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: asr_race_off_sub_ref_race_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX asr_race_off_sub_ref_race_ix ON asr_race_offense_subcat USING btree (race_id);
 
 
 --
--- Name: city_state_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: city_state_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX city_state_ix ON ref_city USING btree (state_id);
 
 
 --
--- Name: ct_arrestee_incident_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ct_arrestee_incident_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ct_arrestee_incident_ix ON ct_arrestee USING btree (incident_id);
 
 
 --
--- Name: ct_arrestee_nibrs_eth_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ct_arrestee_nibrs_eth_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ct_arrestee_nibrs_eth_ix ON ct_arrestee USING btree (ethnicity_id);
 
 
 --
--- Name: ct_arrestee_nibrs_race_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ct_arrestee_nibrs_race_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ct_arrestee_nibrs_race_ix ON ct_arrestee USING btree (race_id);
 
 
 --
--- Name: ct_incident_agency_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ct_incident_agency_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ct_incident_agency_ix ON ct_incident USING btree (agency_id);
 
 
 --
--- Name: ct_incident_ct_month_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ct_incident_ct_month_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ct_incident_ct_month_ix ON ct_incident USING btree (ct_month_id);
 
 
 --
--- Name: ct_incident_ddoc_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ct_incident_ddoc_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ct_incident_ddoc_idx ON ct_incident USING btree (ddocname);
 
 
 --
--- Name: ct_incident_did_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ct_incident_did_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ct_incident_did_idx ON ct_incident USING btree (did);
 
 
 --
--- Name: ct_incident_upd_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ct_incident_upd_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ct_incident_upd_idx ON ct_incident USING btree (update_flag);
 
 
 --
--- Name: ct_month_agency_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ct_month_agency_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ct_month_agency_ix ON ct_month USING btree (agency_id);
 
 
 --
--- Name: ct_month_ddoc_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ct_month_ddoc_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ct_month_ddoc_idx ON ct_month USING btree (ddocname);
 
 
 --
--- Name: ct_month_did_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ct_month_did_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ct_month_did_idx ON ct_month USING btree (did);
 
 
 --
--- Name: ct_offender_incident_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ct_offender_incident_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ct_offender_incident_ix ON ct_offender USING btree (incident_id);
 
 
 --
--- Name: ct_offender_nibrs_eth_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ct_offender_nibrs_eth_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ct_offender_nibrs_eth_ix ON ct_offender USING btree (ethnicity_id);
 
 
 --
--- Name: ct_offender_nibrs_race_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ct_offender_nibrs_race_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ct_offender_nibrs_race_ix ON ct_offender USING btree (race_id);
 
 
 --
--- Name: ct_offense_ct_incident_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ct_offense_ct_incident_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ct_offense_ct_incident_ix ON ct_offense USING btree (incident_id);
 
 
 --
--- Name: ct_offense_nibrs_loc_type_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ct_offense_nibrs_loc_type_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ct_offense_nibrs_loc_type_ix ON ct_offense USING btree (location_id);
 
 
 --
--- Name: ct_offense_nibrs_off_type_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ct_offense_nibrs_off_type_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ct_offense_nibrs_off_type_ix ON ct_offense USING btree (offense_type_id);
 
 
 --
--- Name: ct_property_ct_incident_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ct_property_ct_incident_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ct_property_ct_incident_ix ON ct_property USING btree (incident_id);
 
 
 --
--- Name: ct_property_prop_desc_type_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ct_property_prop_desc_type_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ct_property_prop_desc_type_ix ON ct_property USING btree (prop_desc_id);
 
 
 --
--- Name: ct_vic_nibrs_vic_type_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ct_vic_nibrs_vic_type_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ct_vic_nibrs_vic_type_ix ON ct_victim USING btree (victim_type_id);
 
 
 --
--- Name: ct_weap_nibrs_weap_type_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ct_weap_nibrs_weap_type_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ct_weap_nibrs_weap_type_ix ON ct_weapon USING btree (weapon_id);
 
 
 --
--- Name: ct_weapon_ct_incident_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ct_weapon_ct_incident_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ct_weapon_ct_incident_ix ON ct_weapon USING btree (incident_id);
 
 
 --
--- Name: division_region_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: division_region_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX division_region_ix ON ref_division USING btree (region_id);
 
 
 --
--- Name: hc_bias_mot_bias_list_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: hc_bias_mot_bias_list_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX hc_bias_mot_bias_list_ix ON hc_bias_motivation USING btree (bias_id);
 
 
 --
--- Name: hc_bias_motiv_off_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: hc_bias_motiv_off_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX hc_bias_motiv_off_idx ON hc_bias_motivation USING btree (offense_id);
 
 
 --
--- Name: hc_incident_agency_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: hc_incident_agency_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX hc_incident_agency_ix ON hc_incident USING btree (agency_id);
 
 
 --
--- Name: hc_incident_did_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: hc_incident_did_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX hc_incident_did_idx ON hc_incident USING btree (did);
 
 
 --
--- Name: hc_incident_nibrs_eth_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: hc_incident_nibrs_eth_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX hc_incident_nibrs_eth_ix ON hc_incident USING btree (offender_ethnicity_id);
 
 
 --
--- Name: hc_incident_nibrs_race_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: hc_incident_nibrs_race_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX hc_incident_nibrs_race_ix ON hc_incident USING btree (offender_race_id);
 
 
 --
--- Name: hc_incident_qtr_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: hc_incident_qtr_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX hc_incident_qtr_idx ON hc_incident USING btree (hc_quarter_id);
 
 
 --
--- Name: hc_incident_upd_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: hc_incident_upd_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX hc_incident_upd_idx ON hc_incident USING btree (update_flag);
 
 
 --
--- Name: hc_off_nibrs_loc_type_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: hc_off_nibrs_loc_type_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX hc_off_nibrs_loc_type_ix ON hc_offense USING btree (location_id);
 
 
 --
--- Name: hc_off_nibrs_off_type_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: hc_off_nibrs_off_type_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX hc_off_nibrs_off_type_ix ON hc_offense USING btree (offense_type_id);
 
 
 --
--- Name: hc_offense_incident_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: hc_offense_incident_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX hc_offense_incident_idx ON hc_offense USING btree (incident_id);
 
 
 --
--- Name: hc_quarter_ddoc_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: hc_quarter_ddoc_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX hc_quarter_ddoc_idx ON hc_quarter USING btree (ddocname);
 
 
 --
--- Name: hc_vic_nibrs_vic_type_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: hc_vic_nibrs_vic_type_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX hc_vic_nibrs_vic_type_ix ON hc_victim USING btree (victim_type_id);
 
 
 --
--- Name: ht_month_ddocname_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ht_month_ddocname_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ht_month_ddocname_idx ON ht_month USING btree (ddocname);
 
 
 --
--- Name: ht_month_did_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ht_month_did_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ht_month_did_idx ON ht_month USING btree (did);
 
 
 --
--- Name: ht_month_off_sub_month_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ht_month_off_sub_month_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ht_month_off_sub_month_ix ON ht_month_offense_subcat USING btree (ht_month_id);
 
 
 --
--- Name: ht_month_update_flag_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ht_month_update_flag_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ht_month_update_flag_idx ON ht_month USING btree (update_flag);
 
 
 --
--- Name: metro_division_msa_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: metro_division_msa_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX metro_division_msa_ix ON ref_metro_division USING btree (msa_id);
 
 
 --
--- Name: ni_incnum_agency; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ni_incnum_agency; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ni_incnum_agency ON nibrs_incident USING btree (agency_id, incident_number);
 
 
 --
--- Name: nibrs_arr_weapon_arrestee_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_arr_weapon_arrestee_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_arr_weapon_arrestee_id ON nibrs_arrestee_weapon USING btree (arrestee_id);
 
 
 --
--- Name: nibrs_arrest_weap_type_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_arrest_weap_type_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_arrest_weap_type_ix ON nibrs_arrestee_weapon USING btree (weapon_id);
 
 
 --
--- Name: nibrs_arrestee_age_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_arrestee_age_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_arrestee_age_ix ON nibrs_arrestee USING btree (age_id);
 
 
 --
--- Name: nibrs_arrestee_arrest_type_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_arrestee_arrest_type_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_arrestee_arrest_type_ix ON nibrs_arrestee USING btree (arrest_type_id);
 
 
 --
--- Name: nibrs_arrestee_ethnicity_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_arrestee_ethnicity_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_arrestee_ethnicity_ix ON nibrs_arrestee USING btree (ethnicity_id);
 
 
 --
--- Name: nibrs_arrestee_inc_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_arrestee_inc_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_arrestee_inc_id ON nibrs_arrestee USING btree (incident_id);
 
 
 --
--- Name: nibrs_arrestee_nibrs_race_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_arrestee_nibrs_race_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_arrestee_nibrs_race_ix ON nibrs_arrestee USING btree (race_id);
 
 
 --
--- Name: nibrs_arrestee_offense_type_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_arrestee_offense_type_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_arrestee_offense_type_ix ON nibrs_arrestee USING btree (offense_type_id);
 
 
 --
--- Name: nibrs_bias_motiv_off_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_bias_motiv_off_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_bias_motiv_off_id ON nibrs_bias_motivation USING btree (offense_id);
 
 
 --
--- Name: nibrs_criminal_act_off_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_criminal_act_off_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_criminal_act_off_id ON nibrs_criminal_act USING btree (offense_id);
 
 
 --
--- Name: nibrs_grpb_ar_age_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_grpb_ar_age_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_grpb_ar_age_ix ON nibrs_grpb_arrest USING btree (age_id);
 
 
 --
--- Name: nibrs_grpb_ar_eth_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_grpb_ar_eth_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_grpb_ar_eth_ix ON nibrs_grpb_arrest USING btree (ethnicity_id);
 
 
 --
--- Name: nibrs_grpb_ar_race_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_grpb_ar_race_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_grpb_ar_race_ix ON nibrs_grpb_arrest USING btree (race_id);
 
 
 --
--- Name: nibrs_grpb_ar_weap_type_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_grpb_ar_weap_type_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_grpb_ar_weap_type_ix ON nibrs_grpb_arrest_weapon USING btree (weapon_id);
 
 
 --
--- Name: nibrs_grpb_arrest_dh_ddoc_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_grpb_arrest_dh_ddoc_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_grpb_arrest_dh_ddoc_idx ON nibrs_grpb_arrest USING btree (data_home, ddocname);
 
 
 --
--- Name: nibrs_grpb_arrest_did_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_grpb_arrest_did_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_grpb_arrest_did_idx ON nibrs_grpb_arrest USING btree (did);
 
 
 --
--- Name: nibrs_grpb_arrest_index1; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_grpb_arrest_index1; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_grpb_arrest_index1 ON nibrs_grpb_arrest USING btree (agency_id, arrest_num, arrest_date, arrest_seq_num);
 
 
 --
--- Name: nibrs_grpb_arrest_nm_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_grpb_arrest_nm_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_grpb_arrest_nm_idx ON nibrs_grpb_arrest USING btree (nibrs_month_id);
 
 
 --
--- Name: nibrs_grpb_arrest_weapon_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_grpb_arrest_weapon_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_grpb_arrest_weapon_idx ON nibrs_grpb_arrest_weapon USING btree (grpb_arrest_id);
 
 
 --
--- Name: nibrs_grpb_datahome_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_grpb_datahome_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_grpb_datahome_idx ON nibrs_grpb_arrest USING btree (data_home);
 
 
 --
--- Name: nibrs_grpb_ddoc_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_grpb_ddoc_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_grpb_ddoc_idx ON nibrs_grpb_arrest USING btree (ddocname);
 
 
 --
--- Name: nibrs_incident_clear_ex_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_incident_clear_ex_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_incident_clear_ex_ix ON nibrs_incident USING btree (cleared_except_id);
 
 
 --
--- Name: nibrs_incident_datahome_temp; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_incident_datahome_temp; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_incident_datahome_temp ON nibrs_incident USING btree (data_home);
 
 
 --
--- Name: nibrs_incident_ddocname; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_incident_ddocname; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_incident_ddocname ON nibrs_incident USING btree (ddocname);
 
 
 --
--- Name: nibrs_incident_did_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_incident_did_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_incident_did_idx ON nibrs_incident USING btree (did);
 
 
 --
--- Name: nibrs_incident_idx1; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_incident_idx1; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_incident_idx1 ON nibrs_incident USING btree (agency_id, incident_date, incident_number, data_home);
 
 
 --
--- Name: nibrs_incident_incid_agency; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_incident_incid_agency; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_incident_incid_agency ON nibrs_incident USING btree (agency_id, incident_id);
 
 
 --
--- Name: nibrs_incident_index1; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_incident_index1; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_incident_index1 ON nibrs_incident USING btree (nibrs_month_id);
 
 
 --
--- Name: nibrs_incident_index2; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_incident_index2; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_incident_index2 ON nibrs_incident USING btree (incident_number);
 
 
 --
--- Name: nibrs_incident_status_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_incident_status_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_incident_status_idx ON nibrs_incident USING btree (incident_status);
 
 
 --
--- Name: nibrs_month_datahome_temp; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_month_datahome_temp; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_month_datahome_temp ON nibrs_month USING btree (data_home);
 
 
 --
--- Name: nibrs_month_ddoc_dh_nmid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_month_ddoc_dh_nmid; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_month_ddoc_dh_nmid ON nibrs_month USING btree (nibrs_month_id, ddocname, data_home);
 
 
 --
--- Name: nibrs_month_ddoc_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_month_ddoc_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_month_ddoc_idx ON nibrs_month USING btree (ddocname);
 
 
 --
--- Name: nibrs_month_did_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_month_did_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_month_did_idx ON nibrs_month USING btree (did);
 
 
 --
--- Name: nibrs_month_un; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_month_un; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX nibrs_month_un ON nibrs_month USING btree (agency_id, month_num, data_year, data_home);
 
 
 --
--- Name: nibrs_offender_age_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_offender_age_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_offender_age_ix ON nibrs_offender USING btree (age_id);
 
 
 --
--- Name: nibrs_offender_ethnicity_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_offender_ethnicity_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_offender_ethnicity_ix ON nibrs_offender USING btree (ethnicity_id);
 
 
 --
--- Name: nibrs_offender_inc_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_offender_inc_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_offender_inc_id ON nibrs_offender USING btree (incident_id);
 
 
 --
--- Name: nibrs_offender_race_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_offender_race_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_offender_race_ix ON nibrs_offender USING btree (race_id);
 
 
 --
--- Name: nibrs_offense_loc_type_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_offense_loc_type_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_offense_loc_type_ix ON nibrs_offense USING btree (location_id);
 
 
 --
--- Name: nibrs_offense_off_type_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_offense_off_type_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_offense_off_type_ix ON nibrs_offense USING btree (offense_type_id);
 
 
 --
--- Name: nibrs_offense_x1; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_offense_x1; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_offense_x1 ON nibrs_offense USING btree (incident_id);
 
 
 --
--- Name: nibrs_prop_desc_date_rec_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_prop_desc_date_rec_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_prop_desc_date_rec_ix ON nibrs_property_desc USING btree (date_recovered);
 
 
 --
--- Name: nibrs_property_desc_desc_id_in; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_property_desc_desc_id_in; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_property_desc_desc_id_in ON nibrs_property_desc USING btree (prop_desc_id);
 
 
 --
--- Name: nibrs_property_loss_type_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_property_loss_type_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_property_loss_type_ix ON nibrs_property USING btree (prop_loss_id);
 
 
 --
--- Name: nibrs_property_property_id_in; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_property_property_id_in; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_property_property_id_in ON nibrs_property_desc USING btree (property_id);
 
 
 --
--- Name: nibrs_property_x1; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_property_x1; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_property_x1 ON nibrs_property USING btree (incident_id);
 
 
 --
--- Name: nibrs_susp_drug_meas_type_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_susp_drug_meas_type_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_susp_drug_meas_type_ix ON nibrs_suspected_drug USING btree (drug_measure_type_id);
 
 
 --
--- Name: nibrs_susp_drug_prop_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_susp_drug_prop_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_susp_drug_prop_id ON nibrs_suspected_drug USING btree (property_id);
 
 
 --
--- Name: nibrs_susp_drug_type_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_susp_drug_type_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_susp_drug_type_ix ON nibrs_suspected_drug USING btree (suspected_drug_type_id);
 
 
 --
--- Name: nibrs_suspect_using_code_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_suspect_using_code_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_suspect_using_code_idx ON nibrs_using_list USING btree (suspect_using_code);
 
 
 --
--- Name: nibrs_suspect_using_off_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_suspect_using_off_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_suspect_using_off_id ON nibrs_suspect_using USING btree (offense_id);
 
 
 --
--- Name: nibrs_vic_circ_nibrs_circ_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_vic_circ_nibrs_circ_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_vic_circ_nibrs_circ_ix ON nibrs_victim_circumstances USING btree (circumstances_id);
 
 
 --
--- Name: nibrs_vic_injury_nibrs_inj_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_vic_injury_nibrs_inj_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_vic_injury_nibrs_inj_ix ON nibrs_victim_injury USING btree (injury_id);
 
 
 --
--- Name: nibrs_victim_act_type_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_victim_act_type_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_victim_act_type_ix ON nibrs_victim USING btree (activity_type_id);
 
 
 --
--- Name: nibrs_victim_age_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_victim_age_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_victim_age_ix ON nibrs_victim USING btree (age_id);
 
 
 --
--- Name: nibrs_victim_assign_type_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_victim_assign_type_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_victim_assign_type_ix ON nibrs_victim USING btree (assignment_type_id);
 
 
 --
--- Name: nibrs_victim_circ_just_hom_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_victim_circ_just_hom_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_victim_circ_just_hom_ix ON nibrs_victim_circumstances USING btree (justifiable_force_id);
 
 
 --
--- Name: nibrs_victim_ethnicity_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_victim_ethnicity_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_victim_ethnicity_ix ON nibrs_victim USING btree (ethnicity_id);
 
 
 --
--- Name: nibrs_victim_off_rel_rel_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_victim_off_rel_rel_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_victim_off_rel_rel_ix ON nibrs_victim_offender_rel USING btree (relationship_id);
 
 
 --
--- Name: nibrs_victim_offender_rel_off; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_victim_offender_rel_off; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_victim_offender_rel_off ON nibrs_victim_offender_rel USING btree (offender_id);
 
 
 --
--- Name: nibrs_victim_offender_rel_vic; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_victim_offender_rel_vic; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_victim_offender_rel_vic ON nibrs_victim_offender_rel USING btree (victim_id);
 
 
 --
--- Name: nibrs_victim_offense_off_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_victim_offense_off_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_victim_offense_off_id ON nibrs_victim_offense USING btree (offense_id);
 
 
 --
--- Name: nibrs_victim_race_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_victim_race_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_victim_race_ix ON nibrs_victim USING btree (race_id);
 
 
 --
--- Name: nibrs_victim_x1; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_victim_x1; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_victim_x1 ON nibrs_victim USING btree (incident_id);
 
 
 --
--- Name: nibrs_victims_vic_type_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_victims_vic_type_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_victims_vic_type_ix ON nibrs_victim USING btree (victim_type_id);
 
 
 --
--- Name: nibrs_weap_weap_type_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_weap_weap_type_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_weap_weap_type_ix ON nibrs_weapon USING btree (weapon_id);
 
 
 --
--- Name: nibrs_weapon_off_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: nibrs_weapon_off_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX nibrs_weapon_off_id ON nibrs_weapon USING btree (offense_id);
 
 
 --
--- Name: offense_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: offense_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX offense_ix ON reta_offense_subcat USING btree (offense_id);
 
 
 --
--- Name: pop_grp_parent_pop_grp_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: pop_grp_parent_pop_grp_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX pop_grp_parent_pop_grp_ix ON ref_population_group USING btree (parent_pop_group_id);
 
 
 --
--- Name: ra_state_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ra_state_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ra_state_id ON ref_agency USING btree (state_id);
 
 
 --
--- Name: ref_agency_city_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_agency_city_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ref_agency_city_ix ON ref_agency USING btree (city_id);
 
 
 --
--- Name: ref_agency_county_met_div_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_agency_county_met_div_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ref_agency_county_met_div_ix ON ref_agency_county USING btree (metro_div_id);
 
 
 --
--- Name: ref_agency_cov_agency_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_agency_cov_agency_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ref_agency_cov_agency_ix ON ref_agency_covered_by USING btree (covered_by_agency_id);
 
 
 --
--- Name: ref_agency_data_content_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_agency_data_content_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ref_agency_data_content_idx ON ref_agency_data_content USING btree (agency_id, data_year, reporting_type);
 
 
 --
--- Name: ref_agency_data_content_idx2; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_agency_data_content_idx2; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ref_agency_data_content_idx2 ON ref_agency_data_content USING btree (agency_id, data_year, reporting_type, nibrs_ct_flag, nibrs_hc_flag, nibrs_leoka_flag, nibrs_arson_flag);
 
 
 --
--- Name: ref_agency_data_content_idx3; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_agency_data_content_idx3; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ref_agency_data_content_idx3 ON ref_agency_data_content USING btree (agency_id, data_year, reporting_type, summary_rape_def);
 
 
 --
--- Name: ref_agency_department_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_agency_department_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ref_agency_department_ix ON ref_agency USING btree (department_id);
 
 
 --
--- Name: ref_agency_field_office_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_agency_field_office_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ref_agency_field_office_idx ON ref_agency USING btree (field_office_id);
 
 
 --
--- Name: ref_agency_poc_poc_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_agency_poc_poc_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ref_agency_poc_poc_ix ON ref_agency_poc USING btree (poc_id);
 
 
 --
--- Name: ref_agency_poc_primary_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_agency_poc_primary_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ref_agency_poc_primary_idx ON ref_agency_poc USING btree (agency_id, poc_id, primary_poc_flag);
 
 
 --
--- Name: ref_agency_pop_family_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_agency_pop_family_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ref_agency_pop_family_idx ON ref_agency USING btree (population_family_id);
 
 
 --
--- Name: ref_agency_short_ori_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_agency_short_ori_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ref_agency_short_ori_idx ON ref_agency USING btree ("substring"((legacy_ori)::text, 0, 7));
 
 
 --
--- Name: ref_agency_sub_agency_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_agency_sub_agency_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ref_agency_sub_agency_ix ON ref_agency USING btree (submitting_agency_id);
 
 
 --
--- Name: ref_agency_tribe_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_agency_tribe_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ref_agency_tribe_ix ON ref_agency USING btree (tribe_id);
 
 
 --
--- Name: ref_agency_type_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_agency_type_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ref_agency_type_ix ON ref_agency USING btree (agency_type_id);
 
 
 --
--- Name: ref_agency_type_pop_fam_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_agency_type_pop_fam_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ref_agency_type_pop_fam_ix ON ref_agency_type USING btree (default_pop_family_id);
 
 
 --
--- Name: ref_country_continent_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_country_continent_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ref_country_continent_ix ON ref_country USING btree (continent_id);
 
 
 --
--- Name: ref_county_state_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_county_state_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ref_county_state_ix ON ref_county USING btree (state_id);
 
 
 --
--- Name: ref_global_loc_country_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_global_loc_country_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ref_global_loc_country_ix ON ref_global_location USING btree (country_id);
 
 
 --
--- Name: ref_parent_pop_grp_pop_fam_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_parent_pop_grp_pop_fam_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ref_parent_pop_grp_pop_fam_ix ON ref_parent_population_group USING btree (population_family_id);
 
 
 --
--- Name: ref_poc_role_role_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_poc_role_role_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ref_poc_role_role_ix ON ref_poc_role_assign USING btree (poc_role_id);
 
 
 --
--- Name: ref_poc_state_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_poc_state_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ref_poc_state_ix ON ref_poc USING btree (state_id);
 
 
 --
--- Name: ref_race_code; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_race_code; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX ref_race_code ON ref_race USING btree (race_code);
 
 
 --
--- Name: ref_race_sort_order; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_race_sort_order; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ref_race_sort_order ON ref_race USING btree (sort_order);
 
 
 --
--- Name: ref_sub_agency_state_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_sub_agency_state_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ref_sub_agency_state_ix ON ref_submitting_agency USING btree (state_id);
 
 
 --
--- Name: ref_submitting_agency_sai_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_submitting_agency_sai_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ref_submitting_agency_sai_idx ON ref_submitting_agency USING btree (sai);
 
 
 --
--- Name: ref_uni_campus_uni_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: ref_uni_campus_uni_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX ref_uni_campus_uni_ix ON ref_university_campus USING btree (university_id);
 
 
 --
--- Name: reta_month_data_year_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: reta_month_data_year_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX reta_month_data_year_idx ON reta_month USING btree (data_year);
 
 
 --
--- Name: reta_month_ddocname_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: reta_month_ddocname_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX reta_month_ddocname_idx ON reta_month USING btree (ddocname);
 
 
 --
--- Name: reta_month_did_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: reta_month_did_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX reta_month_did_idx ON reta_month USING btree (did);
 
 
 --
--- Name: reta_month_upd_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: reta_month_upd_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX reta_month_upd_idx ON reta_month USING btree (update_flag DESC);
 
 
 --
--- Name: reta_offense_cat_crime_type_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: reta_offense_cat_crime_type_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX reta_offense_cat_crime_type_ix ON reta_offense_category USING btree (crime_type_id);
 
 
 --
--- Name: reta_offense_category_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: reta_offense_category_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX reta_offense_category_ix ON reta_offense USING btree (offense_category_id);
 
 
 --
--- Name: reta_offense_class_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: reta_offense_class_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX reta_offense_class_ix ON reta_offense USING btree (classification_id);
 
 
 --
--- Name: rmos_reta_month_id_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: rmos_reta_month_id_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX rmos_reta_month_id_idx ON reta_month_offense_subcat USING btree (reta_month_id);
 
 
 --
--- Name: shr_incident_ddocname; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: shr_incident_ddocname; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX shr_incident_ddocname ON shr_incident USING btree (ddocname);
 
 
 --
--- Name: shr_incident_did_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: shr_incident_did_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX shr_incident_did_idx ON shr_incident USING btree (did);
 
 
 --
--- Name: shr_incident_situaton_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: shr_incident_situaton_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX shr_incident_situaton_ix ON shr_incident USING btree (situation_id);
 
 
 --
--- Name: shr_incident_xmonth_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: shr_incident_xmonth_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX shr_incident_xmonth_id ON shr_incident USING btree (shr_month_id);
 
 
 --
--- Name: shr_month_ddoc_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: shr_month_ddoc_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX shr_month_ddoc_idx ON shr_month USING btree (ddocname);
 
 
 --
--- Name: shr_month_did_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: shr_month_did_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX shr_month_did_idx ON shr_month USING btree (did);
 
 
 --
--- Name: shr_off_weap_type_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: shr_off_weap_type_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX shr_off_weap_type_ix ON shr_offense USING btree (weapon_id);
 
 
 --
--- Name: shr_offender_age_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: shr_offender_age_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX shr_offender_age_ix ON shr_offender USING btree (age_id);
 
 
 --
--- Name: shr_offender_ethnicity_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: shr_offender_ethnicity_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX shr_offender_ethnicity_ix ON shr_offender USING btree (ethnicity_id);
 
 
 --
--- Name: shr_offender_race_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: shr_offender_race_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX shr_offender_race_ix ON shr_offender USING btree (race_id);
 
 
 --
--- Name: shr_offense_circ_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: shr_offense_circ_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX shr_offense_circ_ix ON shr_offense USING btree (circumstances_id);
 
 
 --
--- Name: shr_offense_incident_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: shr_offense_incident_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX shr_offense_incident_idx ON shr_offense USING btree (incident_id);
 
 
 --
--- Name: shr_offense_offender_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: shr_offense_offender_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX shr_offense_offender_idx ON shr_offense USING btree (offender_id);
 
 
 --
--- Name: shr_offense_rel_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: shr_offense_rel_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX shr_offense_rel_ix ON shr_offense USING btree (relationship_id);
 
 
 --
--- Name: shr_offense_victim_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: shr_offense_victim_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX shr_offense_victim_idx ON shr_offense USING btree (victim_id);
 
 
 --
--- Name: shr_victim_age_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: shr_victim_age_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX shr_victim_age_ix ON shr_victim USING btree (age_id);
 
 
 --
--- Name: shr_victim_asr_race_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: shr_victim_asr_race_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX shr_victim_asr_race_ix ON shr_victim USING btree (race_id);
 
 
 --
--- Name: shr_victim_ethnicity_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: shr_victim_ethnicity_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX shr_victim_ethnicity_ix ON shr_victim USING btree (ethnicity_id);
 
 
 --
--- Name: state_division_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: state_division_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX state_division_ix ON ref_state USING btree (division_id);
 
 
 --
--- Name: supp_month_ddocname_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: supp_month_ddocname_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX supp_month_ddocname_idx ON supp_month USING btree (ddocname);
 
 
 --
--- Name: supp_month_did_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: supp_month_did_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX supp_month_did_idx ON supp_month USING btree (did);
 
 
 --
--- Name: supp_month_un; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: supp_month_un; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX supp_month_un ON supp_month USING btree (agency_id, data_year, month_num, data_home);
 
 
 --
--- Name: supp_month_upd_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: supp_month_upd_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX supp_month_upd_idx ON supp_month USING btree (update_flag);
 
 
 --
--- Name: supp_off_subcat_off_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: supp_off_subcat_off_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX supp_off_subcat_off_ix ON supp_offense_subcat USING btree (offense_id);
 
 
 --
--- Name: supp_prop_by_off_subcat_ix; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: supp_prop_by_off_subcat_ix; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX supp_prop_by_off_subcat_ix ON supp_prop_by_offense_subcat USING btree (offense_subcat_id);
 
 
 --
--- Name: supp_prop_by_type_val_fk_month; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: supp_prop_by_type_val_fk_month; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX supp_prop_by_type_val_fk_month ON supp_property_by_type_value USING btree (supp_month_id);
 
 
 --
--- Name: agency_county_agency_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ref_agency_county agency_county_agency_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_agency_county
@@ -66685,7 +66690,7 @@ ALTER TABLE ONLY ref_agency_county
 
 
 --
--- Name: agency_county_county_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ref_agency_county agency_county_county_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_agency_county
@@ -66693,7 +66698,7 @@ ALTER TABLE ONLY ref_agency_county
 
 
 --
--- Name: agency_state_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ref_agency agency_state_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_agency
@@ -66701,7 +66706,7 @@ ALTER TABLE ONLY ref_agency
 
 
 --
--- Name: agency_uni_campus_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ref_agency agency_uni_campus_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_agency
@@ -66709,7 +66714,7 @@ ALTER TABLE ONLY ref_agency
 
 
 --
--- Name: arson_mon_by_subcat_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: arson_month_by_subcat arson_mon_by_subcat_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY arson_month_by_subcat
@@ -66717,7 +66722,7 @@ ALTER TABLE ONLY arson_month_by_subcat
 
 
 --
--- Name: arson_mon_by_subcat_month_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: arson_month_by_subcat arson_mon_by_subcat_month_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY arson_month_by_subcat
@@ -66725,7 +66730,7 @@ ALTER TABLE ONLY arson_month_by_subcat
 
 
 --
--- Name: arson_month_agency_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: arson_month arson_month_agency_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY arson_month
@@ -66733,7 +66738,7 @@ ALTER TABLE ONLY arson_month
 
 
 --
--- Name: arson_subcategory_subclass_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: arson_subcategory arson_subcategory_subclass_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY arson_subcategory
@@ -66741,7 +66746,7 @@ ALTER TABLE ONLY arson_subcategory
 
 
 --
--- Name: asr_age_sex_sub_off_sub_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: asr_age_sex_subcat asr_age_sex_sub_off_sub_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY asr_age_sex_subcat
@@ -66749,7 +66754,7 @@ ALTER TABLE ONLY asr_age_sex_subcat
 
 
 --
--- Name: asr_age_sexv1_asr_age_range_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: asr_age_sex_subcat asr_age_sexv1_asr_age_range_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY asr_age_sex_subcat
@@ -66757,7 +66762,7 @@ ALTER TABLE ONLY asr_age_sex_subcat
 
 
 --
--- Name: asr_age_sexv1_asr_month_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: asr_age_sex_subcat asr_age_sexv1_asr_month_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY asr_age_sex_subcat
@@ -66765,7 +66770,7 @@ ALTER TABLE ONLY asr_age_sex_subcat
 
 
 --
--- Name: asr_eth_off_eth_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: asr_ethnicity_offense asr_eth_off_eth_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY asr_ethnicity_offense
@@ -66773,7 +66778,7 @@ ALTER TABLE ONLY asr_ethnicity_offense
 
 
 --
--- Name: asr_eth_off_month_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: asr_ethnicity_offense asr_eth_off_month_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY asr_ethnicity_offense
@@ -66781,7 +66786,7 @@ ALTER TABLE ONLY asr_ethnicity_offense
 
 
 --
--- Name: asr_eth_off_subcat_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: asr_ethnicity_offense asr_eth_off_subcat_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY asr_ethnicity_offense
@@ -66789,7 +66794,7 @@ ALTER TABLE ONLY asr_ethnicity_offense
 
 
 --
--- Name: asr_juvenile_dis_month_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: asr_juvenile_disposition asr_juvenile_dis_month_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY asr_juvenile_disposition
@@ -66797,7 +66802,7 @@ ALTER TABLE ONLY asr_juvenile_disposition
 
 
 --
--- Name: asr_month_agency_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: asr_month asr_month_agency_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY asr_month
@@ -66805,7 +66810,7 @@ ALTER TABLE ONLY asr_month
 
 
 --
--- Name: asr_off_subcat_offense_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: asr_offense_subcat asr_off_subcat_offense_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY asr_offense_subcat
@@ -66813,7 +66818,7 @@ ALTER TABLE ONLY asr_offense_subcat
 
 
 --
--- Name: asr_offense_cat_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: asr_offense asr_offense_cat_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY asr_offense
@@ -66821,7 +66826,7 @@ ALTER TABLE ONLY asr_offense
 
 
 --
--- Name: asr_race_off_sub_off_sub_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: asr_race_offense_subcat asr_race_off_sub_off_sub_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY asr_race_offense_subcat
@@ -66829,7 +66834,7 @@ ALTER TABLE ONLY asr_race_offense_subcat
 
 
 --
--- Name: asr_race_off_sub_ref_race_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: asr_race_offense_subcat asr_race_off_sub_ref_race_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY asr_race_offense_subcat
@@ -66837,7 +66842,7 @@ ALTER TABLE ONLY asr_race_offense_subcat
 
 
 --
--- Name: asr_race_off_subcat_month_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: asr_race_offense_subcat asr_race_off_subcat_month_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY asr_race_offense_subcat
@@ -66845,7 +66850,7 @@ ALTER TABLE ONLY asr_race_offense_subcat
 
 
 --
--- Name: city_state_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ref_city city_state_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_city
@@ -66853,7 +66858,7 @@ ALTER TABLE ONLY ref_city
 
 
 --
--- Name: ct_arrestee_incident_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ct_arrestee ct_arrestee_incident_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ct_arrestee
@@ -66861,7 +66866,7 @@ ALTER TABLE ONLY ct_arrestee
 
 
 --
--- Name: ct_arrestee_nibrs_eth_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ct_arrestee ct_arrestee_nibrs_eth_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ct_arrestee
@@ -66869,7 +66874,7 @@ ALTER TABLE ONLY ct_arrestee
 
 
 --
--- Name: ct_arrestee_race_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ct_arrestee ct_arrestee_race_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ct_arrestee
@@ -66877,7 +66882,7 @@ ALTER TABLE ONLY ct_arrestee
 
 
 --
--- Name: ct_incident_agency_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ct_incident ct_incident_agency_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ct_incident
@@ -66885,7 +66890,7 @@ ALTER TABLE ONLY ct_incident
 
 
 --
--- Name: ct_incident_ct_month_fk1; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ct_incident ct_incident_ct_month_fk1; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ct_incident
@@ -66893,7 +66898,7 @@ ALTER TABLE ONLY ct_incident
 
 
 --
--- Name: ct_month_agency_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ct_month ct_month_agency_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ct_month
@@ -66901,7 +66906,7 @@ ALTER TABLE ONLY ct_month
 
 
 --
--- Name: ct_offender_incident_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ct_offender ct_offender_incident_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ct_offender
@@ -66909,7 +66914,7 @@ ALTER TABLE ONLY ct_offender
 
 
 --
--- Name: ct_offender_nibrs_eth_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ct_offender ct_offender_nibrs_eth_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ct_offender
@@ -66917,7 +66922,7 @@ ALTER TABLE ONLY ct_offender
 
 
 --
--- Name: ct_offender_race_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ct_offender ct_offender_race_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ct_offender
@@ -66925,7 +66930,7 @@ ALTER TABLE ONLY ct_offender
 
 
 --
--- Name: ct_offense_ct_incident_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ct_offense ct_offense_ct_incident_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ct_offense
@@ -66933,7 +66938,7 @@ ALTER TABLE ONLY ct_offense
 
 
 --
--- Name: ct_offense_nibrs_loc_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ct_offense ct_offense_nibrs_loc_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ct_offense
@@ -66941,7 +66946,7 @@ ALTER TABLE ONLY ct_offense
 
 
 --
--- Name: ct_offense_nibrs_off_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ct_offense ct_offense_nibrs_off_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ct_offense
@@ -66949,7 +66954,7 @@ ALTER TABLE ONLY ct_offense
 
 
 --
--- Name: ct_property_ct_incident_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ct_property ct_property_ct_incident_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ct_property
@@ -66957,7 +66962,7 @@ ALTER TABLE ONLY ct_property
 
 
 --
--- Name: ct_property_prop_desc_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ct_property ct_property_prop_desc_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ct_property
@@ -66965,7 +66970,7 @@ ALTER TABLE ONLY ct_property
 
 
 --
--- Name: ct_vic_nibrs_vic_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ct_victim ct_vic_nibrs_vic_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ct_victim
@@ -66973,7 +66978,7 @@ ALTER TABLE ONLY ct_victim
 
 
 --
--- Name: ct_victim_ct_incident_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ct_victim ct_victim_ct_incident_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ct_victim
@@ -66981,7 +66986,7 @@ ALTER TABLE ONLY ct_victim
 
 
 --
--- Name: ct_weap_nibrs_weap_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ct_weapon ct_weap_nibrs_weap_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ct_weapon
@@ -66989,7 +66994,7 @@ ALTER TABLE ONLY ct_weapon
 
 
 --
--- Name: ct_weapon_ct_incident_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ct_weapon ct_weapon_ct_incident_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ct_weapon
@@ -66997,7 +67002,7 @@ ALTER TABLE ONLY ct_weapon
 
 
 --
--- Name: division_region_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ref_division division_region_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_division
@@ -67005,7 +67010,7 @@ ALTER TABLE ONLY ref_division
 
 
 --
--- Name: hc_bias_mot_bias_list_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: hc_bias_motivation hc_bias_mot_bias_list_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY hc_bias_motivation
@@ -67013,7 +67018,7 @@ ALTER TABLE ONLY hc_bias_motivation
 
 
 --
--- Name: hc_bias_motn_off_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: hc_bias_motivation hc_bias_motn_off_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY hc_bias_motivation
@@ -67021,7 +67026,7 @@ ALTER TABLE ONLY hc_bias_motivation
 
 
 --
--- Name: hc_inc_off_inc_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: hc_offense hc_inc_off_inc_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY hc_offense
@@ -67029,7 +67034,7 @@ ALTER TABLE ONLY hc_offense
 
 
 --
--- Name: hc_incident_agency_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: hc_incident hc_incident_agency_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY hc_incident
@@ -67037,7 +67042,7 @@ ALTER TABLE ONLY hc_incident
 
 
 --
--- Name: hc_incident_nibrs_eth_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: hc_incident hc_incident_nibrs_eth_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY hc_incident
@@ -67045,7 +67050,7 @@ ALTER TABLE ONLY hc_incident
 
 
 --
--- Name: hc_incident_quarter_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: hc_incident hc_incident_quarter_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY hc_incident
@@ -67053,7 +67058,7 @@ ALTER TABLE ONLY hc_incident
 
 
 --
--- Name: hc_incident_race_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: hc_incident hc_incident_race_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY hc_incident
@@ -67061,7 +67066,7 @@ ALTER TABLE ONLY hc_incident
 
 
 --
--- Name: hc_off_nibrs_loc_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: hc_offense hc_off_nibrs_loc_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY hc_offense
@@ -67069,7 +67074,7 @@ ALTER TABLE ONLY hc_offense
 
 
 --
--- Name: hc_off_nibrs_off_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: hc_offense hc_off_nibrs_off_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY hc_offense
@@ -67077,7 +67082,7 @@ ALTER TABLE ONLY hc_offense
 
 
 --
--- Name: hc_quarter_agency_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: hc_quarter hc_quarter_agency_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY hc_quarter
@@ -67085,7 +67090,7 @@ ALTER TABLE ONLY hc_quarter
 
 
 --
--- Name: hc_vic_nibrs_vic_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: hc_victim hc_vic_nibrs_vic_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY hc_victim
@@ -67093,7 +67098,7 @@ ALTER TABLE ONLY hc_victim
 
 
 --
--- Name: hc_victim_hc_off_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: hc_victim hc_victim_hc_off_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY hc_victim
@@ -67101,7 +67106,7 @@ ALTER TABLE ONLY hc_victim
 
 
 --
--- Name: ht_month_off_sub_month_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ht_month_offense_subcat ht_month_off_sub_month_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ht_month_offense_subcat
@@ -67109,7 +67114,7 @@ ALTER TABLE ONLY ht_month_offense_subcat
 
 
 --
--- Name: ht_month_off_sub_off_sub_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ht_month_offense_subcat ht_month_off_sub_off_sub_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ht_month_offense_subcat
@@ -67117,7 +67122,7 @@ ALTER TABLE ONLY ht_month_offense_subcat
 
 
 --
--- Name: ht_month_ref_agency_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ht_month ht_month_ref_agency_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ht_month
@@ -67125,7 +67130,7 @@ ALTER TABLE ONLY ht_month
 
 
 --
--- Name: metro_division_msa_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ref_metro_division metro_division_msa_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_metro_division
@@ -67133,7 +67138,7 @@ ALTER TABLE ONLY ref_metro_division
 
 
 --
--- Name: nibrs_arrest_weap_arrest_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_arrestee_weapon nibrs_arrest_weap_arrest_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_arrestee_weapon
@@ -67141,7 +67146,7 @@ ALTER TABLE ONLY nibrs_arrestee_weapon
 
 
 --
--- Name: nibrs_arrest_weap_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_arrestee_weapon nibrs_arrest_weap_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_arrestee_weapon
@@ -67149,7 +67154,7 @@ ALTER TABLE ONLY nibrs_arrestee_weapon
 
 
 --
--- Name: nibrs_arrestee_age_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_arrestee nibrs_arrestee_age_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_arrestee
@@ -67157,7 +67162,7 @@ ALTER TABLE ONLY nibrs_arrestee
 
 
 --
--- Name: nibrs_arrestee_arrest_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_arrestee nibrs_arrestee_arrest_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_arrestee
@@ -67165,7 +67170,7 @@ ALTER TABLE ONLY nibrs_arrestee
 
 
 --
--- Name: nibrs_arrestee_ethnicity_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_arrestee nibrs_arrestee_ethnicity_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_arrestee
@@ -67173,7 +67178,7 @@ ALTER TABLE ONLY nibrs_arrestee
 
 
 --
--- Name: nibrs_arrestee_inc_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_arrestee nibrs_arrestee_inc_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_arrestee
@@ -67181,7 +67186,7 @@ ALTER TABLE ONLY nibrs_arrestee
 
 
 --
--- Name: nibrs_arrestee_offense_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_arrestee nibrs_arrestee_offense_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_arrestee
@@ -67189,7 +67194,7 @@ ALTER TABLE ONLY nibrs_arrestee
 
 
 --
--- Name: nibrs_arrestee_race_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_arrestee nibrs_arrestee_race_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_arrestee
@@ -67197,7 +67202,7 @@ ALTER TABLE ONLY nibrs_arrestee
 
 
 --
--- Name: nibrs_bias_mot_list_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_bias_motivation nibrs_bias_mot_list_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_bias_motivation
@@ -67205,7 +67210,7 @@ ALTER TABLE ONLY nibrs_bias_motivation
 
 
 --
--- Name: nibrs_bias_mot_offense_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_bias_motivation nibrs_bias_mot_offense_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_bias_motivation
@@ -67213,7 +67218,7 @@ ALTER TABLE ONLY nibrs_bias_motivation
 
 
 --
--- Name: nibrs_criminal_act_offense_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_criminal_act nibrs_criminal_act_offense_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_criminal_act
@@ -67221,7 +67226,7 @@ ALTER TABLE ONLY nibrs_criminal_act
 
 
 --
--- Name: nibrs_criminal_act_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_criminal_act nibrs_criminal_act_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_criminal_act
@@ -67229,7 +67234,7 @@ ALTER TABLE ONLY nibrs_criminal_act
 
 
 --
--- Name: nibrs_grpb_ar_age_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_grpb_arrest nibrs_grpb_ar_age_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_grpb_arrest
@@ -67237,7 +67242,7 @@ ALTER TABLE ONLY nibrs_grpb_arrest
 
 
 --
--- Name: nibrs_grpb_ar_agency_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_grpb_arrest nibrs_grpb_ar_agency_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_grpb_arrest
@@ -67245,7 +67250,7 @@ ALTER TABLE ONLY nibrs_grpb_arrest
 
 
 --
--- Name: nibrs_grpb_ar_eth_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_grpb_arrest nibrs_grpb_ar_eth_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_grpb_arrest
@@ -67253,7 +67258,7 @@ ALTER TABLE ONLY nibrs_grpb_arrest
 
 
 --
--- Name: nibrs_grpb_ar_weap_ar_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_grpb_arrest_weapon nibrs_grpb_ar_weap_ar_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_grpb_arrest_weapon
@@ -67261,7 +67266,7 @@ ALTER TABLE ONLY nibrs_grpb_arrest_weapon
 
 
 --
--- Name: nibrs_grpb_ar_weap_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_grpb_arrest_weapon nibrs_grpb_ar_weap_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_grpb_arrest_weapon
@@ -67269,7 +67274,7 @@ ALTER TABLE ONLY nibrs_grpb_arrest_weapon
 
 
 --
--- Name: nibrs_grpb_arrest_nm_id; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_grpb_arrest nibrs_grpb_arrest_nm_id; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_grpb_arrest
@@ -67277,7 +67282,7 @@ ALTER TABLE ONLY nibrs_grpb_arrest
 
 
 --
--- Name: nibrs_grpb_arrest_race_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_grpb_arrest nibrs_grpb_arrest_race_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_grpb_arrest
@@ -67285,7 +67290,7 @@ ALTER TABLE ONLY nibrs_grpb_arrest
 
 
 --
--- Name: nibrs_incident_agency_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_incident nibrs_incident_agency_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_incident
@@ -67293,7 +67298,7 @@ ALTER TABLE ONLY nibrs_incident
 
 
 --
--- Name: nibrs_incident_clear_ex_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_incident nibrs_incident_clear_ex_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_incident
@@ -67301,7 +67306,7 @@ ALTER TABLE ONLY nibrs_incident
 
 
 --
--- Name: nibrs_incident_month_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_incident nibrs_incident_month_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_incident
@@ -67309,7 +67314,7 @@ ALTER TABLE ONLY nibrs_incident
 
 
 --
--- Name: nibrs_month_agency_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_month nibrs_month_agency_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_month
@@ -67317,7 +67322,7 @@ ALTER TABLE ONLY nibrs_month
 
 
 --
--- Name: nibrs_offender_age_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_offender nibrs_offender_age_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_offender
@@ -67325,7 +67330,7 @@ ALTER TABLE ONLY nibrs_offender
 
 
 --
--- Name: nibrs_offender_ethnicity_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_offender nibrs_offender_ethnicity_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_offender
@@ -67333,7 +67338,7 @@ ALTER TABLE ONLY nibrs_offender
 
 
 --
--- Name: nibrs_offender_nibrs_inci_fk1; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_offender nibrs_offender_nibrs_inci_fk1; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_offender
@@ -67341,7 +67346,7 @@ ALTER TABLE ONLY nibrs_offender
 
 
 --
--- Name: nibrs_offender_race_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_offender nibrs_offender_race_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_offender
@@ -67349,7 +67354,7 @@ ALTER TABLE ONLY nibrs_offender
 
 
 --
--- Name: nibrs_offense_inc_fk1; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_offense nibrs_offense_inc_fk1; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_offense
@@ -67357,7 +67362,7 @@ ALTER TABLE ONLY nibrs_offense
 
 
 --
--- Name: nibrs_offense_loc_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_offense nibrs_offense_loc_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_offense
@@ -67365,7 +67370,7 @@ ALTER TABLE ONLY nibrs_offense
 
 
 --
--- Name: nibrs_offense_off_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_offense nibrs_offense_off_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_offense
@@ -67373,7 +67378,7 @@ ALTER TABLE ONLY nibrs_offense
 
 
 --
--- Name: nibrs_prop_desc_prop_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_property_desc nibrs_prop_desc_prop_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_property_desc
@@ -67381,7 +67386,7 @@ ALTER TABLE ONLY nibrs_property_desc
 
 
 --
--- Name: nibrs_prop_desc_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_property_desc nibrs_prop_desc_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_property_desc
@@ -67389,7 +67394,7 @@ ALTER TABLE ONLY nibrs_property_desc
 
 
 --
--- Name: nibrs_property_inc_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_property nibrs_property_inc_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_property
@@ -67397,7 +67402,7 @@ ALTER TABLE ONLY nibrs_property
 
 
 --
--- Name: nibrs_property_loss_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_property nibrs_property_loss_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_property
@@ -67405,7 +67410,7 @@ ALTER TABLE ONLY nibrs_property
 
 
 --
--- Name: nibrs_susp_drug_meas_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_suspected_drug nibrs_susp_drug_meas_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_suspected_drug
@@ -67413,7 +67418,7 @@ ALTER TABLE ONLY nibrs_suspected_drug
 
 
 --
--- Name: nibrs_susp_drug_prop_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_suspected_drug nibrs_susp_drug_prop_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_suspected_drug
@@ -67421,7 +67426,7 @@ ALTER TABLE ONLY nibrs_suspected_drug
 
 
 --
--- Name: nibrs_susp_drug_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_suspected_drug nibrs_susp_drug_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_suspected_drug
@@ -67429,7 +67434,7 @@ ALTER TABLE ONLY nibrs_suspected_drug
 
 
 --
--- Name: nibrs_suspect_using_list_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_suspect_using nibrs_suspect_using_list_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_suspect_using
@@ -67437,7 +67442,7 @@ ALTER TABLE ONLY nibrs_suspect_using
 
 
 --
--- Name: nibrs_suspect_using_off_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_suspect_using nibrs_suspect_using_off_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_suspect_using
@@ -67445,7 +67450,7 @@ ALTER TABLE ONLY nibrs_suspect_using
 
 
 --
--- Name: nibrs_vic_circ_nibrs_circ_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_victim_circumstances nibrs_vic_circ_nibrs_circ_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_victim_circumstances
@@ -67453,7 +67458,7 @@ ALTER TABLE ONLY nibrs_victim_circumstances
 
 
 --
--- Name: nibrs_vic_circ_nibrs_vic_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_victim_circumstances nibrs_vic_circ_nibrs_vic_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_victim_circumstances
@@ -67461,7 +67466,7 @@ ALTER TABLE ONLY nibrs_victim_circumstances
 
 
 --
--- Name: nibrs_vic_injury_nibrs_inj_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_victim_injury nibrs_vic_injury_nibrs_inj_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_victim_injury
@@ -67469,7 +67474,7 @@ ALTER TABLE ONLY nibrs_victim_injury
 
 
 --
--- Name: nibrs_vic_injury_nibrs_vic_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_victim_injury nibrs_vic_injury_nibrs_vic_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_victim_injury
@@ -67477,7 +67482,7 @@ ALTER TABLE ONLY nibrs_victim_injury
 
 
 --
--- Name: nibrs_vic_off_nibrs_off_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_victim_offense nibrs_vic_off_nibrs_off_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_victim_offense
@@ -67485,7 +67490,7 @@ ALTER TABLE ONLY nibrs_victim_offense
 
 
 --
--- Name: nibrs_vic_off_nibrs_vic_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_victim_offense nibrs_vic_off_nibrs_vic_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_victim_offense
@@ -67493,7 +67498,7 @@ ALTER TABLE ONLY nibrs_victim_offense
 
 
 --
--- Name: nibrs_victim_act_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_victim nibrs_victim_act_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_victim
@@ -67501,7 +67506,7 @@ ALTER TABLE ONLY nibrs_victim
 
 
 --
--- Name: nibrs_victim_age_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_victim nibrs_victim_age_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_victim
@@ -67509,7 +67514,7 @@ ALTER TABLE ONLY nibrs_victim
 
 
 --
--- Name: nibrs_victim_assign_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_victim nibrs_victim_assign_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_victim
@@ -67517,7 +67522,7 @@ ALTER TABLE ONLY nibrs_victim
 
 
 --
--- Name: nibrs_victim_circ_just_hom_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_victim_circumstances nibrs_victim_circ_just_hom_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_victim_circumstances
@@ -67525,7 +67530,7 @@ ALTER TABLE ONLY nibrs_victim_circumstances
 
 
 --
--- Name: nibrs_victim_ethnicity_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_victim nibrs_victim_ethnicity_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_victim
@@ -67533,7 +67538,7 @@ ALTER TABLE ONLY nibrs_victim
 
 
 --
--- Name: nibrs_victim_inc_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_victim nibrs_victim_inc_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_victim
@@ -67541,7 +67546,7 @@ ALTER TABLE ONLY nibrs_victim
 
 
 --
--- Name: nibrs_victim_off_rel_off_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_victim_offender_rel nibrs_victim_off_rel_off_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_victim_offender_rel
@@ -67549,7 +67554,7 @@ ALTER TABLE ONLY nibrs_victim_offender_rel
 
 
 --
--- Name: nibrs_victim_off_rel_rel_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_victim_offender_rel nibrs_victim_off_rel_rel_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_victim_offender_rel
@@ -67557,7 +67562,7 @@ ALTER TABLE ONLY nibrs_victim_offender_rel
 
 
 --
--- Name: nibrs_victim_off_rel_vic_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_victim_offender_rel nibrs_victim_off_rel_vic_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_victim_offender_rel
@@ -67565,7 +67570,7 @@ ALTER TABLE ONLY nibrs_victim_offender_rel
 
 
 --
--- Name: nibrs_victim_race_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_victim nibrs_victim_race_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_victim
@@ -67573,7 +67578,7 @@ ALTER TABLE ONLY nibrs_victim
 
 
 --
--- Name: nibrs_victims_vic_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_victim nibrs_victims_vic_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_victim
@@ -67581,7 +67586,7 @@ ALTER TABLE ONLY nibrs_victim
 
 
 --
--- Name: nibrs_weap_off_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_weapon nibrs_weap_off_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_weapon
@@ -67589,7 +67594,7 @@ ALTER TABLE ONLY nibrs_weapon
 
 
 --
--- Name: nibrs_weap_weap_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: nibrs_weapon nibrs_weap_weap_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY nibrs_weapon
@@ -67597,7 +67602,7 @@ ALTER TABLE ONLY nibrs_weapon
 
 
 --
--- Name: offense_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: reta_offense_subcat offense_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY reta_offense_subcat
@@ -67605,7 +67610,7 @@ ALTER TABLE ONLY reta_offense_subcat
 
 
 --
--- Name: pop_grp_parent_pop_grp_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ref_population_group pop_grp_parent_pop_grp_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_population_group
@@ -67613,7 +67618,7 @@ ALTER TABLE ONLY ref_population_group
 
 
 --
--- Name: ref_agency_agency_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ref_agency_covered_by ref_agency_agency_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_agency_covered_by
@@ -67621,7 +67626,7 @@ ALTER TABLE ONLY ref_agency_covered_by
 
 
 --
--- Name: ref_agency_city_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ref_agency ref_agency_city_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_agency
@@ -67629,7 +67634,7 @@ ALTER TABLE ONLY ref_agency
 
 
 --
--- Name: ref_agency_county_met_div_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ref_agency_county ref_agency_county_met_div_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_agency_county
@@ -67637,7 +67642,7 @@ ALTER TABLE ONLY ref_agency_county
 
 
 --
--- Name: ref_agency_cov_agency_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ref_agency_covered_by ref_agency_cov_agency_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_agency_covered_by
@@ -67645,7 +67650,7 @@ ALTER TABLE ONLY ref_agency_covered_by
 
 
 --
--- Name: ref_agency_data_content_ag_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ref_agency_data_content ref_agency_data_content_ag_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_agency_data_content
@@ -67653,7 +67658,7 @@ ALTER TABLE ONLY ref_agency_data_content
 
 
 --
--- Name: ref_agency_department_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ref_agency ref_agency_department_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_agency
@@ -67661,7 +67666,7 @@ ALTER TABLE ONLY ref_agency
 
 
 --
--- Name: ref_agency_field_office_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ref_agency ref_agency_field_office_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_agency
@@ -67669,7 +67674,7 @@ ALTER TABLE ONLY ref_agency
 
 
 --
--- Name: ref_agency_poc_poc_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ref_agency_poc ref_agency_poc_poc_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_agency_poc
@@ -67677,7 +67682,7 @@ ALTER TABLE ONLY ref_agency_poc
 
 
 --
--- Name: ref_agency_pop_family_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ref_agency ref_agency_pop_family_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_agency
@@ -67685,7 +67690,7 @@ ALTER TABLE ONLY ref_agency
 
 
 --
--- Name: ref_agency_sub_agency_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ref_agency ref_agency_sub_agency_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_agency
@@ -67693,7 +67698,7 @@ ALTER TABLE ONLY ref_agency
 
 
 --
--- Name: ref_agency_tribe_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ref_agency ref_agency_tribe_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_agency
@@ -67701,7 +67706,7 @@ ALTER TABLE ONLY ref_agency
 
 
 --
--- Name: ref_agency_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ref_agency ref_agency_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_agency
@@ -67709,7 +67714,7 @@ ALTER TABLE ONLY ref_agency
 
 
 --
--- Name: ref_agency_type_pop_fam_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ref_agency_type ref_agency_type_pop_fam_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_agency_type
@@ -67717,7 +67722,7 @@ ALTER TABLE ONLY ref_agency_type
 
 
 --
--- Name: ref_campus_pop_campus_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ref_campus_population ref_campus_pop_campus_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_campus_population
@@ -67725,7 +67730,7 @@ ALTER TABLE ONLY ref_campus_population
 
 
 --
--- Name: ref_country_continent_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ref_country ref_country_continent_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_country
@@ -67733,7 +67738,7 @@ ALTER TABLE ONLY ref_country
 
 
 --
--- Name: ref_county_pop_county_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ref_county_population ref_county_pop_county_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_county_population
@@ -67741,7 +67746,7 @@ ALTER TABLE ONLY ref_county_population
 
 
 --
--- Name: ref_county_state_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ref_county ref_county_state_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_county
@@ -67749,7 +67754,7 @@ ALTER TABLE ONLY ref_county
 
 
 --
--- Name: ref_global_loc_country_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ref_global_location ref_global_loc_country_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_global_location
@@ -67757,7 +67762,7 @@ ALTER TABLE ONLY ref_global_location
 
 
 --
--- Name: ref_metro_div_pop_metro_div_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ref_metro_div_population ref_metro_div_pop_metro_div_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_metro_div_population
@@ -67765,7 +67770,7 @@ ALTER TABLE ONLY ref_metro_div_population
 
 
 --
--- Name: ref_parent_pop_grp_pop_fam_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ref_parent_population_group ref_parent_pop_grp_pop_fam_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_parent_population_group
@@ -67773,7 +67778,7 @@ ALTER TABLE ONLY ref_parent_population_group
 
 
 --
--- Name: ref_poc_role_poc_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ref_poc_role_assign ref_poc_role_poc_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_poc_role_assign
@@ -67781,7 +67786,7 @@ ALTER TABLE ONLY ref_poc_role_assign
 
 
 --
--- Name: ref_poc_role_role_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ref_poc_role_assign ref_poc_role_role_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_poc_role_assign
@@ -67789,7 +67794,7 @@ ALTER TABLE ONLY ref_poc_role_assign
 
 
 --
--- Name: ref_poc_state_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ref_poc ref_poc_state_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_poc
@@ -67797,7 +67802,7 @@ ALTER TABLE ONLY ref_poc
 
 
 --
--- Name: ref_sub_agency_state_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ref_submitting_agency ref_sub_agency_state_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_submitting_agency
@@ -67805,7 +67810,7 @@ ALTER TABLE ONLY ref_submitting_agency
 
 
 --
--- Name: ref_tribe_pop_tribe_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ref_tribe_population ref_tribe_pop_tribe_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_tribe_population
@@ -67813,7 +67818,7 @@ ALTER TABLE ONLY ref_tribe_population
 
 
 --
--- Name: ref_uni_campus_uni_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ref_university_campus ref_uni_campus_uni_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_university_campus
@@ -67821,7 +67826,7 @@ ALTER TABLE ONLY ref_university_campus
 
 
 --
--- Name: reta_mon_off_off_subcat_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: reta_month_offense_subcat reta_mon_off_off_subcat_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY reta_month_offense_subcat
@@ -67829,7 +67834,7 @@ ALTER TABLE ONLY reta_month_offense_subcat
 
 
 --
--- Name: reta_mon_off_subcat_mon_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: reta_month_offense_subcat reta_mon_off_subcat_mon_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY reta_month_offense_subcat
@@ -67837,7 +67842,7 @@ ALTER TABLE ONLY reta_month_offense_subcat
 
 
 --
--- Name: reta_offense_cat_crime_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: reta_offense_category reta_offense_cat_crime_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY reta_offense_category
@@ -67845,7 +67850,7 @@ ALTER TABLE ONLY reta_offense_category
 
 
 --
--- Name: reta_offense_category_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: reta_offense reta_offense_category_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY reta_offense
@@ -67853,7 +67858,7 @@ ALTER TABLE ONLY reta_offense
 
 
 --
--- Name: reta_offense_class_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: reta_offense reta_offense_class_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY reta_offense
@@ -67861,7 +67866,7 @@ ALTER TABLE ONLY reta_offense
 
 
 --
--- Name: return_a_month_agency_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: reta_month return_a_month_agency_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY reta_month
@@ -67869,7 +67874,7 @@ ALTER TABLE ONLY reta_month
 
 
 --
--- Name: shr_incident_month_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: shr_incident shr_incident_month_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY shr_incident
@@ -67877,7 +67882,7 @@ ALTER TABLE ONLY shr_incident
 
 
 --
--- Name: shr_incident_situaton_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: shr_incident shr_incident_situaton_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY shr_incident
@@ -67885,7 +67890,7 @@ ALTER TABLE ONLY shr_incident
 
 
 --
--- Name: shr_month_agency_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: shr_month shr_month_agency_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY shr_month
@@ -67893,7 +67898,7 @@ ALTER TABLE ONLY shr_month
 
 
 --
--- Name: shr_off_weap_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: shr_offense shr_off_weap_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY shr_offense
@@ -67901,7 +67906,7 @@ ALTER TABLE ONLY shr_offense
 
 
 --
--- Name: shr_offender_age_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: shr_offender shr_offender_age_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY shr_offender
@@ -67909,7 +67914,7 @@ ALTER TABLE ONLY shr_offender
 
 
 --
--- Name: shr_offender_ethnicity_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: shr_offender shr_offender_ethnicity_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY shr_offender
@@ -67917,7 +67922,7 @@ ALTER TABLE ONLY shr_offender
 
 
 --
--- Name: shr_offender_race_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: shr_offender shr_offender_race_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY shr_offender
@@ -67925,7 +67930,7 @@ ALTER TABLE ONLY shr_offender
 
 
 --
--- Name: shr_offense_circ_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: shr_offense shr_offense_circ_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY shr_offense
@@ -67933,7 +67938,7 @@ ALTER TABLE ONLY shr_offense
 
 
 --
--- Name: shr_offense_incident_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: shr_offense shr_offense_incident_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY shr_offense
@@ -67941,7 +67946,7 @@ ALTER TABLE ONLY shr_offense
 
 
 --
--- Name: shr_offense_offender_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: shr_offense shr_offense_offender_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY shr_offense
@@ -67949,7 +67954,7 @@ ALTER TABLE ONLY shr_offense
 
 
 --
--- Name: shr_offense_rel_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: shr_offense shr_offense_rel_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY shr_offense
@@ -67957,7 +67962,7 @@ ALTER TABLE ONLY shr_offense
 
 
 --
--- Name: shr_offense_victim_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: shr_offense shr_offense_victim_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY shr_offense
@@ -67965,7 +67970,7 @@ ALTER TABLE ONLY shr_offense
 
 
 --
--- Name: shr_victim_age_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: shr_victim shr_victim_age_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY shr_victim
@@ -67973,7 +67978,7 @@ ALTER TABLE ONLY shr_victim
 
 
 --
--- Name: shr_victim_ethnicity_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: shr_victim shr_victim_ethnicity_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY shr_victim
@@ -67981,7 +67986,7 @@ ALTER TABLE ONLY shr_victim
 
 
 --
--- Name: shr_victim_race_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: shr_victim shr_victim_race_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY shr_victim
@@ -67989,7 +67994,7 @@ ALTER TABLE ONLY shr_victim
 
 
 --
--- Name: state_division_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ref_state state_division_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ref_state
@@ -67997,7 +68002,7 @@ ALTER TABLE ONLY ref_state
 
 
 --
--- Name: supp_month_agency_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: supp_month supp_month_agency_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY supp_month
@@ -68005,7 +68010,7 @@ ALTER TABLE ONLY supp_month
 
 
 --
--- Name: supp_off_subcat_off_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: supp_offense_subcat supp_off_subcat_off_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY supp_offense_subcat
@@ -68013,7 +68018,7 @@ ALTER TABLE ONLY supp_offense_subcat
 
 
 --
--- Name: supp_prop_by_off_mon_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: supp_prop_by_offense_subcat supp_prop_by_off_mon_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY supp_prop_by_offense_subcat
@@ -68021,7 +68026,7 @@ ALTER TABLE ONLY supp_prop_by_offense_subcat
 
 
 --
--- Name: supp_prop_by_off_subcat_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: supp_prop_by_offense_subcat supp_prop_by_off_subcat_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY supp_prop_by_offense_subcat
@@ -68029,7 +68034,7 @@ ALTER TABLE ONLY supp_prop_by_offense_subcat
 
 
 --
--- Name: supp_prop_by_type_mon_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: supp_property_by_type_value supp_prop_by_type_mon_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY supp_property_by_type_value
@@ -68037,7 +68042,7 @@ ALTER TABLE ONLY supp_property_by_type_value
 
 
 --
--- Name: supp_prop_by_type_prop_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: supp_property_by_type_value supp_prop_by_type_prop_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY supp_property_by_type_value

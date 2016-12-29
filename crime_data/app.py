@@ -120,7 +120,7 @@ def add_resources(app):
     api.add_resource(crime_data.resources.incidents.IncidentsCount,
                      '/incidents/count/')
     api.add_resource(crime_data.resources.incidents.IncidentsDetail,
-                     '/incidents/<string:nbr>/')
+                     '/incidents/<int:id>/')
     api.add_resource(crime_data.resources.offenses.OffensesList, '/offenses/')
     api.add_resource(crime_data.resources.codes.CodeReferenceIndex,
                      '/codes')
