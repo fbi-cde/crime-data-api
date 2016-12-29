@@ -212,9 +212,9 @@ class CdeResource(MethodResource):
         self.verify_api_key(args)
         filters = list(self.filters(args))
         filters = self.postprocess_filters(filters, args)
-        # self.use_filters(filters)
 
-        qry = self.tables.filtered(filters)
+        qry = self.tables.filtered(filters, args)
+
         if self.is_groupable:
             group_columns = [c.strip() for c in args['by'].split(',')]
             qry = self.tables.group_by(qry, group_columns)
@@ -445,7 +445,7 @@ class CdeResource(MethodResource):
     def _split_values(self, val_string):
         val_string = val_string.strip('{} \t')
         values = val_string.split(',')
-        return [v.strip() for v in values]
+        return [v.strip().lower() for v in values]
 
     def filters(self, parsed):
         """Yields `(key, comparitor, (values))` from `request.args`.

@@ -10,8 +10,11 @@ from psycopg2 import ProgrammingError
 from sqlalchemy.dialects.postgresql import JSON
 from sqlalchemy.orm import backref
 from sqlalchemy.sql.elements import BinaryExpression
+from sqlalchemy import func
+from sqlalchemy.sql import sqltypes
+from flask_restful import abort
 
-from crime_data.common import models, newmodels
+from crime_data.common import models
 from crime_data.extensions import db
 from sqlalchemy import or_
 
@@ -235,17 +238,18 @@ class RetaMonthOffenseSubcatSummary(db.Model, CreatableModel):
         """
 
         # columns in grouping sets must be grouped together
-        group_columns = group_by_column_names[:]
-        for col in group_by_column_names:
+        filtered_names = [f[0] for f in filters]
+        group_columns = group_by_column_names + filtered_names
+        for col in group_columns[:]:
+            if col not in cls.grouping_sets:
+                abort(400, message='field {} not found'.format(col))
             for sibling in cls.grouping_sets[col]:
                 if sibling not in group_columns:
                     group_columns.append(sibling)
 
-        filtered_names = [f[0] for f in filters]
         field_names = reversed(cls.filterables)
         for (idx, field_name) in enumerate(field_names):
-            show_field = (field_name in filtered_names) or (
-                field_name in group_columns)
+            show_field = field_name in group_columns
             marshmallow_field = schema.fields[field_name]
             marshmallow_field.load_only = not show_field
             bit_val = 2**idx
@@ -257,21 +261,14 @@ class RetaMonthOffenseSubcatSummary(db.Model, CreatableModel):
 
         return filters
 
-    '''
     @classmethod
-    def add_groupings_to_filters(cls, filters, group_by_column_names):
-        "Convert `by` arguments to bitwise grouping filters"
-        for group_column in group_by_column_names:
-            if group_column not in [f[0] for f in filters]:
-                filters.append((group_column, '__ne__', [None, ]))
-                for sibling_col in cls.grouping_sets[group_column]:
-                    if sibling_col not in [f[0] for f in filters]:
-                        filters.append((sibling_col, '__ne__', [None, ]))
-        return filters
-    '''
+    def column_is_string(cls, col_name):
+        col = getattr(cls.__table__.c, col_name)
+        return isinstance(col.type, sqltypes.String)
 
     @classmethod
-    def filtered(cls, filters):
+    def filtered(cls, filters, args=None):
+        args = args or []
         qry = cls.query
         for filter in filters:
             if isinstance(filter, BinaryExpression):
@@ -279,7 +276,13 @@ class RetaMonthOffenseSubcatSummary(db.Model, CreatableModel):
             else:
                 (col_name, comparitor, values) = filter
                 col = getattr(cls, col_name)
+                if cls.column_is_string(col_name):
+                    col = func.lower(col)
                 operation = getattr(col, comparitor)
                 qry = qry.filter(or_(operation(v) for v in values)).order_by(
                     col)
+        if 'by' in args:
+            for col_name in args['by'].split(','):
+                col = getattr(cls, col_name)
+                qry = qry.order_by(col)
         return qry

@@ -288,7 +288,7 @@ class TestIncidentsCountEndpoint:
     def test_instances_count_returns_counts(self, testapp):
         res = testapp.get('/incidents/count/')
         assert isinstance(res.json['results'], list)
-        assert 'actual_count' in res.json['results'][0]
+        assert 'actual' in res.json['results'][0]
 
     def test_instances_count_groups_by_year_by_default(self, testapp):
         res = testapp.get('/incidents/count/')
@@ -333,10 +333,10 @@ class TestIncidentsCountEndpoint:
             assert row['offense_category'] == 'Robbery'
 
     def test_instances_count_filters_on_city(self, testapp):
-        res = testapp.get('/incidents/count/?by=city&city=dayton')
+        res = testapp.get('/incidents/count/?by=city&city=columbus')
         assert res.json['results']
         for row in res.json['results']:
-            assert row['city'] == 'Dayton'
+            assert row['city'] == 'Columbus'
 
     def test_instances_count_bad_filter_400s(self, testapp):
         res = testapp.get('/incidents/count/?llamas=angry', expect_errors=True)
@@ -359,10 +359,10 @@ class TestIncidentsCountEndpoint:
             assert row['offense_category'] == 'Robbery'
 
     def test_instances_count_equality_filter_by_number(self, testapp):
-        res = testapp.get('/incidents/count/?by=year,month&month=10')
+        res = testapp.get('/incidents/count/?by=year,month&month=1')
         assert res.json['results']
         for row in res.json['results']:
-            assert row['month'] == 10
+            assert row['month'] == 1
 
     def test_instances_count_equality_filter_by_multiple_number(self, testapp):
         res = testapp.get('/incidents/count/?by=year,month&month=8,10')
@@ -394,18 +394,6 @@ class TestIncidentsCountEndpoint:
         for row in res.json['results']:
             for victim in row['victims']:
                 assert victim['age_num'] == 99
-
-    def test_instances_count_simplified_field_name_is_equivalent(self, testapp):
-        res = testapp.get('/incidents/count/?by=data_year,state_abbr')
-        simplified_res = testapp.get('/incidents/count/?by=year,state')
-        assert res.json['results'] == simplified_res.json['results']
-
-    def test_instances_count_reports_simplified_field_name(self, testapp):
-        res = testapp.get('/incidents/count/?by=data_year,state')
-        assert res.json['results']
-        for row in res.json['results']:
-            assert 'year' in row
-            assert 'state' in row
 
     def test_incidents_filter_victim_rel(self, testapp):
         res = testapp.get('/incidents/?victim.relationship_code=AQ')
