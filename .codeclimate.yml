@@ -11,8 +11,6 @@ engines:
           python_version: 3
   fixme:
     enabled: true
-  pep8:
-    enabled: true
   radon:
     enabled: true
 ratings:
