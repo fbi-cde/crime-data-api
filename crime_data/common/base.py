@@ -2,11 +2,8 @@ import json
 import math
 import os
 import random
-<<<<<<< HEAD
 from decimal import Decimal
-=======
 from ast import literal_eval
->>>>>>> master
 from functools import wraps
 
 import sqltap
@@ -335,7 +332,6 @@ class CdeResource(MethodResource):
     def _serialize_from_representation(self, data):
         """Get from cache in an associated `representation` record"""
 
-<<<<<<< HEAD
         result = []
         uncached = 0
         for row in data:
@@ -351,8 +347,6 @@ class CdeResource(MethodResource):
     def _as_dict(self, fieldTuple, res):
         return dict(zip(fieldTuple, res))
 
-=======
->>>>>>> master
     def _compile_query(self, query):
         """
         Gets String representation of an SQLAlchemy query.
