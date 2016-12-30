@@ -5,6 +5,8 @@ See: http://webtest.readthedocs.org/
 """
 import dateutil
 import pytest
+from crime_data.common.newmodels import NibrsIncidentRepresentation
+from crime_data.common.models import db
 
 
 class TestTuningPage:
@@ -26,7 +28,7 @@ class TestIncidentsEndpoint:
     def test_incidents_endpoint_returns_incidents(self, testapp):
         res = testapp.get('/incidents/')
         assert len(res.json['results']) > 0
-        assert 'incident_number' in res.json['results'][0]
+        assert 'incident_id' in res.json['results'][0]
 
     def test_incidents_endpoint_includes_offenses(self, testapp):
         res = testapp.get('/incidents/')
@@ -266,12 +268,12 @@ class TestIncidentsEndpoint:
         res = testapp.get('/incidents/?per_page=5')
         assert len(res.json['results']) == 5
 
-    def _single_incident_number(self, testapp):
+    def _single_incident_id(self, testapp):
         res = testapp.get('/incidents/')
-        return res.json['results'][0]['incident_number']
+        return res.json['results'][0]['incident_id']
 
     def test_incidents_endpoint_single_record_works(self, testapp):
-        id_no = self._single_incident_number(testapp)
+        id_no = self._single_incident_id(testapp)
         res = testapp.get('/incidents/{}/'.format(id_no))
         assert res.status_code == 200
 

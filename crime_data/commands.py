@@ -2,7 +2,7 @@
 """Click commands."""
 import os
 from glob import glob
-from subprocess import call
+from subprocess import call #nosec
 
 import click
 from flask import current_app
@@ -43,7 +43,7 @@ def lint(fix_imports):
         """Execute a checking tool with its arguments."""
         command_line = list(args) + files_and_directories
         click.echo('{}: {}'.format(description, ' '.join(command_line)))
-        rv = call(command_line)
+        rv = call(command_line) #nosec
         if rv != 0:
             exit(rv)
 

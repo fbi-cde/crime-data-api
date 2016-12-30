@@ -20,3 +20,5 @@ pep8-naming==0.3.3
 
 codeclimate-test-reporter
 pytest-cov
+
+bandit==1.3.0

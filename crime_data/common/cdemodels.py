@@ -1,11 +1,9 @@
-import datetime
-
 from flask_restful import abort
 from sqlalchemy import and_, func, or_
 from sqlalchemy.exc import ArgumentError
 from sqlalchemy.orm import aliased
-from sqlalchemy.sql import label
 from sqlalchemy.sql import sqltypes as st
+from sqlalchemy.sql import label
 
 from crime_data.common import models, newmodels
 from crime_data.common.base import QueryTraits, Fields
@@ -444,9 +442,7 @@ class TableFamily:
         for table in tables:
             for (alias, col) in table.map():
                 # this alias includes the baked-in table name
-                if alias in self._map:
-                    print('Column {} already in map'.format(alias))
-                else:
+                if alias not in self._map:
                     self._map[alias] = (table, col)
         # self.print_map() # - uncomment to generate JSON
 

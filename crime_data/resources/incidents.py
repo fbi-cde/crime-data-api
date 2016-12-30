@@ -1,5 +1,5 @@
-from webargs.flaskparser import use_args
 import flask_apispec as swagger
+from webargs.flaskparser import use_args
 
 from crime_data.common import cdemodels, marshmallow_schemas, models, newmodels
 from crime_data.common.base import CdeResource, tuning_page
@@ -12,7 +12,8 @@ def _is_string(col):
 
 class IncidentsList(CdeResource):
 
-    schema = marshmallow_schemas.NibrsIncidentSchema(many=True)
+    schema = marshmallow_schemas.NibrsIncidentSchema(many=False) 
+    _serialize = CdeResource._serialize_from_representation
     tables = cdemodels.IncidentTableFamily()
     # Enable fast counting.
     fast_count = True
@@ -36,6 +37,7 @@ class IncidentsList(CdeResource):
 class IncidentsDetail(CdeResource):
 
     schema = marshmallow_schemas.NibrsIncidentSchema(many=True)
+
     # Enable fast counting.
     fast_count = True
 
@@ -49,9 +51,9 @@ class IncidentsDetail(CdeResource):
         tags=['incidents'],
         description='Return the specific record for a single incident')
     @tuning_page
-    def get(self, args, nbr):
+    def get(self, args, id):
         self.verify_api_key(args)
-        incidents = models.NibrsIncident.query.filter_by(incident_number=nbr)
+        incidents = models.NibrsIncident.query.filter_by(incident_id=id)
         return self.with_metadata(incidents, args)
 
 

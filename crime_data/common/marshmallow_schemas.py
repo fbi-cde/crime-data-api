@@ -237,15 +237,13 @@ class RefCountrySchema(ma.ModelSchema):
         model = models.RefCountry
         ordered = True
 
-    state = ma.Nested(RefContinentSchema)
+    continent = ma.Nested(RefContinentSchema)
 
 
 class RefMsaSchema(ma.ModelSchema):
     class Meta:
         model = models.RefMsa
         ordered = True
-
-    state = ma.Nested(RefContinentSchema)
 
 
 class RefMetroDivision(ma.ModelSchema):
@@ -566,6 +564,19 @@ class NibrsIncidentSchema(ma.ModelSchema):
     victims = ma.Nested(NibrsVictimSchema, many=True)
     arrestees = ma.Nested(NibrsArresteeSchema, many=True)
     offenders = ma.Nested(NibrsOffenderSchema, many=True)
+
+
+class NibrsIncidentRepresentationSchema(ma.ModelSchema):
+    class Meta:
+        models = newmodels.NibrsIncidentRepresentation
+        fields = ('representation', )
+
+class CachedNibrsIncidentSchema(ma.ModelSchema):
+    class Meta:
+        model = models.NibrsIncident
+        fields = ('incident_id', 'representation', )
+
+    representation = ma.Nested(NibrsIncidentRepresentationSchema)
 
 
 class NibrsAssignmentTypeSchema(ma.ModelSchema):

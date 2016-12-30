@@ -14,3 +14,8 @@ class TestCodesEndpoint:
 
         assert 'filters' in res.json
         assert res.json['filters'] == FAMILIES[endpoint].filter_columns
+
+
+    def test_meta_endpoint_handles_trailing_slash(self, testapp):
+        res = testapp.get('/meta/incidents/')
+        assert res.status_code == 200

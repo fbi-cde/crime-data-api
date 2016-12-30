@@ -1,14 +1,15 @@
-from decimal import Decimal
 import json
 import math
 import os
 import random
+from decimal import Decimal
+from ast import literal_eval
 from functools import wraps
 
 import sqltap
 from flask import make_response, request
-from flask_restful import abort, current_app
 from flask_apispec.views import MethodResource
+from flask_restful import abort, current_app
 # import celery
 from flask_sqlalchemy import SignallingSession, SQLAlchemy
 from sqlalchemy import func, or_
@@ -87,7 +88,7 @@ class RoutingSession(SignallingSession):
 
     def get_bind(self, mapper=None, clause=None):
         if self.use_follower:
-            return random.choice(self.followers)
+            return random.choice(self.followers) #nosec
 
         return super().get_bind(mapper=mapper, clause=clause)
 
@@ -327,17 +328,38 @@ class CdeResource(MethodResource):
 
     def _jsonable(self, val):
         if isinstance(val, Decimal):
-            return eval(str(val))
+            return literal_eval(str(val))
         elif hasattr(val, '__pow__'):  # is numeric
             return val
         return str(val)
 
-    def _stringify(self, data):
+    def _serialize(self, data):
         """Avoid JSON serialization errors
         by converting values in list of dicts
-        into strings."""
-        return [{k: self._jsonable(d[k])
-                 for k in d} for d in (r._asdict() for r in data)]
+        into strings.
+
+        Many resources will override this with more specific ways to serialize.
+        """
+        if self.schema:
+            return self.schema.dump(data).data
+        else:
+            return [{k: self._jsonable(d[k])
+                     for k in d} for d in (r._asdict() for r in data)]
+
+    def _serialize_from_representation(self, data):
+        """Get from cache in an associated `representation` record"""
+
+        result = []
+        uncached = 0
+        for row in data:
+            if row.representation and row.representation.representation:
+                result.append(row.representation.representation)
+            else:
+                uncached += 1
+                result.append(self.schema.dump(row).data)
+        if uncached:
+            current_app.logger.warning('{} uncached records generated realtime'.format(uncached))
+        return result
 
     def _as_dict(self, fieldTuple, res):
         return dict(zip(fieldTuple, res))
@@ -390,10 +412,14 @@ class CdeResource(MethodResource):
             session.rollback()
             count = results.count()
 
+        """
         if self.schema:
             serialized = self.schema.dump(paginated).data
         else:
             serialized = self._stringify(paginated)
+        """
+        serialized = self._serialize(paginated)
+
         return {
             'results': serialized,
             'pagination': {

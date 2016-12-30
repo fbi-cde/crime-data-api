@@ -94,3 +94,24 @@ flask db migrate
 flask db upgrade
 flask run
 ```
+
+Security Scans
+--------------
+
+This repository uses the [bandit](https://github.com/openstack/bandit)
+tool to run automated static analysis of the project code for
+potential vulnerabilities. These are run automatically as part of
+continuous integration to identify potential vulnerabilities when they
+are introduced in pull requests.
+
+You can run bandit locally with the following command:
+
+``` shell
+bandit -r .
+```
+
+In some cases, bandit will identify false positives, code that looks
+like it could be a security vulnerability but that will likely never
+be triggered in a production environment. To disable reporting of
+these vulnerabilities, you can append a `#nosec` comment on the line
+of code where the vulnerability was identified.
