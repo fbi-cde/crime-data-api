@@ -12,7 +12,7 @@ def _is_string(col):
 
 class IncidentsList(CdeResource):
 
-    schema = None
+    schema = marshmallow_schemas.NibrsIncidentSchema(many=False) 
     _serialize = CdeResource._serialize_from_representation
     tables = cdemodels.IncidentTableFamily()
     # Enable fast counting.

@@ -5,6 +5,8 @@ See: http://webtest.readthedocs.org/
 """
 import dateutil
 import pytest
+from crime_data.common.newmodels import NibrsIncidentRepresentation
+from crime_data.common.models import db
 
 
 class TestTuningPage:
@@ -274,6 +276,15 @@ class TestIncidentsEndpoint:
         id_no = self._single_incident_number(testapp)
         res = testapp.get('/incidents/{}/'.format(id_no))
         assert res.status_code == 200
+
+    @pytest.mark.skip(reason='wait until building test db from file is automatic')
+    def test_instances_uncached_succeeds(self, testapp):
+        NibrsIncidentRepresentation.query.filter(NibrsIncidentRepresentation.incident_representation_id % 2 == 0).delete()
+        res = testapp.get('/incidents/?per_page=10')
+        assert res.status_code == 200
+        assert len(res.json['results']) == 10
+        for incident in res.json['results']:
+            assert 'incident_date' in incident
 
 
 class TestIncidentsCountEndpoint:

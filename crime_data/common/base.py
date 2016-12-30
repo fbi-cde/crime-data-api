@@ -331,7 +331,17 @@ class CdeResource(MethodResource):
     def _serialize_from_representation(self, data):
         """Get from cache in an associated `representation` record"""
 
-        return [i.representation.representation for i in data]
+        result = []
+        uncached = 0
+        for row in data:
+            if row.representation and row.representation.representation:
+                result.append(row.representation.representation)
+            else:
+                uncached += 1
+                result.append(self.schema.dump(row).data)
+        if uncached:
+            current_app.logger.warning('{} uncached records generated realtime'.format(uncached))
+        return result
 
     def _as_dict(self, fieldTuple, res):
         return dict(zip(fieldTuple, res))
