@@ -555,7 +555,7 @@ class NibrsIncidentSchema(ma.ModelSchema):
                    'did',
                    'nibrs_month',
                    'orig_format',
-                   'incident_id', )
+                   'incident_number', )
 
     offenses = ma.Nested(NibrsOffenseSchema, many=True)
     agency = ma.Nested(RefAgencySchema)
