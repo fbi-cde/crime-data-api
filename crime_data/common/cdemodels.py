@@ -444,9 +444,7 @@ class TableFamily:
         for table in tables:
             for (alias, col) in table.map():
                 # this alias includes the baked-in table name
-                if alias in self._map:
-                    print('Column {} already in map'.format(alias))
-                else:
+                if alias not in self._map:
                     self._map[alias] = (table, col)
         # self.print_map() # - uncomment to generate JSON
 

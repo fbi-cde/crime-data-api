@@ -71,7 +71,8 @@ SET    ff_line_number = NULL,
 UPDATE nibrs_incident
 SET    ddocname = NULL,
        ff_line_number = NULL,
-       did = NULL;
+       did = NULL,
+       incident_number = NULL;
 
 
 UPDATE nibrs_month
@@ -139,7 +140,7 @@ poc_fax1         = NULL,
 poc_fax2         = NULL;
 
 
--- Some name and address information 
+-- Some name and address information
 UPDATE ref_submitting_agency
 SET    comments = NULL;
 

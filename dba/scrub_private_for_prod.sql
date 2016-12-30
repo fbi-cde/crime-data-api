@@ -1,6 +1,6 @@
 -- NULLs out database fields with potentially sensitive information
 -- erring on the side of caution!
--- Slightly less strict than `scrub_private_for_dev.sql` - 
+-- Slightly less strict than `scrub_private_for_dev.sql` -
 -- not necessarily sufficient to release the data with no control
 -- See https://github.com/18F/crime-data-api/issues/113
 
@@ -72,7 +72,8 @@ SET    ff_line_number = NULL,
 UPDATE nibrs_incident
 SET    ddocname = NULL,
        ff_line_number = NULL,
-       did = NULL;
+       did = NULL,
+       incident_number=NULL;
 
 
 UPDATE nibrs_month
@@ -139,7 +140,7 @@ SET
 -- poc_fax2         = NULL;
 
 
--- Some name and address information 
+-- Some name and address information
 -- UPDATE ref_submitting_agency
 -- SET    comments = NULL;
 

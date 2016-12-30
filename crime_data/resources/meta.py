@@ -34,7 +34,8 @@ FAMILIES = {
 
 
 class MetaDetail(CdeResource):
-    """The meta API endpoint returns information about the API endpoint
+    """
+    The meta API endpoint returns information about the API endpoint
     that follows it. Currently this is just the allowed filters for
     the endpoint.
     """
@@ -46,6 +47,7 @@ class MetaDetail(CdeResource):
                               'Currently, this is mainly a list of filters that can '
                               'be added to queries.'))
     def get(self, endpoint):
+        endpoint = endpoint.rstrip('/')
         out = {
             'endpoint': endpoint,
             'filters': FAMILIES[endpoint].filter_columns

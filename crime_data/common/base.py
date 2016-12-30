@@ -2,7 +2,11 @@ import json
 import math
 import os
 import random
+<<<<<<< HEAD
 from decimal import Decimal
+=======
+from ast import literal_eval
+>>>>>>> master
 from functools import wraps
 
 import sqltap
@@ -87,7 +91,7 @@ class RoutingSession(SignallingSession):
 
     def get_bind(self, mapper=None, clause=None):
         if self.use_follower:
-            return random.choice(self.followers)
+            return random.choice(self.followers) #nosec
 
         return super().get_bind(mapper=mapper, clause=clause)
 
@@ -310,7 +314,7 @@ class CdeResource(MethodResource):
 
     def _jsonable(self, val):
         if isinstance(val, Decimal):
-            return eval(str(val))
+            return literal_eval(str(val))
         elif hasattr(val, '__pow__'):  # is numeric
             return val
         return str(val)
@@ -331,6 +335,7 @@ class CdeResource(MethodResource):
     def _serialize_from_representation(self, data):
         """Get from cache in an associated `representation` record"""
 
+<<<<<<< HEAD
         result = []
         uncached = 0
         for row in data:
@@ -346,6 +351,8 @@ class CdeResource(MethodResource):
     def _as_dict(self, fieldTuple, res):
         return dict(zip(fieldTuple, res))
 
+=======
+>>>>>>> master
     def _compile_query(self, query):
         """
         Gets String representation of an SQLAlchemy query.
@@ -382,6 +389,8 @@ class CdeResource(MethodResource):
                 if count < COUNT_QUERY_THRESHOLD:
                     # If the count is less than
                     count = results.count()
+            else:
+                count = results.count()
         except Exception as count_exception:
             # Fallback to counting results with extra query.
             current_app.logger.warning('Failed to fast_count rows:')
