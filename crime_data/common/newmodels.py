@@ -257,7 +257,6 @@ class RetaMonthOffenseSubcatSummary(db.Model, CreatableModel):
                 filters.append(cls.grouping_bitmap.op('&')(bit_val) == 0)
             else:
                 filters.append(cls.grouping_bitmap.op('&')(bit_val) == bit_val)
-            # make filtered accept this
 
         return filters
 

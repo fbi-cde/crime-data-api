@@ -412,12 +412,6 @@ class CdeResource(MethodResource):
             session.rollback()
             count = results.count()
 
-        """
-        if self.schema:
-            serialized = self.schema.dump(paginated).data
-        else:
-            serialized = self._stringify(paginated)
-        """
         serialized = self._serialize(paginated)
 
         return {
