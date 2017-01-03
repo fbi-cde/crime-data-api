@@ -6,6 +6,8 @@ applications:
   domain: fr.cloud.gov
 env:
   FLASK_APP: autoapp.py
+  NEW_RELIC_CONFIG_FILE: newrelic.ini
+  NEW_RELIC_LOG: stdout
 services:
 - crime-data-api-full-db
 - crime-data-api-creds

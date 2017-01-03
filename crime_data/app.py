@@ -21,6 +21,7 @@ from crime_data import commands
 from crime_data.assets import assets
 from crime_data.common.marshmallow_schemas import ma
 from crime_data.common.models import db
+from crime_data.common.credentials import get_credential
 from crime_data.extensions import (cache, debug_toolbar, migrate)
 from flask_apispec.extension import FlaskApiSpec
 from crime_data.settings import ProdConfig
@@ -41,6 +42,7 @@ def create_app(config_object=ProdConfig):
     register_blueprints(app)
     register_errorhandlers(app)
     register_shellcontext(app)
+    register_newrelic(app)
     add_resources(app)
     register_commands(app)
     db.init_app(app)
@@ -145,15 +147,10 @@ def add_resources(app):
         target_username = None
         target_password = None
 
-        if getenv('VCAP_SERVICES'):
-            service_env = json.loads(getenv('VCAP_SERVICES'))
-            creds = [
-                u['credentials'] for u in service_env['user-provided']
-                if 'credentials' in u
-            ]
-            target_username = creds[0]['HTTP_BASIC_USERNAME']
-            target_password = creds[0]['HTTP_BASIC_PASSWORD']
-        else:
+        try:
+            target_username = get_credential('HTTP_BASIC_USERNAME')
+            target_password = get_credential('HTTP_BASIC_PASSWORD')
+        except KeyError:
             target_username = getenv('HTTP_USERNAME')
             target_password = getenv('HTTP_PASSWORD')
 
@@ -179,3 +176,16 @@ def add_resources(app):
     docs.register(crime_data.resources.arrests.ArrestsCountByRace)
     docs.register(crime_data.resources.arrests.ArrestsCountByEthnicity)
     docs.register(crime_data.resources.arrests.ArrestsCountByAgeSex)
+
+
+def register_newrelic(app):
+    """Setup New Relic monitoring for the application"""
+
+    try:
+        license_key = get_credential('NEW_RELIC_API_KEY')
+        import newrelic.agent
+        settings = newrelic.agent.global_settings()
+        settings.license_key = license_key
+        newrelic.agent.initialize()
+    except:
+        pass
