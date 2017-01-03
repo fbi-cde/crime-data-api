@@ -187,5 +187,5 @@ def register_newrelic(app):
         settings = newrelic.agent.global_settings()
         settings.license_key = license_key
         newrelic.agent.initialize()
-    except:
+    except: #nosec
         pass
