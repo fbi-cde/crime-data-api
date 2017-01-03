@@ -17,9 +17,9 @@ database:
 test:
   override:
     - py.test --cov=crime_data tests/
+    - bandit -r .
   post:
     - codeclimate-test-reporter
-    - bandit -r .
 deployment:
   production:
     branch: master
