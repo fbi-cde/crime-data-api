@@ -178,8 +178,14 @@ def add_resources(app):
     docs.register(crime_data.resources.arrests.ArrestsCountByAgeSex)
 
 
+def newrelic_status_endpoint():
+    return 'OK'
+
+
 def register_newrelic(app):
     """Setup New Relic monitoring for the application"""
+
+    app.add_url_rule('/status', 'status', newrelic_status_endpoint)
 
     try:
         license_key = get_credential('NEW_RELIC_API_KEY')
