@@ -1,24 +1,23 @@
 # Everything the developer needs in addition to the production requirements
 -r prod.txt
 
-flask-shell-ipython
+flask-shell-ipython==0.2.2
 
 # Testing
-pytest==2.9.0
-WebTest==2.0.20
+pytest==3.0.5
+WebTest==2.0.24
 factory-boy==2.6.1
 
 # Lint and code style
-flake8==2.5.4
-flake8-blind-except==0.1.0
+flake8==3.2.1
+flake8-blind-except==0.1.1
 flake8-debugger==1.4.0
-flake8-docstrings==0.2.5
-flake8-isort==1.2
-flake8-quotes==0.2.4
+flake8-docstrings==1.0.2
+flake8-isort==2.1.3
+flake8-quotes==0.8.1
 isort==4.2.2
-pep8-naming==0.3.3
-
-codeclimate-test-reporter
-pytest-cov
+pep8-naming==0.4.1
 
 bandit==1.3.0
+codeclimate-test-reporter==0.2.0
+pytest-cov==2.4.0
