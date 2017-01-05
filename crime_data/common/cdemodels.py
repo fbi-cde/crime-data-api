@@ -44,6 +44,60 @@ class CdeRetaMonthOffenseSubcat(models.RetaMonthOffenseSubcat):
     pass
 
 
+class CdeRefState(models.RefState):
+    """A wrapper around the RefState model with extra finder methods"""
+
+    def get(state_id=None, abbr=None, fips=None):
+        """
+        A method to find a state by its database ID, postal abbr or FIPS code
+        """
+        query = CdeRefState.query
+
+        if state_id:
+            query = query.filter(CdeRefState.state_id == state_id)
+        elif abbr:
+            query = query.filter(CdeRefState.state_postal_abbr == abbr)
+        elif fips:
+            query = query.filter(CdeRefState.state_fips_code == fips[0:2])
+
+        return query
+
+
+class CdeRefCounty(models.RefCounty):
+    """A wrapper around the RefCounty model with extra methods"""
+
+    def get(county_id=None, fips=None, name=None):
+        """Find matching counties by id, fips code or name"""
+        query = CdeRefCounty.query
+
+        if county_id:
+            query = query.filter(CdeRefCounty.county_id == county_id)
+        elif fips:
+            if isinstance(fips, str) and len(fips) == 5:
+                state = CdeRefState.get(fips=fips).one()
+                # This is because FBI stores county FIPS as string of
+                # int coercion of county FIPS code so that full FIPS
+                # 05003 you'd expect is stored as '3'
+                county_fips = str(int(fips[2:5]))
+                query = query.filter(
+                    and_(CdeRefCounty.state_id == state.state_id,
+                         CdeRefCounty.county_fips_code == county_fips))
+            else:
+                raise ValueError('The FIPS code must be a 5-character string')
+        elif name:
+            query = query.filter(func.lower(CdeRefCounty.county_name) ==
+                                 func.lower(name))
+
+        return query
+
+    @property
+    def fips(self):
+        """Builds a FIPS code string for the county"""
+        # the int coercion is necessary because of how FBI stores county FIPS
+        return '{}{:03d}'.format(self.state.state_fips_code,
+                                 int(self.county_fips_code))
+
+
 class CdeRefAgency(models.RefAgency):
     def get(ori=None):
         # Base Query
