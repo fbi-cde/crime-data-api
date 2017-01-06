@@ -12,6 +12,13 @@ from crime_data.extensions import db
 session = db.session
 
 
+def get_sql_count(q):
+    """Avoid the slow SQL Alchemy subquery account"""
+    count_q = q.statement.with_only_columns([func.count()]).order_by(None)
+    count = q.session.execute(count_q).scalar()
+    return count
+
+
 class CdeRefState(models.RefState):
     pass
 
@@ -63,6 +70,15 @@ class CdeRefState(models.RefState):
         return query
 
 
+class CdeRefAgencyCounty(models.RefAgencyCounty):
+    """A wrapper around the RefAgencyCounty model"""
+
+    @staticmethod
+    def current_year():
+        """Returns the current year for the agency/county mappings."""
+        return session.query(func.max(CdeRefAgencyCounty.data_year)).scalar()
+
+
 class CdeRefCounty(models.RefCounty):
     """A wrapper around the RefCounty model with extra methods"""
 
@@ -96,6 +112,65 @@ class CdeRefCounty(models.RefCounty):
         # the int coercion is necessary because of how FBI stores county FIPS
         return '{}{:03d}'.format(self.state.state_fips_code,
                                  int(self.county_fips_code))
+
+
+    def num_agencies_for_year(self, data_year):
+        """Returns the number of agencies for that county in a year"""
+        query = session.query(CdeRefAgency)
+        query = (
+            query.join(CdeRefAgencyCounty)
+            .filter(CdeRefAgencyCounty.data_year == data_year)
+            .filter(CdeRefAgencyCounty.county_id == self.county_id)
+        )
+
+        print(query)
+        return get_sql_count(query)
+
+
+    @property
+    def num_agencies(self):
+        """Returns the number of agencies for the most recent year"""
+        return self.num_agencies_for_year(CdeRefAgencyCounty.current_year())
+
+
+    def population_for_year(self, data_year):
+        """Returns the population for a given year"""
+        query = session.query(models.RefCountyPopulation)
+        query = (
+            query.filter(models.RefCountyPopulation.county_id == self.county_id)
+            .filter(models.RefCountyPopulation.data_year == data_year)
+        )
+
+        print(query)
+        return query.one().population
+
+
+    @property
+    def population(self):
+        """Returns the most recent reported population for the county"""
+        return self.population_for_year(CdeRefAgencyCounty.current_year())
+
+
+    def police_officers_for_year(self, data_year):
+        """Returns the number of police officers for a given year"""
+        query = session.query(func.sum(models.PeEmployeeData.male_officer +
+                                       models.PeEmployeeData.female_officer))
+        query = (
+            query.join(CdeRefAgency)
+            .join(CdeRefAgencyCounty)
+            .filter(CdeRefAgencyCounty.data_year == data_year)
+            .filter(CdeRefAgencyCounty.county_id == self.county_id)
+            .filter(CdeRefAgency.agency_id == models.PeEmployeeData.agency_id)
+            .filter(models.PeEmployeeData.data_year == data_year)
+        )
+
+        print(query)
+        return query.scalar()
+
+    @property
+    def police_officers(self):
+        """Returns the total police officers for the current year"""
+        return self.police_officers_for_year(CdeRefAgencyCounty.current_year())
 
 
 class CdeRefAgency(models.RefAgency):

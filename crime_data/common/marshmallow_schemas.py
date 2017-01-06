@@ -231,7 +231,7 @@ class RefDivisionSchema(ma.ModelSchema):
 class RefStateSchema(ma.ModelSchema):
     class Meta:
         model = models.RefState
-        exclude = ('state_id', )
+        exclude = ('state_id', 'counties')
 
     division = ma.Nested(RefDivisionSchema)
 
