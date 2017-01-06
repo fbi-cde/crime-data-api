@@ -231,7 +231,7 @@ class TestIncidentsEndpoint:
     def test_incidents_endpoint_filter_county(self, testapp):
         results = testapp.get('/incidents/?county=warren')
         for incident in results.json['results']:
-            county_names = [c['county'].lower() for c in incident['agency']['counties']]
+            county_names = [c['county_name'].lower() for c in incident['agency']['counties']]
             assert 'warren' in county_names
 
     # End filter tests
@@ -392,8 +392,7 @@ class TestIncidentsCountEndpoint:
         res = testapp.get('/incidents/?victim.age_code=99')
         assert res.json['results']
         for row in res.json['results']:
-            for victim in row['victims']:
-                assert victim['age_num'] == 99
+            assert any(victim['age_num'] == 99 for victim in row['victims'])
 
     def test_instances_count_simplified_field_name_is_equivalent(self, testapp):
         res = testapp.get('/incidents/count/?by=data_year,state_abbr')
