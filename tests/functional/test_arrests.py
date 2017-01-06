@@ -175,55 +175,46 @@ class TestArrestsCountByEthnicityEndpoint:
         res = testapp.get('/arrests/ethnicity/')
         assert 'pagination' in res.json
 
-    @pytest.mark.xfail  # needs a new test db with ethnicity rows
     def test_arrests_count_returns_counts(self, testapp):
         res = testapp.get('/arrests/ethnicity/')
         assert isinstance(res.json['results'], list)
         assert 'arrest_count' in res.json['results'][0]
 
-    @pytest.mark.xfail  # needs a new test db with ethnicity rows
     def test_arrests_count_groups_by_year_by_default(self, testapp):
         res = testapp.get('/arrests/ethnicity/')
         years = [row['year'] for row in res.json['results']]
         assert len(years) == len(set(years))
 
-    @pytest.mark.xfail  # needs a new test db with ethnicity rows
     def test_arrests_count_groups_by_ori(self, testapp):
         res = testapp.get('/arrests/ethnicity/?by=ori')
         oris = [row['ori'] for row in res.json['results']]
         assert len(oris) == len(set(oris))
 
-    @pytest.mark.xfail  # needs a new test db with ethnicity rows
     def test_arrests_count_groups_by_ethnicity(self, testapp):
         res = testapp.get('/arrests/ethnicity/?by=ethnicity')
         uniques = [row['ethnicity'] for row in res.json['results']]
         assert len(uniques) == len(set(uniques))
 
-    @pytest.mark.xfail  # needs a new test db with ethnicity rows
     def test_arrests_count_groups_by_ori_any_year(self, testapp):
         res = testapp.get('/arrests/ethnicity/?by=ori,year')
         rows = [(row['year'], row['ori']) for row in res.json['results']]
         assert len(rows) == len(set(rows))
 
-    @pytest.mark.xfail  # needs a new test db with ethnicity rows
     def test_arrests_count_groups_by_state(self, testapp):
         res = testapp.get('/arrests/ethnicity/?by=state')
         rows = [row['state'] for row in res.json['results']]
         assert len(rows) == len(set(rows))
 
-    @pytest.mark.xfail  # needs a new test db with ethnicity rows
     def test_arrests_count_groups_by_offense(self, testapp):
         res = testapp.get('/arrests/ethnicity/?by=offense')
         rows = [row['offense'] for row in res.json['results']]
         assert len(rows) == len(set(rows))
 
-    @pytest.mark.xfail  # needs a new test db with ethnicity rows
     def test_arrests_count_sorts_by_state(self, testapp):
         res = testapp.get('/arrests/ethnicity/?by=state')
         state_names = [r['state'] for r in res.json['results']]
         assert state_names == sorted(state_names)
 
-    @pytest.mark.xfail  # needs a new test db with ethnicity rows
     def test_arrests_count_filters_on_subcategory(self, testapp):
         res = testapp.get(
             '/arrests/ethnicity/?by=year,offense_subcat_code&offense_subcat_code=ASR_HOM'
@@ -232,15 +223,13 @@ class TestArrestsCountByEthnicityEndpoint:
         for row in res.json['results']:
             assert row['offense_subcat_code'] == 'ASR_HOM'
 
-    @pytest.mark.xfail  # needs a new test db with ethnicity rows
     def test_arrests_count_filters_on_ethnicity(self, testapp):
         res = testapp.get(
-            '/arrests/ethnicity/?by=year,ethnicity&ethnicity=UNK')
+            '/arrests/ethnicity/?by=year,ethnicity&ethnicity=HIS')
         assert res.json['results']
         for row in res.json['results']:
-            assert row['ethnicity'] == 'UNK'
+            assert row['ethnicity'] == 'HIS'
 
-    @pytest.mark.xfail  # needs a new test db with ethnicity rows
     def test_arrests_count_filters_on_category(self, testapp):
         res = testapp.get(
             '/arrests/ethnicity/?by=year,offense_cat_name&offense_cat_name=Robbery'
@@ -249,25 +238,21 @@ class TestArrestsCountByEthnicityEndpoint:
         for row in res.json['results']:
             assert row['offense_cat_name'] == 'Robbery'
 
-    @pytest.mark.xfail  # needs a new test db with ethnicity rows
     def test_arrests_count_filters_on_city(self, testapp):
-        res = testapp.get('/arrests/ethnicity/?by=city&city=dayton')
+        res = testapp.get('/arrests/ethnicity/?by=city&city=abilene')
         assert res.json['results']
         for row in res.json['results']:
-            assert row['city'] == 'Dayton'
+            assert row['city'] == 'Abilene'
 
-    @pytest.mark.xfail  # needs a new test db with ethnicity rows
     def test_arrests_count_bad_filter_400s(self, testapp):
         res = testapp.get('/arrests/ethnicity/?llamas=angry',
                           expect_errors=True)
         assert res.status_code == 400
 
-    @pytest.mark.xfail  # needs a new test db with ethnicity rows
     def test_arrests_count_bad_group_by_400s(self, testapp):
         res = testapp.get('/arrests/ethnicity/?by=llamas', expect_errors=True)
         assert res.status_code == 400
 
-    @pytest.mark.xfail  # needs a new test db with ethnicity rows
     def test_arrests_count_filter_names_case_insensitive(self, testapp):
         res = testapp.get(
             '/arrests/ethnicity/?by=year,offense_cat_name&offense_cat_name=Robbery'
@@ -276,7 +261,6 @@ class TestArrestsCountByEthnicityEndpoint:
         for row in res.json['results']:
             assert row['offense_cat_name'] == 'Robbery'
 
-    @pytest.mark.xfail  # needs a new test db with ethnicity rows
     def test_arrests_count_filter_values_case_insensitive(self, testapp):
         res = testapp.get(
             '/arrests/ethnicity/?by=year,offense_cat_name&offense_cat_name=RobBeRY'
@@ -285,35 +269,30 @@ class TestArrestsCountByEthnicityEndpoint:
         for row in res.json['results']:
             assert row['offense_cat_name'] == 'Robbery'
 
-    @pytest.mark.xfail  # needs a new test db with ethnicity rows
     def test_arrests_count_equality_filter_by_number(self, testapp):
         res = testapp.get('/arrests/ethnicity/?by=year,month&month=10')
         assert res.json['results']
         for row in res.json['results']:
             assert row['month'] == 10
 
-    @pytest.mark.xfail  # needs a new test db with ethnicity rows
     def test_arrests_count_equality_filter_by_multiple_number(self, testapp):
         res = testapp.get('/arrests/ethnicity/?by=year,month&month=8,10')
         assert res.json['results']
         for row in res.json['results']:
             assert row['month'] in (8, 10)
 
-    @pytest.mark.xfail  # needs a new test db with ethnicity rows
     def test_arrests_count_filters_by_greater_than(self, testapp):
         res = testapp.get('/arrests/ethnicity/?by=year,month&month>6')
         assert res.json['results']
         for row in res.json['results']:
             assert row['month'] > 6
 
-    @pytest.mark.xfail  # needs a new test db with ethnicity rows
     def test_arrests_count_filters_by_less_than_or_equal_to(self, testapp):
         res = testapp.get('/arrests/ethnicity/?by=year,month&month<=3')
         assert res.json['results']
         for row in res.json['results']:
             assert row['month'] <= 3
 
-    @pytest.mark.xfail  # needs a new test db with ethnicity rows
     def test_arrests_count_filters_by_less_than_or_equal_to(self, testapp):
         res = testapp.get(
             '/arrests/ethnicity/?by=year,offense_cat_name&offense_cat_name!=Robbery&per_page=100'
@@ -322,13 +301,11 @@ class TestArrestsCountByEthnicityEndpoint:
         for row in res.json['results']:
             assert row['offense_cat_name'] != 'Robbery'
 
-    @pytest.mark.xfail  # needs a new test db with ethnicity rows
     def test_arrests_count_simplified_field_name_is_equivalent(self, testapp):
         res = testapp.get('/arrests/ethnicity/?by=data_year,state_abbr')
         simplified_res = testapp.get('/arrests/ethnicity/?by=year,state')
         assert res.json['results'] == simplified_res.json['results']
 
-    @pytest.mark.xfail  # needs a new test db with ethnicity rows
     def test_arrests_count_reports_simplified_field_name(self, testapp):
         res = testapp.get('/arrests/ethnicity/?by=data_year,state')
         assert res.json['results']
