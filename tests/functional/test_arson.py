@@ -102,22 +102,23 @@ class TestArsonCountEndpoint:
             assert row['subclass_name'] == 'Structural'
 
     def test_arson_count_equality_filter_by_number(self, testapp):
-        res = testapp.get('/arson/?by=year,month&month=9')
+        res = testapp.get('/arson/?by=year,month&month=1')
+        assert res.status_code == 200
         assert res.json['results']
         for row in res.json['results']:
-            assert row['month'] == 9 
+            assert row['month'] == 1 
 
     def test_arson_count_equality_filter_by_multiple_number(self, testapp):
-        res = testapp.get('/arson/?by=year,month&month=7,9')
+        res = testapp.get('/arson/?by=year,month&month=1,2')
         assert res.json['results']
         for row in res.json['results']:
-            assert row['month'] in (7, 9)
+            assert row['month'] in (1, 2)
 
     def test_arson_count_filters_by_greater_than(self, testapp):
-        res = testapp.get('/arson/?by=year,month&month>6')
+        res = testapp.get('/arson/?by=year,month&month<6')
         assert res.json['results']
         for row in res.json['results']:
-            assert row['month'] > 6
+            assert row['month'] < 6
 
     def test_arson_count_filters_by_less_than_or_equal_to(self, testapp):
         res = testapp.get('/arson/?by=year,month&month<=3')
