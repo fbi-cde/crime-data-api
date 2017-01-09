@@ -1,5 +1,11 @@
-CREATE TABLE reta_cube AS
-    SELECT GROUPING(data_year,
+\set ON_ERROR_STOP on
+
+DROP SEQUENCE IF EXISTS retacubeseq;
+CREATE SEQUENCE retacubeseq;
+
+CREATE TABLE reta_cube_rollup AS
+    SELECT NEXTVAL('retacubeseq') AS reta_month_offense_subcat_summary_id,
+           GROUPING(data_year,
              month_num,
              state_name,
              state_abbr,
@@ -35,3 +41,6 @@ CREATE TABLE reta_cube AS
                      (offense_name, offense_code),
                      (offense_subcat_name, offense_subcat_code))
 ;
+
+DROP TABLE IF EXISTS reta_month_offense_subcat_summary CASCADE;
+ALTER TABLE reta_cube_rollup RENAME TO reta_month_offense_subcat_summary;
