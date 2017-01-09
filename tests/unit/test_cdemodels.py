@@ -68,3 +68,19 @@ class TestCdeRefCounty:
 class TestCdeRefAgencyCounty:
     def test_current_year(self, testapp):
         assert CdeRefAgencyCounty.current_year() == 2016
+
+
+class TestCdeRefState:
+    """Test the CdeRefState class"""
+
+    def test_population(self, app):
+        state = CdeRefState.get(abbr="WY").one()
+        assert state.population_for_year(1984) == 511000
+
+    def test_num_agencies(self, app):
+        state = CdeRefState.get(abbr='VA').one()
+        assert state.num_agencies == 145
+
+    def test_police_officers(self, app):
+        state = CdeRefState.get(abbr="VA").one()
+        assert state.police_officers_for_year(2008) == 48

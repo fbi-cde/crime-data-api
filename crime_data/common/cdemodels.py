@@ -51,7 +51,29 @@ class CdeRetaMonthOffenseSubcat(models.RetaMonthOffenseSubcat):
     pass
 
 
-class CdeRefState(models.RefState):
+class CdeRefAgencyCounty(models.RefAgencyCounty):
+    """A wrapper around the RefAgencyCounty model"""
+
+    @staticmethod
+    def current_year():
+        """Returns the current year for the agency/county mappings."""
+        return session.query(func.max(CdeRefAgencyCounty.data_year)).scalar()
+
+
+class CurrentYear:
+    """
+    A mixin that provides the current_year property to other models
+    """
+
+    @property
+    def current_year(self):
+        if self._current_year is None:
+            self._current_year = CdeRefAgencyCounty.current_year
+
+        return self._current_year
+
+
+class CdeRefState(models.RefState, CurrentYear):
     """A wrapper around the RefState model with extra finder methods"""
 
     def get(state_id=None, abbr=None, fips=None):
@@ -70,16 +92,59 @@ class CdeRefState(models.RefState):
         return query
 
 
-class CdeRefAgencyCounty(models.RefAgencyCounty):
-    """A wrapper around the RefAgencyCounty model"""
+    @property
+    def num_agencies(self):
+        """Returns a count of all the agencies in the state"""
 
-    @staticmethod
-    def current_year():
-        """Returns the current year for the agency/county mappings."""
-        return session.query(func.max(CdeRefAgencyCounty.data_year)).scalar()
+        query = session.query(CdeRefAgency)
+        query = (
+            query.join(CdeRefState)
+            .filter(CdeRefState.state_id == self.state_id)
+        )
+
+        return get_sql_count(query)
 
 
-class CdeRefCounty(models.RefCounty):
+    def population_for_year(self, data_year):
+        """Returns the population for a given year"""
+
+        query = session.query(models.RefStatePopulation)
+        query = (
+            query.filter(models.RefStatePopulation.state_id == self.state_id)
+            .filter(models.RefStatePopulation.data_year == data_year)
+        )
+
+        return query.one().population
+
+
+    @property
+    def population(self):
+        """Returns the population for the given year"""
+
+        return self.population_for_year(current_year)
+
+
+    def police_officers_for_year(self, data_year):
+        """Returns the number of police officers for a given year"""
+        query = session.query(func.sum(models.PeEmployeeData.male_officer +
+                                       models.PeEmployeeData.female_officer))
+        query = (
+            query.join(CdeRefAgency)
+            .filter(CdeRefAgency.state_id == self.state_id)
+            .filter(CdeRefAgency.agency_id == models.PeEmployeeData.agency_id)
+            .filter(models.PeEmployeeData.data_year == data_year)
+        )
+
+        return query.scalar()
+
+
+    @property
+    def police_officers(self):
+        """Returns the total police officers for the current year"""
+        return self.police_officers_for_year(current_year)
+
+
+class CdeRefCounty(models.RefCounty, CurrentYear):
     """A wrapper around the RefCounty model with extra methods"""
 
     def get(county_id=None, fips=None, name=None):
@@ -130,7 +195,7 @@ class CdeRefCounty(models.RefCounty):
     @property
     def num_agencies(self):
         """Returns the number of agencies for the most recent year"""
-        return self.num_agencies_for_year(CdeRefAgencyCounty.current_year())
+        return self.num_agencies_for_year(current_year)
 
 
     def population_for_year(self, data_year):
@@ -148,7 +213,7 @@ class CdeRefCounty(models.RefCounty):
     @property
     def population(self):
         """Returns the most recent reported population for the county"""
-        return self.population_for_year(CdeRefAgencyCounty.current_year())
+        return self.population_for_year(current_year)
 
 
     def police_officers_for_year(self, data_year):
@@ -170,7 +235,7 @@ class CdeRefCounty(models.RefCounty):
     @property
     def police_officers(self):
         """Returns the total police officers for the current year"""
-        return self.police_officers_for_year(CdeRefAgencyCounty.current_year())
+        return self.police_officers_for_year(current_year)
 
 
 class CdeRefAgency(models.RefAgency):

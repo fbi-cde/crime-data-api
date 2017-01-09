@@ -2071,6 +2071,26 @@ class RefCountyPopulation(db.Model):
     county = db.relationship('RefCounty')
 
 
+class RefStatePopulation(db.Model):
+    __tablename__ = 'ref_state_population'
+    __tableargs__ = (UniqueConstraint('state_id', 'data_year'), )
+
+    state_id = db.Column(db.Integer,
+                         db.ForeignKey('ref_state.state_id',
+                                       deferrable=True,
+                                       initially='DEFERRED'),
+                         nullable=False,
+                         index=True,
+                         primary_key=True)
+    data_year = db.Column(db.SmallInteger, nullable=False, primary_key=True)
+    population = db.Column(db.BigInteger)
+    source_flag = db.Column(db.String(1), nullable=False)
+    census = db.Column(db.BigInteger)
+    change_timestamp = db.Column(db.DateTime(True))
+    change_user = db.Column(db.String(100))
+    reporting_population = db.Column(db.BigInteger)
+
+
 class RefDepartment(db.Model):
     __tablename__ = 'ref_department'
 
