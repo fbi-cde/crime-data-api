@@ -91,7 +91,7 @@ class RetaMonthOffenseSubcatSummary(db.Model, CreatableModel):
 
     __tablename__ = 'reta_month_offense_subcat_summary'
 
-    grouping_sets = {'grouping_bitmap': [],
+    xgrouping_sets = {'grouping_bitmap': [],
                      'year': [],
                      'month': [],
                      'offense_subcat': ['offense_subcat_code', 'offense', 'offense_code', 'offense_category', 'classification'],
@@ -103,18 +103,35 @@ class RetaMonthOffenseSubcatSummary(db.Model, CreatableModel):
                      'state_name': ['state'],
                      'state': ['state_name'], }
 
+
+    grouping_sets = {'grouping_bitmap': [],
+                     'year': [],
+                     'month': [],
+                     'offense_subcat': ['offense_subcat_code', 'offense', 'offense_code', 'offense_category', 'classification'],
+                     'offense_subcat_code': ['offense_subcat', 'offense', 'offense_code', 'offense_category', 'classification'],
+                     'offense': ['offense_code', 'offense_category', 'classification'],
+                     'offense_code': ['offense', 'offense_category', 'classification'],
+                     'offense_category': ['classification'],
+                     'classification': [],
+                     'state_name': ['state'],
+                     'state': ['state_name'], }
+
+
+    # filterables *must* be in the same order as the GROUPING clause used
+    # to create the `grouping_bitmap` field
     filterables = ['year',
                    'month',
-                   'offense_subcat',
-                   'offense_subcat_code',
+                   'state_name',
+                   'state',
+                   'classification',
+                   'offense_category',
                    'offense',
                    'offense_code',
-                   'offense_category',
-                   'classification',
-                   'state_name',
-                   'state', ]
+                   'offense_subcat',
+                   'offense_subcat_code',
+                   ]
 
-    id = db.Column(db.BigInteger, autoincrement=True, primary_key=True)
+    reta_month_offense_subcat_summary_id = db.Column(db.BigInteger, autoincrement=True, primary_key=True)
     grouping_bitmap = db.Column(db.Integer)
     reported = db.Column(db.BigInteger)
     unfounded = db.Column(db.BigInteger)
