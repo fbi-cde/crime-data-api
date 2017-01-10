@@ -7,7 +7,7 @@ the other hand, must actually be generated in our system.
 from copy import deepcopy
 import logging
 from psycopg2 import ProgrammingError
-from sqlalchemy.dialects.postgresql import JSON
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import backref
 from sqlalchemy.sql.elements import BinaryExpression
 from sqlalchemy import func
@@ -35,7 +35,7 @@ class NibrsIncidentRepresentation(db.Model, CreatableModel):
     incident_representation_id = db.Column(db.BigInteger, primary_key=True)
     incident_id = db.Column(db.BigInteger,
                             db.ForeignKey(models.NibrsIncident.incident_id))
-    representation = db.Column(JSON)
+    representation = db.Column(JSONB)
     incident = db.relationship(models.NibrsIncident,
                                uselist=False,
                                backref=backref('representation',
