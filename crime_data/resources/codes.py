@@ -8,10 +8,13 @@ from crime_data.common.marshmallow_schemas import (ArgumentsSchema,
                                                    CodeIndexResponseSchema)
 
 CODE_MODELS = {
+    'arson_subcategory': models.ArsonSubcategory,
+    'arson_subclassification': models.ArsonSubclassification,
     'asr_age_range': models.AsrAgeRange,
     'asr_ethnicity': models.AsrEthnicity,
     'asr_offense': models.AsrOffense,
     'asr_offense_category': models.AsrOffenseCategory,
+    'asr_offense_subcat': models.AsrOffenseSubcat,
     'crime_type': models.CrimeType,
     'nibrs_activity_type': models.NibrsActivityType,
     'nibrs_age': models.NibrsAge,
@@ -46,16 +49,21 @@ CODE_MODELS = {
     'ref_state': models.RefState,
     'ref_tribe': models.RefTribe,
     'ref_university': models.RefUniversity,
+    'reta_offense': models.RetaOffense,
     'reta_offense_category': models.RetaOffenseCategory,
+    'reta_offense_subcat': models.RetaOffenseSubcat,
     'supp_larceny_type': models.SuppLarcenyType,
     'supp_property_type': models.SuppPropertyType
 }
 
 CODE_SCHEMAS = {
+    'arson_subcategory': marshmallow_schemas.ArsonSubcategorySchema,
+    'arson_subclassification': marshmallow_schemas.ArsonSubclassificationSchema,
     'asr_age_range': marshmallow_schemas.AsrAgeRangeSchema,
     'asr_ethnicity': marshmallow_schemas.AsrEthnicitySchema,
     'asr_offense': marshmallow_schemas.AsrOffenseSchema,
     'asr_offense_category': marshmallow_schemas.AsrOffenseCategorySchema,
+    'asr_offense_subcat': marshmallow_schemas.AsrOffenseSubcatSchema,
     'crime_type': marshmallow_schemas.CrimeTypeSchema,
     'nibrs_activity_type': marshmallow_schemas.NibrsActivityTypeSchema,
     'nibrs_age': marshmallow_schemas.NibrsAgeSchema,
@@ -90,7 +98,9 @@ CODE_SCHEMAS = {
     'ref_state': marshmallow_schemas.RefStateSchema,
     'ref_tribe': marshmallow_schemas.RefTribeSchema,
     'ref_university': marshmallow_schemas.RefUniversitySchema,
+    'reta_offense': marshmallow_schemas.RetaOffenseSchema,
     'reta_offense_category': marshmallow_schemas.RetaOffenseCategorySchema,
+    'reta_offense_subcat': marshmallow_schemas.RetaOffenseSubcatSchema,
     'supp_larceny_type': marshmallow_schemas.SuppLarcenyTypeSchema,
     'supp_property_type': marshmallow_schemas.SuppPropertyTypeSchema
 }
