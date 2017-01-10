@@ -83,129 +83,55 @@ class NibrsIncidentRepresentation(db.Model, CreatableModel):
 
 
 class RetaMonthOffenseSubcatSummary(db.Model, CreatableModel):
+    """
+    Precalculated sums for RETA data.
+
+    Create and populate with `sql/create_reta_summary.sql`
+    """
 
     __tablename__ = 'reta_month_offense_subcat_summary'
 
-    sql = """
-    SELECT GROUPING(data_year,
-             month_num,
-             offense_subcat_name,
-             offense_subcat_code,
-             offense_name,
-             offense_code,
-             offense_category_name,
-             classification_name,
-             ori,
-             ucr_agency_name,
-             ncic_agency_name,
-             city_name,
-             state_name,
-             state_abbr,
-             population_family_name,
-             population_family_desc ) AS grouping_bitmap,
-           SUM(rmos.reported_count) AS reported,
-           SUM(rmos.unfounded_count) AS unfounded,
-           SUM(rmos.actual_count) AS actual,
-           SUM(rmos.cleared_count) AS cleared,
-           SUM(rmos.juvenile_cleared_count) AS juvenile_cleared,
-           rm.data_year AS year,
-           rm.month_num AS month,
-           ros.offense_subcat_name AS offense_subcat,
-           ros.offense_subcat_code,
-           ro.offense_name AS offense,
-           ro.offense_code,
-           roc.offense_category_name AS offense_category,
-           oc.classification_name AS classification,
-           ra.ori,
-           ra.ucr_agency_name,
-           ra.ncic_agency_name,
-           rc.city_name AS city,
-           rs.state_name,
-           rs.state_abbr AS state,
-           rpf.population_family_name,
-           rpf.population_family_desc
-    FROM   reta_month_offense_subcat rmos
-    LEFT OUTER JOIN   reta_offense_subcat ros ON (rmos.offense_subcat_id = ros.offense_subcat_id)
-    LEFT OUTER JOIN   reta_offense ro ON (ros.offense_id = ro.offense_id)
-    LEFT OUTER JOIN   reta_offense_category roc ON (ro.offense_category_id = roc.offense_category_id)
-    LEFT OUTER JOIN   offense_classification oc ON (ro.classification_id = oc.classification_id)
-    LEFT OUTER JOIN   reta_month rm ON (rmos.reta_month_id = rm.reta_month_id)
-    LEFT OUTER JOIN   ref_agency ra ON (rm.agency_id = ra.agency_id)
-    LEFT OUTER JOIN   ref_city rc ON (ra.city_id = rc.city_id)
-    LEFT OUTER JOIN   ref_state rs ON (ra.state_id = rs.state_id)
-    LEFT OUTER JOIN   ref_population_family rpf ON (ra.population_family_id = rpf.population_family_id)
-    GROUP BY CUBE (data_year, month_num,
-                   (offense_subcat_name, offense_subcat_code),
-                   (offense_name, offense_code),
-                   offense_category_name,
-                   classification_name,
-                   (ori, ucr_agency_name, ncic_agency_name),
-                   city_name, (state_name, state_abbr),
-                   (population_family_name, population_family_desc)
-                   )
-    ORDER BY ucr_agency_name, data_year, month_num
-    """
+    xgrouping_sets = {'grouping_bitmap': [],
+                     'year': [],
+                     'month': [],
+                     'offense_subcat': ['offense_subcat_code', 'offense', 'offense_code', 'offense_category', 'classification'],
+                     'offense_subcat_code': ['offense_subcat', 'offense', 'offense_code', 'offense_category', 'classification'],
+                     'offense': ['offense_subcat', 'offense_subcat_code', 'offense_code', 'offense_category', 'classification'],
+                     'offense_code': ['offense_subcat', 'offense_subcat_code', 'offense', 'offense_category', 'classification'],
+                     'offense_category': ['offense_subcat', 'offense_subcat_code', 'offense', 'offense_code', 'classification'],
+                     'classification': ['offense_subcat', 'offense_subcat_code', 'offense', 'offense_code', 'offense_category'],
+                     'state_name': ['state'],
+                     'state': ['state_name'], }
 
-    inserter = """INSERT INTO {}
-        (grouping_bitmap,
-         reported, unfounded, actual, cleared, juvenile_cleared,
-         year, month,
-         offense_subcat, offense_subcat_code,
-         offense, offense_code, offense_category,
-         classification,
-         ori, ucr_agency_name, ncic_agency_name,
-         city, state_name, state,
-         population_family_name, population_family_desc)
-        {}""".format(__tablename__, sql)
 
     grouping_sets = {'grouping_bitmap': [],
                      'year': [],
                      'month': [],
-                     'offense_subcat': ['offense_subcat_code'],
-                     'offense_subcat_code': ['offense_subcat'],
-                     'offense': ['offense_code'],
-                     'offense_code': ['offense'],
-                     'offense_category': [],
+                     'offense_subcat': ['offense_subcat_code', 'offense', 'offense_code', 'offense_category', 'classification'],
+                     'offense_subcat_code': ['offense_subcat', 'offense', 'offense_code', 'offense_category', 'classification'],
+                     'offense': ['offense_code', 'offense_category', 'classification'],
+                     'offense_code': ['offense', 'offense_category', 'classification'],
+                     'offense_category': ['classification'],
                      'classification': [],
-                     'ori': ['ucr_agency_name', 'ncic_agency_name'],
-                     'ucr_agency_name': ['ori', 'ncic_agency_name'],
-                     'ncic_agency_name': ['ori', 'ucr_agency_name'],
-                     'city': [],
                      'state_name': ['state'],
-                     'state': ['state_name'],
-                     'population_family_name': ['population_family_desc'],
-                     'population_family_desc': ['population_family_name'], }
+                     'state': ['state_name'], }
 
+
+    # filterables *must* be in the same order as the GROUPING clause used
+    # to create the `grouping_bitmap` field
     filterables = ['year',
                    'month',
-                   'offense_subcat',
-                   'offense_subcat_code',
-                   'offense',
-                   'offense_code',
-                   'offense_category',
-                   'classification',
-                   'ori',
-                   'ucr_agency_name',
-                   'ncic_agency_name',
-                   'city',
                    'state_name',
                    'state',
-                   'population_family_name',
-                   'population_family_desc', ]
+                   'classification',
+                   'offense_category',
+                   'offense',
+                   'offense_code',
+                   'offense_subcat',
+                   'offense_subcat_code',
+                   ]
 
-    @classmethod
-    def regenerate(cls):
-        """Generates or replaces all cached records."""
-
-        cls.query.delete()
-        db.session.execute(cls.inserter)
-        db.session.commit()
-        cls.query.filter(cls.reported == 0).filter(cls.unfounded == 0). \
-            filter(cls.actual == 0).filter(cls.cleared == 0). \
-            filter(cls.juvenile_cleared == 0).delete()
-        db.session.commit()
-
-    id = db.Column(db.BigInteger, autoincrement=True, primary_key=True)
+    reta_month_offense_subcat_summary_id = db.Column(db.BigInteger, autoincrement=True, primary_key=True)
     grouping_bitmap = db.Column(db.Integer)
     reported = db.Column(db.BigInteger)
     unfounded = db.Column(db.BigInteger)
@@ -220,14 +146,8 @@ class RetaMonthOffenseSubcatSummary(db.Model, CreatableModel):
     offense_code = db.Column(db.Text)
     offense_category = db.Column(db.Text)
     classification = db.Column(db.Text)
-    ori = db.Column(db.Text)
-    ucr_agency_name = db.Column(db.Text)
-    ncic_agency_name = db.Column(db.Text)
-    city = db.Column(db.Text)
     state_name = db.Column(db.Text)
     state = db.Column(db.Text)
-    population_family_name = db.Column(db.Text)
-    population_family_desc = db.Column(db.Text)
 
     @classmethod
     def determine_grouping(cls, filters, group_by_column_names, schema):
