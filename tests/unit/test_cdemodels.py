@@ -52,11 +52,23 @@ class TestCdeRefCounty:
         county = CdeRefCounty.get(county_id=2271).one()
         assert county.num_agencies_for_year(2014) == 8
 
+    def test_num_agencies_missing_data(self, app):
+        """This county is missing current agencies data"""
+
+        county = CdeRefCounty.get(county_id=2271).one()
+        assert county.num_agencies is None
+
     def test_population(self, app):
         """Using the test data in the ref_county_population table"""
 
         county = CdeRefCounty.get(county_id=74).one()
         assert county.population_for_year(1960) == 24501
+
+    def test_population_missing_data(self, app):
+        """This county is missing current population data"""
+
+        county = CdeRefCounty.get(county_id=74).one()
+        assert county.population is None
 
     def test_police_officers(self, app):
         """Using the test data in the database"""
@@ -64,6 +76,11 @@ class TestCdeRefCounty:
         county = CdeRefCounty.get(county_id=3015).one()
         assert county.police_officers_for_year(1977) == 19
 
+    def test_police_officers_missing_data(self, app):
+
+        county = CdeRefCounty.get(county_id=3015).one()
+        assert county.police_officers_for_year(2021) is None
+        assert county.police_officers is None
 
 class TestCdeRefAgencyCounty:
     def test_current_year(self, testapp):

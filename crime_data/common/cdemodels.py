@@ -2,6 +2,8 @@ from flask_restful import abort
 from sqlalchemy import and_, func, or_
 from sqlalchemy.exc import ArgumentError
 from sqlalchemy.orm import aliased
+from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy.sql import label
 from sqlalchemy.sql import sqltypes as st
 from sqlalchemy.sql import label
 
@@ -64,17 +66,19 @@ class CurrentYear:
     """
     A mixin that provides the current_year property to other models
     """
-
     @property
     def current_year(self):
-        if self._current_year is None:
-            self._current_year = CdeRefAgencyCounty.current_year
-
-        return self._current_year
+        try:
+            return self._current_year
+        except AttributeError:
+            self._current_year = CdeRefAgencyCounty.current_year()
+            return self.current_year
 
 
 class CdeRefState(models.RefState, CurrentYear):
     """A wrapper around the RefState model with extra finder methods"""
+
+    counties = db.relationship('CdeRefCounty', lazy='dynamic')
 
     def get(state_id=None, abbr=None, fips=None):
         """
@@ -102,8 +106,11 @@ class CdeRefState(models.RefState, CurrentYear):
             .filter(CdeRefState.state_id == self.state_id)
         )
 
-        return get_sql_count(query)
-
+        count = get_sql_count(query)
+        if count == 0:
+            return None # assume 0 agencies = didn't find anything
+        else:
+            return count
 
     def population_for_year(self, data_year):
         """Returns the population for a given year"""
@@ -114,14 +121,17 @@ class CdeRefState(models.RefState, CurrentYear):
             .filter(models.RefStatePopulation.data_year == data_year)
         )
 
-        return query.one().population
+        try:
+            return query.one().population
+        except NoResultFound:
+            return None
 
 
     @property
     def population(self):
         """Returns the population for the given year"""
 
-        return self.population_for_year(current_year)
+        return self.population_for_year(self.current_year)
 
 
     def police_officers_for_year(self, data_year):
@@ -141,14 +151,14 @@ class CdeRefState(models.RefState, CurrentYear):
     @property
     def police_officers(self):
         """Returns the total police officers for the current year"""
-        return self.police_officers_for_year(current_year)
+        return self.police_officers_for_year(self.current_year)
 
 
 class CdeRefCounty(models.RefCounty, CurrentYear):
-    """A wrapper around the RefCounty model with extra methods"""
+    """A wrapper around the RefCounty model with extra methods."""
 
     def get(county_id=None, fips=None, name=None):
-        """Find matching counties by id, fips code or name"""
+        """Find matching counties by id, fips code or name."""
         query = CdeRefCounty.query
 
         if county_id:
@@ -172,15 +182,31 @@ class CdeRefCounty(models.RefCounty, CurrentYear):
         return query
 
     @property
+    def state_name(self):
+        """Returns the state name or None if no state record is found."""  
+        if self.state is None:
+            None
+        else:
+            self.state.name
+
+    @property
+    def state_abbr(self):
+        """Returns the state postal abbrev or None is no state record is found."""
+
+        if self.state is None:
+            None
+        else:
+            self.state.state_postal_abbr
+
+    @property
     def fips(self):
-        """Builds a FIPS code string for the county"""
+        """Builds a FIPS code string for the county."""
         # the int coercion is necessary because of how FBI stores county FIPS
         return '{}{:03d}'.format(self.state.state_fips_code,
                                  int(self.county_fips_code))
 
-
     def num_agencies_for_year(self, data_year):
-        """Returns the number of agencies for that county in a year"""
+        """Counts the number of agencies for that county in a year."""
         query = session.query(CdeRefAgency)
         query = (
             query.join(CdeRefAgencyCounty)
@@ -188,15 +214,16 @@ class CdeRefCounty(models.RefCounty, CurrentYear):
             .filter(CdeRefAgencyCounty.county_id == self.county_id)
         )
 
-        print(query)
-        return get_sql_count(query)
-
+        count = get_sql_count(query)
+        if count == 0:
+            return None  # assume error finding agencies
+        else:
+            return count
 
     @property
     def num_agencies(self):
         """Returns the number of agencies for the most recent year"""
-        return self.num_agencies_for_year(current_year)
-
+        return self.num_agencies_for_year(self.current_year)
 
     def population_for_year(self, data_year):
         """Returns the population for a given year"""
@@ -206,15 +233,15 @@ class CdeRefCounty(models.RefCounty, CurrentYear):
             .filter(models.RefCountyPopulation.data_year == data_year)
         )
 
-        print(query)
-        return query.one().population
-
+        try:
+            return query.one().population
+        except NoResultFound:
+            return None
 
     @property
     def population(self):
         """Returns the most recent reported population for the county"""
-        return self.population_for_year(current_year)
-
+        return self.population_for_year(self.current_year)
 
     def police_officers_for_year(self, data_year):
         """Returns the number of police officers for a given year"""
@@ -235,7 +262,7 @@ class CdeRefCounty(models.RefCounty, CurrentYear):
     @property
     def police_officers(self):
         """Returns the total police officers for the current year"""
-        return self.police_officers_for_year(current_year)
+        return self.police_officers_for_year(self.current_year)
 
 
 class CdeRefAgency(models.RefAgency):
@@ -277,6 +304,9 @@ class CdeNibrsLocationType(models.NibrsLocationType):
 
 
 class CdeNibrsIncident(models.NibrsIncident, QueryTraits):
+    """
+    Extends models.NibrsIncident.
+    """
 
     over_count = True
 
@@ -289,9 +319,6 @@ class CdeNibrsIncident(models.NibrsIncident, QueryTraits):
     arrestee_race = aliased(CdeRefRace, name='arrestee_race')
     arrestee_age = aliased(CdeNibrsAge, name='arrestee_age')
     arrestee_ethnicity = aliased(CdeNibrsEthnicity, name='arrestee_ethnicity')
-    '''''
-    Extends models.NibrsIncident.
-    ''' ''
 
     # Maps API filter to DB column name.
     @staticmethod

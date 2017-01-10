@@ -2324,7 +2324,9 @@ class RefState(db.Model):
                             index=True)
 
     division = db.relationship('RefDivision', lazy=False)
-    counties = db.relationship('RefCounty', lazy='dynamic', back_populates='state')
+    counties = db.relationship('RefCounty',
+                               lazy='dynamic',
+                               back_populates='state')
 
 
 class RefSubmittingAgency(db.Model):
