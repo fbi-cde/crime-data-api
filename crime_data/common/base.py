@@ -3,7 +3,6 @@ import json
 import math
 import os
 import random
-from ast import literal_eval
 from functools import wraps
 
 import sqltap
@@ -14,7 +13,6 @@ from flask_apispec.views import MethodResource
 from flask_sqlalchemy import SignallingSession, SQLAlchemy
 from sqlalchemy import func, or_
 
-from crime_data.common.credentials import get_credential
 from crime_data.extensions import db
 
 session = db.session
@@ -89,7 +87,7 @@ class RoutingSession(SignallingSession):
 
     def get_bind(self, mapper=None, clause=None):
         if self.use_follower:
-            return random.choice(self.followers) #nosec
+            return random.choice(self.followers)
 
         return super().get_bind(mapper=mapper, clause=clause)
 
@@ -312,7 +310,7 @@ class CdeResource(MethodResource):
 
     def _jsonable(self, val):
         if isinstance(val, Decimal):
-            return literal_eval(str(val))
+            return eval(str(val))
         elif hasattr(val, '__pow__'):  # is numeric
             return val
         return str(val)
@@ -326,6 +324,8 @@ class CdeResource(MethodResource):
 
     def _as_dict(self, fieldTuple, res):
         return dict(zip(fieldTuple, res))
+
+
 
     def _compile_query(self, query):
         """
@@ -399,13 +399,16 @@ class CdeResource(MethodResource):
         return output
 
     def verify_api_key(self, args):
-        try:
-            key = get_credential('API_KEY')
+        if os.getenv('VCAP_SERVICES'):
+            service_env = json.loads(os.getenv('VCAP_SERVICES'))
+            cups_name = 'crime-data-api-creds'
+            creds = [
+                u['credentials'] for u in service_env['user-provided']
+                if 'credentials' in u
+            ]
+            key = creds[0]['API_KEY']
             if args.get('api_key') != key:
                 abort(401, message='Use correct `api_key` argument')
-        except KeyError:
-            if os.getenv('VCAP_SERVICES'):
-                abort(500, message='Unable to verify api_key at this time')
 
     def _parse_inequality_operator(self, k, v):
         """
