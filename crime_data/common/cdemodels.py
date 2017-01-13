@@ -839,3 +839,43 @@ class ArsonTableFamily(TableFamily):
 def _is_string(col):
     col0 = list(col.base_columns)[0]
     return issubclass(col0.type.python_type, str)
+
+
+# OffenderCount views
+from collections import namedtuple
+
+# FIXME: can I just declare a Marshmallow schema for this?
+CountRecord = namedtuple('CountRecord', ['code', 'count'])
+
+class OffenderCountView(object):
+    """A class for fetching the counts from a specific year"""
+
+    def __init__(self, year):
+        self.year = year
+
+    @property
+    def view_name(self):
+        """The name of the specific materialized view for this year."""
+        return "offender_counts_{}".format(self.year)
+
+    def base_query(self, field, state_id=None, county_id=None):
+        query = 'SELECT {} AS code, sum(count) AS count FROM {}'.format(field, self.view_name)
+        query += ' WHERE {} IS NOT NULL'.format(field)
+
+        if state_id:
+            query += ' AND state_id = :state_id'
+
+        if county_id:
+            query += ' AND county_id = :county_id'
+
+        query += ' GROUP BY {}'.format(field)
+        return query
+
+    def grouped_by_field(self, field, state_id=None, county_id=None):
+        """Returns incidents in a specific state or county grouped by race"""
+
+        query = self.base_query(field, state_id=state_id, county_id=county_id)
+        result = session.execute(query, {'state_id': state_id, 'county_id': county_id})
+        records = [CountRecord(*r) for r in result]
+
+        return records
