@@ -39,9 +39,7 @@ BEFORE INSERT ON nibrs_offender_denorm
 FOR EACH ROW EXECUTE PROCEDURE create_partition_and_insert();
 
 
-SET work_mem='4096MB'; -- Go Super Saiyan 1.
-SET synchronous_commit='off'; -- Go Super Saiyan 2.
-SET effective_cache_size='4GB';  -- Go Super Saiyan 3.
+SET synchronous_commit='off'; -- Go Super Saiyan.
 
 INSERT INTO nibrs_offender_denorm (incident_id, agency_id, year, incident_date, offender_id, age_id, age_num, sex_code, race_id) SELECT nibrs_offender.incident_id, nibrs_incident.agency_id, EXTRACT(YEAR FROM nibrs_incident.incident_date) as year, nibrs_incident.incident_date, nibrs_offender.offender_id, nibrs_offender.age_id, ceil(nibrs_offender.age_num::numeric / 10) * 10, nibrs_offender.sex_code,nibrs_offender.race_id from nibrs_offender JOIN nibrs_incident on nibrs_incident.incident_id = nibrs_offender.incident_id;
 

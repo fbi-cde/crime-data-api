@@ -34,10 +34,7 @@ CREATE TRIGGER victim_partition_insert_trigger
 BEFORE INSERT ON nibrs_victim_denorm
 FOR EACH ROW EXECUTE PROCEDURE create_partition_and_insert();
 
-
-SET work_mem='4096MB'; -- Go Super Saiyan.
-SET synchronous_commit='off';
-SET effective_cache_size='4GB';
+SET synchronous_commit='off'; -- Go Super Saiyan.
 
 INSERT INTO nibrs_victim_denorm (incident_id, agency_id, year, incident_date, victim_id, age_id, age_num, sex_code, race_id) SELECT nibrs_victim.incident_id, nibrs_incident.agency_id, EXTRACT(YEAR FROM nibrs_incident.incident_date) as year, nibrs_incident.incident_date, nibrs_victim.victim_id, nibrs_victim.age_id, ceil(nibrs_victim.age_num::numeric / 10) * 10, nibrs_victim.sex_code,nibrs_victim.race_id from nibrs_victim JOIN nibrs_incident on nibrs_incident.incident_id = nibrs_victim.incident_id;
 
