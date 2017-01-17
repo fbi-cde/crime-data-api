@@ -854,21 +854,17 @@ class OffenderCountView(object):
     def query(self, args):
         base_query = None
         qry = None
-        if self.state_id:
-            base_query = self.base_query(self.field, self.state_id, None)
-            try:
+        try:
+            if self.state_id:
+                base_query = self.base_query(self.field, self.state_id, None)
                 qry = session.execute(base_query, {'state_id': self.state_id})
-            except Exception as e:
-                session.rollback()
-                raise e
-
-        if self.county_id:
-            base_query = self.base_query(self.field, None, self.county_id)
-            try:
+            elif self.county_id:
+                base_query = self.base_query(self.field, None, self.county_id)
                 qry = session.execute(base_query, {'county_id': self.county_id})
-            except Exception as e:
-                session.rollback()
-                raise e
+
+        except Exception as e:
+            session.rollback()
+            raise e
         return qry
             
     @property
@@ -901,21 +897,17 @@ class VictimCountView(object):
     def query(self, args):
         base_query = None
         qry = None
-        if self.state_id:
-            base_query = self.base_query(self.field, self.state_id, None)
-            try:
+        try:
+            if self.state_id:
+                base_query = self.base_query(self.field, self.state_id, None)
                 qry = session.execute(base_query, {'state_id': self.state_id})
-            except Exception as e:
-                session.rollback()
-                raise e
-                
-        if self.county_id:
-            base_query = self.base_query(self.field, None, self.county_id)
-            try:
+            elif self.county_id:
+                base_query = self.base_query(self.field, None, self.county_id)
                 qry = session.execute(base_query, {'county_id': self.county_id})
-            except Exception as e:
-                session.rollback()
-                raise e
+
+        except Exception as e:
+            session.rollback()
+            raise e
         return qry
             
     @property
@@ -933,4 +925,106 @@ class VictimCountView(object):
 
         if county_id:
             query += ' AND county_id = :county_id'
+        return query
+
+class HateCrimeCountView(object):
+    """A class for fetching the counts from a specific year"""
+
+    def __init__(self, field, year=None, state_id = None, county_id = None):
+        self.year = year
+        self.state_id = state_id
+        self.county_id = county_id
+        self.field = field
+        self.national = False
+        if self.state_id is None and self.county_id is None:
+            self.national = True
+
+    # MUST IMPLMENT.
+    def query(self, args):
+        base_query = None
+        qry = None
+        try:
+            if self.state_id:
+                base_query = self.base_query(self.field, self.state_id, None)
+                qry = session.execute(base_query, {'state_id': self.state_id})
+            elif self.county_id:
+                base_query = self.base_query(self.field, None, self.county_id)
+                qry = session.execute(base_query, {'county_id': self.county_id})
+            else:
+                base_query = self.base_query(self.field)
+                qry = session.execute(base_query)
+        except Exception as e:
+            session.rollback()
+            raise e
+        return qry
+            
+    @property
+    def view_name(self):
+        """The name of the specific materialized view for this year."""
+        return "hc_counts"
+
+
+    def base_query(self, field, state_id=None, county_id=None):
+        query = 'SELECT {} , count FROM {}'.format(field, self.view_name)
+        query += ' WHERE {} IS NOT NULL'.format(field)
+
+        if state_id:
+            query += ' AND state_id = :state_id'
+
+        if county_id:
+            query += ' AND county_id = :county_id'
+
+        if self.national:
+            query += ' AND state_id is NULL AND county_id is NULL AND agency_id is NULL '
+        return query
+
+class CargoTheftCountView(object):
+    """A class for fetching the counts from a specific year"""
+
+    def __init__(self, field, year=None, state_id = None, county_id = None):
+        self.year = year
+        self.state_id = state_id
+        self.county_id = county_id
+        self.field = field
+        self.national = False
+        if self.state_id is None and self.county_id is None:
+            self.national = True
+
+    # MUST IMPLMENT.
+    def query(self, args):
+        base_query = None
+        qry = None
+        try:
+            if self.state_id:
+                base_query = self.base_query(self.field, self.state_id, None)
+                qry = session.execute(base_query, {'state_id': self.state_id})
+            elif self.county_id:
+                base_query = self.base_query(self.field, None, self.county_id)
+                qry = session.execute(base_query, {'county_id': self.county_id})
+            else:
+                base_query = self.base_query(self.field)
+                qry = session.execute(base_query)
+        except Exception as e:
+            session.rollback()
+            raise e
+        return qry
+            
+    @property
+    def view_name(self):
+        """The name of the specific materialized view for this year."""
+        return "ct_counts"
+
+
+    def base_query(self, field, state_id=None, county_id=None):
+        query = 'SELECT {} , count FROM {}'.format(field, self.view_name)
+        query += ' WHERE {} IS NOT NULL'.format(field)
+
+        if state_id:
+            query += ' AND state_id = :state_id'
+
+        if county_id:
+            query += ' AND county_id = :county_id'
+
+        if self.national:
+            query += ' AND state_id is NULL AND county_id is NULL '
         return query

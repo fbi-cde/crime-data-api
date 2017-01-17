@@ -52,6 +52,16 @@ class IncidentViewCountArgsYear(ArgumentsSchema):
     variable = marsh_fields.String(missing='')
     year = marsh_fields.String(required=True)
 
+class IncidentViewCountArgs(ArgumentsSchema):
+    """
+    Groupable queries can be grouped by one or more fields found in the
+    tables separated by commas
+    """
+    county_id = marsh_fields.Integer()
+    state_id = marsh_fields.Integer()
+    variable = marsh_fields.String(missing='')
+    year = marsh_fields.String(missing=None)
+
 class GroupableArgsSchema(ArgumentsSchema):
     """
     Groupable queries can be grouped by one or more fields found in the
