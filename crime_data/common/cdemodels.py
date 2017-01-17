@@ -1,13 +1,11 @@
-import datetime
-
 from flask_restful import abort
 from sqlalchemy import and_, func, or_
 from sqlalchemy.exc import ArgumentError
 from sqlalchemy.orm import aliased
-from sqlalchemy.sql import label
 from sqlalchemy.sql import sqltypes as st
+from sqlalchemy.sql import label
 
-from crime_data.common import models
+from crime_data.common import models, newmodels
 from crime_data.common.base import QueryTraits, Fields
 from crime_data.extensions import db
 
@@ -47,7 +45,6 @@ class CdeRetaMonthOffenseSubcat(models.RetaMonthOffenseSubcat):
 
 
 class CdeRefAgency(models.RefAgency):
-
     def get(ori=None):
         # Base Query
         query = CdeRefAgency.query
@@ -213,8 +210,8 @@ class CdeRetaMonth(models.RetaMonth, QueryTraits):
             'offense': CdeRetaOffense.offense_name,
             'ori': CdeRefAgency.ori,
             'subcategory': CdeRetaOffenseSubcat.offense_subcat_name,
-            'agency_name': CdeRefAgency.
-            pub_agency_name,  # Assuming Public Agency Name is the best one.
+            'agency_name':
+            CdeRefAgency.pub_agency_name,  # Assuming Public Agency Name is the best one.
             'city': CdeRefCity.city_name.label('city'),
             'year': CdeRetaMonth.data_year,
             'month': CdeRetaMonth.month_num
@@ -348,7 +345,6 @@ class TableFamily:
             self._build_map()
         return self._map
 
-
     @property
     def filter_columns(self):
         out = []
@@ -357,7 +353,8 @@ class TableFamily:
             st.BigInteger: {'type': 'integer'},
             st.SmallInteger: {'type': 'integer'},
             st.Boolean: {'type': 'boolean'},
-            st.DateTime: {'type': 'string', 'format': 'date-time'},
+            st.DateTime: {'type': 'string',
+                          'format': 'date-time'},
             st.String: {'type': 'string'}
         }
         for (name, (table, col)) in self.map.items():
@@ -372,7 +369,6 @@ class TableFamily:
             out.append(field)
         return out
 
-    
     @property
     def input_args(self):
         """Returns a hash of names: type for Swagger"""
@@ -397,7 +393,7 @@ class TableFamily:
         """Applies any nescessary post-processing to query."""
         return qry
 
-    def filtered(self, filters):
+    def filtered(self, filters, args=None):
         """Applies requested Query filters. Returns SQLAlchemy Query object."""
         qry = self.base_query()
         self.joined = {self.base_table,
@@ -477,10 +473,7 @@ class TableFamily:
                     }}, """
 
         print('\n\nmappings for {}\n\n'.format(self))
-        types = {
-            int: 'integer',
-            bool: 'boolean',
-        }
+        types = {int: 'integer', bool: 'boolean', }
         for (name, (table, col)) in sorted(self.map.items()):
             sqla_col = list(col.base_columns)[0]
             typ = types.get(sqla_col.type.python_type, 'string')
@@ -493,9 +486,7 @@ class AgencyTableFamily(TableFamily):
         tables = []
         _agency = JoinedTable(models.RefAgency, parent=parent)
         tables.append(_agency)
-        tables.append(
-            JoinedTable(
-                models.RefAgencyType, parent=_agency)),
+        tables.append(JoinedTable(models.RefAgencyType, parent=_agency)),
 
         _state = JoinedTable(models.RefState, parent=_agency)
         tables.append(_state),
@@ -585,48 +576,56 @@ class IncidentTableFamily(TableFamily):
 
     tables.extend(AgencyTableFamily.get_tables(None))
     tables.append(JoinedTable(models.NibrsClearedExcept))
-    offender = JoinedTable(
-        models.NibrsOffender, prefix='offender', parent=offense)
+    offender = JoinedTable(models.NibrsOffender,
+                           prefix='offender',
+                           parent=offense)
     tables.append(offender)
 
     victim = JoinedTable(models.NibrsVictim, prefix='victim', parent=offense)
-    
+
     tables.append(victim)
 
-    victim_injury = JoinedTable(
-        models.NibrsVictimInjury, prefix='victim', parent=victim)
-    injury = JoinedTable(
-        models.NibrsInjury, prefix='victim', parent=victim_injury)
+    victim_injury = JoinedTable(models.NibrsVictimInjury,
+                                prefix='victim',
+                                parent=victim)
+    injury = JoinedTable(models.NibrsInjury,
+                         prefix='victim',
+                         parent=victim_injury)
     tables.append(victim_injury)
     tables.append(injury)
 
-    victim_offender_rel = JoinedTable(
-        models.NibrsVictimOffenderRel, prefix='victim', parent=victim)
-    relationship_ = JoinedTable(
-        models.NibrsRelationship, prefix='victim', parent=victim_offender_rel)
+    victim_offender_rel = JoinedTable(models.NibrsVictimOffenderRel,
+                                      prefix='victim',
+                                      parent=victim)
+    relationship_ = JoinedTable(models.NibrsRelationship,
+                                prefix='victim',
+                                parent=victim_offender_rel)
     tables.append(victim_offender_rel)
     tables.append(relationship_)
 
-    offense_weapon = JoinedTable(
-        models.NibrsWeapon, prefix='offense', parent=offense)
-    weapon = JoinedTable(
-        models.NibrsWeaponType, prefix='offense', parent=offense_weapon)
+    offense_weapon = JoinedTable(models.NibrsWeapon,
+                                 prefix='offense',
+                                 parent=offense)
+    weapon = JoinedTable(models.NibrsWeaponType,
+                         prefix='offense',
+                         parent=offense_weapon)
     tables.append(offense_weapon)
     tables.append(weapon)
 
-    criminal_act = JoinedTable(
-        models.NibrsCriminalAct, prefix='offense', parent=offense)
-    criminal_act_type = JoinedTable(
-        models.NibrsCriminalActType, prefix='offense', parent=criminal_act)
+    criminal_act = JoinedTable(models.NibrsCriminalAct,
+                               prefix='offense',
+                               parent=offense)
+    criminal_act_type = JoinedTable(models.NibrsCriminalActType,
+                                    prefix='offense',
+                                    parent=criminal_act)
     tables.append(criminal_act)
     tables.append(criminal_act_type)
 
-    arrestee = JoinedTable(
-        models.NibrsArrestee,
-        prefix='arrestee',
-        parent=offense,
-        join=(models.NibrsIncident.incident_id ==
-              models.NibrsArrestee.incident_id))
+    arrestee = JoinedTable(models.NibrsArrestee,
+                           prefix='arrestee',
+                           parent=offense,
+                           join=(models.NibrsIncident.incident_id ==
+                                 models.NibrsArrestee.incident_id))
     tables.append(arrestee)
     tables.append(JoinedTable(offender_age,
                               join=(models.NibrsOffender.age_id ==
@@ -677,18 +676,22 @@ class IncidentTableFamily(TableFamily):
     tables.append(property_)
     tables.append(JoinedTable(models.NibrsPropLossType, parent=property))
     # TODO: property_desc, suspected_drug
-    tables.append(
-        JoinedTable(
-            models.NibrsLocationType,
-            parent=offense,
-            join=(models.NibrsOffense.location_id ==
-                  models.NibrsLocationType.location_id), ))
+    tables.append(JoinedTable(models.NibrsLocationType,
+                              parent=offense,
+                              join=(models.NibrsOffense.location_id ==
+                                    models.NibrsLocationType.location_id), ))
+
     # TODO: COUNTY, TRIBE
 
     def base_query(self):
         """Gets root Query, based on class's base_table"""
         return db.session.query(self.base_table.table)
 
+
+class CachedIncidentCountTableFamily(TableFamily):
+
+    base_table = JoinedTable(newmodels.RetaMonthOffenseSubcatSummary)
+    tables = []
 
 
 class IncidentCountTableFamily(TableFamily):
@@ -718,18 +721,16 @@ class IncidentCountTableFamily(TableFamily):
     def base_query(self):
         return db.session.query(
             label('actual_count',
-                  func.sum(models.RetaMonthOffenseSubcat.actual_count)),
-            label('reported_count',
-                  func.sum(models.RetaMonthOffenseSubcat.reported_count)),
+                  func.sum(models.RetaMonthOffenseSubcat.actual_count)), label(
+                      'reported_count',
+                      func.sum(models.RetaMonthOffenseSubcat.reported_count)),
             label('unfounded_count',
                   func.sum(models.RetaMonthOffenseSubcat.unfounded_count)),
             label('cleared_count',
                   func.sum(models.RetaMonthOffenseSubcat.cleared_count)),
-            label(
-                'juvenile_cleared_count',
-                func.sum(models.RetaMonthOffenseSubcat.juvenile_cleared_count),
-            ))
-
+            label('juvenile_cleared_count',
+                  func.sum(
+                      models.RetaMonthOffenseSubcat.juvenile_cleared_count), ))
 
 # ASR_MONTH is not broken down by race or crime and should have
 # its own endpoint
@@ -757,11 +758,9 @@ class ArrestsByRaceTableFamily(TableFamily):
     tables.extend(category_tables)
     tables.extend(AgencyTableFamily.get_tables(month))
 
-
     def base_query(self):
-        return db.session.query(
-            label('arrest_count',
-                  func.sum(models.AsrRaceOffenseSubcat.arrest_count)))
+        return db.session.query(label('arrest_count', func.sum(
+            models.AsrRaceOffenseSubcat.arrest_count)))
 
 
 class ArrestsByEthnicityTableFamily(TableFamily):
@@ -777,11 +776,9 @@ class ArrestsByEthnicityTableFamily(TableFamily):
     tables.extend(category_tables)
     tables.extend(AgencyTableFamily.get_tables(month))
 
-
     def base_query(self):
-        return db.session.query(
-            label('arrest_count',
-                  func.sum(models.AsrEthnicityOffense.arrest_count)))
+        return db.session.query(label('arrest_count', func.sum(
+            models.AsrEthnicityOffense.arrest_count)))
 
 
 class ArrestsByAgeSexTableFamily(TableFamily):
@@ -798,9 +795,8 @@ class ArrestsByAgeSexTableFamily(TableFamily):
     tables.extend(AgencyTableFamily.get_tables(month))
 
     def base_query(self):
-        return db.session.query(
-            label('arrest_count',
-                  func.sum(models.AsrAgeSexSubcat.arrest_count)))
+        return db.session.query(label('arrest_count', func.sum(
+            models.AsrAgeSexSubcat.arrest_count)))
 
 
 class ArsonTableFamily(TableFamily):
@@ -812,9 +808,8 @@ class ArsonTableFamily(TableFamily):
     tables.append(month)
     subcategory = JoinedTable(models.ArsonSubcategory)
     tables.append(subcategory)
-    tables.append(
-        JoinedTable(
-            models.ArsonSubclassification, parent=subcategory))
+    tables.append(JoinedTable(models.ArsonSubclassification,
+                              parent=subcategory))
 
     tables.extend(AgencyTableFamily.get_tables(month))
 
@@ -823,11 +818,11 @@ class ArsonTableFamily(TableFamily):
             label('reported_count',
                   func.sum(models.ArsonMonthBySubcat.reported_count)),
             label('unfounded_count',
-                  func.sum(models.ArsonMonthBySubcat.unfounded_count)),
-            label('actual_count',
-                  func.sum(models.ArsonMonthBySubcat.actual_count)),
-            label('cleared_count',
-                  func.sum(models.ArsonMonthBySubcat.cleared_count)),
+                  func.sum(models.ArsonMonthBySubcat.unfounded_count)), label(
+                      'actual_count',
+                      func.sum(models.ArsonMonthBySubcat.actual_count)), label(
+                          'cleared_count',
+                          func.sum(models.ArsonMonthBySubcat.cleared_count)),
             label('juvenile_cleared_count',
                   func.sum(models.ArsonMonthBySubcat.juvenile_cleared_count)),
             label('uninhabited_count',

@@ -123,7 +123,9 @@ def add_resources(app):
 
     api.add_resource(crime_data.resources.incidents.IncidentsList,
                      '/incidents/')
-    api.add_resource(crime_data.resources.incidents.IncidentsCount,
+    #api.add_resource(crime_data.resources.incidents.IncidentsCount,
+    #                 '/incidents/count/')
+    api.add_resource(crime_data.resources.incidents.CachedIncidentsCount,
                      '/incidents/count/')
     api.add_resource(crime_data.resources.incidents.IncidentsDetail,
                      '/incidents/<int:id>/')
@@ -187,7 +189,8 @@ def add_resources(app):
     docs = FlaskApiSpec(app)
     docs.register(crime_data.resources.agencies.AgenciesDetail)
     docs.register(crime_data.resources.agencies.AgenciesList)
-    docs.register(crime_data.resources.incidents.IncidentsCount)
+    # docs.register(crime_data.resources.incidents.IncidentsCount)
+    docs.register(crime_data.resources.incidents.CachedIncidentsCount)
     docs.register(crime_data.resources.incidents.IncidentsDetail)
     docs.register(crime_data.resources.incidents.IncidentsList)
     docs.register(crime_data.resources.offenses.OffensesList)

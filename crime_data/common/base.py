@@ -1,14 +1,15 @@
-from decimal import Decimal
 import json
 import math
 import os
 import random
+from decimal import Decimal
+from ast import literal_eval
 from functools import wraps
 
 import sqltap
 from flask import make_response, request
-from flask_restful import abort, current_app
 from flask_apispec.views import MethodResource
+from flask_restful import abort, current_app
 # import celery
 from flask_sqlalchemy import SignallingSession, SQLAlchemy
 from sqlalchemy import func, or_
@@ -17,8 +18,8 @@ from crime_data.extensions import db
 
 session = db.session
 
-
 COUNT_QUERY_THRESHOLD = 1000
+
 
 def tuning_page(f):
     @wraps(f)
@@ -134,8 +135,8 @@ class QueryTraits(object):
                 if _is_string(col):
                     col = func.lower(col)
                     values = [val.lower() for val in values]
-                    query = query.filter(
-                        or_(col.ilike('%' + val + '%') for val in values))
+                    query = query.filter(or_(col.ilike('%' + val + '%')
+                                             for val in values))
                 else:
                     operation = getattr(col, comparitor)
                     query = query.filter(or_(operation(val) for val in values))
@@ -153,25 +154,23 @@ class Fields(object):
     @staticmethod
     def get_db_column_names():
         return {'year': 'data_year',
-             'month': 'month_num',
-             'agency_name': 'ucr_agency_name',
-             'state': 'state_abbr',
-             'city': 'city_name',
-             'county': 'county_name',
-             'tribe': 'tribe_name',
-             'offense': 'offense_name',
-             'offense_subcat': 'offense_subcat_name',
-             'offense_category': 'offense_category_name',
-             # except in ASR it's offense_cat_name
-             'race': 'race_code',
-             'ethnicity': 'ethnicity_code',
-             'juvenile': 'juvenile_flag',
-             'age': 'age_range_code',
-             'sex': 'age_sex',
-             'subclass': 'subclass_code',
-             'subcategory': 'subcategory_code'
-            }
-
+                'month': 'month_num',
+                'agency_name': 'ucr_agency_name',
+                'state': 'state_abbr',
+                'city': 'city_name',
+                'county': 'county_name',
+                'tribe': 'tribe_name',
+                'offense': 'offense_name',
+                'offense_subcat': 'offense_subcat_name',
+                'offense_category': 'offense_category_name',
+                # except in ASR it's offense_cat_name
+                'race': 'race_code',
+                'ethnicity': 'ethnicity_code',
+                'juvenile': 'juvenile_flag',
+                'age': 'age_range_code',
+                'sex': 'age_sex',
+                'subclass': 'subclass_code',
+                'subcategory': 'subcategory_code'}
 
     @staticmethod
     def get_simplified_column_names():
@@ -200,12 +199,23 @@ class CdeResource(MethodResource):
 
     is_groupable = False
 
+    def use_filters(self, filters):
+        "Hook for use of filters _aside from_ applying to query"
+        pass
+
+    def postprocess_filters(self, filters, args):
+        "Hook for edits to filters"
+        return filters
+
     def _get(self, args):
         # TODO: apply "fields" arg
 
         self.verify_api_key(args)
-        filters = self.filters(args)
-        qry = self.tables.filtered(filters)
+        filters = list(self.filters(args))
+        filters = self.postprocess_filters(filters, args)
+
+        qry = self.tables.filtered(filters, args)
+
         if self.is_groupable:
             group_columns = [c.strip() for c in args['by'].split(',')]
             qry = self.tables.group_by(qry, group_columns)
@@ -216,14 +226,19 @@ class CdeResource(MethodResource):
 
         if args['output'] == 'csv':
             output = make_response(self.output_serialize(
-                self.with_metadata(qry, args), self.schema, 'csv', aggregate_many))
+                self.with_metadata(qry,
+                                   args), self.schema, 'csv', aggregate_many))
             output.headers[
                 "Content-Disposition"] = "attachment; filename=incidents.csv"
             output.headers["Content-type"] = "text/csv"
             return output
         return self.with_metadata(qry, args)
 
-    def _serialize_dict(self, data, accumulator={}, path=None, aggregate_many = False):
+    def _serialize_dict(self,
+                        data,
+                        accumulator={},
+                        path=None,
+                        aggregate_many=False):
         """ Recursively serializes a nested dict
         into a flat dict. Replaces lists with their
         length as an integer of any lists in nested dict.
@@ -238,10 +253,9 @@ class CdeResource(MethodResource):
         if isinstance(data, dict):
             iterator = data.items()
 
+        key_path = ""  # The full attribute path.
 
-        key_path = "" # The full attribute path.
-
-        for k,v in iterator:
+        for k, v in iterator:
             # Append path ie: offense _ {key}
             if path:
                 if is_list_iter:
@@ -272,7 +286,11 @@ class CdeResource(MethodResource):
 
         return accumulator
 
-    def output_serialize(self, data, schema=None, format='csv', aggregate_many = False):
+    def output_serialize(self,
+                         data,
+                         schema=None,
+                         format='csv',
+                         aggregate_many=False):
         """ Parses results.
         Either outputs JSON, or CSV.
         """
@@ -315,12 +333,33 @@ class CdeResource(MethodResource):
             return val
         return str(val)
 
-    def _stringify(self, data):
+    def _serialize(self, data):
         """Avoid JSON serialization errors
         by converting values in list of dicts
-        into strings."""
-        return [{k: self._jsonable(d[k])
-                 for k in d} for d in (r._asdict() for r in data)]
+        into strings.
+
+        Many resources will override this with more specific ways to serialize.
+        """
+        if self.schema:
+            return self.schema.dump(data).data
+        else:
+            return [{k: self._jsonable(d[k])
+                     for k in d} for d in (r._asdict() for r in data)]
+
+    def _serialize_from_representation(self, data):
+        """Get from cache in an associated `representation` record"""
+
+        result = []
+        uncached = 0
+        for row in data:
+            if row.representation and row.representation.representation:
+                result.append(row.representation.representation)
+            else:
+                uncached += 1
+                result.append(self.schema.dump(row).data)
+        if uncached:
+            current_app.logger.warning('{} uncached records generated realtime'.format(uncached))
+        return result
 
     def _as_dict(self, fieldTuple, res):
         return dict(zip(fieldTuple, res))
@@ -340,7 +379,7 @@ class CdeResource(MethodResource):
         comp.compile()
         enc = dialect.encoding
         params = {}
-        for k,v in comp.params.items():
+        for k, v in comp.params.items():
             params[k] = sqlescape(v)
         return (comp.string % params)
 
@@ -383,6 +422,8 @@ class CdeResource(MethodResource):
         else:
             serialized = self._stringify(paginated)
 
+        serialized = self._serialize(paginated)
+
         return {
             'results': serialized,
             'pagination': {
@@ -408,10 +449,12 @@ class CdeResource(MethodResource):
             service_env = json.loads(os.getenv('VCAP_SERVICES'))
             cups_name = 'crime-data-api-creds'
             creds = [
+
                 u['credentials'] for u in service_env['user-provided']
                 if 'credentials' in u
             ]
             key = creds[0]['API_KEY']
+
             if args.get('api_key') != key:
                 abort(401, message='Use correct `api_key` argument')
 
@@ -434,7 +477,7 @@ class CdeResource(MethodResource):
     def _split_values(self, val_string):
         val_string = val_string.strip('{} \t')
         values = val_string.split(',')
-        return [v.strip() for v in values]
+        return [v.strip().lower() for v in values]
 
     def filters(self, parsed):
         """Yields `(key, comparitor, (values))` from `request.args`.

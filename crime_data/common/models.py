@@ -8,7 +8,7 @@ from sqlalchemy import (BigInteger, Boolean, Column, DateTime, Float,
                         ForeignKey, Integer, SmallInteger, String, Text,
                         UniqueConstraint, func, text)
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship, backref
+from sqlalchemy.orm import backref, relationship
 
 db = SQLAlchemy()
 
