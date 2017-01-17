@@ -33,7 +33,7 @@ class DevConfig(Config):
 
     ENV = 'dev'
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'postgres:///crime_data_api_dev'
+    SQLALCHEMY_DATABASE_URI = os.getenv('CRIME_DATA_API_DEV_DB_URL') or 'postgres:///crime_data_api_new'
     DEBUG_TB_ENABLED = True
     ASSETS_DEBUG = True  # Don't bundle/minify static assets
     CACHE_TYPE = 'simple'  # Can be "memcached", "redis", etc.
@@ -44,5 +44,5 @@ class TestConfig(Config):
 
     TESTING = True
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', 'postgres:///crime_data_api_test')
+    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', 'postgres:///crime_data_api_new')
     WTF_CSRF_ENABLED = False  # Allows form testing

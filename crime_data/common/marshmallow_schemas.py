@@ -5,8 +5,7 @@ import os
 from flask_marshmallow import Marshmallow
 from marshmallow import fields as marsh_fields
 from marshmallow import Schema, post_dump
-
-from . import cdemodels, models
+from . import cdemodels, models, newmodels
 
 ma = Marshmallow()
 
@@ -41,6 +40,9 @@ class ArgumentsSchema(Schema):
         api_key = marsh_fields.String(
             required=True,
             error_messages={'required': 'Get API key from Catherine'})
+
+# Anything in an ArgumentsSchema will, dangerously ironically,
+# not be filtered for...
 
 
 class GroupableArgsSchema(ArgumentsSchema):
@@ -85,8 +87,8 @@ class PaginationSchema(Schema):
     pages = marsh_fields.Integer(dumpOnly=True)
     per_page = marsh_fields.Integer(dumpOnly=True)
 
-
 # Schemas for data serialization
+
 class ArsonSubclassificationSchema(ma.ModelSchema):
     class Meta:
         model = models.ArsonSubclassification
@@ -100,6 +102,30 @@ class ArsonSubcategorySchema(ma.ModelSchema):
         exclude = ('subcat_xml_path', )
 
     subclass = ma.Nested(ArsonSubclassificationSchema)
+
+
+class CachedIncidentCountSchema(Schema):
+    class Meta:
+        model = newmodels.RetaMonthOffenseSubcatSummary
+
+    # We hack `load_only` to prevent a field from being serialized
+    # (even though this schema is never used for loading);
+    # later we can change it to False to enable output for that field
+    year = marsh_fields.Integer(load_only=True)
+    month = marsh_fields.Integer(load_only=True)
+    offense_subcat = marsh_fields.String(load_only=True)
+    offense_subcat_code = marsh_fields.String(load_only=True)
+    offense = marsh_fields.String(load_only=True)
+    offense_code = marsh_fields.String(load_only=True)
+    offense_category = marsh_fields.String(load_only=True)
+    classification = marsh_fields.String(load_only=True)
+    state_name = marsh_fields.String(load_only=True)
+    state = marsh_fields.String(load_only=True)
+    reported = marsh_fields.Integer()
+    unfounded = marsh_fields.Integer()
+    actual = marsh_fields.Integer()
+    cleared = marsh_fields.Integer()
+    juvenile_cleared = marsh_fields.Integer()
 
 
 class NibrsRelationshipSchema(ma.ModelSchema):
@@ -555,6 +581,19 @@ class NibrsIncidentSchema(ma.ModelSchema):
     victims = ma.Nested(NibrsVictimSchema, many=True)
     arrestees = ma.Nested(NibrsArresteeSchema, many=True)
     offenders = ma.Nested(NibrsOffenderSchema, many=True)
+
+
+class NibrsIncidentRepresentationSchema(ma.ModelSchema):
+    class Meta:
+        models = newmodels.NibrsIncidentRepresentation
+        fields = ('representation', )
+
+class CachedNibrsIncidentSchema(ma.ModelSchema):
+    class Meta:
+        model = models.NibrsIncident
+        fields = ('incident_id', 'representation', )
+
+    representation = ma.Nested(NibrsIncidentRepresentationSchema)
 
 
 class NibrsAssignmentTypeSchema(ma.ModelSchema):
