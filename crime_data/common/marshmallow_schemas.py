@@ -88,7 +88,7 @@ class PaginationSchema(Schema):
     per_page = marsh_fields.Integer(dumpOnly=True)
 
 # Schemas for data serialization
-<<<<<<< HEAD
+
 class ArsonSubclassificationSchema(ma.ModelSchema):
     class Meta:
         model = models.ArsonSubclassification
@@ -102,7 +102,6 @@ class ArsonSubcategorySchema(ma.ModelSchema):
         exclude = ('subcat_xml_path', )
 
     subclass = ma.Nested(ArsonSubclassificationSchema)
-=======
 
 
 class CachedIncidentCountSchema(Schema):
@@ -127,7 +126,6 @@ class CachedIncidentCountSchema(Schema):
     actual = marsh_fields.Integer()
     cleared = marsh_fields.Integer()
     juvenile_cleared = marsh_fields.Integer()
->>>>>>> 650672ec8100bfb17655bd19831a3de530bcac7d
 
 
 class NibrsRelationshipSchema(ma.ModelSchema):

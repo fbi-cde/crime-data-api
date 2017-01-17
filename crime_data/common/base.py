@@ -436,10 +436,6 @@ class CdeResource(MethodResource):
         return output
 
     def verify_api_key(self, args):
-<<<<<<< HEAD
-        try:
-            key = get_credential('API_KEY')
-=======
         if os.getenv('VCAP_SERVICES'):
             service_env = json.loads(os.getenv('VCAP_SERVICES'))
             cups_name = 'crime-data-api-creds'
@@ -448,12 +444,9 @@ class CdeResource(MethodResource):
                 for u in service_env['user-provided'] if 'credentials' in u
             ]
             key = creds[0]['API_KEY']
->>>>>>> 650672ec8100bfb17655bd19831a3de530bcac7d
+
             if args.get('api_key') != key:
                 abort(401, message='Use correct `api_key` argument')
-        except KeyError:
-            if os.getenv('VCAP_SERVICES'):
-                abort(500, message='Unable to verify api_key at this time')
 
     def _parse_inequality_operator(self, k, v):
         """
