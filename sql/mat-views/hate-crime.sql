@@ -9,7 +9,7 @@ from ( SELECT DISTINCT(hc_incident.incident_id), bias_name, hc_incident.agency_i
     LEFT OUTER JOIN nibrs_bias_list ON nibrs_bias_list.bias_id = hc_bias_motivation.bias_id 
     JOIN ref_agency ON ref_agency.agency_id = hc_incident.agency_id
     JOIN ref_agency_county ON ref_agency.agency_id = ref_agency_county.agency_id
-     ) as temp where year = '2014' 
+     ) as temp 
 GROUP BY GROUPING SETS (
     (year, bias_name),
     (year, state_id, bias_name),
