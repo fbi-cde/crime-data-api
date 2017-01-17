@@ -5,12 +5,7 @@ from crime_data.common import cdemodels, marshmallow_schemas, models
 from crime_data.common.base import CdeResource, tuning_page
 
 # Template
-# variables = [location_type, offense_type, property_type, age, sex, race]
-
-# /offenders/count/states/<variable>/?year=...
-# /offenders/count/states/<state>/<variable>/?year=...
-# /offenders/count/counties/<variable>/?year=...
-# /offenders/count/counties/<county>/<variable>/?year=...
+# variables => [location_type, offense_type, property_type, age, sex, race]
 
 def _is_string(col):
     col0 = list(col.base_columns)[0]
