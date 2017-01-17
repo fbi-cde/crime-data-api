@@ -50,7 +50,6 @@ UPDATE nibrs_victim_denorm SET property_id = nibrs_property.property_id, propert
 UPDATE nibrs_victim_denorm SET property_desc_id = nibrs_property_desc.prop_desc_id from nibrs_property_desc where nibrs_property_desc.property_id = nibrs_victim_denorm.property_id;
 UPDATE nibrs_victim_denorm SET prop_desc_name = nibrs_prop_desc_type.prop_desc_name from nibrs_prop_desc_type where nibrs_prop_desc_type.prop_desc_id = nibrs_victim_denorm.property_desc_id;
 
-# TO RUN:
 ALTER TABLE nibrs_victim_denorm ADD COLUMN bias_id smallint, ADD COLUMN bias_name varchar(100), ADD COLUMN offense_id bigint;
 UPDATE nibrs_victim_denorm SET offense_id = nibrs_offense.offense_id from nibrs_offense where nibrs_victim_denorm.incident_id = nibrs_offense.incident_id;
 UPDATE nibrs_victim_denorm SET bias_id = nibrs_bias_motivation.bias_id from nibrs_bias_motivation where nibrs_bias_motivation.offense_id = nibrs_victim_denorm.offense_id;

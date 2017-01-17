@@ -841,12 +841,6 @@ def _is_string(col):
     return issubclass(col0.type.python_type, str)
 
 
-# OffenderCount views
-from collections import namedtuple
-
-# FIXME: can I just declare a Marshmallow schema for this?
-CountRecord = namedtuple('CountRecord', ['code', 'count'])
-
 class OffenderCountView(object):
     """A class for fetching the counts from a specific year"""
 
@@ -867,6 +861,7 @@ class OffenderCountView(object):
             except Exception as e:
                 session.rollback()
                 raise e
+
         if self.county_id:
             base_query = self.base_query(self.field, None, self.county_id)
             try:
@@ -891,5 +886,51 @@ class OffenderCountView(object):
 
         if county_id:
             query += ' AND county_id = :county_id'
-        print(query)
+        return query
+
+class VictimCountView(object):
+    """A class for fetching the counts from a specific year"""
+
+    def __init__(self, year, field, state_id = None, county_id = None):
+        self.year = year
+        self.state_id = state_id
+        self.county_id = county_id
+        self.field = field
+
+    # MUST IMPLMENT.
+    def query(self, args):
+        base_query = None
+        qry = None
+        if self.state_id:
+            base_query = self.base_query(self.field, self.state_id, None)
+            try:
+                qry = session.execute(base_query, {'state_id': self.state_id})
+            except Exception as e:
+                session.rollback()
+                raise e
+                
+        if self.county_id:
+            base_query = self.base_query(self.field, None, self.county_id)
+            try:
+                qry = session.execute(base_query, {'county_id': self.county_id})
+            except Exception as e:
+                session.rollback()
+                raise e
+        return qry
+            
+    @property
+    def view_name(self):
+        """The name of the specific materialized view for this year."""
+        return "victim_counts_{}".format(self.year)
+
+
+    def base_query(self, field, state_id=None, county_id=None):
+        query = 'SELECT {} , count FROM {}'.format(field, self.view_name)
+        query += ' WHERE {} IS NOT NULL'.format(field)
+
+        if state_id:
+            query += ' AND state_id = :state_id'
+
+        if county_id:
+            query += ' AND county_id = :county_id'
         return query
