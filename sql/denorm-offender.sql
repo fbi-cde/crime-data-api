@@ -39,9 +39,7 @@ BEFORE INSERT ON nibrs_offender_denorm
 FOR EACH ROW EXECUTE PROCEDURE create_partition_and_insert();
 
 
-SET work_mem='4096MB'; -- Go Super Saiyan 1.
-SET synchronous_commit='off'; -- Go Super Saiyan 2.
-SET effective_cache_size='4GB';  -- Go Super Saiyan 3.
+SET synchronous_commit='off'; -- Go Super Saiyan.
 
 INSERT INTO nibrs_offender_denorm (incident_id, agency_id, year, incident_date, offender_id, age_id, age_num, sex_code, race_id) SELECT nibrs_offender.incident_id, nibrs_incident.agency_id, EXTRACT(YEAR FROM nibrs_incident.incident_date) as year, nibrs_incident.incident_date, nibrs_offender.offender_id, nibrs_offender.age_id, ceil(nibrs_offender.age_num::numeric / 10) * 10, nibrs_offender.sex_code,nibrs_offender.race_id from nibrs_offender JOIN nibrs_incident on nibrs_incident.incident_id = nibrs_offender.incident_id;
 
@@ -56,4 +54,13 @@ UPDATE nibrs_offender_denorm SET location_name = nibrs_location_type.location_na
 UPDATE nibrs_offender_denorm SET property_id = nibrs_property.property_id, property_loss_id=nibrs_property.prop_loss_id from nibrs_property where nibrs_property.incident_id = nibrs_offender_denorm.incident_id;
 UPDATE nibrs_offender_denorm SET property_desc_id = nibrs_property_desc.prop_desc_id from nibrs_property_desc where nibrs_property_desc.property_id = nibrs_offender_denorm.property_id;
 UPDATE nibrs_offender_denorm SET prop_desc_name = nibrs_prop_desc_type.prop_desc_name from nibrs_prop_desc_type where nibrs_prop_desc_type.prop_desc_id = nibrs_offender_denorm.property_desc_id;
+
+
+# TO RUN:
+ALTER TABLE nibrs_offender_denorm ADD COLUMN bias_id smallint, ADD COLUMN bias_name varchar(100), ADD COLUMN offense_id bigint;
+UPDATE nibrs_offender_denorm SET offense_id = nibrs_offense.offense_id from nibrs_offense where nibrs_offender_denorm.incident_id = nibrs_offense.incident_id;
+UPDATE nibrs_offender_denorm SET bias_id = nibrs_bias_motivation.bias_id from nibrs_bias_motivation where nibrs_bias_motivation.offense_id = nibrs_offender_denorm.offense_id;
+UPDATE nibrs_offender_denorm SET bias_name = nibrs_bias_list.bias_name from nibrs_bias_list where nibrs_offender_denorm.bias_id = nibrs_bias_list.bias_id;
+
+
 
