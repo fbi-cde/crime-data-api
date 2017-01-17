@@ -15,3 +15,4 @@ convert the
 1. Run `pg_dump` to generate a PostgreSQL dumpfile
 1. [upload](upload.md) dumpfile to an S3 bucket
 1. use `cf import-data` to pull the dumpfile into the RDS instance
+1. In `flask shell`, run `from crime_data.common.models import NibrsIncidentRepresentation as NIRep; NIRep.create()`
