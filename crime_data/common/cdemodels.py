@@ -850,16 +850,40 @@ CountRecord = namedtuple('CountRecord', ['code', 'count'])
 class OffenderCountView(object):
     """A class for fetching the counts from a specific year"""
 
-    def __init__(self, year):
+    def __init__(self, year, field, state_id = None, county_id = None):
         self.year = year
+        self.state_id = state_id
+        self.county_id = county_id
+        self.field = field
 
+    # MUST IMPLMENT.
+    def query(self, args):
+        base_query = None
+        qry = None
+        if self.state_id:
+            base_query = self.base_query(self.field, self.state_id, None)
+            try:
+                qry = session.execute(base_query, {'state_id': self.state_id})
+            except Exception as e:
+                session.rollback()
+                raise e
+        if self.county_id:
+            base_query = self.base_query(self.field, None, self.county_id)
+            try:
+                qry = session.execute(base_query, {'county_id': self.county_id})
+            except Exception as e:
+                session.rollback()
+                raise e
+        return qry
+            
     @property
     def view_name(self):
         """The name of the specific materialized view for this year."""
         return "offender_counts_{}".format(self.year)
 
+
     def base_query(self, field, state_id=None, county_id=None):
-        query = 'SELECT {} AS code, sum(count) AS count FROM {}'.format(field, self.view_name)
+        query = 'SELECT {} , count FROM {}'.format(field, self.view_name)
         query += ' WHERE {} IS NOT NULL'.format(field)
 
         if state_id:
@@ -867,15 +891,5 @@ class OffenderCountView(object):
 
         if county_id:
             query += ' AND county_id = :county_id'
-
-        query += ' GROUP BY {}'.format(field)
+        print(query)
         return query
-
-    def grouped_by_field(self, field, state_id=None, county_id=None):
-        """Returns incidents in a specific state or county grouped by race"""
-
-        query = self.base_query(field, state_id=state_id, county_id=county_id)
-        result = session.execute(query, {'state_id': state_id, 'county_id': county_id})
-        records = [CountRecord(*r) for r in result]
-
-        return records

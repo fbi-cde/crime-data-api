@@ -42,6 +42,15 @@ class ArgumentsSchema(Schema):
             required=True,
             error_messages={'required': 'Get API key from Catherine'})
 
+class IncidentViewCountArgsYear(ArgumentsSchema):
+    """
+    Groupable queries can be grouped by one or more fields found in the
+    tables separated by commas
+    """
+    county_id = marsh_fields.Integer()
+    state_id = marsh_fields.Integer()
+    variable = marsh_fields.String(missing='')
+    year = marsh_fields.String(required=True)
 
 class GroupableArgsSchema(ArgumentsSchema):
     """

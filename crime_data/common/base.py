@@ -347,37 +347,42 @@ class CdeResource(MethodResource):
     def with_metadata(self, results, args):
         """Paginates results and wraps them in metadata."""
 
-        paginated = results.limit(args['per_page']).offset(
-            (args['page'] - 1) * args['per_page'])
-        if hasattr(paginated, 'data'):
-            paginated = paginated.data
-
         count = 0
-
         try:
-            if self.fast_count:
-                from sqlalchemy import select
-                count_est_query = select([func.count_estimate(self._compile_query(results))])
-                count_est_query_results = session.execute(count_est_query).fetchall()
-                count = count_est_query_results[0][0]
-                if count < COUNT_QUERY_THRESHOLD:
-                    # If the count is less than 
-                    count = results.count()
-            else:
-                count = results.count()
-        except Exception as count_exception:
-            # Fallback to counting results with extra query.
-            current_app.logger.warning('Failed to fast_count rows:')
-            current_app.logger.warning(str(count_exception))
-            current_app.logger.warning('Falling back to full count')
-            session.rollback()
-            count = results.count()
+            paginated = results.limit(args['per_page']).offset(
+                (args['page'] - 1) * args['per_page'])
+            if hasattr(paginated, 'data'):
+                paginated = paginated.data
 
+            try:
+                if self.fast_count:
+                    from sqlalchemy import select
+                    count_est_query = select([func.count_estimate(self._compile_query(results))])
+                    count_est_query_results = session.execute(count_est_query).fetchall()
+                    count = count_est_query_results[0][0]
+                    if count < COUNT_QUERY_THRESHOLD:
+                        # If the count is less than 
+                        count = results.count()
+                else:
+                    count = results.count()
+            except Exception as count_exception:
+                # Fallback to counting results with extra query.
+                current_app.logger.warning('Failed to fast_count rows:')
+                current_app.logger.warning(str(count_exception))
+                current_app.logger.warning('Falling back to full count')
+                session.rollback()
+                count = results.count()
+
+        except Exception as e:
+            paginated = results
+            count = len(paginated)
+            pass
 
         if self.schema:
             serialized = self.schema.dump(paginated).data
         else:
             serialized = self._stringify(paginated)
+
         return {
             'results': serialized,
             'pagination': {
