@@ -694,6 +694,28 @@ class IncidentCountSchema(Schema):
     year = marsh_fields.Integer(dump_only=True)
 
 
+class IncidentViewCountSchema(Schema):
+    """
+    The basic response fields for an incident - Pre-computed Materialized View - query.
+    """
+
+    class Meta:
+        ordered = True
+
+    count = marsh_fields.Integer(dump_only=True)
+    state_id = marsh_fields.Integer(dump_only=True)
+    county_id = marsh_fields.Integer(dump_only=True)
+    year = marsh_fields.Integer(dump_only=True)
+    race_code = marsh_fields.String(dump_only=True)
+    sex_code = marsh_fields.String(dump_only=True)
+    age_num =marsh_fields.String(dump_only=True)
+    location_name = marsh_fields.String(dump_only=True)
+    offense_name = marsh_fields.String(dump_only=True)
+    prop_desc_name = marsh_fields.String(dump_only=True)
+    victim_type_name = marsh_fields.String(dump_only=True)
+
+
+
 class ArsonCountSchema(Schema):
     """
     The basic response for an arson count response. These records might
