@@ -5,7 +5,7 @@ from crime_data.common import cdemodels, marshmallow_schemas, models
 from crime_data.common.base import CdeResource, tuning_page
 
 # Template
-# variables => [location_type, offense_type, property_type, age, sex, race]
+# variables => [location_type, offense_type, property_type, age_num, sex_code, race_code]
 
 
 def _is_string(col):
