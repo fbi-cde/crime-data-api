@@ -333,6 +333,10 @@ class CdeResource(MethodResource):
             return val
         return str(val)
 
+    def _stringify(self, data):
+        return [{k: self._jsonable(d[k])
+                     for k in d} for d in (r._asdict() for r in data)]
+
     def _serialize(self, data):
         """Avoid JSON serialization errors
         by converting values in list of dicts
@@ -343,8 +347,7 @@ class CdeResource(MethodResource):
         if self.schema:
             return self.schema.dump(data).data
         else:
-            return [{k: self._jsonable(d[k])
-                     for k in d} for d in (r._asdict() for r in data)]
+            return self._stringify(data)
 
     def _serialize_from_representation(self, data):
         """Get from cache in an associated `representation` record"""
@@ -416,12 +419,7 @@ class CdeResource(MethodResource):
             paginated = results
             count = len(paginated)
             pass
-
-        if self.schema:
-            serialized = self.schema.dump(paginated).data
-        else:
-            serialized = self._stringify(paginated)
-
+        
         serialized = self._serialize(paginated)
 
         return {
