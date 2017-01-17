@@ -45,11 +45,12 @@ class TestIncidentsEndpoint:
             assert 'agency' in incident
             assert 'ori' in incident['agency']
 
-    # def test_incidents_endpoint_includes_counties(self, testapp):
-    #     res = testapp.get('/incidents/')
-    #     for incident in res.json['results']:
-    #         agency = incident['agency']
-    #         assert 'counties' in agency
+    @pytest.mark.xfail
+    def test_incidents_endpoint_includes_counties(self, testapp):
+        res = testapp.get('/incidents/')
+        for incident in res.json['results']:
+            agency = incident['agency']
+            assert 'counties' in agency
 
     def test_incidents_endpoint_includes_locations(self, testapp):
         res = testapp.get('/incidents/')
@@ -196,21 +197,22 @@ class TestIncidentsEndpoint:
             assert dt > dateutil.parser.parse('2014-06-01T00:00+00:00')
             assert dt <= dateutil.parser.parse('2014-07-01T00:00+00:00')
 
-    # def test_incidents_endpoint_filters_on_multiple_values(self, testapp):
-    #     res = testapp.get('/incidents/?victim.race_code=A,I,P')
-    #     assert len(res.json['results']) > 0
-    #     for incident in res.json['results']:
-    #         races = [v['race']['race_code'] for v in incident['victims']]
-    #         assert ('A' in races) or ('I' in races) or ('P' in races)
+    @pytest.mark.xfail
+    def test_incidents_endpoint_filters_on_multiple_values(self, testapp):
+        res = testapp.get('/incidents/?victim.race_code=A,I,P')
+        assert len(res.json['results']) > 0
+        for incident in res.json['results']:
+            races = [v['race']['race_code'] for v in incident['victims']]
+            assert ('A' in races) or ('I' in races) or ('P' in races)
 
     # # TODO: escaped commas
-
-    # def test_incidents_endpoint_filters_on_multiple_values_with_brackets(self, testapp):
-    #     res = testapp.get('/incidents/?victim.race_code={A,I,P}')
-    #     assert len(res.json['results']) > 0
-    #     for incident in res.json['results']:
-    #         races = [v['race']['race_code'] for v in incident['victims']]
-    #         assert ('A' in races) or ('I' in races) or ('P' in races)
+    @pytest.mark.xfail
+    def test_incidents_endpoint_filters_on_multiple_values_with_brackets(self, testapp):
+        res = testapp.get('/incidents/?victim.race_code={A,I,P}')
+        assert len(res.json['results']) > 0
+        for incident in res.json['results']:
+            races = [v['race']['race_code'] for v in incident['victims']]
+            assert ('A' in races) or ('I' in races) or ('P' in races)
 
     def test_incidents_endpoint_filter_with_spaces(self, testapp):
         for category_name in ('Larceny/Theft Offenses', 'Larceny/Theft+Offenses', 'Larceny/Theft%20Offenses'):
@@ -232,11 +234,12 @@ class TestIncidentsEndpoint:
         for incident in results.json['results']:
             assert incident['agency']['state']['state_abbr'] == 'OH'
 
-    # def test_incidents_endpoint_filter_county(self, testapp):
-    #     results = testapp.get('/incidents/?county=warren')
-    #     for incident in results.json['results']:
-    #         county_names = [c['county_name'].lower() for c in incident['agency']['counties']]
-    #         assert 'warren' in county_names
+    @pytest.mark.xfail
+    def test_incidents_endpoint_filter_county(self, testapp):
+        results = testapp.get('/incidents/?county=warren')
+        for incident in results.json['results']:
+            county_names = [c['county_name'].lower() for c in incident['agency']['counties']]
+            assert 'warren' in county_names
 
     # End filter tests
 
@@ -336,11 +339,13 @@ class TestIncidentsCountEndpoint:
         for row in res.json['results']:
             assert row['offense_category'] == 'Robbery'
 
-    # def test_instances_count_filters_on_city(self, testapp):
-    #     res = testapp.get('/incidents/count/?by=city&city=columbus')
-    #     assert res.json['results']
-    #     for row in res.json['results']:
-    #         assert row['city'] == 'Columbus'
+    # This is an intentional fail. We don't support city counts yet.
+    @pytest.mark.xfail
+    def test_instances_count_filters_on_city(self, testapp):
+        res = testapp.get('/incidents/count/?by=city&city=columbus')
+        assert res.json['results']
+        for row in res.json['results']:
+            assert row['city'] == 'Columbus'
 
     def test_instances_count_bad_filter_400s(self, testapp):
         res = testapp.get('/incidents/count/?llamas=angry', expect_errors=True)
@@ -391,12 +396,12 @@ class TestIncidentsCountEndpoint:
         assert res.json['results']
         for row in res.json['results']:
             assert row['offense_category'] != 'Robbery'
-
-    # def test_incidents_null_age_codes(self, testapp):
-    #     res = testapp.get('/incidents/?victim.age_code=99')
-    #     assert res.json['results']
-    #     for row in res.json['results']:
-    #         assert any(victim['age_num'] == 99 for victim in row['victims'])
+    @pytest.mark.xfail
+    def test_incidents_null_age_codes(self, testapp):
+        res = testapp.get('/incidents/?victim.age_code=99')
+        assert res.json['results']
+        for row in res.json['results']:
+            assert any(victim['age_num'] == 99 for victim in row['victims'])
 
     def test_incidents_filter_victim_rel(self, testapp):
         res = testapp.get('/incidents/?victim.relationship_code=AQ')
