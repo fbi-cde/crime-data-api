@@ -10,7 +10,6 @@ from (
     location_name,
     offense_name,
     victim_type_name,
-    -- Bucket Stolen, and Recovered value by (N to N+$10000) .
     ct_property.stolen_value::numeric as stolen_value,
     ct_property.recovered_value::numeric as recovered_value,
     prop_desc_name,
@@ -30,22 +29,14 @@ from (
      ) as temp 
 GROUP BY GROUPING SETS (
     (year, prop_desc_name),
-    -- (year, prop_desc_name, stolen_value),
-    -- (year, prop_desc_name, recovered_value),
     (year, location_name),
     (year, victim_type_name),
     (year, offense_name),
-
     (year, state_id, prop_desc_name),
-    -- (year, state_id, prop_desc_name, stolen_value),
-    -- (year, state_id, prop_desc_name, recovered_value),
     (year, state_id, location_name),
     (year, state_id, victim_type_name),
     (year, state_id, offense_name),
-
     (year, county_id, prop_desc_name),
-    -- (year, county_id, prop_desc_name, stolen_value),
-    -- (year, county_id, prop_desc_name, recovered_value),
     (year, county_id, location_name),
     (year, county_id, victim_type_name),
     (year, county_id, offense_name)
