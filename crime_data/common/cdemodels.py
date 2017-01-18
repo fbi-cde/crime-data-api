@@ -834,3 +834,219 @@ class ArsonTableFamily(TableFamily):
 def _is_string(col):
     col0 = list(col.base_columns)[0]
     return issubclass(col0.type.python_type, str)
+
+
+class OffenderCountView(object):
+    """A class for fetching the counts from a specific year"""
+
+    def __init__(self, year, field, state_id = None, county_id = None):
+        self.year = year
+        self.state_id = state_id
+        self.county_id = county_id
+        self.field = field
+
+    # MUST IMPLMENT.
+    def query(self, args):
+        base_query = None
+        qry = None
+        param_dict = {}
+
+        try:
+            base_query = self.base_query(self.field)
+
+            if self.state_id:
+                param_dict['state_id'] = self.state_id
+            if self.county_id:
+                param_dict['county_id'] = self.county_id
+
+            if not param_dict:
+                qry = session.execute(base_query)
+            else:
+                qry = session.execute(base_query, param_dict)
+        except Exception as e:
+            session.rollback()
+            raise e
+        return qry
+            
+    @property
+    def view_name(self):
+        """The name of the specific materialized view for this year."""
+        return "offender_counts_{}".format(self.year)
+
+
+    def base_query(self, field):
+        query = 'SELECT {} , count FROM {}'.format(field, self.view_name)
+        query += ' WHERE {} IS NOT NULL'.format(field)
+
+        if self.state_id:
+            query += ' AND state_id = :state_id'
+
+        if self.county_id:
+            query += ' AND county_id = :county_id'
+        return query
+
+class VictimCountView(object):
+    """A class for fetching the counts from a specific year"""
+
+    def __init__(self, year, field, state_id = None, county_id = None):
+        self.year = year
+        self.state_id = state_id
+        self.county_id = county_id
+        self.field = field
+
+    # MUST IMPLMENT.
+    def query(self, args):
+        base_query = None
+        qry = None
+        param_dict = {}
+
+        try:
+            base_query = self.base_query(self.field)
+
+            if self.state_id:
+                param_dict['state_id'] = self.state_id
+            if self.county_id:
+                param_dict['county_id'] = self.county_id
+
+            if not param_dict:
+                qry = session.execute(base_query)
+            else:
+                qry = session.execute(base_query, param_dict)
+        except Exception as e:
+            session.rollback()
+            raise e
+        return qry
+            
+    @property
+    def view_name(self):
+        """The name of the specific materialized view for this year."""
+        return "victim_counts_{}".format(self.year)
+
+
+    def base_query(self, field):
+        query = 'SELECT {} , count FROM {}'.format(field, self.view_name)
+        query += ' WHERE {} IS NOT NULL'.format(field)
+
+        if self.state_id:
+            query += ' AND state_id = :state_id'
+
+        if self.county_id:
+            query += ' AND county_id = :county_id'
+        return query
+
+class HateCrimeCountView(object):
+    """A class for fetching the counts from a specific year"""
+
+    def __init__(self, field, year=None, state_id = None, county_id = None):
+        self.year = year
+        self.state_id = state_id
+        self.county_id = county_id
+        self.field = field
+        self.national = False
+        if self.state_id is None and self.county_id is None:
+            self.national = True
+
+    # MUST IMPLMENT.
+    def query(self, args):
+        base_query = None
+        qry = None
+        param_dict = {}
+        try:
+            base_query = self.base_query(self.field)
+
+            if self.state_id:
+                param_dict['state_id'] = self.state_id
+            if self.county_id:
+                param_dict['county_id'] = self.county_id
+            if self.year:
+                param_dict['year'] = self.year
+            if not param_dict:
+                qry = session.execute(base_query)
+            else:
+                qry = session.execute(base_query, param_dict)
+        except Exception as e:
+            session.rollback()
+            raise e
+        return qry
+            
+    @property
+    def view_name(self):
+        """The name of the specific materialized view for this year."""
+        return "hc_counts"
+
+
+    def base_query(self, field):
+        query = 'SELECT {} , count, year::text FROM {}'.format(field, self.view_name)
+        query += ' WHERE {} IS NOT NULL'.format(field)
+
+        if self.state_id:
+            query += ' AND state_id = :state_id'
+
+        if self.county_id:
+            query += ' AND county_id = :county_id'
+
+        if self.national:
+            query += ' AND state_id is NULL AND county_id is NULL AND agency_id is NULL'
+
+        if self.year:
+            query += ' AND year = :year '
+
+        return query
+
+class CargoTheftCountView(object):
+    """A class for fetching the counts from a specific year"""
+
+    def __init__(self, field, year=None, state_id = None, county_id = None):
+        self.year = year
+        self.state_id = state_id
+        self.county_id = county_id
+        self.field = field
+        self.national = False
+        if self.state_id is None and self.county_id is None:
+            self.national = True
+
+    # MUST IMPLMENT.
+    def query(self, args):
+        base_query = None
+        qry = None
+        param_dict = {}
+        try:
+            base_query = self.base_query(self.field)
+
+            if self.state_id:
+                param_dict['state_id'] = self.state_id
+            if self.county_id:
+                param_dict['county_id'] = self.county_id
+            if self.year:
+                param_dict['year'] = self.year
+            if not param_dict:
+                qry = session.execute(base_query)
+            else:
+                qry = session.execute(base_query, param_dict)
+        except Exception as e:
+            session.rollback()
+            raise e
+        return qry
+            
+    @property
+    def view_name(self):
+        """The name of the specific materialized view for this year."""
+        return "ct_counts"
+
+
+    def base_query(self, field):
+        query = 'SELECT {} ,stolen_value::text, recovered_value::text, year::text, count FROM {}'.format(field, self.view_name)
+        query += ' WHERE {} IS NOT NULL'.format(field)
+
+        if self.state_id:
+            query += ' AND state_id = :state_id'
+
+        if self.county_id:
+            query += ' AND county_id = :county_id'
+
+        if self.national:
+            query += ' AND state_id is NULL AND county_id is NULL '
+
+        if self.year:
+            query += ' AND year = :year '
+        return query

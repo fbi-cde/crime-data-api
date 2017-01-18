@@ -41,9 +41,29 @@ class ArgumentsSchema(Schema):
             required=True,
             error_messages={'required': 'Get API key from Catherine'})
 
+
+class IncidentViewCountArgsYear(ArgumentsSchema):
+    """
+    Groupable queries can be grouped by one or more fields found in the
+    tables separated by commas
+    """
+    county_id = marsh_fields.Integer()
+    state_id = marsh_fields.Integer()
+    variable = marsh_fields.String(missing='')
+    year = marsh_fields.String(required=True)
+
+class IncidentViewCountArgs(ArgumentsSchema):
+    """
+    Groupable queries can be grouped by one or more fields found in the
+    tables separated by commas
+    """
+    county_id = marsh_fields.Integer()
+    state_id = marsh_fields.Integer()
+    variable = marsh_fields.String(missing='')
+    year = marsh_fields.String(missing=None)
+
 # Anything in an ArgumentsSchema will, dangerously ironically,
 # not be filtered for...
-
 
 class GroupableArgsSchema(ArgumentsSchema):
     """
@@ -731,6 +751,28 @@ class IncidentCountSchema(Schema):
     cleared_count = marsh_fields.Integer(dump_only=True)
     juvenile_cleared_count = marsh_fields.Integer(dump_only=True)
     year = marsh_fields.Integer(dump_only=True)
+
+
+class IncidentViewCountSchema(Schema):
+    """
+    The basic response fields for an incident - Pre-computed Materialized View - query.
+    """
+
+    class Meta:
+        ordered = True
+
+    count = marsh_fields.Integer(dump_only=True)
+    state_id = marsh_fields.Integer(dump_only=True)
+    county_id = marsh_fields.Integer(dump_only=True)
+    year = marsh_fields.Integer(dump_only=True)
+    race_code = marsh_fields.String(dump_only=True)
+    sex_code = marsh_fields.String(dump_only=True)
+    age_num =marsh_fields.String(dump_only=True)
+    location_name = marsh_fields.String(dump_only=True)
+    offense_name = marsh_fields.String(dump_only=True)
+    prop_desc_name = marsh_fields.String(dump_only=True)
+    victim_type_name = marsh_fields.String(dump_only=True)
+
 
 
 class ArsonCountSchema(Schema):

@@ -16,6 +16,10 @@ import crime_data.resources.offenses
 import crime_data.resources.codes
 import crime_data.resources.arson
 import crime_data.resources.meta
+import crime_data.resources.offenders
+import crime_data.resources.victims
+import crime_data.resources.cargo_theft
+import crime_data.resources.hate_crime
 
 from crime_data import commands
 from crime_data.assets import assets
@@ -139,6 +143,20 @@ def add_resources(app):
                      '/arrests/age_sex/')
     api.add_resource(crime_data.resources.arson.ArsonCountResource, '/arson/')
     api.add_resource(crime_data.resources.meta.MetaDetail, '/meta/<path:endpoint>')
+
+    api.add_resource(crime_data.resources.offenders.OffendersCountStates, '/offenders/count/states/<int:state_id>/<string:variable>')
+    api.add_resource(crime_data.resources.victims.VictimsCountStates, '/victims/count/states/<int:state_id>/<string:variable>')
+
+    api.add_resource(crime_data.resources.offenders.OffendersCountCounties, '/offenders/count/counties/<int:county_id>/<string:variable>')
+    api.add_resource(crime_data.resources.victims.VictimsCountCounties, '/victims/count/counties/<int:county_id>/<string:variable>')
+
+    api.add_resource(crime_data.resources.cargo_theft.CargoTheftsCountNational, '/ct/count/national/<string:variable>')
+    api.add_resource(crime_data.resources.cargo_theft.CargoTheftsCountCounties, '/ct/count/counties/<int:county_id>/<string:variable>')
+    api.add_resource(crime_data.resources.cargo_theft.CargoTheftsCountStates, '/ct/count/states/<int:state_id>/<string:variable>')
+
+    api.add_resource(crime_data.resources.hate_crime.HateCrimesCountNational, '/hc/count/national/<string:variable>')
+    api.add_resource(crime_data.resources.hate_crime.HateCrimesCountCounties, '/hc/count/counties/<int:county_id>/<string:variable>')
+    api.add_resource(crime_data.resources.hate_crime.HateCrimesCountStates, '/hc/count/states/<int:state_id>/<string:variable>')
 
     # Wrap swagger in HTTP Auth. Can be removed after ATO
     from flask_httpauth import HTTPBasicAuth

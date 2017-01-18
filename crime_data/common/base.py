@@ -14,7 +14,6 @@ from flask_restful import abort, current_app
 from flask_sqlalchemy import SignallingSession, SQLAlchemy
 from sqlalchemy import func, or_
 
-from crime_data.common.credentials import get_credential
 from crime_data.extensions import db
 
 session = db.session
@@ -89,7 +88,7 @@ class RoutingSession(SignallingSession):
 
     def get_bind(self, mapper=None, clause=None):
         if self.use_follower:
-            return random.choice(self.followers) #nosec
+            return random.choice(self.followers) # nosec, pseudorandom is fine
 
         return super().get_bind(mapper=mapper, clause=clause)
 
@@ -334,6 +333,10 @@ class CdeResource(MethodResource):
             return val
         return str(val)
 
+    def _stringify(self, data):
+        return [{k: self._jsonable(d[k])
+                     for k in d} for d in (r._asdict() for r in data)]
+
     def _serialize(self, data):
         """Avoid JSON serialization errors
         by converting values in list of dicts
@@ -344,8 +347,7 @@ class CdeResource(MethodResource):
         if self.schema:
             return self.schema.dump(data).data
         else:
-            return [{k: self._jsonable(d[k])
-                     for k in d} for d in (r._asdict() for r in data)]
+            return self._stringify(data)
 
     def _serialize_from_representation(self, data):
         """Get from cache in an associated `representation` record"""
@@ -364,6 +366,8 @@ class CdeResource(MethodResource):
 
     def _as_dict(self, fieldTuple, res):
         return dict(zip(fieldTuple, res))
+
+
 
     def _compile_query(self, query):
         """
@@ -385,33 +389,36 @@ class CdeResource(MethodResource):
     def with_metadata(self, results, args):
         """Paginates results and wraps them in metadata."""
 
-        paginated = results.limit(args['per_page']).offset((args['page'] - 1) *
-                                                           args['per_page'])
-        if hasattr(paginated, 'data'):
-            paginated = paginated.data
-
         count = 0
-
         try:
-            if self.fast_count:
-                from sqlalchemy import select
-                count_est_query = select([func.count_estimate(
-                    self._compile_query(results))])
-                count_est_query_results = session.execute(
-                    count_est_query).fetchall()
-                count = count_est_query_results[0][0]
-                if count < COUNT_QUERY_THRESHOLD:
-                    # If the count is less than
+            paginated = results.limit(args['per_page']).offset(
+                (args['page'] - 1) * args['per_page'])
+            if hasattr(paginated, 'data'):
+                paginated = paginated.data
+
+            try:
+                if self.fast_count:
+                    from sqlalchemy import select
+                    count_est_query = select([func.count_estimate(self._compile_query(results))])
+                    count_est_query_results = session.execute(count_est_query).fetchall()
+                    count = count_est_query_results[0][0]
+                    if count < COUNT_QUERY_THRESHOLD:
+                        # If the count is less than
+                        count = results.count()
+                else:
                     count = results.count()
-            else:
+            except Exception as count_exception:
+                # Fallback to counting results with extra query.
+                current_app.logger.warning('Failed to fast_count rows:')
+                current_app.logger.warning(str(count_exception))
+                current_app.logger.warning('Falling back to full count')
+                session.rollback()
                 count = results.count()
-        except Exception as count_exception:
-            # Fallback to counting results with extra query.
-            current_app.logger.warning('Failed to fast_count rows:')
-            current_app.logger.warning(str(count_exception))
-            current_app.logger.warning('Falling back to full count')
-            session.rollback()
-            count = results.count()
+
+        except Exception as e:
+            paginated = results
+            count = len(paginated)
+            pass
 
         serialized = self._serialize(paginated)
 
@@ -440,8 +447,9 @@ class CdeResource(MethodResource):
             service_env = json.loads(os.getenv('VCAP_SERVICES'))
             cups_name = 'crime-data-api-creds'
             creds = [
-                u['credentials']
-                for u in service_env['user-provided'] if 'credentials' in u
+
+                u['credentials'] for u in service_env['user-provided']
+                if 'credentials' in u
             ]
             key = creds[0]['API_KEY']
 
