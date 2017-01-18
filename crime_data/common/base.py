@@ -88,7 +88,7 @@ class RoutingSession(SignallingSession):
 
     def get_bind(self, mapper=None, clause=None):
         if self.use_follower:
-            return random.choice(self.followers)
+            return random.choice(self.followers) # nosec, pseudorandom is fine
 
         return super().get_bind(mapper=mapper, clause=clause)
 
@@ -328,7 +328,7 @@ class CdeResource(MethodResource):
 
     def _jsonable(self, val):
         if isinstance(val, Decimal):
-            return eval(str(val))
+            return literal_eval(str(val))
         elif hasattr(val, '__pow__'):  # is numeric
             return val
         return str(val)
@@ -403,7 +403,7 @@ class CdeResource(MethodResource):
                     count_est_query_results = session.execute(count_est_query).fetchall()
                     count = count_est_query_results[0][0]
                     if count < COUNT_QUERY_THRESHOLD:
-                        # If the count is less than 
+                        # If the count is less than
                         count = results.count()
                 else:
                     count = results.count()
@@ -419,7 +419,7 @@ class CdeResource(MethodResource):
             paginated = results
             count = len(paginated)
             pass
-        
+
         serialized = self._serialize(paginated)
 
         return {
