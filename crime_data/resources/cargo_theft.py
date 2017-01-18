@@ -6,7 +6,7 @@ from crime_data.common.base import CdeResource, tuning_page
 
 # Template
 # variable => [prop_desc_name, location_name, victim_type_name, offense_name]
-
+import decimal
 
 def _is_string(col):
     col0 = list(col.base_columns)[0]

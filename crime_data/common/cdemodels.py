@@ -1011,7 +1011,7 @@ class CargoTheftCountView(object):
 
 
     def base_query(self, field, state_id=None, county_id=None):
-        query = 'SELECT {} , count FROM {}'.format(field, self.view_name)
+        query = 'SELECT {} ,stolen_value::text, recovered_value::text, count FROM {}'.format(field, self.view_name)
         query += ' WHERE {} IS NOT NULL'.format(field)
 
         if state_id:
