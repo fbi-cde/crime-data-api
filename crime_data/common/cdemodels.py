@@ -849,14 +849,20 @@ class OffenderCountView(object):
     def query(self, args):
         base_query = None
         qry = None
-        try:
-            if self.state_id:
-                base_query = self.base_query(self.field, self.state_id, None)
-                qry = session.execute(base_query, {'state_id': self.state_id})
-            elif self.county_id:
-                base_query = self.base_query(self.field, None, self.county_id)
-                qry = session.execute(base_query, {'county_id': self.county_id})
+        param_dict = {}
 
+        try:
+            base_query = self.base_query(self.field)
+
+            if self.state_id:
+                param_dict['state_id'] = self.state_id
+            if self.county_id:
+                param_dict['county_id'] = self.county_id
+
+            if not param_dict:
+                qry = session.execute(base_query)
+            else:
+                qry = session.execute(base_query, param_dict)
         except Exception as e:
             session.rollback()
             raise e
@@ -868,14 +874,14 @@ class OffenderCountView(object):
         return "offender_counts_{}".format(self.year)
 
 
-    def base_query(self, field, state_id=None, county_id=None):
+    def base_query(self, field):
         query = 'SELECT {} , count FROM {}'.format(field, self.view_name)
         query += ' WHERE {} IS NOT NULL'.format(field)
 
-        if state_id:
+        if self.state_id:
             query += ' AND state_id = :state_id'
 
-        if county_id:
+        if self.county_id:
             query += ' AND county_id = :county_id'
         return query
 
@@ -892,14 +898,20 @@ class VictimCountView(object):
     def query(self, args):
         base_query = None
         qry = None
-        try:
-            if self.state_id:
-                base_query = self.base_query(self.field, self.state_id, None)
-                qry = session.execute(base_query, {'state_id': self.state_id})
-            elif self.county_id:
-                base_query = self.base_query(self.field, None, self.county_id)
-                qry = session.execute(base_query, {'county_id': self.county_id})
+        param_dict = {}
 
+        try:
+            base_query = self.base_query(self.field)
+
+            if self.state_id:
+                param_dict['state_id'] = self.state_id
+            if self.county_id:
+                param_dict['county_id'] = self.county_id
+
+            if not param_dict:
+                qry = session.execute(base_query)
+            else:
+                qry = session.execute(base_query, param_dict)
         except Exception as e:
             session.rollback()
             raise e
@@ -911,14 +923,14 @@ class VictimCountView(object):
         return "victim_counts_{}".format(self.year)
 
 
-    def base_query(self, field, state_id=None, county_id=None):
+    def base_query(self, field):
         query = 'SELECT {} , count FROM {}'.format(field, self.view_name)
         query += ' WHERE {} IS NOT NULL'.format(field)
 
-        if state_id:
+        if self.state_id:
             query += ' AND state_id = :state_id'
 
-        if county_id:
+        if self.county_id:
             query += ' AND county_id = :county_id'
         return query
 
@@ -938,16 +950,20 @@ class HateCrimeCountView(object):
     def query(self, args):
         base_query = None
         qry = None
+        param_dict = {}
         try:
+            base_query = self.base_query(self.field)
+
             if self.state_id:
-                base_query = self.base_query(self.field, self.state_id, None)
-                qry = session.execute(base_query, {'state_id': self.state_id})
-            elif self.county_id:
-                base_query = self.base_query(self.field, None, self.county_id)
-                qry = session.execute(base_query, {'county_id': self.county_id})
-            else:
-                base_query = self.base_query(self.field)
+                param_dict['state_id'] = self.state_id
+            if self.county_id:
+                param_dict['county_id'] = self.county_id
+            if self.year:
+                param_dict['year'] = self.year
+            if not param_dict:
                 qry = session.execute(base_query)
+            else:
+                qry = session.execute(base_query, param_dict)
         except Exception as e:
             session.rollback()
             raise e
@@ -959,18 +975,22 @@ class HateCrimeCountView(object):
         return "hc_counts"
 
 
-    def base_query(self, field, state_id=None, county_id=None):
-        query = 'SELECT {} , count FROM {}'.format(field, self.view_name)
+    def base_query(self, field):
+        query = 'SELECT {} , count, year::text FROM {}'.format(field, self.view_name)
         query += ' WHERE {} IS NOT NULL'.format(field)
 
-        if state_id:
+        if self.state_id:
             query += ' AND state_id = :state_id'
 
-        if county_id:
+        if self.county_id:
             query += ' AND county_id = :county_id'
 
         if self.national:
-            query += ' AND state_id is NULL AND county_id is NULL AND agency_id is NULL '
+            query += ' AND state_id is NULL AND county_id is NULL AND agency_id is NULL'
+
+        if self.year:
+            query += ' AND year = :year '
+
         return query
 
 class CargoTheftCountView(object):
@@ -989,16 +1009,20 @@ class CargoTheftCountView(object):
     def query(self, args):
         base_query = None
         qry = None
+        param_dict = {}
         try:
+            base_query = self.base_query(self.field)
+
             if self.state_id:
-                base_query = self.base_query(self.field, self.state_id, None)
-                qry = session.execute(base_query, {'state_id': self.state_id})
-            elif self.county_id:
-                base_query = self.base_query(self.field, None, self.county_id)
-                qry = session.execute(base_query, {'county_id': self.county_id})
-            else:
-                base_query = self.base_query(self.field)
+                param_dict['state_id'] = self.state_id
+            if self.county_id:
+                param_dict['county_id'] = self.county_id
+            if self.year:
+                param_dict['year'] = self.year
+            if not param_dict:
                 qry = session.execute(base_query)
+            else:
+                qry = session.execute(base_query, param_dict)
         except Exception as e:
             session.rollback()
             raise e
@@ -1010,16 +1034,19 @@ class CargoTheftCountView(object):
         return "ct_counts"
 
 
-    def base_query(self, field, state_id=None, county_id=None):
-        query = 'SELECT {} ,stolen_value::text, recovered_value::text, count FROM {}'.format(field, self.view_name)
+    def base_query(self, field):
+        query = 'SELECT {} ,stolen_value::text, recovered_value::text, year::text, count FROM {}'.format(field, self.view_name)
         query += ' WHERE {} IS NOT NULL'.format(field)
 
-        if state_id:
+        if self.state_id:
             query += ' AND state_id = :state_id'
 
-        if county_id:
+        if self.county_id:
             query += ' AND county_id = :county_id'
 
         if self.national:
             query += ' AND state_id is NULL AND county_id is NULL '
+
+        if self.year:
+            query += ' AND year = :year '
         return query
