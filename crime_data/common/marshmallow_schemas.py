@@ -42,15 +42,15 @@ class ArgumentsSchema(Schema):
             error_messages={'required': 'Get API key from Catherine'})
 
 
-class IncidentViewCountArgsYear(ArgumentsSchema):
-    """
-    Groupable queries can be grouped by one or more fields found in the
-    tables separated by commas
-    """
-    county_id = marsh_fields.Integer()
-    state_id = marsh_fields.Integer()
-    variable = marsh_fields.String(missing='')
-    year = marsh_fields.String(required=True)
+# class IncidentViewCountArgsYear(ArgumentsSchema):
+#     """
+#     Groupable queries can be grouped by one or more fields found in the
+#     tables separated by commas
+#     """
+#     county_id = marsh_fields.Integer()
+#     state_id = marsh_fields.Integer()
+#     variable = marsh_fields.String(missing='')
+#     year = marsh_fields.String(required=True)
 
 class IncidentViewCountArgs(ArgumentsSchema):
     """
@@ -64,6 +64,14 @@ class IncidentViewCountArgs(ArgumentsSchema):
 
 # Anything in an ArgumentsSchema will, dangerously ironically,
 # not be filtered for...
+
+COUNT_ARG_VARIABLE_ENUM = ['location_type', 'offense_type',
+                           'property_type', 'age', 'sex', 'race']
+
+class ViewCountArgs(ArgumentsSchema):
+    """Swagger is repeating command-line args twice for some reason"""
+    year = marsh_fields.String(missing=None)
+
 
 class GroupableArgsSchema(ArgumentsSchema):
     """

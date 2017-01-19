@@ -21,7 +21,7 @@ class VictimsCountStates(CdeResource):
 
     #schema = marshmallow_schemas.IncidentCountSchema()
 
-    @use_args(marshmallow_schemas.IncidentViewCountArgsYear)
+    @use_args(marshmallow_schemas.IncidentViewCountArgs)
     # @swagger.use_kwargs(marshmallow_schemas.IncidentViewCountArgs,
     #                     locations=["query"],
     #                     apply=False)
@@ -45,7 +45,7 @@ class VictimsCountCounties(CdeResource):
         # Override stringify function to fit our needs.
         return [dict(r) for r in data]
 
-    @use_args(marshmallow_schemas.IncidentViewCountArgsYear)
+    @use_args(marshmallow_schemas.IncidentViewCountArgs)
     # @swagger.use_kwargs(marshmallow_schemas.IncidentViewCountArgs,
     #                     locations=["query"],
     #                     apply=False)
