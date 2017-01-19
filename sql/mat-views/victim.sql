@@ -14,17 +14,43 @@ GROUP BY GROUPING SETS (
     (year, state_id, sex_code), -- U, F, M
     (year, state_id, age_num), -- Count -> (age_num-10, age_num)
     (year, state_id, location_name), 
+
+    (year, state_id, offense_name,race_code),
+    (year, state_id, offense_name, sex_code), -- U, F, M
+    (year, state_id, offense_name, age_num), -- Count -> (age_num-10, age_num)
+    (year, state_id, offense_name, location_name), 
+
     (year, state_id, offense_name),
     (year, state_id, prop_desc_name),
-    (year, state_id, bias_name),
+
     (year, county_id, race_code),
     (year, county_id, sex_code), -- U, F, M
     (year, county_id, age_num), -- Count -> (age_num-10, age_num)
     (year, county_id, location_name), 
+
+    (year, county_id, offense_name, race_code),
+    (year, county_id, offense_name, sex_code), -- U, F, M
+    (year, county_id, offense_name, age_num), -- Count -> (age_num-10, age_num)
+    (year, county_id, offense_name,location_name), 
+
     (year, county_id, offense_name),
     (year, county_id, prop_desc_name),
-    (year, county_id, bias_name),
-    (year, state_id, offense_name, location_name)
+
+    (year, state_id, offense_name, race_code),
+    (year, state_id, offense_name, sex_code),
+    (year, state_id, offense_name, age_num),
+    (year, state_id, offense_name, ethnicity),
+    (year, state_id, offense_name, resident_status),
+    (year, state_id, offense_name, offender_relationship),
+    (year, state_id, offense_name, circumstance_name),
+
+    (year, county_id, offense_name, race_code),
+    (year, county_id, offense_name, sex_code),
+    (year, county_id, offense_name, age_num),
+    (year, county_id, offense_name, ethnicity),
+    (year, county_id, offense_name, resident_status),
+    (year, county_id, offense_name, offender_relationship),
+    (year, county_id, offense_name, circumstance_name)
 );
 
 SET work_mem='4096MB';
