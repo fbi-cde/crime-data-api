@@ -1060,11 +1060,12 @@ def _is_string(col):
 class OffenderCountView(object):
     """A class for fetching the counts from a specific year"""
 
-    def __init__(self, year, field, state_id = None, county_id = None):
+    def __init__(self, year, field, state_id = None, county_id = None, offenses=False):
         self.year = year
         self.state_id = state_id
         self.county_id = county_id
         self.field = field
+        self.offenses = offenses
 
     # MUST IMPLMENT.
     def query(self, args):
@@ -1079,7 +1080,7 @@ class OffenderCountView(object):
                 param_dict['state_id'] = self.state_id
             if self.county_id:
                 param_dict['county_id'] = self.county_id
-
+            print(base_query)
             if not param_dict:
                 qry = session.execute(base_query)
             else:
@@ -1087,6 +1088,7 @@ class OffenderCountView(object):
         except Exception as e:
             session.rollback()
             raise e
+
         return qry
             
     @property
@@ -1100,20 +1102,22 @@ class OffenderCountView(object):
         query += ' WHERE {} IS NOT NULL'.format(field)
 
         if self.state_id:
-            query += ' AND state_id = :state_id'
+            query += ' AND county_id IS NULL AND state_id = :state_id '
 
         if self.county_id:
             query += ' AND county_id = :county_id'
+
         return query
 
 class VictimCountView(object):
     """A class for fetching the counts from a specific year"""
 
-    def __init__(self, year, field, state_id = None, county_id = None):
+    def __init__(self, year, field, state_id = None, county_id = None, offenses=False):
         self.year = year
         self.state_id = state_id
         self.county_id = county_id
         self.field = field
+        self.offenses = offenses
 
     # MUST IMPLMENT.
     def query(self, args):
@@ -1149,16 +1153,17 @@ class VictimCountView(object):
         query += ' WHERE {} IS NOT NULL'.format(field)
 
         if self.state_id:
-            query += ' AND state_id = :state_id'
+            query += ' AND state_id = :state_id AND county_id IS NULL'
 
         if self.county_id:
             query += ' AND county_id = :county_id'
+
         return query
 
 class HateCrimeCountView(object):
     """A class for fetching the counts from a specific year"""
 
-    def __init__(self, field, year=None, state_id = None, county_id = None):
+    def __init__(self, field, year=None, state_id = None, county_id = None, offenses=False):
         self.year = year
         self.state_id = state_id
         self.county_id = county_id
@@ -1166,6 +1171,7 @@ class HateCrimeCountView(object):
         self.national = False
         if self.state_id is None and self.county_id is None:
             self.national = True
+        self.offenses = offenses
 
     # MUST IMPLMENT.
     def query(self, args):
@@ -1201,10 +1207,10 @@ class HateCrimeCountView(object):
         query += ' WHERE {} IS NOT NULL'.format(field)
 
         if self.state_id:
-            query += ' AND state_id = :state_id'
+            query += ' AND state_id = :state_id AND county_id IS NULL AND agency_id is NULL'
 
         if self.county_id:
-            query += ' AND county_id = :county_id'
+            query += ' AND county_id = :county_id AND agency_id is NULL'
 
         if self.national:
             query += ' AND state_id is NULL AND county_id is NULL AND agency_id is NULL'
@@ -1217,7 +1223,7 @@ class HateCrimeCountView(object):
 class CargoTheftCountView(object):
     """A class for fetching the counts from a specific year"""
 
-    def __init__(self, field, year=None, state_id = None, county_id = None):
+    def __init__(self, field, year=None, state_id = None, county_id = None, offenses=False):
         self.year = year
         self.state_id = state_id
         self.county_id = county_id
@@ -1225,6 +1231,7 @@ class CargoTheftCountView(object):
         self.national = False
         if self.state_id is None and self.county_id is None:
             self.national = True
+        self.offenses = offenses
 
     # MUST IMPLMENT.
     def query(self, args):
@@ -1260,7 +1267,7 @@ class CargoTheftCountView(object):
         query += ' WHERE {} IS NOT NULL'.format(field)
 
         if self.state_id:
-            query += ' AND state_id = :state_id'
+            query += ' AND state_id = :state_id AND county_id IS NULL'
 
         if self.county_id:
             query += ' AND county_id = :county_id'
@@ -1270,4 +1277,5 @@ class CargoTheftCountView(object):
 
         if self.year:
             query += ' AND year = :year '
+
         return query
