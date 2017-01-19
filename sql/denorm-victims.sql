@@ -56,5 +56,11 @@ UPDATE nibrs_victim_denorm SET bias_id = nibrs_bias_motivation.bias_id from nibr
 UPDATE nibrs_victim_denorm SET bias_name = nibrs_bias_list.bias_name from nibrs_bias_list where nibrs_victim_denorm.bias_id = nibrs_bias_list.bias_id;
 
 
+ALTER TABLE nibrs_victim_denorm ADD COLUMN offender_relationship varchar(100), ADD COLUMN ethnicity varchar(100), ADD COLUMN resident_status_code varchar(1) ;
+UPDATE nibrs_victim_denorm SET offender_relationship = nibrs_relationship.relationship_name from nibrs_relationship JOIN nibrs_victim_offender_rel ON (nibrs_victim_offender_rel.victim_id = nibrs_victim_denorm.victim_id);
+UPDATE nibrs_victim_denorm SET ethnicity = nibrs_ethnicity.ethnicity_name, resident_status_code=nibrs_victim.resident_status_code from nibrs_ethnicity JOIN nibrs_victim ON (nibrs_victim.victim_id = nibrs_victim_denorm.victim_id) where nibrs_ethnicity.ethnicity_id = nibrs_victim.ethnicity_id;
+
+
+nibrs_victim_offender_rel
 
 

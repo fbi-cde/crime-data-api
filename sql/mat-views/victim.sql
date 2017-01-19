@@ -4,7 +4,10 @@ SET work_mem='4096MB'; -- Go Super Saiyan.
 SET effective_cache_size='4GB'; -- Go Super Saiyan 2.
 
 drop materialized view victim_counts_2014;
-create materialized view victim_counts_2014 as select count(victim_id),bias_name,prop_desc_name,offense_name, state_id, race_code,location_name, age_num, sex_code, county_id 
+create materialized view victim_counts_2014 as 
+
+SET work_mem='4096MB';
+select count(victim_id),bias_name,prop_desc_name,offense_name, state_id, race_code,location_name, age_num, sex_code, county_id 
 from ( SELECT DISTINCT(victim_id), bias_name,age_code, age_num,race_code,year,prop_desc_name,offense_name,location_name, sex_code, state_id,county_id from nibrs_victim_denorm where year = '2014' ) as temp
 GROUP BY GROUPING SETS (
     (year, state_id, race_code),
@@ -20,7 +23,8 @@ GROUP BY GROUPING SETS (
     (year, county_id, location_name), 
     (year, county_id, offense_name),
     (year, county_id, prop_desc_name),
-    (year, county_id, bias_name)
+    (year, county_id, bias_name),
+    (year, state_id, offense_name, location_name)
 );
 
 SET work_mem='4096MB';
