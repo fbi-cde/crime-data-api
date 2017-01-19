@@ -121,8 +121,6 @@ def add_resources(app):
 
     api.add_resource(crime_data.resources.incidents.IncidentsList,
                      '/incidents/')
-    #api.add_resource(crime_data.resources.incidents.IncidentsCount,
-    #                 '/incidents/count/')
     api.add_resource(crime_data.resources.incidents.CachedIncidentsCount,
                      '/incidents/count/')
     api.add_resource(crime_data.resources.incidents.IncidentsDetail,
@@ -152,7 +150,6 @@ def add_resources(app):
                      '/offenders/count/states/<int:state_id>/<string:variable>')
     api.add_resource(crime_data.resources.victims.VictimsCountStates,
                      '/victims/count/states/<int:state_id>/<string:variable>')
-
     api.add_resource(crime_data.resources.offenders.OffendersCountCounties,
                      '/offenders/count/counties/<int:county_id>/<string:variable>')
     api.add_resource(crime_data.resources.victims.VictimsCountCounties,
@@ -215,6 +212,14 @@ def add_resources(app):
     docs.register(crime_data.resources.geo.CountyDetail)
     docs.register(crime_data.resources.offenders.OffendersCountStates)
     docs.register(crime_data.resources.offenders.OffendersCountCounties)
+    docs.register(crime_data.resources.victims.VictimsCountStates)
+    docs.register(crime_data.resources.victims.VictimsCountCounties)
+    docs.register(crime_data.resources.cargo_theft.CargoTheftsCountNational)
+    docs.register(crime_data.resources.cargo_theft.CargoTheftsCountStates)
+    docs.register(crime_data.resources.cargo_theft.CargoTheftsCountCounties)
+    docs.register(crime_data.resources.hate_crime.HateCrimesCountNational)
+    docs.register(crime_data.resources.hate_crime.HateCrimesCountStates)
+    docs.register(crime_data.resources.hate_crime.HateCrimesCountCounties)
 
 
 def newrelic_status_endpoint():

@@ -19,17 +19,18 @@ class CargoTheftsCountStates(CdeResource):
         # Override stringify function to fit our needs.
         return [dict(r) for r in data]
 
-    #schema = marshmallow_schemas.IncidentCountSchema()
-
     @use_args(marshmallow_schemas.IncidentViewCountArgs)
-    # @swagger.use_kwargs(marshmallow_schemas.IncidentViewCountArgs,
-    #                     locations=["query"],
-    #                     apply=False)
-    # @swagger.doc(
-    #     tags=['offenders'],
-    #     description=(
-    #         'Returns counts by year for offenders. '
-    #         'Offender Incidents - By State'))
+    @swagger.use_kwargs(marshmallow_schemas.ViewCountArgs,
+                        locations=["query"],
+                        apply=False)
+    @swagger.doc(
+        params={'state_id': {'description': 'The state ID from ref_state'},
+                'variable': {'description': 'A variable to group by',
+                             'enum': marshmallow_schemas.COUNT_ARG_VARIABLE_ENUM}},
+        tags=['cargo theft'],
+        description=(
+            'Returns counts by year for offenders. '
+            'Offender Incidents - By State'))
     @swagger.marshal_with(marshmallow_schemas.IncidentCountSchema, apply=False)
     @tuning_page
     def get(self, args, state_id, variable):
@@ -46,14 +47,17 @@ class CargoTheftsCountCounties(CdeResource):
         return [dict(r) for r in data]
 
     @use_args(marshmallow_schemas.IncidentViewCountArgs)
-    # @swagger.use_kwargs(marshmallow_schemas.IncidentViewCountArgs,
-    #                     locations=["query"],
-    #                     apply=False)
-    # @swagger.doc(
-    #     tags=['offenders'],
-    #     description=(
-    #         'Returns counts by year for offenders. '
-    #         'Offender Incidents - By county'))
+    @swagger.use_kwargs(marshmallow_schemas.ViewCountArgs,
+                        locations=["query"],
+                        apply=False)
+    @swagger.doc(
+        params={'county_id': {'description': 'The county ID from ref_county'},
+                'variable': {'description': 'A variable to group by',
+                             'enum': marshmallow_schemas.COUNT_ARG_VARIABLE_ENUM}},
+        tags=['cargo theft'],
+        description=(
+            'Returns counts by year for offenders. '
+            'Offender Incidents - By county'))
     @swagger.marshal_with(marshmallow_schemas.IncidentCountSchema, apply=False)
     @tuning_page
     def get(self, args, county_id, variable):
@@ -70,14 +74,16 @@ class CargoTheftsCountNational(CdeResource):
         return [dict(r) for r in data]
 
     @use_args(marshmallow_schemas.IncidentViewCountArgs)
-    # @swagger.use_kwargs(marshmallow_schemas.IncidentViewCountArgs,
-    #                     locations=["query"],
-    #                     apply=False)
-    # @swagger.doc(
-    #     tags=['offenders'],
-    #     description=(
-    #         'Returns counts by year for offenders. '
-    #         'Offender Incidents - By county'))
+    @swagger.use_kwargs(marshmallow_schemas.IncidentViewCountArgs,
+                        locations=["query"],
+                        apply=False)
+    @swagger.doc(
+        params={'variable': {'description': 'A variable to group by',
+                             'enum': marshmallow_schemas.COUNT_ARG_VARIABLE_ENUM}},
+        tags=['cargo theft'],
+        description=(
+            'Returns counts by year for offenders. '
+            'Offender Incidents - By county'))
     @swagger.marshal_with(marshmallow_schemas.IncidentCountSchema, apply=False)
     @tuning_page
     def get(self, args, variable):
