@@ -11,7 +11,7 @@ integrity: low
 availability: low
 security-baseline: low
 system-type: minor
-level-of-identity-assurance: 0
+level-of-identity-assurance: https://compliance.cloud.gov/
 staff:
     authorizing-official:
         name: Noah Kunin
@@ -44,14 +44,14 @@ staff:
         unit: 18F
         email: colin.craig@gsa.gov
 leveraged-authorizations: 
-- https://www.fedramp.gov/marketplace/compliant-systems/amazon-web-services-aws-eastwest-us-public-cloud/
-purpose: https://github.com/18F/crime-data-api
+- https://marketplace.fedramp.gov/index.html#/product/aws-govcloud
+purpose: https://github.com/18F/crime-data-api/README.md
 components: https://github.com/18F/crime-data-api
-diagram: forthcoming
-network-architecture: forthcoming
+diagram: https://docs.google.com/a/gsa.gov/drawings/d/1nwclBJQfbuzsnGOqe88VukQl3uiH1Jfa4c0FT1Cq43I/edit?usp=sharing
+network-architecture: https://docs.google.com/a/gsa.gov/drawings/d/1nwclBJQfbuzsnGOqe88VukQl3uiH1Jfa4c0FT1Cq43I/edit?usp=sharing
 environments:
 - Cloud Foundry
-- Amazon Web Services East / West
+- Amazon Web Services GovCloud
 user-types:
     developer:
         functions: 
