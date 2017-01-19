@@ -2,12 +2,10 @@
 """The app module, containing the app factory function."""
 import csv
 import io
-import json
 from os import getenv
 
 import flask_restful as restful
 from flask import Flask, render_template
-from flask_cors import CORS, cross_origin
 
 import crime_data.resources.agencies
 import crime_data.resources.arrests
@@ -20,6 +18,7 @@ import crime_data.resources.offenders
 import crime_data.resources.victims
 import crime_data.resources.cargo_theft
 import crime_data.resources.hate_crime
+import crime_data.resources.geo
 
 from crime_data import commands
 from crime_data.assets import assets
@@ -31,7 +30,7 @@ from flask_apispec.extension import FlaskApiSpec
 from crime_data.settings import ProdConfig
 
 if __name__ == '__main__':
-    app.run(debug=True) #nosec, this isn't called on production
+    app.run(debug=True)  # nosec, this isn't called on production
 
 
 def create_app(config_object=ProdConfig):
@@ -41,7 +40,6 @@ def create_app(config_object=ProdConfig):
     """
     app = Flask(__name__)
     app.config.from_object(config_object)
-    CORS(app)
     register_extensions(app)
     register_blueprints(app)
     register_errorhandlers(app)
@@ -141,8 +139,14 @@ def add_resources(app):
                      '/arrests/ethnicity/')
     api.add_resource(crime_data.resources.arrests.ArrestsCountByAgeSex,
                      '/arrests/age_sex/')
-    api.add_resource(crime_data.resources.arson.ArsonCountResource, '/arson/')
-    api.add_resource(crime_data.resources.meta.MetaDetail, '/meta/<path:endpoint>')
+    api.add_resource(crime_data.resources.arson.ArsonCountResource,
+                     '/arson/')
+    api.add_resource(crime_data.resources.meta.MetaDetail,
+                     '/meta/<path:endpoint>')
+    api.add_resource(crime_data.resources.geo.StateDetail,
+                     '/geo/states/<string:id>')
+    api.add_resource(crime_data.resources.geo.CountyDetail,
+                     '/geo/counties/<string:fips>')
 
     api.add_resource(crime_data.resources.offenders.OffendersCountStates, '/offenders/count/states/<int:state_id>/<string:variable>')
     api.add_resource(crime_data.resources.victims.VictimsCountStates, '/victims/count/states/<int:state_id>/<string:variable>')
@@ -197,6 +201,9 @@ def add_resources(app):
     docs.register(crime_data.resources.arrests.ArrestsCountByRace)
     docs.register(crime_data.resources.arrests.ArrestsCountByEthnicity)
     docs.register(crime_data.resources.arrests.ArrestsCountByAgeSex)
+    docs.register(crime_data.resources.meta.MetaDetail)
+    docs.register(crime_data.resources.geo.StateDetail)
+    docs.register(crime_data.resources.geo.CountyDetail)
 
 
 def newrelic_status_endpoint():

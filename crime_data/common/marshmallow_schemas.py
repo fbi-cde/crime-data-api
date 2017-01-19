@@ -231,7 +231,7 @@ class RefDivisionSchema(ma.ModelSchema):
 class RefStateSchema(ma.ModelSchema):
     class Meta:
         model = models.RefState
-        exclude = ('state_id', )
+        exclude = ('state_id', 'counties')
 
     division = ma.Nested(RefDivisionSchema)
 
@@ -838,3 +838,56 @@ class ArsonCountResponseSchema(PaginatedResponseSchema):
 
 class CodeIndexResponseSchema(Schema):
     key = marsh_fields.String()
+
+
+class StateCountyResponseSchema(ma.ModelSchema):
+    """Schema for counties in the StateDetail response."""
+
+    class Meta:
+        model = cdemodels.CdeRefCounty
+        fields = ('county_id', 'county_name', 'fips', 'population', )
+
+    fips = marsh_fields.String()
+    population = marsh_fields.Integer()
+
+
+class StateDetailResponseSchema(ma.ModelSchema):
+    """Response schema for the StateDetail API method."""
+
+    class Meta:
+        model = cdemodels.CdeRefState
+        ordered = True
+        fields = ('state_id', 'name', 'postal_abbr', 'fips_code',
+                  'population', 'num_agencies', 'police_officers', 'counties', )
+
+    name = marsh_fields.String(attribute='state_name')
+    postal_abbr = marsh_fields.String(attribute='state_postal_abbr')
+    fips_code = marsh_fields.String(attribute='state_fips_code')
+    population = marsh_fields.Integer()
+    num_agencies = marsh_fields.Integer()
+    police_officers = marsh_fields.Integer()
+
+    # This is not the most efficient, since it's a N queries for population, but
+    # that is something we can fix later if a problem
+    counties = ma.Nested(StateCountyResponseSchema,
+                         attribute='counties',
+                         many=True)
+
+
+class CountyDetailResponseSchema(ma.ModelSchema):
+    """Response schema for the CountyDetail method."""
+
+    class Meta:
+        model = cdemodels.CdeRefCounty
+        ordered = True
+        fields = ('county_id', 'county_name',
+                  'fips', 'population',
+                  'num_agencies', 'police_officers',
+                  'state_name', 'state_abbr', )
+
+    fips = marsh_fields.String()
+    population = marsh_fields.Integer()
+    num_agencies = marsh_fields.Integer()
+    police_officers = marsh_fields.Integer()
+    state_name = marsh_fields.String()
+    state_abbr = marsh_fields.String()

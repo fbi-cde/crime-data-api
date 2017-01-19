@@ -2,6 +2,8 @@ from flask_restful import abort
 from sqlalchemy import and_, func, or_
 from sqlalchemy.exc import ArgumentError
 from sqlalchemy.orm import aliased
+from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy.sql import label
 from sqlalchemy.sql import sqltypes as st
 from sqlalchemy.sql import label
 
@@ -10,6 +12,13 @@ from crime_data.common.base import QueryTraits, Fields
 from crime_data.extensions import db
 
 session = db.session
+
+
+def get_sql_count(q):
+    """Avoid the slow SQL Alchemy subquery account"""
+    count_q = q.statement.with_only_columns([func.count()]).order_by(None)
+    count = q.session.execute(count_q).scalar()
+    return count
 
 
 class CdeRefState(models.RefState):
@@ -42,6 +51,218 @@ class CdeRefCity(models.RefCity):
 
 class CdeRetaMonthOffenseSubcat(models.RetaMonthOffenseSubcat):
     pass
+
+
+class CdeRefAgencyCounty(models.RefAgencyCounty):
+    """A wrapper around the RefAgencyCounty model"""
+
+    @staticmethod
+    def current_year():
+        """Returns the current year for the agency/county mappings."""
+        return session.query(func.max(CdeRefAgencyCounty.data_year)).scalar()
+
+
+class CurrentYear:
+    """
+    A mixin that provides the current_year property to other models
+    """
+    @property
+    def current_year(self):
+        try:
+            return self._current_year
+        except AttributeError:
+            self._current_year = CdeRefAgencyCounty.current_year()
+            return self.current_year
+
+
+class CdeRefState(models.RefState, CurrentYear):
+    """A wrapper around the RefState model with extra finder methods"""
+
+    counties = db.relationship('CdeRefCounty', lazy='dynamic')
+
+    def get(state_id=None, abbr=None, fips=None):
+        """
+        A method to find a state by its database ID, postal abbr or FIPS code
+        """
+        query = CdeRefState.query
+
+        if state_id:
+            query = query.filter(CdeRefState.state_id == state_id)
+        elif abbr:
+            query = query.filter(CdeRefState.state_postal_abbr == abbr)
+        elif fips:
+            query = query.filter(CdeRefState.state_fips_code == fips[0:2])
+
+        return query
+
+
+    @property
+    def num_agencies(self):
+        """Returns a count of all the agencies in the state"""
+
+        query = session.query(CdeRefAgency)
+        query = (
+            query.join(CdeRefState)
+            .filter(CdeRefState.state_id == self.state_id)
+        )
+
+        count = get_sql_count(query)
+        if count == 0:
+            return None # assume 0 agencies = didn't find anything
+        else:
+            return count
+
+    def population_for_year(self, data_year):
+        """Returns the population for a given year"""
+
+        query = session.query(models.RefStatePopulation)
+        query = (
+            query.filter(models.RefStatePopulation.state_id == self.state_id)
+            .filter(models.RefStatePopulation.data_year == data_year)
+        )
+
+        try:
+            return query.one().population
+        except NoResultFound:
+            return None
+
+
+    @property
+    def population(self):
+        """Returns the population for the given year"""
+
+        return self.population_for_year(self.current_year)
+
+
+    def police_officers_for_year(self, data_year):
+        """Returns the number of police officers for a given year"""
+        query = session.query(func.sum(models.PeEmployeeData.male_officer +
+                                       models.PeEmployeeData.female_officer))
+        query = (
+            query.join(CdeRefAgency)
+            .filter(CdeRefAgency.state_id == self.state_id)
+            .filter(CdeRefAgency.agency_id == models.PeEmployeeData.agency_id)
+            .filter(models.PeEmployeeData.data_year == data_year)
+        )
+
+        return query.scalar()
+
+
+    @property
+    def police_officers(self):
+        """Returns the total police officers for the current year"""
+        return self.police_officers_for_year(self.current_year)
+
+
+class CdeRefCounty(models.RefCounty, CurrentYear):
+    """A wrapper around the RefCounty model with extra methods."""
+
+    def get(county_id=None, fips=None, name=None):
+        """Find matching counties by id, fips code or name."""
+        query = CdeRefCounty.query
+
+        if county_id:
+            query = query.filter(CdeRefCounty.county_id == county_id)
+        elif fips:
+            if isinstance(fips, str) and len(fips) == 5:
+                state = CdeRefState.get(fips=fips).one()
+                # This is because FBI stores county FIPS as string of
+                # int coercion of county FIPS code so that full FIPS
+                # 05003 you'd expect is stored as '3'
+                county_fips = str(int(fips[2:5]))
+                query = query.filter(
+                    and_(CdeRefCounty.state_id == state.state_id,
+                         CdeRefCounty.county_fips_code == county_fips))
+            else:
+                raise ValueError('The FIPS code must be a 5-character string')
+        elif name:
+            query = query.filter(func.lower(CdeRefCounty.county_name) ==
+                                 func.lower(name))
+
+        return query
+
+    @property
+    def state_name(self):
+        """Returns the state name or None if no state record is found."""  
+        if self.state is None:
+            None
+        else:
+            self.state.name
+
+    @property
+    def state_abbr(self):
+        """Returns the state postal abbrev or None is no state record is found."""
+
+        if self.state is None:
+            None
+        else:
+            self.state.state_postal_abbr
+
+    @property
+    def fips(self):
+        """Builds a FIPS code string for the county."""
+        # the int coercion is necessary because of how FBI stores county FIPS
+        return '{}{:03d}'.format(self.state.state_fips_code,
+                                 int(self.county_fips_code))
+
+    def num_agencies_for_year(self, data_year):
+        """Counts the number of agencies for that county in a year."""
+        query = session.query(CdeRefAgency)
+        query = (
+            query.join(CdeRefAgencyCounty)
+            .filter(CdeRefAgencyCounty.data_year == data_year)
+            .filter(CdeRefAgencyCounty.county_id == self.county_id)
+        )
+
+        count = get_sql_count(query)
+        if count == 0:
+            return None  # assume error finding agencies
+        else:
+            return count
+
+    @property
+    def num_agencies(self):
+        """Returns the number of agencies for the most recent year"""
+        return self.num_agencies_for_year(self.current_year)
+
+    def population_for_year(self, data_year):
+        """Returns the population for a given year"""
+        query = session.query(models.RefCountyPopulation)
+        query = (
+            query.filter(models.RefCountyPopulation.county_id == self.county_id)
+            .filter(models.RefCountyPopulation.data_year == data_year)
+        )
+
+        try:
+            return query.one().population
+        except NoResultFound:
+            return None
+
+    @property
+    def population(self):
+        """Returns the most recent reported population for the county"""
+        return self.population_for_year(self.current_year)
+
+    def police_officers_for_year(self, data_year):
+        """Returns the number of police officers for a given year"""
+        query = session.query(func.sum(models.PeEmployeeData.male_officer +
+                                       models.PeEmployeeData.female_officer))
+        query = (
+            query.join(CdeRefAgency)
+            .join(CdeRefAgencyCounty)
+            .filter(CdeRefAgencyCounty.data_year == data_year)
+            .filter(CdeRefAgencyCounty.county_id == self.county_id)
+            .filter(CdeRefAgency.agency_id == models.PeEmployeeData.agency_id)
+            .filter(models.PeEmployeeData.data_year == data_year)
+        )
+
+        print(query)
+        return query.scalar()
+
+    @property
+    def police_officers(self):
+        """Returns the total police officers for the current year"""
+        return self.police_officers_for_year(self.current_year)
 
 
 class CdeRefAgency(models.RefAgency):
@@ -83,6 +304,9 @@ class CdeNibrsLocationType(models.NibrsLocationType):
 
 
 class CdeNibrsIncident(models.NibrsIncident, QueryTraits):
+    """
+    Extends models.NibrsIncident.
+    """
 
     over_count = True
 
@@ -95,9 +319,6 @@ class CdeNibrsIncident(models.NibrsIncident, QueryTraits):
     arrestee_race = aliased(CdeRefRace, name='arrestee_race')
     arrestee_age = aliased(CdeNibrsAge, name='arrestee_age')
     arrestee_ethnicity = aliased(CdeNibrsEthnicity, name='arrestee_ethnicity')
-    '''''
-    Extends models.NibrsIncident.
-    ''' ''
 
     # Maps API filter to DB column name.
     @staticmethod
