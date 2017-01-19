@@ -46,7 +46,7 @@ staff:
 leveraged-authorizations: 
 - https://marketplace.fedramp.gov/index.html#/product/aws-govcloud
 purpose: https://github.com/18F/crime-data-api/README.md
-components: https://github.com/18F/crime-data-api
+components: https://github.com/18F/crime-data-api https://github.com/18F/crime-data-explorer
 diagram: https://docs.google.com/a/gsa.gov/drawings/d/1nwclBJQfbuzsnGOqe88VukQl3uiH1Jfa4c0FT1Cq43I/edit?usp=sharing
 network-architecture: https://docs.google.com/a/gsa.gov/drawings/d/1nwclBJQfbuzsnGOqe88VukQl3uiH1Jfa4c0FT1Cq43I/edit?usp=sharing
 environments:
