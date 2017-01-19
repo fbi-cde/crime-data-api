@@ -1725,6 +1725,29 @@ class OffenseClassification(db.Model):
     class_sort_order = db.Column(db.SmallInteger)
 
 
+class PeEmployeeData(db.Model):
+    __tablename__ = 'pe_employee_data'
+    __table_args__ = (UniqueConstraint('agency_id', 'data_year'), )
+
+    agency_id = db.Column(db.Integer,
+                          db.ForeignKey('ref_agency.agency_id',
+                                        deferrable=True,
+                                        initially='DEFERRED'),
+                          nullable=False,
+                          index=True,
+                          primary_key=True)
+    data_year = db.Column(db.SmallInteger, nullable=False, primary_key=True)
+    reported_flag = db.Column(db.String(1))
+    male_officer = db.Column(db.Integer)
+    male_civilian = db.Column(db.Integer)
+    male_total = db.Column(db.Integer)
+    female_officer = db.Column(db.Integer)
+    female_civilian = db.Column(db.Integer)
+    female_total = db.Column(db.Integer)
+    officer_rate = db.Column(db.Integer)
+    civilian_rate = db.Column(db.Integer)
+
+
 class RefAgencyCounty(db.Model):
     __tablename__ = 'ref_agency_county'
     __table_args__ = (UniqueConstraint('agency_id', 'county_id',
@@ -1848,6 +1871,7 @@ class RefAgency(db.Model):
     tribe = db.relationship('RefTribe')
     counties = db.relationship('RefCounty',
                                secondary=RefAgencyCounty.__table__,
+
                                collection_class=set)
 
 
@@ -2023,18 +2047,14 @@ class RefCounty(db.Model):
                          nullable=False,
                          index=True)
 
-    state = db.relationship('RefState')
+    state = db.relationship('RefState', back_populates='counties')
 
 
 class RefCountyPopulation(db.Model):
     __tablename__ = 'ref_county_population'
     __table_args__ = (UniqueConstraint('county_id', 'data_year'), )
 
-    id = db.Column(db.Integer,
-                   primary_key=True,
-                   server_default=text(
-                       "nextval('ref_county_population_id_seq'::regclass)"))
-    data_year = db.Column(db.SmallInteger, nullable=False)
+    data_year = db.Column(db.SmallInteger, nullable=False, primary_key=True)
     population = db.Column(db.BigInteger)
     source_flag = db.Column(db.String(1), nullable=False)
     change_timestamp = db.Column(db.DateTime(True))
@@ -2045,9 +2065,30 @@ class RefCountyPopulation(db.Model):
                                         deferrable=True,
                                         initially='DEFERRED'),
                           nullable=False,
-                          index=True)
+                          index=True,
+                          primary_key=True)
 
     county = db.relationship('RefCounty')
+
+
+class RefStatePopulation(db.Model):
+    __tablename__ = 'ref_state_population'
+    __tableargs__ = (UniqueConstraint('state_id', 'data_year'), )
+
+    state_id = db.Column(db.Integer,
+                         db.ForeignKey('ref_state.state_id',
+                                       deferrable=True,
+                                       initially='DEFERRED'),
+                         nullable=False,
+                         index=True,
+                         primary_key=True)
+    data_year = db.Column(db.SmallInteger, nullable=False, primary_key=True)
+    population = db.Column(db.BigInteger)
+    source_flag = db.Column(db.String(1), nullable=False)
+    census = db.Column(db.BigInteger)
+    change_timestamp = db.Column(db.DateTime(True))
+    change_user = db.Column(db.String(100))
+    reporting_population = db.Column(db.BigInteger)
 
 
 class RefDepartment(db.Model):
@@ -2283,6 +2324,9 @@ class RefState(db.Model):
                             index=True)
 
     division = db.relationship('RefDivision', lazy=False)
+    counties = db.relationship('RefCounty',
+                               lazy='dynamic',
+                               back_populates='state')
 
 
 class RefSubmittingAgency(db.Model):

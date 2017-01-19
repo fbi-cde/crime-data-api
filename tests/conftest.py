@@ -7,7 +7,7 @@ from webtest import TestApp
 from crime_data.app import create_app
 from crime_data.database import db as _db
 from crime_data.settings import TestConfig
-
+from sqlalchemy.orm import scoped_session, sessionmaker
 
 @pytest.yield_fixture(scope='function')
 def app():
@@ -28,14 +28,12 @@ def testapp(app):
 
 
 @pytest.yield_fixture(scope='function')
-def db(app):
+def rollback(app):
     """A database for the tests."""
     _db.app = app
-    with app.app_context():
-        _db.create_all()
+    _db.session.begin(subtransactions=True)
 
     yield _db
 
     # Explicitly close DB connection
-    _db.session.close()
-    _db.drop_all()
+    _db.session.rollback()
