@@ -39,5 +39,17 @@ GROUP BY GROUPING SETS (
     (year, county_id, prop_desc_name),
     (year, county_id, location_name),
     (year, county_id, victim_type_name),
-    (year, county_id, offense_name)
+    (year, county_id, offense_name),
+
+    (year, offense_name, prop_desc_name),
+    (year, offense_name, location_name),
+    (year, offense_name, victim_type_name),
+
+    (year, state_id, offense_name, prop_desc_name),
+    (year, state_id, offense_name, location_name),
+    (year, state_id, offense_name, victim_type_name),
+
+    (year, county_id, offense_name, prop_desc_name),
+    (year, county_id, offense_name, location_name),
+    (year, county_id, offense_name, victim_type_name)
 );

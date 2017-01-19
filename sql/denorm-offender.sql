@@ -62,5 +62,8 @@ UPDATE nibrs_offender_denorm SET offense_id = nibrs_offense.offense_id from nibr
 UPDATE nibrs_offender_denorm SET bias_id = nibrs_bias_motivation.bias_id from nibrs_bias_motivation where nibrs_bias_motivation.offense_id = nibrs_offender_denorm.offense_id;
 UPDATE nibrs_offender_denorm SET bias_name = nibrs_bias_list.bias_name from nibrs_bias_list where nibrs_offender_denorm.bias_id = nibrs_bias_list.bias_id;
 
+ALTER TABLE nibrs_offender_denorm ADD COLUMN ethnicity varchar(100);
+UPDATE nibrs_offender_denorm SET ethnicity = nibrs_ethnicity.ethnicity_name from nibrs_offender JOIN nibrs_ethnicity ON nibrs_ethnicity.ethnicity_id = nibrs_offender.ethnicity_id where nibrs_offender.offender_id = nibrs_offender_denorm.offender_id;
+
 
 

@@ -1,3 +1,5 @@
+SET synchronous_commit='off'; -- Go Super Saiyan.
+
 drop table nibrs_offense_denorm CASCADE;
 create table nibrs_offense_denorm (
     offense_id bigint, -- nibrs_offender.offender_id
