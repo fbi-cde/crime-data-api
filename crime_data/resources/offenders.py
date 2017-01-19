@@ -19,8 +19,6 @@ class OffendersCountStates(CdeResource):
         # Override stringify function to fit our needs.
         return [dict(r) for r in data]
 
-    schema = marshmallow_schemas.IncidentCountSchema(many=True)
-
     @use_args(marshmallow_schemas.IncidentViewCountArgs)
     @swagger.use_kwargs(marshmallow_schemas.ViewCountArgs,
                         locations=['query'],
@@ -44,8 +42,6 @@ class OffendersCountStates(CdeResource):
 
 class OffendersCountCounties(CdeResource):
 
-    schema = marshmallow_schemas.IncidentCountSchema(many=True)
-    
     def _stringify(self, data):
         # Override stringify function to fit our needs.
         return [dict(r) for r in data]
@@ -55,7 +51,7 @@ class OffendersCountCounties(CdeResource):
                         locations=["query"],
                         apply=False)
     @swagger.doc(
-        params={'county_id': {'description': 'The state ID from ref_county'},
+        params={'county_id': {'description': 'The county ID from ref_county'},
                 'variable': {'description': 'A variable to group by',
                              'enum': marshmallow_schemas.COUNT_ARG_VARIABLE_ENUM}},
         tags=['offenders'],
@@ -70,3 +66,4 @@ class OffendersCountCounties(CdeResource):
         results = model.query(args)
         
         return self.with_metadata(results.fetchall(), args)
+
