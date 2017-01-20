@@ -1,9 +1,15 @@
 # -*- coding: utf-8 -*-
 
 from crime_data.common.models import RefCounty
-from crime_data.common.cdemodels import *
-from tests.factories import *
+from crime_data.common.cdemodels import (CdeRefState,
+                                         CdeRefCounty,
+                                         CdeRefAgencyCounty,
+                                         OffenderCountView,
+                                         VictimCountView)
+from crime_data.common.marshmallow_schemas import (OFFENDER_COUNT_VARIABLE_ENUM,
+                                                   VICTIM_COUNT_VARIABLE_ENUM)
 import pytest
+
 
 class TestCdeRefState:
     def test_get_by_id(self, testapp):
@@ -82,6 +88,7 @@ class TestCdeRefCounty:
         assert county.police_officers_for_year(2021) is None
         assert county.police_officers is None
 
+
 class TestCdeRefAgencyCounty:
     def test_current_year(self, testapp):
         assert CdeRefAgencyCounty.current_year() == 2016
@@ -91,7 +98,7 @@ class TestCdeRefState:
     """Test the CdeRefState class"""
 
     def test_population(self, app):
-        state = CdeRefState.get(abbr="WY").one()
+        state = CdeRefState.get(abbr='WY').one()
         assert state.population_for_year(1984) == 511000
 
     def test_num_agencies(self, app):
@@ -99,5 +106,55 @@ class TestCdeRefState:
         assert state.num_agencies == 145
 
     def test_police_officers(self, app):
-        state = CdeRefState.get(abbr="VA").one()
+        state = CdeRefState.get(abbr='VA').one()
         assert state.police_officers_for_year(2008) == 48
+
+
+class TestOffenderCountView:
+    """Test the OffenderCountView"""
+
+    def test_offender_count_for_a_state(self, app):
+        ocv = OffenderCountView(2014, 'race_code', state_id=3)
+        results = ocv.query({}).fetchall()
+
+        expected = {'B': 14, 'U': 5, 'W': 4}
+
+        assert len(results) == len(expected)
+        for row in results:
+            assert row.count == expected[row.race_code]
+
+    @pytest.mark.parametrize('variable', OFFENDER_COUNT_VARIABLE_ENUM)
+    def test_offender_count_variables(self, app, variable):
+        ocv = OffenderCountView(2014, variable, state_id=3)
+        results = ocv.query({}).fetchall()
+        assert len(results) > 0
+
+
+class TestVictimCountView:
+    """Test the VictimCountView"""
+
+    def test_victim_count_for_a_state(self, app):
+        vcv = VictimCountView(2014, 'offense_name', state_id=3)
+
+        expected = {
+            'Aggravated Assault': 12,
+            'All Other Larceny': 5,
+            'Burglary/Breaking & Entering': 2,
+            'Counterfeiting/Forgery': 1,
+            'Murder and Nonnegligent Manslaughter': 1,
+            'Robbery': 1,
+            'Shoplifting': 1,
+            'Simple Assault': 5,
+            'Theft From Motor Vehicle': 1
+        }
+
+        results = vcv.query({}).fetchall()
+        assert len(results) == len(expected)
+        for row in results:
+            assert row.count == expected[row.offense_name]
+
+    @pytest.mark.parametrize('variable', VICTIM_COUNT_VARIABLE_ENUM)
+    def test_victim_count_variables(self, app, variable):
+        vcv = VictimCountView(2014, variable, state_id=3)
+        results = vcv.query({}).fetchall()
+        assert len(results) > 0

@@ -29,7 +29,7 @@ class VictimsCountStates(CdeResource):
         tags=['victims'],
         params={'state_id': {'description': 'The state ID from ref_county'},
                 'variable': {'description': 'A variable to group by',
-                             'enum': marshmallow_schemas.COUNT_ARG_VARIABLE_ENUM}},        
+                             'enum': marshmallow_schemas.VICTIM_COUNT_VARIABLE_ENUM}},
         description=(
             'Returns counts by year for victims. '
             'Victim incidents - By State'))
@@ -55,7 +55,7 @@ class VictimsCountCounties(CdeResource):
     @swagger.doc(
         params={'county_id': {'description': 'The county ID from ref_county'},
                 'variable': {'description': 'A variable to group by',
-                             'enum': marshmallow_schemas.COUNT_ARG_VARIABLE_ENUM}},        
+                             'enum': marshmallow_schemas.VICTIM_COUNT_VARIABLE_ENUM}},
         tags=['victims'],
          description=(
              'Returns counts by year for victims. '

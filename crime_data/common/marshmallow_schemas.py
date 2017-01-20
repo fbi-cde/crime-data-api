@@ -65,8 +65,18 @@ class IncidentViewCountArgs(ArgumentsSchema):
 # Anything in an ArgumentsSchema will, dangerously ironically,
 # not be filtered for...
 
-COUNT_ARG_VARIABLE_ENUM = ['ethnicity', 'prop_desc_name', 'offense_name',
-                           'race_code', 'location_name', 'age_num', 'sex_code']
+OFFENDER_COUNT_VARIABLE_ENUM = ['ethnicity', 'prop_desc_name', 'offense_name',
+                               'race_code', 'location_name', 'age_num', 'sex_code']
+
+VICTIM_COUNT_VARIABLE_ENUM = ['prop_desc_name', 'offense_name', 'ethnicity',
+                              'resident_status_code', 'offender_relationship',
+                              'circumstance_name', 'race_code', 'location_name',
+                              'age_num', 'sex_code']
+
+CARGO_THEFT_COUNT_VARIABLE_ENUM = ['stolen_value', 'recovered_value', 'location_name',
+                                   'offense_name', 'victim_type_name', 'prop_desc_name']
+
+HATE_CRIME_COUNT_VARIABLE_ENUM = ['ethnicity', 'age_num', 'race_code', 'sex_code']
 
 class ViewCountArgs(ArgumentsSchema):
     """Swagger is repeating command-line args twice for some reason"""
