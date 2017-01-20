@@ -32,10 +32,12 @@ GROUP BY GROUPING SETS (
     (year, location_name),
     (year, victim_type_name),
     (year, offense_name),
+    
     (year, state_id, prop_desc_name),
     (year, state_id, location_name),
     (year, state_id, victim_type_name),
     (year, state_id, offense_name),
+
     (year, county_id, prop_desc_name),
     (year, county_id, location_name),
     (year, county_id, victim_type_name),
