@@ -1,7 +1,7 @@
 import flask_apispec as swagger
 from webargs.flaskparser import use_args
 
-from crime_data.common import cdemodels, marshmallow_schemas, models
+from crime_data.common import cdemodels, marshmallow_schemas
 from crime_data.common.base import CdeResource, tuning_page
 
 # Template
@@ -19,11 +19,11 @@ class VictimsCountStates(CdeResource):
         # Override stringify function to fit our needs.
         return [dict(r) for r in data]
 
-    #schema = marshmallow_schemas.IncidentCountSchema()
+    # schema = marshmallow_schemas.IncidentCountSchema()
 
     @use_args(marshmallow_schemas.IncidentViewCountArgs)
     @swagger.use_kwargs(marshmallow_schemas.ViewCountArgs,
-                        locations=["query"],
+                        locations=['query'],
                         apply=False)
     @swagger.doc(
         tags=['victims'],
@@ -39,8 +39,8 @@ class VictimsCountStates(CdeResource):
         self.verify_api_key(args)
         model = cdemodels.VictimCountView(args['year'], variable, state_id)
         results = model.query(args)
-        
         return self.with_metadata(results.fetchall(), args)
+
 
 class VictimsCountCounties(CdeResource):
 
@@ -50,14 +50,14 @@ class VictimsCountCounties(CdeResource):
 
     @use_args(marshmallow_schemas.IncidentViewCountArgs)
     @swagger.use_kwargs(marshmallow_schemas.ViewCountArgs,
-                        locations=["query"],
+                        locations=['query'],
                         apply=False)
     @swagger.doc(
         params={'county_id': {'description': 'The county ID from ref_county'},
                 'variable': {'description': 'A variable to group by',
                              'enum': marshmallow_schemas.VICTIM_COUNT_VARIABLE_ENUM}},
         tags=['victims'],
-         description=(
+        description=(
              'Returns counts by year for victims. '
              'Victim Incidents - By county'))
     @swagger.marshal_with(marshmallow_schemas.IncidentCountSchema, apply=False)
@@ -66,5 +66,4 @@ class VictimsCountCounties(CdeResource):
         self.verify_api_key(args)
         model = cdemodels.VictimCountView(args['year'], variable, None, county_id)
         results = model.query(args)
-        
         return self.with_metadata(results.fetchall(), args)

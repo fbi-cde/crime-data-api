@@ -1,11 +1,12 @@
 import flask_apispec as swagger
 from webargs.flaskparser import use_args
 
-from crime_data.common import cdemodels, marshmallow_schemas, models
+from crime_data.common import cdemodels, marshmallow_schemas
 from crime_data.common.base import CdeResource, tuning_page
 
 # Template
 # variable => [bias_name]
+
 
 def _is_string(col):
     col0 = list(col.base_columns)[0]
@@ -18,27 +19,26 @@ class HateCrimesCountStates(CdeResource):
         # Override stringify function to fit our needs.
         return [dict(r) for r in data]
 
-    #schema = marshmallow_schemas.IncidentCountSchema()
+    # schema = marshmallow_schemas.IncidentCountSchema()
 
     @use_args(marshmallow_schemas.IncidentViewCountArgs)
     @swagger.use_kwargs(marshmallow_schemas.ViewCountArgs,
-                         locations=["query"],
+                        locations=['query'],
                         apply=False)
     @swagger.doc(
         params={'state_id': {'description': 'The state ID from ref_state'},
                 'variable': {'description': 'A variable to group by',
                              'enum': marshmallow_schemas.HATE_CRIME_COUNT_VARIABLE_ENUM}},
-         tags=['hate crimes'],
-         description=(
-             'Returns counts by year for hate crimes. '
-             'Hate Crime Incidents - By State'))
+        tags=['hate crimes'],
+        description=(
+            'Returns counts by year for hate crimes. '
+            'Hate Crime Incidents - By State'))
     @swagger.marshal_with(marshmallow_schemas.IncidentCountSchema, apply=False)
     @tuning_page
     def get(self, args, state_id, variable):
         self.verify_api_key(args)
         model = cdemodels.HateCrimeCountView(variable, args['year'], state_id)
         results = model.query(args)
-        
         return self.with_metadata(results.fetchall(), args)
 
 class HateCrimesCountCounties(CdeResource):
@@ -49,23 +49,22 @@ class HateCrimesCountCounties(CdeResource):
 
     @use_args(marshmallow_schemas.IncidentViewCountArgs)
     @swagger.use_kwargs(marshmallow_schemas.ViewCountArgs,
-                        locations=["query"],
+                        locations=['query'],
                         apply=False)
     @swagger.doc(
         params={'county_id': {'description': 'The county ID from ref_county'},
                 'variable': {'description': 'A variable to group by',
                              'enum': marshmallow_schemas.HATE_CRIME_COUNT_VARIABLE_ENUM}},
-         tags=['hate crimes'],
-         description=(
-             'Returns counts by year for hate crimes. '
-             'Hate crime incidents - By county'))
+        tags=['hate crimes'],
+        description=(
+            'Returns counts by year for hate crimes. '
+            'Hate crime incidents - By county'))
     @swagger.marshal_with(marshmallow_schemas.IncidentCountSchema, apply=False)
     @tuning_page
     def get(self, args, county_id, variable):
         self.verify_api_key(args)
         model = cdemodels.HateCrimeCountView(variable, args['year'], None, county_id)
         results = model.query(args)
-        
         return self.with_metadata(results.fetchall(), args)
 
 class HateCrimesCountNational(CdeResource):
@@ -76,18 +75,17 @@ class HateCrimesCountNational(CdeResource):
 
     @use_args(marshmallow_schemas.IncidentViewCountArgs)
     @swagger.use_kwargs(marshmallow_schemas.ViewCountArgs,
-                        locations=["query"],
+                        locations=['query'],
                         apply=False)
     @swagger.doc(
         params={'variable': {'description': 'A variable to group by',
                              'enum': marshmallow_schemas.HATE_CRIME_COUNT_VARIABLE_ENUM}},
-         tags=['hate crimes'],
-         description='Returns counts by year for hate crimes. ')
+        tags=['hate crimes'],
+        description='Returns counts by year for hate crimes. ')
     @swagger.marshal_with(marshmallow_schemas.IncidentCountSchema, apply=False)
     @tuning_page
     def get(self, args, variable):
         self.verify_api_key(args)
         model = cdemodels.HateCrimeCountView(variable, args['year'])
         results = model.query(args)
-        
         return self.with_metadata(results.fetchall(), args)

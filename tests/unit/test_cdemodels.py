@@ -5,11 +5,14 @@ from crime_data.common.cdemodels import (CdeRefState,
                                          CdeRefCounty,
                                          CdeRefAgencyCounty,
                                          OffenderCountView,
-                                         VictimCountView)
+                                         VictimCountView,
+                                         CargoTheftCountView,
+                                         HateCrimeCountView)
 from crime_data.common.marshmallow_schemas import (OFFENDER_COUNT_VARIABLE_ENUM,
-                                                   VICTIM_COUNT_VARIABLE_ENUM)
+                                                   VICTIM_COUNT_VARIABLE_ENUM,
+                                                   CARGO_THEFT_COUNT_VARIABLE_ENUM)
 import pytest
-
+from collections import namedtuple
 
 class TestCdeRefState:
     def test_get_by_id(self, testapp):
@@ -123,6 +126,9 @@ class TestOffenderCountView:
         for row in results:
             assert row.count == expected[row.race_code]
 
+    def test_offender_count_view_with_offenses(self, app):
+        pass
+
     @pytest.mark.parametrize('variable', OFFENDER_COUNT_VARIABLE_ENUM)
     def test_offender_count_variables(self, app, variable):
         ocv = OffenderCountView(2014, variable, state_id=3)
@@ -153,8 +159,92 @@ class TestVictimCountView:
         for row in results:
             assert row.count == expected[row.offense_name]
 
+    def test_victim_count_with_offenses(self, app):
+        pass
+
     @pytest.mark.parametrize('variable', VICTIM_COUNT_VARIABLE_ENUM)
     def test_victim_count_variables(self, app, variable):
         vcv = VictimCountView(2014, variable, state_id=3)
         results = vcv.query({}).fetchall()
         assert len(results) > 0
+
+
+class TestCargoTheftCountView:
+    """Test the CargoTheftCountView"""
+
+    def test_cargo_theft_count_for_a_state(self, app):
+        ctv = CargoTheftCountView('prop_desc_name', 2014, state_id=3)
+
+        CtRecord = namedtuple('ct_record', ['count', 'stolen_value', 'recovered_value'])
+        expected = {
+            'Consumable Goods': CtRecord(1, '466', '0'),
+            'Credit/ Debit cards': CtRecord(1, '0', '0'),
+            'Money': CtRecord(1, '290', '217'),
+            'Other': CtRecord(2, '60', '0'),
+            'Purse/ Wallet': CtRecord(1, '20', '0'),
+            'Tools': CtRecord(1, '1000', '0')
+        }
+
+        results = ctv.query({}).fetchall()
+        assert len(results) == len(expected)
+        for row in results:
+            assert row.count == expected[row.prop_desc_name].count
+            assert row.stolen_value == expected[row.prop_desc_name].stolen_value
+            assert row.recovered_value == expected[row.prop_desc_name].recovered_value
+
+    def test_cargo_theft_count_for_nation(self, app):
+        ctv = CargoTheftCountView('victim_type_name', 2014)
+        CtRecord = namedtuple('ct_record', ['count', 'stolen_value', 'recovered_value'])
+        expected = {
+            'Business': CtRecord(63, '7328091', '792831'),
+            'Financial Institution': CtRecord(2, '900', '0'),
+            'Government': CtRecord(4, '1400', '500'),
+            'Individual': CtRecord(80, '861318', '54666'),
+            'Society/Public': CtRecord(2, '2200', '0'),
+            'Unknown': CtRecord(1, '4894', '0')
+        }
+        results = ctv.query({}).fetchall()
+        assert len(results) == len(expected)
+        for row in results:
+            assert row.count == expected[row.victim_type_name].count
+            assert row.stolen_value == expected[row.victim_type_name].stolen_value
+            assert row.recovered_value == expected[row.victim_type_name].recovered_value
+
+    @pytest.mark.parametrize('variable', CARGO_THEFT_COUNT_VARIABLE_ENUM)
+    def test_victim_count_variables(self, app, variable):
+        ctcv = CargoTheftCountView(variable, 2014, state_id=3)
+        results = ctcv.query({}).fetchall()
+        assert len(results) > 0
+
+
+class TestHateCrimeCountView:
+    """Test the HateCrimeCountView"""
+
+    def test_hate_crime_count_view(self, app):
+        hcv = HateCrimeCountView('bias_name', 2014, state_id=6)
+        results = hcv.query({}).fetchall()
+        expected = {
+            'Anti-Black or African American': 1,
+            'Anti-Female': 1,
+            'Anti-Jewish': 1
+        }
+        for row in results:
+            assert row.count == expected[row.bias_name]
+
+    def test_national_hate_crime_count(self, app):
+        hcv = HateCrimeCountView('bias_name', 2014)
+        results = hcv.query({}).fetchall()
+        expected = {
+            'Anti-Asian': 2,
+            'Anti-Black or African American': 13,
+            'Anti-Female': 1,
+            'Anti-Hispanic or Latino': 4,
+            'Anti-Jewish': 2,
+            'Anti-Male Homosexual (Gay)': 1,
+            'Anti-Not Hispanic or Latino': 1,
+            'Anti-Other Religion': 1,
+            'Anti-Physical Disability': 1,
+            'Anti-White': 4
+        }
+        for row in results:
+            assert row.count == expected[row.bias_name]

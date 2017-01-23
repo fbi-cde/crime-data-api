@@ -1207,13 +1207,13 @@ class HateCrimeCountView(object):
         query += ' WHERE {} IS NOT NULL'.format(field)
 
         if self.state_id:
-            query += ' AND state_id = :state_id AND county_id IS NULL AND agency_id is NULL'
+            query += ' AND state_id = :state_id AND county_id IS NULL'
 
         if self.county_id:
-            query += ' AND county_id = :county_id AND agency_id is NULL'
+            query += ' AND county_id = :county_id'
 
         if self.national:
-            query += ' AND state_id is NULL AND county_id is NULL AND agency_id is NULL'
+            query += ' AND state_id is NULL AND county_id is NULL'
 
         if self.year:
             query += ' AND year = :year '

@@ -1,17 +1,18 @@
+import json
 import flask_apispec as swagger
 from webargs.flaskparser import use_args
 
-from crime_data.common import cdemodels, marshmallow_schemas, models
+from crime_data.common import cdemodels, marshmallow_schemas
 from crime_data.common.base import CdeResource, tuning_page
 
 # Template
 # variables => [location_type, offense_type, property_type, age, sex, race]
 
+
 def _is_string(col):
     col0 = list(col.base_columns)[0]
     return issubclass(col0.type.python_type, str)
 
-import json
 
 class OffendersCountStates(CdeResource):
 
@@ -37,7 +38,6 @@ class OffendersCountStates(CdeResource):
         self.verify_api_key(args)
         model = cdemodels.OffenderCountView(args['year'], variable, state_id)
         results = model.query(args)
-        
         return self.with_metadata(results.fetchall(), args)
 
 class OffendersCountCounties(CdeResource):
@@ -48,7 +48,7 @@ class OffendersCountCounties(CdeResource):
 
     @use_args(marshmallow_schemas.IncidentViewCountArgs)
     @swagger.use_kwargs(marshmallow_schemas.ViewCountArgs,
-                        locations=["query"],
+                        locations=['query'],
                         apply=False)
     @swagger.doc(
         params={'county_id': {'description': 'The county ID from ref_county'},
@@ -64,6 +64,4 @@ class OffendersCountCounties(CdeResource):
         self.verify_api_key(args)
         model = cdemodels.OffenderCountView(args['year'], variable, None, county_id)
         results = model.query(args)
-        
         return self.with_metadata(results.fetchall(), args)
-

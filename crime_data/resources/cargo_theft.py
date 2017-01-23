@@ -1,12 +1,13 @@
+import decimal
 import flask_apispec as swagger
 from webargs.flaskparser import use_args
 
-from crime_data.common import cdemodels, marshmallow_schemas, models
+from crime_data.common import cdemodels, marshmallow_schemas
 from crime_data.common.base import CdeResource, tuning_page
 
 # Template
 # variable => [prop_desc_name, location_name, victim_type_name, offense_name]
-import decimal
+
 
 def _is_string(col):
     col0 = list(col.base_columns)[0]
@@ -21,7 +22,7 @@ class CargoTheftsCountStates(CdeResource):
 
     @use_args(marshmallow_schemas.IncidentViewCountArgs)
     @swagger.use_kwargs(marshmallow_schemas.ViewCountArgs,
-                        locations=["query"],
+                        locations=['query'],
                         apply=False)
     @swagger.doc(
         params={'state_id': {'description': 'The state ID from ref_state'},
@@ -37,8 +38,8 @@ class CargoTheftsCountStates(CdeResource):
         self.verify_api_key(args)
         model = cdemodels.CargoTheftCountView(variable, args['year'], state_id)
         results = model.query(args)
-        
         return self.with_metadata(results.fetchall(), args)
+
 
 class CargoTheftsCountCounties(CdeResource):
 
@@ -48,7 +49,7 @@ class CargoTheftsCountCounties(CdeResource):
 
     @use_args(marshmallow_schemas.IncidentViewCountArgs)
     @swagger.use_kwargs(marshmallow_schemas.ViewCountArgs,
-                        locations=["query"],
+                        locations=['query'],
                         apply=False)
     @swagger.doc(
         params={'county_id': {'description': 'The county ID from ref_county'},
@@ -64,8 +65,8 @@ class CargoTheftsCountCounties(CdeResource):
         self.verify_api_key(args)
         model = cdemodels.CargoTheftCountView(variable, args['year'], None, county_id)
         results = model.query(args)
-        
         return self.with_metadata(results.fetchall(), args)
+
 
 class CargoTheftsCountNational(CdeResource):
 
@@ -75,7 +76,7 @@ class CargoTheftsCountNational(CdeResource):
 
     @use_args(marshmallow_schemas.IncidentViewCountArgs)
     @swagger.use_kwargs(marshmallow_schemas.IncidentViewCountArgs,
-                        locations=["query"],
+                        locations=['query'],
                         apply=False)
     @swagger.doc(
         params={'variable': {'description': 'A variable to group by',
@@ -90,5 +91,4 @@ class CargoTheftsCountNational(CdeResource):
         self.verify_api_key(args)
         model = cdemodels.CargoTheftCountView(variable, args['year'])
         results = model.query(args)
-        
         return self.with_metadata(results.fetchall(), args)

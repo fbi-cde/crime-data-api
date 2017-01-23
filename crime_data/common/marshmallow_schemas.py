@@ -73,10 +73,10 @@ VICTIM_COUNT_VARIABLE_ENUM = ['prop_desc_name', 'offense_name', 'ethnicity',
                               'circumstance_name', 'race_code', 'location_name',
                               'age_num', 'sex_code']
 
-CARGO_THEFT_COUNT_VARIABLE_ENUM = ['stolen_value', 'recovered_value', 'location_name',
+CARGO_THEFT_COUNT_VARIABLE_ENUM = ['location_name',
                                    'offense_name', 'victim_type_name', 'prop_desc_name']
 
-HATE_CRIME_COUNT_VARIABLE_ENUM = ['ethnicity', 'age_num', 'race_code', 'sex_code']
+HATE_CRIME_COUNT_VARIABLE_ENUM = ['bias_name']
 
 class ViewCountArgs(ArgumentsSchema):
     """Swagger is repeating command-line args twice for some reason"""
