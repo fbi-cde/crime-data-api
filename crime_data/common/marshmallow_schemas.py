@@ -73,6 +73,8 @@ VICTIM_COUNT_VARIABLE_ENUM = ['prop_desc_name', 'offense_name', 'ethnicity',
                               'circumstance_name', 'race_code', 'location_name',
                               'age_num', 'sex_code']
 
+OFFENSE_COUNT_VARIABLE_ENUM = ['weapon_name', 'method_entry_code', 'num_premises_entered', 'location_name']
+
 CARGO_THEFT_COUNT_VARIABLE_ENUM = ['location_name',
                                    'offense_name', 'victim_type_name', 'prop_desc_name']
 
