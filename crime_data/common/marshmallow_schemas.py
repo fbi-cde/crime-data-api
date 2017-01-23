@@ -42,15 +42,15 @@ class ArgumentsSchema(Schema):
             error_messages={'required': 'Get API key from Catherine'})
 
 
-class IncidentViewCountArgsYear(ArgumentsSchema):
-    """
-    Groupable queries can be grouped by one or more fields found in the
-    tables separated by commas
-    """
-    county_id = marsh_fields.Integer()
-    state_id = marsh_fields.Integer()
-    variable = marsh_fields.String(missing='')
-    year = marsh_fields.String(required=True)
+# class IncidentViewCountArgsYear(ArgumentsSchema):
+#     """
+#     Groupable queries can be grouped by one or more fields found in the
+#     tables separated by commas
+#     """
+#     county_id = marsh_fields.Integer()
+#     state_id = marsh_fields.Integer()
+#     variable = marsh_fields.String(missing='')
+#     year = marsh_fields.String(required=True)
 
 class IncidentViewCountArgs(ArgumentsSchema):
     """
@@ -64,6 +64,32 @@ class IncidentViewCountArgs(ArgumentsSchema):
 
 # Anything in an ArgumentsSchema will, dangerously ironically,
 # not be filtered for...
+
+OFFENDER_COUNT_VARIABLE_ENUM = ['ethnicity', 'prop_desc_name', 'offense_name',
+                                'race_code', 'location_name', 'age_num', 'sex_code']
+
+VICTIM_COUNT_VARIABLE_ENUM = ['prop_desc_name', 'offense_name', 'ethnicity',
+                              'resident_status_code', 'offender_relationship',
+                              'circumstance_name', 'race_code', 'location_name',
+                              'age_num', 'sex_code']
+
+CARGO_THEFT_COUNT_VARIABLE_ENUM = ['location_name',
+                                   'offense_name', 'victim_type_name', 'prop_desc_name']
+
+HATE_CRIME_COUNT_VARIABLE_ENUM = ['bias_name']
+
+
+class ViewCountArgs(ArgumentsSchema):
+    """The regular arguments shema but also add a year argument"""
+
+    year = marsh_fields.String(missing=None)
+
+
+class ViewCountYearRequiredArgs(ArgumentsSchema):
+    """When the year is required"""
+
+    year = marsh_fields.String(required=True, metadata={'description': 'A year to return data for'})
+
 
 class GroupableArgsSchema(ArgumentsSchema):
     """
