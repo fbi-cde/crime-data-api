@@ -158,34 +158,6 @@ def add_resources(app):
     api.add_resource(crime_data.resources.hate_crime.HateCrimesCountCounties, '/hc/count/counties/<int:county_id>/<string:variable>')
     api.add_resource(crime_data.resources.hate_crime.HateCrimesCountStates, '/hc/count/states/<int:state_id>/<string:variable>')
 
-    # Wrap swagger in HTTP Auth. Can be removed after ATO
-    from flask_httpauth import HTTPBasicAuth
-    auth = HTTPBasicAuth()
-
-    @auth.get_password
-    def get_pw(username):
-        target_username = None
-        target_password = None
-
-        try:
-            target_username = get_credential('HTTP_BASIC_USERNAME')
-            target_password = get_credential('HTTP_BASIC_PASSWORD')
-        except KeyError:
-            target_username = getenv('HTTP_USERNAME')
-            target_password = getenv('HTTP_PASSWORD')
-
-        if target_username is None or target_password is None:
-            return None
-
-        if username == target_username:
-            return target_password
-
-        return None
-
-    FlaskApiSpec.swagger_json = auth.login_required(FlaskApiSpec.swagger_json)
-    FlaskApiSpec.swagger_ui = auth.login_required(FlaskApiSpec.swagger_ui)
-    # end of HTTP Auth protection for Swagger endpoints
-
     docs = FlaskApiSpec(app)
     docs.register(crime_data.resources.agencies.AgenciesDetail)
     docs.register(crime_data.resources.agencies.AgenciesList)
