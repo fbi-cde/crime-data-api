@@ -66,7 +66,7 @@ class IncidentViewCountArgs(ArgumentsSchema):
 # not be filtered for...
 
 OFFENDER_COUNT_VARIABLE_ENUM = ['ethnicity', 'prop_desc_name', 'offense_name',
-                               'race_code', 'location_name', 'age_num', 'sex_code']
+                                'race_code', 'location_name', 'age_num', 'sex_code']
 
 VICTIM_COUNT_VARIABLE_ENUM = ['prop_desc_name', 'offense_name', 'ethnicity',
                               'resident_status_code', 'offender_relationship',
@@ -78,9 +78,17 @@ CARGO_THEFT_COUNT_VARIABLE_ENUM = ['location_name',
 
 HATE_CRIME_COUNT_VARIABLE_ENUM = ['bias_name']
 
+
 class ViewCountArgs(ArgumentsSchema):
-    """Swagger is repeating command-line args twice for some reason"""
+    """The regular arguments shema but also add a year argument"""
+
     year = marsh_fields.String(missing=None)
+
+
+class ViewCountYearRequiredArgs(ArgumentsSchema):
+    """When the year is required"""
+
+    year = marsh_fields.String(required=True, metadata={'description': 'A year to return data for'})
 
 
 class GroupableArgsSchema(ArgumentsSchema):

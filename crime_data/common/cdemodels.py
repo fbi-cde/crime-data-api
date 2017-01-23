@@ -1094,6 +1094,8 @@ class OffenderCountView(object):
     @property
     def view_name(self):
         """The name of the specific materialized view for this year."""
+        if self.year is None:
+            raise ValueError("You must provide a single year argument for the offender count view")
         return "offender_counts_{}".format(self.year)
 
 
@@ -1145,6 +1147,8 @@ class VictimCountView(object):
     @property
     def view_name(self):
         """The name of the specific materialized view for this year."""
+        if self.year is None:
+            raise ValueError("You must provide a single year argument for the victim count view")
         return "victim_counts_{}".format(self.year)
 
 

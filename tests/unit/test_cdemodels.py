@@ -135,6 +135,11 @@ class TestOffenderCountView:
         results = ocv.query({}).fetchall()
         assert len(results) > 0
 
+        # test that grouping is working
+        seen_values = set()
+        for row in results:
+            assert row[variable] not in seen_values
+            seen_values.add(row[variable])
 
 class TestVictimCountView:
     """Test the VictimCountView"""
@@ -168,6 +173,12 @@ class TestVictimCountView:
         results = vcv.query({}).fetchall()
         assert len(results) > 0
 
+        # test that grouping is working
+        seen_values = set()
+        for row in results:
+            assert row[variable] not in seen_values
+            seen_values.add(row[variable])
+        print(seen_values)
 
 class TestCargoTheftCountView:
     """Test the CargoTheftCountView"""
@@ -215,6 +226,13 @@ class TestCargoTheftCountView:
         ctcv = CargoTheftCountView(variable, 2014, state_id=3)
         results = ctcv.query({}).fetchall()
         assert len(results) > 0
+
+        # test that grouping is working
+        seen_values = set()
+        for row in results:
+            assert row[variable] not in seen_values
+            seen_values.add(row[variable])
+        print(seen_values)
 
 
 class TestHateCrimeCountView:

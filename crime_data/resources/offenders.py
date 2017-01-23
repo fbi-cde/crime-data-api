@@ -21,7 +21,7 @@ class OffendersCountStates(CdeResource):
         return [dict(r) for r in data]
 
     @use_args(marshmallow_schemas.IncidentViewCountArgs)
-    @swagger.use_kwargs(marshmallow_schemas.ViewCountArgs,
+    @swagger.use_kwargs(marshmallow_schemas.ViewCountYearRequiredArgs,
                         locations=['query'],
                         apply=False)
     @swagger.doc(
@@ -47,7 +47,7 @@ class OffendersCountCounties(CdeResource):
         return [dict(r) for r in data]
 
     @use_args(marshmallow_schemas.IncidentViewCountArgs)
-    @swagger.use_kwargs(marshmallow_schemas.ViewCountArgs,
+    @swagger.use_kwargs(marshmallow_schemas.ViewCountYearRequiredArgs,
                         locations=['query'],
                         apply=False)
     @swagger.doc(
