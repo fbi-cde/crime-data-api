@@ -13,6 +13,34 @@ def _is_string(col):
     return issubclass(col0.type.python_type, str)
 
 
+class VictimsCountNational(CdeResource):
+
+    def _stringify(self, data):
+        # Override stringify function to fit our needs.
+        return [dict(r) for r in data]
+
+    # schema = marshmallow_schemas.IncidentCountSchema()
+
+    @use_args(marshmallow_schemas.IncidentViewCountArgs)
+    @swagger.use_kwargs(marshmallow_schemas.ViewCountArgs,
+                        locations=['query'],
+                        apply=False)
+    @swagger.doc(
+        tags=['victims'],
+        params={'variable': {'description': 'A variable to group by',
+                             'enum': marshmallow_schemas.VICTIM_COUNT_VARIABLE_ENUM}},
+        description=(
+            'Returns counts by year for victims. '
+            'Victim incidents - Nationwide'))
+    @swagger.marshal_with(marshmallow_schemas.IncidentCountSchema, apply=False)
+    @tuning_page
+    def get(self, args, variable):
+        self.verify_api_key(args)
+        model = cdemodels.VictimCountView(args['year'], variable)
+        results = model.query(args)
+        return self.with_metadata(results.fetchall(), args)
+
+
 class VictimsCountStates(CdeResource):
 
     def _stringify(self, data):

@@ -141,6 +141,18 @@ class TestOffenderCountView:
             assert row[variable] not in seen_values
             seen_values.add(row[variable])
 
+    @pytest.mark.parametrize('variable', OFFENDER_COUNT_VARIABLE_ENUM)
+    def test_offender_count_variables(self, app, variable):
+        ocv = OffenderCountView(2014, variable)
+        results = ocv.query({}).fetchall()
+        assert len(results) > 0
+
+        # test that grouping is working
+        seen_values = set()
+        for row in results:
+            assert row[variable] not in seen_values
+            seen_values.add(row[variable])
+
 class TestVictimCountView:
     """Test the VictimCountView"""
 

@@ -14,6 +14,32 @@ def _is_string(col):
     return issubclass(col0.type.python_type, str)
 
 
+class OffendersCountNational(CdeResource):
+
+    def _stringify(self, data):
+        # Override stringify function to fit our needs.
+        return [dict(r) for r in data]
+
+    @use_args(marshmallow_schemas.IncidentViewCountArgs)
+    @swagger.use_kwargs(marshmallow_schemas.ViewCountYearRequiredArgs,
+                        locations=['query'],
+                        apply=False)
+    @swagger.doc(
+        params={'variable': {'description': 'A variable to group by',
+                             'enum': marshmallow_schemas.OFFENDER_COUNT_VARIABLE_ENUM}},
+        tags=['offenders'],
+        description=(
+            'Returns national counts by year for offenders. '
+            'Offender Incidents - national'))
+    @swagger.marshal_with(marshmallow_schemas.IncidentCountSchema, apply=False)
+    @tuning_page
+    def get(self, args, variable):
+        self.verify_api_key(args)
+        model = cdemodels.OffenderCountView(args['year'], variable)
+        results = model.query(args)
+        return self.with_metadata(results.fetchall(), args)
+
+
 class OffendersCountStates(CdeResource):
 
     def _stringify(self, data):
