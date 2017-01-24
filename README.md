@@ -1,7 +1,7 @@
 crime_data_api
 ================
 
-A flasky app.
+A python flask app.
 
 [![Build status](https://circleci.com/gh/18F/crime-data-api.svg?style=svg)](https://circleci.com/gh/18F/crime-data-api)
 [![Code Climate status](https://codeclimate.com/github/18F/crime-data-api.svg)](https://codeclimate.com/github/18F/crime-data-api)
