@@ -3,9 +3,9 @@
 SET work_mem='4096MB'; -- Go Super Saiyan.
 SET effective_cache_size='4GB'; -- Go Super Saiyan 2.
 
-drop materialized view offender_counts_2014;
-create materialized view offender_counts_2014 as select count(offender_id),prop_desc_name,offense_name, state_id, race_code,location_name, age_num, sex_code, county_id, ethnicity 
-from ( SELECT DISTINCT(offender_id), age_code, age_num,race_code,year,prop_desc_name,offense_name,location_name, sex_code, state_id,county_id, ethnicity from nibrs_offender_denorm where year = '2014' ) as temp
+drop materialized view offender_counts_2014 CASCADE;
+create materialized view offender_counts_2014 as select count(offender_id),ethnicity, prop_desc_name,offense_name, state_id, race_code,location_name, age_num, sex_code, county_id 
+from ( SELECT DISTINCT(offender_id), ethnicity, age_code, age_num,race_code,year,prop_desc_name,offense_name,location_name, sex_code, state_id,county_id from nibrs_offender_denorm where year = '2014' ) as temp
 GROUP BY GROUPING SETS (
     (year, race_code),
     (year, sex_code), -- U, F, M
@@ -35,7 +35,7 @@ GROUP BY GROUPING SETS (
 SET work_mem='4096MB';
 SET effective_cache_size='4GB';
 
-drop materialized view offender_counts_2013;
+drop materialized view offender_counts_2013 CASCADE;
 create materialized view offender_counts_2013 as select count(offender_id),ethnicity, prop_desc_name,offense_name, state_id, race_code,location_name, age_num, sex_code, county_id 
 from ( SELECT DISTINCT(offender_id), ethnicity, age_code, age_num,race_code,year,prop_desc_name,offense_name,location_name, sex_code, state_id,county_id from nibrs_offender_denorm where year = '2013' ) as temp
 GROUP BY GROUPING SETS (
