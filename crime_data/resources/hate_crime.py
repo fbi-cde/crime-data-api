@@ -37,7 +37,7 @@ class HateCrimesCountStates(CdeResource):
     @tuning_page
     def get(self, args, state_id, variable):
         self.verify_api_key(args)
-        model = cdemodels.HateCrimeCountView(variable, args['year'], state_id)
+        model = cdemodels.HateCrimeCountView(variable, year=args['year'], state_id=state_id)
         results = model.query(args)
         return self.with_metadata(results.fetchall(), args)
 
@@ -63,7 +63,7 @@ class HateCrimesCountCounties(CdeResource):
     @tuning_page
     def get(self, args, county_id, variable):
         self.verify_api_key(args)
-        model = cdemodels.HateCrimeCountView(variable, args['year'], None, county_id)
+        model = cdemodels.HateCrimeCountView(variable, year=args['year'], county_id=county_id)
         results = model.query(args)
         return self.with_metadata(results.fetchall(), args)
 
@@ -86,6 +86,6 @@ class HateCrimesCountNational(CdeResource):
     @tuning_page
     def get(self, args, variable):
         self.verify_api_key(args)
-        model = cdemodels.HateCrimeCountView(variable, args['year'])
+        model = cdemodels.HateCrimeCountView(variable, year=args['year'])
         results = model.query(args)
         return self.with_metadata(results.fetchall(), args)

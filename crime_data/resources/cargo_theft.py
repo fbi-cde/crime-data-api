@@ -36,7 +36,7 @@ class CargoTheftsCountStates(CdeResource):
     @tuning_page
     def get(self, args, state_id, variable):
         self.verify_api_key(args)
-        model = cdemodels.CargoTheftCountView(variable, args['year'], state_id)
+        model = cdemodels.CargoTheftCountView(variable, year=args['year'], state_id=state_id)
         results = model.query(args)
         return self.with_metadata(results.fetchall(), args)
 
@@ -63,7 +63,7 @@ class CargoTheftsCountCounties(CdeResource):
     @tuning_page
     def get(self, args, county_id, variable):
         self.verify_api_key(args)
-        model = cdemodels.CargoTheftCountView(variable, args['year'], None, county_id)
+        model = cdemodels.CargoTheftCountView(variable, year=args['year'], county_id=county_id)
         results = model.query(args)
         return self.with_metadata(results.fetchall(), args)
 
@@ -89,6 +89,6 @@ class CargoTheftsCountNational(CdeResource):
     @tuning_page
     def get(self, args, variable):
         self.verify_api_key(args)
-        model = cdemodels.CargoTheftCountView(variable, args['year'])
+        model = cdemodels.CargoTheftCountView(variable, year=args['year'])
         results = model.query(args)
         return self.with_metadata(results.fetchall(), args)

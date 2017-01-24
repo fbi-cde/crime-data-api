@@ -36,7 +36,7 @@ class VictimsCountNational(CdeResource):
     @tuning_page
     def get(self, args, variable):
         self.verify_api_key(args)
-        model = cdemodels.VictimCountView(args['year'], variable)
+        model = cdemodels.VictimCountView(variable, year=args['year'])
         results = model.query(args)
         return self.with_metadata(results.fetchall(), args)
 
@@ -65,7 +65,7 @@ class VictimsCountStates(CdeResource):
     @tuning_page
     def get(self, args, state_id, variable):
         self.verify_api_key(args)
-        model = cdemodels.VictimCountView(args['year'], variable, state_id)
+        model = cdemodels.VictimCountView(variable, year=args['year'], state_id=state_id)
         results = model.query(args)
         return self.with_metadata(results.fetchall(), args)
 
@@ -92,6 +92,6 @@ class VictimsCountCounties(CdeResource):
     @tuning_page
     def get(self, args, county_id, variable):
         self.verify_api_key(args)
-        model = cdemodels.VictimCountView(args['year'], variable, None, county_id)
+        model = cdemodels.VictimCountView(variable, year=args['year'], county_id=county_id)
         results = model.query(args)
         return self.with_metadata(results.fetchall(), args)

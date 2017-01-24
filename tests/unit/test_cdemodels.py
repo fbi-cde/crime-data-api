@@ -117,7 +117,7 @@ class TestOffenderCountView:
     """Test the OffenderCountView"""
 
     def test_offender_count_for_a_state(self, app):
-        ocv = OffenderCountView(2014, 'race_code', state_id=3)
+        ocv = OffenderCountView('race_code', year=2014, state_id=3)
         results = ocv.query({}).fetchall()
 
         expected = {'B': 14, 'U': 5, 'W': 4}
@@ -131,7 +131,7 @@ class TestOffenderCountView:
 
     @pytest.mark.parametrize('variable', OFFENDER_COUNT_VARIABLE_ENUM)
     def test_offender_count_variables(self, app, variable):
-        ocv = OffenderCountView(2014, variable, state_id=3)
+        ocv = OffenderCountView(variable, year=2014, state_id=3)
         results = ocv.query({}).fetchall()
         assert len(results) > 0
 
@@ -143,7 +143,7 @@ class TestOffenderCountView:
 
     @pytest.mark.parametrize('variable', OFFENDER_COUNT_VARIABLE_ENUM)
     def test_offender_count_variables(self, app, variable):
-        ocv = OffenderCountView(2014, variable)
+        ocv = OffenderCountView(variable, year=2014)
         results = ocv.query({}).fetchall()
         assert len(results) > 0
 
@@ -157,7 +157,7 @@ class TestVictimCountView:
     """Test the VictimCountView"""
 
     def test_victim_count_for_a_state(self, app):
-        vcv = VictimCountView(2014, 'offense_name', state_id=3)
+        vcv = VictimCountView('offense_name', year=2014, state_id=3)
 
         expected = {
             'Aggravated Assault': 12,
@@ -181,7 +181,7 @@ class TestVictimCountView:
 
     @pytest.mark.parametrize('variable', VICTIM_COUNT_VARIABLE_ENUM)
     def test_victim_count_variables(self, app, variable):
-        vcv = VictimCountView(2014, variable, state_id=3)
+        vcv = VictimCountView(variable, year=2014, state_id=3)
         results = vcv.query({}).fetchall()
         assert len(results) > 0
 
@@ -196,7 +196,7 @@ class TestCargoTheftCountView:
     """Test the CargoTheftCountView"""
 
     def test_cargo_theft_count_for_a_state(self, app):
-        ctv = CargoTheftCountView('prop_desc_name', 2014, state_id=3)
+        ctv = CargoTheftCountView('prop_desc_name', year=2014, state_id=3)
 
         CtRecord = namedtuple('ct_record', ['count', 'stolen_value', 'recovered_value'])
         expected = {
@@ -216,7 +216,7 @@ class TestCargoTheftCountView:
             assert row.recovered_value == expected[row.prop_desc_name].recovered_value
 
     def test_cargo_theft_count_for_nation(self, app):
-        ctv = CargoTheftCountView('victim_type_name', 2014)
+        ctv = CargoTheftCountView('victim_type_name', year=2014)
         CtRecord = namedtuple('ct_record', ['count', 'stolen_value', 'recovered_value'])
         expected = {
             'Business': CtRecord(63, '7328091', '792831'),
@@ -235,7 +235,7 @@ class TestCargoTheftCountView:
 
     @pytest.mark.parametrize('variable', CARGO_THEFT_COUNT_VARIABLE_ENUM)
     def test_victim_count_variables(self, app, variable):
-        ctcv = CargoTheftCountView(variable, 2014, state_id=3)
+        ctcv = CargoTheftCountView(variable, year=2014, state_id=3)
         results = ctcv.query({}).fetchall()
         assert len(results) > 0
 
@@ -251,7 +251,7 @@ class TestHateCrimeCountView:
     """Test the HateCrimeCountView"""
 
     def test_hate_crime_count_view(self, app):
-        hcv = HateCrimeCountView('bias_name', 2014, state_id=6)
+        hcv = HateCrimeCountView('bias_name', year=2014, state_id=6)
         results = hcv.query({}).fetchall()
         expected = {
             'Anti-Black or African American': 1,
@@ -262,7 +262,7 @@ class TestHateCrimeCountView:
             assert row.count == expected[row.bias_name]
 
     def test_national_hate_crime_count(self, app):
-        hcv = HateCrimeCountView('bias_name', 2014)
+        hcv = HateCrimeCountView('bias_name', year=2014)
         results = hcv.query({}).fetchall()
         expected = {
             'Anti-Asian': 2,

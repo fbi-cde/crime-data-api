@@ -48,7 +48,7 @@ class OffensesCountNational(CdeResource):
     @tuning_page
     def get(self, args, variable):
         self.verify_api_key(args)
-        model = cdemodels.OffenseCountView(args['year'], variable)
+        model = cdemodels.OffenseCountView(variable, year=args['year'])
         results = model.query(args)
         return self.with_metadata(results.fetchall(), args)
 
@@ -77,7 +77,7 @@ class OffensesCountStates(CdeResource):
     @tuning_page
     def get(self, args, state_id, variable):
         self.verify_api_key(args)
-        model = cdemodels.OffenseCountView(args['year'], variable, state_id)
+        model = cdemodels.OffenseCountView(variable, year=args['year'], state_id=state_id)
         results = model.query(args)
         return self.with_metadata(results.fetchall(), args)
 
@@ -104,6 +104,6 @@ class OffensesCountCounties(CdeResource):
     @tuning_page
     def get(self, args, county_id, variable):
         self.verify_api_key(args)
-        model = cdemodels.OffenseCountView(args['year'], variable, None, county_id)
+        model = cdemodels.OffenseCountView(variable, year=args['year'], county_id=county_id)
         results = model.query(args)
         return self.with_metadata(results.fetchall(), args)
