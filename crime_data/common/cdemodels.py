@@ -1125,25 +1125,21 @@ class CountView(object):
 
 
 class OffenderCountView(CountView):
-    """A class for fetching the counts from a specific year"""
+    """A class for fetching the counts """
 
     @property
     def view_name(self):
         """The name of the specific materialized view for this year."""
-        if self.year is None:
-            raise ValueError('You must provide a single year argument for the offender count view')
-        return 'offender_counts_{}'.format(self.year)
+        return 'offender_counts'
 
 
 class VictimCountView(CountView):
-    """A class for fetching the counts from a specific year"""
+    """A class for fetching the counts """
 
     @property
     def view_name(self):
-        """The name of the specific materialized view for this year."""
-        if self.year is None:
-            raise ValueError('You must provide a single year argument for the victim count view')
-        return 'victim_counts_{}'.format(self.year)
+        """The name of the specific materialized view."""
+        return 'victim_counts'
 
 
 class OffenseCountView(CountView):
@@ -1151,10 +1147,8 @@ class OffenseCountView(CountView):
 
     @property
     def view_name(self):
-        """The name of the specific materialized view for this year."""
-        if self.year is None:
-            raise ValueError('You must provide a single year argument for the offender count view')
-        return 'offense_counts_{}'.format(self.year)
+        """The name of the specific materialized view."""
+        return 'offense_counts'
 
 
 class MultiYearCountView(CountView):
@@ -1205,16 +1199,16 @@ class HateCrimeCountView(MultiYearCountView):
 
     @property
     def view_name(self):
-        """The name of the specific materialized view for this year."""
+        """The name of the specific materialized view."""
         return 'hc_counts'
 
 
 class CargoTheftCountView(MultiYearCountView):
-    """A class for fetching the counts from a specific year"""
+     """A class for fetching the counts """
 
     @property
     def view_name(self):
-        """The name of the specific materialized view for this year."""
+        """The name of the specific materialized view."""
         return 'ct_counts'
 
     def base_query(self, field):
