@@ -14,7 +14,7 @@ BEGIN
 END
 $func$ LANGUAGE plpgsql;
 
-DROP CASCADE function create_partition_and_insert();
+DROP function IF EXISTS create_partition_and_insert() CASCADE;
 CREATE OR REPLACE FUNCTION create_partition_and_insert() RETURNS trigger AS
   $BODY$
     DECLARE

@@ -146,6 +146,15 @@ def add_resources(app):
     api.add_resource(crime_data.resources.geo.CountyDetail,
                      '/geo/counties/<string:fips>')
 
+
+    api.add_resource(crime_data.resources.offenses.OffensesCountNational,
+                     '/offenses/count/national/<string:variable>')
+    api.add_resource(crime_data.resources.offenses.OffensesCountStates,
+                     '/offenses/count/states/<int:state_id>/<string:variable>')
+    api.add_resource(crime_data.resources.offenses.OffensesCountCounties,
+                     '/offenses/count/counties/<string:variable>')
+
+
     api.add_resource(crime_data.resources.offenders.OffendersCountNational,
                      '/offenders/count/national/<string:variable>')
     api.add_resource(crime_data.resources.offenders.OffendersCountStates,

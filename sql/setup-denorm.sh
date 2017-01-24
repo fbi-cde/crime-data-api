@@ -8,4 +8,6 @@ psql $CRIME_DATA_API_DEV_DB_URL -f sql/mat-views/cargo-theft.sql
 psql $CRIME_DATA_API_DEV_DB_URL -f sql/mat-views/hate-crime.sql
 psql $CRIME_DATA_API_DEV_DB_URL -f sql/mat-views/offender.sql
 psql $CRIME_DATA_API_DEV_DB_URL -f sql/mat-views/victim.sql
-# psql $CRIME_DATA_API_DEV_DB_URL -f mat-views/offense.sql
+psql $CRIME_DATA_API_DEV_DB_URL -f sql/mat-views/offense.sql
+psql $CRIME_DATA_API_DEV_DB_URL -f sql/mat-views/offender-offenses.sql
+psql $CRIME_DATA_API_DEV_DB_URL -f sql/mat-views/victim-offenses.sql
