@@ -28,7 +28,7 @@ class HateCrimesCountStates(CdeResource):
     @swagger.doc(
         params={'state_id': {'description': 'The state ID from ref_state'},
                 'variable': {'description': 'A variable to group by',
-                             'enum': marshmallow_schemas.HATE_CRIME_COUNT_VARIABLE_ENUM}},
+                             'enum': cdemodels.HateCrimeCountView.VARIABLES}},
         tags=['hate crimes'],
         description=(
             'Returns counts by year for hate crimes. '
@@ -54,7 +54,7 @@ class HateCrimesCountCounties(CdeResource):
     @swagger.doc(
         params={'county_id': {'description': 'The county ID from ref_county'},
                 'variable': {'description': 'A variable to group by',
-                             'enum': marshmallow_schemas.HATE_CRIME_COUNT_VARIABLE_ENUM}},
+                             'enum': cdemodels.HateCrimeCountView.VARIABLES}},
         tags=['hate crimes'],
         description=(
             'Returns counts by year for hate crimes. '
@@ -79,7 +79,7 @@ class HateCrimesCountNational(CdeResource):
                         apply=False)
     @swagger.doc(
         params={'variable': {'description': 'A variable to group by',
-                             'enum': marshmallow_schemas.HATE_CRIME_COUNT_VARIABLE_ENUM}},
+                             'enum': cdemodels.HateCrimeCountView.VARIABLES}},
         tags=['hate crimes'],
         description='Returns counts by year for hate crimes. ')
     @swagger.marshal_with(marshmallow_schemas.IncidentCountSchema, apply=False)
