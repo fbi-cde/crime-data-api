@@ -1060,7 +1060,7 @@ def _is_string(col):
 # CountViews
 import abc
 
-class CountView(object):
+class SingleYearCountView(object):
     """The base class for all the CountView subclasses"""
 
     __abstract__ = True
@@ -1124,34 +1124,7 @@ class CountView(object):
         return qry
 
 
-class OffenderCountView(CountView):
-    """A class for fetching the counts """
-
-    @property
-    def view_name(self):
-        """The name of the specific materialized view for this year."""
-        return 'offender_counts'
-
-
-class VictimCountView(CountView):
-    """A class for fetching the counts """
-
-    @property
-    def view_name(self):
-        """The name of the specific materialized view."""
-        return 'victim_counts'
-
-
-class OffenseCountView(CountView):
-    """A class for fetching the counts broken down by offense"""
-
-    @property
-    def view_name(self):
-        """The name of the specific materialized view."""
-        return 'offense_counts'
-
-
-class MultiYearCountView(CountView):
+class MultiYearCountView(SingleYearCountView):
     """For materialized views that aren't split by year"""
 
     def query(self, args):
@@ -1195,6 +1168,33 @@ class MultiYearCountView(CountView):
         return query
 
 
+class OffenderCountView(MultiYearCountView):
+    """A class for fetching the counts """
+
+    @property
+    def view_name(self):
+        """The name of the specific materialized view for this year."""
+        return 'offender_counts'
+
+
+class VictimCountView(MultiYearCountView):
+    """A class for fetching the counts """
+
+    @property
+    def view_name(self):
+        """The name of the specific materialized view."""
+        return 'victim_counts'
+
+
+class OffenseCountView(MultiYearCountView):
+    """A class for fetching the counts broken down by offense"""
+
+    @property
+    def view_name(self):
+        """The name of the specific materialized view."""
+        return 'offense_counts'
+
+
 class HateCrimeCountView(MultiYearCountView):
 
     @property
@@ -1204,7 +1204,7 @@ class HateCrimeCountView(MultiYearCountView):
 
 
 class CargoTheftCountView(MultiYearCountView):
-     """A class for fetching the counts """
+    """A class for fetching the counts """
 
     @property
     def view_name(self):
