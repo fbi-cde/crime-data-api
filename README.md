@@ -1,14 +1,14 @@
-crime_data_api
+Crime Data API
 ================
 
-A python flask app.
+This API powers the [Crime Data Explorer front-end](https://github.com/18F/crime-data-explorer). The API uses the [Python](https://www.python.org/) [Flask](http://flask.pocoo.org/) framework.
 
 [![Build status](https://circleci.com/gh/18F/crime-data-api.svg?style=svg)](https://circleci.com/gh/18F/crime-data-api)
 [![Code Climate status](https://codeclimate.com/github/18F/crime-data-api.svg)](https://codeclimate.com/github/18F/crime-data-api)
 [![Test Coverage](https://codeclimate.com/github/18F/crime-data-api/badges/coverage.svg)](https://codeclimate.com/github/18F/crime-data-api/coverage)
 [![Dependency Status](https://gemnasium.com/18F/crime-data-api.svg)](https://gemnasium.com/18F/crime-data-api)
 
-Quickstart
+Installation
 ----------
 
 First, set your app’s secret key as an environment variable. For example, add the following to `.bashrc` or `.bash_profile`.
