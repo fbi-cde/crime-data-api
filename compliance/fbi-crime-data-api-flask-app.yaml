@@ -1,0 +1,159 @@
+name: FBI Crime Data API Flask application
+documentation_complete: false
+schema_version: 3.0.0
+references:
+  - name: System Security Plan
+    path: https://github.com/18F/crime-data-api/blob/master/system-security-plan.yml
+    type: URL
+verifications:
+  - key: Key of verification
+    name: Name of verification
+    path: Relative path of local file or URL ie. diagrams/diagram-1.png
+    type: Type of reference ie. Image, URL
+  - key: Key of verification
+    name: Name of verification
+    path: Relative path of local file or URL ie. diagrams/diagram-1.png
+    type: Type of reference ie. Image, URL
+satisfies:
+- standard_key: NIST-800-53
+  control_key: AC-2   # Account Management
+  narrative:
+    - text: Not applicable. This application has no accounts requiring management.
+- standard_key: NIST-800-53
+  control_key: AC-3   # Access Enforcement
+  narrative:
+    - text: Not applicable. This applicaton is entirely publicly accessible and enforces no restrictions on access.
+- standard_key: NIST-800-53
+  control_key: AC-6   # Least Privilege
+  narrative:
+    - text: There are no additional privlieged actions available at the application layer.
+- standard_key: NIST-800-53
+  control_key: AU-2   # Audit Events
+  narrative:
+    - text: >
+        New Relic captures and monitors all events, transactions, and errors from the underlying Python process of the application.
+  covered_by:
+    - verification_key: new-relic
+- standard_key: NIST-800-53
+  control_key: AU-6   # Audit Review, Analysis, and Reporting
+  narrative:
+    - text: >
+        New Relic sends a Slack alert to the team if any of the alert policy thresholds are met.
+  covered_by:
+    - verification_key: new-relic
+- standard_key: NIST-800-53
+  control_key: CA-8   # Penetration Testing
+  narrative:
+    - text: The system undergoes a penetration test at least once a year per 18F's Security Assesment and Authorization Policy.
+  covered_by:
+    - verification_key: CA-Policy
+- standard_key: NIST-800-53
+  control_key: CA-8 (1)   # Penetration Testing | Independent team
+  narrative:
+    - text: All penetration test are conducted by an independent team under the management of the GSA Information Security team or via an accredited FedRAMP third-party assessment organization (3PAO).
+  covered_by:
+    - verification_key: CA-Policy
+- standard_key: NIST-800-53
+  control_key: CM-2   # Baseline Configuration
+  narrative:
+    - text: No additional controls.
+- standard_key: NIST-800-53
+  control_key: CM-3   # Configuration Change Control
+  narrative:
+    - text: No additional controls.
+- standard_key: NIST-800-53
+  control_key: CM-6   # Configuration Settings
+  narrative:
+    - text: No additional controls.
+- standard_key: NIST-800-53
+  control_key: CM-8   # Information System Component Inventory
+  narrative:
+    - text: No additional controls.
+- standard_key: NIST-800-53
+  control_key: IA-2   # Identification and Authentication (Organizational
+                      # Users)
+  narrative:
+    - text: No additional controls.
+- standard_key: NIST-800-53
+  control_key: IA-2 (1)   # Identification and Authentication (Organizational
+                          # Users)
+                          # Network Access to Privileged Accounts
+  narrative:
+    - text: No additional controls.
+- standard_key: NIST-800-53
+  control_key: IA-2 (2)   # Identification and Authentication (Organizational
+                          # Users)
+                          # Network Access to Non-Privileged Accounts
+  narrative:
+    - text: No additional controls.
+- standard_key: NIST-800-53
+  control_key: IA-2 (12)  # Identification and Authentication (Organizational
+                          # Users)
+                          # Acceptance of PIV Credentials
+  narrative:
+    - text: No additional controls.
+- standard_key: NIST-800-53
+  control_key: PL-8   # Information Security Architecture
+  narrative:
+    - text: No additional controls.
+- standard_key: NIST-800-53
+  control_key: RA-5   # Vulnerability Scanning
+  narrative:
+    - text: >
+        Multiple tools continously statically and dynamically scan the application. Static scans include Bandit, Code Climate, and Gemnasium. CircleCI dynamically scans the application using multiple unit test. Scans are trigged upon each pull request, and badges reflecting the status of the "master" branch are posted at the top of the code repository's README file.
+  covered_by:
+    - verification_key: bandit
+    - verification_key: code-climate
+    - verification_key: gemnasium
+    - verification_key: circleci
+- standard_key: NIST-800-53
+  control_key: SA-11 (1)   # Developer Security Testing and Evaluation
+                           # Static Code Analysis
+  narrative:
+    - text: See RA-5. Otherwise, there are no additional controls.
+- standard_key: NIST-800-53
+  control_key: SC-7   # Boundary Protection
+  narrative:
+    - text: There are no additional controls.
+- standard_key: NIST-800-53
+  control_key: SC-12 (1)  # Cryptographic Key Establishment and Management
+                          # Availability
+  narrative:
+    - text: >
+        At the application layer (see cloud.gov controls for lower), all keys
+        are available to authorized users by querying cloud.gov's "services",
+        including "custom user provided services".
+- standard_key: NIST-800-53
+  control_key: SC-13  # Cryptographic Protection
+  narrative:
+    - text: No additional controls.
+- standard_key: NIST-800-53
+  control_key: SC-28 (1)  # Protection of Information at Rest
+                          # Cryptographic Protection
+  narrative:
+    - text: No additional controls.
+- standard_key: NIST-800-53
+  control_key: SI-2   # Flaw Remediation
+  narrative:
+    - text: No additional controls.
+- standard_key: NIST-800-53
+  control_key: SI-4   # Information System Monitoring
+  narrative:
+    - text:  No additional controls.
+- standard_key: NIST-800-53
+  control_key: SI-10  # Information Input Validation
+  narrative:
+    - text: Not applicable. This application does not accept any information inputs.
+verifications:
+- key: circleci
+  name: CircleCI
+  path: https://circleci.com/gh/18F/crime-data-api
+  type: URL
+- key: gemnasium
+  name: Gemnasium
+  path: https://gemnasium.com/18F/crime-data-api
+  type: URL
+- key: code-climate
+  name: Code Climate
+  path: https://codeclimate.com/github/18F/crime-data-api
+  type: URL

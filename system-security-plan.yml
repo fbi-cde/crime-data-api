@@ -1,6 +1,6 @@
 ---
-name: FBI Crime Data Explorer
-risk-acceptance: forthcoming #Needs to be signed ATO github link.
+name: FBI Crime Data API Flask application
+risk-acceptance: forthcoming #Needs to be signed ATO Google Drive link.
 uniqueID: MB18F16FBI01
 version: 0.0.1
 phase: alpha
@@ -11,7 +11,7 @@ integrity: low
 availability: low
 security-baseline: low
 system-type: minor
-level-of-identity-assurance: https://compliance.cloud.gov/
+level-of-identity-assurance: 0
 staff:
     authorizing-official:
         name: Noah Kunin
@@ -20,42 +20,43 @@ staff:
         unit: TTS
         email: devops@gsa.gov
     system-owner:
-        name: Larry Bafundo
-        title: System Owner
-        org: General Services Administration
-        unit: 18F
-        email: laurence.bafundo@gsa.gov
-    system-management:
         name: Colin Craig
         title: Engineer
         org: General Services Administration
         unit: 18F
         email: colin.craig@gsa.gov
-    system-security-officer:
-        name: Noah Kunin
-        title: 18F Infrastructure Director
+    system-management:
+        name: Larry Bafundo
+        title: System Owner
         org: General Services Administration
         unit: 18F
-        email: devops@gsa.gov
+        email: laurence.bafundo@gsa.gov
+    system-security-officer:
+        name: Randy Bator
+        title: ISSO
+        org: General Services Administration
+        unit: GSA IT
+        email: randy.bator@gsa.gov
     technical-lead:
         name: Colin Craig
         title: Engineer
         org: General Services Administration
         unit: 18F
         email: colin.craig@gsa.gov
-leveraged-authorizations: 
+leveraged-authorizations:
 - https://marketplace.fedramp.gov/index.html#/product/aws-govcloud
+- Public link for cloud.gov ATO en route
 purpose: https://github.com/18F/crime-data-api/README.md
-components: https://github.com/18F/crime-data-api https://github.com/18F/crime-data-explorer
-diagram: https://docs.google.com/a/gsa.gov/drawings/d/1nwclBJQfbuzsnGOqe88VukQl3uiH1Jfa4c0FT1Cq43I/edit?usp=sharing
-network-architecture: https://docs.google.com/a/gsa.gov/drawings/d/1nwclBJQfbuzsnGOqe88VukQl3uiH1Jfa4c0FT1Cq43I/edit?usp=sharing
+components: https://github.com/18F/crime-data-api
+diagram: https://docs.google.com/a/gsa.gov/drawings/d/1nwclBJQfbuzsnGOqe88VukQl3uiH1Jfa4c0FT1Cq43I/
+network-architecture: https://docs.google.com/a/gsa.gov/drawings/d/1nwclBJQfbuzsnGOqe88VukQl3uiH1Jfa4c0FT1Cq43I/
 environments:
-- Cloud Foundry
+- cloud.gov
 - Amazon Web Services GovCloud
 user-types:
     developer:
-        functions: 
+        functions:
         - deployment
         - engineering
-controls: [url]
+controls: https://github.com/18F/crime-data-api/tree/master/compliance
 ---
