@@ -40,7 +40,7 @@ class OffensesCountNational(CdeResource):
     @swagger.doc(
         tags=['offenses'],
         params={'variable': {'description': 'A variable to group by',
-                             'enum': marshmallow_schemas.OFFENSE_COUNT_VARIABLE_ENUM}},
+                             'enum': cdemodels.OffenseCountView.VARIABLES}},
         description=(
             'Returns counts by year for offenses. '
             'Offense incidents - Nationwide'))
@@ -69,7 +69,7 @@ class OffensesCountStates(CdeResource):
         tags=['offenses'],
         params={'state_id': {'description': 'The state ID from ref_county'},
                 'variable': {'description': 'A variable to group by',
-                             'enum': marshmallow_schemas.OFFENSE_COUNT_VARIABLE_ENUM}},
+                             'enum': cdemodels.OffenseCountView.VARIABLES}},
         description=(
             'Returns counts by year for offenses. '
             'Offense incidents - By State'))
@@ -95,7 +95,7 @@ class OffensesCountCounties(CdeResource):
     @swagger.doc(
         params={'county_id': {'description': 'The county ID from ref_county'},
                 'variable': {'description': 'A variable to group by',
-                             'enum': marshmallow_schemas.OFFENSE_COUNT_VARIABLE_ENUM}},
+                             'enum': cdemodels.OffenseCountView.VARIABLES}},
         tags=['offenses'],
         description=(
              'Returns counts by year for offenses. '

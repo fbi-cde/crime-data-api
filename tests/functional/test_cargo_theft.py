@@ -4,11 +4,12 @@
 See: http://webtest.readthedocs.org/
 """
 import pytest
-from crime_data.common.marshmallow_schemas import CARGO_THEFT_COUNT_VARIABLE_ENUM
+from crime_data.common.cdemodels import CargoTheftCountView
+
 
 class TestCargoTheftEndpoint:
 
-    @pytest.mark.parametrize('variable', CARGO_THEFT_COUNT_VARIABLE_ENUM)
+    @pytest.mark.parametrize('variable', CargoTheftCountView.VARIABLES)
     def test_state_endpoint_count(self, testapp, variable):
         url = '/ct/count/states/3/{}?year=2014'.format(variable)
         res = testapp.get(url)
@@ -17,7 +18,7 @@ class TestCargoTheftEndpoint:
         for r in res.json['results']:
             assert 'count' in r
 
-    @pytest.mark.parametrize('variable', CARGO_THEFT_COUNT_VARIABLE_ENUM)
+    @pytest.mark.parametrize('variable', CargoTheftCountView.VARIABLES)
     def test_national_endpoint_count(self, testapp, variable):
         url = '/ct/count/national/{}?year=2014'.format(variable)
         res = testapp.get(url)

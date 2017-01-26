@@ -8,9 +8,6 @@ from crime_data.common.cdemodels import (CdeRefState,
                                          VictimCountView,
                                          CargoTheftCountView,
                                          HateCrimeCountView)
-from crime_data.common.marshmallow_schemas import (OFFENDER_COUNT_VARIABLE_ENUM,
-                                                   VICTIM_COUNT_VARIABLE_ENUM,
-                                                   CARGO_THEFT_COUNT_VARIABLE_ENUM)
 import pytest
 from collections import namedtuple
 
@@ -126,10 +123,11 @@ class TestOffenderCountView:
         for row in results:
             assert row.count == expected[row.race_code]
 
-    def test_offender_count_view_with_offenses(self, app):
-        pass
+    def test_offender_count_view_with_bad_variable(self, app):
+        with pytest.raises(ValueError):
+            OffenderCountView('foo')
 
-    @pytest.mark.parametrize('variable', OFFENDER_COUNT_VARIABLE_ENUM)
+    @pytest.mark.parametrize('variable', OffenderCountView.VARIABLES)
     def test_offender_count_variables(self, app, variable):
         ocv = OffenderCountView(variable, year=2014, state_id=3)
         results = ocv.query({}).fetchall()
@@ -141,7 +139,7 @@ class TestOffenderCountView:
             assert row[variable] not in seen_values
             seen_values.add(row[variable])
 
-    @pytest.mark.parametrize('variable', OFFENDER_COUNT_VARIABLE_ENUM)
+    @pytest.mark.parametrize('variable', OffenderCountView.VARIABLES)
     def test_offender_count_variables(self, app, variable):
         ocv = OffenderCountView(variable, year=2014)
         results = ocv.query({}).fetchall()
@@ -179,7 +177,7 @@ class TestVictimCountView:
     def test_victim_count_with_offenses(self, app):
         pass
 
-    @pytest.mark.parametrize('variable', VICTIM_COUNT_VARIABLE_ENUM)
+    @pytest.mark.parametrize('variable', VictimCountView.VARIABLES)
     def test_victim_count_variables(self, app, variable):
         vcv = VictimCountView(variable, year=2014, state_id=3)
         results = vcv.query({}).fetchall()
@@ -233,7 +231,7 @@ class TestCargoTheftCountView:
             assert row.stolen_value == expected[row.victim_type_name].stolen_value
             assert row.recovered_value == expected[row.victim_type_name].recovered_value
 
-    @pytest.mark.parametrize('variable', CARGO_THEFT_COUNT_VARIABLE_ENUM)
+    @pytest.mark.parametrize('variable', CargoTheftCountView.VARIABLES)
     def test_victim_count_variables(self, app, variable):
         ctcv = CargoTheftCountView(variable, year=2014, state_id=3)
         results = ctcv.query({}).fetchall()

@@ -65,22 +65,6 @@ class IncidentViewCountArgs(ArgumentsSchema):
 # Anything in an ArgumentsSchema will, dangerously ironically,
 # not be filtered for...
 
-OFFENDER_COUNT_VARIABLE_ENUM = ['ethnicity', 'prop_desc_name', 'offense_name',
-                                'race_code', 'location_name', 'age_num', 'sex_code']
-
-VICTIM_COUNT_VARIABLE_ENUM = ['prop_desc_name', 'offense_name', 'ethnicity',
-                              'resident_status_code', 'offender_relationship',
-                              'circumstance_name', 'race_code', 'location_name',
-                              'age_num', 'sex_code']
-
-OFFENSE_COUNT_VARIABLE_ENUM = ['weapon_name', 'method_entry_code', 'num_premises_entered', 'location_name']
-
-CARGO_THEFT_COUNT_VARIABLE_ENUM = ['location_name',
-                                   'offense_name', 'victim_type_name', 'prop_desc_name']
-
-HATE_CRIME_COUNT_VARIABLE_ENUM = ['bias_name']
-
-
 class ViewCountArgs(ArgumentsSchema):
     """The regular arguments shema but also add a year argument"""
 
