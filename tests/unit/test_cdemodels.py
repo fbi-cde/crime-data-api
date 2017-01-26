@@ -316,21 +316,18 @@ class TestOffenseOffenderCountView:
     """Test the OffenseOffenderCountView"""
 
     def test_count_for_a_state(self, app):
-        v = OffenseOffenderCountView('race_code', year=1999, state_id=47, offense_name='Aggravated Assault')
+        v = OffenseOffenderCountView('race_code', year=2013, state_id=47, offense_name='Aggravated Assault')
         results = v.query({}).fetchall()
-
         expected = [
-            ('1999', 'Aggravated Assault', 'B', 1),
-            ('1999', 'Aggravated Assault', 'U', 2),
-            ('1999', 'Aggravated Assault', 'W', 3)]
-
+            ('2013', 'Aggravated Assault', 'W', 4)
+        ]
         assert len(results) == len(expected)
         for row, expect in zip(results, expected):
             assert row == expect
 
-    @pytest.mark.parametrize('year', [1999, None])
-    @pytest.mark.parametrize('state_id', [47, None])
-    @pytest.mark.parametrize('offense_name', ['Aggravated Assault', None])
+    @pytest.mark.parametrize('year', [2014, None])
+    @pytest.mark.parametrize('state_id', [41, None])
+    @pytest.mark.parametrize('offense_name', ['Shoplifting', None])
     @pytest.mark.parametrize('variable', OffenseOffenderCountView.VARIABLES)
     def test_endpoint(self, app, year, state_id, offense_name, variable):
         v = OffenseOffenderCountView(variable, year=year, state_id=state_id, offense_name=offense_name)
