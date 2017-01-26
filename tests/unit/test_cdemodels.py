@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
 
-from crime_data.common.models import RefCounty
 from crime_data.common.cdemodels import (CdeRefState,
                                          CdeRefCounty,
                                          CdeRefAgencyCounty,
                                          OffenderCountView,
                                          VictimCountView,
                                          CargoTheftCountView,
-                                         HateCrimeCountView)
+                                         HateCrimeCountView,
+                                         OffenseVictimCountView,
+                                         OffenseOffenderCountView,
+                                         OffenseCargoTheftCountView,
+                                         OffenseHateCrimeCountView)
 import pytest
 from collections import namedtuple
 
@@ -276,3 +279,126 @@ class TestHateCrimeCountView:
         }
         for row in results:
             assert row.count == expected[row.bias_name]
+
+
+class TestOffenseVictimCountView:
+    """Test the OffenseVictimCountView"""
+
+    def test_count_for_a_state(self, app):
+        v = OffenseVictimCountView('race_code', year=1999, state_id=47, offense_name='Aggravated Assault')
+        results = v.query({}).fetchall()
+
+        expected = [
+            ('1999', 'Aggravated Assault', 'B', 1),
+            ('1999', 'Aggravated Assault', 'U', 2),
+            ('1999', 'Aggravated Assault', 'W', 3)]
+        assert len(results) == len(expected)
+        for row, expect in zip(results, expected):
+            assert row == expect
+
+    @pytest.mark.parametrize('year', [1999, None])
+    @pytest.mark.parametrize('state_id', [47, None])
+    @pytest.mark.parametrize('offense_name', ['Aggravated Assault', None])
+    @pytest.mark.parametrize('variable', OffenseVictimCountView.VARIABLES)
+    def test_endpoint(self, app, year, state_id, offense_name, variable):
+        v = OffenseVictimCountView(variable, year=year, state_id=state_id, offense_name=offense_name)
+        results = v.query({}).fetchall()
+        assert len(results) > 0
+
+        seen_values = set()
+        for row in results:
+            row_key = (row.year, row.offense_name, row[variable], )
+            assert row_key not in seen_values
+            seen_values.add(row_key)
+
+
+class TestOffenseOffenderCountView:
+    """Test the OffenseOffenderCountView"""
+
+    def test_count_for_a_state(self, app):
+        v = OffenseOffenderCountView('race_code', year=1999, state_id=47, offense_name='Aggravated Assault')
+        results = v.query({}).fetchall()
+
+        expected = [
+            ('1999', 'Aggravated Assault', 'B', 1),
+            ('1999', 'Aggravated Assault', 'U', 2),
+            ('1999', 'Aggravated Assault', 'W', 3)]
+
+        assert len(results) == len(expected)
+        for row, expect in zip(results, expected):
+            assert row == expect
+
+    @pytest.mark.parametrize('year', [1999, None])
+    @pytest.mark.parametrize('state_id', [47, None])
+    @pytest.mark.parametrize('offense_name', ['Aggravated Assault', None])
+    @pytest.mark.parametrize('variable', OffenseOffenderCountView.VARIABLES)
+    def test_endpoint(self, app, year, state_id, offense_name, variable):
+        v = OffenseOffenderCountView(variable, year=year, state_id=state_id, offense_name=offense_name)
+        results = v.query({}).fetchall()
+        assert len(results) > 0
+
+        seen_values = set()
+        for row in results:
+            row_key = (row.year, row.offense_name, row[variable], )
+            assert row_key not in seen_values
+            seen_values.add(row_key)
+
+
+class TestOffenseCargoTheftCountView:
+    """Test the OffenseCargoTheftCountView"""
+
+    def test_count_for_a_state(self, app):
+        v = OffenseCargoTheftCountView('prop_desc_name', year=2013, state_id=47, offense_name='Robbery')
+        results = v.query({}).fetchall()
+        expected = [
+            ('2013', 'Robbery', 'Consumable Goods', 1, '3220', '0'),
+            ('2013', 'Robbery', 'Negotiable Instruments', 1, '560', '0')
+        ]
+        assert len(results) == len(expected)
+        for row, expect in zip(results, expected):
+            assert row == expect
+
+    @pytest.mark.parametrize('year', [2013, None])
+    @pytest.mark.parametrize('state_id', [47, None])
+    @pytest.mark.parametrize('offense_name', ['Robbery', None])
+    @pytest.mark.parametrize('variable', OffenseCargoTheftCountView.VARIABLES)
+    def test_endpoint(self, app, year, state_id, offense_name, variable):
+        v = OffenseCargoTheftCountView(variable, year=year, state_id=state_id, offense_name=offense_name)
+        results = v.query({}).fetchall()
+        assert len(results) > 0
+
+        seen_values = set()
+        for row in results:
+            row_key = (row.year, row.offense_name, row[variable], )
+            assert row_key not in seen_values
+            seen_values.add(row_key)
+
+
+class TestOffenseHateCrimeCountView:
+    """Test the OffenseOffenderCountView"""
+
+    def test_count_for_a_state(self, app):
+        v = OffenseHateCrimeCountView('bias_name', year=1999, state_id=47, offense_name='Aggravated Assault')
+        results = v.query({}).fetchall()
+
+        expected = [
+            ('1999', 'Aggravated Assault', 'Anti-Black or African American', 1),
+            ('1999', 'Aggravated Assault', 'Anti-White', 1)]
+        assert len(results) == len(expected)
+        for row, expect in zip(results, expected):
+            assert row == expect
+
+    @pytest.mark.parametrize('year', [1999, None])
+    @pytest.mark.parametrize('state_id', [47, None])
+    @pytest.mark.parametrize('offense_name', ['Aggravated Assault', None])
+    @pytest.mark.parametrize('variable', OffenseHateCrimeCountView.VARIABLES)
+    def test_endpoint(self, app, year, state_id, offense_name, variable):
+        v = OffenseHateCrimeCountView(variable, year=year, state_id=state_id, offense_name=offense_name)
+        results = v.query({}).fetchall()
+        assert len(results) > 0
+
+        seen_values = set()
+        for row in results:
+            row_key = (row.year, row.offense_name, row[variable], )
+            assert row_key not in seen_values
+            seen_values.add(row_key)
