@@ -4,7 +4,7 @@
 i=0
 for (( ; ; ))
 do
-  RESULT=`psql -f representations_chunk.sql $CRIME_DATA_API_DEV_DB_URL`
+  RESULT=`psql -f after_load/representations_chunk.sql $CRIME_DATA_API_DB_URL`
   echo "got $RESULT"
   if [[ $RESULT == *"INSERT 0 0"* ]]
   then
