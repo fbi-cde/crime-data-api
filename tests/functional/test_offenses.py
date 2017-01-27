@@ -4,7 +4,8 @@
 See: http://webtest.readthedocs.org/
 """
 import pytest
-from crime_data.common.cdemodels import OffenseCountView
+from crime_data.common.marshmallow_schemas import OFFENSE_COUNT_VARIABLE_ENUM
+
 
 class TestOffensesEndpoint:
     def test_offenses_endpoint_exists(self, testapp):
@@ -27,7 +28,7 @@ class TestOffensesEndpoint:
             for category in crime_type['categories']:
                 assert 'offense_category_name' in category
 
-    @pytest.mark.parametrize('variable', OffenseCountView.VARIABLES)
+    @pytest.mark.parametrize('variable', OFFENSE_COUNT_VARIABLE_ENUM)
     def test_state_endpoint_count(self, testapp, variable):
         url = '/offenses/count/states/3/{}?year=2014'.format(variable)
         res = testapp.get(url)
@@ -36,8 +37,8 @@ class TestOffensesEndpoint:
         for r in res.json['results']:
             assert 'count' in r
 
-    @pytest.mark.parametrize('variable', OffenseCountView.VARIABLES)
-    def test_national_endpoint_count(self, testapp, variable):
+    @pytest.mark.parametrize('variable', OFFENSE_COUNT_VARIABLE_ENUM)
+    def test_state_endpoint_count(self, testapp, variable):
         url = '/offenses/count/national/{}?year=2014'.format(variable)
         res = testapp.get(url)
         assert res.status_code == 200
@@ -47,5 +48,5 @@ class TestOffensesEndpoint:
 
     @pytest.mark.xfail
     def test_state_endpoint_no_year_in_request(self, testapp):
-        res = testapp.get('/offenses/count/states/3/race_code')
+        res = testapp.get('/offenses/count/states/3/location_name')
         assert res.status_code == 500

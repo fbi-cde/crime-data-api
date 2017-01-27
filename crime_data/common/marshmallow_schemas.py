@@ -78,6 +78,7 @@ class ViewCountYearRequiredArgs(ArgumentsSchema):
 
 
 class GroupableArgsSchema(ArgumentsSchema):
+    
     """
     Groupable queries can be grouped by one or more fields found in the
     tables separated by commas
