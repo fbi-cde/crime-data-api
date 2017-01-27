@@ -25,8 +25,3 @@ class TestVictimsEndpoint:
         assert 'pagination' in res.json
         for r in res.json['results']:
             assert 'count' in r
-
-    @pytest.mark.xfail
-    def test_state_endpoint_no_year_in_request(self, testapp):
-        res = testapp.get('/victims/count/states/3/race_code')
-        assert res.status_code == 500

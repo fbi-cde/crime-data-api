@@ -59,7 +59,7 @@ class CargoTheftsCountCounties(CdeResource):
         description=(
             'Returns counts by year for offenders. '
             'Offender Incidents - By county'))
-    @swagger.marshal_with(marshmallow_schemas.IncidentCountSchema, apply=False)
+    @swagger.marshal_with(marshmallow_schemas.CargoTheftCountViewResponseSchema, apply=False)
     @tuning_page
     def get(self, args, county_id, variable):
         self.verify_api_key(args)
@@ -85,10 +85,40 @@ class CargoTheftsCountNational(CdeResource):
         description=(
             'Returns counts by year for offenders. '
             'Offender Incidents - By county'))
-    @swagger.marshal_with(marshmallow_schemas.IncidentCountSchema, apply=False)
+    @swagger.marshal_with(marshmallow_schemas.CargoTheftCountViewResponseSchema, apply=False)
     @tuning_page
     def get(self, args, variable):
         self.verify_api_key(args)
         model = cdemodels.CargoTheftCountView(variable, year=args['year'])
+        results = model.query(args)
+        return self.with_metadata(results.fetchall(), args)
+
+
+class CargoTheftOffenseSubcounts(CdeResource):
+
+    def _stringify(self, data):
+        # Override stringify function to fit our needs.
+        return [dict(r) for r in data]
+
+    @use_args(marshmallow_schemas.OffenseCountViewArgs)
+    @swagger.use_kwargs(marshmallow_schemas.OffenseCountViewArgs,
+                        locations=['query'],
+                        apply=False)
+    @swagger.doc(
+        params={'state_id': {'description': 'The ID for a state to limit the query to'},
+                'variable': {'description': 'A variable to group by',
+                             'enum': cdemodels.OffenseCargoTheftCountView.VARIABLES}},
+        tags=['cargo theft'],
+        description=(
+             'Returns counts by year for victims. '
+             'Victim Incidents - By county'))
+    @swagger.marshal_with(marshmallow_schemas.OffenseCargoTheftCountViewResponseSchema, apply=False)
+    @tuning_page
+    def get(self, args, variable, state_id=None):
+        self.verify_api_key(args)
+        model = cdemodels.OffenseCargoTheftCountView(variable,
+                                                     year=args.get('year', None),
+                                                     offense_name=args.get('offense_name', None),
+                                                     state_id=state_id)
         results = model.query(args)
         return self.with_metadata(results.fetchall(), args)

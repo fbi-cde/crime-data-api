@@ -95,3 +95,33 @@ class VictimsCountCounties(CdeResource):
         model = cdemodels.VictimCountView(variable, year=args['year'], county_id=county_id)
         results = model.query(args)
         return self.with_metadata(results.fetchall(), args)
+
+
+class VictimOffenseSubcounts(CdeResource):
+
+    def _stringify(self, data):
+        # Override stringify function to fit our needs.
+        return [dict(r) for r in data]
+
+    @use_args(marshmallow_schemas.OffenseCountViewArgs)
+    @swagger.use_kwargs(marshmallow_schemas.OffenseCountViewArgs,
+                        locations=['query'],
+                        apply=False)
+    @swagger.doc(
+        params={'state_id': {'description': 'The ID for a state to limit the query to'},
+                'variable': {'description': 'A variable to group by',
+                             'enum': cdemodels.OffenseVictimCountView.VARIABLES}},
+        tags=['victims'],
+        description=(
+             'Returns counts by year for victims. '
+             'Victim Incidents - By county'))
+    @swagger.marshal_with(marshmallow_schemas.CargoTheftCountViewResponseSchema, apply=False)
+    @tuning_page
+    def get(self, args, variable, state_id=None):
+        self.verify_api_key(args)
+        model = cdemodels.OffenseVictimCountView(variable,
+                                                 year=args.get('year', None),
+                                                 offense_name=args.get('offense_name', None),
+                                                 state_id=state_id)
+        results = model.query(args)
+        return self.with_metadata(results.fetchall(), args)
