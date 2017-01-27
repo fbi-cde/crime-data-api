@@ -26,7 +26,7 @@ class OffendersCountNational(CdeResource):
                         apply=False)
     @swagger.doc(
         params={'variable': {'description': 'A variable to group by',
-                             'enum': marshmallow_schemas.OFFENDER_COUNT_VARIABLE_ENUM}},
+                             'enum': cdemodels.OffenderCountView.VARIABLES}},
         tags=['offenders'],
         description=(
             'Returns national counts by year for offenders. '
@@ -35,7 +35,7 @@ class OffendersCountNational(CdeResource):
     @tuning_page
     def get(self, args, variable):
         self.verify_api_key(args)
-        model = cdemodels.OffenderCountView(args['year'], variable)
+        model = cdemodels.OffenderCountView(variable, year=args['year'])
         results = model.query(args)
         return self.with_metadata(results.fetchall(), args)
 
@@ -53,7 +53,7 @@ class OffendersCountStates(CdeResource):
     @swagger.doc(
         params={'state_id': {'description': 'The state ID from ref_state'},
                 'variable': {'description': 'A variable to group by',
-                             'enum': marshmallow_schemas.OFFENDER_COUNT_VARIABLE_ENUM}},
+                             'enum': cdemodels.OffenderCountView.VARIABLES}},
         tags=['offenders'],
         description=(
             'Returns counts by year for offenders. '
@@ -62,7 +62,7 @@ class OffendersCountStates(CdeResource):
     @tuning_page
     def get(self, args, state_id, variable):
         self.verify_api_key(args)
-        model = cdemodels.OffenderCountView(args['year'], variable, state_id)
+        model = cdemodels.OffenderCountView(variable, year=args['year'], state_id=state_id)
         results = model.query(args)
         return self.with_metadata(results.fetchall(), args)
 
@@ -79,7 +79,7 @@ class OffendersCountCounties(CdeResource):
     @swagger.doc(
         params={'county_id': {'description': 'The county ID from ref_county'},
                 'variable': {'description': 'A variable to group by',
-                             'enum': marshmallow_schemas.OFFENDER_COUNT_VARIABLE_ENUM}},
+                             'enum': cdemodels.OffenderCountView.VARIABLES}},
         tags=['offenders'],
         description=(
             'Returns counts by year for offenders. '
@@ -88,6 +88,36 @@ class OffendersCountCounties(CdeResource):
     @tuning_page
     def get(self, args, county_id, variable):
         self.verify_api_key(args)
-        model = cdemodels.OffenderCountView(args['year'], variable, None, county_id)
+        model = cdemodels.OffenderCountView(variable, year=args['year'], county_id=county_id)
+        results = model.query(args)
+        return self.with_metadata(results.fetchall(), args)
+
+
+class OffenderOffenseSubcounts(CdeResource):
+
+    def _stringify(self, data):
+        # Override stringify function to fit our needs.
+        return [dict(r) for r in data]
+
+    @use_args(marshmallow_schemas.OffenseCountViewArgs)
+    @swagger.use_kwargs(marshmallow_schemas.OffenseCountViewArgs,
+                        locations=['query'],
+                        apply=False)
+    @swagger.doc(
+        params={'state_id': {'description': 'The ID for a state to limit the query to'},
+                'variable': {'description': 'A variable to group by',
+                             'enum': cdemodels.OffenseOffenderCountView.VARIABLES}},
+        tags=['offenders'],
+        description=(
+             'Returns counts by year for victims. '
+             'Victim Incidents - By county'))
+    @swagger.marshal_with(marshmallow_schemas.OffenseCountViewResponseSchema, apply=False)
+    @tuning_page
+    def get(self, args, variable, state_id=None):
+        self.verify_api_key(args)
+        model = cdemodels.OffenseOffenderCountView(variable,
+                                                   year=args.get('year', None),
+                                                   offense_name=args.get('offense_name', None),
+                                                   state_id=state_id)
         results = model.query(args)
         return self.with_metadata(results.fetchall(), args)

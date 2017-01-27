@@ -1,3 +1,4 @@
+import abc
 from flask_restful import abort
 from sqlalchemy import and_, func, or_
 from sqlalchemy.exc import ArgumentError
@@ -5,7 +6,7 @@ from sqlalchemy.orm import aliased
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.sql import label
 from sqlalchemy.sql import sqltypes as st
-from sqlalchemy.sql import label
+from psycopg2.extensions import AsIs
 
 from crime_data.common import models, newmodels
 from crime_data.common.base import QueryTraits, Fields
@@ -108,7 +109,7 @@ class CdeRefState(models.RefState, CurrentYear):
 
         count = get_sql_count(query)
         if count == 0:
-            return None # assume 0 agencies = didn't find anything
+            return None  # assume 0 agencies = didn't find anything
         else:
             return count
 
@@ -126,13 +127,11 @@ class CdeRefState(models.RefState, CurrentYear):
         except NoResultFound:
             return None
 
-
     @property
     def population(self):
         """Returns the population for the given year"""
 
         return self.population_for_year(self.current_year)
-
 
     def police_officers_for_year(self, data_year):
         """Returns the number of police officers for a given year"""
@@ -146,7 +145,6 @@ class CdeRefState(models.RefState, CurrentYear):
         )
 
         return query.scalar()
-
 
     @property
     def police_officers(self):
@@ -183,7 +181,7 @@ class CdeRefCounty(models.RefCounty, CurrentYear):
 
     @property
     def state_name(self):
-        """Returns the state name or None if no state record is found."""  
+        """Returns the state name or None if no state record is found."""
         if self.state is None:
             None
         else:
@@ -550,14 +548,14 @@ class JoinedTable:
 class TableFamily:
     """""
     Base class for Queries on the CDE database.
-    """ ""
+    """""
 
     def __init__(self):
         self._map = {}
 
     @classmethod
     def get_tables(cls, parent):
-        return tables
+        return self.tables
 
     @property
     def map(self):
@@ -720,9 +718,9 @@ class AgencyTableFamily(TableFamily):
         _division = JoinedTable(models.RefDivision, parent=_state)
         tables.append(_division)
         tables.append(JoinedTable(models.RefRegion, parent=_division))
-        tables.append(JoinedTable(models.RefSubmittingAgency, # prefix?
-                        join=(models.RefAgency.agency_id ==
-                              models.RefSubmittingAgency.agency_id)))
+        tables.append(JoinedTable(models.RefSubmittingAgency,  # prefix?
+                                  join=(models.RefAgency.agency_id ==
+                                        models.RefSubmittingAgency.agency_id)))
         tables.append(JoinedTable(models.RefFieldOffice, parent=_agency))
         tables.append(JoinedTable(
             models.RefPopulationFamily,
@@ -735,7 +733,7 @@ class AgencyTableFamily(TableFamily):
 class IncidentTableFamily(TableFamily):
     """""
     Base Class for Incident table based queries.
-    """ ""
+    """""
 
     # List of all associated tables.
     tables = []
@@ -918,7 +916,7 @@ class CachedIncidentCountTableFamily(TableFamily):
 class IncidentCountTableFamily(TableFamily):
     """""
     Base class for any RETA Summary data queries.
-    """ ""
+    """""
 
     # List of all associated tables.
     tables = []
@@ -955,6 +953,7 @@ class IncidentCountTableFamily(TableFamily):
 
 # ASR_MONTH is not broken down by race or crime and should have
 # its own endpoint
+
 
 # This tree of subcategory-offense-category is shared by the following three families
 category_tables = []
@@ -1057,146 +1056,43 @@ def _is_string(col):
     return issubclass(col0.type.python_type, str)
 
 
-class OffenderCountView(object):
-    """A class for fetching the counts from a specific year"""
+# CountViews
+class MultiYearCountView(object):
+    """For materialized views that aren't split by year"""
 
-    def __init__(self, year, field, state_id = None, county_id = None, offenses=False):
+    __abstract__ = True
+
+    VARIABLES = []
+
+    def __init__(self, field, year=None, state_id=None, county_id=None):
+        if field not in self.VARIABLES:
+            raise ValueError('Invalid variable "{}" specified for {}'.format(field, self.view_name))
+
         self.year = year
         self.state_id = state_id
         self.county_id = county_id
         self.field = field
-        self.offenses = offenses
         self.national = False
         if self.state_id is None and self.county_id is None:
             self.national = True
 
-    # MUST IMPLMENT.
-    def query(self, args):
-        base_query = None
-        qry = None
-        param_dict = {}
-
-        try:
-            base_query = self.base_query(self.field)
-
-            if self.state_id:
-                param_dict['state_id'] = self.state_id
-            if self.county_id:
-                param_dict['county_id'] = self.county_id
-
-            print(base_query)
-            if not param_dict:
-                qry = session.execute(base_query)
-            else:
-                qry = session.execute(base_query, param_dict)
-        except Exception as e:
-            session.rollback()
-            raise e
-
-        return qry
-            
     @property
+    @abc.abstractmethod
     def view_name(self):
-        """The name of the specific materialized view for this year."""
-        if self.year is None:
-            raise ValueError("You must provide a single year argument for the offender count view")
-        return "offender_counts_{}".format(self.year)
+        """The subclasses must define a method that tells the base_query which table to use."""
+        return
 
-
-    def base_query(self, field):
-        query = 'SELECT {} , count FROM {}'.format(field, self.view_name)
-        query += ' WHERE {} IS NOT NULL'.format(field)
-
-        if self.state_id:
-            query += ' AND county_id IS NULL AND state_id = :state_id '
-
-        if self.county_id:
-            query += ' AND county_id = :county_id'
-
-        if self.national:
-            query += ' AND state_id is NULL AND county_id is NULL'    
-
-        return query
-
-class VictimCountView(object):
-    """A class for fetching the counts from a specific year"""
-
-    def __init__(self, year, field, state_id = None, county_id = None, offenses=False):
-        self.year = year
-        self.state_id = state_id
-        self.county_id = county_id
-        self.field = field
-        self.offenses = offenses
-        self.national = False
-        if self.state_id is None and self.county_id is None:
-            self.national = True
-
-    # MUST IMPLMENT.
-    def query(self, args):
-        base_query = None
-        qry = None
-        param_dict = {}
-
-        try:
-            base_query = self.base_query(self.field)
-
-            if self.state_id:
-                param_dict['state_id'] = self.state_id
-            if self.county_id:
-                param_dict['county_id'] = self.county_id
-
-            if not param_dict:
-                qry = session.execute(base_query)
-            else:
-                qry = session.execute(base_query, param_dict)
-        except Exception as e:
-            session.rollback()
-            raise e
-        return qry
-            
-    @property
-    def view_name(self):
-        """The name of the specific materialized view for this year."""
-        if self.year is None:
-            raise ValueError("You must provide a single year argument for the victim count view")
-        return "victim_counts_{}".format(self.year)
-
-
-    def base_query(self, field):
-        query = 'SELECT {} , count FROM {}'.format(field, self.view_name)
-        query += ' WHERE {} IS NOT NULL'.format(field)
-
-        if self.state_id:
-            query += ' AND state_id = :state_id AND county_id IS NULL'
-
-        if self.county_id:
-            query += ' AND county_id = :county_id'
-
-        if self.national:
-            query += ' AND state_id is NULL AND county_id is NULL'
-
-        return query
-
-class HateCrimeCountView(object):
-    """A class for fetching the counts from a specific year"""
-
-    def __init__(self, field, year=None, state_id = None, county_id = None, offenses=False):
-        self.year = year
-        self.state_id = state_id
-        self.county_id = county_id
-        self.field = field
-        self.national = False
-        if self.state_id is None and self.county_id is None:
-            self.national = True
-        self.offenses = offenses
-
-    # MUST IMPLMENT.
     def query(self, args):
         base_query = None
         qry = None
         param_dict = {}
         try:
             base_query = self.base_query(self.field)
+
+            # this is unescaoed, but not provided as user input_args
+            param_dict['view_name'] = AsIs(self.view_name)
+            # field is unescaped but validated in constructor
+            param_dict['field'] = AsIs(self.field)
 
             if self.state_id:
                 param_dict['state_id'] = self.state_id
@@ -1212,16 +1108,10 @@ class HateCrimeCountView(object):
             session.rollback()
             raise e
         return qry
-            
-    @property
-    def view_name(self):
-        """The name of the specific materialized view for this year."""
-        return "hc_counts"
-
 
     def base_query(self, field):
-        query = 'SELECT {} , count, year::text FROM {}'.format(field, self.view_name)
-        query += ' WHERE {} IS NOT NULL'.format(field)
+        query = 'SELECT :field , count, year::text FROM :view_name'
+        query += ' WHERE :field IS NOT NULL'
 
         if self.state_id:
             query += ' AND state_id = :state_id AND county_id IS NULL'
@@ -1237,51 +1127,69 @@ class HateCrimeCountView(object):
 
         return query
 
-class CargoTheftCountView(object):
-    """A class for fetching the counts from a specific year"""
 
-    def __init__(self, field, year=None, state_id = None, county_id = None, offenses=False):
-        self.year = year
-        self.state_id = state_id
-        self.county_id = county_id
-        self.field = field
-        self.national = False
-        if self.state_id is None and self.county_id is None:
-            self.national = True
-        self.offenses = offenses
+class OffenderCountView(MultiYearCountView):
+    """A class for fetching the counts """
 
-    # MUST IMPLMENT.
-    def query(self, args):
-        base_query = None
-        qry = None
-        param_dict = {}
-        try:
-            base_query = self.base_query(self.field)
+    VARIABLES = ['ethnicity', 'prop_desc_name', 'offense_name',
+                 'race_code', 'location_name', 'age_num', 'sex_code']
 
-            if self.state_id:
-                param_dict['state_id'] = self.state_id
-            if self.county_id:
-                param_dict['county_id'] = self.county_id
-            if self.year:
-                param_dict['year'] = self.year
-            if not param_dict:
-                qry = session.execute(base_query)
-            else:
-                qry = session.execute(base_query, param_dict)
-        except Exception as e:
-            session.rollback()
-            raise e
-        return qry
-            
     @property
     def view_name(self):
         """The name of the specific materialized view for this year."""
-        return "ct_counts"
+        return 'offender_counts'
 
+
+class VictimCountView(MultiYearCountView):
+    """A class for fetching the counts """
+
+    VARIABLES = ['prop_desc_name', 'offense_name', 'ethnicity',
+                 'resident_status_code', 'offender_relationship',
+                 'circumstance_name', 'race_code', 'location_name',
+                 'age_num', 'sex_code']
+
+    @property
+    def view_name(self):
+        """The name of the specific materialized view."""
+        return 'victim_counts'
+
+
+class OffenseCountView(MultiYearCountView):
+    """A class for fetching the counts broken down by offense"""
+
+    VARIABLES = ['weapon_name', 'method_entry_code', 'num_premises_entered', 'location_name']
+
+    @property
+    def view_name(self):
+        """The name of the specific materialized view."""
+        return 'offense_counts'
+
+
+class HateCrimeCountView(MultiYearCountView):
+
+    VARIABLES = ['bias_name']
+
+    @property
+    def view_name(self):
+        """The name of the specific materialized view."""
+        return 'hc_counts'
+
+
+class CargoTheftCountView(MultiYearCountView):
+    """A class for fetching the counts """
+
+    VARIABLES = ['location_name',
+                 'offense_name', 'victim_type_name', 'prop_desc_name']
+
+    @property
+    def view_name(self):
+        """The name of the specific materialized view."""
+        return 'ct_counts'
 
     def base_query(self, field):
-        query = 'SELECT {} ,stolen_value::text, recovered_value::text, year::text, count FROM {}'.format(field, self.view_name)
-        query += ' WHERE {} IS NOT NULL'.format(field)
+        query = 'SELECT :field ,stolen_value::text, recovered_value::text, year::text, count'
+        query += ' FROM :view_name '
+        query += ' WHERE :field IS NOT NULL'
 
         if self.state_id:
             query += ' AND state_id = :state_id AND county_id IS NULL'
@@ -1297,33 +1205,39 @@ class CargoTheftCountView(object):
 
         return query
 
-class OffenseCountView(object):
-    """A class for fetching the counts from a specific year"""
 
-    def __init__(self, year, field, state_id = None, county_id = None, offenses=False):
+class OffenseSubCountView(object):
+
+    def __init__(self, field, year=None, state_id=None, county_id=None, offense_name=None):
+        if field not in self.VARIABLES:
+            raise ValueError('Invalid variable "{}" specified for {}'.format(field, self.view_name))
         self.year = year
         self.state_id = state_id
         self.county_id = county_id
         self.field = field
-        self.offenses = offenses
+        self.offense_name = offense_name
         self.national = False
         if self.state_id is None and self.county_id is None:
             self.national = True
 
-    # MUST IMPLMENT.
     def query(self, args):
         base_query = None
         qry = None
         param_dict = {}
-
         try:
             base_query = self.base_query(self.field)
 
+            # this is unescaoed, but not provided as user input_args
+            param_dict['view_name'] = AsIs(self.view_name)
+            # field is unescaped but validated in constructor
+            param_dict['field'] = AsIs(self.field)
+
             if self.state_id:
                 param_dict['state_id'] = self.state_id
-            if self.county_id:
-                param_dict['county_id'] = self.county_id
-
+            if self.year:
+                param_dict['year'] = self.year
+            if self.offense_name:
+                param_dict['offense_name'] = self.offense_name
             if not param_dict:
                 qry = session.execute(base_query)
             else:
@@ -1331,28 +1245,103 @@ class OffenseCountView(object):
         except Exception as e:
             session.rollback()
             raise e
-
         return qry
-            
-    @property
-    def view_name(self):
-        """The name of the specific materialized view for this year."""
-        if self.year is None:
-            raise ValueError("You must provide a single year argument for the offender count view")
-        return "offense_counts_{}".format(self.year)
-
 
     def base_query(self, field):
-        query = 'SELECT {} , count FROM {}'.format(field, self.view_name)
-        query += ' WHERE {} IS NOT NULL'.format(field)
+        query = 'SELECT year::text, offense_name, :field, count'
+        query += ' FROM :view_name'
+        query += ' WHERE :field IS NOT NULL'
 
         if self.state_id:
-            query += ' AND county_id IS NULL AND state_id = :state_id '
-
-        if self.county_id:
-            query += ' AND county_id = :county_id'
+            query += ' AND state_id = :state_id '
 
         if self.national:
-            query += ' AND state_id is NULL AND county_id is NULL'    
+            query += ' AND state_id is NULL '
 
+        if self.offense_name:
+            query += ' AND offense_name = :offense_name'
+
+        if self.year:
+            query += ' AND year = :year'
+
+        query += ' ORDER by year, offense_name, :field'
         return query
+    
+        
+class OffenseVictimCountView(OffenseSubCountView):
+    """This reports subgrouped counts of a field for a given offense"""
+
+    VARIABLES = ['resident_status_code', 'offender_relationship',
+                 'circumstance_name', 'ethnicity', 'race_code',
+                 'age_num', 'sex_code']
+
+    @property
+    def view_name(self):
+        return 'offense_victim_counts'
+
+
+class OffenseOffenderCountView(OffenseSubCountView):
+
+    VARIABLES = ['ethnicity', 'race_code', 'age_num', 'sex_code']
+
+    @property
+    def view_name(self):
+        return 'offense_offender_counts'
+
+
+class OffenseCargoTheftCountView(OffenseSubCountView):
+
+    VARIABLES = ['location_name', 'victim_type_name', 'prop_desc_name']
+
+    def base_query(self, field):
+        query = 'SELECT year::text, offense_name, :field, count, stolen_value::text, recovered_value::text'
+        query += ' FROM :view_name'
+        query += ' WHERE :field IS NOT NULL'
+
+        if self.state_id:
+            query += ' AND state_id = :state_id AND county_id IS NULL'
+
+        if self.national:
+            query += ' AND state_id is NULL AND county_id IS NULL'
+
+        if self.offense_name:
+            query += ' AND offense_name = :offense_name'
+
+        if self.year:
+            query += ' AND year = :year'
+
+        query += ' ORDER by year, offense_name, :field'
+        return query
+
+    @property
+    def view_name(self):
+        return 'offense_ct_counts'
+
+
+class OffenseHateCrimeCountView(OffenseSubCountView):
+
+    VARIABLES = ['bias_name']
+
+    def base_query(self, field):
+        query = 'SELECT year::text, offense_name, :field, count'
+        query += ' FROM :view_name'
+        query += ' WHERE :field IS NOT NULL'
+
+        if self.state_id:
+            query += ' AND state_id = :state_id AND county_id IS NULL'
+
+        if self.national:
+            query += ' AND state_id is NULL AND county_id IS NULL'
+
+        if self.offense_name:
+            query += ' AND offense_name = :offense_name'
+
+        if self.year:
+            query += ' AND year = :year'
+
+        query += ' ORDER by year, offense_name, :field'
+        return query
+
+    @property
+    def view_name(self):
+        return 'offense_hc_counts'

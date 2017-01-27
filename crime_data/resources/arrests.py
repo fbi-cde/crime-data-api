@@ -57,6 +57,7 @@ class ArrestsCountByAgeSex(ArrestsCountResource):
         return self._get(args)
 
 
+
 """
 Big (?) problem here: whole different set of classification codes
 for different domains.

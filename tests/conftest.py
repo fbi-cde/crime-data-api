@@ -7,7 +7,7 @@ from webtest import TestApp
 from crime_data.app import create_app
 from crime_data.database import db as _db
 from crime_data.settings import TestConfig
-from sqlalchemy.orm import scoped_session, sessionmaker
+
 
 @pytest.yield_fixture(scope='function')
 def app():

@@ -40,7 +40,7 @@ class OffensesCountNational(CdeResource):
     @swagger.doc(
         tags=['offenses'],
         params={'variable': {'description': 'A variable to group by',
-                             'enum': marshmallow_schemas.OFFENSE_COUNT_VARIABLE_ENUM}},
+                             'enum': cdemodels.OffenseCountView.VARIABLES}},
         description=(
             'Returns counts by year for offenses. '
             'Offense incidents - Nationwide'))
@@ -48,7 +48,7 @@ class OffensesCountNational(CdeResource):
     @tuning_page
     def get(self, args, variable):
         self.verify_api_key(args)
-        model = cdemodels.OffenseCountView(args['year'], variable)
+        model = cdemodels.OffenseCountView(variable, year=args['year'])
         results = model.query(args)
         return self.with_metadata(results.fetchall(), args)
 
@@ -69,7 +69,7 @@ class OffensesCountStates(CdeResource):
         tags=['offenses'],
         params={'state_id': {'description': 'The state ID from ref_county'},
                 'variable': {'description': 'A variable to group by',
-                             'enum': marshmallow_schemas.OFFENSE_COUNT_VARIABLE_ENUM}},
+                             'enum': cdemodels.OffenseCountView.VARIABLES}},
         description=(
             'Returns counts by year for offenses. '
             'Offense incidents - By State'))
@@ -77,7 +77,7 @@ class OffensesCountStates(CdeResource):
     @tuning_page
     def get(self, args, state_id, variable):
         self.verify_api_key(args)
-        model = cdemodels.OffenseCountView(args['year'], variable, state_id)
+        model = cdemodels.OffenseCountView(variable, year=args['year'], state_id=state_id)
         results = model.query(args)
         return self.with_metadata(results.fetchall(), args)
 
@@ -95,7 +95,7 @@ class OffensesCountCounties(CdeResource):
     @swagger.doc(
         params={'county_id': {'description': 'The county ID from ref_county'},
                 'variable': {'description': 'A variable to group by',
-                             'enum': marshmallow_schemas.OFFENSE_COUNT_VARIABLE_ENUM}},
+                             'enum': cdemodels.OffenseCountView.VARIABLES}},
         tags=['offenses'],
         description=(
              'Returns counts by year for offenses. '
@@ -104,6 +104,6 @@ class OffensesCountCounties(CdeResource):
     @tuning_page
     def get(self, args, county_id, variable):
         self.verify_api_key(args)
-        model = cdemodels.OffenseCountView(args['year'], variable, None, county_id)
+        model = cdemodels.OffenseCountView(variable, year=args['year'], county_id=county_id)
         results = model.query(args)
         return self.with_metadata(results.fetchall(), args)

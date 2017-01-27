@@ -181,6 +181,18 @@ def add_resources(app):
                      '/hc/count/counties/<int:county_id>/<string:variable>')
     api.add_resource(crime_data.resources.hate_crime.HateCrimesCountStates,
                      '/hc/count/states/<int:state_id>/<string:variable>')
+    api.add_resource(crime_data.resources.victims.VictimOffenseSubcounts,
+                     '/victims/count/states/<int:state_id>/<string:variable>/offenses',
+                     '/victims/count/national/<string:variable>/offenses')
+    api.add_resource(crime_data.resources.offenders.OffenderOffenseSubcounts,
+                     '/offenders/count/states/<int:state_id>/<string:variable>/offenses',
+                     '/offenders/count/national/<string:variable>/offenses')
+    api.add_resource(crime_data.resources.hate_crime.HateCrimeOffenseSubcounts,
+                     '/hc/count/states/<int:state_id>/<string:variable>/offenses',
+                     '/hc/count/national/<string:variable>/offenses')
+    api.add_resource(crime_data.resources.cargo_theft.CargoTheftOffenseSubcounts,
+                     '/ct/count/states/<int:state_id>/<string:variable>/offenses',
+                     '/ct/count/national/<string:variable>/offenses')
 
     docs = FlaskApiSpec(app)
     docs.register(crime_data.resources.agencies.AgenciesDetail)
@@ -207,7 +219,10 @@ def add_resources(app):
     docs.register(crime_data.resources.hate_crime.HateCrimesCountNational)
     docs.register(crime_data.resources.hate_crime.HateCrimesCountStates)
     docs.register(crime_data.resources.hate_crime.HateCrimesCountCounties)
-
+    docs.register(crime_data.resources.victims.VictimOffenseSubcounts)
+    docs.register(crime_data.resources.offenders.OffenderOffenseSubcounts)
+    docs.register(crime_data.resources.cargo_theft.CargoTheftOffenseSubcounts)
+    docs.register(crime_data.resources.hate_crime.HateCrimeOffenseSubcounts)
 
 def newrelic_status_endpoint():
     return 'OK'
