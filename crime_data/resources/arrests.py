@@ -54,10 +54,8 @@ class ArrestsCountByAgeSex(ArrestsCountResource):
     #              description='Returns counts of arrests. These can be grouped further with the by column.')
     # @tuning_page
     def get(self, args):
-        try:
-            return self._get(args)
-        except Exception as e:
-            raise e
+        return self._get(args)
+
 
 
 """
