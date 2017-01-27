@@ -131,14 +131,14 @@ def add_resources(app):
     api.add_resource(crime_data.resources.codes.CodeReferenceList,
                      '/codes/<string:code_table>.<string:output>',
                      '/codes/<string:code_table>')
-    # api.add_resource(crime_data.resources.arrests.ArrestsCountByRace,
-    #                  '/arrests/race/')
-    # api.add_resource(crime_data.resources.arrests.ArrestsCountByEthnicity,
-    #                  '/arrests/ethnicity/')
-    # api.add_resource(crime_data.resources.arrests.ArrestsCountByAgeSex,
-    #                  '/arrests/age_sex/')
-    # api.add_resource(crime_data.resources.arson.ArsonCountResource,
-    #                  '/arson/')
+    api.add_resource(crime_data.resources.arrests.ArrestsCountByRace,
+                     '/arrests/race/')
+    api.add_resource(crime_data.resources.arrests.ArrestsCountByEthnicity,
+                     '/arrests/ethnicity/')
+    api.add_resource(crime_data.resources.arrests.ArrestsCountByAgeSex,
+                     '/arrests/age_sex/')
+    api.add_resource(crime_data.resources.arson.ArsonCountResource,
+                     '/arson/')
     api.add_resource(crime_data.resources.meta.MetaDetail,
                      '/meta/<path:endpoint>')
     api.add_resource(crime_data.resources.geo.StateDetail,
