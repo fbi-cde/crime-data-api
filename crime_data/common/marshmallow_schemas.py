@@ -59,8 +59,14 @@ class IncidentViewCountArgs(ArgumentsSchema):
     """
     county_id = marsh_fields.Integer()
     state_id = marsh_fields.Integer()
-    variable = marsh_fields.String(missing='')
+    variable = marsh_fields.String(required=True)
     year = marsh_fields.String(missing=None)
+
+
+class OffenseCountViewArgs(IncidentViewCountArgs):
+    """Adds offense_name as a field"""
+
+    offense_name = marsh_fields.String(metadata={'description': 'The NIBRS offense name to subgroup by'})
 
 # Anything in an ArgumentsSchema will, dangerously ironically,
 # not be filtered for...
@@ -807,6 +813,29 @@ class ArsonCountSchema(Schema):
     uninhabited_count = marsh_fields.Integer(dump_only=True)
     year = marsh_fields.Integer(dump_only=True)
 
+
+class CountViewResponseSchema(Schema):
+
+    count = marsh_fields.Integer(dump_only=True, required=True)
+    year = marsh_fields.Integer(dump_only=True, required=True)
+
+
+class CargoTheftCountViewResponseSchema(CountViewResponseSchema):
+
+    stolen_value = marsh_fields.String(dump_only=True)
+    recovered_value = marsh_fields.String(dump_only=True)
+
+
+class OffenseCountViewResponseSchema(CountViewResponseSchema):
+
+    offense_name = marsh_fields.String(dump_only=True)
+
+
+class OffenseCargoTheftCountViewResponseSchema(CountViewResponseSchema):
+
+    offense_name = marsh_fields.String(dump_only=True)
+    stolen_value = marsh_fields.String(dump_only=True)
+    recovered_value = marsh_fields.String(dump_only=True)
 
 # response schemas
 class PaginatedResponseSchema(Schema):
