@@ -63,7 +63,7 @@ class IncidentsCount(CdeResource):
 
     @use_args(marshmallow_schemas.GroupableArgsSchema)
     @swagger.use_kwargs(marshmallow_schemas.GroupableArgsSchema,
-                        locations=["query"],
+                        locations=['query'],
                         apply=False)
     @swagger.doc(
         tags=['incidents'],
@@ -94,5 +94,14 @@ class CachedIncidentsCount(CdeResource):
                 field.load_only = field_name not in filtered_names
 
     @use_args(marshmallow_schemas.GroupableArgsSchema)
+    @swagger.use_kwargs(marshmallow_schemas.GroupableArgsSchema,
+                        locations=['query'],
+                        apply=False)
+    @swagger.doc(
+        tags=['incidents'],
+        description=(
+            'Returns counts by year for incidents. '
+            'Incidents can be grouped for counting with the `by` parameter'))
+    @swagger.marshal_with(marshmallow_schemas.IncidentCountSchema, apply=False)
     def get(self, args):
         return self._get(args)

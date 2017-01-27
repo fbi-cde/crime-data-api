@@ -26,8 +26,15 @@ class SchemaFormater(object):
         return data
 
 
+class ApiKeySchema(Schema):
+    if os.getenv('VCAP_APPLICATION'):
+        api_key = marsh_fields.String(
+            required=True,
+            error_messages={'required': 'Get API key from Catherine'})
+
+
 # Schemas for request parsing
-class ArgumentsSchema(Schema):
+class ArgumentsSchema(ApiKeySchema):
     """Input arguments for many API methods"""
 
     output = marsh_fields.String(missing='json')
@@ -36,10 +43,7 @@ class ArgumentsSchema(Schema):
     per_page = marsh_fields.Integer(missing=10)
     fields = marsh_fields.String()
     tuning = marsh_fields.Boolean(missing=False)
-    if os.getenv('VCAP_APPLICATION'):
-        api_key = marsh_fields.String(
-            required=True,
-            error_messages={'required': 'Get API key from Catherine'})
+
 
 
 # class IncidentViewCountArgsYear(ArgumentsSchema):
