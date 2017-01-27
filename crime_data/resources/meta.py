@@ -40,7 +40,7 @@ class MetaDetail(CdeResource):
     the endpoint.
     """
 
-    @swagger.use_kwargs({'endpoint': fields.Str()})
+    @swagger.use_kwargs({}, apply=False, locations=['path'])
     @swagger.marshal_with(MetaDetailResponseSchema)
     @swagger.doc(tags=['meta'],
                  description=('Returns meta information about the query endpoint. '

@@ -11,7 +11,7 @@ class ArsonCountResource(CdeResource):
     is_groupable = True
 
     @use_args(marshmallow_schemas.GroupableArgsSchema)
-    @swagger.use_kwargs(marshmallow_schemas.GroupableArgsSchema, apply=False, positions=['query'])
+    @swagger.use_kwargs(marshmallow_schemas.GroupableArgsSchema, apply=False, locations=['query'])
     @swagger.marshal_with(marshmallow_schemas.ArsonCountResponseSchema, apply=False)
     @tuning_page
     def get(self, args):
