@@ -34,9 +34,9 @@ class CargoTheftsCountStates(CdeResource):
             'Offender Incidents - By State'))
     @swagger.marshal_with(marshmallow_schemas.IncidentCountSchema, apply=False)
     @tuning_page
-    def get(self, args, state_id, variable):
+    def get(self, args, state_id=None, state_abbr=None, variable=None):
         self.verify_api_key(args)
-        model = cdemodels.CargoTheftCountView(variable, year=args['year'], state_id=state_id)
+        model = cdemodels.CargoTheftCountView(variable, year=args['year'], state_id=state_id, state_abbr=state_abbr)
         results = model.query(args)
         return self.with_metadata(results.fetchall(), args)
 
@@ -114,11 +114,12 @@ class CargoTheftOffenseSubcounts(CdeResource):
              'Victim Incidents - By county'))
     @swagger.marshal_with(marshmallow_schemas.OffenseCargoTheftCountViewResponseSchema, apply=False)
     @tuning_page
-    def get(self, args, variable, state_id=None):
+    def get(self, args, variable, state_id=None, state_abbr=None):
         self.verify_api_key(args)
         model = cdemodels.OffenseCargoTheftCountView(variable,
                                                      year=args.get('year', None),
                                                      offense_name=args.get('offense_name', None),
-                                                     state_id=state_id)
+                                                     state_id=state_id,
+                                                     state_abbr=state_abbr)
         results = model.query(args)
         return self.with_metadata(results.fetchall(), args)

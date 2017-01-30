@@ -1064,12 +1064,19 @@ class MultiYearCountView(object):
 
     VARIABLES = []
 
-    def __init__(self, field, year=None, state_id=None, county_id=None):
+    def __init__(self, field, year=None, state_id=None, state_abbr=None, county_id=None):
+        if field is None:
+            raise ValueError('You must specify a field for the CountView')
+
         if field not in self.VARIABLES:
             raise ValueError('Invalid variable "{}" specified for {}'.format(field, self.view_name))
 
         self.year = year
         self.state_id = state_id
+
+        if state_abbr and state_id is None:
+            self.state_id = CdeRefState.get(abbr=state_abbr).one().state_id
+            
         self.county_id = county_id
         self.field = field
         self.national = False
@@ -1110,21 +1117,23 @@ class MultiYearCountView(object):
         return qry
 
     def base_query(self, field):
-        query = 'SELECT :field , count, year::text FROM :view_name'
-        query += ' WHERE :field IS NOT NULL'
+        select_query = 'SELECT :field , count, year::text'
+        from_query = ' FROM :view_name'
+        where_query = ' WHERE :field IS NOT NULL'
 
         if self.state_id:
-            query += ' AND state_id = :state_id AND county_id IS NULL'
+            where_query += ' AND state_id = :state_id AND county_id IS NULL'
 
         if self.county_id:
-            query += ' AND county_id = :county_id'
+            where_query += ' AND county_id = :county_id'
 
         if self.national:
-            query += ' AND state_id is NULL AND county_id is NULL'
+            where_query += ' AND state_id is NULL AND county_id is NULL'
 
         if self.year:
-            query += ' AND year = :year '
+            where_query += ' AND year = :year '
 
+        query = select_query + from_query + where_query
         return query
 
 
@@ -1208,11 +1217,15 @@ class CargoTheftCountView(MultiYearCountView):
 
 class OffenseSubCountView(object):
 
-    def __init__(self, field, year=None, state_id=None, county_id=None, offense_name=None):
+    def __init__(self, field, year=None, state_id=None, county_id=None, offense_name=None, state_abbr=None):
         if field not in self.VARIABLES:
             raise ValueError('Invalid variable "{}" specified for {}'.format(field, self.view_name))
         self.year = year
         self.state_id = state_id
+
+        if state_abbr and state_id is None:
+            self.state_id = CdeRefState.get(abbr=state_abbr).one().state_id
+
         self.county_id = county_id
         self.field = field
         self.offense_name = offense_name

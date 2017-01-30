@@ -75,9 +75,9 @@ class OffensesCountStates(CdeResource):
             'Offense incidents - By State'))
     @swagger.marshal_with(marshmallow_schemas.IncidentCountSchema, apply=False)
     @tuning_page
-    def get(self, args, state_id, variable):
+    def get(self, args, state_id=None, state_abbr=None, variable=None):
         self.verify_api_key(args)
-        model = cdemodels.OffenseCountView(variable, year=args['year'], state_id=state_id)
+        model = cdemodels.OffenseCountView(variable, year=args['year'], state_id=state_id, state_abbr=state_abbr)
         results = model.query(args)
         return self.with_metadata(results.fetchall(), args)
 
