@@ -537,8 +537,8 @@ SET work_mem='4096MB';
 SET effective_cache_size='4GB';
 
 drop materialized view victim_counts_2001 CASCADE;
-create materialized view victim_counts_2001 as select count(victim_id),prop_desc_name,offense_name,ethnicity, resident_status_code, offender_relationship, circumstance_name,  state_id, race_code,location_name, age_num, sex_code, county_id 
-from ( SELECT DISTINCT(victim_id), age_code, age_num,race_code,year,prop_desc_name,offense_name,location_name,ethnicity, resident_status_code, offender_relationship, circumstance_name,  sex_code, state_id,county_id from nibrs_victim_denorm where year = '2001' ) as temp
+create materialized view victim_counts_2001 as select count(victim_id),prop_desc_name,offense_name, ethnicity, resident_status_code, offender_relationship, circumstance_name, state_id, race_code,location_name, age_num, sex_code, county_id 
+from ( SELECT DISTINCT(victim_id), age_code, age_num,race_code,year,prop_desc_name,ethnicity, resident_status_code, offender_relationship, circumstance_name, offense_name,location_name, sex_code, state_id,county_id from nibrs_victim_denorm where year = '2001' ) as temp
 GROUP BY GROUPING SETS (
     (year, race_code),
     (year, sex_code), -- U, F, M
@@ -578,8 +578,8 @@ SET work_mem='4096MB';
 SET effective_cache_size='4GB';
 
 drop materialized view victim_counts_2000 CASCADE;
-create materialized view victim_counts_2000 as select count(victim_id),ethnicity, resident_status_code, offender_relationship, circumstance_name, prop_desc_name,offense_name, state_id, race_code,location_name, age_num, sex_code, county_id 
-from ( SELECT DISTINCT(victim_id), age_code, age_num,race_code,year,ethnicity, resident_status_code, offender_relationship, circumstance_name, prop_desc_name,offense_name,location_name, sex_code, state_id,county_id from nibrs_victim_denorm where year = '2000' ) as temp
+create materialized view victim_counts_2000 as select count(victim_id),prop_desc_name,offense_name, ethnicity, resident_status_code, offender_relationship, circumstance_name, state_id, race_code,location_name, age_num, sex_code, county_id 
+from ( SELECT DISTINCT(victim_id), age_code, age_num,race_code,year,prop_desc_name,ethnicity, resident_status_code, offender_relationship, circumstance_name, offense_name,location_name, sex_code, state_id,county_id from nibrs_victim_denorm where year = '2000' ) as temp
 GROUP BY GROUPING SETS (
     (year, race_code),
     (year, sex_code), -- U, F, M
@@ -619,8 +619,8 @@ SET work_mem='4096MB';
 SET effective_cache_size='4GB';
 
 drop materialized view victim_counts_1999 CASCADE;
-create materialized view victim_counts_1999 as select count(victim_id),ethnicity, resident_status_code, offender_relationship, circumstance_name, prop_desc_name,offense_name, state_id, race_code,location_name, age_num, sex_code, county_id 
-from ( SELECT DISTINCT(victim_id), age_code, age_num,race_code,ethnicity, resident_status_code, offender_relationship, circumstance_name, year,prop_desc_name,offense_name,location_name, sex_code, state_id,county_id from nibrs_victim_denorm where year = '1999' ) as temp
+create materialized view victim_counts_1999 as select count(victim_id),prop_desc_name,offense_name, ethnicity, resident_status_code, offender_relationship, circumstance_name, state_id, race_code,location_name, age_num, sex_code, county_id 
+from ( SELECT DISTINCT(victim_id), age_code, age_num,race_code,year,prop_desc_name,ethnicity, resident_status_code, offender_relationship, circumstance_name, offense_name,location_name, sex_code, state_id,county_id from nibrs_victim_denorm where year = '1999' ) as temp
 GROUP BY GROUPING SETS (
     (year, race_code),
     (year, sex_code), -- U, F, M
@@ -661,8 +661,8 @@ SET work_mem='4096MB';
 SET effective_cache_size='4GB';
 
 drop materialized view victim_counts_1998 CASCADE;
-create materialized view victim_counts_1998 as select count(victim_id),ethnicity, resident_status_code, offender_relationship, circumstance_name, prop_desc_name,offense_name, state_id, race_code,location_name, age_num, sex_code, county_id 
-from ( SELECT DISTINCT(victim_id), age_code, age_num,ethnicity, resident_status_code, offender_relationship, circumstance_name, race_code,year,prop_desc_name,offense_name,location_name, sex_code, state_id,county_id from nibrs_victim_denorm where year = '1998' ) as temp
+create materialized view victim_counts_1998 as select count(victim_id),prop_desc_name,offense_name, ethnicity, resident_status_code, offender_relationship, circumstance_name, state_id, race_code,location_name, age_num, sex_code, county_id 
+from ( SELECT DISTINCT(victim_id), age_code, age_num,race_code,year,prop_desc_name,ethnicity, resident_status_code, offender_relationship, circumstance_name, offense_name,location_name, sex_code, state_id,county_id from nibrs_victim_denorm where year = '1998' ) as temp
 GROUP BY GROUPING SETS (
     (year, race_code),
     (year, sex_code), -- U, F, M
@@ -702,8 +702,8 @@ SET work_mem='4096MB';
 SET effective_cache_size='4GB';
 
 drop materialized view victim_counts_1997 CASCADE;
-create materialized view victim_counts_1997 as select count(victim_id),ethnicity, resident_status_code, offender_relationship, circumstance_name, prop_desc_name,offense_name, state_id, race_code,location_name, age_num, sex_code, county_id 
-from ( SELECT DISTINCT(victim_id), age_code, age_num,ethnicity, resident_status_code, offender_relationship, circumstance_name, race_code,year,prop_desc_name,offense_name,location_name, sex_code, state_id,county_id from nibrs_victim_denorm where year = '1997' ) as temp
+create materialized view victim_counts_1997 as select count(victim_id),prop_desc_name,offense_name, ethnicity, resident_status_code, offender_relationship, circumstance_name, state_id, race_code,location_name, age_num, sex_code, county_id 
+from ( SELECT DISTINCT(victim_id), age_code, age_num,race_code,year,prop_desc_name,ethnicity, resident_status_code, offender_relationship, circumstance_name, offense_name,location_name, sex_code, state_id,county_id from nibrs_victim_denorm where year = '1997' ) as temp
 GROUP BY GROUPING SETS (
     (year, race_code),
     (year, sex_code), -- U, F, M
@@ -744,8 +744,8 @@ SET effective_cache_size='4GB';
 
 
 drop materialized view victim_counts_1996 CASCADE;
-create materialized view victim_counts_1996 as select count(victim_id),ethnicity, resident_status_code, offender_relationship, circumstance_name, prop_desc_name,offense_name, state_id, race_code,location_name, age_num, sex_code, county_id 
-from ( SELECT DISTINCT(victim_id), age_code, ethnicity, resident_status_code, offender_relationship, circumstance_name, age_num,race_code,year,prop_desc_name,offense_name,location_name, sex_code, state_id,county_id from nibrs_victim_denorm where year = '1996' ) as temp
+create materialized view victim_counts_1996 as select count(victim_id),prop_desc_name,offense_name, ethnicity, resident_status_code, offender_relationship, circumstance_name, state_id, race_code,location_name, age_num, sex_code, county_id 
+from ( SELECT DISTINCT(victim_id), age_code, age_num,race_code,year,prop_desc_name,ethnicity, resident_status_code, offender_relationship, circumstance_name, offense_name,location_name, sex_code, state_id,county_id from nibrs_victim_denorm where year = '1996' ) as temp
 GROUP BY GROUPING SETS (
     (year, race_code),
     (year, sex_code), -- U, F, M
@@ -785,8 +785,8 @@ SET work_mem='4096MB';
 SET effective_cache_size='4GB';
 
 drop materialized view victim_counts_1995 CASCADE;
-create materialized view victim_counts_1995 as select count(victim_id),ethnicity, resident_status_code, offender_relationship, circumstance_name, prop_desc_name,offense_name, state_id, race_code,location_name, age_num, sex_code, county_id 
-from ( SELECT DISTINCT(victim_id), age_code, age_num,ethnicity, resident_status_code, offender_relationship, circumstance_name, race_code,year,prop_desc_name,offense_name,location_name, sex_code, state_id,county_id from nibrs_victim_denorm where year = '1995' ) as temp
+create materialized view victim_counts_1995 as select count(victim_id),prop_desc_name,offense_name, ethnicity, resident_status_code, offender_relationship, circumstance_name, state_id, race_code,location_name, age_num, sex_code, county_id 
+from ( SELECT DISTINCT(victim_id), age_code, age_num,race_code,year,prop_desc_name,ethnicity, resident_status_code, offender_relationship, circumstance_name, offense_name,location_name, sex_code, state_id,county_id from nibrs_victim_denorm where year = '1995' ) as temp
 GROUP BY GROUPING SETS (
     (year, race_code),
     (year, sex_code), -- U, F, M
@@ -826,8 +826,8 @@ SET work_mem='4096MB';
 SET effective_cache_size='4GB';
 
 drop materialized view victim_counts_1994 CASCADE;
-create materialized view victim_counts_1994 as select count(victim_id),ethnicity, resident_status_code, offender_relationship, circumstance_name, prop_desc_name,offense_name, state_id, race_code,location_name, age_num, sex_code, county_id 
-from ( SELECT DISTINCT(victim_id), age_code, age_num,ethnicity, resident_status_code, offender_relationship, circumstance_name, race_code,year,prop_desc_name,offense_name,location_name, sex_code, state_id,county_id from nibrs_victim_denorm where year = '1994' ) as temp
+create materialized view victim_counts_1994 as select count(victim_id),prop_desc_name,offense_name, ethnicity, resident_status_code, offender_relationship, circumstance_name, state_id, race_code,location_name, age_num, sex_code, county_id 
+from ( SELECT DISTINCT(victim_id), age_code, age_num,race_code,year,prop_desc_name,ethnicity, resident_status_code, offender_relationship, circumstance_name, offense_name,location_name, sex_code, state_id,county_id from nibrs_victim_denorm where year = '1994' ) as temp
 GROUP BY GROUPING SETS (
     (year, race_code),
     (year, sex_code), -- U, F, M
@@ -867,8 +867,8 @@ SET work_mem='4096MB';
 SET effective_cache_size='4GB';
 
 drop materialized view victim_counts_1993 CASCADE;
-create materialized view victim_counts_1993 as select count(victim_id),ethnicity, resident_status_code, offender_relationship, circumstance_name, prop_desc_name,offense_name, state_id, race_code,location_name, age_num, sex_code, county_id 
-from ( SELECT DISTINCT(victim_id), age_code,ethnicity, resident_status_code, offender_relationship, circumstance_name,  age_num,race_code,year,prop_desc_name,offense_name,location_name, sex_code, state_id,county_id from nibrs_victim_denorm where year = '1993' ) as temp
+create materialized view victim_counts_1993 as select count(victim_id),prop_desc_name,offense_name, ethnicity, resident_status_code, offender_relationship, circumstance_name, state_id, race_code,location_name, age_num, sex_code, county_id 
+from ( SELECT DISTINCT(victim_id), age_code, age_num,race_code,year,prop_desc_name,ethnicity, resident_status_code, offender_relationship, circumstance_name, offense_name,location_name, sex_code, state_id,county_id from nibrs_victim_denorm where year = '1993' ) as temp
 GROUP BY GROUPING SETS (
     (year, race_code),
     (year, sex_code), -- U, F, M
@@ -908,8 +908,8 @@ SET work_mem='4096MB';
 SET effective_cache_size='4GB';
 
 drop materialized view victim_counts_1992 CASCADE;
-create materialized view victim_counts_1992 as select count(victim_id),ethnicity, resident_status_code, offender_relationship, circumstance_name, prop_desc_name,offense_name, state_id, race_code,location_name, age_num, sex_code, county_id 
-from ( SELECT DISTINCT(victim_id), age_code, ethnicity, resident_status_code, offender_relationship, circumstance_name, age_num,race_code,year,prop_desc_name,offense_name,location_name, sex_code, state_id,county_id from nibrs_victim_denorm where year = '1992' ) as temp
+create materialized view victim_counts_1992 as select count(victim_id),prop_desc_name,offense_name, ethnicity, resident_status_code, offender_relationship, circumstance_name, state_id, race_code,location_name, age_num, sex_code, county_id 
+from ( SELECT DISTINCT(victim_id), age_code, age_num,race_code,year,prop_desc_name,ethnicity, resident_status_code, offender_relationship, circumstance_name, offense_name,location_name, sex_code, state_id,county_id from nibrs_victim_denorm where year = '1992' ) as temp
 GROUP BY GROUPING SETS (
     (year, race_code),
     (year, sex_code), -- U, F, M
@@ -949,8 +949,8 @@ SET work_mem='4096MB';
 SET effective_cache_size='4GB';
 
 drop materialized view victim_counts_1991 CASCADE;
-create materialized view victim_counts_1991 as select count(victim_id),ethnicity, resident_status_code, offender_relationship, circumstance_name, prop_desc_name,offense_name, state_id, race_code,location_name, age_num, sex_code, county_id 
-from ( SELECT DISTINCT(victim_id), ethnicity, resident_status_code, offender_relationship, circumstance_name, age_code, age_num,race_code,year,prop_desc_name,offense_name,location_name, sex_code, state_id,county_id from nibrs_victim_denorm where year = '1991' ) as temp
+create materialized view victim_counts_1991 as select count(victim_id),prop_desc_name,offense_name, ethnicity, resident_status_code, offender_relationship, circumstance_name, state_id, race_code,location_name, age_num, sex_code, county_id 
+from ( SELECT DISTINCT(victim_id), age_code, age_num,race_code,year,prop_desc_name,ethnicity, resident_status_code, offender_relationship, circumstance_name, offense_name,location_name, sex_code, state_id,county_id from nibrs_victim_denorm where year = '1991' ) as temp
 GROUP BY GROUPING SETS (
     (year, race_code),
     (year, sex_code), -- U, F, M
