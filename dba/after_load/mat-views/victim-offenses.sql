@@ -150,7 +150,7 @@ GROUP BY GROUPING SETS (
 );
 SET work_mem='4096MB';
 drop materialized view offense_victim_counts_2007 CASCADE;
-create materialized view offense_victim_counts_2007 as select count(victim_id),ethnicity,resident_status_code,offender_relationship,circumstance_name,offense_name, state_id, race_code, age_num, sex_code 
+create materialized view offense_victim_counts_2007 as select count(victim_id),resident_status_code,offender_relationship,circumstance_name,ethnicity,offense_name, state_id, race_code, age_num, sex_code  
 from ( SELECT DISTINCT(victim_id), ethnicity, age_num,race_code,resident_status_code,offender_relationship,circumstance_name,year,offense_name, sex_code, state_id from nibrs_victim_denorm where year = '2007' and state_id is not null) as temp
 GROUP BY GROUPING SETS (
     (year, offense_name, race_code),
