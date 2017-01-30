@@ -903,15 +903,19 @@ class StateDetailResponseSchema(ma.ModelSchema):
     class Meta:
         model = cdemodels.CdeRefState
         ordered = True
-        fields = ('state_id', 'name', 'postal_abbr', 'fips_code',
-                  'population', 'num_agencies', 'police_officers', 'counties', )
+        fields = ('state_id', 'name', 'postal_abbr', 'fips_code', 'current_year',
+                  'reporting_agencies', 'covered_population', 'reporting_rate',
+                  'total_population', 'total_agencies', 'police_officers', 'counties', )
 
     name = marsh_fields.String(attribute='state_name')
     postal_abbr = marsh_fields.String(attribute='state_postal_abbr')
     fips_code = marsh_fields.String(attribute='state_fips_code')
-    population = marsh_fields.Integer()
-    num_agencies = marsh_fields.Integer()
+    total_population = marsh_fields.Integer()
+    covered_population = marsh_fields.Integer()
+    total_agencies = marsh_fields.Integer()
+    reporting_agencies = marsh_fields.Integer()
     police_officers = marsh_fields.Integer()
+    current_year = marsh_fields.Integer()
 
     # This is not the most efficient, since it's a N queries for population, but
     # that is something we can fix later if a problem

@@ -23,8 +23,12 @@ psql $CRIME_DATA_API_DB_URL <after_load/create_reta_summary.sql >/dev/null
 psql $CRIME_DATA_API_DB_URL <after_load/create_reta_summary_indexes.sql >/dev/null
 echo "DONE"
 
-echo -n "Create View Count tables from NIBRS"
+echo -n "Create View Count tables from NIBRS..."
 after_load/setup-denorm.sh >/dev/null
+echo "DONE"
+
+echo -n "Create participation views..."
+psql $CRIME_DATA_API_DB_URL <after_load/participation_table.sql
 echo "DONE"
 
 echo -n "Building cached incident representations (may be slow)..."

@@ -205,3 +205,32 @@ class RetaMonthOffenseSubcatSummary(db.Model, CreatableModel):
                 col = getattr(cls, col_name)
                 qry = qry.order_by(col)
         return qry
+
+
+class ParticipationRate(db.Model):
+    __tablename__ = 'cde_participation_rates'
+
+    data_year = db.Column(db.SmallInteger, nullable=False, primary_key=True)
+    total_population = db.Column(db.BigInteger)
+    covered_population = db.Column(db.BigInteger)
+    total_agencies = db.Column(db.Integer)
+    reporting_agencies = db.Column(db.Integer)
+    reporting_rate = db.Column(db.Float)
+    state_id = db.Column(db.Integer,
+                         db.ForeignKey('ref_state.state_id',
+                                       deferrable=True,
+                                       initially='DEFERRED'),
+                         nullable=True,
+                         index=True)
+    county_id = db.Column(db.Integer,
+                          db.ForeignKey('ref_county.county_id',
+                                        deferrable=True,
+                                        initially='DEFERRED'),
+                          nullable=True,
+                          index=True)
+    metro_div_id = db.Column(db.Integer,
+                             db.ForeignKey('ref_metro_division.metro_div_id',
+                                           deferrable=True,
+                                           initially='DEFERRED'),
+                             nullable=True,
+                             index=True)
