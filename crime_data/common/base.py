@@ -2,6 +2,7 @@ import json
 import math
 import os
 import random
+from urllib import parse
 from decimal import Decimal
 from ast import literal_eval
 from functools import wraps
@@ -452,8 +453,9 @@ class CdeResource(MethodResource):
                 if 'credentials' in u
             ]
             key = creds[0]['API_KEY']
+            test_key = args.get('api_key')
 
-            if args.get('api_key') != key:
+            if test_key != key and parse.unquote(test_key) != key:
                 abort(401, message='Use correct `api_key` argument')
 
     def _parse_inequality_operator(self, k, v):
