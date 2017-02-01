@@ -78,7 +78,6 @@ JOIN ref_agency a ON a.agency_id = c.agency_id
 JOIN ref_agency_county rac ON rac.agency_id = a.agency_id AND rac.data_year = c.data_year
 JOIN ref_county rc ON rc.county_id = rac.county_id
 JOIN ref_county_population rcp ON rcp.county_id = rac.county_id AND rcp.data_year = c.data_year
-WHERE rc.state_id = 55 and rcp.data_year = 1960
 GROUP BY c.data_year, rc.county_id, rcp.population;
 
 UPDATE cde_participation_rates

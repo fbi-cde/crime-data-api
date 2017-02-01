@@ -251,43 +251,32 @@ class CdeRefCounty(models.RefCounty):
         return '{}{:03d}'.format(self.state.state_fips_code,
                                  int(self.county_fips_code))
 
-    def num_agencies_for_year(self, data_year):
+    def total_agencies_for_year(self, data_year):
         """Counts the number of agencies for that county in a year."""
-        query = session.query(CdeRefAgency)
-        query = (
-            query.join(CdeRefAgencyCounty)
-            .filter(CdeRefAgencyCounty.data_year == data_year)
-            .filter(CdeRefAgencyCounty.county_id == self.county_id)
-        )
-
-        count = get_sql_count(query)
-        if count == 0:
-            return None  # assume error finding agencies
-        else:
-            return count
+        return self._participation_for_year(data_year).total_agencies
 
     @property
-    def num_agencies(self):
+    def reporting_agencies(self):
         """Returns the number of agencies for the most recent year"""
-        return self.num_agencies_for_year(self.current_year)
+        return self.reporting_agencies_for_year(self.current_year)
 
-    def population_for_year(self, data_year):
-        """Returns the population for a given year"""
-        query = session.query(models.RefCountyPopulation)
-        query = (
-            query.filter(models.RefCountyPopulation.county_id == self.county_id)
-            .filter(models.RefCountyPopulation.data_year == data_year)
-        )
-
-        try:
-            return query.one().population
-        except NoResultFound:
-            return None
+    def reporting_agencies_for_year(self, data_year):
+        """Counts the number of agencies for that county in a year."""
+        return self._participation_for_year(data_year).reporting_agencies
 
     @property
-    def population(self):
+    def total_agencies(self):
+        """Returns the number of agencies for the most recent year"""
+        return self.total_agencies_for_year(self.current_year)
+
+    def total_population_for_year(self, data_year):
+        """Returns the population for a given year"""
+        return self._participation_for_year(data_year).total_population
+
+    @property
+    def total_population(self):
         """Returns the most recent reported population for the county"""
-        return self.population_for_year(self.current_year)
+        return self.total_population_for_year(self.current_year)
 
     def police_officers_for_year(self, data_year):
         """Returns the number of police officers for a given year"""
@@ -310,7 +299,24 @@ class CdeRefCounty(models.RefCounty):
         """Returns the total police officers for the current year"""
         return self.police_officers_for_year(self.current_year)
 
+    @property
+    def participation_cache(self):
+        try:
+            return self._participation_cache
+        except AttributeError:
+            self._participation_cache = {}
+            return self._participation_cache
 
+    def _participation_for_year(self, year):
+        """Internal method for loading the participation data"""
+        try:
+            return self.participation_cache[year]
+        except KeyError:
+            l = CdeParticipationRate(county_id=self.county_id, year=year).query().one()
+            self.participation_cache[year] = l
+            return l
+
+    
 class CdeRefAgency(models.RefAgency):
     def get(ori=None):
         # Base Query
@@ -594,16 +600,16 @@ class JoinedTable:
 
 
 class TableFamily:
-    """""
+    """
     Base class for Queries on the CDE database.
-    """""
+    """
 
     def __init__(self):
         self._map = {}
 
     @classmethod
     def get_tables(cls, parent):
-        return self.tables
+        return tables
 
     @property
     def map(self):
