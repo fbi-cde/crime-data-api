@@ -44,3 +44,10 @@ CREATE TABLE reta_cube_rollup AS
 
 DROP TABLE IF EXISTS reta_month_offense_subcat_summary CASCADE;
 ALTER TABLE reta_cube_rollup RENAME TO reta_month_offense_subcat_summary;
+
+-- Some tweaks for the existing table
+ALTER TABLE reta_month_offense_subcat_summary ADD COLUMN state_id INT;
+UPDATE reta_month_offense_subcat_summary AS r SET state_id = s.state_id FROM ref_state AS s WHERE s.state_abbr = r.state;
+-- Change state to be the postal abbreviation
+UPDATE reta_month_offense_subcat_summary set state='NE' where state='NB';
+UPDATE reta_month_offense_subcat_summary set state='GU' where state='GM';

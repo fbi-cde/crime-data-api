@@ -18,6 +18,19 @@ from crime_data.common import models
 from crime_data.extensions import db
 from sqlalchemy import or_
 
+class ParticipationRate(db.Model):
+    __tablename__ = 'cde_participation_rates'
+
+    data_year = db.Column(db.SmallInteger, nullable=False, primary_key=True)
+    total_population = db.Column(db.BigInteger)
+    covered_population = db.Column(db.BigInteger)
+    total_agencies = db.Column(db.Integer)
+    reporting_agencies = db.Column(db.Integer)
+    reporting_rate = db.Column(db.Float)
+    state_id = db.Column(db.Integer)
+    county_id = db.Column(db.Integer)
+    metro_div_id = db.Column(db.Integer)
+
 
 class CreatableModel:
     @classmethod
@@ -100,8 +113,8 @@ class RetaMonthOffenseSubcatSummary(db.Model, CreatableModel):
                      'offense_code': ['offense_subcat', 'offense_subcat_code', 'offense', 'offense_category', 'classification'],
                      'offense_category': ['offense_subcat', 'offense_subcat_code', 'offense', 'offense_code', 'classification'],
                      'classification': ['offense_subcat', 'offense_subcat_code', 'offense', 'offense_code', 'offense_category'],
-                     'state_name': ['state'],
-                     'state': ['state_name'], }
+                     'state_name': ['state', 'state_id'],
+                     'state': ['state_name', 'state_id'], }
 
 
     grouping_sets = {'grouping_bitmap': [],
@@ -113,8 +126,8 @@ class RetaMonthOffenseSubcatSummary(db.Model, CreatableModel):
                      'offense_code': ['offense', 'offense_category', 'classification'],
                      'offense_category': ['classification'],
                      'classification': [],
-                     'state_name': ['state'],
-                     'state': ['state_name'], }
+                     'state_name': ['state', 'state_id'],
+                     'state': ['state_name', 'state_id'], }
 
 
     # filterables *must* be in the same order as the GROUPING clause used
@@ -148,6 +161,12 @@ class RetaMonthOffenseSubcatSummary(db.Model, CreatableModel):
     classification = db.Column(db.Text)
     state_name = db.Column(db.Text)
     state = db.Column(db.Text)
+    state_id = db.Column(db.Integer)
+
+    state_participation = db.relationship('ParticipationRate',
+                                          lazy='joined',
+                                          foreign_keys=[state_id, year],
+                                          primaryjoin="and_(ParticipationRate.state_id==RetaMonthOffenseSubcatSummary.state_id,ParticipationRate.data_year==RetaMonthOffenseSubcatSummary.year)")
 
     @classmethod
     def determine_grouping(cls, filters, group_by_column_names, schema):
@@ -205,32 +224,3 @@ class RetaMonthOffenseSubcatSummary(db.Model, CreatableModel):
                 col = getattr(cls, col_name)
                 qry = qry.order_by(col)
         return qry
-
-
-class ParticipationRate(db.Model):
-    __tablename__ = 'cde_participation_rates'
-
-    data_year = db.Column(db.SmallInteger, nullable=False, primary_key=True)
-    total_population = db.Column(db.BigInteger)
-    covered_population = db.Column(db.BigInteger)
-    total_agencies = db.Column(db.Integer)
-    reporting_agencies = db.Column(db.Integer)
-    reporting_rate = db.Column(db.Float)
-    state_id = db.Column(db.Integer,
-                         db.ForeignKey('ref_state.state_id',
-                                       deferrable=True,
-                                       initially='DEFERRED'),
-                         nullable=True,
-                         index=True)
-    county_id = db.Column(db.Integer,
-                          db.ForeignKey('ref_county.county_id',
-                                        deferrable=True,
-                                        initially='DEFERRED'),
-                          nullable=True,
-                          index=True)
-    metro_div_id = db.Column(db.Integer,
-                             db.ForeignKey('ref_metro_division.metro_div_id',
-                                           deferrable=True,
-                                           initially='DEFERRED'),
-                             nullable=True,
-                             index=True)

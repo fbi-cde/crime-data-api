@@ -169,7 +169,7 @@ class CachedIncidentCountSchema(Schema):
     actual = marsh_fields.Integer()
     cleared = marsh_fields.Integer()
     juvenile_cleared = marsh_fields.Integer()
-
+    total_population = marsh_fields.Integer(load_only=True)
 
 class NibrsRelationshipSchema(ma.ModelSchema):
     class Meta:
