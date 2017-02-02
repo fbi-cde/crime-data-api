@@ -26,6 +26,15 @@ class TestVictimsEndpoint:
             assert 'stolen_value' in r
             assert 'recovered_value' in r
 
+    def test_victims_offenses_endpoint_with_postal_code(self, testapp):
+        url = '/ct/count/states/AR/prop_desc_name/offenses?year=2014'
+        res = testapp.get(url)
+        assert 'pagination' in res.json
+        for r in res.json['results']:
+            assert 'count' in r
+            assert 'stolen_value' in r
+            assert 'recovered_value' in r
+
     @pytest.mark.parametrize('variable', OffenseCargoTheftCountView.VARIABLES)
     def test_victims_offenses_endpoint_with_state_year_offense(self, testapp, variable):
         url = '/ct/count/states/43/{}/offenses?offense_name=Robbery&year=2014'.format(variable)

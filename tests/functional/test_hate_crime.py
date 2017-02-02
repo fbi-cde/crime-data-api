@@ -14,6 +14,14 @@ class TestHateCrimeEndpoint:
         for r in res.json['results']:
             assert 'count' in r
 
+    def test_state_endpoint_count_with_postal_code(self, testapp):
+        url = '/hc/count/states/AR/bias_name?year=2014'
+        res = testapp.get(url)
+        assert res.status_code == 200
+        assert 'pagination' in res.json
+        for r in res.json['results']:
+            assert 'count' in r
+
     def test_national_endpoint_count(self, testapp):
         url = '/hc/count/national/bias_name?year=2014'
         res = testapp.get(url)

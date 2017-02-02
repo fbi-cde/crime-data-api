@@ -150,7 +150,8 @@ def add_resources(app):
     api.add_resource(crime_data.resources.offenses.OffensesCountNational,
                      '/offenses/count/national/<string:variable>')
     api.add_resource(crime_data.resources.offenses.OffensesCountStates,
-                     '/offenses/count/states/<int:state_id>/<string:variable>')
+                     '/offenses/count/states/<int:state_id>/<string:variable>',
+                     '/offenses/count/states/<string:state_abbr>/<string:variable>')
     api.add_resource(crime_data.resources.offenses.OffensesCountCounties,
                      '/offenses/count/counties/<string:variable>')
 
@@ -158,11 +159,14 @@ def add_resources(app):
     api.add_resource(crime_data.resources.offenders.OffendersCountNational,
                      '/offenders/count/national/<string:variable>')
     api.add_resource(crime_data.resources.offenders.OffendersCountStates,
-                     '/offenders/count/states/<int:state_id>/<string:variable>')
+                     '/offenders/count/states/<int:state_id>/<string:variable>',
+                     '/offenders/count/states/<string:state_abbr>/<string:variable>')
+
     api.add_resource(crime_data.resources.victims.VictimsCountNational,
                      '/victims/count/national/<string:variable>')
     api.add_resource(crime_data.resources.victims.VictimsCountStates,
-                     '/victims/count/states/<int:state_id>/<string:variable>')
+                     '/victims/count/states/<int:state_id>/<string:variable>',
+                     '/victims/count/states/<string:state_abbr>/<string:variable>')
     api.add_resource(crime_data.resources.offenders.OffendersCountCounties,
                      '/offenders/count/counties/<int:county_id>/<string:variable>')
     api.add_resource(crime_data.resources.victims.VictimsCountCounties,
@@ -173,25 +177,32 @@ def add_resources(app):
     api.add_resource(crime_data.resources.cargo_theft.CargoTheftsCountCounties,
                      '/ct/count/counties/<int:county_id>/<string:variable>')
     api.add_resource(crime_data.resources.cargo_theft.CargoTheftsCountStates,
-                     '/ct/count/states/<int:state_id>/<string:variable>')
+                     '/ct/count/states/<int:state_id>/<string:variable>',
+                     '/ct/count/states/<string:state_abbr>/<string:variable>')
 
     api.add_resource(crime_data.resources.hate_crime.HateCrimesCountNational,
                      '/hc/count/national/<string:variable>')
     api.add_resource(crime_data.resources.hate_crime.HateCrimesCountCounties,
                      '/hc/count/counties/<int:county_id>/<string:variable>')
     api.add_resource(crime_data.resources.hate_crime.HateCrimesCountStates,
-                     '/hc/count/states/<int:state_id>/<string:variable>')
+                     '/hc/count/states/<int:state_id>/<string:variable>',
+                     '/hc/count/states/<string:state_abbr>/<string:variable>')
+
     api.add_resource(crime_data.resources.victims.VictimOffenseSubcounts,
                      '/victims/count/states/<int:state_id>/<string:variable>/offenses',
+                     '/victims/count/states/<string:state_abbr>/<string:variable>/offenses',
                      '/victims/count/national/<string:variable>/offenses')
     api.add_resource(crime_data.resources.offenders.OffenderOffenseSubcounts,
                      '/offenders/count/states/<int:state_id>/<string:variable>/offenses',
+                     '/offenders/count/states/<string:state_abbr>/<string:variable>/offenses',
                      '/offenders/count/national/<string:variable>/offenses')
     api.add_resource(crime_data.resources.hate_crime.HateCrimeOffenseSubcounts,
                      '/hc/count/states/<int:state_id>/<string:variable>/offenses',
+                     '/hc/count/states/<string:state_abbr>/<string:variable>/offenses',
                      '/hc/count/national/<string:variable>/offenses')
     api.add_resource(crime_data.resources.cargo_theft.CargoTheftOffenseSubcounts,
                      '/ct/count/states/<int:state_id>/<string:variable>/offenses',
+                     '/ct/count/states/<string:state_abbr>/<string:variable>/offenses',
                      '/ct/count/national/<string:variable>/offenses')
 
     docs = FlaskApiSpec(app)

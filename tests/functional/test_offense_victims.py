@@ -22,6 +22,13 @@ class TestVictimsEndpoint:
         for r in res.json['results']:
             assert 'count' in r
 
+    def test_victims_offenses_endpoint_with_state_postal_code(self, testapp):
+        url = '/victims/count/states/AR/race_code/offenses?year=2014'
+        res = testapp.get(url)
+        assert 'pagination' in res.json
+        for r in res.json['results']:
+            assert 'count' in r
+
     @pytest.mark.parametrize('variable', OffenseVictimCountView.VARIABLES)
     def test_victims_offenses_endpoint_with_state_year_offense(self, testapp, variable):
         url = '/victims/count/states/43/{}/offenses?offense_name=Aggravated+Assault&year=2014'.format(variable)
