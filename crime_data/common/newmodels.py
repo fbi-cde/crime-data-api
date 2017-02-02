@@ -29,7 +29,6 @@ class ParticipationRate(db.Model):
     reporting_rate = db.Column(db.Float)
     state_id = db.Column(db.Integer)
     county_id = db.Column(db.Integer)
-    metro_div_id = db.Column(db.Integer)
 
 
 class CreatableModel:

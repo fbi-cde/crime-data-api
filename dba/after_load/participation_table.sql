@@ -9,56 +9,15 @@ CREATE TABLE cde_participation_rates
     data_year smallint NOT NULL,
     state_id bigint,
     county_id bigint,
-    metro_div_id bigint,
     total_agencies int,
     reporting_agencies int,
     reporting_rate float,
     total_population bigint,
-    covered_population bigint,
-    CONSTRAINT state_cde_participation_rates_fk FOREIGN KEY (state_id)
-        REFERENCES public.ref_state (state_id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION,
-    CONSTRAINT county_cde_participation_rates_fk FOREIGN KEY (county_id)
-        REFERENCES public.ref_county (county_id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION,
-    CONSTRAINT met_div_cde_participation_rates_fk FOREIGN KEY (metro_div_id)
-        REFERENCES public.ref_metro_division (metro_div_id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
+    covered_population bigint
 )
 WITH (
     OIDS = FALSE
 );
-
--- DROP INDEX public.cde_participation_rates_state_ix;
-
-CREATE INDEX cde_participation_rates_state_ix
-    ON public.cde_participation_rates USING btree
-    (state_id)
-    TABLESPACE pg_default;
-
--- DROP INDEX public.cde_participation_rates_county_ix;
-
-CREATE INDEX cde_participation_rates_county_ix
-ON public.cde_participation_rates USING btree
-(county_id)
-TABLESPACE pg_default;
-
--- DROP INDEX public.cde_participation_rates_metro_div_ix;
-
-CREATE INDEX cde_participation_rates_metro_div_ix
-ON public.cde_participation_rates USING btree
-(metro_div_id)
-TABLESPACE pg_default;
-
--- DROP INDEX public.cde_participation_rates_state_data_year_ix;
-
-CREATE UNIQUE INDEX cde_participation_rates_state_data_year_ix
-ON public.cde_participation_rates USING btree
-(data_year, state_id)
-TABLESPACE pg_default;
 
 INSERT INTO cde_participation_rates(data_year, state_id, total_agencies, reporting_agencies, reporting_rate)
 SELECT c.data_year, a.state_id, COUNT(a.ori) AS total_agencies, SUM(c.reported) AS reporting_agencies,
@@ -67,7 +26,10 @@ FROM cde_annual_participation c
 JOIN ref_agency a ON a.agency_id = c.agency_id
 GROUP BY c.data_year, a.state_id;
 
--- This will currently double-count agencies that span 2 counts
+-- If an agency spans multiple counties, it will be counted once in
+-- the total/reporting agencies counts for each county. Its population
+-- is apportioned individually though, so its full population won't be
+-- duplicated for each county
 INSERT INTO cde_participation_rates(data_year, county_id, total_agencies, reporting_agencies, reporting_rate, total_population, covered_population)
 SELECT c.data_year, rc.county_id, COUNT(a.ori) AS total_agencies, SUM(c.reported) AS reporting_agencies,
 CAST(SUM(c.reported) AS float)/COUNT(a.ori) AS reporting_rate,
