@@ -113,8 +113,8 @@ class RetaMonthOffenseSubcatSummary(db.Model, CreatableModel):
                      'offense_code': ['offense_subcat', 'offense_subcat_code', 'offense', 'offense_category', 'classification'],
                      'offense_category': ['offense_subcat', 'offense_subcat_code', 'offense', 'offense_code', 'classification'],
                      'classification': ['offense_subcat', 'offense_subcat_code', 'offense', 'offense_code', 'offense_category'],
-                     'state_name': ['state', 'state_id'],
-                     'state': ['state_name', 'state_id'], }
+                     'state_name': ['state'],
+                     'state': ['state_name'], }
 
 
     grouping_sets = {'grouping_bitmap': [],
@@ -126,8 +126,8 @@ class RetaMonthOffenseSubcatSummary(db.Model, CreatableModel):
                      'offense_code': ['offense', 'offense_category', 'classification'],
                      'offense_category': ['classification'],
                      'classification': [],
-                     'state_name': ['state', 'state_id'],
-                     'state': ['state_name', 'state_id'], }
+                     'state_name': ['state'],
+                     'state': ['state_name'], }
 
 
     # filterables *must* be in the same order as the GROUPING clause used
@@ -161,12 +161,6 @@ class RetaMonthOffenseSubcatSummary(db.Model, CreatableModel):
     classification = db.Column(db.Text)
     state_name = db.Column(db.Text)
     state = db.Column(db.Text)
-    state_id = db.Column(db.Integer)
-
-    state_participation = db.relationship('ParticipationRate',
-                                          lazy='joined',
-                                          foreign_keys=[state_id, year],
-                                          primaryjoin="and_(ParticipationRate.state_id==RetaMonthOffenseSubcatSummary.state_id,ParticipationRate.data_year==RetaMonthOffenseSubcatSummary.year)")
 
     @classmethod
     def determine_grouping(cls, filters, group_by_column_names, schema):
