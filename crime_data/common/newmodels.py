@@ -18,6 +18,18 @@ from crime_data.common import models
 from crime_data.extensions import db
 from sqlalchemy import or_
 
+class ParticipationRate(db.Model):
+    __tablename__ = 'cde_participation_rates'
+
+    data_year = db.Column(db.SmallInteger, nullable=False, primary_key=True)
+    total_population = db.Column(db.BigInteger)
+    covered_population = db.Column(db.BigInteger)
+    total_agencies = db.Column(db.Integer)
+    reporting_agencies = db.Column(db.Integer)
+    reporting_rate = db.Column(db.Float)
+    state_id = db.Column(db.Integer)
+    county_id = db.Column(db.Integer)
+
 
 class CreatableModel:
     @classmethod

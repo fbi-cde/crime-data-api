@@ -143,6 +143,10 @@ def add_resources(app):
                      '/meta/<path:endpoint>')
     api.add_resource(crime_data.resources.geo.StateDetail,
                      '/geo/states/<string:id>')
+    api.add_resource(crime_data.resources.geo.StateParticipation,
+                     '/geo/states/<int:state_id>/participation',
+                     '/geo/states/<string:state_abbr>/participation')
+
     api.add_resource(crime_data.resources.geo.CountyDetail,
                      '/geo/counties/<string:fips>')
 

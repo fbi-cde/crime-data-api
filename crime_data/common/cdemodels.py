@@ -1,4 +1,5 @@
 import abc
+from collections import namedtuple
 from flask_restful import abort
 from sqlalchemy import and_, func, or_
 from sqlalchemy.exc import ArgumentError
@@ -63,20 +64,35 @@ class CdeRefAgencyCounty(models.RefAgencyCounty):
         return session.query(func.max(CdeRefAgencyCounty.data_year)).scalar()
 
 
-class CurrentYear:
-    """
-    A mixin that provides the current_year property to other models
-    """
+# CdeParticipationRecord = namedtuple('CdeParticipationRecord', ['year', 'total_agencies', 'reporting_agencies', 'reporting_rate', 'total_population', 'covered_population'])
+
+class CdeParticipationRate(newmodels.ParticipationRate):
+    """Class for querying the cde_participation_rate"""
+
+    def __init__(self, year=None, state_id=None, state_abbr=None, county_id=None, metro_div_id=None):
+        self.year = year
+        self.state_id = state_id
+        self.state_abbr = state_abbr
+        self.county_id = county_id
+        self.metro_div_id = metro_div_id
+
     @property
-    def current_year(self):
-        try:
-            return self._current_year
-        except AttributeError:
-            self._current_year = CdeRefAgencyCounty.current_year()
-            return self.current_year
+    def query(self):
+        qry = super().query
+
+        if self.state_id:
+            qry = qry.filter(newmodels.ParticipationRate.state_id == self.state_id)
+
+        if self.county_id:
+            qry = qry.filter(newmodels.ParticipationRate.county_id == self.county_id)
+
+        if self.year:
+            qry = qry.filter(newmodels.ParticipationRate.data_year == self.year)
+
+        return qry
 
 
-class CdeRefState(models.RefState, CurrentYear):
+class CdeRefState(models.RefState):
     """A wrapper around the RefState model with extra finder methods"""
 
     counties = db.relationship('CdeRefCounty', lazy='dynamic')
@@ -96,42 +112,50 @@ class CdeRefState(models.RefState, CurrentYear):
 
         return query
 
-
     @property
-    def num_agencies(self):
-        """Returns a count of all the agencies in the state"""
-
-        query = session.query(CdeRefAgency)
-        query = (
-            query.join(CdeRefState)
-            .filter(CdeRefState.state_id == self.state_id)
-        )
-
-        count = get_sql_count(query)
-        if count == 0:
-            return None  # assume 0 agencies = didn't find anything
-        else:
-            return count
-
-    def population_for_year(self, data_year):
-        """Returns the population for a given year"""
-
-        query = session.query(models.RefStatePopulation)
-        query = (
-            query.filter(models.RefStatePopulation.state_id == self.state_id)
-            .filter(models.RefStatePopulation.data_year == data_year)
-        )
-
+    def current_year(self):
         try:
-            return query.one().population
-        except NoResultFound:
-            return None
+            return self._current_year
+        except AttributeError:
+            self._current_year = session.execute('select max(data_year) from cde_participation_rates where state_id = :state_id', {'state_id': self.state_id}).scalar()
+            return self._current_year
 
     @property
-    def population(self):
-        """Returns the population for the given year"""
+    def total_agencies(self):
+        return self.total_agencies_for_year(self.current_year)
 
-        return self.population_for_year(self.current_year)
+    def total_agencies_for_year(self, data_year):
+        return self._participation_for_year(data_year).total_agencies
+
+    @property
+    def reporting_agencies(self):
+        return self.reporting_agencies_for_year(self.current_year)
+
+    def reporting_agencies_for_year(self, data_year):
+        return self._participation_for_year(data_year).reporting_agencies
+
+    @property
+    def reporting_rate(self):
+        return self.reporting_rate_for_year(self.current_year)
+
+    def reporting_rate_for_year(self, data_year):
+        return self._participation_for_year(data_year).reporting_rate
+
+    @property
+    def total_population(self):
+        """Returns the population for the given year"""
+        return self.total_population_for_year(self.current_year)
+
+    def total_population_for_year(self, data_year):
+        """Returns the population for a given year"""
+        return self._participation_for_year(data_year).total_population
+
+    @property
+    def covered_population(self):
+        return self.covered_population_for_year(self.current_year)
+
+    def covered_population_for_year(self, data_year):
+        return self._participation_for_year(data_year).covered_population
 
     def police_officers_for_year(self, data_year):
         """Returns the number of police officers for a given year"""
@@ -151,8 +175,25 @@ class CdeRefState(models.RefState, CurrentYear):
         """Returns the total police officers for the current year"""
         return self.police_officers_for_year(self.current_year)
 
+    @property
+    def participation_cache(self):
+        try:
+            return self._participation_cache
+        except AttributeError:
+            self._participation_cache = {}
+            return self._participation_cache
 
-class CdeRefCounty(models.RefCounty, CurrentYear):
+    def _participation_for_year(self, year):
+        """Internal method for loading the participation data"""
+        try:
+            return self.participation_cache[year]
+        except KeyError:
+            l = CdeParticipationRate(state_id=self.state_id, year=year).query.one()
+            self.participation_cache[year] = l
+            return l
+
+
+class CdeRefCounty(models.RefCounty):
     """A wrapper around the RefCounty model with extra methods."""
 
     def get(county_id=None, fips=None, name=None):
@@ -180,6 +221,14 @@ class CdeRefCounty(models.RefCounty, CurrentYear):
         return query
 
     @property
+    def current_year(self):
+        try:
+            return self._current_year
+        except AttributeError:
+            self._current_year = session.execute('select max(data_year) from cde_participation_rates where county_id = :county_id', {'county_id': self.county_id}).scalar()
+            return self._current_year
+
+    @property
     def state_name(self):
         """Returns the state name or None if no state record is found."""
         if self.state is None:
@@ -203,43 +252,32 @@ class CdeRefCounty(models.RefCounty, CurrentYear):
         return '{}{:03d}'.format(self.state.state_fips_code,
                                  int(self.county_fips_code))
 
-    def num_agencies_for_year(self, data_year):
+    def total_agencies_for_year(self, data_year):
         """Counts the number of agencies for that county in a year."""
-        query = session.query(CdeRefAgency)
-        query = (
-            query.join(CdeRefAgencyCounty)
-            .filter(CdeRefAgencyCounty.data_year == data_year)
-            .filter(CdeRefAgencyCounty.county_id == self.county_id)
-        )
-
-        count = get_sql_count(query)
-        if count == 0:
-            return None  # assume error finding agencies
-        else:
-            return count
+        return self._participation_for_year(data_year).total_agencies
 
     @property
-    def num_agencies(self):
+    def reporting_agencies(self):
         """Returns the number of agencies for the most recent year"""
-        return self.num_agencies_for_year(self.current_year)
+        return self.reporting_agencies_for_year(self.current_year)
 
-    def population_for_year(self, data_year):
-        """Returns the population for a given year"""
-        query = session.query(models.RefCountyPopulation)
-        query = (
-            query.filter(models.RefCountyPopulation.county_id == self.county_id)
-            .filter(models.RefCountyPopulation.data_year == data_year)
-        )
-
-        try:
-            return query.one().population
-        except NoResultFound:
-            return None
+    def reporting_agencies_for_year(self, data_year):
+        """Counts the number of agencies for that county in a year."""
+        return self._participation_for_year(data_year).reporting_agencies
 
     @property
-    def population(self):
+    def total_agencies(self):
+        """Returns the number of agencies for the most recent year"""
+        return self.total_agencies_for_year(self.current_year)
+
+    def total_population_for_year(self, data_year):
+        """Returns the population for a given year"""
+        return self._participation_for_year(data_year).total_population
+
+    @property
+    def total_population(self):
         """Returns the most recent reported population for the county"""
-        return self.population_for_year(self.current_year)
+        return self.total_population_for_year(self.current_year)
 
     def police_officers_for_year(self, data_year):
         """Returns the number of police officers for a given year"""
@@ -262,7 +300,24 @@ class CdeRefCounty(models.RefCounty, CurrentYear):
         """Returns the total police officers for the current year"""
         return self.police_officers_for_year(self.current_year)
 
+    @property
+    def participation_cache(self):
+        try:
+            return self._participation_cache
+        except AttributeError:
+            self._participation_cache = {}
+            return self._participation_cache
 
+    def _participation_for_year(self, year):
+        """Internal method for loading the participation data"""
+        try:
+            return self.participation_cache[year]
+        except KeyError:
+            l = CdeParticipationRate(county_id=self.county_id, year=year).query.one()
+            self.participation_cache[year] = l
+            return l
+
+    
 class CdeRefAgency(models.RefAgency):
     def get(ori=None):
         # Base Query
@@ -546,16 +601,16 @@ class JoinedTable:
 
 
 class TableFamily:
-    """""
+    """
     Base class for Queries on the CDE database.
-    """""
+    """
 
     def __init__(self):
         self._map = {}
 
     @classmethod
     def get_tables(cls, parent):
-        return self.tables
+        return tables
 
     @property
     def map(self):

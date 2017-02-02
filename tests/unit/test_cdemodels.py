@@ -15,20 +15,6 @@ from crime_data.common.cdemodels import (CdeRefState,
 import pytest
 from collections import namedtuple
 
-class TestCdeRefState:
-    def test_get_by_id(self, testapp):
-        s = CdeRefState.get(state_id=12).one()
-        assert s.state_name == 'Florida'
-
-    def test_get_by_abbr(self, testapp):
-        s = CdeRefState.get(abbr='NE').one()
-        assert s.state_name == 'Nebraska'
-
-    def test_get_by_fips(self, testapp):
-        s = CdeRefState.get(fips='06075').one()
-        assert s.state_name == 'California'
-
-
 class TestCdeRefCounty:
     def test_get_by_id(self, testapp):
         s = CdeRefCounty.get(county_id=753).one()
@@ -60,25 +46,13 @@ class TestCdeRefCounty:
         """Using the test data in the ref_agencies table"""
 
         county = CdeRefCounty.get(county_id=2271).one()
-        assert county.num_agencies_for_year(2014) == 8
-
-    def test_num_agencies_missing_data(self, app):
-        """This county is missing current agencies data"""
-
-        county = CdeRefCounty.get(county_id=2271).one()
-        assert county.num_agencies is None
+        assert county.total_agencies_for_year(1960) == 3
 
     def test_population(self, app):
         """Using the test data in the ref_county_population table"""
 
         county = CdeRefCounty.get(county_id=74).one()
-        assert county.population_for_year(1960) == 24501
-
-    def test_population_missing_data(self, app):
-        """This county is missing current population data"""
-
-        county = CdeRefCounty.get(county_id=74).one()
-        assert county.population is None
+        assert county.total_population_for_year(1960) == 24501
 
     def test_police_officers(self, app):
         """Using the test data in the database"""
@@ -101,17 +75,53 @@ class TestCdeRefAgencyCounty:
 class TestCdeRefState:
     """Test the CdeRefState class"""
 
-    def test_population(self, app):
-        state = CdeRefState.get(abbr='WY').one()
-        assert state.population_for_year(1984) == 511000
+    def test_get_by_id(self, testapp):
+        s = CdeRefState.get(state_id=12).one()
+        assert s.state_name == 'Florida'
 
-    def test_num_agencies(self, app):
-        state = CdeRefState.get(abbr='VA').one()
-        assert state.num_agencies == 145
+    def test_get_by_abbr(self, testapp):
+        s = CdeRefState.get(abbr='NE').one()
+        assert s.state_name == 'Nebraska'
+
+    def test_get_by_fips(self, testapp):
+        s = CdeRefState.get(fips='06075').one()
+        assert s.state_name == 'California'
 
     def test_police_officers(self, app):
         state = CdeRefState.get(abbr='VA').one()
         assert state.police_officers_for_year(2008) == 48
+
+    def test_participation(self, app):
+        test_year = 1960
+        state = CdeRefState.get(state_id=55).one()
+
+        # SELECT distinct rm.agency_id, ra.pub_agency_name
+        # FROM reta_month rm
+        # JOIN ref_agency ra ON ra.agency_id = rm.agency_id
+        # WHERE ra.state_id=55 and rm.data_year=1960
+        assert state.total_agencies_for_year(test_year) == 34
+
+        # SELECT distinct rm.agency_id, ra.pub_agency_name
+        # FROM reta_month rm
+        # JOIN ref_agency ra ON ra.agency_id = rm.agency_id
+        # WHERE ra.state_id=55 and rm.data_year=1960 AND
+        # rm.reported_flag = 'Y'
+        assert state.reporting_agencies_for_year(test_year) == 13
+        assert state.reporting_rate_for_year(test_year) == pytest.approx(0.382352941)
+
+        # select SUM(rcp.population)::text from ref_county_population rcp
+        # JOIN ref_county rc ON rc.county_id = rcp.county_id
+        # WHERE rc.state_id=55 AND rcp.data_year=1960
+        assert state.total_population_for_year(test_year) == 1244332
+
+        # select SUM(rac.population)::text
+        # from ref_agency_county rac
+        # WHERE rac.agency_id IN (select rm.agency_id from reta_month rm
+        #                         JOIN ref_agency ra ON rm.agency_id=ra.agency_id
+        #                         WHERE rm.reported_flag = 'Y'
+        #                         AND rm.data_year=rac.data_year
+        #                         AND rm.data_year=1960 and ra.state_id=55)
+        assert state.covered_population_for_year(test_year) == 177770
 
 
 class TestOffenseCountView:
