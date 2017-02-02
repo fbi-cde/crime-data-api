@@ -33,3 +33,20 @@ class CountyDetail(CdeResource):
         self.verify_api_key(args)
         county = cdemodels.CdeRefCounty.get(fips=fips).one()
         return jsonify(self.schema.dump(county).data)
+
+
+class StateParticipation(CdeResource):
+    schema = marshmallow_schemas.ParticipationRateSchema(many=True)
+
+    @use_args(marshmallow_schemas.ArgumentsSchema)
+    @swagger.use_kwargs(marshmallow_schemas.ApiKeySchema, apply=False, locations=['query'])
+    @swagger.marshal_with(marshmallow_schemas.ParticipationRateSchema, apply=False)
+    @swagger.doc(tags=['geo'], description='Participation data for a state')
+    def get(self, args, state_id=None, state_abbr=None):
+        self.verify_api_key(args)
+
+        if state_abbr:
+            state_id = cdemodels.CdeRefState.get(abbr=state_abbr).one().state_id
+
+        rates = cdemodels.CdeParticipationRate(state_id=state_id).query.order_by('data_year DESC').all()
+        return jsonify(self.schema.dump(rates).data)

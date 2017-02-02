@@ -941,3 +941,20 @@ class CountyDetailResponseSchema(ma.ModelSchema):
     police_officers = marsh_fields.Integer()
     state_name = marsh_fields.String()
     state_abbr = marsh_fields.String()
+
+
+class ParticipationRateSchema(ma.ModelSchema):
+    """Response format for participation record"""
+
+    class Meta:
+        # model = cdemodels.CdeParticipationRate
+        ordered = True
+        fields = ('data_year', 'total_population', 'covered_population',
+                  'total_agencies', 'reporting_agencies', 'reporting_rate')
+
+    data_year = marsh_fields.Integer()
+    total_population = marsh_fields.Integer()
+    covered_population = marsh_fields.Integer()
+    total_agencies = marsh_fields.Integer()
+    reporting_agencies = marsh_fields.Integer()
+    reporting_rate = marsh_fields.Float()

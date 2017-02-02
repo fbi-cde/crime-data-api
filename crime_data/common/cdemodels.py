@@ -66,18 +66,19 @@ class CdeRefAgencyCounty(models.RefAgencyCounty):
 
 # CdeParticipationRecord = namedtuple('CdeParticipationRecord', ['year', 'total_agencies', 'reporting_agencies', 'reporting_rate', 'total_population', 'covered_population'])
 
-class CdeParticipationRate(object):
+class CdeParticipationRate(newmodels.ParticipationRate):
     """Class for querying the cde_participation_rate"""
 
-    def __init__(self, year=None, state_id=None, county_id=None, metro_div_id=None):
+    def __init__(self, year=None, state_id=None, state_abbr=None, county_id=None, metro_div_id=None):
         self.year = year
         self.state_id = state_id
+        self.state_abbr = state_abbr
         self.county_id = county_id
         self.metro_div_id = metro_div_id
 
+    @property
     def query(self):
-
-        qry = newmodels.ParticipationRate.query
+        qry = super().query
 
         if self.state_id:
             qry = qry.filter(newmodels.ParticipationRate.state_id == self.state_id)
@@ -187,7 +188,7 @@ class CdeRefState(models.RefState):
         try:
             return self.participation_cache[year]
         except KeyError:
-            l = CdeParticipationRate(state_id=self.state_id, year=year).query().one()
+            l = CdeParticipationRate(state_id=self.state_id, year=year).query.one()
             self.participation_cache[year] = l
             return l
 
@@ -312,7 +313,7 @@ class CdeRefCounty(models.RefCounty):
         try:
             return self.participation_cache[year]
         except KeyError:
-            l = CdeParticipationRate(county_id=self.county_id, year=year).query().one()
+            l = CdeParticipationRate(county_id=self.county_id, year=year).query.one()
             self.participation_cache[year] = l
             return l
 

@@ -12,3 +12,7 @@ class TestGeoEndpoint:
     def test_county_detail_endpoint(self, testapp):
         res = testapp.get('/geo/counties/39043')
         assert res.status_code == 200
+
+    def test_state_participation_endpoint(self, testapp):
+        res = testapp.get('/geo/states/NY/participation')
+        assert res.status_code == 200
