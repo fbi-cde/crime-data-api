@@ -949,10 +949,10 @@ class ParticipationRateSchema(ma.ModelSchema):
     class Meta:
         # model = cdemodels.CdeParticipationRate
         ordered = True
-        fields = ('data_year', 'total_population', 'covered_population',
+        fields = ('year', 'total_population', 'covered_population',
                   'total_agencies', 'reporting_agencies', 'reporting_rate')
 
-    data_year = marsh_fields.Integer()
+    year = marsh_fields.Integer(attribute='data_year')
     total_population = marsh_fields.Integer()
     covered_population = marsh_fields.Integer()
     total_agencies = marsh_fields.Integer()
