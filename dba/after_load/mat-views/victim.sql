@@ -248,7 +248,7 @@ GROUP BY GROUPING SETS (
     (year, county_id, ethnicity)
 );
 
-drop materialized view victim_counts_2008 CASCADE; count(victim_id),ethnicity, resident_status_code, offender_relationship, circumstance_name, prop_desc_name,offense_name, state_id, race_code,location_name, age_num, sex_code, county_id
+drop materialized view victim_counts_2008 CASCADE;
 create materialized view victim_counts_2008 as select count(victim_id),prop_desc_name,offense_name, ethnicity, resident_status_code, offender_relationship, circumstance_name, state_id, race_code,location_name, age_num, sex_code, county_id 
 from ( SELECT DISTINCT(victim_id), age_code, age_num,race_code,ethnicity, resident_status_code, offender_relationship, circumstance_name, year,prop_desc_name,offense_name,location_name, sex_code, state_id,county_id from nibrs_victim_denorm where year = '2008' ) as temp
 GROUP BY GROUPING SETS (
