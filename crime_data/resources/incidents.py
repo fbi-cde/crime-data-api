@@ -82,6 +82,12 @@ class CachedIncidentsCount(CdeResource):
     schema = marshmallow_schemas.CachedIncidentCountSchema(many=True)
 
     def postprocess_filters(self, filters, args):
+        # filters, explorer_offenses = partition(lambda x: x[0] == 'explorer_offense', filters)
+        #if explorer_offenses:
+        #    eo = explorer_offenses[0]
+        #    mapper = ExplorerOffenseMapping(eo[2])
+        #    filters.append(('offense', eo[1], mapper.reta_offense))
+
         group_by_column_names = [c.strip() for c in args.get('by').split(',')]
         filters = newmodels.RetaMonthOffenseSubcatSummary.determine_grouping(filters, group_by_column_names, self.schema)
         return filters
