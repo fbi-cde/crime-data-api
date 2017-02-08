@@ -1,5 +1,5 @@
 # Everything needed in production
-
+more_itertools==2.5.0
 wheel==0.29.0
 
 # Flask

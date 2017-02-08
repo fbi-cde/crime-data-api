@@ -1,8 +1,8 @@
 import flask_apispec as swagger
 from webargs.flaskparser import use_args
-
+from itertools import filterfalse
 from crime_data.common import cdemodels, marshmallow_schemas, models, newmodels
-from crime_data.common.base import CdeResource, tuning_page
+from crime_data.common.base import CdeResource, tuning_page, ExplorerOffenseMapping
 
 
 def _is_string(col):
@@ -82,11 +82,13 @@ class CachedIncidentsCount(CdeResource):
     schema = marshmallow_schemas.CachedIncidentCountSchema(many=True)
 
     def postprocess_filters(self, filters, args):
-        # filters, explorer_offenses = partition(lambda x: x[0] == 'explorer_offense', filters)
-        #if explorer_offenses:
-        #    eo = explorer_offenses[0]
-        #    mapper = ExplorerOffenseMapping(eo[2])
-        #    filters.append(('offense', eo[1], mapper.reta_offense))
+        explorer_offenses = [x for x in filters if x[0] == 'explorer_offense']
+
+        if explorer_offenses:
+            eo = explorer_offenses[0]
+            mapper = ExplorerOffenseMapping(eo[2])
+            filters = [x for x in filters if x[0] != 'explorer_offense']
+            filters.append(('offense', eo[1], mapper.reta_offense))
 
         group_by_column_names = [c.strip() for c in args.get('by').split(',')]
         filters = newmodels.RetaMonthOffenseSubcatSummary.determine_grouping(filters, group_by_column_names, self.schema)

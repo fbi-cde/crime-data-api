@@ -6,6 +6,7 @@ from urllib import parse
 from decimal import Decimal
 from ast import literal_eval
 from functools import wraps
+import more_itertools
 
 import sqltap
 from flask import make_response, request
@@ -498,21 +499,36 @@ class ExplorerOffenseMapping(object):
     """For mapping from explorer offenses to SRS and NIBRS"""
 
     RETA_OFFENSE_MAPPING = {
-        'aggravated-assault': 'Assault',
-        'burglary': 'Burglary',
-        'larceny': 'Larceny',
-        'motor-vehicle-theft': 'Moter vehicle theft',
-        'murder': 'Murder and Nonnegligent Homicide',
-        'rape': 'Rape',
-        'robbery': 'Robbery',
+        'aggravated-assault': 'assault',
+        'burglary': 'burglary',
+        'larceny': 'larceny',
+        'motor-vehicle-theft': 'motor vehicle theft',
+        'murder': 'murder and nonnegligent homicide',
+        'rape': 'rape',
+        'robbery': 'robbery'
     }
 
-    def __init__(self, offense):
-        self.offense = offense
+    NIBRS_OFFENSE_MAPPING = {
+        'aggravated-assault': 'Aggravated Assault',
+        'burglary': 'Burglary/Breaking & Entering',
+        'larceny': 'Larceny/Theft Offenses', # FIXME: this is a whole category
+        'motor-vehicle-theft': 'Motor Vehicle Theft',
+        'murder': 'Murder and Nonnegligent Manslaughter',
+        'rape': 'Rape',
+        'robbery': 'Robbery',
+        'arson': 'Arson'
+    }
+
+    def __init__(self, offenses):
+        self.offenses = offenses
 
     @property
     def reta_offense(self):
-        return self.RETA_OFFENSE_MAPPING[self.offense]
+        return more_itertools.collapse([self.RETA_OFFENSE_MAPPING[x] for x in self.offenses])
+
+    @property
+    def nibrs_offense(self):
+        return more_itertools.collapse([self.NIBRS_OFFENSE_MAPPING[x] for x in self.offenses])
 
 
 db = RoutingSQLAlchemy()
