@@ -27,6 +27,7 @@ class CargoTheftsCountStates(CdeResource):
     @swagger.doc(
         params={'state_id': {'description': 'The state ID from ref_state'},
                 'variable': {'description': 'A variable to group by',
+                             'locations': ['path'],
                              'enum': cdemodels.CargoTheftCountView.VARIABLES}},
         tags=['cargo theft'],
         description=(
@@ -54,6 +55,7 @@ class CargoTheftsCountCounties(CdeResource):
     @swagger.doc(
         params={'county_id': {'description': 'The county ID from ref_county'},
                 'variable': {'description': 'A variable to group by',
+                             'locations': ['path'],
                              'enum': cdemodels.CargoTheftCountView.VARIABLES}},
         tags=['cargo theft'],
         description=(
@@ -75,11 +77,12 @@ class CargoTheftsCountNational(CdeResource):
         return [dict(r) for r in data]
 
     @use_args(marshmallow_schemas.IncidentViewCountArgs)
-    @swagger.use_kwargs(marshmallow_schemas.IncidentViewCountArgs,
+    @swagger.use_kwargs(marshmallow_schemas.ViewCountArgs,
                         locations=['query'],
                         apply=False)
     @swagger.doc(
         params={'variable': {'description': 'A variable to group by',
+                             'locations': ['path'],
                              'enum': cdemodels.CargoTheftCountView.VARIABLES}},
         tags=['cargo theft'],
         description=(
@@ -107,6 +110,7 @@ class CargoTheftOffenseSubcounts(CdeResource):
     @swagger.doc(
         params={'state_id': {'description': 'The ID for a state to limit the query to'},
                 'variable': {'description': 'A variable to group by',
+                             'locations': ['path'],
                              'enum': cdemodels.OffenseCargoTheftCountView.VARIABLES}},
         tags=['cargo theft'],
         description=(
@@ -119,6 +123,7 @@ class CargoTheftOffenseSubcounts(CdeResource):
         model = cdemodels.OffenseCargoTheftCountView(variable,
                                                      year=args.get('year', None),
                                                      offense_name=args.get('offense_name', None),
+                                                     explorer_offense=args.get('explorer_offense', None),
                                                      state_id=state_id,
                                                      state_abbr=state_abbr)
         results = model.query(args)

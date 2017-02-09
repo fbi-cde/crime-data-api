@@ -494,6 +494,47 @@ class CdeResource(MethodResource):
             yield (k.lower(), self.OPERATORS[op], v)
 
 
+class ExplorerOffenseMapping(object):
+    """For mapping from explorer offenses to SRS and NIBRS"""
+
+    RETA_OFFENSE_MAPPING = {
+        'aggravated-assault': 'assault',
+        'burglary': 'burglary',
+        'larceny': 'larceny',
+        'motor-vehicle-theft': 'motor vehicle theft',
+        'murder': 'murder and nonnegligent homicide',
+        'rape': 'rape',
+        'robbery': 'robbery',
+        'arson': 'arson'
+    }
+
+    NIBRS_OFFENSE_MAPPING = {
+        'aggravated-assault': 'Aggravated Assault',
+        'burglary': 'Burglary/Breaking & Entering',
+        'larceny': ['Not Specified', 'Theft of Motor Vehicle Parts or Accessories',
+                    'Pocket-picking', 'Theft From Motor Vehicle',
+                    'Purse-snatching', 'Shoplifting', 'All Other Larceny',
+                    'Theft From Building',
+                    'Theft From Coin-Operated Machine or Device'],
+        'motor-vehicle-theft': 'Motor Vehicle Theft',
+        'murder': 'Murder and Nonnegligent Manslaughter',
+        'rape': 'Rape',
+        'robbery': 'Robbery',
+        'arson': 'Arson'
+    }
+
+    def __init__(self, offense):
+        self.offense = offense
+
+    @property
+    def reta_offense(self):
+        return self.RETA_OFFENSE_MAPPING[self.offense]
+
+    @property
+    def nibrs_offense(self):
+        return self.NIBRS_OFFENSE_MAPPING[self.offense]
+
+
 db = RoutingSQLAlchemy()
 
 

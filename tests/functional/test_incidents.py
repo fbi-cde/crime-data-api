@@ -322,6 +322,11 @@ class TestIncidentsCountEndpoint:
         rows = [row['offense'] for row in res.json['results']]
         assert len(rows) == len(set(rows))
 
+    def test_instances_count_filter_by_explorer_offense(self, testapp):
+        res = testapp.get('/incidents/count/?explorer_offense=larceny')
+        rows = [row['offense'] for row in res.json['results']]
+        assert len(rows) == len(set(rows))
+
     def test_instances_count_sorts_by_state(self, testapp):
         res = testapp.get('/incidents/count/?by=state')
         state_names = [r['state'] for r in res.json['results']]

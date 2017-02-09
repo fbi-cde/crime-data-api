@@ -28,6 +28,7 @@ class VictimsCountNational(CdeResource):
     @swagger.doc(
         tags=['victims'],
         params={'variable': {'description': 'A variable to group by',
+                             'locations': ['path'],
                              'enum': cdemodels.VictimCountView.VARIABLES}},
         description=(
             'Returns counts by year for victims. '
@@ -57,6 +58,7 @@ class VictimsCountStates(CdeResource):
         tags=['victims'],
         params={'state_id': {'description': 'The state ID from ref_county'},
                 'variable': {'description': 'A variable to group by',
+                             'locations': ['path'],
                              'enum': cdemodels.VictimCountView.VARIABLES}},
         description=(
             'Returns counts by year for victims. '
@@ -83,6 +85,7 @@ class VictimsCountCounties(CdeResource):
     @swagger.doc(
         params={'county_id': {'description': 'The county ID from ref_county'},
                 'variable': {'description': 'A variable to group by',
+                             'locations': ['path'],
                              'enum': cdemodels.VictimCountView.VARIABLES}},
         tags=['victims'],
         description=(
@@ -110,6 +113,7 @@ class VictimOffenseSubcounts(CdeResource):
     @swagger.doc(
         params={'state_id': {'description': 'The ID for a state to limit the query to'},
                 'variable': {'description': 'A variable to group by',
+                             'locations': ['path'],
                              'enum': cdemodels.OffenseVictimCountView.VARIABLES}},
         tags=['victims'],
         description=(
@@ -122,6 +126,7 @@ class VictimOffenseSubcounts(CdeResource):
         model = cdemodels.OffenseVictimCountView(variable,
                                                  year=args.get('year', None),
                                                  offense_name=args.get('offense_name', None),
+                                                 explorer_offense=args.get('explorer_offense', None),
                                                  state_id=state_id,
                                                  state_abbr=state_abbr)
         results = model.query(args)

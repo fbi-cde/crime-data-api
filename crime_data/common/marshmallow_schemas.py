@@ -6,6 +6,7 @@ from flask_marshmallow import Marshmallow
 from marshmallow import fields as marsh_fields
 from marshmallow import Schema, post_dump
 from . import cdemodels, models, newmodels
+from crime_data.common.base import ExplorerOffenseMapping
 
 ma = Marshmallow()
 
@@ -71,7 +72,8 @@ class OffenseCountViewArgs(IncidentViewCountArgs):
     """Adds offense_name as a field"""
 
     offense_name = marsh_fields.String(metadata={'description': 'The NIBRS offense name to subgroup by'})
-
+    explorer_offense = marsh_fields.String(metadata={'description': 'A standardized offense class used by the explorer',
+                                                     'enum': ExplorerOffenseMapping.NIBRS_OFFENSE_MAPPING.keys()})
 # Anything in an ArgumentsSchema will, dangerously ironically,
 # not be filtered for...
 
