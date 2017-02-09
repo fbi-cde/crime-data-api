@@ -504,7 +504,8 @@ class ExplorerOffenseMapping(object):
         'motor-vehicle-theft': 'motor vehicle theft',
         'murder': 'murder and nonnegligent homicide',
         'rape': 'rape',
-        'robbery': 'robbery'
+        'robbery': 'robbery',
+        'arson': 'arson'
     }
 
     NIBRS_OFFENSE_MAPPING = {
