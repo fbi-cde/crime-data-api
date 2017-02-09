@@ -10,7 +10,7 @@ from sqlalchemy.sql import sqltypes as st
 from psycopg2.extensions import AsIs
 
 from crime_data.common import models, newmodels
-from crime_data.common.base import QueryTraits, Fields
+from crime_data.common.base import QueryTraits, Fields, ExplorerOffenseMapping
 from crime_data.extensions import db
 
 session = db.session
@@ -1272,7 +1272,8 @@ class CargoTheftCountView(MultiYearCountView):
 
 class OffenseSubCountView(object):
 
-    def __init__(self, field, year=None, state_id=None, county_id=None, offense_name=None, state_abbr=None):
+    def __init__(self, field, year=None, state_id=None, county_id=None,
+                 offense_name=None, state_abbr=None, explorer_offense=None):
         if field not in self.VARIABLES:
             raise ValueError('Invalid variable "{}" specified for {}'.format(field, self.view_name))
         self.year = year
@@ -1283,7 +1284,18 @@ class OffenseSubCountView(object):
 
         self.county_id = county_id
         self.field = field
+
+        self.explorer_offense = explorer_offense
         self.offense_name = offense_name
+
+        if explorer_offense:
+            offenses = ExplorerOffenseMapping(explorer_offense).nibrs_offense
+            if isinstance(offenses, str):
+                offenses = [offenses]
+            self.offense_name = tuple(offenses)
+        elif offense_name:
+            self.offense_name = (offense_name, )
+
         self.national = False
         if self.state_id is None and self.county_id is None:
             self.national = True
@@ -1306,17 +1318,25 @@ class OffenseSubCountView(object):
                 param_dict['year'] = self.year
             if self.offense_name:
                 param_dict['offense_name'] = self.offense_name
+            if self.explorer_offense:
+                param_dict['explorer_offense'] = self.explorer_offense
+
             if not param_dict:
                 qry = session.execute(base_query)
             else:
                 qry = session.execute(base_query, param_dict)
+
         except Exception as e:
             session.rollback()
             raise e
         return qry
 
     def base_query(self, field):
-        query = 'SELECT year::text, offense_name, :field, count'
+        if self.explorer_offense:
+            query = 'SELECT year::text, :explorer_offense AS offense_name, :field, SUM(count)::int AS count'
+        else:
+            query = 'SELECT year::text, offense_name, :field, count'
+
         query += ' FROM :view_name'
         query += ' WHERE :field IS NOT NULL'
 
@@ -1327,15 +1347,19 @@ class OffenseSubCountView(object):
             query += ' AND state_id is NULL '
 
         if self.offense_name:
-            query += ' AND offense_name = :offense_name'
+            query += ' AND offense_name IN :offense_name'
 
         if self.year:
             query += ' AND year = :year'
 
+        if self.explorer_offense:
+            query += ' GROUP by year, :field'
+
         query += ' ORDER by year, offense_name, :field'
+
         return query
-    
-        
+
+
 class OffenseVictimCountView(OffenseSubCountView):
     """This reports subgrouped counts of a field for a given offense"""
 
@@ -1362,7 +1386,12 @@ class OffenseCargoTheftCountView(OffenseSubCountView):
     VARIABLES = ['location_name', 'victim_type_name', 'prop_desc_name']
 
     def base_query(self, field):
-        query = 'SELECT year::text, offense_name, :field, count, stolen_value::text, recovered_value::text'
+        if self.explorer_offense:
+            query = 'SELECT year::text, :explorer_offense AS offense_name, :field, '
+            query += 'SUM(count)::int AS count, SUM(stolen_value)::text AS stolen_value, '
+            query += 'SUM(recovered_value)::text AS recovered_value'
+        else:
+            query = 'SELECT year::text, offense_name, :field, count, stolen_value::text, recovered_value::text'
         query += ' FROM :view_name'
         query += ' WHERE :field IS NOT NULL'
 
@@ -1373,10 +1402,13 @@ class OffenseCargoTheftCountView(OffenseSubCountView):
             query += ' AND state_id is NULL AND county_id IS NULL'
 
         if self.offense_name:
-            query += ' AND offense_name = :offense_name'
+            query += ' AND offense_name IN :offense_name'
 
         if self.year:
             query += ' AND year = :year'
+
+        if self.explorer_offense:
+            query += ' GROUP by year, :field'
 
         query += ' ORDER by year, offense_name, :field'
         return query
@@ -1391,7 +1423,11 @@ class OffenseHateCrimeCountView(OffenseSubCountView):
     VARIABLES = ['bias_name']
 
     def base_query(self, field):
-        query = 'SELECT year::text, offense_name, :field, count'
+        if self.explorer_offense:
+            query = 'SELECT year::text, :explorer_offense AS offense_name, :field, SUM(count)::int AS count'
+        else:
+            query = 'SELECT year::text, offense_name, :field, count'
+
         query += ' FROM :view_name'
         query += ' WHERE :field IS NOT NULL'
 
@@ -1402,14 +1438,17 @@ class OffenseHateCrimeCountView(OffenseSubCountView):
             query += ' AND state_id is NULL AND county_id IS NULL'
 
         if self.offense_name:
-            query += ' AND offense_name = :offense_name'
+            query += ' AND offense_name IN :offense_name'
 
         if self.year:
             query += ' AND year = :year'
 
+        if self.explorer_offense:
+            query += ' GROUP by year, :field'
+
         query += ' ORDER by year, offense_name, :field'
         return query
-
+    
     @property
     def view_name(self):
         return 'offense_hc_counts'

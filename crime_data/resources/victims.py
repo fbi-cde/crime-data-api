@@ -122,6 +122,7 @@ class VictimOffenseSubcounts(CdeResource):
         model = cdemodels.OffenseVictimCountView(variable,
                                                  year=args.get('year', None),
                                                  offense_name=args.get('offense_name', None),
+                                                 explorer_offense=args.get('explorer_offense', None),
                                                  state_id=state_id,
                                                  state_abbr=state_abbr)
         results = model.query(args)

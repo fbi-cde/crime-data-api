@@ -3,7 +3,7 @@ import flask_apispec as swagger
 from webargs.flaskparser import use_args
 
 from crime_data.common import cdemodels, marshmallow_schemas
-from crime_data.common.base import CdeResource, tuning_page
+from crime_data.common.base import CdeResource, tuning_page, ExplorerOffenseMapping
 
 # Template
 # variables => [location_type, offense_type, property_type, age, sex, race]
@@ -105,6 +105,8 @@ class OffenderOffenseSubcounts(CdeResource):
                         apply=False)
     @swagger.doc(
         params={'state_id': {'description': 'The ID for a state to limit the query to'},
+                'explorer_offense': {'description': 'A offense class used by the explorer',
+                                     'enum': ExplorerOffenseMapping.NIBRS_OFFENSE_MAPPING.keys()},
                 'variable': {'description': 'A variable to group by',
                              'enum': cdemodels.OffenseOffenderCountView.VARIABLES}},
         tags=['offenders'],
@@ -118,6 +120,7 @@ class OffenderOffenseSubcounts(CdeResource):
         model = cdemodels.OffenseOffenderCountView(variable,
                                                    year=args.get('year', None),
                                                    offense_name=args.get('offense_name', None),
+                                                   explorer_offense=args.get('explorer_offense', None),
                                                    state_id=state_id)
         results = model.query(args)
         return self.with_metadata(results.fetchall(), args)

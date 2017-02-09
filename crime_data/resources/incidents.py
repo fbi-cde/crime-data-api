@@ -86,9 +86,9 @@ class CachedIncidentsCount(CdeResource):
 
         if explorer_offenses:
             eo = explorer_offenses[0]
-            mapper = ExplorerOffenseMapping(eo[2])
+            mapped = [ExplorerOffenseMapping(x).reta_offense for x in eo[2]]
             filters = [x for x in filters if x[0] != 'explorer_offense']
-            filters.append(('offense', eo[1], mapper.reta_offense))
+            filters.append(('offense', eo[1], mapped))
 
         group_by_column_names = [c.strip() for c in args.get('by').split(',')]
         filters = newmodels.RetaMonthOffenseSubcatSummary.determine_grouping(filters, group_by_column_names, self.schema)
