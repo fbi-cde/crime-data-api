@@ -28,6 +28,7 @@ class HateCrimesCountStates(CdeResource):
     @swagger.doc(
         params={'state_id': {'description': 'The state ID from ref_state'},
                 'variable': {'description': 'A variable to group by',
+                             'locations': ['path'],
                              'enum': cdemodels.HateCrimeCountView.VARIABLES}},
         tags=['hate crimes'],
         description=(
@@ -40,6 +41,7 @@ class HateCrimesCountStates(CdeResource):
         model = cdemodels.HateCrimeCountView(variable, year=args['year'], state_id=state_id, state_abbr=state_abbr)
         results = model.query(args)
         return self.with_metadata(results.fetchall(), args)
+
 
 class HateCrimesCountCounties(CdeResource):
 
@@ -54,6 +56,7 @@ class HateCrimesCountCounties(CdeResource):
     @swagger.doc(
         params={'county_id': {'description': 'The county ID from ref_county'},
                 'variable': {'description': 'A variable to group by',
+                             'locations': ['path'],
                              'enum': cdemodels.HateCrimeCountView.VARIABLES}},
         tags=['hate crimes'],
         description=(
@@ -67,6 +70,7 @@ class HateCrimesCountCounties(CdeResource):
         results = model.query(args)
         return self.with_metadata(results.fetchall(), args)
 
+
 class HateCrimesCountNational(CdeResource):
 
     def _stringify(self, data):
@@ -79,6 +83,7 @@ class HateCrimesCountNational(CdeResource):
                         apply=False)
     @swagger.doc(
         params={'variable': {'description': 'A variable to group by',
+                             'locations': ['path'],
                              'enum': cdemodels.HateCrimeCountView.VARIABLES}},
         tags=['hate crimes'],
         description='Returns counts by year for hate crimes. ')
@@ -104,6 +109,7 @@ class HateCrimeOffenseSubcounts(CdeResource):
     @swagger.doc(
         params={'state_id': {'description': 'The ID for a state to limit the query to'},
                 'variable': {'description': 'A variable to group by',
+                             'locations': ['path'],
                              'enum': cdemodels.OffenseHateCrimeCountView.VARIABLES}},
         tags=['hate crimes'],
         description=(

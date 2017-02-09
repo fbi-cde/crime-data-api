@@ -222,6 +222,7 @@ def add_resources(app):
     docs.register(crime_data.resources.meta.MetaDetail)
     docs.register(crime_data.resources.geo.StateDetail)
     docs.register(crime_data.resources.geo.CountyDetail)
+    docs.register(crime_data.resources.geo.StateParticipation)
     docs.register(crime_data.resources.offenders.OffendersCountNational)
     docs.register(crime_data.resources.offenders.OffendersCountStates)
     docs.register(crime_data.resources.offenders.OffendersCountCounties)

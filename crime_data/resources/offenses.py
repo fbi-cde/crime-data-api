@@ -69,6 +69,7 @@ class OffensesCountStates(CdeResource):
         tags=['offenses'],
         params={'state_id': {'description': 'The state ID from ref_county'},
                 'variable': {'description': 'A variable to group by',
+                             'locations': ['path'],
                              'enum': cdemodels.OffenseCountView.VARIABLES}},
         description=(
             'Returns counts by year for offenses. '
@@ -95,6 +96,7 @@ class OffensesCountCounties(CdeResource):
     @swagger.doc(
         params={'county_id': {'description': 'The county ID from ref_county'},
                 'variable': {'description': 'A variable to group by',
+                             'locations': ['path'],
                              'enum': cdemodels.OffenseCountView.VARIABLES}},
         tags=['offenses'],
         description=(

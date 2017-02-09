@@ -108,6 +108,7 @@ class OffenderOffenseSubcounts(CdeResource):
                 'explorer_offense': {'description': 'A offense class used by the explorer',
                                      'enum': ExplorerOffenseMapping.NIBRS_OFFENSE_MAPPING.keys()},
                 'variable': {'description': 'A variable to group by',
+                             'locations': ['path'],
                              'enum': cdemodels.OffenseOffenderCountView.VARIABLES}},
         tags=['offenders'],
         description=(
