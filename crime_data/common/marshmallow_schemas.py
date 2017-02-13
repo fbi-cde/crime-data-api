@@ -792,12 +792,19 @@ class IncidentViewCountSchema(Schema):
     year = marsh_fields.Integer(dump_only=True)
     race_code = marsh_fields.String(dump_only=True)
     sex_code = marsh_fields.String(dump_only=True)
-    age_num =marsh_fields.String(dump_only=True)
+    age_num = marsh_fields.String(dump_only=True)
     location_name = marsh_fields.String(dump_only=True)
     offense_name = marsh_fields.String(dump_only=True)
     prop_desc_name = marsh_fields.String(dump_only=True)
     victim_type_name = marsh_fields.String(dump_only=True)
 
+
+class AgencyParticipationSchema(Schema):
+    class Meta:
+        ordered = True
+
+    year = marsh_fields.Integer(dump_only=True, attribute='data_year')
+    reported = marsh_fields.Integer(dump_only=True)
 
 
 class ArsonCountSchema(Schema):

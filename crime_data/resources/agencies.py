@@ -6,7 +6,7 @@ import flask_apispec as swagger
 
 from crime_data.common import cdemodels as models
 from crime_data.common import marshmallow_schemas
-from crime_data.common.base import CdeResource
+from crime_data.common.base import CdeResource, tuning_page
 from crime_data.common.marshmallow_schemas import (
     AgenciesIncidentArgsSchema, AgenciesRetaArgsSchema, RefAgencySchema,
     ArgumentsSchema)
@@ -38,3 +38,17 @@ class AgenciesDetail(AgenciesResource):
         self.verify_api_key(args)
         agency = models.CdeRefAgency.get(nbr)
         return self.with_metadata(agency, args)
+
+
+class AgenciesParticipation(CdeResource):
+    tables = models.AgencyParticipationFamily()
+    is_groupable = False
+
+    @use_args(marshmallow_schemas.GroupableArgsSchema)
+    #@swagger.use_kwargs(marshmallow_schemas.GroupableArgsSchema, apply=False, locations=['query'])
+    #@swagger.doc(tags=['agencies', 'participation'],
+    #             description='Returns data on participating agencies. May be filtered by agency fields')
+    #@swagger.marshal_with(marshmallow_schemas.AgenciesParticipationResponseSchema, apply=False)
+    @tuning_page
+    def get(self, args):
+        return self._get(args)

@@ -1106,6 +1106,21 @@ class ArsonTableFamily(TableFamily):
                   func.sum(models.ArsonMonthBySubcat.est_damage_value)))
 
 
+class AgencyParticipationFamily(TableFamily):
+
+    base_table = JoinedTable(models.AgencyAnnualParticipation)
+
+    tables = []
+    _agency = JoinedTable(models.RefAgency)
+    tables.append(_agency)
+    _state = JoinedTable(models.RefState)
+    tables.append(_state)
+
+    def base_query(self):
+        """Gets root Query, based on class's base_table"""
+        return db.session.query(self.base_table.table)
+
+
 def _is_string(col):
     col0 = list(col.base_columns)[0]
     return issubclass(col0.type.python_type, str)

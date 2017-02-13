@@ -8,15 +8,17 @@ from copy import deepcopy
 import logging
 from psycopg2 import ProgrammingError
 from sqlalchemy.dialects.postgresql import JSONB
-from sqlalchemy.orm import backref
+from sqlalchemy.orm import backref, relationship
 from sqlalchemy.sql.elements import BinaryExpression
 from sqlalchemy import func
 from sqlalchemy.sql import sqltypes
 from flask_restful import abort
 
 from crime_data.common import models
+from crime_data.common.models import RefAgency
 from crime_data.extensions import db
 from sqlalchemy import or_
+
 
 class ParticipationRate(db.Model):
     __tablename__ = 'cde_participation_rates'
