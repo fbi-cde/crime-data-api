@@ -510,6 +510,7 @@ class ExplorerOffenseMapping(object):
         'larceny': 'larceny',
         'motor-vehicle-theft': 'motor vehicle theft',
         'murder': 'murder and nonnegligent homicide',
+        'homicide': 'murder and nonnegligent homicide',
         'rape': 'rape',
         'robbery': 'robbery',
         'arson': 'arson'
@@ -525,6 +526,7 @@ class ExplorerOffenseMapping(object):
                     'Theft From Coin-Operated Machine or Device'],
         'motor-vehicle-theft': 'Motor Vehicle Theft',
         'murder': 'Murder and Nonnegligent Manslaughter',
+        'homicide': 'Murder and Nonnegligent Manslaughter',
         'rape': 'Rape',
         'robbery': 'Robbery',
         'arson': 'Arson'
