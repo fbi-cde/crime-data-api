@@ -16,5 +16,3 @@ class ArsonCountResource(CdeResource):
     @tuning_page
     def get(self, args):
         return self._get(args)
-
-""
