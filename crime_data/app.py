@@ -8,11 +8,11 @@ import flask_restful as restful
 from flask import Flask, render_template
 
 import crime_data.resources.agencies
-import crime_data.resources.arrests
+#import crime_data.resources.arrests
 import crime_data.resources.incidents
 import crime_data.resources.offenses
 import crime_data.resources.codes
-import crime_data.resources.arson
+#import crime_data.resources.arson
 import crime_data.resources.meta
 import crime_data.resources.offenders
 import crime_data.resources.victims
@@ -121,26 +121,26 @@ def add_resources(app):
     api.add_resource(crime_data.resources.agencies.AgenciesParticipation,
                      '/agencies/participation')
 
-    api.add_resource(crime_data.resources.incidents.IncidentsList,
-                     '/incidents/')
+    # api.add_resource(crime_data.resources.incidents.IncidentsList,
+    #                  '/incidents/')
     api.add_resource(crime_data.resources.incidents.CachedIncidentsCount,
                      '/incidents/count/')
-    api.add_resource(crime_data.resources.incidents.IncidentsDetail,
-                     '/incidents/<int:id>/')
+    # api.add_resource(crime_data.resources.incidents.IncidentsDetail,
+    #                  '/incidents/<int:id>/')
     api.add_resource(crime_data.resources.offenses.OffensesList, '/offenses/')
     api.add_resource(crime_data.resources.codes.CodeReferenceIndex,
                      '/codes')
     api.add_resource(crime_data.resources.codes.CodeReferenceList,
                      '/codes/<string:code_table>.<string:output>',
                      '/codes/<string:code_table>')
-    api.add_resource(crime_data.resources.arrests.ArrestsCountByRace,
-                     '/arrests/race/')
-    api.add_resource(crime_data.resources.arrests.ArrestsCountByEthnicity,
-                     '/arrests/ethnicity/')
-    api.add_resource(crime_data.resources.arrests.ArrestsCountByAgeSex,
-                     '/arrests/age_sex/')
-    api.add_resource(crime_data.resources.arson.ArsonCountResource,
-                     '/arson/')
+    # api.add_resource(crime_data.resources.arrests.ArrestsCountByRace,
+    #                  '/arrests/race/')
+    # api.add_resource(crime_data.resources.arrests.ArrestsCountByEthnicity,
+    #                  '/arrests/ethnicity/')
+    # api.add_resource(crime_data.resources.arrests.ArrestsCountByAgeSex,
+    #                  '/arrests/age_sex/')
+    # api.add_resource(crime_data.resources.arson.ArsonCountResource,
+    #                  '/arson/')
     api.add_resource(crime_data.resources.meta.MetaDetail,
                      '/meta/<path:endpoint>')
     api.add_resource(crime_data.resources.geo.StateDetail,
@@ -216,12 +216,12 @@ def add_resources(app):
     docs.register(crime_data.resources.agencies.AgenciesList)
     docs.register(crime_data.resources.agencies.AgenciesParticipation)
     docs.register(crime_data.resources.incidents.CachedIncidentsCount)
-    docs.register(crime_data.resources.incidents.IncidentsDetail)
-    docs.register(crime_data.resources.incidents.IncidentsList)
+    # docs.register(crime_data.resources.incidents.IncidentsDetail)
+    # docs.register(crime_data.resources.incidents.IncidentsList)
     docs.register(crime_data.resources.offenses.OffensesList)
-    docs.register(crime_data.resources.arrests.ArrestsCountByRace)
-    docs.register(crime_data.resources.arrests.ArrestsCountByEthnicity)
-    docs.register(crime_data.resources.arrests.ArrestsCountByAgeSex)
+    # docs.register(crime_data.resources.arrests.ArrestsCountByRace)
+    # docs.register(crime_data.resources.arrests.ArrestsCountByEthnicity)
+    # docs.register(crime_data.resources.arrests.ArrestsCountByAgeSex)
     docs.register(crime_data.resources.meta.MetaDetail)
     docs.register(crime_data.resources.geo.StateDetail)
     docs.register(crime_data.resources.geo.CountyDetail)
