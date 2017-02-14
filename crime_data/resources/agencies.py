@@ -4,7 +4,7 @@ from flask_restful import fields, marshal_with, reqparse
 from webargs.flaskparser import use_args
 import flask_apispec as swagger
 
-from crime_data.common import cdemodels as models
+from crime_data.common import cdemodels, models
 from crime_data.common import marshmallow_schemas
 from crime_data.common.base import CdeResource, tuning_page
 from crime_data.common.marshmallow_schemas import (
@@ -24,7 +24,7 @@ class AgenciesList(AgenciesResource):
                  description='Returns a paginated list of all agencies')
     def get(self, args):
         self.verify_api_key(args)
-        result = models.CdeRefAgency.get()
+        result = cdemodels.CdeRefAgency.get()
         return self.with_metadata(result, args)
 
 
@@ -36,7 +36,7 @@ class AgenciesDetail(AgenciesResource):
     @swagger.marshal_with(marshmallow_schemas.AgenciesDetailResponseSchema, apply=False)
     def get(self, args, nbr):
         self.verify_api_key(args)
-        agency = models.CdeRefAgency.get(nbr)
+        agency = cdemodels.CdeRefAgency.get(nbr)
         return self.with_metadata(agency, args)
 
 
@@ -44,7 +44,10 @@ class AgenciesParticipation(CdeResource):
 
     schema = marshmallow_schemas.AgencyParticipationSchema(many=True)
 
-    tables = models.AgencyParticipationFamily()
+    def set_ordering(self, qry, args):
+        return qry.order_by(models.AgencyAnnualParticipation.data_year, models.RefState.state_name, models.RefAgency.pub_agency_name)
+
+    tables = cdemodels.AgencyParticipationFamily()
     is_groupable = False
 
     @use_args(marshmallow_schemas.GroupableArgsSchema)
