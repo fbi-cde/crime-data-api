@@ -176,22 +176,9 @@ class CdeRefState(models.RefState):
         """Returns the total police officers for the current year"""
         return self.police_officers_for_year(self.current_year)
 
-    @property
-    def participation_cache(self):
-        try:
-            return self._participation_cache
-        except AttributeError:
-            self._participation_cache = {}
-            return self._participation_cache
-
     def _participation_for_year(self, year):
-        """Internal method for loading the participation data"""
-        try:
-            return self.participation_cache[year]
-        except KeyError:
-            l = CdeParticipationRate(state_id=self.state_id, year=year).query.one()
-            self.participation_cache[year] = l
-            return l
+        l = CdeParticipationRate(state_id=self.state_id, year=year).query.one()
+        return l
 
 
 class CdeRefCounty(models.RefCounty):
@@ -302,24 +289,12 @@ class CdeRefCounty(models.RefCounty):
         """Returns the total police officers for the current year"""
         return self.police_officers_for_year(self.current_year)
 
-    @property
-    def participation_cache(self):
-        try:
-            return self._participation_cache
-        except AttributeError:
-            self._participation_cache = {}
-            return self._participation_cache
-
     def _participation_for_year(self, year):
         """Internal method for loading the participation data"""
-        try:
-            return self.participation_cache[year]
-        except KeyError:
-            l = CdeParticipationRate(county_id=self.county_id, year=year).query.one()
-            self.participation_cache[year] = l
-            return l
+        l = CdeParticipationRate(county_id=self.county_id, year=year).query.one()
+        return l
 
-    
+
 class CdeRefAgency(models.RefAgency):
     def get(ori=None):
         # Base Query

@@ -16,6 +16,7 @@ class StateDetail(CdeResource):
     @swagger.doc(tags=['geo'],
                  params={'state_id': {'description': 'A state postal abbreviation'}},
                  description=['Returns basic information about a state and lists counties in the state'])
+    @tuning_page
     def get(self, args, id):
         self.verify_api_key(args)
         state = cdemodels.CdeRefState.get(abbr=id).one()
@@ -29,6 +30,7 @@ class CountyDetail(CdeResource):
     @swagger.use_kwargs(marshmallow_schemas.ApiKeySchema, apply=False, locations=['query'])
     @swagger.marshal_with(marshmallow_schemas.CountyDetailResponseSchema, apply=False)
     @swagger.doc(tags=['geo'], description='Demographic details for a county')
+    @tuning_page
     def get(self, args, fips):
         self.verify_api_key(args)
         county = cdemodels.CdeRefCounty.get(fips=fips).one()
@@ -42,6 +44,7 @@ class StateParticipation(CdeResource):
     @swagger.use_kwargs(marshmallow_schemas.ApiKeySchema, apply=False, locations=['query'])
     @swagger.marshal_with(marshmallow_schemas.ParticipationRateSchema, apply=False)
     @swagger.doc(tags=['geo'], description='Participation data for a state')
+    @tuning_page
     def get(self, args, state_id=None, state_abbr=None):
         self.verify_api_key(args)
 
