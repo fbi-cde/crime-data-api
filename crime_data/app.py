@@ -121,26 +121,26 @@ def add_resources(app):
     api.add_resource(crime_data.resources.agencies.AgenciesParticipation,
                      '/agencies/participation')
 
-    api.add_resource(crime_data.resources.incidents.IncidentsList,
-                     '/incidents/')
+    # api.add_resource(crime_data.resources.incidents.IncidentsList,
+    #                  '/incidents/')
     api.add_resource(crime_data.resources.incidents.CachedIncidentsCount,
                      '/incidents/count/')
-    api.add_resource(crime_data.resources.incidents.IncidentsDetail,
-                     '/incidents/<int:id>/')
+    # api.add_resource(crime_data.resources.incidents.IncidentsDetail,
+    #                  '/incidents/<int:id>/')
     api.add_resource(crime_data.resources.offenses.OffensesList, '/offenses/')
     api.add_resource(crime_data.resources.codes.CodeReferenceIndex,
                      '/codes')
     api.add_resource(crime_data.resources.codes.CodeReferenceList,
                      '/codes/<string:code_table>.<string:output>',
                      '/codes/<string:code_table>')
-    api.add_resource(crime_data.resources.arrests.ArrestsCountByRace,
-                     '/arrests/race/')
-    api.add_resource(crime_data.resources.arrests.ArrestsCountByEthnicity,
-                     '/arrests/ethnicity/')
-    api.add_resource(crime_data.resources.arrests.ArrestsCountByAgeSex,
-                     '/arrests/age_sex/')
-    api.add_resource(crime_data.resources.arson.ArsonCountResource,
-                     '/arson/')
+    # api.add_resource(crime_data.resources.arrests.ArrestsCountByRace,
+    #                  '/arrests/race/')
+    # api.add_resource(crime_data.resources.arrests.ArrestsCountByEthnicity,
+    #                  '/arrests/ethnicity/')
+    # api.add_resource(crime_data.resources.arrests.ArrestsCountByAgeSex,
+    #                  '/arrests/age_sex/')
+    # api.add_resource(crime_data.resources.arson.ArsonCountResource,
+    #                  '/arson/')
     api.add_resource(crime_data.resources.meta.MetaDetail,
                      '/meta/<path:endpoint>')
     api.add_resource(crime_data.resources.geo.StateDetail,
