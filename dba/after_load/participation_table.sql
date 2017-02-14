@@ -19,7 +19,7 @@ JOIN ref_state rs ON rs.state_id = ra.state_id
 LEFT OUTER JOIN ref_agency_population rap ON rap.agency_id = rm.agency_id AND rap.data_year = rm.data_year
 LEFT OUTER JOIN ref_population_group rpg ON rpg.population_group_id = rap.population_group_id
 group by rm.data_year, rs.state_name, rs.state_postal_abbr, ra.agency_id, ra.ori, ra.pub_agency_name, rap.population, rpg.population_group_code, rpg.population_group_desc
-ORDER by rm.data_year, rs.state_name, ra.pub_agency_name limit 100;
+ORDER by rm.data_year, rs.state_name, ra.pub_agency_name;
 
 drop table if exists cde_participation_rates;
 CREATE TABLE cde_participation_rates
