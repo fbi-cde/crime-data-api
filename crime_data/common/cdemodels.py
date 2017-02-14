@@ -166,6 +166,7 @@ class CdeRefState(models.RefState):
             .filter(CdeRefAgency.state_id == self.state_id)
             .filter(CdeRefAgency.agency_id == models.PeEmployeeData.agency_id)
             .filter(models.PeEmployeeData.data_year == data_year)
+            .filter(models.PeEmployeeData.reported_flag == 'Y')
         )
 
         return query.scalar()
@@ -290,6 +291,7 @@ class CdeRefCounty(models.RefCounty):
             .filter(CdeRefAgencyCounty.county_id == self.county_id)
             .filter(CdeRefAgency.agency_id == models.PeEmployeeData.agency_id)
             .filter(models.PeEmployeeData.data_year == data_year)
+            .filter(models.PeEmployeeData.reported_flag == 'Y')
         )
 
         print(query)
