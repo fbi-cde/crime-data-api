@@ -1111,11 +1111,13 @@ class AgencyParticipationFamily(TableFamily):
     base_table = JoinedTable(models.AgencyAnnualParticipation)
 
     tables = []
-    _agency = JoinedTable(models.RefAgency)
+    _agency = JoinedTable(models.RefAgency, join=(models.AgencyAnnualParticipation.agency_id ==
+                                                  models.RefAgency.agency_id))
     tables.append(_agency)
-    _state = JoinedTable(models.RefState)
+    _state = JoinedTable(models.RefState, parent=_agency)
     tables.append(_state)
 
+ 
     def base_query(self):
         """Gets root Query, based on class's base_table"""
         return db.session.query(self.base_table.table)

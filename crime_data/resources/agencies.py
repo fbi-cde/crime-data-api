@@ -41,6 +41,9 @@ class AgenciesDetail(AgenciesResource):
 
 
 class AgenciesParticipation(CdeResource):
+
+    schema = marshmallow_schemas.AgencyParticipationSchema(many=True)
+
     tables = models.AgencyParticipationFamily()
     is_groupable = False
 

@@ -804,8 +804,11 @@ class AgencyParticipationSchema(Schema):
         ordered = True
 
     year = marsh_fields.Integer(dump_only=True, attribute='data_year')
+    agency_ori = marsh_fields.String(dump_only=True, attribute='agency.ori')
+    agency_name = marsh_fields.String(dump_only=True, attribute='agency.pub_agency_name')
+    state_name = marsh_fields.String(attribute='agency.state.state_name')
+    state_abbr = marsh_fields.String(attribute='agency.state.state_postal_abbr')
     reported = marsh_fields.Integer(dump_only=True)
-
 
 class ArsonCountSchema(Schema):
     """

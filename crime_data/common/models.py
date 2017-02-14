@@ -2882,7 +2882,7 @@ class AgencyAnnualParticipation(db.Model):
     __tablename__ = 'cde_annual_participation'
 
     data_year = db.Column(db.SmallInteger, nullable=False, primary_key=True)
-    agency_id = db.Column(db.Integer, db.ForeignKey('ref_agency.agency_id'), nullable=False, primary_key=True)
+    agency_id = db.Column(db.Integer, nullable=False, primary_key=True)
     reported = db.Column(db.SmallInteger, nullable=False)
 
     agency = relationship('RefAgency', lazy='joined', foreign_keys=[agency_id],
