@@ -1083,6 +1083,7 @@ class ArsonTableFamily(TableFamily):
                   func.sum(models.ArsonMonthBySubcat.est_damage_value)))
 
 
+
 def _is_string(col):
     col0 = list(col.base_columns)[0]
     return issubclass(col0.type.python_type, str)

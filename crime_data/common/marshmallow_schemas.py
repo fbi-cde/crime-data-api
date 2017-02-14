@@ -792,12 +792,23 @@ class IncidentViewCountSchema(Schema):
     year = marsh_fields.Integer(dump_only=True)
     race_code = marsh_fields.String(dump_only=True)
     sex_code = marsh_fields.String(dump_only=True)
-    age_num =marsh_fields.String(dump_only=True)
+    age_num = marsh_fields.String(dump_only=True)
     location_name = marsh_fields.String(dump_only=True)
     offense_name = marsh_fields.String(dump_only=True)
     prop_desc_name = marsh_fields.String(dump_only=True)
     victim_type_name = marsh_fields.String(dump_only=True)
 
+
+class AgencyParticipationSchema(Schema):
+    class Meta:
+        model = newmodels.AgencyAnnualParticipation
+        fields = ('year', 'state_name', 'state_abbr', 'agency_id', 'agency_ori',
+                  'agency_name', 'agency_population', 'population_group_code',
+                  'population_group', 'reported', 'reported_12mos')
+        exclude = ('agency_id', )
+        ordered = True
+
+    year = marsh_fields.Integer(attribute='data_year')
 
 
 class ArsonCountSchema(Schema):
@@ -863,6 +874,8 @@ class AgenciesListResponseSchema(PaginatedResponseSchema):
 class AgenciesDetailResponseSchema(PaginatedResponseSchema):
     results = ma.Nested(RefAgencySchema)
 
+class AgenciesParticipationResponseSchema(PaginatedResponseSchema):
+    results = ma.Nested(AgencyParticipationSchema)
 
 class IncidentsCountResponseSchema(PaginatedResponseSchema):
     results = ma.Nested(IncidentCountSchema, many=True)

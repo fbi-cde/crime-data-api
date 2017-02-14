@@ -208,6 +208,10 @@ class CdeResource(MethodResource):
         "Hook for edits to filters"
         return filters
 
+    def set_ordering(self, qry, args):
+        """This could potentially look at args for ordering directives in the future."""
+        return qry
+
     def _get(self, args):
         # TODO: apply "fields" arg
 
@@ -220,6 +224,9 @@ class CdeResource(MethodResource):
         if self.is_groupable:
             group_columns = [c.strip() for c in args['by'].split(',')]
             qry = self.tables.group_by(qry, group_columns)
+        else:
+            qry = self.set_ordering(qry, args)
+
         aggregate_many = False
 
         if args['aggregate_many'] == 'true':

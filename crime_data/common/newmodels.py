@@ -8,15 +8,61 @@ from copy import deepcopy
 import logging
 from psycopg2 import ProgrammingError
 from sqlalchemy.dialects.postgresql import JSONB
-from sqlalchemy.orm import backref
+from sqlalchemy.orm import backref, relationship
 from sqlalchemy.sql.elements import BinaryExpression
 from sqlalchemy import func
 from sqlalchemy.sql import sqltypes
 from flask_restful import abort
 
 from crime_data.common import models
+from crime_data.common.models import RefAgency
 from crime_data.extensions import db
 from sqlalchemy import or_
+
+
+class AgencyAnnualParticipation(db.Model):
+    """Represents agency participation for a single month."""
+
+    __tablename__ = 'cde_annual_participation'
+
+    data_year = db.Column(db.SmallInteger, nullable=False, primary_key=True)
+    state_name = db.Column(db.String)
+    state_abbr = db.Column(db.String)
+    agency_id = db.Column(db.Integer, nullable=False, primary_key=True)
+    agency_ori = db.Column(db.String)
+    agency_name = db.Column(db.String)
+    agency_population = db.Column(db.BigInteger)
+    population_group_code = db.Column(db.String)
+    population_group = db.Column(db.String)
+    reported = db.Column(db.SmallInteger, nullable=False)
+    reported_12mos = db.Column(db.SmallInteger, nullable=False)
+
+    @classmethod
+    def column_is_string(cls, col_name):
+        col = getattr(cls.__table__.c, col_name)
+        return isinstance(col.type, sqltypes.String)
+
+    @classmethod
+    def filtered(cls, filters, args=None):
+        args = args or []
+        qry = cls.query
+        for filter in filters:
+            if isinstance(filter, BinaryExpression):
+                qry = qry.filter(filter)
+            else:
+                (col_name, comparitor, values) = filter
+                col = getattr(cls, col_name)
+                if cls.column_is_string(col_name):
+                    col = func.lower(col)
+                operation = getattr(col, comparitor)
+                qry = qry.filter(or_(operation(v) for v in values)).order_by(
+                    col)
+        if 'by' in args:
+            for col_name in args['by'].split(','):
+                col = getattr(cls, col_name)
+                qry = qry.order_by(col)
+        return qry
+
 
 class ParticipationRate(db.Model):
     __tablename__ = 'cde_participation_rates'
