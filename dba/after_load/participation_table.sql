@@ -1,7 +1,25 @@
 SET work_mem='4096MB'; -- Go Super Saiyan.
 
 drop materialized view cde_annual_participation;
-create materialized view cde_annual_participation AS SELECT data_year, agency_id, bool_or(CASE WHEN reported_flag = 'Y' THEN TRUE ELSE FALSE END)::int AS reported from reta_month group by data_year, agency_id;
+create materialized view cde_annual_participation AS
+SELECT rm.data_year,
+rs.state_name AS state_name,
+rs.state_postal_abbr AS state_abbr,
+ra.agency_id,
+ra.ori as agency_ori,
+ra.pub_agency_name as agency_name,
+rap.population AS agency_population,
+rpg.population_group_code AS population_group_code,
+rpg.population_group_desc AS population_group,
+bool_or(CASE WHEN reported_flag = 'Y' THEN TRUE ELSE FALSE END)::int AS reported,
+bool_and(CASE WHEN reported_flag = 'Y' THEN TRUE ELSE FALSE END)::int AS reported_12mos
+from reta_month rm
+JOIN ref_agency ra ON ra.agency_id = rm.agency_id
+JOIN ref_state rs ON rs.state_id = ra.state_id
+LEFT OUTER JOIN ref_agency_population rap ON rap.agency_id = rm.agency_id AND rap.data_year = rm.data_year
+LEFT OUTER JOIN ref_population_group rpg ON rpg.population_group_id = rap.population_group_id
+group by rm.data_year, rs.state_name, rs.state_postal_abbr, ra.agency_id, ra.ori, ra.pub_agency_name, rap.population, rpg.population_group_code, rpg.population_group_desc
+ORDER by rm.data_year, rs.state_name, ra.pub_agency_name limit 100;
 
 drop table if exists cde_participation_rates;
 CREATE TABLE cde_participation_rates

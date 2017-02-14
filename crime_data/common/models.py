@@ -2874,16 +2874,3 @@ class SuppPropertyType(db.Model):
     prop_type_name = db.Column(db.String(100), nullable=False)
     prop_type_code = db.Column(db.String(20), nullable=False)
     prop_type_code_num = db.Column(db.SmallInteger, nullable=False)
-
-
-class AgencyAnnualParticipation(db.Model):
-    """Represents agency participation for a single month."""
-
-    __tablename__ = 'cde_annual_participation'
-
-    data_year = db.Column(db.SmallInteger, nullable=False, primary_key=True)
-    agency_id = db.Column(db.Integer, nullable=False, primary_key=True)
-    reported = db.Column(db.SmallInteger, nullable=False)
-
-    agency = relationship('RefAgency', lazy='joined', foreign_keys=[agency_id],
-                          primaryjoin='RefAgency.agency_id == AgencyAnnualParticipation.agency_id')

@@ -4,7 +4,7 @@ from flask_restful import fields, marshal_with, reqparse
 from webargs.flaskparser import use_args
 import flask_apispec as swagger
 
-from crime_data.common import cdemodels, models
+from crime_data.common import cdemodels, models, newmodels
 from crime_data.common import marshmallow_schemas
 from crime_data.common.base import CdeResource, tuning_page
 from crime_data.common.marshmallow_schemas import (
@@ -43,18 +43,14 @@ class AgenciesDetail(AgenciesResource):
 class AgenciesParticipation(CdeResource):
 
     schema = marshmallow_schemas.AgencyParticipationSchema(many=True)
-
-    def set_ordering(self, qry, args):
-        return qry.order_by(models.AgencyAnnualParticipation.data_year, models.RefState.state_name, models.RefAgency.pub_agency_name)
-
-    tables = cdemodels.AgencyParticipationFamily()
+    tables = newmodels.AgencyAnnualParticipation
     is_groupable = False
 
-    @use_args(marshmallow_schemas.GroupableArgsSchema)
-    #@swagger.use_kwargs(marshmallow_schemas.GroupableArgsSchema, apply=False, locations=['query'])
-    #@swagger.doc(tags=['agencies', 'participation'],
-    #             description='Returns data on participating agencies. May be filtered by agency fields')
-    #@swagger.marshal_with(marshmallow_schemas.AgenciesParticipationResponseSchema, apply=False)
+    @use_args(marshmallow_schemas.ArgumentsSchema)
+    @swagger.use_kwargs(marshmallow_schemas.ArgumentsSchema, apply=False, locations=['query'])
+    @swagger.doc(tags=['agencies', 'participation'],
+                 description='Returns data on agency participation. May be filtered by agency fields')
+    @swagger.marshal_with(marshmallow_schemas.AgenciesParticipationResponseSchema, apply=False)
     @tuning_page
     def get(self, args):
         return self._get(args)

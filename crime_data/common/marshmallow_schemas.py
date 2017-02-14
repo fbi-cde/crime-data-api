@@ -801,14 +801,15 @@ class IncidentViewCountSchema(Schema):
 
 class AgencyParticipationSchema(Schema):
     class Meta:
+        model = newmodels.AgencyAnnualParticipation
+        fields = ('year', 'state_name', 'state_abbr', 'agency_id', 'agency_ori',
+                  'agency_name', 'agency_population', 'population_group_code',
+                  'population_group', 'reported', 'reported_12mos')
+        exclude = ('agency_id', )
         ordered = True
 
-    year = marsh_fields.Integer(dump_only=True, attribute='data_year')
-    agency_ori = marsh_fields.String(dump_only=True, attribute='agency.ori')
-    agency_name = marsh_fields.String(dump_only=True, attribute='agency.pub_agency_name')
-    state_name = marsh_fields.String(attribute='agency.state.state_name')
-    state_abbr = marsh_fields.String(attribute='agency.state.state_postal_abbr')
-    reported = marsh_fields.Integer(dump_only=True)
+    year = marsh_fields.Integer(attribute='data_year')
+
 
 class ArsonCountSchema(Schema):
     """
@@ -873,6 +874,8 @@ class AgenciesListResponseSchema(PaginatedResponseSchema):
 class AgenciesDetailResponseSchema(PaginatedResponseSchema):
     results = ma.Nested(RefAgencySchema)
 
+class AgenciesParticipationResponseSchema(PaginatedResponseSchema):
+    results = ma.Nested(AgencyParticipationSchema)
 
 class IncidentsCountResponseSchema(PaginatedResponseSchema):
     results = ma.Nested(IncidentCountSchema, many=True)
