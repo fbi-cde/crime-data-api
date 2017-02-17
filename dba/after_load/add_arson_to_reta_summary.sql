@@ -1,6 +1,3 @@
-ALTER TABLE reta_month_offense_subcat_summary
-ADD COLUMN audit_notes varchar(255);
-
 -- Add arson counts into RMOSS table
 INSERT INTO reta_month_offense_subcat_summary
 SELECT NEXTVAL('retacubeseq') AS reta_month_offense_subcat_summary_id,
@@ -25,8 +22,7 @@ t.offense_category,
 t.offense_code,
 t.offense,
 asuc.subcategory_name AS offense_subcat,
-asuc.subcategory_code AS offense_subcat_code,
-'arson' AS audit_notes
+asuc.subcategory_code AS offense_subcat_code
 FROM (VALUES('Property', 'Arson', 'X_ARS', 'Arson')) AS t(classification, offense_category, offense_code, offense), arson_month_by_subcat ambs
 JOIN   arson_month am ON ambs.arson_month_id = am.arson_month_id
 JOIN   arson_subcategory asuc ON ambs.subcategory_id = asuc.subcategory_id
@@ -67,8 +63,7 @@ SET reported = r.reported + arson_totals.reported,
     actual = r.actual + arson_totals.actual,
     unfounded = r.unfounded + arson_totals.unfounded,
     cleared = r.cleared + arson_totals.cleared,
-    juvenile_cleared = r.juvenile_cleared + arson_totals.juvenile_cleared,
-    audit_notes = 'arson+(' || arson_totals.reported || ', ' || arson_totals.unfounded || ', ' || arson_totals.actual || ', ' || arson_totals.cleared || ', ' || arson_totals.juvenile_cleared || ') '
+    juvenile_cleared = r.juvenile_cleared + arson_totals.juvenile_cleared
 FROM arson_totals
 WHERE r.classification = 'Property'
 AND r.year = arson_totals.year
@@ -95,8 +90,7 @@ SET reported = r.reported + arson_totals.reported,
     actual = r.actual + arson_totals.actual,
     unfounded = r.unfounded + arson_totals.unfounded,
     cleared = r.cleared + arson_totals.cleared,
-    juvenile_cleared = r.juvenile_cleared + arson_totals.juvenile_cleared,
-    audit_notes = 'arson+(' || arson_totals.reported || ', ' || arson_totals.unfounded || ', ' || arson_totals.actual || ', ' || arson_totals.cleared || ', ' || arson_totals.juvenile_cleared || ') '
+    juvenile_cleared = r.juvenile_cleared + arson_totals.juvenile_cleared
 FROM arson_totals
 WHERE r.classification = 'Property'
 AND r.year = arson_totals.year
@@ -122,8 +116,7 @@ SET reported = r.reported + arson_totals.reported,
 actual = r.actual + arson_totals.actual,
 unfounded = r.unfounded + arson_totals.unfounded,
 cleared = r.cleared + arson_totals.cleared,
-juvenile_cleared = r.juvenile_cleared + arson_totals.juvenile_cleared,
-audit_notes = 'arson+(' || arson_totals.reported || ', ' || arson_totals.unfounded || ', ' || arson_totals.actual || ', ' || arson_totals.cleared || ', ' || arson_totals.juvenile_cleared || ') '
+juvenile_cleared = r.juvenile_cleared + arson_totals.juvenile_cleared
 FROM arson_totals
 WHERE r.classification = 'Property'
 AND r.year = arson_totals.year
@@ -149,8 +142,7 @@ SET reported = r.reported + arson_totals.reported,
 actual = r.actual + arson_totals.actual,
 unfounded = r.unfounded + arson_totals.unfounded,
 cleared = r.cleared + arson_totals.cleared,
-juvenile_cleared = r.juvenile_cleared + arson_totals.juvenile_cleared,
-audit_notes = 'arson+(' || arson_totals.reported || ', ' || arson_totals.unfounded || ', ' || arson_totals.actual || ', ' || arson_totals.cleared || ', ' || arson_totals.juvenile_cleared || ') '
+juvenile_cleared = r.juvenile_cleared + arson_totals.juvenile_cleared
 FROM arson_totals
 WHERE r.classification = 'Property'
 AND r.state = arson_totals.state
@@ -176,8 +168,7 @@ SET reported = r.reported + arson_totals.reported,
 actual = r.actual + arson_totals.actual,
 unfounded = r.unfounded + arson_totals.unfounded,
 cleared = r.cleared + arson_totals.cleared,
-juvenile_cleared = r.juvenile_cleared + arson_totals.juvenile_cleared,
-audit_notes = 'arson+(' || arson_totals.reported || ', ' || arson_totals.unfounded || ', ' || arson_totals.actual || ', ' || arson_totals.cleared || ', ' || arson_totals.juvenile_cleared || ') '
+juvenile_cleared = r.juvenile_cleared + arson_totals.juvenile_cleared
 FROM arson_totals
 WHERE r.classification = 'Property'
 AND r.state = arson_totals.state
@@ -202,8 +193,7 @@ SET reported = r.reported + arson_totals.reported,
 actual = r.actual + arson_totals.actual,
 unfounded = r.unfounded + arson_totals.unfounded,
 cleared = r.cleared + arson_totals.cleared,
-juvenile_cleared = r.juvenile_cleared + arson_totals.juvenile_cleared,
-audit_notes = 'arson+(' || arson_totals.reported || ', ' || arson_totals.unfounded || ', ' || arson_totals.actual || ', ' || arson_totals.cleared || ', ' || arson_totals.juvenile_cleared || ') '
+juvenile_cleared = r.juvenile_cleared + arson_totals.juvenile_cleared
 FROM arson_totals
 WHERE r.classification = 'Property'
 AND r.year = arson_totals.year
@@ -228,8 +218,7 @@ SET reported = r.reported + arson_totals.reported,
 actual = r.actual + arson_totals.actual,
 unfounded = r.unfounded + arson_totals.unfounded,
 cleared = r.cleared + arson_totals.cleared,
-juvenile_cleared = r.juvenile_cleared + arson_totals.juvenile_cleared,
-audit_notes = 'arson+(' || arson_totals.reported || ', ' || arson_totals.unfounded || ', ' || arson_totals.actual || ', ' || arson_totals.cleared || ', ' || arson_totals.juvenile_cleared || ') '
+juvenile_cleared = r.juvenile_cleared + arson_totals.juvenile_cleared
 FROM arson_totals
 WHERE r.classification = 'Property'
 AND r.year = arson_totals.year
@@ -252,8 +241,7 @@ SET reported = r.reported + arson_totals.reported,
 actual = r.actual + arson_totals.actual,
 unfounded = r.unfounded + arson_totals.unfounded,
 cleared = r.cleared + arson_totals.cleared,
-juvenile_cleared = r.juvenile_cleared + arson_totals.juvenile_cleared,
-audit_notes = 'arson+(' || arson_totals.reported || ', ' || arson_totals.unfounded || ', ' || arson_totals.actual || ', ' || arson_totals.cleared || ', ' || arson_totals.juvenile_cleared || ') '
+juvenile_cleared = r.juvenile_cleared + arson_totals.juvenile_cleared
 FROM arson_totals
 WHERE r.classification = 'Property'
 AND r.grouping_bitmap = 991;
