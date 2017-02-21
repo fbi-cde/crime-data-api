@@ -1,7 +1,45 @@
 # -*- coding: utf-8 -*-
 
-from crime_data.common.newmodels import RetaMonthOffenseSubcatSummary
+from crime_data.common.newmodels import (RetaMonthOffenseSubcatSummary,
+                                         AgencyAnnualParticipation,
+                                         ParticipationRate)
 import pytest
+
+class TestAgencyAnnualParticipation:
+    # Agency 191, 1991
+    def test_for_agency_in_nibrs_month(self, app):
+        q = AgencyAnnualParticipation.query
+        q = q.filter(AgencyAnnualParticipation.data_year == 1991)
+        q = q.filter(AgencyAnnualParticipation.agency_id == 191).one()
+        assert q.reported == 1
+        assert q.months_reported == 2
+        assert q.reported_nibrs == 1
+        assert q.morths_reported_nibrs == 2
+
+    def test_for_agency_not_in_nibrs_month(self, app):
+        q = AgencyAnnualParticipation.query
+        q = q.filter(AgencyAnnualParticipation.data_year == 2002)
+        q = q.filter(AgencyAnnualParticipation.agency_id == 9744).one()
+        assert q.reported == 1
+        assert q.months_reported == 3
+        assert q.reported_nibrs == 0
+        assert q.months_reported_nibrs == 0
+
+
+class TestParticipationRate:
+    def test_for_state_in_year(self, app):
+        q = ParticipationRate.query
+        q = q.filter(ParticipationRate.data_year == 1991)
+        q = q.filter(ParticipationRate.state_id == 2).one()
+        assert q.data_year == 1991
+        assert q.state_id == 2
+        assert q.total_agencies == 1
+        assert q.reporting_agencies == 1
+        assert q.reporting_rate == 1
+        assert q.nibrs_reporting_agencies == 1
+        assert q.nibrs_reporting_rate == 1
+        assert q.total_population == None
+        assert q.covered_population == 0
 
 
 class TestArsonAdditionsToRetaMonthOffenseSubcatSummary:
