@@ -19,8 +19,7 @@ psql $CRIME_DATA_API_DB_URL <after_load/functions.sql >/dev/null
 echo "DONE"
 
 echo -n "Create RET A Summaries..."
-psql $CRIME_DATA_API_DB_URL <after_load/create_reta_summary.sql >/dev/null
-psql $CRIME_DATA_API_DB_URL <after_load/create_reta_summary_indexes.sql >/dev/null
+after_load/reta_summary.sh >/dev/null
 echo "DONE"
 
 echo -n "Create View Count tables from NIBRS..."

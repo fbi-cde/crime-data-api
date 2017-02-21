@@ -1,6 +1,6 @@
 \set ON_ERROR_STOP on
 
-DROP SEQUENCE IF EXISTS retacubeseq;
+DROP SEQUENCE IF EXISTS retacubeseq CASCADE;
 CREATE SEQUENCE retacubeseq;
 
 CREATE TABLE reta_cube_rollup AS
@@ -8,7 +8,7 @@ CREATE TABLE reta_cube_rollup AS
            GROUPING(data_year,
              month_num,
              state_name,
-             state_abbr,
+             state_postal_abbr,
              classification_name, offense_category_name,
              offense_name, offense_code,
              offense_subcat_name, offense_subcat_code
@@ -21,7 +21,7 @@ CREATE TABLE reta_cube_rollup AS
            rm.data_year AS year,
            rm.month_num AS month,
            rs.state_name,
-           rs.state_abbr AS state,
+           rs.state_postal_abbr AS state,
            oc.classification_name AS classification,
            roc.offense_category_name AS offense_category,
            ro.offense_code,
@@ -36,7 +36,7 @@ CREATE TABLE reta_cube_rollup AS
     LEFT OUTER JOIN   reta_month rm ON (rmos.reta_month_id = rm.reta_month_id)
     LEFT OUTER JOIN   ref_agency ra ON (rm.agency_id = ra.agency_id)
     LEFT OUTER JOIN   ref_state rs ON (ra.state_id = rs.state_id)
-    GROUP BY CUBE (data_year, month_num, (state_name, state_abbr)),
+    GROUP BY CUBE (data_year, month_num, (state_name, state_postal_abbr)),
              ROLLUP (classification_name, offense_category_name,
                      (offense_name, offense_code),
                      (offense_subcat_name, offense_subcat_code))
