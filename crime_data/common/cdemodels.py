@@ -180,6 +180,10 @@ class CdeRefState(models.RefState):
         l = CdeParticipationRate(state_id=self.state_id, year=year).query.one()
         return l
 
+    @property
+    def participation_rates(self):
+        return CdeParticipationRate(state_id=self.state_id).query.order_by('data_year DESC').all()
+
 
 class CdeRefCounty(models.RefCounty):
     """A wrapper around the RefCounty model with extra methods."""
