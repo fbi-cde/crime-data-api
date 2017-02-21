@@ -901,6 +901,23 @@ class CodeIndexResponseSchema(Schema):
     key = marsh_fields.String()
 
 
+class ParticipationRateSchema(ma.ModelSchema):
+    """Response format for participation record"""
+
+    class Meta:
+        # model = cdemodels.CdeParticipationRate
+        ordered = True
+        fields = ('year', 'total_population', 'covered_population',
+                  'total_agencies', 'reporting_agencies', 'reporting_rate')
+
+    year = marsh_fields.Integer(attribute='data_year')
+    total_population = marsh_fields.Integer()
+    covered_population = marsh_fields.Integer()
+    total_agencies = marsh_fields.Integer()
+    reporting_agencies = marsh_fields.Integer()
+    reporting_rate = marsh_fields.Float()
+
+
 class StateCountyResponseSchema(ma.ModelSchema):
     """Schema for counties in the StateDetail response."""
 
@@ -920,7 +937,8 @@ class StateDetailResponseSchema(ma.ModelSchema):
         ordered = True
         fields = ('state_id', 'name', 'postal_abbr', 'fips_code', 'current_year',
                   'reporting_agencies', 'covered_population', 'reporting_rate',
-                  'total_population', 'total_agencies', 'police_officers', 'counties', )
+                  'total_population', 'total_agencies', 'police_officers', 'counties',
+                  'participation', )
 
     name = marsh_fields.String(attribute='state_name')
     postal_abbr = marsh_fields.String(attribute='state_postal_abbr')
@@ -937,6 +955,9 @@ class StateDetailResponseSchema(ma.ModelSchema):
     counties = ma.Nested(StateCountyResponseSchema,
                          attribute='counties',
                          many=True)
+    participation = ma.Nested(ParticipationRateSchema,
+                              attribute='participation_rates',
+                              many=True)
 
 
 class CountyDetailResponseSchema(ma.ModelSchema):
@@ -957,19 +978,3 @@ class CountyDetailResponseSchema(ma.ModelSchema):
     state_name = marsh_fields.String()
     state_abbr = marsh_fields.String()
 
-
-class ParticipationRateSchema(ma.ModelSchema):
-    """Response format for participation record"""
-
-    class Meta:
-        # model = cdemodels.CdeParticipationRate
-        ordered = True
-        fields = ('year', 'total_population', 'covered_population',
-                  'total_agencies', 'reporting_agencies', 'reporting_rate')
-
-    year = marsh_fields.Integer(attribute='data_year')
-    total_population = marsh_fields.Integer()
-    covered_population = marsh_fields.Integer()
-    total_agencies = marsh_fields.Integer()
-    reporting_agencies = marsh_fields.Integer()
-    reporting_rate = marsh_fields.Float()
