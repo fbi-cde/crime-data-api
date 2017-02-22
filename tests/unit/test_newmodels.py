@@ -6,7 +6,6 @@ from crime_data.common.newmodels import (RetaMonthOffenseSubcatSummary,
 import pytest
 
 class TestAgencyAnnualParticipation:
-    # Agency 191, 1991
     def test_for_agency_in_nibrs_month(self, app):
         q = AgencyAnnualParticipation.query
         q = q.filter(AgencyAnnualParticipation.data_year == 1991)
@@ -14,7 +13,7 @@ class TestAgencyAnnualParticipation:
         assert q.reported == 1
         assert q.months_reported == 2
         assert q.reported_nibrs == 1
-        assert q.morths_reported_nibrs == 2
+        assert q.months_reported_nibrs == 2
 
     def test_for_agency_not_in_nibrs_month(self, app):
         q = AgencyAnnualParticipation.query
