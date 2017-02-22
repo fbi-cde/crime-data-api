@@ -804,7 +804,8 @@ class AgencyParticipationSchema(Schema):
         model = newmodels.AgencyAnnualParticipation
         fields = ('year', 'state_name', 'state_abbr', 'agency_id', 'agency_ori',
                   'agency_name', 'agency_population', 'population_group_code',
-                  'population_group', 'reported', 'reported_12mos')
+                  'population_group', 'reported', 'months_reported',
+                  'reported_nibrs', 'months_reported_nibrs', )
         exclude = ('agency_id', )
         ordered = True
 
@@ -929,6 +930,26 @@ class StateCountyResponseSchema(ma.ModelSchema):
     population = marsh_fields.Integer()
 
 
+class ParticipationRateSchema(ma.ModelSchema):
+    """Response format for participation record"""
+
+    class Meta:
+        # model = cdemodels.CdeParticipationRate
+        ordered = True
+        fields = ('year', 'total_population', 'covered_population',
+                  'total_agencies', 'reporting_agencies', 'reporting_rate',
+                  'nibrs_reporting_agencies', 'nibrs_reporting_rate',)
+
+    year = marsh_fields.Integer(attribute='data_year')
+    total_population = marsh_fields.Integer()
+    covered_population = marsh_fields.Integer()
+    total_agencies = marsh_fields.Integer()
+    reporting_agencies = marsh_fields.Integer()
+    reporting_rate = marsh_fields.Float()
+    nibrs_reporting_agencies = marsh_fields.Integer()
+    nibrs_reporting_rate = marsh_fields.Float()
+
+
 class StateDetailResponseSchema(ma.ModelSchema):
     """Response schema for the StateDetail API method."""
 
@@ -977,4 +998,5 @@ class CountyDetailResponseSchema(ma.ModelSchema):
     police_officers = marsh_fields.Integer()
     state_name = marsh_fields.String()
     state_abbr = marsh_fields.String()
+
 

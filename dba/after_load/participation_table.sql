@@ -11,11 +11,14 @@ ra.pub_agency_name as agency_name,
 rap.population AS agency_population,
 rpg.population_group_code AS population_group_code,
 rpg.population_group_desc AS population_group,
-bool_or(CASE WHEN reported_flag = 'Y' THEN TRUE ELSE FALSE END)::int AS reported,
-bool_and(CASE WHEN reported_flag = 'Y' THEN TRUE ELSE FALSE END)::int AS reported_12mos
-from reta_month rm
+bool_or(CASE WHEN rm.reported_flag = 'Y' THEN TRUE ELSE FALSE END)::int AS reported,
+SUM(CASE WHEN rm.reported_flag = 'Y' THEN 1 ELSE 0 END)::int AS months_reported,
+bool_or(CASE WHEN nm.reported_status IN ('I', 'Z') THEN TRUE ELSE FALSE END)::int AS reported_nibrs,
+SUM(CASE WHEN nm.reported_status IN ('I', 'Z') THEN 1 ELSE 0 END)::int AS months_reported_nibrs
+FROM reta_month rm
 JOIN ref_agency ra ON ra.agency_id = rm.agency_id
 JOIN ref_state rs ON rs.state_id = ra.state_id
+LEFT OUTER JOIN nibrs_month nm ON nm.agency_id = rm.agency_id AND nm.data_year = rm.data_year AND nm.month_num = rm.month_num
 LEFT OUTER JOIN ref_agency_population rap ON rap.agency_id = rm.agency_id AND rap.data_year = rm.data_year
 LEFT OUTER JOIN ref_population_group rpg ON rpg.population_group_id = rap.population_group_id
 group by rm.data_year, rs.state_name, rs.state_postal_abbr, ra.agency_id, ra.ori, ra.pub_agency_name, rap.population, rpg.population_group_code, rpg.population_group_desc
@@ -30,6 +33,8 @@ CREATE TABLE cde_participation_rates
     total_agencies int,
     reporting_agencies int,
     reporting_rate float,
+    nibrs_reporting_agencies int,
+    nibrs_reporting_rate float,
     total_population bigint,
     covered_population bigint
 )
@@ -37,9 +42,11 @@ WITH (
     OIDS = FALSE
 );
 
-INSERT INTO cde_participation_rates(data_year, state_id, total_agencies, reporting_agencies, reporting_rate)
+INSERT INTO cde_participation_rates(data_year, state_id, total_agencies, reporting_agencies, reporting_rate, nibrs_reporting_agencies, nibrs_reporting_rate)
 SELECT c.data_year, a.state_id, COUNT(a.ori) AS total_agencies, SUM(c.reported) AS reporting_agencies,
-CAST(SUM(c.reported) AS float)/COUNT(a.ORI) AS reporting_rate
+CAST(SUM(c.reported) AS float)/COUNT(a.ORI) AS reporting_rate,
+SUM(c.reported_nibrs) AS nibrs_reporting_agencies,
+CAST(SUM(c.reported_nibrs) AS float)/COUNT(a.ORI) AS nibrs_reporting_rate
 FROM cde_annual_participation c
 JOIN ref_agency a ON a.agency_id = c.agency_id
 GROUP BY c.data_year, a.state_id;
@@ -48,9 +55,11 @@ GROUP BY c.data_year, a.state_id;
 -- the total/reporting agencies counts for each county. Its population
 -- is apportioned individually though, so its full population won't be
 -- duplicated for each county
-INSERT INTO cde_participation_rates(data_year, county_id, total_agencies, reporting_agencies, reporting_rate, total_population, covered_population)
+INSERT INTO cde_participation_rates(data_year, county_id, total_agencies, reporting_agencies, reporting_rate, nibrs_reporting_agencies, nibrs_reporting_rate, total_population, covered_population)
 SELECT c.data_year, rc.county_id, COUNT(a.ori) AS total_agencies, SUM(c.reported) AS reporting_agencies,
 CAST(SUM(c.reported) AS float)/COUNT(a.ori) AS reporting_rate,
+SUM(c.reported_nibrs) AS nibrs_reporting_agencies,
+CAST(SUM(c.reported_nibrs) AS float)/COUNT(a.ori) AS nibrs_reporting_rate,
 rcp.population AS total_population,
 SUM(rac.population) AS covered_population
 FROM cde_annual_participation c

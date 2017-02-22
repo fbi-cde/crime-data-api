@@ -35,7 +35,9 @@ class AgencyAnnualParticipation(db.Model):
     population_group_code = db.Column(db.String)
     population_group = db.Column(db.String)
     reported = db.Column(db.SmallInteger, nullable=False)
-    reported_12mos = db.Column(db.SmallInteger, nullable=False)
+    months_reported = db.Column(db.SmallInteger, nullable=False)
+    reported_nibrs = db.Column(db.SmallInteger, nullable=False)
+    months_reported_nibrs = db.Column(db.SmallInteger, nullable=False)
 
     @classmethod
     def column_is_string(cls, col_name):
@@ -73,6 +75,8 @@ class ParticipationRate(db.Model):
     total_agencies = db.Column(db.Integer)
     reporting_agencies = db.Column(db.Integer)
     reporting_rate = db.Column(db.Float)
+    nibrs_reporting_agencies = db.Column(db.Integer)
+    nibrs_reporting_rate = db.Column(db.Float)
     state_id = db.Column(db.Integer)
     county_id = db.Column(db.Integer)
 
