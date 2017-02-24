@@ -46,6 +46,26 @@ class AgenciesParticipation(CdeResource):
     tables = newmodels.AgencyAnnualParticipation
     is_groupable = False
 
+    def postprocess_filters(self, filters, args):
+        years = [x for x in filters if x[0] == 'year']
+
+        print(filters)
+        if years:
+            y = years[0]
+            data_year = y[2][0]
+            match = re.search('(\d{4})-(\d{4})', str(data_year))
+            if match:
+                data_years = list(range(int(match.group(1)), int(match.group(2))))
+            else:
+                data_years = [data_years]
+
+            print(data_year)
+            filters = [x for x in filters if x[0] != 'year']
+            filters.append(('data_year', y[1], data_years))
+
+        return filters
+
+
     @use_args(marshmallow_schemas.ArgumentsSchema)
     @swagger.use_kwargs(marshmallow_schemas.ArgumentsSchema, apply=False, locations=['query'])
     @swagger.doc(tags=['agencies', 'participation'],
