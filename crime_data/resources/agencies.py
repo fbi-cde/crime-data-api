@@ -53,4 +53,4 @@ class AgenciesParticipation(CdeResource):
     @swagger.marshal_with(marshmallow_schemas.AgenciesParticipationResponseSchema, apply=False)
     @tuning_page
     def get(self, args):
-        return self._get(args)
+        return self._get(args, csv_filename='agency_participation')

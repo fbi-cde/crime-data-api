@@ -212,7 +212,7 @@ class CdeResource(MethodResource):
         """This could potentially look at args for ordering directives in the future."""
         return qry
 
-    def _get(self, args):
+    def _get(self, args, csv_filename='incidents'):
         # TODO: apply "fields" arg
 
         self.verify_api_key(args)
@@ -237,7 +237,7 @@ class CdeResource(MethodResource):
                 self.with_metadata(qry,
                                    args), self.schema, 'csv', aggregate_many))
             output.headers[
-                "Content-Disposition"] = "attachment; filename=incidents.csv"
+                "Content-Disposition"] = "attachment; filename={}.csv".format(csv_filename)
             output.headers["Content-type"] = "text/csv"
             return output
         return self.with_metadata(qry, args)
