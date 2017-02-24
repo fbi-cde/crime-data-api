@@ -226,21 +226,27 @@ class CdeResource(MethodResource):
             qry = self.tables.group_by(qry, group_columns)
         else:
             qry = self.set_ordering(qry, args)
+        return self.render_response(qry, args, csv_filename=csv_filename)
 
-        aggregate_many = False
-
-        if args['aggregate_many'] == 'true':
-            aggregate_many = True
-
+    def render_response(self, qry, args, csv_filename='incidents'):
         if args['output'] == 'csv':
-            output = make_response(self.output_serialize(
-                self.with_metadata(qry,
-                                   args), self.schema, 'csv', aggregate_many))
+            aggregate_many = False
+
+            if args['aggregate_many'] == 'true':
+                aggregate_many = True
+
+            output = make_response(
+                self.output_serialize(
+                    self.with_metadata(qry, args),
+                    self.schema,
+                    'csv',
+                    aggregate_many))
             output.headers[
-                "Content-Disposition"] = "attachment; filename={}.csv".format(csv_filename)
-            output.headers["Content-type"] = "text/csv"
+                'Content-Disposition'] = 'attachment; filename={}.csv'.format(csv_filename)
+            output.headers['Content-type'] = 'text/csv'
             return output
-        return self.with_metadata(qry, args)
+        else:
+            return self.with_metadata(qry, args)
 
     def _serialize_dict(self,
                         data,

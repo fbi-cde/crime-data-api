@@ -48,8 +48,7 @@ class StateParticipation(CdeResource):
     def get(self, args, state_id=None, state_abbr=None):
         self.verify_api_key(args)
 
-        if state_abbr:
-            state_id = cdemodels.CdeRefState.get(abbr=state_abbr).one().state_id
-
-        rates = cdemodels.CdeParticipationRate(state_id=state_id).query.order_by('data_year DESC').all()
-        return jsonify(self.schema.dump(rates).data)
+        state = cdemodels.CdeRefState.get(abbr=state_abbr, state_id=state_id).one()
+        rates = cdemodels.CdeParticipationRate(state_id=state.state_id).query.order_by('data_year DESC').all()
+        filename = '{}_state_participation'.format(state.state_postal_abbr)
+        return self.render_response(rates, args, csv_filename=filename)
