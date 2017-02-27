@@ -1362,6 +1362,12 @@ class OffenseOffenderCountView(OffenseSubCountView):
     def view_name(self):
         return 'offense_offender_counts'
 
+class OffenseByOffenseTypeCountView(OffenseSubCountView):
+    VARIABLES = ['weapon_name', 'method_entry_code', 'num_premises_entered', 'location_name']
+
+    @property
+    def view_name(self):
+        return 'offense_offense_counts'
 
 class OffenseCargoTheftCountView(OffenseSubCountView):
 

@@ -202,6 +202,10 @@ def add_resources(app):
                      '/offenders/count/states/<int:state_id>/<string:variable>/offenses',
                      '/offenders/count/states/<string:state_abbr>/<string:variable>/offenses',
                      '/offenders/count/national/<string:variable>/offenses')
+    api.add_resource(crime_data.resources.offenses.OffenseByOffenseTypeSubcounts,
+                     '/offenses/count/states/<int:state_id>/<string:variable>/offenses',
+                     '/offenses/count/states/<string:state_abbr>/<string:variable>/offenses',
+                     '/offenses/count/national/<string:variable>/offenses')
     api.add_resource(crime_data.resources.hate_crime.HateCrimeOffenseSubcounts,
                      '/hc/count/states/<int:state_id>/<string:variable>/offenses',
                      '/hc/count/states/<string:state_abbr>/<string:variable>/offenses',
@@ -238,6 +242,7 @@ def add_resources(app):
     docs.register(crime_data.resources.hate_crime.HateCrimesCountNational)
     docs.register(crime_data.resources.hate_crime.HateCrimesCountStates)
     docs.register(crime_data.resources.hate_crime.HateCrimesCountCounties)
+    docs.register(crime_data.resources.offenses.OffenseByOffenseTypeSubcounts)
     docs.register(crime_data.resources.victims.VictimOffenseSubcounts)
     docs.register(crime_data.resources.offenders.OffenderOffenseSubcounts)
     docs.register(crime_data.resources.cargo_theft.CargoTheftOffenseSubcounts)
