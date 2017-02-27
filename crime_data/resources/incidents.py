@@ -111,5 +111,6 @@ class CachedIncidentsCount(CdeResource):
             'Returns counts by year for incidents. '
             'Incidents can be grouped for counting with the `by` parameter'))
     @swagger.marshal_with(marshmallow_schemas.IncidentCountSchema, apply=False)
+    @tuning_page
     def get(self, args):
         return self._get(args)
