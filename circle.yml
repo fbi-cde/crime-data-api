@@ -1,6 +1,6 @@
 machine:
   python:
-    version: 3.4.6
+    version: 3.4.5
   environment:
     CF_API: https://api.fr.cloud.gov
     CF_USERNAME: fbi-crime-explorer_deployer
