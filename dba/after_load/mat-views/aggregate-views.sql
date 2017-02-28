@@ -157,5 +157,5 @@ create materialized view offense_offense_counts as
     SELECT *,1995 as year  FROM offense_offense_counts_1995 UNION
     SELECT *,1994 as year  FROM offense_offense_counts_1994 UNION 
     SELECT *,1993 as year  FROM offense_offense_counts_1993 UNION 
-    SELECT *,1993 as year  FROM offense_offense_counts_1992 UNION
-    SELECT *,1992 as year  FROM offense_offense_counts_1991;
+    SELECT *,1992 as year  FROM offense_offense_counts_1992 UNION
+    SELECT *,1991 as year  FROM offense_offense_counts_1991;
