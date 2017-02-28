@@ -3,7 +3,8 @@ from webargs.flaskparser import use_args
 from itertools import filterfalse
 from crime_data.common import cdemodels, marshmallow_schemas, models, newmodels
 from crime_data.common.base import CdeResource, tuning_page, ExplorerOffenseMapping
-
+from crime_data.extensions import DEFAULT_MAX_AGE
+from flask.ext.cachecontrol import cache
 
 def _is_string(col):
     col0 = list(col.base_columns)[0]
@@ -29,6 +30,7 @@ class IncidentsList(CdeResource):
                         locations=['query'])
     @swagger.marshal_with(marshmallow_schemas.IncidentsListResponseSchema,
                           apply=False)
+    @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page
     def get(self, args):
         return self._get(args)
@@ -50,6 +52,7 @@ class IncidentsDetail(CdeResource):
     @swagger.doc(
         tags=['incidents'],
         description='Return the specific record for a single incident')
+    @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page
     def get(self, args, id):
         self.verify_api_key(args)
@@ -71,6 +74,7 @@ class IncidentsCount(CdeResource):
             'Returns counts by year for incidents. '
             'Incidents can be grouped for counting with the `by` parameter'))
     @swagger.marshal_with(marshmallow_schemas.IncidentCountSchema, apply=False)
+    @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page
     def get(self, args):
         return self._get(args)
@@ -111,6 +115,7 @@ class CachedIncidentsCount(CdeResource):
             'Returns counts by year for incidents. '
             'Incidents can be grouped for counting with the `by` parameter'))
     @swagger.marshal_with(marshmallow_schemas.IncidentCountSchema, apply=False)
+    @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page
     def get(self, args):
         return self._get(args)

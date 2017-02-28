@@ -1,5 +1,7 @@
 from webargs.flaskparser import use_args
 import flask_apispec as swagger
+from crime_data.extensions import DEFAULT_MAX_AGE
+from flask.ext.cachecontrol import cache
 
 from crime_data.common import cdemodels, marshmallow_schemas
 from crime_data.common.base import CdeResource, tuning_page
@@ -19,6 +21,7 @@ class OffensesList(CdeResource):
     @swagger.marshal_with(marshmallow_schemas.OffensesListResponseSchema, apply=False)
     @swagger.doc(tags=['offenses'],
                  description='Returns a list of all offenses.')
+    @cache(max_age=DEFAULT_MAX_AGE, public=True)
     def get(self, args):
         self.verify_api_key(args)
         result = cdemodels.CdeCrimeType.query
@@ -45,6 +48,7 @@ class OffensesCountNational(CdeResource):
             'Returns counts by year for offenses. '
             'Offense incidents - Nationwide'))
     @swagger.marshal_with(marshmallow_schemas.IncidentCountSchema, apply=False)
+    @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page
     def get(self, args, variable):
         self.verify_api_key(args)
@@ -75,6 +79,7 @@ class OffensesCountStates(CdeResource):
             'Returns counts by year for offenses. '
             'Offense incidents - By State'))
     @swagger.marshal_with(marshmallow_schemas.IncidentCountSchema, apply=False)
+    @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page
     def get(self, args, state_id=None, state_abbr=None, variable=None):
         self.verify_api_key(args)
@@ -103,6 +108,7 @@ class OffensesCountCounties(CdeResource):
              'Returns counts by year for offenses. '
              'Offense Incidents - By county'))
     @swagger.marshal_with(marshmallow_schemas.IncidentCountSchema, apply=False)
+    @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page
     def get(self, args, county_id, variable):
         self.verify_api_key(args)
@@ -131,6 +137,7 @@ class OffenseByOffenseTypeSubcounts(CdeResource):
              'Returns counts by year for victims. '
              'Victim Incidents - By county'))
     @swagger.marshal_with(marshmallow_schemas.OffenseCountViewResponseSchema, apply=False)
+    @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page
     def get(self, args, variable, state_id=None, state_abbr=None):
         self.verify_api_key(args)

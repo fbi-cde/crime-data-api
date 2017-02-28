@@ -1,4 +1,5 @@
 from flask import jsonify
+from flask.ext.cachecontrol import cache_for
 from webargs.flaskparser import use_args
 import flask_apispec as swagger
 from marshmallow import fields, Schema
@@ -46,6 +47,7 @@ class MetaDetail(CdeResource):
                  description=('Returns meta information about the query endpoint. '
                               'Currently, this is mainly a list of filters that can '
                               'be added to queries.'))
+    @cache_for(hours=1)
     def get(self, endpoint):
         endpoint = endpoint.rstrip('/')
         out = {

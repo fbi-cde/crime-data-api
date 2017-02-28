@@ -25,7 +25,7 @@ from crime_data.assets import assets
 from crime_data.common.marshmallow_schemas import ma
 from crime_data.common.models import db
 from crime_data.common.credentials import get_credential
-from crime_data.extensions import (cache, debug_toolbar, migrate)
+from crime_data.extensions import (cache, debug_toolbar, migrate, cache_control)
 from flask_apispec.extension import FlaskApiSpec
 from crime_data.settings import ProdConfig
 
@@ -59,6 +59,7 @@ def register_extensions(app):
     ma.init_app(app)
     debug_toolbar.init_app(app)
     migrate.init_app(app, db)
+    cache_control.init_app(app)
     return None
 
 

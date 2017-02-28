@@ -1,5 +1,7 @@
 from webargs.flaskparser import use_args
 import flask_apispec as swagger
+from crime_data.extensions import DEFAULT_MAX_AGE
+from flask.ext.cachecontrol import cache
 
 from crime_data.common import cdemodels, marshmallow_schemas
 from crime_data.common.base import CdeResource, tuning_page
@@ -13,6 +15,7 @@ class ArrestsCountResource(CdeResource):
     @swagger.use_kwargs(marshmallow_schemas.GroupableArgsSchema, apply=False, locations=['query'])
     @swagger.doc(tags=['arrests'],
                  description='Returns counts of arrests. These can be grouped further with the by column.')
+    @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page
     def get(self, args):
         return self._get(args)
@@ -26,6 +29,7 @@ class ArrestsCountByRace(ArrestsCountResource):
     @swagger.use_kwargs(marshmallow_schemas.GroupableArgsSchema, apply=False, locations=['query'])
     @swagger.doc(tags=['arrests'],
                  description='Returns counts of arrests. These can be grouped further with the by column.')
+    @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page
     def get(self, args):
         return self._get(args)
@@ -39,6 +43,7 @@ class ArrestsCountByEthnicity(ArrestsCountResource):
     @swagger.use_kwargs(marshmallow_schemas.GroupableArgsSchema, apply=False, locations=['query'])
     @swagger.doc(tags=['arrests'],
                  description='Returns counts of arrests. These can be grouped further with the by column.')
+    @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page
     def get(self, args):
         return self._get(args)
@@ -52,6 +57,7 @@ class ArrestsCountByAgeSex(ArrestsCountResource):
     @swagger.use_kwargs(marshmallow_schemas.GroupableArgsSchema, apply=False, locations=['query'])
     @swagger.doc(tags=['arrests'],
                  description='Returns counts of arrests. These can be grouped further with the by column.')
+    @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page
     def get(self, args):
         return self._get(args)

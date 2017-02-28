@@ -3,6 +3,8 @@ import re
 from flask_restful import fields, marshal_with, reqparse
 from webargs.flaskparser import use_args
 import flask_apispec as swagger
+from crime_data.extensions import DEFAULT_MAX_AGE
+from flask.ext.cachecontrol import cache
 
 from crime_data.common import cdemodels, models, newmodels
 from crime_data.common import marshmallow_schemas
@@ -22,6 +24,7 @@ class AgenciesList(AgenciesResource):
     @swagger.marshal_with(marshmallow_schemas.AgenciesListResponseSchema, apply=False)
     @swagger.doc(tags=['agencies'],
                  description='Returns a paginated list of all agencies')
+    @cache(max_age=DEFAULT_MAX_AGE, public=True)
     def get(self, args):
         self.verify_api_key(args)
         result = cdemodels.CdeRefAgency.get()
@@ -34,6 +37,7 @@ class AgenciesDetail(AgenciesResource):
     @swagger.doc(tags=['agencies'],
                  description='Returns information on a single agency')
     @swagger.marshal_with(marshmallow_schemas.AgenciesDetailResponseSchema, apply=False)
+    @cache(max_age=DEFAULT_MAX_AGE, public=True)
     def get(self, args, nbr):
         self.verify_api_key(args)
         agency = cdemodels.CdeRefAgency.get(nbr)
@@ -71,6 +75,7 @@ class AgenciesParticipation(CdeResource):
     @swagger.doc(tags=['agencies', 'participation'],
                  description='Returns data on agency participation. May be filtered by agency fields')
     @swagger.marshal_with(marshmallow_schemas.AgenciesParticipationResponseSchema, apply=False)
+    @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page
     def get(self, args):
         return self._get(args, csv_filename='agency_participation')
