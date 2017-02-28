@@ -212,7 +212,7 @@ class CdeResource(MethodResource):
         """This could potentially look at args for ordering directives in the future."""
         return qry
 
-    def _get(self, args):
+    def _get(self, args, csv_filename='incidents'):
         # TODO: apply "fields" arg
 
         self.verify_api_key(args)
@@ -226,21 +226,27 @@ class CdeResource(MethodResource):
             qry = self.tables.group_by(qry, group_columns)
         else:
             qry = self.set_ordering(qry, args)
+        return self.render_response(qry, args, csv_filename=csv_filename)
 
-        aggregate_many = False
-
-        if args['aggregate_many'] == 'true':
-            aggregate_many = True
-
+    def render_response(self, qry, args, csv_filename='incidents'):
         if args['output'] == 'csv':
-            output = make_response(self.output_serialize(
-                self.with_metadata(qry,
-                                   args), self.schema, 'csv', aggregate_many))
+            aggregate_many = False
+
+            if args['aggregate_many'] == 'true':
+                aggregate_many = True
+
+            output = make_response(
+                self.output_serialize(
+                    self.with_metadata(qry, args),
+                    self.schema,
+                    'csv',
+                    aggregate_many))
             output.headers[
-                "Content-Disposition"] = "attachment; filename=incidents.csv"
-            output.headers["Content-type"] = "text/csv"
+                'Content-Disposition'] = 'attachment; filename={}.csv'.format(csv_filename)
+            output.headers['Content-type'] = 'text/csv'
             return output
-        return self.with_metadata(qry, args)
+        else:
+            return self.with_metadata(qry, args)
 
     def _serialize_dict(self,
                         data,
