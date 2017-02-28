@@ -10,6 +10,7 @@ itsdangerous==0.24
 click>=5.0
 flask-httpauth
 Flask-Script>=0.6
+Flask-CacheControl==0.1.2
 
 # Database
 Flask-SQLAlchemy==2.1
