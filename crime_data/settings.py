@@ -15,7 +15,7 @@ class Config(object):
     DEBUG_TB_INTERCEPT_REDIRECTS = False
     CACHE_TYPE = 'simple'  # Can be "memcached", "redis", etc.
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-
+    # JSON_SORT_KEYS=False
 
 class ProdConfig(Config):
     """Production configuration."""

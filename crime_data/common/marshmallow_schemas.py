@@ -802,10 +802,12 @@ class IncidentViewCountSchema(Schema):
 class AgencyParticipationSchema(Schema):
     class Meta:
         model = newmodels.AgencyAnnualParticipation
-        fields = ('year', 'state_name', 'state_abbr', 'agency_id', 'agency_ori',
-                  'agency_name', 'agency_population', 'population_group_code',
-                  'population_group', 'reported', 'months_reported',
-                  'reported_nibrs', 'months_reported_nibrs', )
+        fields = ('state_name', 'state_abbr', 'year', 'agency_ori',
+                  'agency_name', 'reported', 'months_reported',
+                  'reported_nibrs', 'months_reported_nibrs',
+                  'population_group_code',
+                  'population_group', 'agency_population',)
+
         exclude = ('agency_id', )
         ordered = True
 
