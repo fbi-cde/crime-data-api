@@ -6,6 +6,7 @@ from urllib import parse
 from decimal import Decimal
 from ast import literal_eval
 from functools import wraps
+from collections import OrderedDict
 
 import sqltap
 from flask import make_response, request
@@ -323,11 +324,12 @@ class CdeResource(MethodResource):
 
             # Serialize Data to flattened list of dicts.
             for d in data['results']:
-                to_csv.append(self._serialize_dict(d, {}))
+                to_csv.append(self._serialize_dict(d, OrderedDict()))
 
             # Fill in any missing keys.
-            empty = dict.fromkeys(set().union(*to_csv), "")
-            to_csv = [dict(empty, **d) for d in to_csv]
+            empty = OrderedDict.fromkeys(to_csv[0].keys(), "")
+            print(empty)
+            to_csv = [OrderedDict(empty, **d) for d in to_csv]
 
             # Generate CSV.
             # TODO: Sort by columns.
