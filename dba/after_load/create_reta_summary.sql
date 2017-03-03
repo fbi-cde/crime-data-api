@@ -66,10 +66,10 @@ FROM
             am.month_num AS month,
             rs.state_name,
             rs.state_postal_abbr AS state,
-            'Property' as classification,
-            'Arson' as offense_category,
-            'X_ARS' as offense_code,
-            'Arson' as offense,
+            'Property'::text as classification,
+            'Arson'::text as offense_category,
+            'X_ARS'::text as offense_code,
+            'Arson'::text as offense,
             asuc.subcategory_name AS offense_subcat,
             asuc.subcategory_code AS offense_subcat_code
     FROM arson_month_by_subcat ambs
