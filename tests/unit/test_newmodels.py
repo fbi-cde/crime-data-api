@@ -78,11 +78,11 @@ class TestArsonAdditionsToRetaMonthOffenseSubcatSummary:
         q = q.filter(RetaMonthOffenseSubcatSummary.year == None)
         q = q.filter(RetaMonthOffenseSubcatSummary.state == 'VA')
         q = q.filter(RetaMonthOffenseSubcatSummary.offense_subcat_code == None).one()
-        assert q.reported == 255
+        assert q.reported == 235
         assert q.unfounded == 33
-        assert q.actual == 222
-        assert q.cleared == 34
-        assert q.juvenile_cleared == 14
+        assert q.actual == 202
+        assert q.cleared == 32
+        assert q.juvenile_cleared == 12
 
     def test_arson_fields_for_arson_total(self, app):
         q = RetaMonthOffenseSubcatSummary.query
@@ -92,11 +92,11 @@ class TestArsonAdditionsToRetaMonthOffenseSubcatSummary:
         q = q.filter(RetaMonthOffenseSubcatSummary.year == None)
         q = q.filter(RetaMonthOffenseSubcatSummary.state == None)
         q = q.filter(RetaMonthOffenseSubcatSummary.offense_subcat_code == None).one()
-        assert q.reported == 4293
+        assert q.reported == 4033
         assert q.unfounded == 482
-        assert q.actual == 3811
-        assert q.cleared == 625
-        assert q.juvenile_cleared == 221
+        assert q.actual == 3551
+        assert q.cleared == 608
+        assert q.juvenile_cleared == 215
 
     def test_arson_fields_for_state_month_year(self, app):
         q = RetaMonthOffenseSubcatSummary.query
@@ -219,8 +219,8 @@ class TestArsonAdditionsToRetaMonthOffenseSubcatSummary:
         q = q.filter(RetaMonthOffenseSubcatSummary.year == None)
         q = q.filter(RetaMonthOffenseSubcatSummary.state == None)
         q = q.filter(RetaMonthOffenseSubcatSummary.offense_category == None).one()
-        assert q.reported == 4372
+        assert q.reported == 4112
         assert q.unfounded == 482
-        assert q.actual == 3890
-        assert q.cleared == 626
-        assert q.juvenile_cleared == 221
+        assert q.actual == 3630
+        assert q.cleared == 610
+        assert q.juvenile_cleared == 215
