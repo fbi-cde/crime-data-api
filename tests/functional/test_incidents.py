@@ -8,6 +8,7 @@ import pytest
 from crime_data.common.newmodels import NibrsIncidentRepresentation
 from crime_data.common.models import db
 from crime_data.common.base import ExplorerOffenseMapping
+from flex.core import validate_api_call
 
 # class TestIncidentsEndpoint:
 #     def test_incidents_endpoint_exists(self, testapp):
@@ -291,11 +292,15 @@ from crime_data.common.base import ExplorerOffenseMapping
 #         res = testapp.get('/incidents/?victim.injury_code=N')
 #         assert res.json['results']
 
-
 class TestIncidentsCountEndpoint:
     def test_instances_count_exists(self, testapp):
         res = testapp.get('/incidents/count/')
         assert res.status_code == 200
+
+    def test_instances_count_matches_swagger(self, testapp, swagger):
+        res = testapp.get('/incidents/count/')
+        # import pdb;pdb.set_trace()
+        validate_api_call(swagger, raw_request=res.request, raw_response=res)
 
     def test_incidents_count_endpoint_includes_metadata(self, testapp):
         res = testapp.get('/incidents/count/')
@@ -321,35 +326,42 @@ class TestIncidentsCountEndpoint:
     #     rows = [(row['year'], row['ori']) for row in res.json['results']]
     #     assert len(rows) == len(set(rows))
 
-    def test_instances_count_groups_by_state(self, testapp):
+    def test_instances_count_groups_by_state(self, testapp, swagger):
         res = testapp.get('/incidents/count/?by=state')
         rows = [row['state'] for row in res.json['results']]
         assert len(rows) == len(set(rows))
+        validate_api_call(swagger, raw_request=res.request, raw_response=res)
 
-    def test_instances_count_groups_by_offense(self, testapp):
+    def test_instances_count_groups_by_offense(self, testapp, swagger):
         res = testapp.get('/incidents/count/?by=offense')
         rows = [row['offense'] for row in res.json['results']]
         assert len(rows) == len(set(rows))
+        validate_api_call(swagger, raw_request=res.request, raw_response=res)
 
     @pytest.mark.parametrize('explorer_offense', ExplorerOffenseMapping.RETA_OFFENSE_MAPPING.keys())
-    def test_instances_count_filter_by_explorer_offense(self, testapp, explorer_offense):
+    def test_instances_count_filter_by_explorer_offense(self, testapp, swagger, explorer_offense):
         url = '/incidents/count/?explorer_offense={}'.format(explorer_offense)
         res = testapp.get(url)
         assert 'pagination' in res.json
+        validate_api_call(swagger, raw_request=res.request, raw_response=res)
 
-    def test_instances_count_sorts_by_state(self, testapp):
-        res = testapp.get('/incidents/count/?by=state')
-        state_names = [r['state'] for r in res.json['results']]
-        assert state_names == sorted(state_names)
+    @pytest.mark.parametrize('groupby', ["year", "month", "offense_subcat", "offense_subcat_code", "offense", "offense_code", "offense_category", "classification", "state", "state_name"])
+    def test_instances_count_grouping(self, swagger, testapp, groupby):
+        res = testapp.get('/incidents/count/?by={}'.format(groupby))
+        group_values = [r[groupby] for r in res.json['results']]
+        assert group_values == sorted(group_values)
+        validate_api_call(swagger, raw_request=res.request, raw_response=res)
 
-    def test_instances_count_filters_on_subcategory(self, testapp):
+    def test_instances_count_filters_on_subcategory(self, testapp, swagger):
         res = testapp.get('/incidents/count/?by=year,offense_subcat_code&offense_subcat_code=SUM_HOM')
         assert res.json['results']
+        validate_api_call(swagger, raw_request=res.request, raw_response=res)
         for row in res.json['results']:
             assert row['offense_subcat_code'] == 'SUM_HOM'
 
-    def test_instances_count_filters_on_category(self, testapp):
+    def test_instances_count_filters_on_category(self, testapp, swagger):
         res = testapp.get('/incidents/count/?by=year,offense_category&offense_category=Robbery')
+        validate_api_call(swagger, raw_request=res.request, raw_response=res)
         assert res.json['results']
         for row in res.json['results']:
             assert row['offense_category'] == 'Robbery'
@@ -362,34 +374,40 @@ class TestIncidentsCountEndpoint:
         for row in res.json['results']:
             assert row['city'] == 'Columbus'
 
-    def test_instances_count_bad_filter_400s(self, testapp):
+    def test_instances_count_bad_filter_400s(self, testapp, swagger):
         res = testapp.get('/incidents/count/?llamas=angry', expect_errors=True)
+        validate_api_call(swagger, raw_request=res.request, raw_response=res)
         assert res.status_code == 400
 
-    def test_instances_count_bad_group_by_400s(self, testapp):
+    def test_instances_count_bad_group_by_400s(self, testapp, swagger):
         res = testapp.get('/incidents/count/?by=llamas', expect_errors=True)
         assert res.status_code == 400
+        # validate_api_call(swagger, raw_request=res.request, raw_response=res)
 
-    def test_instances_count_filter_names_case_insensitive(self, testapp):
+    def test_instances_count_filter_names_case_insensitive(self, testapp, swagger):
         res = testapp.get('/incidents/count/?by=year,offense_category&offense_category=Robbery')
+        validate_api_call(swagger, raw_request=res.request, raw_response=res)
         assert res.json['results']
         for row in res.json['results']:
             assert row['offense_category'] == 'Robbery'
 
-    def test_instances_count_filter_values_case_insensitive(self, testapp):
+    def test_instances_count_filter_values_case_insensitive(self, testapp, swagger):
         res = testapp.get('/incidents/count/?by=year,offense_category&offense_category=RobBeRY')
+        validate_api_call(swagger, raw_request=res.request, raw_response=res)
         assert res.json['results']
         for row in res.json['results']:
             assert row['offense_category'] == 'Robbery'
 
-    def test_instances_count_equality_filter_by_number(self, testapp):
+    def test_instances_count_equality_filter_by_number(self, testapp, swagger):
         res = testapp.get('/incidents/count/?by=year,month&month=1')
+        validate_api_call(swagger, raw_request=res.request, raw_response=res)
         assert res.json['results']
         for row in res.json['results']:
             assert row['month'] == 1
 
-    def test_instances_count_equality_filter_by_multiple_number(self, testapp):
+    def test_instances_count_equality_filter_by_multiple_number(self, testapp, swagger):
         res = testapp.get('/incidents/count/?by=year,month&month=8,10')
+        validate_api_call(swagger, raw_request=res.request, raw_response=res)
         assert res.json['results']
         for row in res.json['results']:
             assert row['month'] in (8, 10)

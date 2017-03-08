@@ -1,0 +1,361 @@
+{
+  "baseUrl": "/",
+  "info": {
+    "title": "FBI Crime Data API", 
+    "version": "v1"
+  },
+  "securityDefinitions": {
+    "api_key": {
+      "type": "apiKey",
+      "name": "api_key",
+      "in": "query"
+    }
+  },
+  "security": [
+    {"api_key": []}
+  ],
+  "parameters": {
+    "aggregateManyParam": {
+      "default": "false",
+      "in": "query",
+      "name": "aggregate_many",
+      "required": false,
+      "type": "string"
+    },
+    "fieldsParam": {
+      "in": "query",
+      "name": "fields",
+      "required": false,
+      "type": "string"
+    },
+    "perPageParam": {
+      "default": 10,
+      "format": "int32",
+      "in": "query",
+      "name": "per_page",
+      "required": false,
+      "type": "integer"
+    },
+    "pageParam": {
+      "default": 1,
+      "format": "int32",
+      "in": "query",
+      "name": "page",
+      "required": false,
+      "type": "integer"
+    },
+    "incidentCountGroupByParam": {
+      "in": "query",
+      "name": "by",
+      "required": false,
+      "type": "array",
+      "default": ["year"],
+      "collectionFormat": "csv",
+      "items": {
+        "type": "string",
+        "enum": ["year", "month", "offense_subcat", "offense_subcat_code", "offense", "offense_code", "offense_category", "classification", "state", "state_name"]
+      }
+    },
+    "outputParam": {
+      "default": "json",
+      "in": "query",
+      "name": "output",
+      "required": false,
+      "type": "string"
+    },
+    "yearParam": {
+      "in": "query",
+      "name": "year",
+      "description": "Use this field to limit results to a single year. Note that a range can be specified by using the comparison operators and multiple arguments like `&year>2000&year<2010`",
+      "required": false,
+      "type": "array",
+      "collectionFormat": "csv",
+      "items": {
+        "type": "integer",
+        "minimum": 1960
+      }
+    },
+    "monthParam": {
+      "in": "query",
+      "name": "month",
+      "description": "Use this field to limit results to the specified month. Multiple months can be specified with multiple query parameters or by using comparison operators in the query",
+      "required": false,
+      "allowMultiple": true,
+      "type": "array",
+      "collectionFormat": "csv",
+      "items": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 12
+      }
+    },
+    "stateParam": {
+      "in": "query",
+      "name": "State ID",
+      "description": "The two-letter postal abbreviation for the state",
+      "required": false,
+      "type": "array",
+      "collectionFormat": "csv",
+      "items": {
+        "type": "string",
+        "pattern": "[A-Z]{2}"
+      }
+    },
+    "offenseCategoryParam": {
+      "in": "query",
+      "name": "SRS Offense Category",
+      "description": "The names of SRS offense categories to search against",
+      "required": false,
+      "type": "array",
+      "collectionFormat": "csv",
+      "items": {
+        "type": "string"
+      }
+    },
+    "explorerOffenseParam": {
+      "in": "query",
+      "name": "Explorer Offense",
+      "description": "For the convenience of the Crime Data Explorer, this method takes a generic crime offense name and searches against the specific SRS or NIBRS offense in the backend models",
+      "required": false,
+      "type": "string",
+      "enum": ["aggravated-assault", "arson", "burglary", "larceny", "motor-vehicle-theft", "homicide", "rape", "robbery"]
+    }
+  },
+  "definitions": {
+    "Error": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "description": "An error message",
+          "type": "string"
+        }
+      },
+      "required": ["message"]
+    },
+    "Pagination": {
+      "properties": {
+        "count": {
+          "format": "int32", 
+          "type": "integer"
+        }, 
+        "page": {
+          "format": "int32", 
+          "type": "integer"
+        }, 
+        "pages": {
+          "format": "int32", 
+          "type": "integer"
+        }, 
+        "per_page": {
+          "format": "int32", 
+          "type": "integer"
+        }
+      }, 
+      "type": "object",
+      "additionalProperties": false
+    },
+    "IncidentCount": {
+      "description": "",
+      "required": ["actual", "cleared", "reported", "unfounded"],
+      "properties": {
+        "actual": {
+          "format": "int32",
+          "readOnly": true,
+          "type": "integer"
+        },
+        "cleared": {
+          "format": "int32",
+          "readOnly": true,
+          "type": "integer"
+        },
+        "juvenile_cleared": {
+          "format": "int32",
+          "readOnly": true,
+          "type": "integer"
+        },
+        "reported": {
+          "format": "int32",
+          "readOnly": true,
+          "type": "integer"
+        },
+        "unfounded": {
+          "format": "int32",
+          "readOnly": true,
+          "type": "integer"
+        },
+        "year": {
+          "format": "int32",
+          "readOnly": true,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "ParticipationCount": {
+      "type": "object",
+      "required": ["year", "reporting_agencies", "total_agencies", "reporting_rate", "total_population",
+                   "nibrs_reporting_agencies", "nibrs_reporting_rate",
+                   "covered_population", "nibrs_covered_population"],
+      "properties": {
+        "year": {
+          "format": "int32",
+          "type": "integer",
+          "description": "The year that these participation statistics were calculated for",
+          "minimum": 1960
+        },
+        "reporting_agencies": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "total_agencies": {
+          "description": "The total number of agencies for the specific year",
+          "format": "int32",
+          "type": "integer",
+          "minimum": 0
+        },
+        "reporting_rate": {
+          "description": "A rate of which agencies have filed either an SRS or NIBRS report in the given year",
+          "format": "float",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "total_population": {
+          "description": "The sum of the population within the jurisdictions of all agencies for that year",
+          "format": "int32",
+          "type": "integer",
+          "minimum": 0
+        },
+        "nibrs_reporting_agencies": {
+          "description": "The number of agencies who filed a NIBRS report in the given year",
+          "format": "int32",
+          "type": "integer"
+        },
+        "nibrs_reporting_rate": {
+          "description": "A rate of how many agencies filed a NIBRS report in a given year",
+          "format": "float",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "covered_population": {
+          "description": "The total population within jurisdictions of agencies who filed either a SRS or NIBRS report in the given year.",
+          "anyOf": [
+            {
+              "format": "int32",
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "nibrs_covered_population": {
+          "description": "The total population within jurisdictions of agencies who filed either a NIBRS report in the given year.",
+          "anyOf": [
+            {
+              "format": "int32",
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "schemes": ["https"],
+  "host": "crime-data-api.fbi.gov",
+  "produces": ["application/json", "text/csv"],
+  "paths": {
+    "/incidents/count/": {
+      "get": {
+        "description": "Returns counts by year for incidents.\nIncidents can also be grouped for counting with the `by` parameter, which accepts 1 or more of the following fields in a comma-delimited list: `year`, `month`, `offense_subcat`, `offense_subcat_code`, `offense`, `offense_code`, `offense_category`, `classification`, `state`, `state_name`",
+        "parameters": [
+          {"$ref": "#/parameters/aggregateManyParam"},
+          {"$ref": "#/parameters/fieldsParam"},
+          {"$ref": "#/parameters/pageParam"},
+          {"$ref": "#/parameters/perPageParam"},
+          {"$ref": "#/parameters/outputParam"},
+          {"$ref": "#/parameters/incidentCountGroupByParam"},
+          {"$ref": "#/parameters/yearParam"},
+          {"$ref": "#/parameters/monthParam"},
+          {"$ref": "#/parameters/stateParam"},
+          {"$ref": "#/parameters/offenseCategoryParam"},
+          {"$ref": "#/parameters/explorerOffenseParam"}
+        ],
+        "responses": {
+          "default": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "200": {
+            "description": "",
+            "schema": {
+              "required": ["pagination", "results"],
+              "properties": {
+                "pagination": {
+                  "$ref": "#/definitions/Pagination"
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/IncidentCount"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "incidents"
+        ]
+      }
+    },
+    "/participation/national": {
+      "get": {
+        "description": "Returns national participation data",
+        "parameters": [
+          {"$ref": "#/parameters/aggregateManyParam"},
+          {"$ref": "#/parameters/fieldsParam"},
+          {"$ref": "#/parameters/pageParam"},
+          {"$ref": "#/parameters/perPageParam"},
+          {"$ref": "#/parameters/outputParam"}
+        ],
+        "responses": {
+          "default": {
+            "description": "Standard error response",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "200": {
+            "description": "Returns a paginated list of statistics for nationwide participation per year in revers chronological order",
+            "schema": {
+              "type": "object",
+              "required": ["pagination", "results"],
+              "properties": {
+                "pagination": {
+                  "$ref": "#/definitions/Pagination"
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/ParticipationCount"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "swagger": "2.0", 
+  "tags": []
+}
