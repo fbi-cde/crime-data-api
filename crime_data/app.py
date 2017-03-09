@@ -19,6 +19,7 @@ import crime_data.resources.victims
 import crime_data.resources.cargo_theft
 import crime_data.resources.hate_crime
 import crime_data.resources.geo
+import crime_data.resources.participation
 
 from crime_data import commands
 from crime_data.assets import assets
@@ -154,6 +155,10 @@ def add_resources(app):
                      '/geo/counties/<string:fips>')
 
 
+    api.add_resource(crime_data.resources.participation.NationalParticipation,
+                     '/participation/national')
+
+
     api.add_resource(crime_data.resources.offenses.OffensesCountNational,
                      '/offenses/count/national/<string:variable>')
     api.add_resource(crime_data.resources.offenses.OffensesCountStates,
@@ -227,6 +232,7 @@ def add_resources(app):
     # docs.register(crime_data.resources.arrests.ArrestsCountByRace)
     # docs.register(crime_data.resources.arrests.ArrestsCountByEthnicity)
     # docs.register(crime_data.resources.arrests.ArrestsCountByAgeSex)
+    docs.register(crime_data.resources.participation.NationalParticipation)
     docs.register(crime_data.resources.meta.MetaDetail)
     docs.register(crime_data.resources.geo.StateDetail)
     docs.register(crime_data.resources.geo.CountyDetail)

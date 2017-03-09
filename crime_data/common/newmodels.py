@@ -80,6 +80,11 @@ class ParticipationRate(db.Model):
     state_id = db.Column(db.Integer)
     county_id = db.Column(db.Integer)
 
+    state = relationship('RefState', foreign_keys=[state_id],
+                         primaryjoin='RefState.state_id == ParticipationRate.state_id')
+    county = relationship('RefCounty', foreign_keys=[county_id],
+                          primaryjoin='RefCounty.county_id == ParticipationRate.county_id')
+
 
 class CreatableModel:
     @classmethod
