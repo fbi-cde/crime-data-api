@@ -117,10 +117,11 @@ def add_resources(app):
         return resp
 
     api.add_resource(crime_data.resources.agencies.AgenciesList, '/agencies/')
+    api.add_resource(crime_data.resources.agencies.AgenciesParticipation,
+                     '/agencies/participation',
+                     '/agencies/participation/')
     api.add_resource(crime_data.resources.agencies.AgenciesDetail,
                      '/agencies/<string:nbr>/')
-    api.add_resource(crime_data.resources.agencies.AgenciesParticipation,
-                     '/agencies/participation')
 
     # api.add_resource(crime_data.resources.incidents.IncidentsList,
     #                  '/incidents/')
