@@ -41,11 +41,11 @@ class CountyDetail(CdeResource):
 
 
 class StateParticipation(CdeResource):
-    schema = marshmallow_schemas.ParticipationRateSchema(many=True)
+    schema = marshmallow_schemas.StateParticipationRateSchema(many=True)
 
     @use_args(marshmallow_schemas.ArgumentsSchema)
     @swagger.use_kwargs(marshmallow_schemas.ApiKeySchema, apply=False, locations=['query'])
-    @swagger.marshal_with(marshmallow_schemas.ParticipationRateSchema, apply=False)
+    @swagger.marshal_with(marshmallow_schemas.StateParticipationRateSchema, apply=False)
     @swagger.doc(tags=['geo'], description='Participation data for a state')
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page

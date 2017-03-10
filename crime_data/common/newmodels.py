@@ -15,7 +15,7 @@ from sqlalchemy.sql import sqltypes
 from flask_restful import abort
 
 from crime_data.common import models
-from crime_data.common.models import RefAgency
+from crime_data.common.models import RefAgency, RefState, RefCounty
 from crime_data.extensions import db
 from sqlalchemy import or_
 
@@ -79,6 +79,13 @@ class ParticipationRate(db.Model):
     nibrs_reporting_rate = db.Column(db.Float)
     state_id = db.Column(db.Integer)
     county_id = db.Column(db.Integer)
+    state_name = db.Column(db.String)
+    county_name = db.Column(db.String)
+
+    # state = relationship('RefState', foreign_keys=[state_id],
+    #                     primaryjoin='RefState.state_id == ParticipationRate.state_id')
+    # county = relationship('RefCounty', foreign_keys=[county_id],
+    #                       primaryjoin='RefCounty.county_id == ParticipationRate.county_id')
 
 
 class CreatableModel:
