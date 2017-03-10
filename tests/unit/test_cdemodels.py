@@ -111,10 +111,11 @@ class TestCdeRefState:
         assert state.reporting_agencies_for_year(test_year) == 13
         assert state.reporting_rate_for_year(test_year) == pytest.approx(0.382352941)
 
-        # select SUM(rcp.population)::text from ref_county_population rcp
-        # JOIN ref_county rc ON rc.county_id = rcp.county_id
-        # WHERE rc.state_id=55 AND rcp.data_year=1960
-        assert state.total_population_for_year(test_year) == 1244332
+        # select SUM(rac.population)
+        # from ref_agency_county rac
+        # JOIN ref_county rc ON rac.county_id = rc.county_id
+        # WHERE rc.state_id=55 and rac.data_year=1960;
+        assert state.total_population_for_year(test_year) == 706802
 
         # select SUM(rac.population)::text
         # from ref_agency_county rac

@@ -10,6 +10,7 @@ from sqlalchemy.sql import sqltypes as st
 from psycopg2.extensions import AsIs
 
 from crime_data.common import models, newmodels
+from crime_data.common.models import RefState, RefCounty
 from crime_data.common.base import QueryTraits, Fields, ExplorerOffenseMapping
 from crime_data.extensions import db
 
@@ -23,8 +24,11 @@ def get_sql_count(q):
     return count
 
 
-class CdeRefState(models.RefState):
-    pass
+#class CdeRefState(RefState):
+#    pass
+
+#class CdeRefCounty(RefCounty):
+#    pass
 
 
 class CdeNibrsAge(models.NibrsAge):
@@ -69,12 +73,11 @@ class CdeRefAgencyCounty(models.RefAgencyCounty):
 class CdeParticipationRate(newmodels.ParticipationRate):
     """Class for querying the cde_participation_rate"""
 
-    def __init__(self, year=None, state_id=None, state_abbr=None, county_id=None, metro_div_id=None):
+    def __init__(self, year=None, state_id=None, state_abbr=None, county_id=None):
         self.year = year
         self.state_id = state_id
         self.state_abbr = state_abbr
         self.county_id = county_id
-        self.metro_div_id = metro_div_id
 
     @property
     def query(self):
@@ -92,10 +95,10 @@ class CdeParticipationRate(newmodels.ParticipationRate):
         return qry
 
 
-class CdeRefState(models.RefState):
+class CdeRefState(RefState):
     """A wrapper around the RefState model with extra finder methods"""
 
-    counties = db.relationship('CdeRefCounty', lazy='dynamic')
+    counties = db.relationship('RefCounty', lazy='dynamic')
 
     def get(state_id=None, abbr=None, fips=None):
         """
@@ -185,7 +188,7 @@ class CdeRefState(models.RefState):
         return CdeParticipationRate(state_id=self.state_id).query.order_by('data_year DESC').all()
 
 
-class CdeRefCounty(models.RefCounty):
+class CdeRefCounty(RefCounty):
     """A wrapper around the RefCounty model with extra methods."""
 
     def get(county_id=None, fips=None, name=None):

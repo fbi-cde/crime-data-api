@@ -29,7 +29,9 @@ CREATE TABLE cde_participation_rates
 (
     data_year smallint NOT NULL,
     state_id bigint,
+    state_name varchar(255),
     county_id bigint,
+    county_name varchar(255),
     total_agencies int,
     reporting_agencies int,
     reporting_rate float,
@@ -42,39 +44,46 @@ WITH (
     OIDS = FALSE
 );
 
-INSERT INTO cde_participation_rates(data_year, state_id, total_agencies, reporting_agencies, reporting_rate, nibrs_reporting_agencies, nibrs_reporting_rate)
-SELECT c.data_year, a.state_id, COUNT(a.ori) AS total_agencies, SUM(c.reported) AS reporting_agencies,
+ALTER TABLE ONLY cde_participation_rates
+ADD CONSTRAINT cde_participation_rates_state_fk FOREIGN KEY (state_id) REFERENCES ref_state(state_id);
+
+ALTER TABLE ONLY cde_participation_rates
+ADD CONSTRAINT cde_participation_rates_county_fk FOREIGN KEY (county_id) REFERENCES ref_county(county_id);
+
+
+INSERT INTO cde_participation_rates(data_year, state_id, state_name, total_agencies, reporting_agencies, reporting_rate, nibrs_reporting_agencies, nibrs_reporting_rate)
+SELECT c.data_year, a.state_id, rs.state_name, COUNT(a.ori) AS total_agencies, SUM(c.reported) AS reporting_agencies,
 CAST(SUM(c.reported) AS float)/COUNT(a.ORI) AS reporting_rate,
 SUM(c.reported_nibrs) AS nibrs_reporting_agencies,
 CAST(SUM(c.reported_nibrs) AS float)/COUNT(a.ORI) AS nibrs_reporting_rate
 FROM cde_annual_participation c
 JOIN ref_agency a ON a.agency_id = c.agency_id
-GROUP BY c.data_year, a.state_id;
+JOIN ref_state rs ON a.state_id = rs.state_id
+GROUP BY c.data_year, a.state_id, rs.state_name;
 
 -- If an agency spans multiple counties, it will be counted once in
 -- the total/reporting agencies counts for each county. Its population
 -- is apportioned individually though, so its full population won't be
 -- duplicated for each county
-INSERT INTO cde_participation_rates(data_year, county_id, total_agencies, reporting_agencies, reporting_rate, nibrs_reporting_agencies, nibrs_reporting_rate, total_population, covered_population)
-SELECT c.data_year, rc.county_id, COUNT(a.ori) AS total_agencies, SUM(c.reported) AS reporting_agencies,
+INSERT INTO cde_participation_rates(data_year, county_id, county_name, total_agencies, reporting_agencies, reporting_rate, nibrs_reporting_agencies, nibrs_reporting_rate, total_population, covered_population)
+SELECT c.data_year, rc.county_id, rc.county_name, COUNT(a.ori) AS total_agencies, SUM(c.reported) AS reporting_agencies,
 CAST(SUM(c.reported) AS float)/COUNT(a.ori) AS reporting_rate,
 SUM(c.reported_nibrs) AS nibrs_reporting_agencies,
 CAST(SUM(c.reported_nibrs) AS float)/COUNT(a.ori) AS nibrs_reporting_rate,
-rcp.population AS total_population,
-SUM(rac.population) AS covered_population
+SUM(rac.population) AS total_population,
+SUM(CASE WHEN c.reported = 1 THEN rac.population ELSE 0 END) AS covered_population
 FROM cde_annual_participation c
 JOIN ref_agency a ON a.agency_id = c.agency_id
 JOIN ref_agency_county rac ON rac.agency_id = a.agency_id AND rac.data_year = c.data_year
 JOIN ref_county rc ON rc.county_id = rac.county_id
-JOIN ref_county_population rcp ON rcp.county_id = rac.county_id AND rcp.data_year = c.data_year
-GROUP BY c.data_year, rc.county_id, rcp.population;
+GROUP BY c.data_year, rc.county_id, rc.county_name;
 
 UPDATE cde_participation_rates
-SET total_population=(SELECT SUM(rcp.population)
-                          FROM ref_county_population rcp
-                          JOIN ref_county rc ON rc.county_id=rcp.county_id
+SET total_population=(SELECT SUM(rac.population)
+                          FROM ref_agency_county rac
+                          JOIN ref_county rc ON rc.county_id=rac.county_id
                           WHERE rc.state_id=cde_participation_rates.state_id
-                          AND rcp.data_year=cde_participation_rates.data_year)
+                          AND rac.data_year=cde_participation_rates.data_year)
 WHERE state_id IS NOT NULL;
 
 UPDATE cde_participation_rates

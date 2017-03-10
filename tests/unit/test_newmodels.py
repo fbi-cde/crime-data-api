@@ -37,7 +37,7 @@ class TestParticipationRate:
         assert q.reporting_rate == 1
         assert q.nibrs_reporting_agencies == 1
         assert q.nibrs_reporting_rate == 1
-        assert q.total_population == None
+        assert q.total_population == 80007
         assert q.covered_population == 0
 
 

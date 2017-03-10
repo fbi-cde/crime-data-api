@@ -952,6 +952,15 @@ class ParticipationRateSchema(ma.ModelSchema):
     nibrs_reporting_rate = marsh_fields.Float()
 
 
+class StateParticipationRateSchema(ParticipationRateSchema):
+    class Meta:
+        fields = ('year', 'state_name', 'total_population', 'covered_population',
+                  'total_agencies', 'reporting_agencies', 'reporting_rate',
+                  'nibrs_reporting_agencies', 'nibrs_reporting_rate',)
+
+    state_name = marsh_fields.String()
+
+
 class StateDetailResponseSchema(ma.ModelSchema):
     """Response schema for the StateDetail API method."""
 
