@@ -85,11 +85,11 @@ JOIN ref_county rc ON rc.county_id = rac.county_id
 GROUP BY c.data_year, rc.county_id, rc.county_name;
 
 UPDATE cde_participation_rates_temp
-SET total_population=(SELECT SUM(rap.population)
-                      FROM ref_agency_population rap
-                      JOIN ref_agency ra ON ra.agency_id=rap.agency_id
+SET total_population=(SELECT SUM(rac.population)
+                      FROM ref_agency_county rac
+                      JOIN ref_agency ra ON ra.agency_id=rac.agency_id
                       WHERE ra.state_id=cde_participation_rates_temp.state_id
-                      AND rap.data_year=cde_participation_rates_temp.data_year)
+                      AND rac.data_year=cde_participation_rates_temp.data_year)
 WHERE state_id IS NOT NULL;
 
 UPDATE cde_participation_rates_temp
@@ -125,10 +125,10 @@ JOIN ref_agency a ON a.agency_id = c.agency_id
 GROUP BY c.data_year;
 
 UPDATE cde_participation_rates_temp
-SET total_population=(SELECT SUM(rap.population)
-                      FROM ref_agency_population rap
-                      JOIN ref_agency ra ON ra.agency_id=rap.agency_id
-                      WHERE rap.data_year=cde_participation_rates_temp.data_year)
+SET total_population=(SELECT SUM(rac.population)
+                      FROM ref_agency_county rac
+                      JOIN ref_agency ra ON ra.agency_id=rac.agency_id
+                      WHERE rac.data_year=cde_participation_rates_temp.data_year)
 WHERE state_id IS NULL AND county_id IS NULL;
 
 UPDATE cde_participation_rates_temp

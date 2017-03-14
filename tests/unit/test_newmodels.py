@@ -52,7 +52,7 @@ class TestParticipationRate:
         assert q.reporting_rate == pytest.approx(0.181818182)
         assert q.nibrs_reporting_agencies == 1
         assert q.nibrs_reporting_rate == pytest.approx(0.090909091)
-        assert q.total_population == 283027
+        assert q.total_population == 83769
         assert q.covered_population == 0
 
 
