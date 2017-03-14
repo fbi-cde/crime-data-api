@@ -40,6 +40,22 @@ class TestParticipationRate:
         assert q.total_population == 80007
         assert q.covered_population == 0
 
+    def test_for_year(self, app):
+        q = ParticipationRate.query
+        q = q.filter(ParticipationRate.data_year == 1991)
+        q = q.filter(ParticipationRate.state_id == None)
+        q = q.filter(ParticipationRate.county_id == None).one()
+
+        assert q.data_year == 1991
+        assert q.state_id is None
+        assert q.total_agencies == 11
+        assert q.reporting_agencies == 2
+        assert q.reporting_rate == pytest.approx(0.181818182)
+        assert q.nibrs_reporting_agencies == 1
+        assert q.nibrs_reporting_rate == pytest.approx(0.090909091)
+        assert q.total_population == 283027
+        assert q.covered_population == 0
+
 
 class TestArsonAdditionsToRetaMonthOffenseSubcatSummary:
     def test_arson_fields_for_state_month_year(self, app):
