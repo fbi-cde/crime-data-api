@@ -1,7 +1,6 @@
 SET work_mem='4096MB'; -- Go Super Saiyan.
 
-drop materialized view cde_annual_participation;
-create materialized view cde_annual_participation AS
+create materialized view cde_annual_participation_temp AS
 SELECT rm.data_year,
 rs.state_name AS state_name,
 rs.state_postal_abbr AS state_abbr,
@@ -24,8 +23,13 @@ LEFT OUTER JOIN ref_population_group rpg ON rpg.population_group_id = rap.popula
 group by rm.data_year, rs.state_name, rs.state_postal_abbr, ra.agency_id, ra.ori, ra.pub_agency_name, rap.population, rpg.population_group_code, rpg.population_group_desc
 ORDER by rm.data_year, rs.state_name, ra.pub_agency_name;
 
-drop table if exists cde_participation_rates;
-CREATE TABLE cde_participation_rates
+--- this lets us rebuild with less disruption
+DROP MATERIALIZED VIEW IF EXISTS cde_annual_participation CASCADE;
+ALTER MATERIALIZED VIEW cde_annual_participation_temp RENAME TO cde_annual_participation;
+
+
+drop table if exists cde_participation_rates_temp;
+CREATE TABLE cde_participation_rates_temp
 (
     data_year smallint NOT NULL,
     state_id bigint,
@@ -44,14 +48,14 @@ WITH (
     OIDS = FALSE
 );
 
-ALTER TABLE ONLY cde_participation_rates
+ALTER TABLE ONLY cde_participation_rates_temp
 ADD CONSTRAINT cde_participation_rates_state_fk FOREIGN KEY (state_id) REFERENCES ref_state(state_id);
 
-ALTER TABLE ONLY cde_participation_rates
+ALTER TABLE ONLY cde_participation_rates_temp
 ADD CONSTRAINT cde_participation_rates_county_fk FOREIGN KEY (county_id) REFERENCES ref_county(county_id);
 
 
-INSERT INTO cde_participation_rates(data_year, state_id, state_name, total_agencies, reporting_agencies, reporting_rate, nibrs_reporting_agencies, nibrs_reporting_rate)
+INSERT INTO cde_participation_rates_temp(data_year, state_id, state_name, total_agencies, reporting_agencies, reporting_rate, nibrs_reporting_agencies, nibrs_reporting_rate)
 SELECT c.data_year, a.state_id, rs.state_name, COUNT(a.ori) AS total_agencies, SUM(c.reported) AS reporting_agencies,
 CAST(SUM(c.reported) AS float)/COUNT(a.ORI) AS reporting_rate,
 SUM(c.reported_nibrs) AS nibrs_reporting_agencies,
@@ -65,7 +69,7 @@ GROUP BY c.data_year, a.state_id, rs.state_name;
 -- the total/reporting agencies counts for each county. Its population
 -- is apportioned individually though, so its full population won't be
 -- duplicated for each county
-INSERT INTO cde_participation_rates(data_year, county_id, county_name, total_agencies, reporting_agencies, reporting_rate, nibrs_reporting_agencies, nibrs_reporting_rate, total_population, covered_population)
+INSERT INTO cde_participation_rates_temp(data_year, county_id, county_name, total_agencies, reporting_agencies, reporting_rate, nibrs_reporting_agencies, nibrs_reporting_rate, total_population, covered_population)
 SELECT c.data_year, rc.county_id, rc.county_name, COUNT(a.ori) AS total_agencies, SUM(c.reported) AS reporting_agencies,
 CAST(SUM(c.reported) AS float)/COUNT(a.ori) AS reporting_rate,
 SUM(c.reported_nibrs) AS nibrs_reporting_agencies,
@@ -78,21 +82,24 @@ JOIN ref_agency_county rac ON rac.agency_id = a.agency_id AND rac.data_year = c.
 JOIN ref_county rc ON rc.county_id = rac.county_id
 GROUP BY c.data_year, rc.county_id, rc.county_name;
 
-UPDATE cde_participation_rates
+UPDATE cde_participation_rates_temp
 SET total_population=(SELECT SUM(rac.population)
                           FROM ref_agency_county rac
                           JOIN ref_county rc ON rc.county_id=rac.county_id
-                          WHERE rc.state_id=cde_participation_rates.state_id
-                          AND rac.data_year=cde_participation_rates.data_year)
+                          WHERE rc.state_id=cde_participation_rates_temp.state_id
+                          AND rac.data_year=cde_participation_rates_temp.data_year)
 WHERE state_id IS NOT NULL;
 
-UPDATE cde_participation_rates
+UPDATE cde_participation_rates_temp
 SET covered_population=(SELECT SUM(rca.population)
                         FROM ref_agency_county rca
                         JOIN ref_agency ra ON ra.agency_id=rca.agency_id
                         JOIN cde_annual_participation cap ON cap.agency_id=rca.agency_id
                         WHERE cap.data_year = rca.data_year
-                        AND cap.data_year = cde_participation_rates.data_year
-                        AND ra.state_id = cde_participation_rates.state_id
+                        AND cap.data_year = cde_participation_rates_temp.data_year
+                        AND ra.state_id = cde_participation_rates_temp.state_id
                         AND cap.reported = 1)
 WHERE state_id IS NOT NULL;
+
+DROP TABLE IF EXISTS cde_participation_rates CASCADE;
+ALTER TABLE cde_participation_rates_temp RENAME TO cde_participation_rates;
