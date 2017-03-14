@@ -28,17 +28,16 @@ class TestAgencyAnnualParticipation:
 class TestParticipationRate:
     def test_for_state_in_year(self, app):
         q = ParticipationRate.query
-        q = q.filter(ParticipationRate.data_year == 1991)
-        q = q.filter(ParticipationRate.state_id == 2).one()
-        assert q.data_year == 1991
-        assert q.state_id == 2
-        assert q.total_agencies == 1
-        assert q.reporting_agencies == 1
-        assert q.reporting_rate == 1
-        assert q.nibrs_reporting_agencies == 1
-        assert q.nibrs_reporting_rate == 1
-        assert q.total_population == 80007
-        assert q.covered_population == 0
+        q = q.filter(ParticipationRate.data_year == 1999)
+        q = q.filter(ParticipationRate.state_id == 47).one()
+        assert q.data_year == 1999
+        assert q.state_id == 47
+        assert q.total_agencies == 8
+        assert q.reporting_agencies == 5
+        assert q.reporting_rate == pytest.approx(0.625)
+        assert q.nibrs_reporting_agencies == 3
+        assert q.nibrs_reporting_rate == pytest.approx(0.375)
+
 
     def test_for_year(self, app):
         q = ParticipationRate.query

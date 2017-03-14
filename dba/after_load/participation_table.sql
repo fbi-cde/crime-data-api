@@ -42,7 +42,8 @@ CREATE TABLE cde_participation_rates_temp
     nibrs_reporting_agencies int,
     nibrs_reporting_rate float,
     total_population bigint,
-    covered_population bigint
+    covered_population bigint,
+    nibrs_covered_population bigint
 )
 WITH (
     OIDS = FALSE
@@ -69,13 +70,14 @@ GROUP BY c.data_year, a.state_id, rs.state_name;
 -- the total/reporting agencies counts for each county. Its population
 -- is apportioned individually though, so its full population won't be
 -- duplicated for each county
-INSERT INTO cde_participation_rates_temp(data_year, county_id, county_name, total_agencies, reporting_agencies, reporting_rate, nibrs_reporting_agencies, nibrs_reporting_rate, total_population, covered_population)
+INSERT INTO cde_participation_rates_temp(data_year, county_id, county_name, total_agencies, reporting_agencies, reporting_rate, nibrs_reporting_agencies, nibrs_reporting_rate, total_population, covered_population, nibrs_covered_population)
 SELECT c.data_year, rc.county_id, rc.county_name, COUNT(a.ori) AS total_agencies, SUM(c.reported) AS reporting_agencies,
 CAST(SUM(c.reported) AS float)/COUNT(a.ori) AS reporting_rate,
 SUM(c.reported_nibrs) AS nibrs_reporting_agencies,
 CAST(SUM(c.reported_nibrs) AS float)/COUNT(a.ori) AS nibrs_reporting_rate,
 SUM(rac.population) AS total_population,
-SUM(CASE WHEN c.reported = 1 THEN rac.population ELSE 0 END) AS covered_population
+SUM(CASE WHEN c.reported = 1 THEN rac.population ELSE 0 END) AS covered_population,
+SUM(CASE WHEN c.reported_nibrs = 1 THEN rac.population ELSE 0 END) AS nibrs_covered_population
 FROM cde_annual_participation c
 JOIN ref_agency a ON a.agency_id = c.agency_id
 JOIN ref_agency_county rac ON rac.agency_id = a.agency_id AND rac.data_year = c.data_year
@@ -99,6 +101,17 @@ SET covered_population=(SELECT SUM(rca.population)
                         AND cap.data_year = cde_participation_rates_temp.data_year
                         AND ra.state_id = cde_participation_rates_temp.state_id
                         AND cap.reported = 1)
+WHERE state_id IS NOT NULL;
+
+UPDATE cde_participation_rates_temp
+SET nibrs_covered_population=(SELECT SUM(rca.population)
+                              FROM ref_agency_county rca
+                              JOIN ref_agency ra ON ra.agency_id=rca.agency_id
+                              JOIN cde_annual_participation cap ON cap.agency_id=rca.agency_id
+                              WHERE cap.data_year = rca.data_year
+                              AND cap.data_year = cde_participation_rates_temp.data_year
+                              AND ra.state_id = cde_participation_rates_temp.state_id
+                              AND cap.reported_nibrs = 1)
 WHERE state_id IS NOT NULL;
 
 --- annual rollups
@@ -126,6 +139,16 @@ SET covered_population=(SELECT SUM(rca.population)
                         WHERE cap.data_year = rca.data_year
                         AND cap.data_year = cde_participation_rates_temp.data_year
                         AND cap.reported = 1)
+WHERE state_id IS NULL AND county_id IS NULL;
+
+UPDATE cde_participation_rates_temp
+SET nibrs_covered_population=(SELECT SUM(rca.population)
+                              FROM ref_agency_county rca
+                              JOIN ref_agency ra ON ra.agency_id=rca.agency_id
+                              JOIN cde_annual_participation cap ON cap.agency_id=rca.agency_id
+                              WHERE cap.data_year = rca.data_year
+                              AND cap.data_year = cde_participation_rates_temp.data_year
+                              AND cap.reported_nibrs = 1)
 WHERE state_id IS NULL AND county_id IS NULL;
 
 DROP TABLE IF EXISTS cde_participation_rates CASCADE;

@@ -77,6 +77,7 @@ class ParticipationRate(db.Model):
     reporting_rate = db.Column(db.Float)
     nibrs_reporting_agencies = db.Column(db.Integer)
     nibrs_reporting_rate = db.Column(db.Float)
+    nibrs_covered_population = db.Column(db.BigInteger)
     state_id = db.Column(db.Integer)
     county_id = db.Column(db.Integer)
     state_name = db.Column(db.String)
