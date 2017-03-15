@@ -46,7 +46,15 @@ class AgenciesDetail(AgenciesResource):
 
 class AgenciesParticipation(CdeResource):
 
-    schema = marshmallow_schemas.AgencyParticipationSchema(many=True)
+    schema = marshmallow_schemas.AgencyParticipationSchema(many=True,
+                                                           only=('state_name', 'year', 'agency_ori',
+                                                                 'agency_name', 'reported',
+                                                                 'months_reported',
+                                                                 'months_reported_nibrs',
+                                                                 'population_group_code',
+                                                                 'population_group',
+                                                                 'agency_population',)
+                                                        )
     tables = newmodels.AgencyAnnualParticipation
     is_groupable = False
 
@@ -56,19 +64,10 @@ class AgenciesParticipation(CdeResource):
         print(filters)
         if years:
             y = years[0]
-            data_year = y[2][0]
-            match = re.search('(\d{4})-(\d{4})', str(data_year))
-            if match:
-                data_years = list(range(int(match.group(1)), int(match.group(2))))
-            else:
-                data_years = [data_years]
-
-            print(data_year)
             filters = [x for x in filters if x[0] != 'year']
-            filters.append(('data_year', y[1], data_years))
+            filters.append(('data_year', y[1], y[2]))
 
         return filters
-
 
     @use_args(marshmallow_schemas.ArgumentsSchema)
     @swagger.use_kwargs(marshmallow_schemas.ArgumentsSchema, apply=False, locations=['query'])
