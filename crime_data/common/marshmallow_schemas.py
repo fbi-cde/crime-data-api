@@ -904,23 +904,6 @@ class CodeIndexResponseSchema(Schema):
     key = marsh_fields.String()
 
 
-class ParticipationRateSchema(ma.ModelSchema):
-    """Response format for participation record"""
-
-    class Meta:
-        # model = cdemodels.CdeParticipationRate
-        ordered = True
-        fields = ('year', 'total_population', 'covered_population',
-                  'total_agencies', 'reporting_agencies', 'reporting_rate')
-
-    year = marsh_fields.Integer(attribute='data_year')
-    total_population = marsh_fields.Integer()
-    covered_population = marsh_fields.Integer()
-    total_agencies = marsh_fields.Integer()
-    reporting_agencies = marsh_fields.Integer()
-    reporting_rate = marsh_fields.Float()
-
-
 class StateCountyResponseSchema(ma.ModelSchema):
     """Schema for counties in the StateDetail response."""
 
@@ -940,7 +923,8 @@ class ParticipationRateSchema(ma.ModelSchema):
         ordered = True
         fields = ('year', 'total_population', 'covered_population',
                   'total_agencies', 'reporting_agencies', 'reporting_rate',
-                  'nibrs_reporting_agencies', 'nibrs_reporting_rate',)
+                  'nibrs_reporting_agencies', 'nibrs_reporting_rate',
+                  'nibrs_covered_population',)
 
     year = marsh_fields.Integer(attribute='data_year')
     total_population = marsh_fields.Integer()
@@ -950,7 +934,7 @@ class ParticipationRateSchema(ma.ModelSchema):
     reporting_rate = marsh_fields.Float()
     nibrs_reporting_agencies = marsh_fields.Integer()
     nibrs_reporting_rate = marsh_fields.Float()
-
+    nibrs_covered_population = marsh_fields.Integer()
 
 class StateParticipationRateSchema(ParticipationRateSchema):
     class Meta:

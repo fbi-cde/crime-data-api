@@ -15,7 +15,7 @@ from crime_data.common.marshmallow_schemas import(
 
 class NationalParticipation(CdeResource):
     """Returns a collection of all state participation rates for each year"""
-    schema = marshmallow_schemas.StateParticipationRateSchema(many=True)
+    schema = marshmallow_schemas.ParticipationRateSchema(many=True)
 
     @use_args(ArgumentsSchema)
     @swagger.use_kwargs(ApiKeySchema, apply=False, locations=['query'])
@@ -27,7 +27,8 @@ class NationalParticipation(CdeResource):
         self.verify_api_key(args)
 
         rates = cdemodels.CdeParticipationRate().query
-        rates = rates.filter(newmodels.ParticipationRate.state_id != None)
-        rates = rates.order_by('data_year DESC, state_name').all()
+        rates = rates.filter(newmodels.ParticipationRate.state_id == None)
+        rates = rates.filter(newmodels.ParticipationRate.county_id == None)
+        rates = rates.order_by('data_year DESC').all()
         filename = 'participation_rates'
         return self.render_response(rates, args, csv_filename=filename)
