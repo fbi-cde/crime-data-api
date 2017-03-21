@@ -22,7 +22,6 @@ session = db.session
 
 COUNT_QUERY_THRESHOLD = 1000
 
-
 def tuning_page(f):
     @wraps(f)
     def decorated_get(*args, **kwargs):
@@ -328,7 +327,6 @@ class CdeResource(MethodResource):
 
             # Fill in any missing keys.
             empty = OrderedDict.fromkeys(to_csv[0].keys(), "")
-            print(empty)
             to_csv = [OrderedDict(empty, **d) for d in to_csv]
 
             # Generate CSV.
@@ -468,10 +466,10 @@ class CdeResource(MethodResource):
                 if 'credentials' in u
             ]
             key = creds[0]['API_KEY']
-            test_key = args.get('api_key')
+            test_key = args.get('api_header_key', None) or args.get('api_key')
 
-            if test_key != key and parse.unquote(test_key) != key:
-                abort(401, message='Use correct `api_key` argument')
+            if test_key is None or (test_key != key and parse.unquote(test_key) != key):
+                abort(401, message='Use correct `api_key` argument or X-API-KEY HTTP header')
 
     def _parse_inequality_operator(self, k, v):
         """

@@ -28,11 +28,13 @@ class SchemaFormater(object):
 
 
 class ApiKeySchema(Schema):
-    if os.getenv('VCAP_APPLICATION'):
-        api_key = marsh_fields.String(
-            required=True,
-            error_messages={'required': 'Get API key from Catherine'})
-
+    api_key = marsh_fields.String(
+        required=False,
+        error_messages={'required': 'Get API key from Catherine'})
+    api_header_key = marsh_fields.String(
+        load_from='X-API-KEY',
+        required=False,
+        location='headers')
 
 # Schemas for request parsing
 class ArgumentsSchema(ApiKeySchema):
