@@ -24,7 +24,7 @@ class TestOffendersOffensesEndpoint:
             assert 'count' in r
 
     @pytest.mark.parametrize('variable', OffenseOffenderCountView.VARIABLES)
-    def test_offenders_offenses_endpoint_with_state_postal_code(self, testapp):
+    def test_offenders_offenses_endpoint_with_state_postal_code(self, testapp, variable):
         url = '/offenders/count/states/AR/{}/offenses?year=2014'.format(variable)
         res = testapp.get(url)
         assert 'pagination' in res.json

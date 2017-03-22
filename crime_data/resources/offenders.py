@@ -122,12 +122,13 @@ class OffenderOffenseSubcounts(CdeResource):
     @swagger.marshal_with(marshmallow_schemas.OffenseCountViewResponseSchema, apply=False)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page
-    def get(self, args, variable, state_id=None):
+    def get(self, args, variable, state_id=None, state_abbr=None):
         self.verify_api_key(args)
         model = cdemodels.OffenseOffenderCountView(variable,
                                                    year=args.get('year', None),
                                                    offense_name=args.get('offense_name', None),
                                                    explorer_offense=args.get('explorer_offense', None),
-                                                   state_id=state_id)
+                                                   state_id=state_id,
+                                                   state_abbr=state_abbr)
         results = model.query(args)
         return self.with_metadata(results.fetchall(), args)
