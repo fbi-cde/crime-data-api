@@ -54,7 +54,7 @@ class OffendersCountStates(CdeResource):
                         locations=['query'],
                         apply=False)
     @swagger.doc(
-        params={'state_id': {'description': 'The state ID from ref_state'},
+        params={'state_abbr': {'description': 'The two letter State Abbreviation'},
                 'variable': {'description': 'A variable to group by',
                              'enum': cdemodels.OffenderCountView.VARIABLES}},
         tags=['offenders'],
@@ -109,7 +109,7 @@ class OffenderOffenseSubcounts(CdeResource):
                         locations=['query'],
                         apply=False)
     @swagger.doc(
-        params={'state_id': {'description': 'The ID for a state to limit the query to'},
+        params={'state_abbr': {'description': 'The two letter State Abbreviation'},
                 'explorer_offense': {'description': 'A offense class used by the explorer',
                                      'enum': ExplorerOffenseMapping.NIBRS_OFFENSE_MAPPING.keys()},
                 'variable': {'description': 'A variable to group by',
@@ -122,12 +122,13 @@ class OffenderOffenseSubcounts(CdeResource):
     @swagger.marshal_with(marshmallow_schemas.OffenseCountViewResponseSchema, apply=False)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page
-    def get(self, args, variable, state_id=None):
+    def get(self, args, variable, state_id=None, state_abbr=None):
         self.verify_api_key(args)
         model = cdemodels.OffenseOffenderCountView(variable,
                                                    year=args.get('year', None),
                                                    offense_name=args.get('offense_name', None),
                                                    explorer_offense=args.get('explorer_offense', None),
-                                                   state_id=state_id)
+                                                   state_id=state_id,
+                                                   state_abbr=state_abbr)
         results = model.query(args)
         return self.with_metadata(results.fetchall(), args)

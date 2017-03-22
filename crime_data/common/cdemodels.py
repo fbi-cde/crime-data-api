@@ -1115,7 +1115,8 @@ class MultiYearCountView(object):
         self.state_id = state_id
 
         if state_abbr and state_id is None:
-            self.state_id = CdeRefState.get(abbr=state_abbr).one().state_id
+            # Select State ID for State Abbreviation.
+            self.state_id = CdeRefState.get(abbr=state_abbr.upper()).one().state_id
             
         self.county_id = county_id
         self.field = field
@@ -1265,7 +1266,8 @@ class OffenseSubCountView(object):
         self.state_id = state_id
 
         if state_abbr and state_id is None:
-            self.state_id = CdeRefState.get(abbr=state_abbr).one().state_id
+            # Select State ID for State Abbreviation.
+            self.state_id = CdeRefState.get(abbr=state_abbr.upper()).one().state_id
 
         self.county_id = county_id
         self.field = field

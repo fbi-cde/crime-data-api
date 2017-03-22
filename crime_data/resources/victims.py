@@ -59,7 +59,7 @@ class VictimsCountStates(CdeResource):
                         apply=False)
     @swagger.doc(
         tags=['victims'],
-        params={'state_id': {'description': 'The state ID from ref_county'},
+        params={'state_abbr': {'description': 'The two letter State Abbreviation'},
                 'variable': {'description': 'A variable to group by',
                              'locations': ['path'],
                              'enum': cdemodels.VictimCountView.VARIABLES}},
@@ -116,7 +116,7 @@ class VictimOffenseSubcounts(CdeResource):
                         locations=['query'],
                         apply=False)
     @swagger.doc(
-        params={'state_id': {'description': 'The ID for a state to limit the query to'},
+        params={'state_abbr': {'description': 'The two letter State Abbreviation'},
                 'variable': {'description': 'A variable to group by',
                              'locations': ['path'],
                              'enum': cdemodels.OffenseVictimCountView.VARIABLES}},

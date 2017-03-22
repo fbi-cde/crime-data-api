@@ -26,7 +26,7 @@ class HateCrimesCountStates(CdeResource):
                         locations=['query'],
                         apply=False)
     @swagger.doc(
-        params={'state_id': {'description': 'The state ID from ref_state'},
+        params={'state_abbr': {'description': 'The two letter State Abbreviation'},
                 'variable': {'description': 'A variable to group by',
                              'locations': ['path'],
                              'enum': cdemodels.HateCrimeCountView.VARIABLES}},
@@ -107,7 +107,7 @@ class HateCrimeOffenseSubcounts(CdeResource):
                         locations=['query'],
                         apply=False)
     @swagger.doc(
-        params={'state_id': {'description': 'The ID for a state to limit the query to'},
+        params={'state_abbr': {'description': 'The two letter State Abbreviation'},
                 'variable': {'description': 'A variable to group by',
                              'locations': ['path'],
                              'enum': cdemodels.OffenseHateCrimeCountView.VARIABLES}},

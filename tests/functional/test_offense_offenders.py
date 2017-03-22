@@ -16,7 +16,7 @@ class TestOffendersOffensesEndpoint:
             assert 'count' in r
 
     @pytest.mark.parametrize('variable', OffenseOffenderCountView.VARIABLES)
-    def test_victims_offenses_endpoint_with_just_state_year(self, testapp, variable):
+    def test_offenders_offenses_endpoint_with_just_state_year(self, testapp, variable):
         url = '/offenders/count/states/43/{}/offenses?year=2014'.format(variable)
         res = testapp.get(url)
         assert 'pagination' in res.json
@@ -24,7 +24,15 @@ class TestOffendersOffensesEndpoint:
             assert 'count' in r
 
     @pytest.mark.parametrize('variable', OffenseOffenderCountView.VARIABLES)
-    def test_victims_offenses_endpoint_with_state_year_offense(self, testapp, variable):
+    def test_offenders_offenses_endpoint_with_state_postal_code(self, testapp, variable):
+        url = '/offenders/count/states/AR/{}/offenses?year=2014'.format(variable)
+        res = testapp.get(url)
+        assert 'pagination' in res.json
+        for r in res.json['results']:
+            assert 'count' in r
+
+    @pytest.mark.parametrize('variable', OffenseOffenderCountView.VARIABLES)
+    def test_offenders_offenses_endpoint_with_state_year_offense(self, testapp, variable):
         url = '/offenders/count/states/43/{}/offenses?offense_name=Aggravated+Assault&year=2014'.format(variable)
         res = testapp.get(url)
         assert 'pagination' in res.json
@@ -33,7 +41,7 @@ class TestOffendersOffensesEndpoint:
 
     @pytest.mark.parametrize('variable', OffenseOffenderCountView.VARIABLES)
     @pytest.mark.parametrize('explorer_offense', ExplorerOffenseMapping.NIBRS_OFFENSE_MAPPING.keys())
-    def test_victims_offenses_endpoint_with_state_year_explorer_offense(self, testapp, variable, explorer_offense):
+    def test_offenders_offenses_endpoint_with_state_year_explorer_offense(self, testapp, variable, explorer_offense):
         url = '/offenders/count/states/43/{}/offenses?explorer_offense={}&year=2014'.format(variable, explorer_offense)
         res = testapp.get(url)
         assert 'pagination' in res.json
