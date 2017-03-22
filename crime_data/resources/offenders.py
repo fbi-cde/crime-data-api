@@ -54,7 +54,7 @@ class OffendersCountStates(CdeResource):
                         locations=['query'],
                         apply=False)
     @swagger.doc(
-        params={'state_id': {'description': 'The state ID from ref_state'},
+        params={'state_abbr': {'description': 'The two letter State Abbreviation'},
                 'variable': {'description': 'A variable to group by',
                              'enum': cdemodels.OffenderCountView.VARIABLES}},
         tags=['offenders'],
@@ -109,7 +109,7 @@ class OffenderOffenseSubcounts(CdeResource):
                         locations=['query'],
                         apply=False)
     @swagger.doc(
-        params={'state_id': {'description': 'The ID for a state to limit the query to'},
+        params={'state_abbr': {'description': 'The two letter State Abbreviation'},
                 'explorer_offense': {'description': 'A offense class used by the explorer',
                                      'enum': ExplorerOffenseMapping.NIBRS_OFFENSE_MAPPING.keys()},
                 'variable': {'description': 'A variable to group by',
