@@ -91,7 +91,7 @@
     },
     "stateParam": {
       "in": "query",
-      "name": "State ID",
+      "name": "state",
       "description": "The two-letter postal abbreviation for the state",
       "required": false,
       "type": "array",
@@ -101,9 +101,17 @@
         "pattern": "[A-Z]{2}"
       }
     },
+    "statePathParam": {
+      "in": "path",
+      "name": "state_id",
+      "description": "The two-letter postal abbreviation for the state",
+      "required": true,
+      "type": "string",
+      "pattern": "[A-Z]{2}"
+    },
     "offenseCategoryParam": {
       "in": "query",
-      "name": "SRS Offense Category",
+      "name": "offense_category",
       "description": "The names of SRS offense categories to search against",
       "required": false,
       "type": "array",
@@ -114,7 +122,7 @@
     },
     "explorerOffenseParam": {
       "in": "query",
-      "name": "Explorer Offense",
+      "name": "explorer_offense",
       "description": "For the convenience of the Crime Data Explorer, this method takes a generic crime offense name and searches against the specific SRS or NIBRS offense in the backend models",
       "required": false,
       "type": "string",
@@ -222,21 +230,42 @@
         },
         "total_population": {
           "description": "The sum of the population within the jurisdictions of all agencies for that year",
-          "format": "int32",
-          "type": "integer",
-          "minimum": 0
+          "anyOf": [
+            {
+              "format": "int32",
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "nibrs_reporting_agencies": {
           "description": "The number of agencies who filed a NIBRS report in the given year",
-          "format": "int32",
-          "type": "integer"
+          "anyOf": [
+            {
+              "format": "int32",
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "nibrs_reporting_rate": {
           "description": "A rate of how many agencies filed a NIBRS report in a given year",
           "format": "float",
-          "type": "number",
-          "minimum": 0,
-          "maximum": 1
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "covered_population": {
           "description": "The total population within jurisdictions of agencies who filed either a SRS or NIBRS report in the given year.",
@@ -265,12 +294,142 @@
           ]
         }
       }
+    },
+    "StateParticipationCount": {
+      "allOf": [
+        {"$ref": "#/definitions/ParticipationCount"},
+        {
+          "required": ["state_name"],
+          "properties": {
+            "state_name": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "GeoCountyBasicInfo": {
+      "description": "Basic information about the county, as returned within the response for the /geo/states endpoint.",
+      "required": ["county_id", "county_name"],
+      "properties": {
+        "county_id": {
+          "description": "The internal identifier for the county within the CDE database",
+          "format": "int32",
+          "type": "integer"
+        },
+        "county_name": {
+          "description": "The name of the county",
+          "maxLength": 100,
+          "type": "string"
+        },
+        "fips": {
+          "description": "The five character numeric code used to identify the county in the TK",
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 5
+        }
+      },
+      "type": "object"
+    },
+    "GeoStateDetail": {
+      "description": "The record of metadata returned by the /geo/states/<state_id> endpoint to describe a single state",
+      "type": "object",
+      "properties": {
+        "counties": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/GeoCountyBasicInfo"
+          }
+        },
+        "current_year": {
+          "description": "The most recent year of data for the state",
+          "format": "int32",
+          "type": "integer"
+        },
+        "fips_code": {
+          "description": "The two-digit FIPS code for the state",
+          "minLength": 2,
+          "maxLength": 2,
+          "type": "string"
+        },
+        "name": {
+          "description": "The name of the state",
+          "type": "string"
+        },
+        "participation": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ParticipationCount"
+          }
+        }
+      },
+      "required": ["name", "current_year", "participation", "counties", "fips_code"]
     }
   },
   "schemes": ["https"],
   "host": "crime-data-api.fbi.gov",
   "produces": ["application/json", "text/csv"],
   "paths": {
+    "/geo/states/{state_id}": {
+      "get": {
+        "description": "Returns basic information about the state",
+        "parameters": [
+          {"$ref": "#/parameters/statePathParam"}
+        ],
+        "responses": {
+          "default": {
+            "description": "The standard error response",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "200": {
+            "description": "The metadata for a state",
+            "schema": {
+              "$ref": "#/definitions/GeoStateDetail"
+            }
+          }
+        }
+      }
+    },
+    "/geo/states/{state_id}/participation": {
+      "get": {
+        "description": "Returns just the participation data for a state",
+        "parameters": [
+          {"$ref": "#/parameters/aggregateManyParam"},
+          {"$ref": "#/parameters/fieldsParam"},
+          {"$ref": "#/parameters/pageParam"},
+          {"$ref": "#/parameters/perPageParam"},
+          {"$ref": "#/parameters/outputParam"},
+          {"$ref": "#/parameters/statePathParam"}
+        ],
+        "responses": {
+          "default": {
+            "description": "The standard error response",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "200": {
+            "description": "For success, return a paginated list of participation stats. Note that if you request `output=csv`, you probably want to also make `per_page` sufficiently large to include all data.",
+            "schema": {
+              "required": ["pagination", "results"],
+              "properties": {
+                "pagination": {
+                  "$ref": "#/definitions/Pagination"
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/StateParticipationCount"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/incidents/count/": {
       "get": {
         "description": "Returns counts by year for incidents.\nIncidents can also be grouped for counting with the `by` parameter, which accepts 1 or more of the following fields in a comma-delimited list: `year`, `month`, `offense_subcat`, `offense_subcat_code`, `offense`, `offense_code`, `offense_category`, `classification`, `state`, `state_name`",
