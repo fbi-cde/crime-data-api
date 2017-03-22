@@ -436,12 +436,17 @@ class CdeResource(MethodResource):
 
         serialized = self._serialize(paginated)
 
+        max_page = math.ceil(count / args['per_page'])
+
+        if args['page'] > max_page:
+            # Let user know they have reached the page max.
+            args['page'] = max_page
         return {
             'results': serialized,
             'pagination': {
                 'count': count,
                 'page': args['page'],
-                'pages': math.ceil(count / args['per_page']),
+                'pages': max_page,
                 'per_page': args['per_page'],
             },
         }
