@@ -42,5 +42,5 @@ def rollback(app):
 @pytest.yield_fixture(scope='session')
 def swagger():
     """Load the swagger specification in a JSON schema object"""
-    schema = flex.load('static/swagger.json')
+    schema = flex.load('crime_data/static/swagger.json')
     yield schema
