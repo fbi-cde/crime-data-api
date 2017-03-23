@@ -113,8 +113,18 @@
       "name": "state_id",
       "description": "The two-letter postal abbreviation for the state",
       "required": true,
+      "type": "string"
+    },
+    "victimCountVariableParam": {
+      "in": "path",
+      "name": "variable",
+      "description": "A specific variable to group victim counts by",
+      "required": true,
       "type": "string",
-      "pattern": "[A-Z]{2}"
+      "enum": ["prop_desc_name", "offense_name", "ethnicity",
+               "resident_status_code", "offender_relationship",
+               "circumstance_name", "race_code", "location_name",
+               "age_num", "sex_code"]
     },
     "offenseCategoryParam": {
       "in": "query",
@@ -134,6 +144,14 @@
       "required": false,
       "type": "string",
       "enum": ["aggravated-assault", "arson", "burglary", "larceny", "motor-vehicle-theft", "homicide", "rape", "robbery"]
+    }
+  },
+  "responses": {
+    "Error": {
+      "description": "The standard error response",
+      "schema": {
+        "$ref": "#/definitions/Error"
+      }
     }
   },
   "definitions": {
@@ -314,6 +332,27 @@
           }
         }
       ]
+    },
+    "CountForYear": {
+      "required": ["year", "count"],
+      "properties": {
+        "year": {
+          "description": "The year for which the counts were computed",
+          "type": "string"
+        },
+        "count": {
+          "description": "A count for a specific value of a variable in a given year",
+          "oneOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
     },
     "GeoCountyBasicInfo": {
       "description": "Basic information about the county, as returned within the response for the /geo/states endpoint.",
@@ -514,6 +553,79 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/definitions/ParticipationCount"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/victims/count/national/{variable}": {
+      "description": "Foo bar baz quux",
+      "get": {
+        "tags": ["counts", "victims"],
+        "parameters": [
+          {"$ref": "#/parameters/victimCountVariableParam"},
+          {"$ref": "#/parameters/aggregateManyParam"},
+          {"$ref": "#/parameters/fieldsParam"},
+          {"$ref": "#/parameters/pageParam"},
+          {"$ref": "#/parameters/perPageParam"},
+          {"$ref": "#/parameters/outputParam"}
+        ],
+        "responses": {
+          "default": {
+            "$ref": "#/responses/Error"
+          },
+          "200": {
+            "description": "",
+            "schema": {
+              "required": ["pagination", "results"],
+              "properties": {
+                "pagination": {
+                  "$ref": "#/definitions/Pagination"
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/CountForYear"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/victims/count/states/{state_id}/{variable}": {
+      "description": "Foo bar baz quux",
+      "get": {
+        "tags": ["counts", "victims"],
+        "parameters": [
+          {"$ref": "#/parameters/statePathParam"},
+          {"$ref": "#/parameters/victimCountVariableParam"},
+          {"$ref": "#/parameters/aggregateManyParam"},
+          {"$ref": "#/parameters/fieldsParam"},
+          {"$ref": "#/parameters/pageParam"},
+          {"$ref": "#/parameters/perPageParam"},
+          {"$ref": "#/parameters/outputParam"}
+        ],
+        "responses": {
+          "default": {
+            "$ref": "#/responses/Error"
+          },
+          "200": {
+            "description": "",
+            "schema": {
+              "required": ["pagination", "results"],
+              "properties": {
+                "pagination": {
+                  "$ref": "#/definitions/Pagination"
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/CountForYear"
                   }
                 }
               }
