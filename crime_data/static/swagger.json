@@ -476,7 +476,7 @@
         }
       }
     },
-    "/incidents/count/": {
+    "/counts": {
       "get": {
         "description": "Returns counts by year for incidents.\nIncidents can also be grouped for counting with the `by` parameter, which accepts 1 or more of the following fields in a comma-delimited list: `year`, `month`, `offense_subcat`, `offense_subcat_code`, `offense`, `offense_code`, `offense_category`, `classification`, `state`, `state_name`",
         "parameters": [
