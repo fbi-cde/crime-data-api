@@ -1,7 +1,6 @@
 {
-  "baseUrl": "/",
   "info": {
-    "title": "FBI Crime Data API", 
+    "title": "FBI Crime Data API",
     "version": "v1"
   },
   "securityDefinitions": {
@@ -12,7 +11,9 @@
     }
   },
   "security": [
-    {"api_key": []}
+    {
+      "api_key": []
+    }
   ],
   "parameters": {
     "aggregateManyParam": {
@@ -54,11 +55,24 @@
       "description": "Counts can be provided for statistics grouped by a list of one or more parameters",
       "required": false,
       "type": "array",
-      "default": ["year"],
+      "default": [
+        "year"
+      ],
       "collectionFormat": "csv",
       "items": {
         "type": "string",
-        "enum": ["year", "month", "offense_subcat", "offense_subcat_code", "offense", "offense_code", "offense_category", "classification", "state", "state_name"]
+        "enum": [
+          "year",
+          "month",
+          "offense_subcat",
+          "offense_subcat_code",
+          "offense",
+          "offense_code",
+          "offense_category",
+          "classification",
+          "state",
+          "state_name"
+        ]
       }
     },
     "outputParam": {
@@ -68,7 +82,10 @@
       "description": "The format to return results in",
       "required": false,
       "type": "string",
-      "enum": ["json", "csv"]
+      "enum": [
+        "json",
+        "csv"
+      ]
     },
     "yearParam": {
       "in": "query",
@@ -87,7 +104,6 @@
       "name": "month",
       "description": "Use this field to limit results to the specified month. Multiple months can be specified with multiple query parameters or by using comparison operators in the query",
       "required": false,
-      "allowMultiple": true,
       "type": "array",
       "collectionFormat": "csv",
       "items": {
@@ -121,10 +137,18 @@
       "description": "A specific variable to group victim counts by",
       "required": true,
       "type": "string",
-      "enum": ["prop_desc_name", "offense_name", "ethnicity",
-               "resident_status_code", "offender_relationship",
-               "circumstance_name", "race_code", "location_name",
-               "age_num", "sex_code"]
+      "enum": [
+        "prop_desc_name",
+        "offense_name",
+        "ethnicity",
+        "resident_status_code",
+        "offender_relationship",
+        "circumstance_name",
+        "race_code",
+        "location_name",
+        "age_num",
+        "sex_code"
+      ]
     },
     "victimsCountForOffenseVariableParam": {
       "in": "path",
@@ -132,10 +156,17 @@
       "description": "A specific variable to group victim counts by",
       "required": true,
       "type": "string",
-      "enum": ["prop_desc_name", "ethnicity",
-               "resident_status_code", "offender_relationship",
-               "circumstance_name", "race_code", "location_name",
-               "age_num", "sex_code"]
+      "enum": [
+        "prop_desc_name",
+        "ethnicity",
+        "resident_status_code",
+        "offender_relationship",
+        "circumstance_name",
+        "race_code",
+        "location_name",
+        "age_num",
+        "sex_code"
+      ]
     },
     "offendersCountVariableParam": {
       "in": "path",
@@ -143,8 +174,15 @@
       "description": "A specific variable to group offender counts by",
       "required": true,
       "type": "string",
-      "enum": ["ethnicity", "prop_desc_name", "offense_name",
-               "race_code", "location_name", "age_num", "sex_code"]
+      "enum": [
+        "ethnicity",
+        "prop_desc_name",
+        "offense_name",
+        "race_code",
+        "location_name",
+        "age_num",
+        "sex_code"
+      ]
     },
     "offendersCountForOffenseVariableParam": {
       "in": "path",
@@ -152,8 +190,14 @@
       "description": "A specific variable to group offender counts by for within the specified offense",
       "required": true,
       "type": "string",
-      "enum": ["ethnicity", "prop_desc_name",
-               "race_code", "location_name", "age_num", "sex_code"]
+      "enum": [
+        "ethnicity",
+        "prop_desc_name",
+        "race_code",
+        "location_name",
+        "age_num",
+        "sex_code"
+      ]
     },
     "offensesCountVariableParam": {
       "in": "path",
@@ -161,7 +205,12 @@
       "description": "A specific variable to group offense counts by",
       "required": true,
       "type": "string",
-      "enum": ["weapon_name", "method_entry_code", "num_premises_entered", "location_name"]
+      "enum": [
+        "weapon_name",
+        "method_entry_code",
+        "num_premises_entered",
+        "location_name"
+      ]
     },
     "cargoTheftsCountVariableParam": {
       "in": "path",
@@ -169,7 +218,12 @@
       "description": "A specific variable to group cargo_theft counts by",
       "required": true,
       "type": "string",
-      "enum": ["location_name", "offense_name", "victim_type_name", "prop_desc_name"]
+      "enum": [
+        "location_name",
+        "offense_name",
+        "victim_type_name",
+        "prop_desc_name"
+      ]
     },
     "cargoTheftsCountForOffenseVariableParam": {
       "in": "path",
@@ -177,15 +231,21 @@
       "description": "A specific variable to group cargo_theft counts by",
       "required": true,
       "type": "string",
-      "enum": ["location_name", "victim_type_name", "prop_desc_name"]
-    },    
+      "enum": [
+        "location_name",
+        "victim_type_name",
+        "prop_desc_name"
+      ]
+    },
     "hateCrimesCountVariableParam": {
       "in": "path",
       "name": "variable",
       "description": "A specific variable to group hate_crime counts by",
       "required": true,
       "type": "string",
-      "enum": ["bias_name"]
+      "enum": [
+        "bias_name"
+      ]
     },
     "offenseCategoryParam": {
       "in": "query",
@@ -211,7 +271,16 @@
       "description": "For the convenience of the Crime Data Explorer, this method takes a generic crime offense name and searches against the specific SRS or NIBRS offense in the backend models",
       "required": false,
       "type": "string",
-      "enum": ["aggravated-assault", "arson", "burglary", "larceny", "motor-vehicle-theft", "homicide", "rape", "robbery"]
+      "enum": [
+        "aggravated-assault",
+        "arson",
+        "burglary",
+        "larceny",
+        "motor-vehicle-theft",
+        "homicide",
+        "rape",
+        "robbery"
+      ]
     }
   },
   "responses": {
@@ -231,33 +300,40 @@
           "type": "string"
         }
       },
-      "required": ["message"]
+      "required": [
+        "message"
+      ]
     },
     "Pagination": {
       "properties": {
         "count": {
-          "format": "int32", 
+          "format": "int32",
           "type": "integer"
-        }, 
+        },
         "page": {
-          "format": "int32", 
+          "format": "int32",
           "type": "integer"
-        }, 
+        },
         "pages": {
-          "format": "int32", 
+          "format": "int32",
           "type": "integer"
-        }, 
+        },
         "per_page": {
-          "format": "int32", 
+          "format": "int32",
           "type": "integer"
         }
-      }, 
+      },
       "type": "object",
       "additionalProperties": false
     },
     "IncidentCount": {
       "description": "",
-      "required": ["actual", "cleared", "reported", "unfounded"],
+      "required": [
+        "actual",
+        "cleared",
+        "reported",
+        "unfounded"
+      ],
       "properties": {
         "actual": {
           "format": "int32",
@@ -292,11 +368,19 @@
       },
       "type": "object"
     },
-    "ParticipationCount": {
+    "ParticipationRate": {
       "type": "object",
-      "required": ["year", "reporting_agencies", "total_agencies", "reporting_rate", "total_population",
-                   "nibrs_reporting_agencies", "nibrs_reporting_rate",
-                   "covered_population", "nibrs_covered_population"],
+      "required": [
+        "year",
+        "reporting_agencies",
+        "total_agencies",
+        "reporting_rate",
+        "total_population",
+        "nibrs_reporting_agencies",
+        "nibrs_reporting_rate",
+        "covered_population",
+        "nibrs_covered_population"
+      ],
       "properties": {
         "year": {
           "format": "int32",
@@ -323,76 +407,42 @@
         },
         "total_population": {
           "description": "The sum of the population within the jurisdictions of all agencies for that year",
-          "anyOf": [
-            {
-              "format": "int32",
-              "type": "integer",
-              "minimum": 0
-            },
-            {
-              "type": "null"
-            }
-          ]
+          "format": "int32",
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
         },
         "nibrs_reporting_agencies": {
           "description": "The number of agencies who filed a NIBRS report in the given year",
-          "anyOf": [
-            {
-              "format": "int32",
-              "type": "integer"
-            },
-            {
-              "type": "null"
-            }
-          ]
+          "type": "integer"
         },
         "nibrs_reporting_rate": {
           "description": "A rate of how many agencies filed a NIBRS report in a given year",
           "format": "float",
-          "anyOf": [
-            {
-              "type": "number",
-              "minimum": 0,
-              "maximum": 1
-            },
-            {
-              "type": "null"
-            }
-          ]
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
         },
         "covered_population": {
-          "description": "The total population within jurisdictions of agencies who filed either a SRS or NIBRS report in the given year.",
-          "anyOf": [
-            {
-              "format": "int32",
-              "type": "integer",
-              "minimum": 0
-            },
-            {
-              "type": "null"
-            }
-          ]
+          "description": "The total population within jurisdictions of agencies who filed either a SRS or NIBRS report in the given year. format: int32 type: integer minimum: 0"
         },
         "nibrs_covered_population": {
-          "description": "The total population within jurisdictions of agencies who filed either a NIBRS report in the given year.",
-          "anyOf": [
-            {
-              "format": "int32",
-              "type": "integer",
-              "minimum": 0
-            },
-            {
-              "type": "null"
-            }
-          ]
+          "description": "The total population within jurisdictions of agencies who filed either a NIBRS report in the given year. format: int32 type: integer minimum: 0"
         }
       }
     },
-    "StateParticipationCount": {
+    "StateParticipationRate": {
       "allOf": [
-        {"$ref": "#/definitions/ParticipationCount"},
         {
-          "required": ["state_name"],
+          "$ref": "#/definitions/ParticipationRate"
+        },
+        {
+          "type": "object",
+          "required": [
+            "state_name"
+          ],
           "properties": {
             "state_name": {
               "type": "string"
@@ -402,7 +452,11 @@
       ]
     },
     "CountForYear": {
-      "required": ["year", "count"],
+      "description": "This object will almost always include an additional variable field with the value of the variable being counted. So. if you asked the API for counts related to `race_code` variable, each record would have a key like `race_code` and the corresponding value (ie, `B`, `W`) etc. for that count.",
+      "required": [
+        "year",
+        "count"
+      ],
       "properties": {
         "year": {
           "description": "The year for which the counts were computed",
@@ -410,15 +464,8 @@
         },
         "count": {
           "description": "A count for a specific value of a variable in a given year",
-          "oneOf": [
-            {
-              "type": "integer",
-              "minimum": 0
-            },
-            {
-              "type": "null"
-            }
-          ]
+          "type": "integer",
+          "minimum": 0
         }
       }
     },
@@ -429,7 +476,10 @@
           "$ref": "#/definitions/CountForYear"
         },
         {
-          "required": ["stolen_value", "recovered_value"],
+          "required": [
+            "stolen_value",
+            "recovered_value"
+          ],
           "properties": {
             "stolen_value": {
               "description": "The total estimated value for stolen property in that count",
@@ -440,12 +490,33 @@
               "type": "string"
             }
           }
-        }   
+        }
       ]
+    },
+    "PaginatedCountForYear": {
+      "type": "object",
+      "required": [
+        "pagination",
+        "results"
+      ],
+      "properties": {
+        "pagination": {
+          "$ref": "#/definitions/Pagination"
+        },
+        "results": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CountForYear"
+          }
+        }
+      }
     },
     "GeoCountyBasicInfo": {
       "description": "Basic information about the county, as returned within the response for the /geo/states endpoint.",
-      "required": ["county_id", "county_name"],
+      "required": [
+        "county_id",
+        "county_name"
+      ],
       "properties": {
         "county_id": {
           "description": "The internal identifier for the county within the CDE database",
@@ -494,35 +565,50 @@
         "participation": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/ParticipationCount"
+            "$ref": "#/definitions/ParticipationRate"
           }
         }
       },
-      "required": ["name", "current_year", "participation", "counties", "fips_code"]
+      "required": [
+        "name",
+        "current_year",
+        "participation",
+        "counties",
+        "fips_code"
+      ]
     }
   },
-  "schemes": ["https"],
+  "schemes": [
+    "https"
+  ],
   "host": "crime-data-api.fbi.gov",
-  "produces": ["application/json", "text/csv"],
+  "produces": [
+    "application/json",
+    "text/csv"
+  ],
   "paths": {
     "/geo/states/{state_id}": {
       "get": {
-        "tags": ["state"],
+        "tags": [
+          "state"
+        ],
         "description": "Returns basic information about the state",
         "parameters": [
-          {"$ref": "#/parameters/statePathParam"}
+          {
+            "$ref": "#/parameters/statePathParam"
+          }
         ],
         "responses": {
-          "default": {
-            "description": "The standard error response",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
           "200": {
             "description": "The metadata for a state",
             "schema": {
               "$ref": "#/definitions/GeoStateDetail"
+            }
+          },
+          "500": {
+            "description": "The standard error response",
+            "schema": {
+              "$ref": "#/definitions/Error"
             }
           }
         }
@@ -530,27 +616,40 @@
     },
     "/geo/states/{state_id}/participation": {
       "get": {
-        "tags": ["state", "participation"],
+        "tags": [
+          "state",
+          "participation"
+        ],
         "description": "Returns just the participation data for a state",
         "parameters": [
-          {"$ref": "#/parameters/aggregateManyParam"},
-          {"$ref": "#/parameters/fieldsParam"},
-          {"$ref": "#/parameters/pageParam"},
-          {"$ref": "#/parameters/perPageParam"},
-          {"$ref": "#/parameters/outputParam"},
-          {"$ref": "#/parameters/statePathParam"}
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          },
+          {
+            "$ref": "#/parameters/statePathParam"
+          }
         ],
         "responses": {
-          "default": {
-            "description": "The standard error response",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
           "200": {
             "description": "For success, return a paginated list of participation stats. Note that if you request `output=csv`, you probably want to also make `per_page` sufficiently large to include all data.",
             "schema": {
-              "required": ["pagination", "results"],
+              "type": "object",
+              "required": [
+                "pagination",
+                "results"
+              ],
               "properties": {
                 "pagination": {
                   "$ref": "#/definitions/Pagination"
@@ -558,10 +657,16 @@
                 "results": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/definitions/StateParticipationCount"
+                    "$ref": "#/definitions/StateParticipationRate"
                   }
                 }
               }
+            }
+          },
+          "500": {
+            "description": "The standard error response",
+            "schema": {
+              "$ref": "#/definitions/Error"
             }
           }
         }
@@ -569,32 +674,55 @@
     },
     "/counts": {
       "get": {
-        "tags": ["trends"],
-        "description": "Returns counts by year for incidents.\nIncidents can also be grouped for counting with the `by` parameter, which accepts 1 or more of the following fields in a comma-delimited list: `year`, `month`, `offense_subcat`, `offense_subcat_code`, `offense`, `offense_code`, `offense_category`, `classification`, `state`, `state_name`",
+        "tags": [
+          "summary"
+        ],
+        "description": "Returns counts by year for incidents.
+Incidents can also be grouped for counting with the `by` parameter, which accepts 1 or more of the following fields in a comma-delimited list: `year`, `month`, `offense_subcat`, `offense_subcat_code`, `offense`, `offense_code`, `offense_category`, `classification`, `state`, `state_name`",
         "parameters": [
-          {"$ref": "#/parameters/aggregateManyParam"},
-          {"$ref": "#/parameters/fieldsParam"},
-          {"$ref": "#/parameters/pageParam"},
-          {"$ref": "#/parameters/perPageParam"},
-          {"$ref": "#/parameters/outputParam"},
-          {"$ref": "#/parameters/incidentCountGroupByParam"},
-          {"$ref": "#/parameters/yearParam"},
-          {"$ref": "#/parameters/monthParam"},
-          {"$ref": "#/parameters/stateParam"},
-          {"$ref": "#/parameters/offenseCategoryParam"},
-          {"$ref": "#/parameters/explorerOffenseParam"}
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          },
+          {
+            "$ref": "#/parameters/incidentCountGroupByParam"
+          },
+          {
+            "$ref": "#/parameters/yearParam"
+          },
+          {
+            "$ref": "#/parameters/monthParam"
+          },
+          {
+            "$ref": "#/parameters/stateParam"
+          },
+          {
+            "$ref": "#/parameters/offenseCategoryParam"
+          },
+          {
+            "$ref": "#/parameters/explorerOffenseParam"
+          }
         ],
         "responses": {
-          "default": {
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
           "200": {
             "description": "",
             "schema": {
-              "required": ["pagination", "results"],
+              "type": "object",
+              "required": [
+                "pagination",
+                "results"
+              ],
               "properties": {
                 "pagination": {
                   "$ref": "#/definitions/Pagination"
@@ -607,36 +735,49 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
-        },
-        "tags": [
-          "summary"
-        ]
+        }
       }
     },
     "/participation/national": {
       "get": {
-      "tags": ["participation", "national"],
+        "tags": [
+          "participation",
+          "national"
+        ],
         "description": "Returns national participation data",
         "parameters": [
-          {"$ref": "#/parameters/aggregateManyParam"},
-          {"$ref": "#/parameters/fieldsParam"},
-          {"$ref": "#/parameters/pageParam"},
-          {"$ref": "#/parameters/perPageParam"},
-          {"$ref": "#/parameters/outputParam"}
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
         ],
         "responses": {
-          "default": {
-            "description": "Standard error response",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
           "200": {
             "description": "Returns a paginated list of statistics for nationwide participation per year in revers chronological order",
             "schema": {
               "type": "object",
-              "required": ["pagination", "results"],
+              "required": [
+                "pagination",
+                "results"
+              ],
               "properties": {
                 "pagination": {
                   "$ref": "#/definitions/Pagination"
@@ -644,254 +785,306 @@
                 "results": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/definitions/ParticipationCount"
+                    "$ref": "#/definitions/ParticipationRate"
                   }
                 }
               }
+            }
+          },
+          "500": {
+            "description": "Standard error response",
+            "schema": {
+              "$ref": "#/definitions/Error"
             }
           }
         }
       }
     },
     "/offenders/count/national/{variable}": {
-      "description": "TK",
       "get": {
-        "tags": ["counts", "offenders", "national"],
+        "tags": [
+          "nibrs summaries",
+          "offenders",
+          "national"
+        ],
         "parameters": [
-          {"$ref": "#/parameters/offendersCountVariableParam"},
-          {"$ref": "#/parameters/aggregateManyParam"},
-          {"$ref": "#/parameters/fieldsParam"},
-          {"$ref": "#/parameters/pageParam"},
-          {"$ref": "#/parameters/perPageParam"},
-          {"$ref": "#/parameters/outputParam"}
+          {
+            "$ref": "#/parameters/offendersCountVariableParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
         ],
         "responses": {
-          "default": {
-            "$ref": "#/responses/Error"
-          },
           "200": {
             "description": "",
             "schema": {
-              "required": ["pagination", "results"],
-              "properties": {
-                "pagination": {
-                  "$ref": "#/definitions/Pagination"
-                },
-                "results": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/CountForYear"
-                  }
-                }
-              }
+              "$ref": "#/definitions/PaginatedCountForYear"
             }
+          },
+          "default": {
+            "$ref": "#/responses/Error"
           }
         }
       }
     },
     "/offenders/count/states/{state_id}/{variable}": {
-      "description": "TK",
       "get": {
-        "tags": ["counts", "offenders", "state"],
+        "tags": [
+          "nibrs summaries",
+          "offenders",
+          "state"
+        ],
         "parameters": [
-          {"$ref": "#/parameters/statePathParam"},
-          {"$ref": "#/parameters/offendersCountVariableParam"},
-          {"$ref": "#/parameters/aggregateManyParam"},
-          {"$ref": "#/parameters/fieldsParam"},
-          {"$ref": "#/parameters/pageParam"},
-          {"$ref": "#/parameters/perPageParam"},
-          {"$ref": "#/parameters/outputParam"}
+          {
+            "$ref": "#/parameters/statePathParam"
+          },
+          {
+            "$ref": "#/parameters/offendersCountVariableParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
         ],
         "responses": {
-          "default": {
-            "$ref": "#/responses/Error"
-          },
           "200": {
             "description": "",
             "schema": {
-              "required": ["pagination", "results"],
-              "properties": {
-                "pagination": {
-                  "$ref": "#/definitions/Pagination"
-                },
-                "results": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/CountForYear"
-                  }
-                }
-              }
+              "$ref": "#/definitions/PaginatedCountForYear"
             }
+          },
+          "default": {
+            "$ref": "#/responses/Error"
           }
         }
       }
     },
     "/offenses/count/national/{variable}": {
-      "description": "TK",
       "get": {
-        "tags": ["counts", "victims", "national"],
+        "tags": [
+          "nibrs summaries",
+          "victims",
+          "national"
+        ],
         "parameters": [
-          {"$ref": "#/parameters/offensesCountVariableParam"},
-          {"$ref": "#/parameters/aggregateManyParam"},
-          {"$ref": "#/parameters/fieldsParam"},
-          {"$ref": "#/parameters/pageParam"},
-          {"$ref": "#/parameters/perPageParam"},
-          {"$ref": "#/parameters/outputParam"}
+          {
+            "$ref": "#/parameters/offensesCountVariableParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
         ],
         "responses": {
-          "default": {
-            "$ref": "#/responses/Error"
-          },
           "200": {
             "description": "",
             "schema": {
-              "required": ["pagination", "results"],
-              "properties": {
-                "pagination": {
-                  "$ref": "#/definitions/Pagination"
-                },
-                "results": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/CountForYear"
-                  }
-                }
-              }
+              "$ref": "#/definitions/PaginatedCountForYear"
             }
+          },
+          "default": {
+            "$ref": "#/responses/Error"
           }
         }
       }
     },
     "/offenses/count/states/{state_id}/{variable}": {
-      "description": "TK",
       "get": {
-        "tags": ["counts", "offenses", "state"],
+        "tags": [
+          "nibrs summaries",
+          "offenses",
+          "state"
+        ],
         "parameters": [
-          {"$ref": "#/parameters/statePathParam"},
-          {"$ref": "#/parameters/offensesCountVariableParam"},
-          {"$ref": "#/parameters/aggregateManyParam"},
-          {"$ref": "#/parameters/fieldsParam"},
-          {"$ref": "#/parameters/pageParam"},
-          {"$ref": "#/parameters/perPageParam"},
-          {"$ref": "#/parameters/outputParam"}
+          {
+            "$ref": "#/parameters/statePathParam"
+          },
+          {
+            "$ref": "#/parameters/offensesCountVariableParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
         ],
         "responses": {
-          "default": {
-            "$ref": "#/responses/Error"
-          },
           "200": {
             "description": "",
             "schema": {
-              "required": ["pagination", "results"],
-              "properties": {
-                "pagination": {
-                  "$ref": "#/definitions/Pagination"
-                },
-                "results": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/CountForYear"
-                  }
-                }
-              }
+              "$ref": "#/definitions/PaginatedCountForYear"
             }
+          },
+          "default": {
+            "$ref": "#/responses/Error"
           }
         }
       }
     },
     "/victims/count/national/{variable}": {
-      "description": "TK",
       "get": {
-        "tags": ["counts", "victims", "national"],
+        "tags": [
+          "nibrs summaries",
+          "victims",
+          "national"
+        ],
         "parameters": [
-          {"$ref": "#/parameters/victimsCountVariableParam"},
-          {"$ref": "#/parameters/aggregateManyParam"},
-          {"$ref": "#/parameters/fieldsParam"},
-          {"$ref": "#/parameters/pageParam"},
-          {"$ref": "#/parameters/perPageParam"},
-          {"$ref": "#/parameters/outputParam"}
+          {
+            "$ref": "#/parameters/victimsCountVariableParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
         ],
         "responses": {
-          "default": {
-            "$ref": "#/responses/Error"
-          },
           "200": {
             "description": "",
             "schema": {
-              "required": ["pagination", "results"],
-              "properties": {
-                "pagination": {
-                  "$ref": "#/definitions/Pagination"
-                },
-                "results": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/CountForYear"
-                  }
-                }
-              }
+              "$ref": "#/definitions/PaginatedCountForYear"
             }
+          },
+          "default": {
+            "$ref": "#/responses/Error"
           }
         }
       }
     },
     "/victims/count/states/{state_id}/{variable}": {
-      "description": "Foo bar baz quux",
       "get": {
-        "tags": ["counts", "victims", "state"],
+        "tags": [
+          "nibrs summaries",
+          "victims",
+          "state"
+        ],
         "parameters": [
-          {"$ref": "#/parameters/statePathParam"},
-          {"$ref": "#/parameters/victimsCountVariableParam"},
-          {"$ref": "#/parameters/aggregateManyParam"},
-          {"$ref": "#/parameters/fieldsParam"},
-          {"$ref": "#/parameters/pageParam"},
-          {"$ref": "#/parameters/perPageParam"},
-          {"$ref": "#/parameters/outputParam"}
+          {
+            "$ref": "#/parameters/statePathParam"
+          },
+          {
+            "$ref": "#/parameters/victimsCountVariableParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
         ],
         "responses": {
-          "default": {
-            "$ref": "#/responses/Error"
-          },
           "200": {
             "description": "",
             "schema": {
-              "required": ["pagination", "results"],
-              "properties": {
-                "pagination": {
-                  "$ref": "#/definitions/Pagination"
-                },
-                "results": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/CountForYear"
-                  }
-                }
-              }
+              "$ref": "#/definitions/PaginatedCountForYear"
             }
+          },
+          "default": {
+            "$ref": "#/responses/Error"
           }
         }
       }
     },
     "/ct/count/national/{variable}": {
-      "description": "TK",
       "get": {
-        "tags": ["counts", "cargo theft", "national"],
+        "tags": [
+          "nibrs summaries",
+          "cargo theft",
+          "national"
+        ],
         "parameters": [
-          {"$ref": "#/parameters/cargoTheftsCountVariableParam"},
-          {"$ref": "#/parameters/aggregateManyParam"},
-          {"$ref": "#/parameters/fieldsParam"},
-          {"$ref": "#/parameters/pageParam"},
-          {"$ref": "#/parameters/perPageParam"},
-          {"$ref": "#/parameters/outputParam"}
+          {
+            "$ref": "#/parameters/cargoTheftsCountVariableParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
         ],
         "responses": {
-          "default": {
-            "$ref": "#/responses/Error"
-          },
           "200": {
             "description": "",
             "schema": {
-              "required": ["pagination", "results"],
+              "type": "object",
+              "required": [
+                "pagination",
+                "results"
+              ],
               "properties": {
                 "pagination": {
                   "$ref": "#/definitions/Pagination"
@@ -904,31 +1097,51 @@
                 }
               }
             }
+          },
+          "default": {
+            "$ref": "#/responses/Error"
           }
         }
       }
     },
     "/ct/count/states/{state_id}/{variable}": {
-      "description": "TK",
       "get": {
-        "tags": ["counts", "cargo theft"],
+        "tags": [
+          "nibrs summaries",
+          "cargo theft"
+        ],
         "parameters": [
-          {"$ref": "#/parameters/statePathParam"},
-          {"$ref": "#/parameters/cargoTheftsCountVariableParam"},
-          {"$ref": "#/parameters/aggregateManyParam"},
-          {"$ref": "#/parameters/fieldsParam"},
-          {"$ref": "#/parameters/pageParam"},
-          {"$ref": "#/parameters/perPageParam"},
-          {"$ref": "#/parameters/outputParam"}
+          {
+            "$ref": "#/parameters/statePathParam"
+          },
+          {
+            "$ref": "#/parameters/cargoTheftsCountVariableParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
         ],
         "responses": {
-          "default": {
-            "$ref": "#/responses/Error"
-          },
           "200": {
             "description": "",
             "schema": {
-              "required": ["pagination", "results"],
+              "type": "object",
+              "required": [
+                "pagination",
+                "results"
+              ],
               "properties": {
                 "pagination": {
                   "$ref": "#/definitions/Pagination"
@@ -941,30 +1154,49 @@
                 }
               }
             }
+          },
+          "default": {
+            "$ref": "#/responses/Error"
           }
         }
       }
     },
     "/hc/count/national/{variable}": {
-      "description": "TK",
       "get": {
-        "tags": ["counts", "hate crimes", "national"],
+        "tags": [
+          "nibrs summaries",
+          "hate crimes",
+          "national"
+        ],
         "parameters": [
-          {"$ref": "#/parameters/hateCrimesCountVariableParam"},
-          {"$ref": "#/parameters/aggregateManyParam"},
-          {"$ref": "#/parameters/fieldsParam"},
-          {"$ref": "#/parameters/pageParam"},
-          {"$ref": "#/parameters/perPageParam"},
-          {"$ref": "#/parameters/outputParam"}
+          {
+            "$ref": "#/parameters/hateCrimesCountVariableParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
         ],
         "responses": {
-          "default": {
-            "$ref": "#/responses/Error"
-          },
           "200": {
             "description": "",
             "schema": {
-              "required": ["pagination", "results"],
+              "type": "object",
+              "required": [
+                "pagination",
+                "results"
+              ],
               "properties": {
                 "pagination": {
                   "$ref": "#/definitions/Pagination"
@@ -977,108 +1209,149 @@
                 }
               }
             }
+          },
+          "default": {
+            "$ref": "#/responses/Error"
           }
         }
       }
     },
     "/hc/count/states/{state_id}/{variable}": {
-      "description": "TK",
       "get": {
-        "tags": ["counts", "hate crimes", "state"],
+        "tags": [
+          "nibrs summaries",
+          "hate crimes",
+          "state"
+        ],
         "parameters": [
-          {"$ref": "#/parameters/statePathParam"},
-          {"$ref": "#/parameters/hateCrimesCountVariableParam"},
-          {"$ref": "#/parameters/aggregateManyParam"},
-          {"$ref": "#/parameters/fieldsParam"},
-          {"$ref": "#/parameters/pageParam"},
-          {"$ref": "#/parameters/perPageParam"},
-          {"$ref": "#/parameters/outputParam"}
+          {
+            "$ref": "#/parameters/statePathParam"
+          },
+          {
+            "$ref": "#/parameters/hateCrimesCountVariableParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
         ],
         "responses": {
-          "default": {
-            "$ref": "#/responses/Error"
-          },
           "200": {
             "description": "",
             "schema": {
-              "required": ["pagination", "results"],
-              "properties": {
-                "pagination": {
-                  "$ref": "#/definitions/Pagination"
-                },
-                "results": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/CountForYear"
-                  }
-                }
-              }
+              "$ref": "#/definitions/PaginatedCountForYear"
             }
+          },
+          "default": {
+            "$ref": "#/responses/Error"
           }
         }
       }
     },
     "/offenders/count/national/{variable}/offenses": {
-      "description": "TK",
       "get": {
-        "tags": ["counts", "offenders", "national", "for offense"],
+        "tags": [
+          "nibrs summaries",
+          "offenders",
+          "national",
+          "for offense"
+        ],
         "parameters": [
-          {"$ref": "#/parameters/offendersCountVariableParam"},
-          {"$ref": "#/parameters/offenseNameParam"},
-          {"$ref": "#/parameters/explorerOffenseParam"},
-          {"$ref": "#/parameters/aggregateManyParam"},
-          {"$ref": "#/parameters/fieldsParam"},
-          {"$ref": "#/parameters/pageParam"},
-          {"$ref": "#/parameters/perPageParam"},
-          {"$ref": "#/parameters/outputParam"}
+          {
+            "$ref": "#/parameters/offendersCountVariableParam"
+          },
+          {
+            "$ref": "#/parameters/offenseNameParam"
+          },
+          {
+            "$ref": "#/parameters/explorerOffenseParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
         ],
         "responses": {
-          "default": {
-            "$ref": "#/responses/Error"
-          },
           "200": {
             "description": "",
             "schema": {
-              "required": ["pagination", "results"],
-              "properties": {
-                "pagination": {
-                  "$ref": "#/definitions/Pagination"
-                },
-                "results": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/CountForYear"
-                  }
-                }
-              }
+              "$ref": "#/definitions/PaginatedCountForYear"
             }
+          },
+          "default": {
+            "$ref": "#/responses/Error"
           }
         }
       }
     },
     "/offenders/count/states/{state_id}/{variable}/offenses": {
-      "description": "TK",
       "get": {
-        "tags": ["counts", "offenders", "state", "for offense"],
+        "tags": [
+          "nibrs summaries",
+          "offenders",
+          "state",
+          "for offense"
+        ],
         "parameters": [
-          {"$ref": "#/parameters/statePathParam"},
-          {"$ref": "#/parameters/offendersCountForOffenseVariableParam"},
-          {"$ref": "#/parameters/offenseNameParam"},
-          {"$ref": "#/parameters/explorerOffenseParam"},
-          {"$ref": "#/parameters/aggregateManyParam"},
-          {"$ref": "#/parameters/fieldsParam"},
-          {"$ref": "#/parameters/pageParam"},
-          {"$ref": "#/parameters/perPageParam"},
-          {"$ref": "#/parameters/outputParam"}
+          {
+            "$ref": "#/parameters/statePathParam"
+          },
+          {
+            "$ref": "#/parameters/offendersCountForOffenseVariableParam"
+          },
+          {
+            "$ref": "#/parameters/offenseNameParam"
+          },
+          {
+            "$ref": "#/parameters/explorerOffenseParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
         ],
         "responses": {
-          "default": {
-            "$ref": "#/responses/Error"
-          },
           "200": {
             "description": "",
             "schema": {
-              "required": ["pagination", "results"],
+              "type": "object",
+              "required": [
+                "pagination",
+                "results"
+              ],
               "properties": {
                 "pagination": {
                   "$ref": "#/definitions/Pagination"
@@ -1091,32 +1364,56 @@
                 }
               }
             }
+          },
+          "500": {
+            "$ref": "#/responses/Error"
           }
         }
       }
     },
     "/offenses/count/national/{variable}/offenses": {
-      "description": "TK",
       "get": {
-        "tags": ["counts", "victims", "national", "for offense"],
+        "tags": [
+          "nibrs summaries",
+          "victims",
+          "national",
+          "for offense"
+        ],
         "parameters": [
-          {"$ref": "#/parameters/offensesCountVariableParam"},
-          {"$ref": "#/parameters/offenseNameParam"},
-          {"$ref": "#/parameters/explorerOffenseParam"},
-          {"$ref": "#/parameters/aggregateManyParam"},
-          {"$ref": "#/parameters/fieldsParam"},
-          {"$ref": "#/parameters/pageParam"},
-          {"$ref": "#/parameters/perPageParam"},
-          {"$ref": "#/parameters/outputParam"}
+          {
+            "$ref": "#/parameters/offensesCountVariableParam"
+          },
+          {
+            "$ref": "#/parameters/offenseNameParam"
+          },
+          {
+            "$ref": "#/parameters/explorerOffenseParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
         ],
         "responses": {
-          "default": {
-            "$ref": "#/responses/Error"
-          },
           "200": {
             "description": "",
             "schema": {
-              "required": ["pagination", "results"],
+              "type": "object",
+              "required": [
+                "pagination",
+                "results"
+              ],
               "properties": {
                 "pagination": {
                   "$ref": "#/definitions/Pagination"
@@ -1129,33 +1426,59 @@
                 }
               }
             }
+          },
+          "default": {
+            "$ref": "#/responses/Error"
           }
         }
       }
     },
     "/offenses/count/states/{state_id}/{variable}/offenses": {
-      "description": "TK",
       "get": {
-        "tags": ["counts", "offenses", "state", "for offense"],
+        "tags": [
+          "nibrs summaries",
+          "offenses",
+          "state",
+          "for offense"
+        ],
         "parameters": [
-          {"$ref": "#/parameters/statePathParam"},
-          {"$ref": "#/parameters/offensesCountVariableParam"},
-          {"$ref": "#/parameters/offenseNameParam"},
-          {"$ref": "#/parameters/explorerOffenseParam"},
-          {"$ref": "#/parameters/aggregateManyParam"},
-          {"$ref": "#/parameters/fieldsParam"},
-          {"$ref": "#/parameters/pageParam"},
-          {"$ref": "#/parameters/perPageParam"},
-          {"$ref": "#/parameters/outputParam"}
+          {
+            "$ref": "#/parameters/statePathParam"
+          },
+          {
+            "$ref": "#/parameters/offensesCountVariableParam"
+          },
+          {
+            "$ref": "#/parameters/offenseNameParam"
+          },
+          {
+            "$ref": "#/parameters/explorerOffenseParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
         ],
         "responses": {
-          "default": {
-            "$ref": "#/responses/Error"
-          },
           "200": {
             "description": "",
             "schema": {
-              "required": ["pagination", "results"],
+              "type": "object",
+              "required": [
+                "pagination",
+                "results"
+              ],
               "properties": {
                 "pagination": {
                   "$ref": "#/definitions/Pagination"
@@ -1168,32 +1491,56 @@
                 }
               }
             }
+          },
+          "default": {
+            "$ref": "#/responses/Error"
           }
         }
       }
     },
     "/victims/count/national/{variable}/offenses": {
-      "description": "TK",
       "get": {
-        "tags": ["counts", "victims", "national", "for offense"],
+        "tags": [
+          "nibrs summaries",
+          "victims",
+          "national",
+          "for offense"
+        ],
         "parameters": [
-          {"$ref": "#/parameters/victimsCountForOffenseVariableParam"},
-          {"$ref": "#/parameters/offenseNameParam"},
-          {"$ref": "#/parameters/explorerOffenseParam"},
-          {"$ref": "#/parameters/aggregateManyParam"},
-          {"$ref": "#/parameters/fieldsParam"},
-          {"$ref": "#/parameters/pageParam"},
-          {"$ref": "#/parameters/perPageParam"},
-          {"$ref": "#/parameters/outputParam"}
+          {
+            "$ref": "#/parameters/victimsCountForOffenseVariableParam"
+          },
+          {
+            "$ref": "#/parameters/offenseNameParam"
+          },
+          {
+            "$ref": "#/parameters/explorerOffenseParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
         ],
         "responses": {
-          "default": {
-            "$ref": "#/responses/Error"
-          },
           "200": {
             "description": "",
             "schema": {
-              "required": ["pagination", "results"],
+              "type": "object",
+              "required": [
+                "pagination",
+                "results"
+              ],
               "properties": {
                 "pagination": {
                   "$ref": "#/definitions/Pagination"
@@ -1206,33 +1553,59 @@
                 }
               }
             }
+          },
+          "default": {
+            "$ref": "#/responses/Error"
           }
         }
       }
     },
     "/victims/count/states/{state_id}/{variable}/offenses": {
-      "description": "Foo bar baz quux",
       "get": {
-        "tags": ["counts", "victims", "state", "for offense"],
+        "tags": [
+          "nibrs summaries",
+          "victims",
+          "state",
+          "for offense"
+        ],
         "parameters": [
-          {"$ref": "#/parameters/statePathParam"},
-          {"$ref": "#/parameters/victimsCountForOffenseVariableParam"},
-          {"$ref": "#/parameters/offenseNameParam"},
-          {"$ref": "#/parameters/explorerOffenseParam"},
-          {"$ref": "#/parameters/aggregateManyParam"},
-          {"$ref": "#/parameters/fieldsParam"},
-          {"$ref": "#/parameters/pageParam"},
-          {"$ref": "#/parameters/perPageParam"},
-          {"$ref": "#/parameters/outputParam"}
+          {
+            "$ref": "#/parameters/statePathParam"
+          },
+          {
+            "$ref": "#/parameters/victimsCountForOffenseVariableParam"
+          },
+          {
+            "$ref": "#/parameters/offenseNameParam"
+          },
+          {
+            "$ref": "#/parameters/explorerOffenseParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
         ],
         "responses": {
-          "default": {
-            "$ref": "#/responses/Error"
-          },
           "200": {
             "description": "",
             "schema": {
-              "required": ["pagination", "results"],
+              "type": "object",
+              "required": [
+                "pagination",
+                "results"
+              ],
               "properties": {
                 "pagination": {
                   "$ref": "#/definitions/Pagination"
@@ -1245,32 +1618,56 @@
                 }
               }
             }
+          },
+          "default": {
+            "$ref": "#/responses/Error"
           }
         }
       }
     },
     "/ct/count/national/{variable}/offenses": {
-      "description": "TK",
       "get": {
-        "tags": ["counts", "cargo theft", "national", "for offense"],
+        "tags": [
+          "nibrs summaries",
+          "cargo theft",
+          "national",
+          "for offense"
+        ],
         "parameters": [
-          {"$ref": "#/parameters/cargoTheftsCountForOffenseVariableParam"},
-          {"$ref": "#/parameters/offenseNameParam"},
-          {"$ref": "#/parameters/explorerOffenseParam"},
-          {"$ref": "#/parameters/aggregateManyParam"},
-          {"$ref": "#/parameters/fieldsParam"},
-          {"$ref": "#/parameters/pageParam"},
-          {"$ref": "#/parameters/perPageParam"},
-          {"$ref": "#/parameters/outputParam"}
+          {
+            "$ref": "#/parameters/cargoTheftsCountForOffenseVariableParam"
+          },
+          {
+            "$ref": "#/parameters/offenseNameParam"
+          },
+          {
+            "$ref": "#/parameters/explorerOffenseParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
         ],
         "responses": {
-          "default": {
-            "$ref": "#/responses/Error"
-          },
           "200": {
             "description": "",
             "schema": {
-              "required": ["pagination", "results"],
+              "type": "object",
+              "required": [
+                "pagination",
+                "results"
+              ],
               "properties": {
                 "pagination": {
                   "$ref": "#/definitions/Pagination"
@@ -1283,33 +1680,59 @@
                 }
               }
             }
+          },
+          "default": {
+            "$ref": "#/responses/Error"
           }
         }
       }
     },
     "/ct/count/states/{state_id}/{variable}/offenses": {
-      "description": "TK",
       "get": {
-        "tags": ["counts", "cargo theft", "state", "for offense"],
+        "tags": [
+          "nibrs summaries",
+          "cargo theft",
+          "state",
+          "for offense"
+        ],
         "parameters": [
-          {"$ref": "#/parameters/statePathParam"},
-          {"$ref": "#/parameters/cargoTheftsCountVariableParam"},
-          {"$ref": "#/parameters/offenseNameParam"},
-          {"$ref": "#/parameters/explorerOffenseParam"},
-          {"$ref": "#/parameters/aggregateManyParam"},
-          {"$ref": "#/parameters/fieldsParam"},
-          {"$ref": "#/parameters/pageParam"},
-          {"$ref": "#/parameters/perPageParam"},
-          {"$ref": "#/parameters/outputParam"}
+          {
+            "$ref": "#/parameters/statePathParam"
+          },
+          {
+            "$ref": "#/parameters/cargoTheftsCountVariableParam"
+          },
+          {
+            "$ref": "#/parameters/offenseNameParam"
+          },
+          {
+            "$ref": "#/parameters/explorerOffenseParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
         ],
         "responses": {
-          "default": {
-            "$ref": "#/responses/Error"
-          },
           "200": {
             "description": "",
             "schema": {
-              "required": ["pagination", "results"],
+              "type": "object",
+              "required": [
+                "pagination",
+                "results"
+              ],
               "properties": {
                 "pagination": {
                   "$ref": "#/definitions/Pagination"
@@ -1322,104 +1745,127 @@
                 }
               }
             }
+          },
+          "default": {
+            "$ref": "#/responses/Error"
           }
         }
       }
     },
     "/hc/count/national/{variable}/offenses": {
-      "description": "TK",
       "get": {
-        "tags": ["counts", "hate crimes", "national", "for offense"],
+        "tags": [
+          "nibrs summaries",
+          "hate crimes",
+          "national",
+          "for offense"
+        ],
         "parameters": [
-          {"$ref": "#/parameters/hateCrimesCountVariableParam"},
-          {"$ref": "#/parameters/offenseNameParam"},
-          {"$ref": "#/parameters/explorerOffenseParam"},
-          {"$ref": "#/parameters/aggregateManyParam"},
-          {"$ref": "#/parameters/fieldsParam"},
-          {"$ref": "#/parameters/pageParam"},
-          {"$ref": "#/parameters/perPageParam"},
-          {"$ref": "#/parameters/outputParam"}
+          {
+            "$ref": "#/parameters/hateCrimesCountVariableParam"
+          },
+          {
+            "$ref": "#/parameters/offenseNameParam"
+          },
+          {
+            "$ref": "#/parameters/explorerOffenseParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
         ],
         "responses": {
+          "200": {
+            "description": "TK",
+            "schema": {
+              "$ref": "#/definitions/PaginatedCountForYear"
+            }
+          },
           "default": {
             "$ref": "#/responses/Error"
-          },
-          "200": {
-            "description": "",
-            "schema": {
-              "required": ["pagination", "results"],
-              "properties": {
-                "pagination": {
-                  "$ref": "#/definitions/Pagination"
-                },
-                "results": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/CountForYear"
-                  }
-                }
-              }
-            }
           }
         }
       }
     },
     "/hc/count/states/{state_id}/{variable}/offenses": {
-      "description": "This provides a counts of a hate crime variable specific to a single offense. You must either specify an offense_name or explorer_offense parameter",
       "get": {
-        "tags": ["counts", "hate crimes", "state", "for offense"],
+        "tags": [
+          "nibrs summaries",
+          "hate crimes",
+          "state",
+          "for offense"
+        ],
         "parameters": [
-          {"$ref": "#/parameters/statePathParam"},
-          {"$ref": "#/parameters/hateCrimesCountVariableParam"},
-          {"$ref": "#/parameters/offenseNameParam"},
-          {"$ref": "#/parameters/explorerOffenseParam"},
-          {"$ref": "#/parameters/aggregateManyParam"},
-          {"$ref": "#/parameters/fieldsParam"},
-          {"$ref": "#/parameters/pageParam"},
-          {"$ref": "#/parameters/perPageParam"},
-          {"$ref": "#/parameters/outputParam"}
+          {
+            "$ref": "#/parameters/statePathParam"
+          },
+          {
+            "$ref": "#/parameters/hateCrimesCountVariableParam"
+          },
+          {
+            "$ref": "#/parameters/offenseNameParam"
+          },
+          {
+            "$ref": "#/parameters/explorerOffenseParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
         ],
         "responses": {
-          "default": {
-            "$ref": "#/responses/Error"
-          },
           "200": {
-            "description": "",
+            "description": "TK",
             "schema": {
-              "required": ["pagination", "results"],
-              "properties": {
-                "pagination": {
-                  "$ref": "#/definitions/Pagination"
-                },
-                "results": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/CountForYear"
-                  }
-                }
-              }
+              "$ref": "#/definitions/PaginatedCountForYear"
             }
+          },
+          "500": {
+            "$ref": "#/responses/Error"
           }
         }
       }
-    }       
+    }
   },
-  "swagger": "2.0", 
+  "swagger": "2.0",
   "tags": [
     {
       "name": "cargo theft",
       "description": "The FBI collects statistics about cargo theft",
       "externalDocs": {
-          "description": "About Cargo Theft Statistics",
-          "url": "https://ucr.fbi.gov/crime-in-the-u.s/2015/crime-in-the-u.s.-2015/additional-reports/cargo-theft/cargotheft-report_-2015-_final"
+        "description": "About Cargo Theft Statistics",
+        "url": "https://ucr.fbi.gov/crime-in-the-u.s/2015/crime-in-the-u.s.-2015/additional-reports/cargo-theft/cargotheft-report_-2015-_final"
       }
     },
     {
       "name": "hate crimes",
       "description": "These API endpoints return data about hate crimes that have been reported to the FBI UCR program.",
       "externalDocs": {
-          "description": "About Hate Crime Statistics",
-          "url": "https://ucr.fbi.gov/hate-crime/2015/resource-pages/abouthatecrime_final"
+        "description": "About Hate Crime Statistics",
+        "url": "https://ucr.fbi.gov/hate-crime/2015/resource-pages/abouthatecrime_final"
       }
     },
     {
@@ -1429,6 +1875,10 @@
     {
       "name": "participation",
       "description": "These API endpoints provide data on participation. This may mean either specific reports on if a given agency has filed crime reports to the SRS or NIBRS system in a given year or aggregated data on how many agencies within a state or county or city have filed SRS reports or NIBRS."
+    },
+    {
+      "name": "nibrs summaries",
+      "description": "These endpoints return summarized counts for specific variables within the NIBRS sub-tables. This is what is used to populate the detailed histograms of offenders, offenses, victims and other types of information on the crime data explorer for states with agencies that participate in the NIBRS program. You must provide a variable argument as part of the call, but these endpoints will return counts of how many times each value occurred for a variable in a given year. For instance, using the `race_code` variable with the `count/victims` endpoint will return a count of how many victims of each race_code were in a given year."
     },
     {
       "name": "for offense",
