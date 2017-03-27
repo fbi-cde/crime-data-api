@@ -1,5 +1,4 @@
 from webargs.flaskparser import use_args
-import flask_apispec as swagger
 from crime_data.extensions import DEFAULT_MAX_AGE
 from flask.ext.cachecontrol import cache
 
@@ -12,9 +11,6 @@ class ArrestsCountResource(CdeResource):
     is_groupable = True
 
     @use_args(marshmallow_schemas.GroupableArgsSchema)
-    @swagger.use_kwargs(marshmallow_schemas.GroupableArgsSchema, apply=False, locations=['query'])
-    @swagger.doc(tags=['arrests'],
-                 description='Returns counts of arrests. These can be grouped further with the by column.')
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page
     def get(self, args):
@@ -26,9 +22,6 @@ class ArrestsCountByRace(ArrestsCountResource):
     tables = cdemodels.ArrestsByRaceTableFamily()
 
     @use_args(marshmallow_schemas.GroupableArgsSchema)
-    @swagger.use_kwargs(marshmallow_schemas.GroupableArgsSchema, apply=False, locations=['query'])
-    @swagger.doc(tags=['arrests'],
-                 description='Returns counts of arrests. These can be grouped further with the by column.')
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page
     def get(self, args):
@@ -40,9 +33,6 @@ class ArrestsCountByEthnicity(ArrestsCountResource):
     tables = cdemodels.ArrestsByEthnicityTableFamily()
 
     @use_args(marshmallow_schemas.GroupableArgsSchema)
-    @swagger.use_kwargs(marshmallow_schemas.GroupableArgsSchema, apply=False, locations=['query'])
-    @swagger.doc(tags=['arrests'],
-                 description='Returns counts of arrests. These can be grouped further with the by column.')
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page
     def get(self, args):
@@ -54,9 +44,6 @@ class ArrestsCountByAgeSex(ArrestsCountResource):
     tables = cdemodels.ArrestsByAgeSexTableFamily()
 
     @use_args(marshmallow_schemas.GroupableArgsSchema)
-    @swagger.use_kwargs(marshmallow_schemas.GroupableArgsSchema, apply=False, locations=['query'])
-    @swagger.doc(tags=['arrests'],
-                 description='Returns counts of arrests. These can be grouped further with the by column.')
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page
     def get(self, args):

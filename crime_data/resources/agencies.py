@@ -2,7 +2,6 @@ import re
 
 from flask_restful import fields, marshal_with, reqparse
 from webargs.flaskparser import use_args
-import flask_apispec as swagger
 from crime_data.extensions import DEFAULT_MAX_AGE
 from flask.ext.cachecontrol import cache
 
@@ -20,10 +19,6 @@ class AgenciesResource(CdeResource):
 
 class AgenciesList(AgenciesResource):
     @use_args(marshmallow_schemas.RefAgencySchema)
-    @swagger.use_kwargs(marshmallow_schemas.RefAgencySchema, apply=False, locations=['query'])
-    @swagger.marshal_with(marshmallow_schemas.AgenciesListResponseSchema, apply=False)
-    @swagger.doc(tags=['agencies'],
-                 description='Returns a paginated list of all agencies')
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
     def get(self, args):
         self.verify_api_key(args)
@@ -33,10 +28,6 @@ class AgenciesList(AgenciesResource):
 
 class AgenciesDetail(AgenciesResource):
     @use_args(marshmallow_schemas.ArgumentsSchema)
-    @swagger.use_kwargs(marshmallow_schemas.ArgumentsSchema, apply=False, locations=['query'])
-    @swagger.doc(tags=['agencies'],
-                 description='Returns information on a single agency')
-    @swagger.marshal_with(marshmallow_schemas.AgenciesDetailResponseSchema, apply=False)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
     def get(self, args, nbr):
         self.verify_api_key(args)
@@ -70,10 +61,6 @@ class AgenciesParticipation(CdeResource):
         return filters
 
     @use_args(marshmallow_schemas.ArgumentsSchema)
-    @swagger.use_kwargs(marshmallow_schemas.ArgumentsSchema, apply=False, locations=['query'])
-    @swagger.doc(tags=['agencies', 'participation'],
-                 description='Returns data on agency participation. May be filtered by agency fields')
-    @swagger.marshal_with(marshmallow_schemas.AgenciesParticipationResponseSchema, apply=False)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page
     def get(self, args):

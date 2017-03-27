@@ -942,7 +942,7 @@ class StateParticipationRateSchema(ParticipationRateSchema):
     class Meta:
         fields = ('year', 'state_name', 'total_population', 'covered_population',
                   'total_agencies', 'reporting_agencies', 'reporting_rate',
-                  'nibrs_reporting_agencies', 'nibrs_reporting_rate',)
+                  'nibrs_reporting_agencies', 'nibrs_reporting_rate', 'nibrs_covered_population', )
 
     state_name = marsh_fields.String()
 

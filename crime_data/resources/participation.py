@@ -2,7 +2,6 @@ import re
 
 from flask_restful import fields, marshal_with, reqparse
 from webargs.flaskparser import use_args
-import flask_apispec as swagger
 from crime_data.extensions import DEFAULT_MAX_AGE
 from flask.ext.cachecontrol import cache
 
@@ -18,9 +17,6 @@ class NationalParticipation(CdeResource):
     schema = marshmallow_schemas.ParticipationRateSchema(many=True)
 
     @use_args(ArgumentsSchema)
-    @swagger.use_kwargs(ApiKeySchema, apply=False, locations=['query'])
-    @swagger.marshal_with(StateParticipationRateSchema, apply=False)
-    @swagger.doc(tags=['participation'], description='Participation data for all states')
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page
     def get(self, args):

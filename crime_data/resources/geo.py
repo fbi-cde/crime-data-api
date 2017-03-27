@@ -1,5 +1,4 @@
 from flask import jsonify
-import flask_apispec as swagger
 from webargs.flaskparser import use_args
 from crime_data.extensions import DEFAULT_MAX_AGE
 from flask.ext.cachecontrol import cache
@@ -12,11 +11,6 @@ class StateDetail(CdeResource):
     schema = marshmallow_schemas.StateDetailResponseSchema()
 
     @use_args(marshmallow_schemas.ArgumentsSchema)
-    @swagger.use_kwargs(marshmallow_schemas.ApiKeySchema, apply=False, locations=['query'])
-    @swagger.marshal_with(marshmallow_schemas.StateDetailResponseSchema, apply=False)
-    @swagger.doc(tags=['geo'],
-                 params={'state_id': {'description': 'A state postal abbreviation'}},
-                 description=['Returns basic information about a state and lists counties in the state'])
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page
     def get(self, args, id):
@@ -29,9 +23,6 @@ class CountyDetail(CdeResource):
     schema = marshmallow_schemas.CountyDetailResponseSchema()
 
     @use_args(marshmallow_schemas.ArgumentsSchema)
-    @swagger.use_kwargs(marshmallow_schemas.ApiKeySchema, apply=False, locations=['query'])
-    @swagger.marshal_with(marshmallow_schemas.CountyDetailResponseSchema, apply=False)
-    @swagger.doc(tags=['geo'], description='Demographic details for a county')
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page
     def get(self, args, fips):
@@ -44,9 +35,6 @@ class StateParticipation(CdeResource):
     schema = marshmallow_schemas.StateParticipationRateSchema(many=True)
 
     @use_args(marshmallow_schemas.ArgumentsSchema)
-    @swagger.use_kwargs(marshmallow_schemas.ApiKeySchema, apply=False, locations=['query'])
-    @swagger.marshal_with(marshmallow_schemas.StateParticipationRateSchema, apply=False)
-    @swagger.doc(tags=['geo'], description='Participation data for a state')
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page
     def get(self, args, state_id=None, state_abbr=None):

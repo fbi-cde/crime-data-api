@@ -13,3 +13,13 @@ app = create_app(CONFIG)
 if get_debug_flag():
     import sqltap.wsgi
     app.wsgi_app = sqltap.wsgi.SQLTapMiddleware(app.wsgi_app)
+
+
+# Add some static routing
+@app.route('/')
+def swagger_ui():
+    return app.send_static_file('swagger-ui.html')
+
+@app.route('/swagger.json')
+def swagger_json():
+    return app.send_static_file('swagger.json')

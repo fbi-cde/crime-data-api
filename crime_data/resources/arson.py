@@ -1,5 +1,4 @@
 from webargs.flaskparser import use_args
-import flask_apispec as swagger
 from crime_data.extensions import DEFAULT_MAX_AGE
 from flask.ext.cachecontrol import cache
 

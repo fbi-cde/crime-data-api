@@ -1,4 +1,3 @@
-import flask_apispec as swagger
 from webargs.flaskparser import use_args
 
 from crime_data.common import cdemodels, marshmallow_schemas
@@ -22,19 +21,6 @@ class HateCrimesCountStates(CdeResource):
     # schema = marshmallow_schemas.IncidentCountSchema()
 
     @use_args(marshmallow_schemas.IncidentViewCountArgs)
-    @swagger.use_kwargs(marshmallow_schemas.ViewCountArgs,
-                        locations=['query'],
-                        apply=False)
-    @swagger.doc(
-        params={'state_abbr': {'description': 'The two letter State Abbreviation'},
-                'variable': {'description': 'A variable to group by',
-                             'locations': ['path'],
-                             'enum': cdemodels.HateCrimeCountView.VARIABLES}},
-        tags=['hate crimes'],
-        description=(
-            'Returns counts by year for hate crimes. '
-            'Hate Crime Incidents - By State'))
-    @swagger.marshal_with(marshmallow_schemas.IncidentCountSchema, apply=False)
     @tuning_page
     def get(self, args, state_id=None, state_abbr=None, variable=None):
         self.verify_api_key(args)
@@ -50,19 +36,6 @@ class HateCrimesCountCounties(CdeResource):
         return [dict(r) for r in data]
 
     @use_args(marshmallow_schemas.IncidentViewCountArgs)
-    @swagger.use_kwargs(marshmallow_schemas.ViewCountArgs,
-                        locations=['query'],
-                        apply=False)
-    @swagger.doc(
-        params={'county_id': {'description': 'The county ID from ref_county'},
-                'variable': {'description': 'A variable to group by',
-                             'locations': ['path'],
-                             'enum': cdemodels.HateCrimeCountView.VARIABLES}},
-        tags=['hate crimes'],
-        description=(
-            'Returns counts by year for hate crimes. '
-            'Hate crime incidents - By county'))
-    @swagger.marshal_with(marshmallow_schemas.IncidentCountSchema, apply=False)
     @tuning_page
     def get(self, args, county_id, variable):
         self.verify_api_key(args)
@@ -78,16 +51,6 @@ class HateCrimesCountNational(CdeResource):
         return [dict(r) for r in data]
 
     @use_args(marshmallow_schemas.IncidentViewCountArgs)
-    @swagger.use_kwargs(marshmallow_schemas.ViewCountArgs,
-                        locations=['query'],
-                        apply=False)
-    @swagger.doc(
-        params={'variable': {'description': 'A variable to group by',
-                             'locations': ['path'],
-                             'enum': cdemodels.HateCrimeCountView.VARIABLES}},
-        tags=['hate crimes'],
-        description='Returns counts by year for hate crimes. ')
-    @swagger.marshal_with(marshmallow_schemas.IncidentCountSchema, apply=False)
     @tuning_page
     def get(self, args, variable):
         self.verify_api_key(args)
@@ -103,19 +66,6 @@ class HateCrimeOffenseSubcounts(CdeResource):
         return [dict(r) for r in data]
 
     @use_args(marshmallow_schemas.OffenseCountViewArgs)
-    @swagger.use_kwargs(marshmallow_schemas.OffenseCountViewArgs,
-                        locations=['query'],
-                        apply=False)
-    @swagger.doc(
-        params={'state_abbr': {'description': 'The two letter State Abbreviation'},
-                'variable': {'description': 'A variable to group by',
-                             'locations': ['path'],
-                             'enum': cdemodels.OffenseHateCrimeCountView.VARIABLES}},
-        tags=['hate crimes'],
-        description=(
-             'Returns counts by year for victims. '
-             'Hate crime incidents - By county'))
-    @swagger.marshal_with(marshmallow_schemas.OffenseCountViewResponseSchema, apply=False)
     @tuning_page
     def get(self, args, variable, state_id=None, state_abbr=None):
         self.verify_api_key(args)

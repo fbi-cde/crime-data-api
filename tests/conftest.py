@@ -3,6 +3,7 @@
 
 import pytest
 from webtest import TestApp
+import flex
 
 from crime_data.app import create_app
 from crime_data.database import db as _db
@@ -37,3 +38,9 @@ def rollback(app):
 
     # Explicitly close DB connection
     _db.session.rollback()
+
+@pytest.yield_fixture(scope='session')
+def swagger():
+    """Load the swagger specification in a JSON schema object"""
+    schema = flex.load('crime_data/static/swagger.json')
+    yield schema

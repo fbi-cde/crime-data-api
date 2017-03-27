@@ -1,1097 +1,1944 @@
 {
-  "swagger": "2.0",
   "info": {
-    "title": "Crime Data API",
-    "description": "RESTful API service providing data and statistics on crime in the USA",
-    "version": "1.0.0"
+    "description": "Some introductory text should go here. Markdown is **totally** supported.",
+    "title": "FBI Crime Data API",
+    "version": "v1"
   },
-  "host": "localhost:5000",
-  "schemes": [
-    "http"
+  "securityDefinitions": {
+    "api_key": {
+      "type": "apiKey",
+      "name": "api_key",
+      "in": "query"
+    }
+  },
+  "security": [
+    {
+      "api_key": []
+    }
   ],
-  "basePath": "/",
+  "parameters": {
+    "aggregateManyParam": {
+      "default": "false",
+      "in": "query",
+      "name": "aggregate_many",
+      "description": "TKTK",
+      "required": false,
+      "type": "string"
+    },
+    "fieldsParam": {
+      "in": "query",
+      "name": "fields",
+      "description": "Limit response to specific fields only",
+      "required": false,
+      "type": "string"
+    },
+    "perPageParam": {
+      "default": 10,
+      "format": "int32",
+      "in": "query",
+      "name": "per_page",
+      "description": "How many results to show per page. You might want to make this large for CSV downloads",
+      "required": false,
+      "type": "integer"
+    },
+    "pageParam": {
+      "default": 1,
+      "format": "int32",
+      "in": "query",
+      "name": "page",
+      "description": "Which page of results to show",
+      "required": false,
+      "type": "integer"
+    },
+    "incidentCountGroupByParam": {
+      "in": "query",
+      "name": "by",
+      "description": "Counts can be provided for statistics grouped by a list of one or more parameters",
+      "required": false,
+      "type": "array",
+      "default": [
+        "year"
+      ],
+      "collectionFormat": "csv",
+      "items": {
+        "type": "string",
+        "enum": [
+          "year",
+          "month",
+          "offense_subcat",
+          "offense_subcat_code",
+          "offense",
+          "offense_code",
+          "offense_category",
+          "classification",
+          "state",
+          "state_name"
+        ]
+      }
+    },
+    "outputParam": {
+      "default": "json",
+      "in": "query",
+      "name": "output",
+      "description": "The format to return results in",
+      "required": false,
+      "type": "string",
+      "enum": [
+        "json",
+        "csv"
+      ]
+    },
+    "yearParam": {
+      "in": "query",
+      "name": "year",
+      "description": "Use this field to limit results to a single year. Note that a range can be specified by using the comparison operators and multiple arguments like `&year>2000&year<2010`",
+      "required": false,
+      "type": "array",
+      "collectionFormat": "csv",
+      "items": {
+        "type": "integer",
+        "minimum": 1960
+      }
+    },
+    "monthParam": {
+      "in": "query",
+      "name": "month",
+      "description": "Use this field to limit results to the specified month. Multiple months can be specified with multiple query parameters or by using comparison operators in the query",
+      "required": false,
+      "type": "array",
+      "collectionFormat": "csv",
+      "items": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 12
+      }
+    },
+    "stateParam": {
+      "in": "query",
+      "name": "state",
+      "description": "The two-letter postal abbreviation for the state",
+      "required": false,
+      "type": "array",
+      "collectionFormat": "csv",
+      "items": {
+        "type": "string",
+        "pattern": "[A-Z]{2}"
+      }
+    },
+    "statePathParam": {
+      "in": "path",
+      "name": "state_id",
+      "description": "The two-letter postal abbreviation for the state",
+      "required": true,
+      "type": "string"
+    },
+    "codeTablePathParam": {
+      "in": "path",
+      "name": "code_table_id",
+      "description": "The name of the code table to return the values for",
+      "required": true,
+      "type": "string"
+    },
+    "victimsCountVariableParam": {
+      "in": "path",
+      "name": "variable",
+      "description": "A specific variable to group victim counts by",
+      "required": true,
+      "type": "string",
+      "enum": [
+        "prop_desc_name",
+        "offense_name",
+        "ethnicity",
+        "resident_status_code",
+        "offender_relationship",
+        "circumstance_name",
+        "race_code",
+        "location_name",
+        "age_num",
+        "sex_code"
+      ]
+    },
+    "victimsCountForOffenseVariableParam": {
+      "in": "path",
+      "name": "variable",
+      "description": "A specific variable to group victim counts by",
+      "required": true,
+      "type": "string",
+      "enum": [
+        "prop_desc_name",
+        "ethnicity",
+        "resident_status_code",
+        "offender_relationship",
+        "circumstance_name",
+        "race_code",
+        "location_name",
+        "age_num",
+        "sex_code"
+      ]
+    },
+    "offendersCountVariableParam": {
+      "in": "path",
+      "name": "variable",
+      "description": "A specific variable to group offender counts by",
+      "required": true,
+      "type": "string",
+      "enum": [
+        "ethnicity",
+        "prop_desc_name",
+        "offense_name",
+        "race_code",
+        "location_name",
+        "age_num",
+        "sex_code"
+      ]
+    },
+    "offendersCountForOffenseVariableParam": {
+      "in": "path",
+      "name": "variable",
+      "description": "A specific variable to group offender counts by for within the specified offense",
+      "required": true,
+      "type": "string",
+      "enum": [
+        "ethnicity",
+        "prop_desc_name",
+        "race_code",
+        "location_name",
+        "age_num",
+        "sex_code"
+      ]
+    },
+    "offensesCountVariableParam": {
+      "in": "path",
+      "name": "variable",
+      "description": "A specific variable to group offense counts by",
+      "required": true,
+      "type": "string",
+      "enum": [
+        "weapon_name",
+        "method_entry_code",
+        "num_premises_entered",
+        "location_name"
+      ]
+    },
+    "cargoTheftsCountVariableParam": {
+      "in": "path",
+      "name": "variable",
+      "description": "A specific variable to group cargo_theft counts by",
+      "required": true,
+      "type": "string",
+      "enum": [
+        "location_name",
+        "offense_name",
+        "victim_type_name",
+        "prop_desc_name"
+      ]
+    },
+    "cargoTheftsCountForOffenseVariableParam": {
+      "in": "path",
+      "name": "variable",
+      "description": "A specific variable to group cargo_theft counts by",
+      "required": true,
+      "type": "string",
+      "enum": [
+        "location_name",
+        "victim_type_name",
+        "prop_desc_name"
+      ]
+    },
+    "hateCrimesCountVariableParam": {
+      "in": "path",
+      "name": "variable",
+      "description": "A specific variable to group hate_crime counts by",
+      "required": true,
+      "type": "string",
+      "enum": [
+        "bias_name"
+      ]
+    },
+    "offenseCategoryParam": {
+      "in": "query",
+      "name": "offense_category",
+      "description": "The names of SRS offense categories to search against",
+      "required": false,
+      "type": "array",
+      "collectionFormat": "csv",
+      "items": {
+        "type": "string"
+      }
+    },
+    "offenseNameParam": {
+      "in": "query",
+      "name": "offense_name",
+      "description": "A specific name for an offense in NIBRS",
+      "required": false,
+      "type": "string"
+    },
+    "explorerOffenseParam": {
+      "in": "query",
+      "name": "explorer_offense",
+      "description": "For the convenience of the Crime Data Explorer, this method takes a generic crime offense name and searches against the specific SRS or NIBRS offense in the backend models",
+      "required": false,
+      "type": "string",
+      "enum": [
+        "aggravated-assault",
+        "arson",
+        "burglary",
+        "larceny",
+        "motor-vehicle-theft",
+        "homicide",
+        "rape",
+        "robbery"
+      ]
+    }
+  },
+  "responses": {
+    "Error": {
+      "description": "The standard error response",
+      "schema": {
+        "$ref": "#/definitions/Error"
+      }
+    }
+  },
+  "definitions": {
+    "Error": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "description": "An error message",
+          "type": "string"
+        }
+      },
+      "required": [
+        "message"
+      ]
+    },
+    "Pagination": {
+      "properties": {
+        "count": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "page": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "pages": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "per_page": {
+          "format": "int32",
+          "type": "integer"
+        }
+      },
+      "type": "object",
+      "additionalProperties": false
+    },
+    "IncidentCount": {
+      "description": "",
+      "required": [
+        "actual",
+        "cleared",
+        "reported",
+        "unfounded"
+      ],
+      "properties": {
+        "actual": {
+          "format": "int32",
+          "readOnly": true,
+          "type": "integer"
+        },
+        "cleared": {
+          "format": "int32",
+          "readOnly": true,
+          "type": "integer"
+        },
+        "juvenile_cleared": {
+          "format": "int32",
+          "readOnly": true,
+          "type": "integer"
+        },
+        "reported": {
+          "format": "int32",
+          "readOnly": true,
+          "type": "integer"
+        },
+        "unfounded": {
+          "format": "int32",
+          "readOnly": true,
+          "type": "integer"
+        },
+        "year": {
+          "format": "int32",
+          "readOnly": true,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "ParticipationRate": {
+      "type": "object",
+      "required": [
+        "year",
+        "reporting_agencies",
+        "total_agencies",
+        "reporting_rate",
+        "total_population",
+        "nibrs_reporting_agencies",
+        "nibrs_reporting_rate",
+        "covered_population",
+        "nibrs_covered_population"
+      ],
+      "properties": {
+        "year": {
+          "format": "int32",
+          "type": "integer",
+          "description": "The year that these participation statistics were calculated for",
+          "minimum": 1960
+        },
+        "reporting_agencies": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "total_agencies": {
+          "description": "The total number of agencies for the specific year",
+          "format": "int32",
+          "type": "integer",
+          "minimum": 0
+        },
+        "reporting_rate": {
+          "description": "A rate of which agencies have filed either an SRS or NIBRS report in the given year",
+          "format": "float",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "total_population": {
+          "description": "The sum of the population within the jurisdictions of all agencies for that year",
+          "format": "int32",
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "nibrs_reporting_agencies": {
+          "description": "The number of agencies who filed a NIBRS report in the given year",
+          "type": "integer"
+        },
+        "nibrs_reporting_rate": {
+          "description": "A rate of how many agencies filed a NIBRS report in a given year",
+          "format": "float",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "covered_population": {
+          "description": "The total population within jurisdictions of agencies who filed either a SRS or NIBRS report in the given year. format: int32 type: integer minimum: 0"
+        },
+        "nibrs_covered_population": {
+          "description": "The total population within jurisdictions of agencies who filed either a NIBRS report in the given year. format: int32 type: integer minimum: 0"
+        }
+      }
+    },
+    "StateParticipationRate": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/ParticipationRate"
+        },
+        {
+          "type": "object",
+          "required": [
+            "state_name"
+          ],
+          "properties": {
+            "state_name": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "CountForYear": {
+      "description": "This object will almost always include an additional variable field with the value of the variable being counted. So. if you asked the API for counts related to `race_code` variable, each record would have a key like `race_code` and the corresponding value (ie, `B`, `W`) etc. for that count.",
+      "required": [
+        "year",
+        "count"
+      ],
+      "properties": {
+        "year": {
+          "description": "The year for which the counts were computed",
+          "type": "string"
+        },
+        "count": {
+          "description": "A count for a specific value of a variable in a given year",
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "CargoTheftCountForYear": {
+      "description": "Cargo theft counts also include dollar estimates for the values of stolen and recovered property",
+      "allOf": [
+        {
+          "$ref": "#/definitions/CountForYear"
+        },
+        {
+          "required": [
+            "stolen_value",
+            "recovered_value"
+          ],
+          "properties": {
+            "stolen_value": {
+              "description": "The total estimated value for stolen property in that count",
+              "type": "string"
+            },
+            "recovered_value": {
+              "description": "The total estimated value for recovered property in that count",
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "PaginatedCountForYear": {
+      "type": "object",
+      "required": [
+        "pagination",
+        "results"
+      ],
+      "properties": {
+        "pagination": {
+          "$ref": "#/definitions/Pagination"
+        },
+        "results": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CountForYear"
+          }
+        }
+      }
+    },
+    "GeoCountyBasicInfo": {
+      "description": "Basic information about the county, as returned within the response for the /geo/states endpoint.",
+      "required": [
+        "county_id",
+        "county_name"
+      ],
+      "properties": {
+        "county_id": {
+          "description": "The internal identifier for the county within the CDE database",
+          "format": "int32",
+          "type": "integer"
+        },
+        "county_name": {
+          "description": "The name of the county",
+          "maxLength": 100,
+          "type": "string"
+        },
+        "fips": {
+          "description": "The five character numeric code used to identify the county in the TK",
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 5
+        }
+      },
+      "type": "object"
+    },
+    "GeoStateDetail": {
+      "description": "The record of metadata returned by the /geo/states/<state_id> endpoint to describe a single state",
+      "type": "object",
+      "properties": {
+        "counties": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/GeoCountyBasicInfo"
+          }
+        },
+        "current_year": {
+          "description": "The most recent year of data for the state",
+          "format": "int32",
+          "type": "integer"
+        },
+        "fips_code": {
+          "description": "The two-digit FIPS code for the state",
+          "minLength": 2,
+          "maxLength": 2,
+          "type": "string"
+        },
+        "name": {
+          "description": "The name of the state",
+          "type": "string"
+        },
+        "participation": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ParticipationRate"
+          }
+        }
+      },
+      "required": [
+        "name",
+        "current_year",
+        "participation",
+        "counties",
+        "fips_code"
+      ]
+    }
+  },
+  "schemes": [
+    "https"
+  ],
+  "host": "crime-data-api.fr.cloud.gov",
   "produces": [
-    "application/json"
+    "application/json",
+    "text/csv"
   ],
   "paths": {
-    "/incidents": {
+    "/codes": {
       "get": {
-        "summary": "NIBRS incidents",
-        "description": "Incidents reported to the FBI with the National Incident Based Reporting Standard (NIBRS)\n",
+        "tags": [
+          "meta"
+        ],
+        "description": "The codes endpoint returns a listing of all the code lookup tables for codes that are used throughout the crime data explorer. Certain API endpoints will return either the codes or their corresponding values. This endpoint returns a dictionary mapping code table names to URLs for their lookup",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "schema": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/codes/{code_table_id}": {
+      "get": {
+        "tags": [
+          "meta"
+        ],
+        "description": "This endpoint returns a list of values for a given code lookup table within the crime data explorer. Other API endpoints may return either the codes or their corresponding value in a given record, so this endpoints provides a comprehensive list of all possible values that you might expect to see. The actual structure of each result will vary depending on the code table you are requesting.",
         "parameters": [
           {
-            "name": "api_key",
-            "in": "query",
-            "description": "API key to provide access to the data",
-            "type": "string",
-            "required": true
+            "$ref": "#/parameters/codeTablePathParam"
           },
           {
-            "name": "tuning",
-            "in": "query",
-            "description": "Return an HTML tuning report instead of data (DEBUG must be on)",
-            "type": "boolean",
-            "required": false
+            "$ref": "#/parameters/aggregateManyParam"
           },
           {
-            "name": "added_date",
-            "in": "query",
-            "type": "string",
-            "required": false
+            "$ref": "#/parameters/fieldsParam"
           },
           {
-            "name": "agency_email",
-            "in": "query",
-            "type": "string",
-            "required": false
+            "$ref": "#/parameters/pageParam"
           },
           {
-            "name": "agency_id",
-            "in": "query",
-            "type": "integer",
-            "required": false
+            "$ref": "#/parameters/perPageParam"
           },
           {
-            "name": "agency_name",
-            "in": "query",
-            "type": "string",
-            "required": false
+            "$ref": "#/parameters/outputParam"
+          }
+        ],
+        "responses": {
+          "default": {
+            "$ref": "#/responses/Error"
           },
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "array"
+            }
+          }
+        }
+      }
+    },
+    "/geo/states/{state_id}": {
+      "get": {
+        "tags": [
+          "state"
+        ],
+        "description": "Returns basic information about the state",
+        "parameters": [
           {
-            "name": "agency_status",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "agency_type_id",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "agency_type_name",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "agency_website",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "arrestee.age_code",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "arrestee.age_id",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "arrestee.age_name",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "arrestee.age_num",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "arrestee.age_range_high_num",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "arrestee.age_range_low_num",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "arrestee.arrest_date",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "arrestee.arrest_num",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "arrestee.arrest_type_id",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "arrestee.arrestee_id",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "arrestee.arrestee_seq_num",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "arrestee.clearance_ind",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "arrestee.end_year",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "arrestee.ethnicity_code",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "arrestee.ethnicity_id",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "arrestee.ethnicity_name",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "arrestee.ff_line_number",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "arrestee.hc_flag",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "arrestee.incident_id",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "arrestee.multiple_indicator",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "arrestee.notes",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "arrestee.offense_type_id",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "arrestee.race_code",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "arrestee.race_desc",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "arrestee.race_id",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "arrestee.resident_code",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "arrestee.sex_code",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "arrestee.sort_order",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "arrestee.start_year",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "arrestee.under_18_disposition_code",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "attempt_complete_flag",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "campus_id",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "cargo_theft_flag",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "change_timestamp",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "change_user",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "city_id",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "cleared_except_code",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "cleared_except_date",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "cleared_except_id",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "cleared_except_name",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "comments",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "crime_against",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "ct_flag",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "data_home",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "ddocname",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "default_pop_family_id",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "department_id",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "did",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "division_code",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "division_desc",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "division_id",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "division_name",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "dormant_year",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "ff_line_number",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "fid_code",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "field_office_alpha_code",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "field_office_code",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "field_office_id",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "field_office_name",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "field_office_numeric_code",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "hc_code",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "hc_flag",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "incident_date",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "incident_hour",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "incident_id",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "incident_number",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "incident_status",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "judicial_dist_code",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "legacy_notify_agency",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "legacy_ori",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "location_code",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "location_id",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "location_name",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "method_entry_code",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "ncic_agency_name",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "nibrs_month_id",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "notify_agency",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "num_premises_entered",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "offender.age_code",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "offender.age_id",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "offender.age_name",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "offender.age_num",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "offender.age_range_high_num",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "offender.age_range_low_num",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "offender.end_year",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "offender.ethnicity_code",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "offender.ethnicity_id",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "offender.ethnicity_name",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "offender.ff_line_number",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "offender.hc_flag",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "offender.incident_id",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "offender.notes",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "offender.offender_id",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "offender.offender_seq_num",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "offender.race_code",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "offender.race_desc",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "offender.race_id",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "offender.sex_code",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "offender.sort_order",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "offender.start_year",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "offense_category_name",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "offense_code",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "offense_id",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "offense_name",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "offense_type_id",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "ori",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "orig_format",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "population_family_desc",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "population_family_id",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "population_family_name",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "prop_loss_id",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "prop_loss_name",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "property_id",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "pub_agency_name",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "recovered_count",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "region_code",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "region_desc",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "region_id",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "region_name",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "report_date_flag",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "sai",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "sort_order",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "special_mailing_address",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "special_mailing_group",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "state_abbr",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "state_code",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "state_fips_code",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "state_id",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "state_name",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "state_postal_abbr",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "state_pub_freq_months",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "stolen_count",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "submission_date",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "submitting_agency_id",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "tribe_id",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "ucr_agency_name",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "victim.activity_type_id",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "victim.age_code",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "victim.age_id",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "victim.age_name",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "victim.age_num",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "victim.age_range_high_num",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "victim.age_range_low_num",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "victim.agency_data_year",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "victim.assignment_type_id",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "victim.end_year",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "victim.ethnicity_code",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "victim.ethnicity_id",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "victim.ethnicity_name",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "victim.ff_line_number",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "victim.hc_flag",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "victim.incident_id",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "victim.notes",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "victim.outside_agency_id",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "victim.race_code",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "victim.race_desc",
-            "in": "query",
-            "type": "string",
-            "required": false
-          },
-          {
-            "name": "victim.race_id",
-            "in": "query",
-            "type": "integer",
-            "required": false
-          },
-          {
-            "name": "victim.resident_status_code",
-            "in": "query",
-            "type": "string",
-            "required": false
+            "$ref": "#/parameters/statePathParam"
           }
         ],
         "responses": {
           "200": {
-            "description": "An array of incidents",
+            "description": "The metadata for a state",
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Incident"
-              }
+              "$ref": "#/definitions/GeoStateDetail"
             }
           },
-          "default": {
-            "description": "Unauthenticated error",
+          "500": {
+            "description": "The standard error response",
             "schema": {
               "$ref": "#/definitions/Error"
             }
           }
         }
       }
-    }
-  },
-  "definitions": {
-    "Incident": {
-      "type": "object",
-      "properties": {
-        "incident_date": {
-          "type": "string",
-          "format": "date",
-          "description": "Date of incident"
-        },
-        "incident_hour": {
-          "type": "integer",
-          "description": "Hour from 0 through 23 of incident"
-        },
-        "agency": {
-          "type": "object",
-          "properties": {
-            "ori": {
-              "type": "string",
-              "description": "The Originating Reference ID (ORI) for the submitting law enforcement agency"
+    },
+    "/geo/states/{state_id}/participation": {
+      "get": {
+        "tags": [
+          "state",
+          "participation"
+        ],
+        "description": "Returns just the participation data for a state",
+        "parameters": [
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          },
+          {
+            "$ref": "#/parameters/statePathParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "For success, return a paginated list of participation stats. Note that if you request `output=csv`, you probably want to also make `per_page` sufficiently large to include all data.",
+            "schema": {
+              "type": "object",
+              "required": [
+                "pagination",
+                "results"
+              ],
+              "properties": {
+                "pagination": {
+                  "$ref": "#/definitions/Pagination"
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/StateParticipationRate"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "The standard error response",
+            "schema": {
+              "$ref": "#/definitions/Error"
             }
           }
         }
       }
     },
-    "Error": {
-      "type": "object",
-      "properties": {
-        "code": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "message": {
-          "type": "string"
-        },
-        "fields": {
-          "type": "string"
+    "/counts": {
+      "get": {
+        "tags": [
+          "trends",
+          "state",
+          "national"
+        ],
+        "description": "Returns counts by year for incidents. Incidents can also be grouped for counting with the `by` parameter, which accepts 1 or more of the following fields in a comma-delimited list: `year`, `month`, `offense_subcat`, `offense_subcat_code`, `offense`, `offense_code`, `offense_category`, `classification`, `state`, `state_name`",
+        "parameters": [
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          },
+          {
+            "$ref": "#/parameters/incidentCountGroupByParam"
+          },
+          {
+            "$ref": "#/parameters/yearParam"
+          },
+          {
+            "$ref": "#/parameters/monthParam"
+          },
+          {
+            "$ref": "#/parameters/stateParam"
+          },
+          {
+            "$ref": "#/parameters/offenseCategoryParam"
+          },
+          {
+            "$ref": "#/parameters/explorerOffenseParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "required": [
+                "pagination",
+                "results"
+              ],
+              "properties": {
+                "pagination": {
+                  "$ref": "#/definitions/Pagination"
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/IncidentCount"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
         }
       }
     },
-    "Offense": {
-      "type": "object",
-      "properties": {}
+    "/participation/national": {
+      "get": {
+        "tags": [
+          "participation",
+          "national"
+        ],
+        "description": "Returns national participation data",
+        "parameters": [
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a paginated list of statistics for nationwide participation per year in revers chronological order",
+            "schema": {
+              "type": "object",
+              "required": [
+                "pagination",
+                "results"
+              ],
+              "properties": {
+                "pagination": {
+                  "$ref": "#/definitions/Pagination"
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/ParticipationRate"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Standard error response",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/offenders/count/national/{variable}": {
+      "get": {
+        "tags": [
+          "nibrs summaries",
+          "national"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/offendersCountVariableParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/PaginatedCountForYear"
+            }
+          },
+          "default": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
+    "/offenders/count/states/{state_id}/{variable}": {
+      "get": {
+        "tags": [
+          "nibrs summaries",
+          "state"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/statePathParam"
+          },
+          {
+            "$ref": "#/parameters/offendersCountVariableParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/PaginatedCountForYear"
+            }
+          },
+          "default": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
+    "/offenses/count/national/{variable}": {
+      "get": {
+        "tags": [
+          "nibrs summaries",
+          "national"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/offensesCountVariableParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/PaginatedCountForYear"
+            }
+          },
+          "default": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
+    "/offenses/count/states/{state_id}/{variable}": {
+      "get": {
+        "tags": [
+          "nibrs summaries",
+          "state"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/statePathParam"
+          },
+          {
+            "$ref": "#/parameters/offensesCountVariableParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/PaginatedCountForYear"
+            }
+          },
+          "default": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
+    "/victims/count/national/{variable}": {
+      "get": {
+        "tags": [
+          "nibrs summaries",
+          "national"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/victimsCountVariableParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/PaginatedCountForYear"
+            }
+          },
+          "default": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
+    "/victims/count/states/{state_id}/{variable}": {
+      "get": {
+        "tags": [
+          "nibrs summaries",
+          "state"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/statePathParam"
+          },
+          {
+            "$ref": "#/parameters/victimsCountVariableParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/PaginatedCountForYear"
+            }
+          },
+          "default": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
+    "/ct/count/national/{variable}": {
+      "get": {
+        "tags": [
+          "nibrs summaries",
+          "cargo theft",
+          "national"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/cargoTheftsCountVariableParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "required": [
+                "pagination",
+                "results"
+              ],
+              "properties": {
+                "pagination": {
+                  "$ref": "#/definitions/Pagination"
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/CargoTheftCountForYear"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
+    "/ct/count/states/{state_id}/{variable}": {
+      "get": {
+        "tags": [
+          "nibrs summaries",
+          "cargo theft"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/statePathParam"
+          },
+          {
+            "$ref": "#/parameters/cargoTheftsCountVariableParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "required": [
+                "pagination",
+                "results"
+              ],
+              "properties": {
+                "pagination": {
+                  "$ref": "#/definitions/Pagination"
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/CargoTheftCountForYear"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
+    "/hc/count/national/{variable}": {
+      "get": {
+        "tags": [
+          "nibrs summaries",
+          "hate crimes",
+          "national"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/hateCrimesCountVariableParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "required": [
+                "pagination",
+                "results"
+              ],
+              "properties": {
+                "pagination": {
+                  "$ref": "#/definitions/Pagination"
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/CountForYear"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
+    "/hc/count/states/{state_id}/{variable}": {
+      "get": {
+        "tags": [
+          "nibrs summaries",
+          "hate crimes",
+          "state"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/statePathParam"
+          },
+          {
+            "$ref": "#/parameters/hateCrimesCountVariableParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/PaginatedCountForYear"
+            }
+          },
+          "default": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
+    "/offenders/count/national/{variable}/offenses": {
+      "get": {
+        "tags": [
+          "nibrs summaries",
+          "national"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/offendersCountVariableParam"
+          },
+          {
+            "$ref": "#/parameters/offenseNameParam"
+          },
+          {
+            "$ref": "#/parameters/explorerOffenseParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/PaginatedCountForYear"
+            }
+          },
+          "default": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
+    "/offenders/count/states/{state_id}/{variable}/offenses": {
+      "get": {
+        "tags": [
+          "nibrs summaries",
+          "state"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/statePathParam"
+          },
+          {
+            "$ref": "#/parameters/offendersCountForOffenseVariableParam"
+          },
+          {
+            "$ref": "#/parameters/offenseNameParam"
+          },
+          {
+            "$ref": "#/parameters/explorerOffenseParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "required": [
+                "pagination",
+                "results"
+              ],
+              "properties": {
+                "pagination": {
+                  "$ref": "#/definitions/Pagination"
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/CountForYear"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
+    "/offenses/count/national/{variable}/offenses": {
+      "get": {
+        "tags": [
+          "nibrs summaries",
+          "national"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/offensesCountVariableParam"
+          },
+          {
+            "$ref": "#/parameters/offenseNameParam"
+          },
+          {
+            "$ref": "#/parameters/explorerOffenseParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "required": [
+                "pagination",
+                "results"
+              ],
+              "properties": {
+                "pagination": {
+                  "$ref": "#/definitions/Pagination"
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/CountForYear"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
+    "/offenses/count/states/{state_id}/{variable}/offenses": {
+      "get": {
+        "tags": [
+          "nibrs summaries",
+          "state"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/statePathParam"
+          },
+          {
+            "$ref": "#/parameters/offensesCountVariableParam"
+          },
+          {
+            "$ref": "#/parameters/offenseNameParam"
+          },
+          {
+            "$ref": "#/parameters/explorerOffenseParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "required": [
+                "pagination",
+                "results"
+              ],
+              "properties": {
+                "pagination": {
+                  "$ref": "#/definitions/Pagination"
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/CountForYear"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
+    "/victims/count/national/{variable}/offenses": {
+      "get": {
+        "tags": [
+          "nibrs summaries",
+          "national"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/victimsCountForOffenseVariableParam"
+          },
+          {
+            "$ref": "#/parameters/offenseNameParam"
+          },
+          {
+            "$ref": "#/parameters/explorerOffenseParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "required": [
+                "pagination",
+                "results"
+              ],
+              "properties": {
+                "pagination": {
+                  "$ref": "#/definitions/Pagination"
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/CountForYear"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
+    "/victims/count/states/{state_id}/{variable}/offenses": {
+      "get": {
+        "tags": [
+          "nibrs summaries",
+          "state"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/statePathParam"
+          },
+          {
+            "$ref": "#/parameters/victimsCountForOffenseVariableParam"
+          },
+          {
+            "$ref": "#/parameters/offenseNameParam"
+          },
+          {
+            "$ref": "#/parameters/explorerOffenseParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "required": [
+                "pagination",
+                "results"
+              ],
+              "properties": {
+                "pagination": {
+                  "$ref": "#/definitions/Pagination"
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/CountForYear"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
+    "/ct/count/national/{variable}/offenses": {
+      "get": {
+        "tags": [
+          "nibrs summaries",
+          "cargo theft",
+          "national"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/cargoTheftsCountForOffenseVariableParam"
+          },
+          {
+            "$ref": "#/parameters/offenseNameParam"
+          },
+          {
+            "$ref": "#/parameters/explorerOffenseParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "required": [
+                "pagination",
+                "results"
+              ],
+              "properties": {
+                "pagination": {
+                  "$ref": "#/definitions/Pagination"
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/CargoTheftCountForYear"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
+    "/ct/count/states/{state_id}/{variable}/offenses": {
+      "get": {
+        "tags": [
+          "nibrs summaries",
+          "cargo theft",
+          "state"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/statePathParam"
+          },
+          {
+            "$ref": "#/parameters/cargoTheftsCountVariableParam"
+          },
+          {
+            "$ref": "#/parameters/offenseNameParam"
+          },
+          {
+            "$ref": "#/parameters/explorerOffenseParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "required": [
+                "pagination",
+                "results"
+              ],
+              "properties": {
+                "pagination": {
+                  "$ref": "#/definitions/Pagination"
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/CargoTheftCountForYear"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
+    "/hc/count/national/{variable}/offenses": {
+      "get": {
+        "tags": [
+          "nibrs summaries",
+          "hate crimes",
+          "national"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/hateCrimesCountVariableParam"
+          },
+          {
+            "$ref": "#/parameters/offenseNameParam"
+          },
+          {
+            "$ref": "#/parameters/explorerOffenseParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "TK",
+            "schema": {
+              "$ref": "#/definitions/PaginatedCountForYear"
+            }
+          },
+          "default": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
+    "/hc/count/states/{state_id}/{variable}/offenses": {
+      "get": {
+        "tags": [
+          "nibrs summaries",
+          "hate crimes",
+          "state"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/statePathParam"
+          },
+          {
+            "$ref": "#/parameters/hateCrimesCountVariableParam"
+          },
+          {
+            "$ref": "#/parameters/offenseNameParam"
+          },
+          {
+            "$ref": "#/parameters/explorerOffenseParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "TK",
+            "schema": {
+              "$ref": "#/definitions/PaginatedCountForYear"
+            }
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
     }
-  }
+  },
+  "swagger": "2.0",
+  "tags": [
+    {
+      "name": "cargo theft",
+      "description": "The FBI collects statistics about cargo theft",
+      "externalDocs": {
+        "description": "About Cargo Theft Statistics",
+        "url": "https://ucr.fbi.gov/crime-in-the-u.s/2015/crime-in-the-u.s.-2015/additional-reports/cargo-theft/cargotheft-report_-2015-_final"
+      }
+    },
+    {
+      "name": "hate crimes",
+      "description": "These API endpoints return data about hate crimes that have been reported to the FBI UCR program.",
+      "externalDocs": {
+        "description": "About Hate Crime Statistics",
+        "url": "https://ucr.fbi.gov/hate-crime/2015/resource-pages/abouthatecrime_final"
+      }
+    },
+    {
+      "name": "national",
+      "description": "These API methods provide nationwide counts of crime"
+    },
+    {
+      "name": "trends",
+      "description": "Top-level trends for the national and state levels"
+    },
+    {
+      "name": "participation",
+      "description": "These API endpoints provide data on participation. This may mean either specific reports on if a given agency has filed crime reports to the SRS or NIBRS system in a given year or aggregated data on how many agencies within a state or county or city have filed SRS reports or NIBRS."
+    },
+    {
+      "name": "meta",
+      "description": "These API endpoints return data about the crime data explorer database and its code values rather than specific crime statistics."
+    },
+    {
+      "name": "nibrs summaries",
+      "description": "These endpoints return summarized counts for specific variables within the NIBRS sub-tables. This is what is used to populate the detailed histograms of offenders, offenses, victims and other types of information on the crime data explorer for states with agencies that participate in the NIBRS program. You must provide a variable argument as part of the call, but these endpoints will return counts of how many times each value occurred for a variable in a given year. For instance, using the `race_code` variable with the `count/victims` endpoint will return a count of how many victims of each race_code were in a given year. The `/offenses` API methods provide grouped counts for a specified variable, but only for incidents related to a single offense. For instance, the call `count/victims/states/OH/race_code?explorer_offense=aggravated-assault` would be used to get annual histograms of the race codes for victims of aggravated assault only."
+    },
+    {
+      "name": "state",
+      "description": "These endpoints provide data for state-level views of crime"
+    }
+  ]
 }
