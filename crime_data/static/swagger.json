@@ -1,5 +1,6 @@
 {
   "info": {
+    "description": "Some introductory text should go here. Markdown is **totally** supported.",
     "title": "FBI Crime Data API",
     "version": "v1"
   },
@@ -588,7 +589,7 @@
   "schemes": [
     "https"
   ],
-  "host": "crime-data-api.fbi.gov",
+  "host": "crime-data-api.fr.cloud.gov",
   "produces": [
     "application/json",
     "text/csv"
@@ -743,7 +744,9 @@
     "/counts": {
       "get": {
         "tags": [
-          "summary"
+          "trends",
+          "state",
+          "national"
         ],
         "description": "Returns counts by year for incidents. Incidents can also be grouped for counting with the `by` parameter, which accepts 1 or more of the following fields in a comma-delimited list: `year`, `month`, `offense_subcat`, `offense_subcat_code`, `offense`, `offense_code`, `offense_category`, `classification`, `state`, `state_name`",
         "parameters": [
@@ -871,7 +874,6 @@
       "get": {
         "tags": [
           "nibrs summaries",
-          "offenders",
           "national"
         ],
         "parameters": [
@@ -911,7 +913,6 @@
       "get": {
         "tags": [
           "nibrs summaries",
-          "offenders",
           "state"
         ],
         "parameters": [
@@ -954,7 +955,6 @@
       "get": {
         "tags": [
           "nibrs summaries",
-          "victims",
           "national"
         ],
         "parameters": [
@@ -994,7 +994,6 @@
       "get": {
         "tags": [
           "nibrs summaries",
-          "offenses",
           "state"
         ],
         "parameters": [
@@ -1037,7 +1036,6 @@
       "get": {
         "tags": [
           "nibrs summaries",
-          "victims",
           "national"
         ],
         "parameters": [
@@ -1077,7 +1075,6 @@
       "get": {
         "tags": [
           "nibrs summaries",
-          "victims",
           "state"
         ],
         "parameters": [
@@ -1330,9 +1327,7 @@
       "get": {
         "tags": [
           "nibrs summaries",
-          "offenders",
-          "national",
-          "for offense"
+          "national"
         ],
         "parameters": [
           {
@@ -1377,9 +1372,7 @@
       "get": {
         "tags": [
           "nibrs summaries",
-          "offenders",
-          "state",
-          "for offense"
+          "state"
         ],
         "parameters": [
           {
@@ -1442,9 +1435,7 @@
       "get": {
         "tags": [
           "nibrs summaries",
-          "victims",
-          "national",
-          "for offense"
+          "national"
         ],
         "parameters": [
           {
@@ -1504,9 +1495,7 @@
       "get": {
         "tags": [
           "nibrs summaries",
-          "offenses",
-          "state",
-          "for offense"
+          "state"
         ],
         "parameters": [
           {
@@ -1569,9 +1558,7 @@
       "get": {
         "tags": [
           "nibrs summaries",
-          "victims",
-          "national",
-          "for offense"
+          "national"
         ],
         "parameters": [
           {
@@ -1631,9 +1618,7 @@
       "get": {
         "tags": [
           "nibrs summaries",
-          "victims",
-          "state",
-          "for offense"
+          "state"
         ],
         "parameters": [
           {
@@ -1697,8 +1682,7 @@
         "tags": [
           "nibrs summaries",
           "cargo theft",
-          "national",
-          "for offense"
+          "national"
         ],
         "parameters": [
           {
@@ -1759,8 +1743,7 @@
         "tags": [
           "nibrs summaries",
           "cargo theft",
-          "state",
-          "for offense"
+          "state"
         ],
         "parameters": [
           {
@@ -1824,8 +1807,7 @@
         "tags": [
           "nibrs summaries",
           "hate crimes",
-          "national",
-          "for offense"
+          "national"
         ],
         "parameters": [
           {
@@ -1871,8 +1853,7 @@
         "tags": [
           "nibrs summaries",
           "hate crimes",
-          "state",
-          "for offense"
+          "state"
         ],
         "parameters": [
           {
@@ -1940,6 +1921,10 @@
       "description": "These API methods provide nationwide counts of crime"
     },
     {
+      "name": "trends",
+      "description": "Top-level trends for the national and state levels"
+    },
+    {
       "name": "participation",
       "description": "These API endpoints provide data on participation. This may mean either specific reports on if a given agency has filed crime reports to the SRS or NIBRS system in a given year or aggregated data on how many agencies within a state or county or city have filed SRS reports or NIBRS."
     },
@@ -1949,11 +1934,7 @@
     },
     {
       "name": "nibrs summaries",
-      "description": "These endpoints return summarized counts for specific variables within the NIBRS sub-tables. This is what is used to populate the detailed histograms of offenders, offenses, victims and other types of information on the crime data explorer for states with agencies that participate in the NIBRS program. You must provide a variable argument as part of the call, but these endpoints will return counts of how many times each value occurred for a variable in a given year. For instance, using the `race_code` variable with the `count/victims` endpoint will return a count of how many victims of each race_code were in a given year."
-    },
-    {
-      "name": "for offense",
-      "description": "The `for offense` API methods provide grouped counts for a specified variable, but only for incidents related to a single offense. For instance, the call `count/victims/states/OH/race_code?explorer_offense=aggravated-assault` would be used to get annual histograms of the race codes for victims of aggravated assault only."
+      "description": "These endpoints return summarized counts for specific variables within the NIBRS sub-tables. This is what is used to populate the detailed histograms of offenders, offenses, victims and other types of information on the crime data explorer for states with agencies that participate in the NIBRS program. You must provide a variable argument as part of the call, but these endpoints will return counts of how many times each value occurred for a variable in a given year. For instance, using the `race_code` variable with the `count/victims` endpoint will return a count of how many victims of each race_code were in a given year. The `/offenses` API methods provide grouped counts for a specified variable, but only for incidents related to a single offense. For instance, the call `count/victims/states/OH/race_code?explorer_offense=aggravated-assault` would be used to get annual histograms of the race codes for victims of aggravated assault only."
     },
     {
       "name": "state",
