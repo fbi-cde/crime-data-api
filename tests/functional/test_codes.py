@@ -5,15 +5,16 @@ See: http://webtest.readthedocs.org/
 """
 import pytest
 from crime_data.resources.codes import CODE_MODELS
+from flex.core import validate_api_call
 
 
 class TestCodesIndex:
     """Test the /codes URL endpoint"""
 
-    def test_codes_index_exists(self, testapp):
+    def test_codes_index_exists(self, testapp, swagger):
         res = testapp.get('/codes')
         assert res.status_code == 200
-
+        validate_api_call(swagger, raw_request=res.request, raw_response=res)
 
 class TestCodesEndpoint:
     """Test the /codes/* methods"""
@@ -66,14 +67,14 @@ class TestCodesEndpoint:
         ('supp_larceny_type', 'larceny_type_code'),
         ('supp_property_type', 'prop_type_code')
     ])
-    def test_codes_endpoint_exists(self, testapp, table, id_col):
+    def test_codes_endpoint_exists(self, testapp, swagger, table, id_col):
         res = testapp.get('/codes/{0}'.format(table))
+        validate_api_call(swagger, raw_request=res.request, raw_response=res)
         assert res.status_code == 200
         assert id_col in res.json[0]
 
         res = testapp.get('/codes/{0}.csv'.format(table))
         assert res.status_code == 200
-
 
     @pytest.mark.parametrize('table,key', [
         ('nibrs_arrest_type', 'arrestees'),

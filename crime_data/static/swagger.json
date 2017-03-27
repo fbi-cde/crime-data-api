@@ -131,6 +131,13 @@
       "required": true,
       "type": "string"
     },
+    "codeTablePathParam": {
+      "in": "path",
+      "name": "code_table_id",
+      "description": "The name of the code table to return the values for",
+      "required": true,
+      "type": "string"
+    },
     "victimsCountVariableParam": {
       "in": "path",
       "name": "variable",
@@ -587,6 +594,67 @@
     "text/csv"
   ],
   "paths": {
+    "/codes": {
+      "get": {
+        "tags": [
+          "meta"
+        ],
+        "description": "The codes endpoint returns a listing of all the code lookup tables for codes that are used throughout the crime data explorer. Certain API endpoints will return either the codes or their corresponding values. This endpoint returns a dictionary mapping code table names to URLs for their lookup",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "schema": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/codes/{code_table_id}": {
+      "get": {
+        "tags": [
+          "meta"
+        ],
+        "description": "This endpoint returns a list of values for a given code lookup table within the crime data explorer. Other API endpoints may return either the codes or their corresponding value in a given record, so this endpoints provides a comprehensive list of all possible values that you might expect to see. The actual structure of each result will vary depending on the code table you are requesting.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/codeTablePathParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
+        ],
+        "responses": {
+          "default": {
+            "$ref": "#/responses/Error"
+          },
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "array"
+            }
+          }
+        }
+      }
+    },
     "/geo/states/{state_id}": {
       "get": {
         "tags": [
@@ -677,8 +745,7 @@
         "tags": [
           "summary"
         ],
-        "description": "Returns counts by year for incidents.
-Incidents can also be grouped for counting with the `by` parameter, which accepts 1 or more of the following fields in a comma-delimited list: `year`, `month`, `offense_subcat`, `offense_subcat_code`, `offense`, `offense_code`, `offense_category`, `classification`, `state`, `state_name`",
+        "description": "Returns counts by year for incidents. Incidents can also be grouped for counting with the `by` parameter, which accepts 1 or more of the following fields in a comma-delimited list: `year`, `month`, `offense_subcat`, `offense_subcat_code`, `offense`, `offense_code`, `offense_category`, `classification`, `state`, `state_name`",
         "parameters": [
           {
             "$ref": "#/parameters/aggregateManyParam"
@@ -1875,6 +1942,10 @@ Incidents can also be grouped for counting with the `by` parameter, which accept
     {
       "name": "participation",
       "description": "These API endpoints provide data on participation. This may mean either specific reports on if a given agency has filed crime reports to the SRS or NIBRS system in a given year or aggregated data on how many agencies within a state or county or city have filed SRS reports or NIBRS."
+    },
+    {
+      "name": "meta",
+      "description": "These API endpoints return data about the crime data explorer database and its code values rather than specific crime statistics."
     },
     {
       "name": "nibrs summaries",
