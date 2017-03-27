@@ -27,7 +27,6 @@ from crime_data.common.marshmallow_schemas import ma
 from crime_data.common.models import db
 from crime_data.common.credentials import get_credential
 from crime_data.extensions import (cache, debug_toolbar, migrate, cache_control)
-from flask_apispec.extension import FlaskApiSpec
 from crime_data.settings import ProdConfig
 
 if __name__ == '__main__':
@@ -222,39 +221,6 @@ def add_resources(app):
                      '/ct/count/states/<string:state_abbr>/<string:variable>/offenses',
                      '/ct/count/national/<string:variable>/offenses')
 
-    # docs = FlaskApiSpec(app)
-    # docs.register(crime_data.resources.agencies.AgenciesDetail)
-    # docs.register(crime_data.resources.agencies.AgenciesList)
-    # docs.register(crime_data.resources.agencies.AgenciesParticipation)
-    # docs.register(crime_data.resources.incidents.CachedIncidentsCount)
-    # # docs.register(crime_data.resources.incidents.IncidentsDetail)
-    # # docs.register(crime_data.resources.incidents.IncidentsList)
-    # docs.register(crime_data.resources.offenses.OffensesList)
-    # # docs.register(crime_data.resources.arrests.ArrestsCountByRace)
-    # # docs.register(crime_data.resources.arrests.ArrestsCountByEthnicity)
-    # # docs.register(crime_data.resources.arrests.ArrestsCountByAgeSex)
-    # docs.register(crime_data.resources.participation.NationalParticipation)
-    # docs.register(crime_data.resources.meta.MetaDetail)
-    # docs.register(crime_data.resources.geo.StateDetail)
-    # docs.register(crime_data.resources.geo.CountyDetail)
-    # docs.register(crime_data.resources.geo.StateParticipation)
-    # docs.register(crime_data.resources.offenders.OffendersCountNational)
-    # docs.register(crime_data.resources.offenders.OffendersCountStates)
-    # docs.register(crime_data.resources.offenders.OffendersCountCounties)
-    # docs.register(crime_data.resources.victims.VictimsCountNational)
-    # docs.register(crime_data.resources.victims.VictimsCountStates)
-    # docs.register(crime_data.resources.victims.VictimsCountCounties)
-    # docs.register(crime_data.resources.cargo_theft.CargoTheftsCountNational)
-    # docs.register(crime_data.resources.cargo_theft.CargoTheftsCountStates)
-    # docs.register(crime_data.resources.cargo_theft.CargoTheftsCountCounties)
-    # docs.register(crime_data.resources.hate_crime.HateCrimesCountNational)
-    # docs.register(crime_data.resources.hate_crime.HateCrimesCountStates)
-    # docs.register(crime_data.resources.hate_crime.HateCrimesCountCounties)
-    # docs.register(crime_data.resources.offenses.OffenseByOffenseTypeSubcounts)
-    # docs.register(crime_data.resources.victims.VictimOffenseSubcounts)
-    # docs.register(crime_data.resources.offenders.OffenderOffenseSubcounts)
-    # docs.register(crime_data.resources.cargo_theft.CargoTheftOffenseSubcounts)
-    # docs.register(crime_data.resources.hate_crime.HateCrimeOffenseSubcounts)
 
 def newrelic_status_endpoint():
     return 'OK'

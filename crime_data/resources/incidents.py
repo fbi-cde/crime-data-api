@@ -1,4 +1,3 @@
-import flask_apispec as swagger
 from webargs.flaskparser import use_args
 from itertools import filterfalse
 from crime_data.common import cdemodels, marshmallow_schemas, models, newmodels
@@ -20,16 +19,6 @@ class IncidentsList(CdeResource):
     fast_count = True
 
     @use_args(marshmallow_schemas.ArgumentsSchema)
-    @swagger.doc(
-        tags=['incidents'],
-        description=(
-            'Return all matching incidents. Queries can drill down '
-            'on specific values for fields within the incidents record.'))
-    @swagger.use_kwargs(marshmallow_schemas.ArgumentsSchema,
-                        apply=False,
-                        locations=['query'])
-    @swagger.marshal_with(marshmallow_schemas.IncidentsListResponseSchema,
-                          apply=False)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page
     def get(self, args):
@@ -44,14 +33,6 @@ class IncidentsDetail(CdeResource):
     fast_count = True
 
     @use_args(marshmallow_schemas.ArgumentsSchema)
-    @swagger.use_kwargs(marshmallow_schemas.ArgumentsSchema,
-                        apply=False,
-                        locations=['query'])
-    @swagger.marshal_with(marshmallow_schemas.IncidentsDetailResponseSchema,
-                          apply=False)
-    @swagger.doc(
-        tags=['incidents'],
-        description='Return the specific record for a single incident')
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page
     def get(self, args, id):
@@ -65,15 +46,6 @@ class IncidentsCount(CdeResource):
     is_groupable = True
 
     @use_args(marshmallow_schemas.GroupableArgsSchema)
-    @swagger.use_kwargs(marshmallow_schemas.GroupableArgsSchema,
-                        locations=['query'],
-                        apply=False)
-    @swagger.doc(
-        tags=['incidents'],
-        description=(
-            'Returns counts by year for incidents. '
-            'Incidents can be grouped for counting with the `by` parameter'))
-    @swagger.marshal_with(marshmallow_schemas.IncidentCountSchema, apply=False)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page
     def get(self, args):
@@ -106,15 +78,6 @@ class CachedIncidentsCount(CdeResource):
                 field.load_only = field_name not in filtered_names
 
     @use_args(marshmallow_schemas.GroupableArgsSchema)
-    @swagger.use_kwargs(marshmallow_schemas.GroupableArgsSchema,
-                        locations=['query'],
-                        apply=False)
-    @swagger.doc(
-        tags=['incidents'],
-        description=(
-            'Returns counts by year for incidents. '
-            'Incidents can be grouped for counting with the `by` parameter'))
-    @swagger.marshal_with(marshmallow_schemas.IncidentCountSchema, apply=False)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page
     def get(self, args):

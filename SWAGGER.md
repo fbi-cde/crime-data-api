@@ -38,9 +38,9 @@ distribution only to authorized personnel.
 
 ## Swagger Endpoints
 
-The [/swagger/](https://crime-data-api.fr.cloud.gov/swagger/) returns
-a dynamically generated `swagger.json` file with a listing of all the
-endpoints and their parameters.
+The [/swagger/](https://crime-data-api.fr.cloud.gov/swagger.json)
+returns a `swagger.json` file located within `crime_data/static/` with
+a listing of all the endpoints and their parameters.
 
 The [/swagger-ui/](https://crime-data-api.fr.cloud.gov/swagger-ui/)
 path returns the Swagger-UI, an interactive view of the endpoints that
@@ -49,104 +49,32 @@ queries against the API.
 
 ## Adding a New Method
 
-We are using
-the [flask-apispec](https://github.com/jmcarp/flask-apispec) library
-for generating the Swagger documentation and UI. This is a convenient
-mechanism that lets us document our endpoints with only decorators:
+Unlike some other project that dynamically generate their Swagger from
+decorations applied to methods, we are using a static swagger.json
+file for this project. This means that developers will have to update
+the swagger file for any new methods or changes to the responses for
+existing methods. This is admittedly not immediately convenient, but
+it lets us treat the swagger.json file as a contract of what the API
+responses should be and use that for functional tests to ensure our
+responses conform to what is described.
+
+We are using the [flex](https://github.com/pipermerriam/flex) Swagger
+validator in functional tests to verify they match Swagger. To add,
+modify your functional test to be like the following
 
 ``` python
-import flask_apispec as swagger
+from flex.core import validate_api_call
 
-class IncidentsList(CdeResource):
-
-    schema = marshmallow_schemas.NibrsIncidentSchema(many=True)
-    tables = cdemodels.IncidentTableFamily()
-    # Enable fast counting.
-    fast_count = True
-
-    @use_args(marshmallow_schemas.ArgumentsSchema)
-    @swagger.doc(tags=['incidents'],
-                 description=('Return all matching incidents. Queries can drill down '
-                              'on specific values for fields within the incidents record.')
-    )
-    @swagger.use_kwargs(marshmallow_schemas.ArgumentsSchema, apply=False, locations=['query'])
-    @swagger.marshal_with(marshmallow_schemas.IncidentsListResponseSchema, apply=False)
-    @tuning_page
-    def get(self, args):
-        return self._get(args)
-
+def TestCountsEndpoint:
+    def test_counts_matches_swagger(self, testapp, swagger):
+        res = testapp.get('/counts')
+        validate_api_call(swagger, raw_request=res.request, raw_response=res)
 ```
 
-The flask-apispec library is meant to be used for RESTful
-applications, and by default its decorators define the allowed schema
-for parsing or returning arguments in addition to documenting those
-schema within Swagger. The Crime Data API is not RESTful and many API
-methods allow the user to specify additional fields as part of the
-request (ie, `/incidents/?victim.age_num=24`) or might return
-additional fields (ie, when you use the `by` parameter to group
-counts, each count result will include the fields being grouped
-by). We use the `apply=False` argument with flask-apispec decorators
-to tell it that we only want to describe the endpoint with APISpec;
-otherwise it will use the supplied Marshmallow schemas to
-parse/serialize responses and discard any additional fields.
-
-If you are adding a new endpoint, there are three decorators that can
-be applied to functions.
-
-
-``` python
-@swagger.doc(tags=['incidents'],
-             description=('Return all matching incidents. Queries can drill down '
-                          'on specific values for fields within the incidents record.')
-)
-@swagger.use_kwargs(marshmallow_schemas.ArgumentsSchema, apply=False, locations=['query'])
-@swagger.marshal_with(marshmallow_schemas.IncidentsListResponseSchema, apply=False)
-```
-
-The `@doc` decorator allows you to specify a description for the API
-in Markdown. Tags are used to group together related API endpoints (if
-you tag an API with multiple tags, it will show up in several places
-in the Swagger UI).
-
-The `@use_kwargs` decorator is used to specify what arguments the API
-method takes. It takes either a dict of fields or a Marshmallow schema
-like those we are using already. This could normally be used for
-webargs processing, but we already are using the `@use_args` decorator
-from webargs, and flask-apispec currently only has support for
-translating input parameters to kwargs (which makes sense in a RESTful
-API, but not for one that supports arbitrary queries). So we tell
-flask-apispec to only use this information for documentation with the
-`apply=False` argument and we use the `locations=['query']` argument
-to specify that parameters are only specified as query parameters on
-the URL.
-
-The `@marshal_with` decorator tells `flask-apispec` what the return
-type of the API method will be. It takes a Marshmallow schema as its
-type. As before, we send it the `apply=False` argument to limit its
-functionality specifically to documenting the returned type in
-Swagger. Since many of our response return their data in a paginated
-structure like
-
-``` json
-{
-  "pagination": {...}
-  "results": [{...}, {...} ...]
-}
-```
-
-it might be necessary to define a Marshmallow schema for the response
-that inherits from a basic response schema that captures the paginated
-structure. For instance, the `IncidentsListResponseSchema` specified above looks like
-
-``` python
-class IncidentsListResponseSchema(PaginatedResponseSchema):
-    results = ma.Nested(NibrsIncidentSchema, many=True)
-```
-
-Of course, since we are only using flask-apispec for generating the
-documentation, it won't cause the program to crash if you specify an
-incorrect or incomplete schema. But it's better to be more specific
-about what it returns.
+The `swagger` fixture in py.test loads the
+`crime_data/static/swagger.json` into a Flex object so we can use it
+for validating that requests and responses match what is in the
+Swagger schema.
 
 ## Missing Pieces
 

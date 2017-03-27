@@ -10,8 +10,7 @@ from collections import OrderedDict
 
 import sqltap
 from flask import make_response, request
-from flask_apispec.views import MethodResource
-from flask_restful import abort, current_app
+from flask_restful import Resource, abort, current_app
 # import celery
 from flask_sqlalchemy import SignallingSession, SQLAlchemy
 from sqlalchemy import func, or_
@@ -183,7 +182,7 @@ class RoutingSQLAlchemy(SQLAlchemy):
         return RoutingSession(self, **options)
 
 
-class CdeResource(MethodResource):
+class CdeResource(Resource):
     __abstract__ = True
     schema = None
     # Enable fast counting.

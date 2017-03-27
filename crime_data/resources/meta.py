@@ -1,7 +1,6 @@
 from flask import jsonify
 from flask.ext.cachecontrol import cache_for
 from webargs.flaskparser import use_args
-import flask_apispec as swagger
 from marshmallow import fields, Schema
 from crime_data.common import cdemodels, marshmallow_schemas
 from crime_data.common.marshmallow_schemas import ma
@@ -41,12 +40,6 @@ class MetaDetail(CdeResource):
     the endpoint.
     """
 
-    @swagger.use_kwargs({}, apply=False, locations=['path'])
-    @swagger.marshal_with(MetaDetailResponseSchema)
-    @swagger.doc(tags=['meta'],
-                 description=('Returns meta information about the query endpoint. '
-                              'Currently, this is mainly a list of filters that can '
-                              'be added to queries.'))
     @cache_for(hours=1)
     def get(self, endpoint):
         endpoint = endpoint.rstrip('/')

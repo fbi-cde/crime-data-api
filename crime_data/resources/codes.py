@@ -1,6 +1,5 @@
 from flask import url_for, jsonify
 from webargs.flaskparser import use_args
-import flask_apispec as swagger
 from flask.ext.cachecontrol import cache_for
 
 from crime_data.common import marshmallow_schemas, models
@@ -108,10 +107,6 @@ CODE_SCHEMAS = {
 
 
 class CodeReferenceIndex(CdeResource):
-    @swagger.doc(tags=['codes'],
-                 description=('Returns a listing of all the available code endpoints '
-                              'that can be queried for details on allowed code values.'))
-    @swagger.marshal_with(CodeIndexResponseSchema(many=True), apply=False)
     @cache_for(hours=1)
     def get(self):
         endpoints = {key: url_for('codereferencelist', code_table=key)
@@ -121,10 +116,6 @@ class CodeReferenceIndex(CdeResource):
 
 class CodeReferenceList(CdeResource):
     @use_args(ArgumentsSchema)
-    @swagger.use_kwargs(ArgumentsSchema, apply=False, positions=['query'])
-    @swagger.doc(tags=['codes'],
-                 description=('Returns the values for a specific code. '
-                              'The specific response format will vary from table to table.'))
     @cache_for(hours=1)
     def get(self, args, code_table, output=None):
         self.schema = CODE_SCHEMAS[code_table](many=True)

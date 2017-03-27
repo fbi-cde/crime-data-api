@@ -1,5 +1,4 @@
 import json
-import flask_apispec as swagger
 from webargs.flaskparser import use_args
 from crime_data.extensions import DEFAULT_MAX_AGE
 from flask.ext.cachecontrol import cache
@@ -23,17 +22,6 @@ class OffendersCountNational(CdeResource):
         return [dict(r) for r in data]
 
     @use_args(marshmallow_schemas.IncidentViewCountArgs)
-    @swagger.use_kwargs(marshmallow_schemas.ViewCountYearRequiredArgs,
-                        locations=['query'],
-                        apply=False)
-    @swagger.doc(
-        params={'variable': {'description': 'A variable to group by',
-                             'enum': cdemodels.OffenderCountView.VARIABLES}},
-        tags=['offenders'],
-        description=(
-            'Returns national counts by year for offenders. '
-            'Offender Incidents - national'))
-    @swagger.marshal_with(marshmallow_schemas.IncidentCountSchema, apply=False)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page
     def get(self, args, variable):
@@ -50,18 +38,6 @@ class OffendersCountStates(CdeResource):
         return [dict(r) for r in data]
 
     @use_args(marshmallow_schemas.IncidentViewCountArgs)
-    @swagger.use_kwargs(marshmallow_schemas.ViewCountYearRequiredArgs,
-                        locations=['query'],
-                        apply=False)
-    @swagger.doc(
-        params={'state_abbr': {'description': 'The two letter State Abbreviation'},
-                'variable': {'description': 'A variable to group by',
-                             'enum': cdemodels.OffenderCountView.VARIABLES}},
-        tags=['offenders'],
-        description=(
-            'Returns counts by year for offenders. '
-            'Offender Incidents - By State'))
-    @swagger.marshal_with(marshmallow_schemas.IncidentCountSchema, apply=False)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page
     def get(self, args, state_id=None, state_abbr=None, variable=None):
@@ -77,18 +53,6 @@ class OffendersCountCounties(CdeResource):
         return [dict(r) for r in data]
 
     @use_args(marshmallow_schemas.IncidentViewCountArgs)
-    @swagger.use_kwargs(marshmallow_schemas.ViewCountYearRequiredArgs,
-                        locations=['query'],
-                        apply=False)
-    @swagger.doc(
-        params={'county_id': {'description': 'The county ID from ref_county'},
-                'variable': {'description': 'A variable to group by',
-                             'enum': cdemodels.OffenderCountView.VARIABLES}},
-        tags=['offenders'],
-        description=(
-            'Returns counts by year for offenders. '
-            'Offender Incidents - By county'))
-    @swagger.marshal_with(marshmallow_schemas.IncidentCountSchema, apply=False)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page
     def get(self, args, county_id, variable):
@@ -105,21 +69,6 @@ class OffenderOffenseSubcounts(CdeResource):
         return [dict(r) for r in data]
 
     @use_args(marshmallow_schemas.OffenseCountViewArgs)
-    @swagger.use_kwargs(marshmallow_schemas.OffenseCountViewArgs,
-                        locations=['query'],
-                        apply=False)
-    @swagger.doc(
-        params={'state_abbr': {'description': 'The two letter State Abbreviation'},
-                'explorer_offense': {'description': 'A offense class used by the explorer',
-                                     'enum': ExplorerOffenseMapping.NIBRS_OFFENSE_MAPPING.keys()},
-                'variable': {'description': 'A variable to group by',
-                             'locations': ['path'],
-                             'enum': cdemodels.OffenseOffenderCountView.VARIABLES}},
-        tags=['offenders'],
-        description=(
-             'Returns counts by year for victims. '
-             'Victim Incidents - By county'))
-    @swagger.marshal_with(marshmallow_schemas.OffenseCountViewResponseSchema, apply=False)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page
     def get(self, args, variable, state_id=None, state_abbr=None):
