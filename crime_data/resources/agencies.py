@@ -33,35 +33,3 @@ class AgenciesDetail(AgenciesResource):
         self.verify_api_key(args)
         agency = cdemodels.CdeRefAgency.get(nbr)
         return self.with_metadata(agency, args)
-
-
-class AgenciesParticipation(CdeResource):
-
-    schema = marshmallow_schemas.AgencyParticipationSchema(many=True,
-                                                           only=('state_name', 'year', 'agency_ori',
-                                                                 'agency_name', 'reported',
-                                                                 'months_reported',
-                                                                 'months_reported_nibrs',
-                                                                 'population_group_code',
-                                                                 'population_group',
-                                                                 'agency_population',)
-                                                        )
-    tables = newmodels.AgencyAnnualParticipation
-    is_groupable = False
-
-    def postprocess_filters(self, filters, args):
-        years = [x for x in filters if x[0] == 'year']
-
-        print(filters)
-        if years:
-            y = years[0]
-            filters = [x for x in filters if x[0] != 'year']
-            filters.append(('data_year', y[1], y[2]))
-
-        return filters
-
-    @use_args(marshmallow_schemas.ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    @tuning_page
-    def get(self, args):
-        return self._get(args, csv_filename='agency_participation')

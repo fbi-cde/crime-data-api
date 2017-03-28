@@ -117,9 +117,9 @@ def add_resources(app):
         return resp
 
     api.add_resource(crime_data.resources.agencies.AgenciesList, '/agencies/')
-    api.add_resource(crime_data.resources.agencies.AgenciesParticipation,
+    api.add_resource(crime_data.resources.participation.AgenciesParticipation,
                      '/agencies/participation',
-                     '/agencies/participation/')
+                     '/participation/agencies')
     api.add_resource(crime_data.resources.agencies.AgenciesDetail,
                      '/agencies/<string:nbr>/')
 
@@ -147,9 +147,10 @@ def add_resources(app):
                      '/meta/<path:endpoint>')
     api.add_resource(crime_data.resources.geo.StateDetail,
                      '/geo/states/<string:id>')
-    api.add_resource(crime_data.resources.geo.StateParticipation,
+    api.add_resource(crime_data.resources.participation.StateParticipation,
                      '/geo/states/<int:state_id>/participation',
-                     '/geo/states/<string:state_abbr>/participation')
+                     '/geo/states/<string:state_abbr>/participation',
+                     '/participation/states/<string:state_abbr>')
 
     api.add_resource(crime_data.resources.geo.CountyDetail,
                      '/geo/counties/<string:fips>')

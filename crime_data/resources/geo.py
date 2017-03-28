@@ -29,18 +29,3 @@ class CountyDetail(CdeResource):
         self.verify_api_key(args)
         county = cdemodels.CdeRefCounty.get(fips=fips).one()
         return jsonify(self.schema.dump(county).data)
-
-
-class StateParticipation(CdeResource):
-    schema = marshmallow_schemas.StateParticipationRateSchema(many=True)
-
-    @use_args(marshmallow_schemas.ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    @tuning_page
-    def get(self, args, state_id=None, state_abbr=None):
-        self.verify_api_key(args)
-
-        state = cdemodels.CdeRefState.get(abbr=state_abbr, state_id=state_id).one()
-        rates = cdemodels.CdeParticipationRate(state_id=state.state_id).query.order_by('data_year DESC').all()
-        filename = '{}_state_participation'.format(state.state_postal_abbr)
-        return self.render_response(rates, args, csv_filename=filename)

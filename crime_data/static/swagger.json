@@ -125,6 +125,64 @@
         "pattern": "[A-Z]{2}"
       }
     },
+    "stateNameParam": {
+      "in": "query",
+      "name": "state_name",
+      "description": "The name of the state",
+      "required": false,
+      "type": "array",
+      "collectionFormat": "csv",
+      "items": {
+        "type": "string"
+      }
+    },
+    "agencyOriParam": {
+      "in": "query",
+      "name": "agency_ori",
+      "description": "The ORI of the agency. You can provide multiple arguments.",
+      "required": false,
+      "type": "array",
+      "collectionFormat": "csv",
+      "items": {
+        "type": "string",
+        "pattern": "[A-Z0-9]{9}"
+      }
+    },
+    "agencyNameParam": {
+      "in": "query",
+      "name": "agency_name",
+      "description": "The name of the agency. Currently only supports exact matches.",
+      "required": false,
+      "type": "string"
+    },
+    "reportedParam": {
+      "in": "query",
+      "name": "reported",
+      "description": "If the agency has reported either SRS or NIBRS. This makes the most sense when combined with a `year` argument.",
+      "required": false,
+      "type": "string"
+    },
+    "reportedNibrsParam": {
+      "in": "query",
+      "name": "reported_nibrs",
+      "description": "If the agency has reported either NIBRS. This makes the most sense when combined with a `year` argument.",
+      "required": false,
+      "type": "string"
+    },
+    "monthsReportedParam": {
+      "in": "query",
+      "name": "reported",
+      "description": "Months in a year that the agency has reported either SRS or NIBRS. This makes the most sense when combined with a `year` argument.",
+      "required": false,
+      "type": "string"
+    },
+    "monthsReportedNibrsParam": {
+      "in": "query",
+      "name": "reported_nibrs",
+      "description": "Months in a year that an agency has reported NIBRS. This makes the most sense when combined with a `year` argument.",
+      "required": false,
+      "type": "string"
+    },
     "statePathParam": {
       "in": "path",
       "name": "state_id",
@@ -375,6 +433,73 @@
         }
       },
       "type": "object"
+    },
+    "AgencyParticipation": {
+      "type": "object",
+      "required": [],
+      "properties": {
+        "year": {
+          "format": "int32",
+          "type": ["integer", "null"],
+          "description": "The year these participation details are for",
+          "minimum": 1960
+        },
+        "state_name": {
+          "type": "string",
+          "description": "The name of the state the agency is located in"
+        },
+        "state_abbr": {
+          "type": ["string", "null"],
+          "pattern": "[A-Z]{2}",
+          "decription": "The two-letter postal abbreviation for the state"
+        },
+        "agency_ori": {
+          "type": ["string", "null"],
+          "pattern": "[A-Z0-9]{9}",
+          "description": "The 9-character ORI for the agency"
+        },
+        "agency_name": {
+          "type": ["string", "null"],
+          "description": "The agency's name"
+        },
+        "agency_population": {
+          "type": ["number", "null"],
+          "description": "The unique population within the jurisdiction for the agency. The FBI UCR program does not overlap populations even though agency jurisdictions might overlap. This means that some agencies like state highway patrols or transit police might be assigned a population of 0, and that is not a bug",
+          "minimum": 0
+        },
+        "population_group_code": {
+          "type": ["string", "null"],
+          "description": "The FBI code for the population group the agency belongs to. For a full listing of all population codes, call the `/codes/ref_population_group`"
+        },
+        "population_group": {
+          "type": ["string", "null"],
+          "description": "The name for the population group the agency belongs to"
+        },
+        "reported": {
+          "type": ["integer", "null"],
+          "description": "This is 1 if agency reported either SRS or NIBRS at least once in the given year",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "months_reported": {
+          "type": "integer",
+          "description": "How many months the agency filed a crime report in the given year",
+          "minimum": 0,
+          "maximum": 12
+        },
+        "reported_nibrs": {
+          "type": "integer",
+          "description": "This is 1 if agency reported to NIBRS at least once in the given year",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "months_reported_nibrs": {
+          "type": "integer",
+          "description": "How many months the agency filed a NIBRS crime report in the given year",
+          "minimum": 0,
+          "maximum": 12
+        }
+      }
     },
     "ParticipationRate": {
       "type": "object",
@@ -683,7 +808,7 @@
         }
       }
     },
-    "/geo/states/{state_id}/participation": {
+    "/participation/states/{state_id}": {
       "get": {
         "tags": [
           "state",
@@ -727,6 +852,87 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/definitions/StateParticipationRate"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "The standard error response",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/participation/agencies": {
+      "get": {
+        "tags": [
+          "participation"
+        ],
+        "description": "Returns participation details for agencies",
+        "parameters": [
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          },
+          {
+            "$ref": "#/parameters/yearParam"
+          },
+          {
+            "$ref": "#/parameters/stateNameParam"
+          },
+          {
+            "$ref": "#/parameters/stateParam"
+          },
+          {
+            "$ref": "#/parameters/agencyOriParam"
+          },
+          {
+            "$ref": "#/parameters/agencyNameParam"
+          },
+          {
+            "$ref": "#/parameters/reportedParam"
+          },
+          {
+            "$ref": "#/parameters/reportedNibrsParam"
+          },
+          {
+            "$ref": "#/parameters/monthsReportedParam"
+          },
+          {
+            "$ref": "#/parameters/monthsReportedNibrsParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "For success, return a paginated list of agency participation detail. With no parameters, this can get quite large, but you can provide filters to limit to specific fields.",
+            "schema": {
+              "type": "object",
+              "required": [
+                "pagination",
+                "results"
+              ],
+              "properties": {
+                "pagination": {
+                  "$ref": "#/definitions/Pagination"
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/AgencyParticipation"
                   }
                 }
               }
