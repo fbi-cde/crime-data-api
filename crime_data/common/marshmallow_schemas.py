@@ -48,7 +48,6 @@ class ArgumentsSchema(ApiKeySchema):
     tuning = marsh_fields.Boolean(missing=False)
 
 
-
 # class IncidentViewCountArgsYear(ArgumentsSchema):
 #     """
 #     Groupable queries can be grouped by one or more fields found in the
@@ -997,3 +996,10 @@ class CountyDetailResponseSchema(ma.ModelSchema):
     state_abbr = marsh_fields.String()
 
 
+class AgencySchema(ma.ModelSchema):
+    """Response schema for the CdeAgency table"""
+
+    class Meta:
+        model = newmodels.CdeAgency
+        ordered = True
+        exclude = ('agency_id', 'state_id', 'city_id', 'submitting_agency_id', 'covered_by_id', )

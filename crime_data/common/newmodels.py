@@ -282,6 +282,28 @@ class CdeAgency(db.Model):
     __tablename__ = 'cde_agencies'
     __table_args__ = (UniqueConstraint('agency_id'), )
 
+    @classmethod
+    def column_is_string(cls, col_name):
+        col = getattr(cls.__table__.c, col_name)
+        return isinstance(col.type, sqltypes.String)
+
+    @classmethod
+    def filtered(cls, filters, args=None):
+        args = args or []
+        qry = cls.query
+        for filter in filters:
+            if isinstance(filter, BinaryExpression):
+                qry = qry.filter(filter)
+            else:
+                (col_name, comparitor, values) = filter
+                col = getattr(cls, col_name)
+                if cls.column_is_string(col_name):
+                    col = func.lower(col)
+                operation = getattr(col, comparitor)
+                qry = qry.filter(or_(operation(v) for v in values)).order_by(
+                    col)
+        return qry
+
     agency_id = db.Column(db.BigInteger, primary_key=True)
     ori = db.Column(db.String(9))
     legacy_ori = db.Column(db.String(9))
