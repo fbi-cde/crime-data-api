@@ -2,7 +2,8 @@
 
 from crime_data.common.newmodels import (RetaMonthOffenseSubcatSummary,
                                          AgencyAnnualParticipation,
-                                         ParticipationRate)
+                                         ParticipationRate,
+                                         CdeAgency)
 import pytest
 
 class TestAgencyAnnualParticipation:
@@ -54,6 +55,56 @@ class TestParticipationRate:
         assert q.nibrs_reporting_rate == pytest.approx(0.090909091)
         assert q.total_population == 83769
         assert q.covered_population == 0
+
+
+class TestCdeAgencies:
+    def test_basic_ref_agency_fields(self, app):
+        a = CdeAgency.query.filter(CdeAgency.agency_id == 22330).one()
+        assert a is not None
+        assert a.ori == 'CA0280400'
+        assert a.legacy_ori == 'CA0280400'
+        assert a.agency_name == 'Yountville'
+        assert a.agency_type_id == 99
+        assert a.agency_type_name == 'Unknown'
+        assert a.state_id == 6
+        assert a.state_abbr == 'CA'
+        assert a.city_id is None
+        assert a.agency_status == 'A'
+        assert a.submitting_agency_id == 23357
+        assert a.submitting_sai == 'CAUCR0001'
+        assert a.submitting_name == 'Department of Justice Criminal Justice Statistics Center'
+        assert a.submitting_state_abbr == 'CA'
+        assert a.dormant_year == 1983
+
+    def test_agency_covering(self, app):
+        a = CdeAgency.query.filter(CdeAgency.agency_id == 16487).one()
+        assert a is not None
+        assert a.current_year == 1984
+        assert a.covered_by_id == 16495
+        assert a.covered_by_ori == 'PA030SP00'
+        assert a.covered_by_name == 'State Police: Greene County'
+
+    def test_current_year_and_population(self, app):
+        a = CdeAgency.query.filter(CdeAgency.agency_id == 15909).one()
+        assert a is not None
+        assert a.current_year == 2013
+        assert a.population == 10479
+        assert a.suburban_area_flag == 'Y'
+
+    def test_city_association(self, app):
+        a = CdeAgency.query.filter(CdeAgency.agency_id == 12223).one()
+        assert a is not None
+        assert a.city_id == 6690
+        assert a.city_name == 'Barrington'
+        assert a.state_id == 35
+        assert a.state_abbr == 'NJ'
+
+    def test_staffing_association(self, app):
+        a = CdeAgency.query.filter(CdeAgency.agency_id == 2820).one()
+        assert a is not None
+        assert a.staffing_year == 1990
+        assert a.total_officers == 116
+        assert a.total_civilians == 169
 
 
 class TestArsonAdditionsToRetaMonthOffenseSubcatSummary:

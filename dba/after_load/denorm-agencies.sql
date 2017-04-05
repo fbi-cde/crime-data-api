@@ -1,9 +1,9 @@
 \set ON_ERROR_STOP on
 
-DROP TABLE IF EXISTS denorm_agencies_temp;
+DROP TABLE IF EXISTS denorm_agencies_temp CASCADE;
 CREATE TABLE denorm_agencies_temp
 (
-    agency_id bigint NOT NULL,
+    agency_id bigint PRIMARY KEY,
     ori character(9) NOT NULL,
     legacy_ori character(9) NOT NULL,
     agency_name character varying(100),
@@ -19,6 +19,7 @@ CREATE TABLE denorm_agencies_temp
     submitting_agency_id bigint,
     submitting_sai character varying(9),
     submitting_name character varying(150),
+    submitting_state_abbr character varying(2),
     start_year smallint,
     dormant_year smallint,
     current_year smallint,
@@ -33,7 +34,7 @@ CREATE TABLE denorm_agencies_temp
     covered_by_ori character(9),
     covered_by_name character varying(100),
     staffing_year smallint,
-    total_police int,
+    total_officers int,
     total_civilians int
  );
 
@@ -48,7 +49,7 @@ ALTER TABLE ONLY denorm_agencies_temp
 ADD CONSTRAINT agencies_campus_fk FOREIGN KEY (campus_id) REFERENCES ref_university_campus(campus_id);
 
 ALTER TABLE ONLY denorm_agencies_temp
-ADD CONSTRAINT agencies_pk  PRIMARY KEY (agency_id);
+ADD CONSTRAINT agencies_state_fk FOREIGN KEY (state_id) REFERENCES ref_state(state_id);
 
 
 INSERT INTO denorm_agencies_temp
@@ -69,6 +70,7 @@ ra.agency_status,
 ra.submitting_agency_id,
 rsa.sai AS submitting_sai,
 rsa.agency_name AS submitting_name,
+rss.state_postal_abbr AS submitting_state_abbr,
 y.start_year,
 ra.dormant_year,
 y.current_year AS current_year,
@@ -83,20 +85,21 @@ racp.covered_by_agency_id AS covered_by_id,
 covering.ori AS covered_by_ori,
 covering.pub_agency_name AS covered_by_name,
 pe.staffing_year AS staffing_year,
-COALESCE(ped.male_officer + ped.female_officer) AS total_police,
+COALESCE(ped.male_officer + ped.female_officer) AS total_officers,
 COALESCE(ped.male_civilian + ped.female_civilian) AS total_civilians
 FROM ref_agency ra
-LEFT OUTER JOIN ref_agency_type rat ON rat.agency_type_id = ra.agency_type_id
-JOIN (SELECT agency_id, min(data_year) AS start_year, max(data_year) AS current_year FROM ref_agency_county GROUP BY agency_id) y ON y.agency_id=ra.agency_id
+JOIN ref_agency_type rat ON rat.agency_type_id = ra.agency_type_id
+LEFT OUTER JOIN (SELECT agency_id, min(data_year) AS start_year, max(data_year) AS current_year FROM ref_agency_population GROUP BY agency_id) y ON y.agency_id=ra.agency_id
 LEFT OUTER JOIN (SELECT agency_id, max(data_year) AS staffing_year FROM pe_employee_data WHERE reported_flag='Y' GROUP BY agency_id) pe ON pe.agency_id=ra.agency_id
-JOIN ref_city rc ON rc.city_id=ra.city_id
-JOIN ref_state rs ON rs.state_id=ra.state_id
+LEFT OUTER JOIN ref_city rc ON rc.city_id=ra.city_id
+LEFT OUTER JOIN ref_state rs ON rs.state_id=ra.state_id
 LEFT OUTER JOIN cde_annual_participation cap ON cap.agency_id=ra.agency_id AND cap.data_year=y.current_year
 LEFT OUTER JOIN ref_submitting_agency rsa ON rsa.agency_id=ra.submitting_agency_id
+LEFT OUTER JOIN ref_state rss ON rss.state_id=rsa.state_id
 LEFT OUTER JOIN ref_agency_population rap ON rap.agency_id=ra.agency_id AND rap.data_year=y.current_year
 LEFT OUTER JOIN ref_population_group rpg ON rpg.population_group_id=rap.population_group_id
 LEFT OUTER JOIN ref_agency_covered_by racp ON racp.agency_id=ra.agency_id AND racp.data_year=y.current_year
-LEFT OUTER JOIN ref_agency covering ON covering.agency_id=racp.agency_id
+LEFT OUTER JOIN ref_agency covering ON covering.agency_id=racp.covered_by_agency_id
 LEFT OUTER JOIN pe_employee_data ped ON ped.agency_id=ra.agency_id AND ped.data_year=pe.staffing_year;
 
 DROP TABLE IF EXISTS cde_agencies CASCADE;

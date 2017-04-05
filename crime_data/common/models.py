@@ -1748,6 +1748,29 @@ class PeEmployeeData(db.Model):
     civilian_rate = db.Column(db.Integer)
 
 
+class RefUniversity(db.Model):
+    __tablename__ = 'ref_university'
+
+    university_id = db.Column(db.BigInteger, primary_key=True)
+    university_abbr = db.Column(db.String(20))
+    university_name = db.Column(db.String(100), unique=True)
+
+
+class RefUniversityCampus(db.Model):
+    __tablename__ = 'ref_university_campus'
+
+    campus_id = db.Column(db.BigInteger, primary_key=True)
+    campus_name = db.Column(db.String(100))
+    university_id = db.Column(db.Integer,
+                              db.ForeignKey('ref_university.university_id',
+                                            deferrable=True,
+                                            initially='DEFERRED'),
+                              nullable=False,
+                              index=True)
+
+    university = db.relationship('RefUniversity')
+
+
 class RefAgencyCounty(db.Model):
     __tablename__ = 'ref_agency_county'
     __table_args__ = (UniqueConstraint('agency_id', 'county_id',
@@ -1861,7 +1884,7 @@ class RefAgency(db.Model):
                          index=True)
 
     agency_type = db.relationship('RefAgencyType', lazy=False)
-    campus = db.relationship('RefUniversityCampu')
+    campus = db.relationship('RefUniversityCampus')
     city = db.relationship('RefCity', lazy=False)
     department = db.relationship('RefDepartment', lazy=False)
     field_office = db.relationship('RefFieldOffice', lazy=False)
@@ -1990,7 +2013,7 @@ class RefCampusPopulation(db.Model):
                           nullable=False,
                           index=True)
 
-    campus = db.relationship('RefUniversityCampu')
+    campus = db.relationship('RefUniversityCampus')
 
 
 class RefCity(db.Model):
@@ -2378,29 +2401,6 @@ class RefTribePopulation(db.Model):
                          index=True)
 
     tribe = db.relationship('RefTribe')
-
-
-class RefUniversity(db.Model):
-    __tablename__ = 'ref_university'
-
-    university_id = db.Column(db.BigInteger, primary_key=True)
-    university_abbr = db.Column(db.String(20))
-    university_name = db.Column(db.String(100), unique=True)
-
-
-class RefUniversityCampu(db.Model):
-    __tablename__ = 'ref_university_campus'
-
-    campus_id = db.Column(db.BigInteger, primary_key=True)
-    campus_name = db.Column(db.String(100))
-    university_id = db.Column(db.Integer,
-                              db.ForeignKey('ref_university.university_id',
-                                            deferrable=True,
-                                            initially='DEFERRED'),
-                              nullable=False,
-                              index=True)
-
-    university = db.relationship('RefUniversity')
 
 
 class RetaMonth(db.Model):
