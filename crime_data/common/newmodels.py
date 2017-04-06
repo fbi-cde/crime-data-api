@@ -10,7 +10,7 @@ from psycopg2 import ProgrammingError
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import backref, relationship
 from sqlalchemy.sql.elements import BinaryExpression
-from sqlalchemy import func
+from sqlalchemy import func, UniqueConstraint
 from sqlalchemy.sql import sqltypes
 from flask_restful import abort
 
@@ -275,3 +275,66 @@ class RetaMonthOffenseSubcatSummary(db.Model, CreatableModel):
                 col = getattr(cls, col_name)
                 qry = qry.order_by(col)
         return qry
+
+
+class CdeAgency(db.Model):
+    """A class for the denormalized cde_agencies table"""
+    __tablename__ = 'cde_agencies'
+    __table_args__ = (UniqueConstraint('agency_id'), )
+
+    @classmethod
+    def column_is_string(cls, col_name):
+        col = getattr(cls.__table__.c, col_name)
+        return isinstance(col.type, sqltypes.String)
+
+    @classmethod
+    def filtered(cls, filters, args=None):
+        args = args or []
+        qry = cls.query
+        for filter in filters:
+            if isinstance(filter, BinaryExpression):
+                qry = qry.filter(filter)
+            else:
+                (col_name, comparitor, values) = filter
+                col = getattr(cls, col_name)
+                if cls.column_is_string(col_name):
+                    col = func.lower(col)
+                operation = getattr(col, comparitor)
+                qry = qry.filter(or_(operation(v) for v in values)).order_by(
+                    col)
+        return qry
+
+    agency_id = db.Column(db.BigInteger, primary_key=True)
+    ori = db.Column(db.String(9))
+    legacy_ori = db.Column(db.String(9))
+    agency_name = db.Column(db.String(100))
+    agency_type_id = db.Column(db.String(1))
+    agency_type_name = db.Column(db.String(100))
+    # FIXME: can add associations when we need them
+    tribe_id = db.Column(db.BigInteger)
+    campus_id = db.Column(db.BigInteger)
+    city_id = db.Column(db.BigInteger)
+    city_name = db.Column(db.String(100))
+    state_id = db.Column(db.SmallInteger)
+    state_abbr = db.Column(db.String(2))
+    agency_status = db.Column(db.String(1))
+    submitting_agency_id = db.Column(db.BigInteger)
+    submitting_sai = db.Column(db.String(9))
+    submitting_name = db.Column(db.String(150))
+    submitting_state_abbr = db.Column(db.String(2))
+    start_year = db.Column(db.SmallInteger)
+    dormant_year = db.Column(db.SmallInteger)
+    current_year = db.Column(db.SmallInteger)
+    population = db.Column(db.BigInteger)
+    population_group_code = db.Column(db.String(2))
+    population_group_desc = db.Column(db.String(150))
+    population_source_flag = db.Column(db.String(1))
+    suburban_area_flag = db.Column(db.String(1))
+    months_reported = db.Column(db.SmallInteger)
+    nibrs_months_reported = db.Column(db.SmallInteger)
+    covered_by_id = db.Column(db.BigInteger)
+    covered_by_ori = db.Column(db.String(9))
+    covered_by_name = db.Column(db.String(100))
+    staffing_year = db.Column(db.SmallInteger)
+    total_officers = db.Column(db.Integer)
+    total_civilians = db.Column(db.Integer)

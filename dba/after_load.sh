@@ -30,7 +30,11 @@ echo -n "Create participation views..."
 psql $CRIME_DATA_API_DB_URL <after_load/participation_table.sql
 echo "DONE"
 
-echo -n "Building cached incident representations (may be slow)..."
-psql $CRIME_DATA_API_DB_URL <after_load/cache_representations.sql >/dev/null
-after_load/cache_representation.sh >/dev/null
+echo -n "Create cde_agencies table..."
+psql $CRIME_DATA_API_DB_URL <after_load/denorm-agencies.sql
 echo "DONE"
+
+#echo -n "Building cached incident representations (may be slow)..."
+#psql $CRIME_DATA_API_DB_URL <after_load/cache_representations.sql >/dev/null
+#after_load/cache_representation.sh >/dev/null
+#echo "DONE"

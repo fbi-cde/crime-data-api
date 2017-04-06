@@ -116,12 +116,12 @@ def add_resources(app):
         resp.headers.extend(headers or {})
         return resp
 
-    api.add_resource(crime_data.resources.agencies.AgenciesList, '/agencies/')
+    api.add_resource(crime_data.resources.agencies.AgenciesList, '/agencies')
     api.add_resource(crime_data.resources.participation.AgenciesParticipation,
                      '/agencies/participation',
                      '/participation/agencies')
     api.add_resource(crime_data.resources.agencies.AgenciesDetail,
-                     '/agencies/<string:nbr>/')
+                     '/agencies/<string:ori>')
 
     # api.add_resource(crime_data.resources.incidents.IncidentsList,
     #                  '/incidents/')
