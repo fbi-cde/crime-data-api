@@ -277,6 +277,19 @@ class RetaMonthOffenseSubcatSummary(db.Model, CreatableModel):
         return qry
 
 
+class CdeZipCounty(db.Model):
+    __tablename__ = 'cde_zip_counties'
+
+    zip = db.Column(db.String(5), primary_key=True)
+    fips = db.Column(db.String(5), primary_key=True)
+    county_id = db.Column(db.Integer,
+                          db.ForeignKey(RefCounty.county_id,
+                                        deferrable=True,
+                                        initially='DEFERRED'),
+                          nullable=False)
+    county = db.relationship(RefCounty, backref='zip_codes')
+
+
 class CdeAgency(db.Model):
     """A class for the denormalized cde_agencies table"""
     __tablename__ = 'cde_agencies'
@@ -304,7 +317,11 @@ class CdeAgency(db.Model):
                     col)
         return qry
 
-    agency_id = db.Column(db.BigInteger, primary_key=True)
+    agency_id = db.Column(db.BigInteger,
+                          db.ForeignKey(RefAgency.agency_id,
+                                        deferrable=True,
+                                        initially='DEFERRED'),
+                          primary_key=True)
     ori = db.Column(db.String(9))
     legacy_ori = db.Column(db.String(9))
     agency_name = db.Column(db.String(100))
@@ -338,3 +355,16 @@ class CdeAgency(db.Model):
     staffing_year = db.Column(db.SmallInteger)
     total_officers = db.Column(db.Integer)
     total_civilians = db.Column(db.Integer)
+
+    ref_agency = db.relationship(RefAgency, backref='cde_agency')
+
+    @staticmethod
+    def find_for_zip(zip):
+        """Returns all the agencies that reside with the same county as a given zip code"""
+
+        query = CdeAgency.query
+        query = query.join(CdeAgency.ref_agency)
+        query = query.join(RefAgency.counties)
+        query = query.join(RefCounty.zip_codes)
+        query = query.filter(CdeZipCounty.zip == zip)
+        return query.distinct().all()

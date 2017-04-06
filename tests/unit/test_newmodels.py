@@ -106,6 +106,11 @@ class TestCdeAgencies:
         assert a.total_officers == 116
         assert a.total_civilians == 169
 
+    def test_find_by_zip(self, app):
+        agencies = CdeAgency.find_for_zip('08201')
+        assert len(agencies) == 3
+        oris = [a.ori for a in agencies]
+        assert sorted(oris) == sorted(['AL0040000', 'AL0040100', 'AL0040200'])
 
 class TestArsonAdditionsToRetaMonthOffenseSubcatSummary:
     def test_arson_fields_for_state_month_year(self, app):
