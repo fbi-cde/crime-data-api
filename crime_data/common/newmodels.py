@@ -473,6 +473,7 @@ class CdeAgency(db.Model):
     population_group_desc = db.Column(db.String(150))
     population_source_flag = db.Column(db.String(1))
     suburban_area_flag = db.Column(db.String(1))
+    core_city_flag = db.Column(db.String(1))
     months_reported = db.Column(db.SmallInteger)
     nibrs_months_reported = db.Column(db.SmallInteger)
     covered_by_id = db.Column(db.BigInteger)

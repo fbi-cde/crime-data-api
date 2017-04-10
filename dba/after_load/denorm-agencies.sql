@@ -28,6 +28,7 @@ CREATE TABLE denorm_agencies_temp
     population_group_desc character varying(150),
     population_source_flag character varying(1),
     suburban_area_flag character varying(1),
+    core_city_flag character varying(1),
     months_reported smallint,
     nibrs_months_reported smallint,
     covered_by_id bigint,
@@ -79,6 +80,7 @@ rpg.population_group_code,
 rpg.population_group_desc,
 rap.source_flag AS population_source_flag,
 rap.suburban_area_flag,
+rac.core_city_flag,
 cap.months_reported,
 cap.months_reported_nibrs AS nibrs_months_reported,
 racp.covered_by_agency_id AS covered_by_id,
@@ -97,10 +99,10 @@ LEFT OUTER JOIN cde_annual_participation cap ON cap.agency_id=ra.agency_id AND c
 LEFT OUTER JOIN ref_submitting_agency rsa ON rsa.agency_id=ra.submitting_agency_id
 LEFT OUTER JOIN ref_state rss ON rss.state_id=rsa.state_id
 LEFT OUTER JOIN ref_agency_population rap ON rap.agency_id=ra.agency_id AND rap.data_year=y.current_year
+LEFT OUTER JOIN ref_agency_county rac ON rac.agency_id=ra.agency_id AND rac.data_year=y.current_year
 LEFT OUTER JOIN ref_population_group rpg ON rpg.population_group_id=rap.population_group_id
 LEFT OUTER JOIN ref_agency_covered_by_flat racp ON racp.agency_id=ra.agency_id AND racp.data_year=y.current_year
 LEFT OUTER JOIN ref_agency covering ON covering.agency_id=racp.covered_by_agency_id
 LEFT OUTER JOIN pe_employee_data ped ON ped.agency_id=ra.agency_id AND ped.data_year=pe.staffing_year;
-
 DROP TABLE IF EXISTS cde_agencies CASCADE;
 ALTER TABLE denorm_agencies_temp RENAME TO cde_agencies;

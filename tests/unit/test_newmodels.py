@@ -139,6 +139,11 @@ class TestCdeAgencies:
         assert a.total_officers == 116
         assert a.total_civilians == 169
 
+    def test_core_city_flag(self, app):
+        a = CdeAgency.query.filter(CdeAgency.agency_id == 1484).one()
+        assert a is not None
+        assert a.core_city_flag == 'Y'
+
 
 class TestArsonAdditionsToRetaMonthOffenseSubcatSummary:
     def test_arson_fields_for_state_month_year(self, app):
