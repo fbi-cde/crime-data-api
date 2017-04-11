@@ -1,7 +1,16 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [2017-04-12]
+### Added
+- Include API introduction text in Swagger documentation ([#461](https://github.com/18F/crime-data-api/pull/461))
+
+### Changed
+- Restore `/agencies` and `/agencies/:ori` endpoints ([#452](https://github.com/18F/crime-data-api/pull/452))
+
+### Removed
+- Removed unused code in `CdeNibrsIncident` and `CdeRetaMonth` classes ([#441](https://github.com/18F/crime-data-api/pull/441/files))
+- Remove `/geo/states/<state_abbr>/participation` and `/incidents/count` endpoints ([#463](https://github.com/18F/crime-data-api/pull/463))
 
 ## [2017-03-29]
 ### Added
