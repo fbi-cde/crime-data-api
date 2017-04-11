@@ -30,6 +30,10 @@ echo -n "Create participation views..."
 psql $CRIME_DATA_API_DB_URL <after_load/participation_table.sql
 echo "DONE"
 
+echo -n "Create flat ref_agency_covered_by table..."
+psql $CRIME_DATA_API_DB_URL <after_load/flatten-covered-by.sql
+echo "DONE"
+
 echo -n "Create cde_agencies table..."
 psql $CRIME_DATA_API_DB_URL <after_load/denorm-agencies.sql
 echo "DONE"
