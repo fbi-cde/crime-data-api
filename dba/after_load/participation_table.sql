@@ -1,6 +1,6 @@
 SET work_mem='4096MB'; -- Go Super Saiyan.
 
-create materialized view cde_annual_participation_temp AS
+CREATE materialized VIEW cde_annual_participation_temp AS
 SELECT rm.data_year,
 rs.state_name AS state_name,
 rs.state_postal_abbr AS state_abbr,
@@ -26,8 +26,7 @@ LEFT OUTER JOIN ref_agency_covered_by racb ON racb.agency_id=rm.agency_id AND ra
 LEFT OUTER JOIN ref_agency_covered_by_flat racbf ON racb.agency_id=rm.agency_id AND racb.data_year=rm.data_year
 LEFT OUTER JOIN reta_month covered_rm ON covered_rm.agency_id=racb.covered_by_agency_id AND covered_rm.data_year=rm.data_year AND covered_rm.month_num=rm.month_num
 LEFT OUTER JOIN nibrs_month covered_nm ON covered_nm.agency_id=racb.covered_by_agency_id AND covered_nm.data_year=nm.data_year AND covered_nm.month_num=nm.month_num
-group by rm.data_year, rs.state_name, rs.state_postal_abbr, ra.agency_id, ra.ori, ra.pub_agency_name, rap.population, rpg.population_group_code, rpg.population_group_desc, racb.co
-vered_by_agency_id, racbf.covered_by_agency_id
+GROUP BY rm.data_year, rs.state_name, rs.state_postal_abbr, ra.agency_id, ra.ori, ra.pub_agency_name, rap.population, rpg.population_group_code, rpg.population_group_desc, racb.covered_by_agency_id, racbf.covered_by_agency_id
 ORDER by rm.data_year, rs.state_name, ra.pub_agency_name;
 
 --- this lets us rebuild with less disruption

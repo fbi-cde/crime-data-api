@@ -26,12 +26,12 @@ echo -n "Create View Count tables from NIBRS..."
 after_load/setup-denorm.sh >/dev/null
 echo "DONE"
 
-echo -n "Create participation views..."
-psql $CRIME_DATA_API_DB_URL <after_load/participation_table.sql
-echo "DONE"
-
 echo -n "Create flat ref_agency_covered_by table..."
 psql $CRIME_DATA_API_DB_URL <after_load/flatten-covered-by.sql
+echo "DONE"
+
+echo -n "Create participation views..."
+psql $CRIME_DATA_API_DB_URL <after_load/participation_table.sql
 echo "DONE"
 
 echo -n "Create cde_agencies table..."
