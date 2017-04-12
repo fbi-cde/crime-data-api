@@ -38,6 +38,10 @@ echo -n "Create cde_agencies table..."
 psql $CRIME_DATA_API_DB_URL <after_load/denorm-agencies.sql
 echo "DONE"
 
+echo -n "Create reta_agency_summary table..."
+psql $CRIME_DATA_API_DB_URL <after_load/create_reta_agency_summary.sql
+echo "DONE"
+
 #echo -n "Building cached incident representations (may be slow)..."
 #psql $CRIME_DATA_API_DB_URL <after_load/cache_representations.sql >/dev/null
 #after_load/cache_representation.sh >/dev/null

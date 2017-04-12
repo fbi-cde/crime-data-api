@@ -6,7 +6,7 @@ CREATE SEQUENCE retacubeseq;
 CREATE TABLE reta_agency_rollup AS
 SELECT
 NEXTVAL('retacubeseq') AS reta_month_agency_summary_id,
-GROUPING(year, agency_id, agency_ori, agency_name, population, months_reported, nibrs_months_reported, classification, offense_category, offense, offense_code) AS grouping_bitmap,
+GROUPING(year, agency_id, agency_ori, agency_name, population, months_reported, nibrs_months_reported, covered_by_id, covered_by_ori, covered_by_name, covered_by_root_id, covered_by_root_ori, covered_by_root_name, classification, offense_category, offense, offense_code) AS grouping_bitmap,
 SUM(u.reported_count) AS reported,
 SUM(u.unfounded_count) AS unfounded,
 SUM(u.actual_count) AS actual,
@@ -22,7 +22,13 @@ u.offense_code,
 u.offense,
 u.months_reported,
 u.nibrs_months_reported,
-u.population
+u.population,
+u.covered_by_id,
+u.covered_by_ori,
+u.covered_by_name,
+u.covered_by_root_id,
+u.covered_by_root_ori,
+u.covered_by_root_name
 FROM
 (
    (SELECT
@@ -41,7 +47,13 @@ FROM
            ro.offense_name AS offense,
            cap.agency_population AS population,
            cap.months_reported,
-           cap.months_reported_nibrs AS nibrs_months_reported
+           cap.months_reported_nibrs AS nibrs_months_reported,
+           covered.agency_id AS covered_by_id,
+           covered.ori AS covered_by_ori,
+           covered.pub_agency_name AS covered_by_name,
+           root_covered.agency_id AS covered_by_root_id,
+           root_covered.ori AS covered_by_root_ori,
+           root_covered.pub_agency_name AS covered_by_root_name
     FROM   reta_month_offense_subcat rmos
     LEFT OUTER JOIN   reta_offense_subcat ros ON (rmos.offense_subcat_id = ros.offense_subcat_id)
     LEFT OUTER JOIN   reta_offense ro ON (ros.offense_id = ro.offense_id)
@@ -50,7 +62,9 @@ FROM
     LEFT OUTER JOIN   reta_month rm ON (rmos.reta_month_id = rm.reta_month_id)
     LEFT OUTER JOIN   ref_agency ra ON (rm.agency_id = ra.agency_id)
     LEFT OUTER JOIN   cde_annual_participation cap ON (cap.agency_id=rm.agency_id AND cap.data_year=rm.data_year)
-    WHERE rmos.actual_status NOT IN (2,3,4)
+    LEFT OUTER JOIN   ref_agency covered ON (covered.agency_id=cap.covered_by_id)
+    LEFT OUTER JOIN   ref_agency root_covered ON (root_covered.agency_id=cap.covered_by_root_id)
+    WHERE rmos.actual_status NOT IN (2,3,4) AND rm.data_year <= ra.dormant_year
   )
   -- UNION
   --     (SELECT
@@ -82,10 +96,10 @@ GROUP BY GROUPING SETS(
 (agency_id, agency_ori, agency_name),
 (agency_id, agency_ori, agency_name, classification),
 (agency_id, agency_ori, agency_name, classification, offense_category, offense, offense_code),
-(year, agency_id, agency_ori, agency_name, population, months_reported, nibrs_months_reported),
-(year, agency_id, agency_ori, agency_name, population, months_reported, nibrs_months_reported, classification),
-(year, agency_id, agency_ori, agency_name, population, months_reported, nibrs_months_reported, classification, offense_category),
-(year, agency_id, agency_ori, agency_name, population, months_reported, nibrs_months_reported, classification, offense_category, offense, offense_code)
+(year, agency_id, agency_ori, agency_name, population, months_reported, nibrs_months_reported, covered_by_id, covered_by_ori, covered_by_name, covered_by_root_id, covered_by_root_ori, covered_by_root_name),
+(year, agency_id, agency_ori, agency_name, population, months_reported, nibrs_months_reported, covered_by_id, covered_by_ori, covered_by_name, covered_by_root_id, covered_by_root_ori, covered_by_root_name, classification),
+(year, agency_id, agency_ori, agency_name, population, months_reported, nibrs_months_reported, covered_by_id, covered_by_ori, covered_by_name, covered_by_root_id, covered_by_root_ori, covered_by_root_name, classification, offense_category),
+(year, agency_id, agency_ori, agency_name, population, months_reported, nibrs_months_reported, covered_by_id, covered_by_ori, covered_by_name, covered_by_root_id, covered_by_root_ori, covered_by_root_name, classification, offense_category, offense, offense_code)
 );
 
 DROP TABLE IF EXISTS reta_annual_offense_agency_summary CASCADE;
