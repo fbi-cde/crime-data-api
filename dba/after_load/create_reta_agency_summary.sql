@@ -53,7 +53,8 @@ FROM
            covered.pub_agency_name AS covered_by_name,
            root_covered.agency_id AS covered_by_root_id,
            root_covered.ori AS covered_by_root_ori,
-           root_covered.pub_agency_name AS covered_by_root_name
+           root_covered.pub_agency_name AS covered_by_root_name,
+           cap.months_reported_nibrs AS nibrs_months_reported
     FROM   reta_month_offense_subcat rmos
     LEFT OUTER JOIN   reta_offense_subcat ros ON (rmos.offense_subcat_id = ros.offense_subcat_id)
     LEFT OUTER JOIN   reta_offense ro ON (ros.offense_id = ro.offense_id)
