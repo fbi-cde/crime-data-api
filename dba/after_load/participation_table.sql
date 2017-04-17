@@ -1,5 +1,6 @@
 SET work_mem='4096MB'; -- Go Super Saiyan.
 
+
 CREATE materialized VIEW cde_annual_participation_temp AS
 SELECT rm.data_year,
 rs.state_name AS state_name,
@@ -54,6 +55,13 @@ CREATE TABLE cde_participation_rates_temp
 WITH (
     OIDS = FALSE
 );
+
+
+
+-- Temporarily disable Autovacuum.
+ALTER TABLE cde_participation_rates_temp SET (autovacuum_enabled = false, toast.autovacuum_enabled = false);
+ALTER TABLE cde_participation_rates SET (autovacuum_enabled = false, toast.autovacuum_enabled = false);
+
 
 ALTER TABLE ONLY cde_participation_rates_temp
 ADD CONSTRAINT cde_participation_rates_state_fk FOREIGN KEY (state_id) REFERENCES ref_state(state_id);
@@ -159,3 +167,7 @@ WHERE state_id IS NULL AND county_id IS NULL;
 
 DROP TABLE IF EXISTS cde_participation_rates CASCADE;
 ALTER TABLE cde_participation_rates_temp RENAME TO cde_participation_rates;
+
+-- Re-enable Autovacuum.
+ALTER TABLE cde_participation_rates SET (autovacuum_enabled = true, toast.autovacuum_enabled = true);
+
