@@ -540,12 +540,18 @@ class TableFamily:
         """Returns a finalized SQLAlchemy Query object"""
         self._build_map()
         # self.print_map() # - uncomment to generate JSON
-        qry = self.base_query()
-        for table in self.tables:
-            if table.join is None:
-                qry = qry.outerjoin(table.table)
-            else:
-                qry = qry.outerjoin(table.table, table.join)
+        try:
+            qry = self.base_query()
+            for table in self.tables:
+                if table.join is None:
+                    qry = qry.outerjoin(table.table)
+                else:
+                    qry = qry.outerjoin(table.table, table.join)
+        except Exception, e:
+            session.rollback()
+            session.close()
+            raise e
+
         return qry
 
     def print_map(self):
@@ -986,6 +992,7 @@ class MultiYearCountView(object):
                 qry = session.execute(base_query, param_dict)
         except Exception as e:
             session.rollback()
+            session.close()
             raise e
         return qry
 
@@ -1147,6 +1154,7 @@ class OffenseSubCountView(object):
 
         except Exception as e:
             session.rollback()
+            session.close()
             raise e
         return qry
 
