@@ -375,7 +375,9 @@ class CdeResource(Resource):
             paginated = results
             count = len(paginated)
             pass
-
+        # Close session connection - release to pool.
+        session.close()
+        
         serialized = self._serialize(paginated)
 
         max_page = math.ceil(count / args['per_page'])
