@@ -1003,3 +1003,17 @@ class AgencySchema(ma.ModelSchema):
         model = newmodels.CdeAgency
         ordered = True
         exclude = ('agency_id', 'state_id', 'city_id', 'submitting_agency_id', 'covered_by_id', )
+
+
+class EstimateSchema(ma.ModelSchema):
+   """Response schema for the RetaEstimated table"""
+
+   class Meta:
+       model = newmodels.RetaEstimated
+       ordered = True
+       exclude = ('estimate_id', 'state_id', 'state', )
+
+
+class NationalEstimateSchema(EstimateSchema):
+    class Meta:
+        exclude = ('estimate_id', 'state_id', 'state', 'state_abbr', )

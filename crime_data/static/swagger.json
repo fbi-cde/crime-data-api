@@ -1,6 +1,6 @@
 {
   "info": {
-    "description": "\nThe Crime Data API enables you to explore data from the FBI's Uniform Crime Reporting (UCR) program. This is data the FBI collects from law state and local law enforcement agencies and is used to compile the Crime in the US annual reports since 1960. The program is voluntary and not all agencies participate. In addition, data is often published publicly about 18 months after it is submitted to the FBI. This means that the most recent year for data in the API is 2015.\n\nThis site and API are in beta, which means we’re actively working on both and adding new features. While we plan to version big changes that are not backwards compatible, expect things to change as the API develops. This might mean that the structure of endpoints could shift around or that the accepted parameters are changed. All noteable changes to the API are recorded in the [CHANGELOG](https://github.com/18F/crime-data-api/blob/master/CHANGELOG.md).\n\nThe API is a read-only web service that returns JSON or CSV data. It is broadly organized around the data reporting systems the FBI UCR program uses and their related entities. Agencies submit data using one of two reporting formats – the Summary Reporting System (SRS), or the National Incident Based Reporting System (NIBRS). SRS data is the legacy format that provides aggregated counts of the reported crime offenses known to law enforcement by location.\n\nNIBRS is a newer format that provides an incident-based view of crime. It includes information about each offense, such as the time of day an incident occurred, the demographics of the offenders/victims, the known relationships between the offenders and victims, and many other details around how and where crime occurs. Neither format includes personally identifiable information (PII) about the offenders or victims. While many agencies submit SRS data, the FBI plans to transition all crime reporting to the NIBRS format by 2021.\n\nOther UCR data collection systems made available by this API include:\n\n* Supplemental homicide report (SHR)\n* Cargo theft\n* Hate crimes\n* Human trafficking\n* Law enforcement officers assaulted and killed (LEOKA)\n* Law enforcement agency personnel demographic data\n\nThere is a lot of data, but a good place to start is by looking at the rate of a particular crime over the last 10 years in a state or Washington, DC.\n\nLet’s try it with homicide in Washington, DC for from 2004 through 2014.  find crime rates, we will use the /counts endpoint passing in parameters to represent the crime type (homicide) and the years in question. Here’s the API request the Crime Data Explorer makes to display this data:\n `/counts?explorer_offense=homicide&per_page=11&year>=2004&year<=2014&state=dc`\n\nWe can use the `explorer_offense` parameter to just get data related to homicide crimes. If you do not supply an offense, you’ll get data that represents all the crime types in that location. Next we set our `per_page` parameter to be 11, since we’ll be requesting 11 years at once. We do this to ensure that we only need to make one request to get all of the data. We craft a date range query by supply two `year` parameters using greater than and less than operators in the URL. Finally, we supply the location that we want data for. If `state` is omitted, the data will represent the national perspective.\n\nGet an API key here. That will enable you to place up to XX requests per minute. Each call is limited to YY results per page. You can email questions or comments to EE. You can ask questions or give us feedback using Github issues.\n\nThe model definitions and schema are available at [/swagger](/swagger). This is useful for making wrappers and exploring the data.\n\nThe API was designed to provide as much information as possible in a usable format. However, the FBI still has some recommendations about how to interpret and display the data provided. The FBI strongly advises against using this data to do any sort of ranking or comparison among states or other entities. The exception being that it is appropriate to compare a city to its respective state, and that state to a national perspective.\n\nView our [source code](https://github.com/18F/crime-data-api). We welcome issues and pull requests!",
+    "description": "The Crime Data API enables you to explore data from the FBI Uniform Crime Reporting (UCR) program. This is data the FBI collects from law state and local law enforcement agencies and is used to compile the Crime in the US annual reports since 1960. The program is voluntary and not all agencies participate. In addition, data is often published publicly about 18 months after it is submitted to the FBI. This means that the most recent year for data in the API is 2015.\n\nThis site and API are in beta, which means we're actively working on both and adding new features. While we plan to version big changes that are not backwards compatible, expect things to change as the API develops. This might mean that the structure of endpoints could shift around or that the accepted parameters are changed. All noteable changes to the API are recorded in the [CHANGELOG](https://github.com/18F/crime-data-api/blob/master/CHANGELOG.md).\n\nThe API is a read-only web service that returns JSON or CSV data. It is broadly organized around the data reporting systems the FBI UCR program uses and their related entities. Agencies submit data using one of two reporting formats -- the Summary Reporting System (SRS), or the National Incident Based Reporting System (NIBRS). SRS data is the legacy format that provides aggregated counts of the reported crime offenses known to law enforcement by location.\n\nNIBRS is a newer format that provides an incident-based view of crime. It includes information about each offense, such as the time of day an incident occurred, the demographics of the offenders/victims, the known relationships between the offenders and victims, and many other details around how and where crime occurs. Neither format includes personally identifiable information (PII) about the offenders or victims. While many agencies submit SRS data, the FBI plans to transition all crime reporting to the NIBRS format by 2021.\n\nOther UCR data collection systems made available by this API include:\n\n* Supplemental homicide report (SHR)\n* Cargo theft\n* Hate crimes\n* Human trafficking\n* Law enforcement officers assaulted and killed (LEOKA)\n* Law enforcement agency personnel demographic data\nThere is a lot of data, but a good place to start is by looking at the rate of a particular crime over the last 10 years in a state or Washington, DC.\nLet's try it with homicide in Washington, DC for from 2004 through 2014.  find crime rates, we will use the /counts endpoint passing in parameters to represent the crime type (homicide) and the years in question. Here's the API request the Crime Data Explorer makes to display this data:\n\n`/counts?explorer_offense=homicide&per_page=11&year>=2004&year<=2014&state=dc`\n\nWe can use the `explorer_offense` parameter to just get data related to homicide crimes. If you do not supply an offense, you'll get data that represents all the crime types in that location. Next we set our `per_page` parameter to be 11, since we'll be requesting 11 years at once. We do this to ensure that we only need to make one request to get all of the data. We craft a date range query by supply two `year` parameters using greater than and less than operators in the URL. Finally, we supply the location that we want data for. If `state` is omitted, the data will represent the national perspective.\n\nGet an API key here. That will enable you to place up to XX requests per minute. Each call is limited to YY results per page. You can email questions or comments to EE. You can ask questions or give us feedback using Github issues.\n\nThe model definitions and schema are available at [/swagger.json](/swagger.json). This is useful for making wrappers and exploring the data.\n\nThe API was designed to provide as much information as possible in a usable format. However, the FBI still has some recommendations about how to interpret and display the data provided. The FBI strongly advises against using this data to do any sort of ranking or comparison among states or other entities. The exception being that it is appropriate to compare a city to its respective state, and that state to a national perspective.\n\nView our [source code](https://github.com/18F/crime-data-api). We welcome issues and pull requests!",
     "title": "FBI Crime Data API",
     "version": "v1"
   },
@@ -644,6 +644,98 @@
         }
       }
     },
+    "EstimatedCount": {
+      "type": "object",
+      "required": [
+        "year",
+        "population",
+        "violent_crime",
+        "homicide",
+        "rape_legacy",
+        "rape_revised",
+        "robbery",
+        "aggravated_assault",
+        "property_crime",
+        "burglary",
+        "larceny",
+        "motor_vehicle_theft",
+        "caveats"
+      ],
+      "properties": {
+        "year": {
+          "type": "integer",
+          "description": "The year of the estimated counts"
+        },
+        "population": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Populations are U.S. Census Bureau provisional estimates as of July 1 for each year except 2000 and 2010, which are decennial census counts."
+        },
+        "state_abbr": {
+          "type": "string",
+          "description": "The 2-letter postal abbreviation if these estimates are for a specific state",
+          "minLength": 2,
+          "maxLength": 2
+        },
+        "violent_crime": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "The violent crime figures include the offenses of murder, rape (legacy definition), robbery, and aggravated assault."
+        },
+        "homicide": {
+          "type": "integer",
+          "description": "Murder and nonnegligent manslaughter",
+          "minimum": 0
+        },
+        "rape_legacy": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Rape (legacy definition)"
+        },
+        "rape_revised": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0,
+          "description": "Rape (revised 2013 definition)"
+        },
+        "robbery": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Robbery"
+        },
+        "aggravated_assault": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Aggravated assault"
+        },
+        "property_crime": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "The total of all property crime categories"
+        },
+        "burglary": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Burglary"
+        },
+        "larceny": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Larceny theft"
+        },
+        "motor_vehicle_theft": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Motor vehicle theft"
+        },
+        "caveats": {
+          "type": ["string", "null"],
+          "description": "Caveats provided by the FBI related to the estimates for that specific year. Note that a lack of caveats does not that other precautions for working with the data don't apply."
+        }
+      }
+    },
     "IncidentCount": {
       "description": "",
       "required": [
@@ -790,7 +882,7 @@
         "covered_population",
         "nibrs_covered_population"
       ],
-      "properties": {
+      "prvoperties": {
         "year": {
           "format": "int32",
           "type": "integer",
@@ -1126,14 +1218,121 @@
           }
         ],
         "responses": {
-          "default": {
-            "$ref": "#/responses/Error"
-          },
           "200": {
             "description": "Successful response",
             "schema": {
               "type": "array"
             }
+          },
+          "default": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
+    "/estimates/national": {
+      "get": {
+        "tags": [
+          "estimates",
+          "national"
+        ],
+        "description": "This endpoint returns national estimates from the API",
+        "parameters": [
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "object",
+              "required": [
+                "pagination",
+                "results"
+              ],
+              "properties": {
+                "pagination": {
+                  "$ref": "#/definitions/Pagination"
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/EstimatedCount"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
+    "/estimates/states/{state_id}": {
+      "get": {
+        "tags": [
+          "estimates",
+          "state"
+        ],
+        "description": "This endpoint returns national estimates from the API",
+        "parameters": [
+          {
+            "$ref": "#/parameters/statePathParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "object",
+              "required": [
+                "pagination",
+                "results"
+              ],
+              "properties": {
+                "pagination": {
+                  "$ref": "#/definitions/Pagination"
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/EstimatedCount"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/responses/Error"
           }
         }
       }
@@ -2478,6 +2677,10 @@
         "description": "About Hate Crime Statistics",
         "url": "https://ucr.fbi.gov/hate-crime/2015/resource-pages/abouthatecrime_final"
       }
+    },
+    {
+      "name": "estimates",
+      "description": "These endpoints return estimated annual counts for crime categories reported as part of the annual `Crime in the United States` reports."
     },
     {
       "name": "national",
