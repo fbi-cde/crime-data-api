@@ -11,7 +11,7 @@ CREATE TABLE flat_covered_by_temp
 );
 
 WITH RECURSIVE flatcover(data_year, agency_id, covered_by_agency_id, root_agency_id) AS (
-SELECT data_year, agency_id, 0::bigint AS covered_by_agency_id, agency_id AS root_agency_id
+SELECT DISTINCT data_year, agency_id, 0::bigint AS covered_by_agency_id, agency_id AS root_agency_id
 FROM ref_agency_county WHERE ref_agency_county.agency_id NOT IN (select agency_id from ref_agency_covered_by WHERE data_year=ref_agency_county.data_year)
 UNION ALL
 SELECT u.data_year, u.agency_id, u.covered_by_agency_id, f.root_agency_id
