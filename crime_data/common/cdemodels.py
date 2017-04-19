@@ -547,7 +547,7 @@ class TableFamily:
                     qry = qry.outerjoin(table.table)
                 else:
                     qry = qry.outerjoin(table.table, table.join)
-        except Exception, e:
+        except Exception as e:
             session.rollback()
             session.close()
             raise e
