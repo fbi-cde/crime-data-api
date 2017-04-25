@@ -1,107 +1,93 @@
-\set ON_ERROR_STOP on
+DROP TABLE IF EXISTS agency_reporting;
+
+CREATE TABLE agency_reporting AS
+SELECT rm.data_year,
+rm.agency_id,
+bool_or(CASE WHEN rm.reported_flag = 'Y' THEN TRUE ELSE FALSE END) AS reported
+FROM reta_month rm
+GROUP BY rm.data_year, rm.agency_id;
+
+CREATE TABLE covering_counts AS
+SELECT data_year, covered_by_agency_id, COUNT(agency_id) AS count
+FROM ref_agency_covered_by_flat
+GROUP BY covered_by_agency_id, data_year;
+
+CREATE TABLE agency_sums (
+ data_year smallint NOT NULL,
+ agency_id bigint NOT NULL, 
+ offense_id bigint NOT NULL,
+ offense_code varchar(20),
+ reported integer, 
+ unfounded integer,
+ actual integer,
+ cleared integer,
+ juvenile_cleared integer
+);
+
+DO
+$do$
+DECLARE
+   arr integer[] := array[0, 11, 12, 20, 21, 22, 23, 24, 25, 30, 31, 32, 33, 34, 40, 41, 42, 43, 44, 45, 50, 51, 52, 53, 60, 70, 71, 72, 73, 80, 81, 82];
+   i integer;
+BEGIN
+   FOREACH i IN ARRAY arr
+   LOOP
+    RAISE NOTICE 'Executing Inserts for offense_subcat_id: %', i;
+    SET work_mem='2GB';
+    INSERT INTO agency_sums (data_year, agency_id, offense_id, offense_code, reported, unfounded, actual, cleared, juvenile_cleared)  
+    SELECT rm.data_year,
+    rm.agency_id,
+    ros.offense_id,
+    ro.offense_code,
+    SUM(rmos.reported_count) AS reported,
+    SUM(rmos.unfounded_count) AS unfounded,
+    SUM(rmos.actual_count) AS actual,
+    SUM(rmos.cleared_count) AS cleared,
+    SUM(rmos.juvenile_cleared_count) AS juvenile_cleared
+    FROM (SELECT * from reta_month_offense_subcat where offense_subcat_id=i AND reta_month_offense_subcat.actual_status NOT IN (2, 3, 4)) rmos
+    JOIN reta_offense_subcat ros ON (rmos.offense_subcat_id = ros.offense_subcat_id)
+    JOIN reta_offense ro ON ro.offense_id=ros.offense_id
+    JOIN reta_month rm ON (rmos.reta_month_id = rm.reta_month_id)
+    JOIN agency_reporting ar ON ar.agency_id=rm.agency_id AND ar.data_year=rm.data_year
+    WHERE ar.reported IS TRUE
+    GROUP BY rm.data_year, rm.agency_id, ros.offense_id, ro.offense_code;
+   END LOOP;
+END
+$do$;
 
 DROP SEQUENCE IF EXISTS retacubeseq CASCADE;
 CREATE SEQUENCE retacubeseq;
 
-CREATE TABLE reta_agency_rollup AS
+DROP TABLE IF EXISTS reta_agency_offense_summary;
+CREATE TABLE reta_agency_offense_summary AS
 SELECT
-NEXTVAL('retacubeseq') AS reta_month_agency_summary_id,
-GROUPING(year, agency_id, agency_ori, agency_name, population, months_reported, nibrs_months_reported, covered_by_id, covered_by_ori, covered_by_name, covered_by_root_id, covered_by_root_ori, covered_by_root_name, classification, offense_category, offense, offense_code) AS grouping_bitmap,
-SUM(u.reported_count) AS reported,
-SUM(u.unfounded_count) AS unfounded,
-SUM(u.actual_count) AS actual,
-SUM(u.cleared_count) AS cleared,
-SUM(u.juvenile_cleared_count) AS juvenile_cleared,
-u.year,
-u.agency_id,
-u.agency_ori,
-u.agency_name,
-u.classification,
-u.offense_category,
-u.offense_code,
-u.offense,
-u.months_reported,
-u.nibrs_months_reported,
-u.population,
-u.covered_by_id,
-u.covered_by_ori,
-u.covered_by_name,
-u.covered_by_root_id,
-u.covered_by_root_ori,
-u.covered_by_root_name
-FROM
-(
-   (SELECT
-           ra.agency_id,
-           ra.ori AS agency_ori,
-           ra.pub_agency_name AS agency_name,
-           rmos.reported_count,
-           rmos.unfounded_count,
-           rmos.actual_count,
-           rmos.cleared_count,
-           rmos.juvenile_cleared_count,
-           rm.data_year AS year,
-           oc.classification_name AS classification,
-           roc.offense_category_name AS offense_category,
-           ro.offense_code,
-           ro.offense_name AS offense,
-           cap.agency_population AS population,
-           cap.months_reported,
-           cap.months_reported_nibrs AS nibrs_months_reported,
-           covered.agency_id AS covered_by_id,
-           covered.ori AS covered_by_ori,
-           covered.pub_agency_name AS covered_by_name,
-           root_covered.agency_id AS covered_by_root_id,
-           root_covered.ori AS covered_by_root_ori,
-           root_covered.pub_agency_name AS covered_by_root_name,
-           cap.months_reported_nibrs AS nibrs_months_reported
-    FROM   reta_month_offense_subcat rmos
-    LEFT OUTER JOIN   reta_offense_subcat ros ON (rmos.offense_subcat_id = ros.offense_subcat_id)
-    LEFT OUTER JOIN   reta_offense ro ON (ros.offense_id = ro.offense_id)
-    LEFT OUTER JOIN   reta_offense_category roc ON (ro.offense_category_id = roc.offense_category_id)
-    LEFT OUTER JOIN   offense_classification oc ON (ro.classification_id = oc.classification_id)
-    LEFT OUTER JOIN   reta_month rm ON (rmos.reta_month_id = rm.reta_month_id)
-    LEFT OUTER JOIN   ref_agency ra ON (rm.agency_id = ra.agency_id)
-    LEFT OUTER JOIN   cde_annual_participation cap ON (cap.agency_id=rm.agency_id AND cap.data_year=rm.data_year)
-    LEFT OUTER JOIN   ref_agency covered ON (covered.agency_id=cap.covered_by_id)
-    LEFT OUTER JOIN   ref_agency root_covered ON (root_covered.agency_id=cap.covered_by_root_id)
-    WHERE rmos.actual_status NOT IN (2,3,4) AND rm.data_year <= ra.dormant_year
-  )
-  -- UNION
-  --     (SELECT
-  --     		ra.agency_id,
-  --          	ra.ori AS agency_ori,
-  --           ra.pub_agency_name AS agency_name,
-  --           ambs.reported_count,
-  --           ambs.unfounded_count,
-  --           ambs.actual_count,
-  --           ambs.cleared_count,
-  --           ambs.juvenile_cleared_count,
-  --           am.data_year AS year,
-  --           'Property'::text as classification,
-  --           'Arson'::text as offense_category,
-  --           'X_ARS'::text as offense_code,
-  --           'Arson'::text as offense,
-  --           cap.agency_population AS population,
-  --           cap.months_reported,
-  --           cap.months_reported_nibrs AS nibrs_months_reported
-  --   FROM arson_month_by_subcat ambs
-  --   JOIN   arson_month am ON ambs.arson_month_id = am.arson_month_id
-  --   LEFT OUTER JOIN   arson_subcategory asuc ON ambs.subcategory_id = asuc.subcategory_id
-  --   LEFT OUTER JOIN   ref_agency ra ON am.agency_id = ra.agency_id
-  --   LEFT OUTER JOIN   cde_annual_participation cap ON (cap.agency_id=am.agency_id AND cap.data_year=am.data_year)
-  --   WHERE ambs.actual_status = 0
-	-- )
-) AS u
-GROUP BY GROUPING SETS(
-(agency_id, agency_ori, agency_name),
-(agency_id, agency_ori, agency_name, classification),
-(agency_id, agency_ori, agency_name, classification, offense_category, offense, offense_code),
-(year, agency_id, agency_ori, agency_name, population, months_reported, nibrs_months_reported, covered_by_id, covered_by_ori, covered_by_name, covered_by_root_id, covered_by_root_ori, covered_by_root_name),
-(year, agency_id, agency_ori, agency_name, population, months_reported, nibrs_months_reported, covered_by_id, covered_by_ori, covered_by_name, covered_by_root_id, covered_by_root_ori, covered_by_root_name, classification),
-(year, agency_id, agency_ori, agency_name, population, months_reported, nibrs_months_reported, covered_by_id, covered_by_ori, covered_by_name, covered_by_root_id, covered_by_root_ori, covered_by_root_name, classification, offense_category),
-(year, agency_id, agency_ori, agency_name, population, months_reported, nibrs_months_reported, covered_by_id, covered_by_ori, covered_by_name, covered_by_root_id, covered_by_root_ori, covered_by_root_name, classification, offense_category, offense, offense_code)
-);
-
-DROP TABLE IF EXISTS reta_annual_offense_agency_summary CASCADE;
-ALTER TABLE reta_agency_rollup RENAME TO reta_annual_offense_agency_summary;
+NEXTVAL('retacubeseq') AS reta_agency_summary_id,
+ar.data_year AS year,
+rs.state_postal_abbr,
+rs.state_name,
+ra.agency_id,
+ra.ori AS agency_ori,
+ra.pub_agency_name AS agency_name,
+ar.reported AS reported,
+CASE WHEN racb.agency_id IS NOT NULL THEN TRUE ELSE FALSE END AS covered,
+cvring.count AS covering_count,
+rap.population AS agency_population,
+rpg.population_group_code AS population_group_code,
+rpg.population_group_desc AS population_group,
+homicide.reported AS homicide_reported,
+homicide.actual AS homicide_actual,
+homicide.cleared AS homicide_cleared,
+homicide.juvenile_cleared AS homicide_juvenile_cleared,
+rape.reported AS rape_reported,
+rape.actual AS rape_actual,
+rape.cleared AS rape_cleared,
+rape.juvenile_cleared AS rape_juvenile_cleared
+FROM agency_reporting ar
+JOIN ref_agency ra ON ra.agency_id=ar.agency_id
+LEFT OUTER JOIN ref_state rs ON rs.state_id=ra.state_id
+LEFT OUTER JOIN ref_agency_covered_by racb ON racb.agency_id=ar.agency_id AND racb.data_year=ar.data_year
+LEFT OUTER JOIN covering_counts cvring ON cvring.covered_by_agency_id=ar.agency_id AND cvring.data_year=ar.data_year
+LEFT OUTER JOIN ref_agency_population rap ON rap.agency_id=ar.agency_id AND rap.data_year=ar.data_year
+LEFT OUTER JOIN ref_population_group rpg ON rpg.population_group_id=rap.population_group_id
+LEFT OUTER JOIN agency_sums homicide ON homicide.agency_id=ar.agency_id AND homicide.data_year=ar.data_year AND homicide.offense_code='SUM_HOM'
+LEFT OUTER JOIN agency_sums rape ON rape.agency_id=ar.agency_id AND rape.data_year=ar.data_year AND rape.offense_code='SUM_RPE';
