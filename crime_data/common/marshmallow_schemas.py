@@ -867,17 +867,9 @@ class IncidentViewCountSchema(Schema):
 
 class AgencyParticipationSchema(Schema):
     class Meta:
-        model = newmodels.AgencyAnnualParticipation
-        fields = ('state_name', 'state_abbr', 'year', 'agency_ori',
-                  'agency_name', 'reported', 'months_reported',
-                  'reported_nibrs', 'months_reported_nibrs',
-                  'population_group_code',
-                  'population_group', 'agency_population',)
-
+        model = newmodels.AgencyParticipation
         exclude = ('agency_id', )
         ordered = True
-
-    year = marsh_fields.Integer(attribute='data_year')
 
 
 class ArsonCountSchema(Schema):
@@ -985,30 +977,16 @@ class ParticipationRateSchema(ma.ModelSchema):
     """Response format for participation record"""
 
     class Meta:
-        # model = cdemodels.CdeParticipationRate
+        model = newmodels.ParticipationRate
         ordered = True
-        fields = ('year', 'total_population', 'covered_population',
-                  'total_agencies', 'reporting_agencies', 'reporting_rate',
-                  'nibrs_reporting_agencies', 'nibrs_reporting_rate',
-                  'nibrs_covered_population',)
+        exclude = ('participation_id', 'state_id', 'state_abbr', 'state_name', )
 
-    year = marsh_fields.Integer(attribute='data_year')
-    total_population = marsh_fields.Integer()
-    covered_population = marsh_fields.Integer()
-    total_agencies = marsh_fields.Integer()
-    reporting_agencies = marsh_fields.Integer()
-    reporting_rate = marsh_fields.Float()
-    nibrs_reporting_agencies = marsh_fields.Integer()
-    nibrs_reporting_rate = marsh_fields.Float()
-    nibrs_covered_population = marsh_fields.Integer()
 
 class StateParticipationRateSchema(ParticipationRateSchema):
     class Meta:
-        fields = ('year', 'state_name', 'total_population', 'covered_population',
-                  'total_agencies', 'reporting_agencies', 'reporting_rate',
-                  'nibrs_reporting_agencies', 'nibrs_reporting_rate', 'nibrs_covered_population', )
-
-    state_name = marsh_fields.String()
+        model = newmodels.ParticipationRate
+        exclude = ('participation_id', )
+        ordered = True
 
 
 class StateDetailResponseSchema(ma.ModelSchema):

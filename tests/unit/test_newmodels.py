@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 
 from crime_data.common.newmodels import (RetaMonthOffenseSubcatSummary,
-                                         AgencyAnnualParticipation,
+                                         AgencyParticipation,
                                          ParticipationRate,
                                          CdeAgency)
 import pytest
 
-class TestAgencyAnnualParticipation:
+class TestAgencyParticipation:
     def test_for_agency_in_nibrs_month(self, app):
-        q = AgencyAnnualParticipation.query
+        q = AgencyParticipation.query
         q = q.filter(AgencyAnnualParticipation.data_year == 2014)
         q = q.filter(AgencyAnnualParticipation.agency_id == 17381).one()
         assert q.reported == 1
@@ -17,7 +17,7 @@ class TestAgencyAnnualParticipation:
         assert q.months_reported_nibrs == 12
 
     def test_for_agency_not_in_nibrs_month(self, app):
-        q = AgencyAnnualParticipation.query
+        q = AgencyParticipation.query
         q = q.filter(AgencyAnnualParticipation.data_year == 2014)
         q = q.filter(AgencyAnnualParticipation.agency_id == 17427).one()
         assert q.reported == 1
