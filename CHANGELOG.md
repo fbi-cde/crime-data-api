@@ -1,6 +1,15 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-04-26]
+### Added
+- Create new denormalized table for agency annual counts ([#455](https://github.com/18F/crime-data-api/pull/455))
+- Load estimated data ([#469](https://github.com/18F/crime-data-api/pull/469))
+
+### Changed
+- Close off every database connection at the end of a transaction ([#470](https://github.com/18F/crime-data-api/pull/470))
+
+
 ## [2017-04-12]
 ### Added
 - Include API introduction text in Swagger documentation ([#461](https://github.com/18F/crime-data-api/pull/461))
@@ -11,6 +20,7 @@ All notable changes to this project will be documented in this file.
 ### Removed
 - Removed unused code in `CdeNibrsIncident` and `CdeRetaMonth` classes ([#441](https://github.com/18F/crime-data-api/pull/441/files))
 - Remove `/geo/states/<state_abbr>/participation` and `/incidents/count` endpoints ([#463](https://github.com/18F/crime-data-api/pull/463))
+
 
 ## [2017-03-29]
 ### Added
