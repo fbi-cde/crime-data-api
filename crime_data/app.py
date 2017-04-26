@@ -20,6 +20,7 @@ import crime_data.resources.cargo_theft
 import crime_data.resources.hate_crime
 import crime_data.resources.geo
 import crime_data.resources.participation
+import crime_data.resources.estimates
 
 from crime_data import commands
 from crime_data.assets import assets
@@ -156,6 +157,11 @@ def add_resources(app):
 
     api.add_resource(crime_data.resources.participation.NationalParticipation,
                      '/participation/national')
+
+    api.add_resource(crime_data.resources.estimates.EstimatesNational,
+                     '/estimates/national')
+    api.add_resource(crime_data.resources.estimates.EstimatesState,
+                     '/estimates/states/<string:state_id>')
 
 
     api.add_resource(crime_data.resources.offenses.OffensesCountNational,

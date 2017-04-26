@@ -83,11 +83,6 @@ class ParticipationRate(db.Model):
     state_name = db.Column(db.String)
     county_name = db.Column(db.String)
 
-    # state = relationship('RefState', foreign_keys=[state_id],
-    #                     primaryjoin='RefState.state_id == ParticipationRate.state_id')
-    # county = relationship('RefCounty', foreign_keys=[county_id],
-    #                       primaryjoin='RefCounty.county_id == ParticipationRate.county_id')
-
 
 class CreatableModel:
     @classmethod
@@ -150,6 +145,39 @@ class NibrsIncidentRepresentation(db.Model, CreatableModel):
         from crime_data.common import marshmallow_schemas
         _schema = marshmallow_schemas.NibrsIncidentSchema()
         self.representation = _schema.dump(self.incident).data
+
+
+class RetaEstimated(db.Model):
+    """
+    Estimated data loaded from a CSV data file created from published data
+    tables from the _Crime in the United States_ reports.
+    """
+    __tablename__ = 'reta_estimated'
+    __table_args__ = (
+        UniqueConstraint('year', 'state_id'), )
+
+    estimate_id = db.Column(db.Integer, primary_key=True)
+    year = db.Column(db.SmallInteger)
+    state_id = db.Column(db.SmallInteger,
+                         db.ForeignKey(RefState.state_id,
+                                       deferrable=True,
+                                       initially='DEFERRED'),
+                         nullable=True)
+    state_abbr = db.Column(db.String(2))
+    population = db.Column(db.BigInteger)
+    violent_crime = db.Column(db.BigInteger)
+    homicide = db.Column(db.BigInteger)
+    rape_legacy = db.Column(db.BigInteger)
+    rape_revised = db.Column(db.BigInteger)
+    robbery = db.Column(db.BigInteger)
+    aggravated_assault = db.Column(db.BigInteger)
+    property_crime = db.Column(db.BigInteger)
+    burglary = db.Column(db.BigInteger)
+    larceny = db.Column(db.BigInteger)
+    motor_vehicle_theft = db.Column(db.BigInteger)
+    caveats = db.Column(db.Text)
+
+    state = relationship(RefState)
 
 
 class RetaMonthOffenseSubcatSummary(db.Model, CreatableModel):
