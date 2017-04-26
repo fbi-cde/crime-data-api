@@ -377,7 +377,7 @@ class CdeResource(Resource):
             count = len(paginated)
             pass
         # Close session connection - release to pool.
-        session.close()
+        #session.close()
         
         serialized = self._serialize(paginated)
 
