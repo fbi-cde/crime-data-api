@@ -48,16 +48,7 @@ class NationalParticipation(CdeResource):
 
 class AgenciesParticipation(CdeResource):
 
-    schema = marshmallow_schemas.AgencyParticipationSchema(many=True,
-                                                           only=('state_name', 'state_abbr', 'year', 'agency_ori',
-                                                                 'agency_name', 'reported',
-                                                                 'months_reported',
-                                                                 'months_reported_nibrs',
-                                                                 'population_group_code',
-                                                                 'population_group',
-                                                                 'agency_population',)
-                                                          )
-
+    schema = marshmallow_schemas.AgencyParticipationSchema(many=True)
     tables = newmodels.AgencyParticipation
     is_groupable = False
 

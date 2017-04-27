@@ -90,7 +90,7 @@ class CdeParticipationRate(newmodels.ParticipationRate):
             qry = qry.filter(newmodels.ParticipationRate.county_id == self.county_id)
 
         if self.year:
-            qry = qry.filter(newmodels.ParticipationRate.data_year == self.year)
+            qry = qry.filter(newmodels.ParticipationRate.year == self.year)
 
         return qry
 
@@ -131,18 +131,18 @@ class CdeRefState(RefState):
         return self._participation_for_year(data_year).total_agencies
 
     @property
-    def reporting_agencies(self):
-        return self.reporting_agencies_for_year(self.current_year)
+    def participating_agencies(self):
+        return self.participating_agencies_for_year(self.current_year)
 
-    def reporting_agencies_for_year(self, data_year):
-        return self._participation_for_year(data_year).reporting_agencies
+    def participating_agencies_for_year(self, data_year):
+        return self._participation_for_year(data_year).participating_agencies
 
     @property
-    def reporting_rate(self):
-        return self.reporting_rate_for_year(self.current_year)
+    def participation_rate(self):
+        return self.participating_rate_for_year(self.current_year)
 
-    def reporting_rate_for_year(self, data_year):
-        return self._participation_for_year(data_year).reporting_rate
+    def participation_rate_for_year(self, data_year):
+        return self._participation_for_year(data_year).participation_rate
 
     @property
     def total_population(self):
@@ -152,13 +152,6 @@ class CdeRefState(RefState):
     def total_population_for_year(self, data_year):
         """Returns the population for a given year"""
         return self._participation_for_year(data_year).total_population
-
-    @property
-    def covered_population(self):
-        return self.covered_population_for_year(self.current_year)
-
-    def covered_population_for_year(self, data_year):
-        return self._participation_for_year(data_year).covered_population
 
     def police_officers_for_year(self, data_year):
         """Returns the number of police officers for a given year"""
@@ -185,7 +178,7 @@ class CdeRefState(RefState):
 
     @property
     def participation_rates(self):
-        return CdeParticipationRate(state_id=self.state_id).query.order_by('data_year DESC').all()
+        return CdeParticipationRate(state_id=self.state_id).query.order_by('year DESC').all()
 
 
 class CdeRefCounty(RefCounty):
@@ -252,13 +245,13 @@ class CdeRefCounty(RefCounty):
         return self._participation_for_year(data_year).total_agencies
 
     @property
-    def reporting_agencies(self):
+    def participating_agencies(self):
         """Returns the number of agencies for the most recent year"""
-        return self.reporting_agencies_for_year(self.current_year)
+        return self.participating_agencies_for_year(self.current_year)
 
-    def reporting_agencies_for_year(self, data_year):
+    def participating_agencies_for_year(self, data_year):
         """Counts the number of agencies for that county in a year."""
-        return self._participation_for_year(data_year).reporting_agencies
+        return self._participation_for_year(data_year).participating_agencies
 
     @property
     def total_agencies(self):

@@ -95,10 +95,6 @@ class ParticipationRate(db.Model):
     covered_rate = db.Column(db.Float)
     total_population = db.Column(db.BigInteger)
 
-    state = db.relationship(RefState)
-    county = db.relationship(RefCounty)
-
-
 
 class CreatableModel:
     @classmethod
