@@ -153,6 +153,15 @@ class CdeRefState(RefState):
         """Returns the population for a given year"""
         return self._participation_for_year(data_year).total_population
 
+    @property
+    def participating_population(self):
+        """Returns the population for the given year"""
+        return self.participating_population_for_year(self.current_year)
+
+    def participating_population_for_year(self, data_year):
+        """Returns the population for a given year"""
+        return self._participation_for_year(data_year).participating_population
+
     def police_officers_for_year(self, data_year):
         """Returns the number of police officers for a given year"""
         query = session.query(func.sum(models.PeEmployeeData.male_officer +
@@ -252,6 +261,15 @@ class CdeRefCounty(RefCounty):
     def participating_agencies_for_year(self, data_year):
         """Counts the number of agencies for that county in a year."""
         return self._participation_for_year(data_year).participating_agencies
+
+    @property
+    def participating_population(self):
+        """Returns the population for the given year"""
+        return self.participating_population_for_year(self.current_year)
+
+    def participating_population_for_year(self, data_year):
+        """Returns the population for a given year"""
+        return self._participation_for_year(data_year).participating_population
 
     @property
     def total_agencies(self):

@@ -1108,8 +1108,9 @@
         "total_agencies",
         "participation_rate",
         "total_population",
+        "participating_population",
         "nibrs_participating_agencies",
-        "nibrs_participation_rate",
+        "nibrs_participation_rate"
       ],
       "prvoperties": {
         "year": {
@@ -1138,6 +1139,15 @@
         },
         "total_population": {
           "description": "The sum of the population within the jurisdictions of all agencies for that year",
+          "format": "int32",
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "participating_population": {
+          "description": "The sum of the population within the jurisdictions of all agencies that participated for that year",
           "format": "int32",
           "type": [
             "integer",

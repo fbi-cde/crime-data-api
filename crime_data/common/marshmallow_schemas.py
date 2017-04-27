@@ -996,7 +996,7 @@ class StateDetailResponseSchema(ma.ModelSchema):
         model = cdemodels.CdeRefState
         ordered = True
         fields = ('state_id', 'name', 'postal_abbr', 'fips_code', 'current_year',
-                  'participating_agencies', 'participation_rate',
+                  'participating_agencies', 'participation_rate', 'participating_population',
                   'total_population', 'total_agencies', 'police_officers', 'counties',
                   'participation', )
 
@@ -1004,6 +1004,7 @@ class StateDetailResponseSchema(ma.ModelSchema):
     postal_abbr = marsh_fields.String(attribute='state_postal_abbr')
     fips_code = marsh_fields.String(attribute='state_fips_code')
     total_population = marsh_fields.Integer()
+    participating_population = marsh_fields.Integer()
     total_agencies = marsh_fields.Integer()
     participating_agencies = marsh_fields.Integer()
     participation_rate = marsh_fields.Float()

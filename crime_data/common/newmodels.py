@@ -94,6 +94,7 @@ class ParticipationRate(db.Model):
     covered_agencies = db.Column(db.Integer)
     covered_rate = db.Column(db.Float)
     total_population = db.Column(db.BigInteger)
+    participating_population = db.Column(db.BigInteger)
 
 
 class CreatableModel:
