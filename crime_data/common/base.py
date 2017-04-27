@@ -370,6 +370,7 @@ class CdeResource(Resource):
                 current_app.logger.warning('Falling back to full count')
                 session.rollback()
                 count = results.count()
+                pass
 
         except Exception as e:
             paginated = results

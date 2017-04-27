@@ -1,6 +1,6 @@
 SET work_mem='4096MB'; -- Go Super Saiyan.
 
-create materialized view cde_annual_participation_temp AS
+CREATE materialized VIEW cde_annual_participation_temp AS
 SELECT rm.data_year,
 rs.state_name AS state_name,
 rs.state_postal_abbr AS state_abbr,
@@ -10,17 +10,23 @@ ra.pub_agency_name as agency_name,
 rap.population AS agency_population,
 rpg.population_group_code AS population_group_code,
 rpg.population_group_desc AS population_group,
-bool_or(CASE WHEN rm.reported_flag = 'Y' THEN TRUE ELSE FALSE END)::int AS reported,
-SUM(CASE WHEN rm.reported_flag = 'Y' THEN 1 ELSE 0 END)::int AS months_reported,
-bool_or(CASE WHEN nm.reported_status IN ('I', 'Z') THEN TRUE ELSE FALSE END)::int AS reported_nibrs,
-SUM(CASE WHEN nm.reported_status IN ('I', 'Z') THEN 1 ELSE 0 END)::int AS months_reported_nibrs
+bool_or(CASE WHEN rm.reported_flag = 'Y' OR covered_rm.reported_flag = 'Y' THEN TRUE ELSE FALSE END)::int AS reported,
+SUM(CASE WHEN rm.reported_flag = 'Y' OR covered_rm.reported_flag = 'Y' THEN 1 ELSE 0 END)::int AS months_reported,
+bool_or(CASE WHEN nm.reported_status IN ('I', 'Z') OR covered_nm.reported_status IN ('I', 'Z') THEN TRUE ELSE FALSE END)::int AS reported_nibrs,
+SUM(CASE WHEN nm.reported_status IN ('I', 'Z') OR covered_nm.reported_status IN ('I', 'Z') THEN 1 ELSE 0 END)::int AS months_reported_nibrs,
+racb.covered_by_agency_id AS covered_by_id,
+racbf.covered_by_agency_id AS covered_by_root_id
 FROM reta_month rm
-JOIN ref_agency ra ON ra.agency_id = rm.agency_id
+JOIN ref_agency ra ON ra.agency_id = rm.agency_id AND (ra.dormant_year IS NULL OR rm.data_year <= ra.dormant_year)
 JOIN ref_state rs ON rs.state_id = ra.state_id
 LEFT OUTER JOIN nibrs_month nm ON nm.agency_id = rm.agency_id AND nm.data_year = rm.data_year AND nm.month_num = rm.month_num
 LEFT OUTER JOIN ref_agency_population rap ON rap.agency_id = rm.agency_id AND rap.data_year = rm.data_year
 LEFT OUTER JOIN ref_population_group rpg ON rpg.population_group_id = rap.population_group_id
-group by rm.data_year, rs.state_name, rs.state_postal_abbr, ra.agency_id, ra.ori, ra.pub_agency_name, rap.population, rpg.population_group_code, rpg.population_group_desc
+LEFT OUTER JOIN ref_agency_covered_by racb ON racb.agency_id=rm.agency_id AND racb.data_year=rm.data_year
+LEFT OUTER JOIN ref_agency_covered_by_flat racbf ON racb.agency_id=rm.agency_id AND racb.data_year=rm.data_year
+LEFT OUTER JOIN reta_month covered_rm ON covered_rm.agency_id=racb.covered_by_agency_id AND covered_rm.data_year=rm.data_year AND covered_rm.month_num=rm.month_num
+LEFT OUTER JOIN nibrs_month covered_nm ON covered_nm.agency_id=racb.covered_by_agency_id AND covered_nm.data_year=nm.data_year AND covered_nm.month_num=nm.month_num
+GROUP BY rm.data_year, rs.state_name, rs.state_postal_abbr, ra.agency_id, ra.ori, ra.pub_agency_name, rap.population, rpg.population_group_code, rpg.population_group_desc, racb.covered_by_agency_id, racbf.covered_by_agency_id
 ORDER by rm.data_year, rs.state_name, ra.pub_agency_name;
 
 --- this lets us rebuild with less disruption
