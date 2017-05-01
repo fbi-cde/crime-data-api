@@ -1082,7 +1082,8 @@
   "schemes": [
     "https"
   ],
-  "host": "crime-data-api.fr.cloud.gov",
+  "host": "api.usa.gov",
+  "basePath": "/crime/fbi/ucr/",
   "produces": [
     "application/json",
     "text/csv"
