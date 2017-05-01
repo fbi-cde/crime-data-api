@@ -174,6 +174,57 @@ class CachedIncidentCountSchema(Schema):
     juvenile_cleared = marsh_fields.Integer()
     total_population = marsh_fields.Integer(load_only=True)
 
+class CachedAgencyIncidentCountSchema(Schema):
+    class Meta:
+        model = newmodels.RetaMonthAgencySubcatSummary
+    year = marsh_fields.Integer()
+    state_name = marsh_fields.String()
+    agency_id = marsh_fields.Integer()
+    agency_ori = marsh_fields.String()
+    agency_name = marsh_fields.String()
+    reported = marsh_fields.Integer()
+    covered = marsh_fields.Integer()
+    covering_count = marsh_fields.Integer()
+    agency_population = marsh_fields.Integer()
+    population_group_code = marsh_fields.String()
+    population_group = marsh_fields.String()
+    homicide_reported = marsh_fields.Integer()
+    homicide_actual = marsh_fields.Integer()
+    homicide_cleared = marsh_fields.Integer()
+    homicide_juvenile_cleared = marsh_fields.Integer()
+    rape_reported = marsh_fields.Integer()
+    rape_actual = marsh_fields.Integer()
+    rape_cleared = marsh_fields.Integer()
+    rape_juvenile_cleared = marsh_fields.Integer()
+
+
+class AgencySumsSchema(Schema):
+    class Meta:
+        model = newmodels.AgencySums
+
+    id = marsh_fields.Integer()
+    data_year = marsh_fields.Integer()
+    agency_id = marsh_fields.Integer()
+    ori = marsh_fields.String()
+    state_postal_abbr = marsh_fields.String()
+    ucr_agency_name = marsh_fields.String()
+    ncic_agency_name = marsh_fields.String()
+    pub_agency_name = marsh_fields.String()
+    offense_id = marsh_fields.Integer()
+    offense_code = marsh_fields.String() # reta_offense
+    offense_subcat_code = marsh_fields.String()
+    offense_subcat_name = marsh_fields.String()
+    offense_name = marsh_fields.String()
+    reported = marsh_fields.Integer()
+    unfounded = marsh_fields.Integer()
+    actual = marsh_fields.Integer()
+    cleared = marsh_fields.Integer()
+    juvenile_cleared = marsh_fields.Integer()
+    ucr_agency_name = marsh_fields.String()
+    ncic_agency_name = marsh_fields.String()
+    pub_agency_name = marsh_fields.String()
+
+
 class NibrsRelationshipSchema(ma.ModelSchema):
     class Meta:
         model = models.NibrsRelationship

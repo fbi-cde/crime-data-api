@@ -4,6 +4,7 @@ from crime_data.common import cdemodels, marshmallow_schemas, models, newmodels
 from crime_data.common.base import CdeResource, tuning_page, ExplorerOffenseMapping
 from crime_data.extensions import DEFAULT_MAX_AGE
 from flask.ext.cachecontrol import cache
+from flask import jsonify
 
 def _is_string(col):
     col0 = list(col.base_columns)[0]
@@ -82,3 +83,35 @@ class CachedIncidentsCount(CdeResource):
     @tuning_page
     def get(self, args):
         return self._get(args)
+
+
+class AgenciesSums(CdeResource):
+    schema = marshmallow_schemas.AgencySumsSchema(many=True)
+    def _stringify(self, data):
+        # Override stringify function to fit our needs.
+        return [dict(r) for r in data]
+
+    @use_args(marshmallow_schemas.OffenseCountViewArgs)
+    @tuning_page
+    def get(self, args, state_abbr = None, agency_ori = None):
+        self.verify_api_key(args)
+        model = newmodels.AgencySums()
+        agency_sums = model.get(state = state_abbr, agency = agency_ori, year =  args['year'])
+        print(agency_sums)
+        return jsonify(self.schema.dump(agency_sums).data)
+
+class CachedIncidentsAgenciesCount(CdeResource):
+
+    schema = marshmallow_schemas.CachedAgencyIncidentCountSchema(many=True)
+
+    def _stringify(self, data):
+        # Override stringify function to fit our needs.
+        return [dict(r) for r in data]
+
+    @use_args(marshmallow_schemas.OffenseCountViewArgs)
+    @tuning_page
+    def get(self, args, state_abbr = None, agency_ori = None):
+        self.verify_api_key(args)
+        model = newmodels.RetaMonthAgencySubcatSummary()
+        reta_offenses = model.get(state = state_abbr, agency = agency_ori, year =  args['year'])
+        return jsonify(self.schema.dump(reta_offenses).data)
