@@ -125,4 +125,4 @@ class CachedIncidentsAgenciesCount(CdeResource):
         self.verify_api_key(args)
         model = newmodels.RetaMonthAgencySubcatSummary()
         reta_offenses = model.get(state = state_abbr, agency = agency_ori, year =  args['year'])
-        return self.with_metadata(self.schema.dumpreta_offenses).data, args)
+        return self.with_metadata(self.schema.dump(reta_offenses).data, args)

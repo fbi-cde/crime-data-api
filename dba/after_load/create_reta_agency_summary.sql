@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS agency_reporting;
 CREATE TABLE agency_reporting AS
 SELECT rm.data_year,
 rm.agency_id,
-bool_or(CASE WHEN rm.reported_flag = 'Y' THEN TRUE ELSE FALSE END) AS reported
+bool_and(CASE WHEN rm.reported_flag = 'Y' THEN TRUE ELSE FALSE END) AS reported
 FROM reta_month rm
 GROUP BY rm.data_year, rm.agency_id;
 
