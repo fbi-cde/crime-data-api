@@ -268,7 +268,7 @@ class AgencySums(db.Model):
 
         # Heads up - This is going to probably make local tests fail, as our sample DB's 
         # only contain a little bit of data - ie. reported may not be 12 (ever).
-        query = query.filter(AgencySums.reported > 1) # Agency reported 12 Months.
+        query = query.filter(AgencySums.reported == 12) # Agency reported 12 Months.
         return query
 
 
