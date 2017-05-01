@@ -43,7 +43,7 @@ BEGIN
     SUM(rmos.unfounded_count) AS unfounded,
     SUM(rmos.actual_count) AS actual,
     SUM(rmos.cleared_count) AS cleared,
-    SUM(rmos.juvenile_cleared_count) AS juvenile_cleared,
+    SUM(rmos.juvenile_cleared_count) AS juvenile_cleared 
     FROM (SELECT * from reta_month_offense_subcat where offense_subcat_id=i AND reta_month_offense_subcat.actual_status NOT IN (2, 3, 4)) rmos
     JOIN reta_offense_subcat ros ON (rmos.offense_subcat_id = ros.offense_subcat_id)
     JOIN reta_offense ro ON ro.offense_id=ros.offense_id
