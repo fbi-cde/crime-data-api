@@ -220,14 +220,15 @@ class RetaMonthAgencySubcatSummary(db.Model, CreatableModel):
             query = query.filter(RetaMonthAgencySubcatSummary.agency_ori == agency)
         if year:
             query = query.filter(RetaMonthAgencySubcatSummary.year == year)
+
         return query
 
 class AgencySums(db.Model):
 
     __tablename__ = 'agency_sums_view'
-    
+
     id = db.Column(db.BigInteger, autoincrement=True, primary_key=True)
-    data_year = db.Column(db.SmallInteger)
+    year = db.Column(db.SmallInteger)
     agency_id = db.Column(db.BigInteger)
     state_postal_abbr = db.Column(db.Text)
     ori = db.Column(db.Text)
@@ -258,6 +259,10 @@ class AgencySums(db.Model):
             query = query.filter(AgencySums.agency_ori == agency)
         if year:
             query = query.filter(AgencySums.year == year)
+
+        # Heads up - This is going to probably make local tests fail, as our sample DB's 
+        # only contain a little bit of data - ie. reported may not be 12 (ever).
+        query = query.filter(AgencySums.reported == 12) # Agency reported 12 Months.
         return query
 
 

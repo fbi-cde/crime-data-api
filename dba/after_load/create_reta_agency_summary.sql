@@ -62,7 +62,7 @@ drop materialized view agency_sums_view CASCADE;
 create materialized view agency_sums_view as 
     SELECT 
     asums.id,
-    asums.data_year,
+    asums.data_year as year,
     asums.agency_id,
     asums.offense_id,
     asums.offense_code,

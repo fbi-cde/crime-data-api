@@ -203,7 +203,7 @@ class AgencySumsSchema(Schema):
         model = newmodels.AgencySums
 
     id = marsh_fields.Integer()
-    data_year = marsh_fields.Integer()
+    year = marsh_fields.Integer()
     agency_id = marsh_fields.Integer()
     ori = marsh_fields.String()
     state_postal_abbr = marsh_fields.String()
