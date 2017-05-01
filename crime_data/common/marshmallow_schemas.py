@@ -223,6 +223,10 @@ class AgencySumsSchema(Schema):
     ucr_agency_name = marsh_fields.String()
     ncic_agency_name = marsh_fields.String()
     pub_agency_name = marsh_fields.String()
+    county_name = marsh_fields.String()
+    county_ansi_code = marsh_fields.String()
+    county_fips_code = marsh_fields.String()
+    legacy_county_code = marsh_fields.String()
 
 
 class NibrsRelationshipSchema(ma.ModelSchema):

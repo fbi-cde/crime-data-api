@@ -85,7 +85,7 @@ class CachedIncidentsCount(CdeResource):
         return self._get(args)
 
 
-class AgenciesSums(CdeResource):
+class AgenciesSumsState(CdeResource):
     '''''
     Agency Suboffense Sums by (year, agency) - Only agencies reporting all 12 months.
     '''''
@@ -97,7 +97,21 @@ class AgenciesSums(CdeResource):
         self.verify_api_key(args)
         model = newmodels.AgencySums()
         agency_sums = model.get(state = state_abbr, agency = agency_ori, year =  args['year'])
-        return jsonify(self.schema.dump(agency_sums).data)
+        return self.with_metadata(self.schema.dump(agency_sums).data, args)
+
+class AgenciesSumsCounty(CdeResource):
+    '''''
+    Agency Suboffense Sums by (year, agency) - Only agencies reporting all 12 months.
+    '''''
+    schema = marshmallow_schemas.AgencySumsSchema(many=True)
+
+    @use_args(marshmallow_schemas.OffenseCountViewArgs)
+    @tuning_page
+    def get(self, args, county_fips_code = None, agency_ori = None):
+        self.verify_api_key(args)
+        model = newmodels.AgencySums()
+        agency_sums = model.get(agency = agency_ori, year =  args['year'], county = county_fips_code)
+        return self.with_metadata(self.schema.dump(agency_sums).data, args)
 
 class CachedIncidentsAgenciesCount(CdeResource):
     '''''
@@ -111,4 +125,4 @@ class CachedIncidentsAgenciesCount(CdeResource):
         self.verify_api_key(args)
         model = newmodels.RetaMonthAgencySubcatSummary()
         reta_offenses = model.get(state = state_abbr, agency = agency_ori, year =  args['year'])
-        return jsonify(self.schema.dump(reta_offenses).data)
+        return self.with_metadata(self.schema.dumpreta_offenses).data, args)

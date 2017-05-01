@@ -58,7 +58,6 @@ $do$;
 ALTER TABLE agency_sums ADD COLUMN id SERIAL PRIMARY KEY;
 
 drop materialized view agency_sums_view CASCADE;
-
 create materialized view agency_sums_view as 
     SELECT 
     asums.id,
@@ -78,9 +77,15 @@ create materialized view agency_sums_view as
     ag.pub_agency_name,
     ros.offense_subcat_name,
     ros.offense_subcat_code,
-    rs.state_postal_abbr 
+    rs.state_postal_abbr,
+    rc.county_name,
+    rc.county_ansi_code,
+    rc.county_fips_code,
+    rc.legacy_county_code 
     from agency_sums asums 
     JOIN ref_agency ag ON (asums.agency_id = ag.agency_id)
+    JOIN ref_agency_county rac ON (asums.agency_id = rac.agency_id)
+    JOIN ref_county rc ON (rac.county_id = rc.county_id)
     JOIN reta_offense_subcat ros ON (asums.offense_id = ros.offense_subcat_id)
     JOIN reta_offense ro ON ro.offense_code=asums.offense_code
     JOIN ref_state rs ON (rs.state_id  = ag.state_id);
