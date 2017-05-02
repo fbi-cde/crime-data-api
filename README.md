@@ -6,7 +6,7 @@ crime_data_api
 [![Test Coverage](https://codeclimate.com/github/18F/crime-data-api/badges/coverage.svg)](https://codeclimate.com/github/18F/crime-data-api/coverage)
 [![Dependency Status](https://gemnasium.com/18F/crime-data-api.svg)](https://gemnasium.com/18F/crime-data-api)
 
-This project is the back end for the Crime Data Explorer [18f/crime-data-explorer](https://github.com/18f/crime-data-explorer). The Crime Data Explorer is a website that allows law enforcement and the general public to more easily access uniform crime data. The FBI collects this data from state and local law enforcement agencies and publishes it in the form of annual reports. 
+This project is the back end for the Crime Data Explorer [18f/crime-data-explorer](https://github.com/18f/crime-data-explorer). The Crime Data Explorer is a website that allows law enforcement and the general public to more easily access uniform crime data. The FBI collects this data from state and local law enforcement agencies and publishes it in the form of annual reports.
 
 This project is a python flask app.
 
@@ -51,6 +51,11 @@ You can find the Swagger UI API documentation page at [http://127.0.0.1:5000/sta
 Deployment
 ----------
 The app is continuously deployed to [cloud.gov](https://www.cloud.gov) with [CircleCI](https://circleci.com/gh/18F/crime-data-api) with every commit to `master`.
+
+Tagged releases must be deployed manually using the `manifests/demo.yml` manifest file. You can use the following set of steps once you have authenticated with cloud.gov:
+
+0. `git checkout <<version tag>>` - i.e. `git checkout v2017-04-12`
+0. `cf push -f manifests/demo.yml`
 
 In production environments, make sure the `FLASK_DEBUG` environment variable is unset or is set to `0`, so that `ProdConfig` is used.
 
