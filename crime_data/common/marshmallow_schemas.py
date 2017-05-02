@@ -78,6 +78,15 @@ class OffenseCountViewArgs(IncidentViewCountArgs):
 # Anything in an ArgumentsSchema will, dangerously ironically,
 # not be filtered for...
 
+
+class OffenseCountViewArgsYear(IncidentViewCountArgs):
+    """Adds offense_name as a field"""
+
+    offense_name = marsh_fields.String(metadata={'description': 'The NIBRS offense name to subgroup by'})
+    explorer_offense = marsh_fields.String(metadata={'description': 'A standardized offense class used by the explorer',
+                                                     'enum': ExplorerOffenseMapping.NIBRS_OFFENSE_MAPPING.keys()})
+    year = marsh_fields.String(required=True)
+
 class ViewCountArgs(ArgumentsSchema):
     """The regular arguments shema but also add a year argument"""
 
@@ -223,10 +232,10 @@ class AgencySumsSchema(Schema):
     ucr_agency_name = marsh_fields.String()
     ncic_agency_name = marsh_fields.String()
     pub_agency_name = marsh_fields.String()
-    county_name = marsh_fields.String()
-    county_ansi_code = marsh_fields.String()
-    county_fips_code = marsh_fields.String()
-    legacy_county_code = marsh_fields.String()
+    # county_name = marsh_fields.String()
+    # county_ansi_code = marsh_fields.String()
+    # county_fips_code = marsh_fields.String()
+    # legacy_county_code = marsh_fields.String()
 
 
 class NibrsRelationshipSchema(ma.ModelSchema):

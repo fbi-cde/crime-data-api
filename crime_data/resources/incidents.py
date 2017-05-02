@@ -99,19 +99,24 @@ class AgenciesSumsState(CdeResource):
         agency_sums = model.get(state = state_abbr, agency = agency_ori, year =  args['year'])
         return self.with_metadata(self.schema.dump(agency_sums).data, args)
 
+
 class AgenciesSumsCounty(CdeResource):
     '''''
     Agency Suboffense Sums by (year, agency) - Only agencies reporting all 12 months.
     '''''
     schema = marshmallow_schemas.AgencySumsSchema(many=True)
 
-    @use_args(marshmallow_schemas.OffenseCountViewArgs)
+    @use_args(marshmallow_schemas.OffenseCountViewArgsYear)
     @tuning_page
     def get(self, args, county_fips_code = None, agency_ori = None):
+        '''''
+        Year is a required field atm.
+        '''''
         self.verify_api_key(args)
         model = newmodels.AgencySums()
         agency_sums = model.get(agency = agency_ori, year =  args['year'], county = county_fips_code)
         return self.with_metadata(self.schema.dump(agency_sums).data, args)
+
 
 class CachedIncidentsAgenciesCount(CdeResource):
     '''''

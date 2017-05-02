@@ -17,7 +17,7 @@ from flask_restful import abort
 from crime_data.common import models
 from crime_data.common.models import RefAgency, RefState, RefCounty
 from crime_data.extensions import db
-from sqlalchemy import or_
+from sqlalchemy import or_,and_
 
 
 class AgencyAnnualParticipation(db.Model):
@@ -211,7 +211,7 @@ class RetaMonthAgencySubcatSummary(db.Model, CreatableModel):
     rape_juvenile_cleared = db.Column(db.BigInteger)
 
     def get(self, state = None, agency = None, year = None):
-        """Find matching counties by id, fips code or name."""
+        """Get Agency - Offense counts given some filters."""
         query = RetaMonthAgencySubcatSummary.query
 
         if state:
@@ -248,19 +248,21 @@ class AgencySums(db.Model):
     ucr_agency_name = db.Column(db.String(100))
     ncic_agency_name = db.Column(db.String(100))
     pub_agency_name = db.Column(db.String(100))
-    county_name = db.Column(db.Text)
-    county_ansi_code = db.Column(db.Text)
-    county_fips_code = db.Column(db.Text)
-    legacy_county_code = db.Column(db.Text)
 
     def get(self, state = None, agency = None, year = None, county = None):
-        """Find matching counties by id, fips code or name."""
+        """Get Agency Sums given a state/year/county/agency ori, etc."""
         query = AgencySums.query
 
         if state:
             query = query.filter(func.lower(AgencySums.state_postal_abbr) == state.lower())
-        if county:
-            query = query.filter(func.lower(AgencySums.county_fips_code) == county)
+        # ATM year, and county are required.
+        if county and year:
+            subq = (db.session.query(models.RefAgencyCounty.agency_id)
+                    .select_from(models.RefAgencyCounty)
+                    .join(models.RefCounty, and_(models.RefAgencyCounty.county_id == models.RefCounty.county_id))
+                    .filter(models.RefCounty.county_fips_code == county).filter(models.RefAgencyCounty.data_year == year).subquery()
+                )
+            query = query.filter(AgencySums.agency_id.in_(subq))
         if agency:
             query = query.filter(AgencySums.agency_ori == agency)
         if year:
@@ -268,7 +270,8 @@ class AgencySums(db.Model):
 
         # Heads up - This is going to probably make local tests fail, as our sample DB's 
         # only contain a little bit of data - ie. reported may not be 12 (ever).
-        query = query.filter(AgencySums.reported == 12) # Agency reported 12 Months.
+        query = query.filter(AgencySums.reported == 12 ) # Agency reported 12 Months.
+        print(query)
         return query
 
 
