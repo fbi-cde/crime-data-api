@@ -179,7 +179,7 @@ class RetaEstimated(db.Model):
 
     state = relationship(RefState)
 
-class RetaMonthAgencySubcatSummary(db.Model, CreatableModel):
+class RetaMonthAgencySubcatSummary(db.Model):
     """
     Precalculated sums for RETA Agency level data (offense level).
 
