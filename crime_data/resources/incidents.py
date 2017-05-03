@@ -4,6 +4,7 @@ from crime_data.common import cdemodels, marshmallow_schemas, models, newmodels
 from crime_data.common.base import CdeResource, tuning_page, ExplorerOffenseMapping
 from crime_data.extensions import DEFAULT_MAX_AGE
 from flask.ext.cachecontrol import cache
+from flask import jsonify
 
 def _is_string(col):
     col0 = list(col.base_columns)[0]
@@ -82,3 +83,51 @@ class CachedIncidentsCount(CdeResource):
     @tuning_page
     def get(self, args):
         return self._get(args)
+
+
+class AgenciesSumsState(CdeResource):
+    '''''
+    Agency Suboffense Sums by (year, agency) - Only agencies reporting all 12 months.
+    '''''
+    schema = marshmallow_schemas.AgencySumsSchema(many=True)
+
+    @use_args(marshmallow_schemas.OffenseCountViewArgs)
+    @tuning_page
+    def get(self, args, state_abbr = None, agency_ori = None):
+        self.verify_api_key(args)
+        model = newmodels.AgencySums()
+        agency_sums = model.get(state = state_abbr, agency = agency_ori, year =  args['year'])
+        return self.with_metadata(self.schema.dump(agency_sums).data, args)
+
+
+class AgenciesSumsCounty(CdeResource):
+    '''''
+    Agency Suboffense Sums by (year, agency) - Only agencies reporting all 12 months.
+    '''''
+    schema = marshmallow_schemas.AgencySumsSchema(many=True)
+
+    @use_args(marshmallow_schemas.OffenseCountViewArgsYear)
+    @tuning_page
+    def get(self, args, state_abbr = None, county_fips_code = None, agency_ori = None):
+        '''''
+        Year is a required field atm.
+        '''''
+        self.verify_api_key(args)
+        model = newmodels.AgencySums()
+        agency_sums = model.get(agency = agency_ori, year =  args['year'], county = county_fips_code, state=state_abbr)
+        return self.with_metadata(self.schema.dump(agency_sums).data, args)
+
+
+class CachedIncidentsAgenciesCount(CdeResource):
+    '''''
+    Agency Offense counts by year.
+    '''''
+    schema = marshmallow_schemas.CachedAgencyIncidentCountSchema(many=True)
+
+    @use_args(marshmallow_schemas.OffenseCountViewArgs)
+    @tuning_page
+    def get(self, args, state_abbr = None, agency_ori = None):
+        self.verify_api_key(args)
+        model = newmodels.RetaMonthAgencySubcatSummary()
+        reta_offenses = model.get(state = state_abbr, agency = agency_ori, year =  args['year'])
+        return self.with_metadata(self.schema.dump(reta_offenses).data, args)

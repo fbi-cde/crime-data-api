@@ -33,35 +33,3 @@ CREATE OR REPLACE FUNCTION create_partition_and_insert() RETURNS trigger AS
   $BODY$
 LANGUAGE plpgsql VOLATILE
 COST 100;
-
-
-
-DROP function IF EXISTS create_state_partition_and_insert() CASCADE;
-CREATE OR REPLACE FUNCTION create_state_partition_and_insert() RETURNS trigger AS
-  $BODY$
-    DECLARE
-      partition_state TEXT;
-      partition TEXT;
-    BEGIN
-      partition_state := NEW.state_postal_abbr;
-      partition := TG_RELNAME || '_' || partition_state;
-      IF NOT EXISTS(SELECT relname FROM pg_class WHERE relname=partition) THEN
-        RAISE NOTICE 'A partition has been created %', partition;
-        EXECUTE 'CREATE TABLE ' || partition || ' (check (state_postal_abbr = ''' || NEW.state_postal_abbr || ''')) INHERITS (' || TG_RELNAME || ');';
-        EXECUTE 'CREATE UNIQUE INDEX ' || partition || '_idx ON ' || partition || '(agency_id, date)';
-      END IF;
-      EXECUTE 'INSERT INTO ' || partition || ' SELECT(' || TG_RELNAME || ' ' || quote_literal(NEW) || ').* RETURNING agency_id;';
-      RETURN NULL;
-    END;
-  $BODY$
-LANGUAGE plpgsql VOLATILE
-COST 100;
-
-CREATE TABLE reta_annual_offense_agency_summary (
-  agency_id integer,
-  date date DEFAULT NOW()
-);
-
-CREATE TRIGGER agency_sum_partition_insert_trigger
-BEFORE INSERT ON reta_annual_offense_agency_summary
-FOR EACH ROW EXECUTE PROCEDURE create_state_partition_and_insert();
