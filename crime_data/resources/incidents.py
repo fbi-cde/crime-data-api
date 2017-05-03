@@ -114,6 +114,7 @@ class AgenciesSumsCounty(CdeResource):
         '''''
         self.verify_api_key(args)
         model = newmodels.AgencySums()
+        year = None
         if 'year' in args:
             year = args['year']
         agency_sums = model.get(agency = agency_ori, year =  year, county = county_fips_code, state=state_abbr)
@@ -131,6 +132,7 @@ class CachedIncidentsAgenciesCount(CdeResource):
     def get(self, args, state_abbr = None, agency_ori = None):
         self.verify_api_key(args)
         model = newmodels.RetaMonthAgencySubcatSummary()
+        year = None
         if 'year' in args:
             year = args['year']
         reta_offenses = model.get(state = state_abbr, agency = agency_ori, year =  args['year'])
