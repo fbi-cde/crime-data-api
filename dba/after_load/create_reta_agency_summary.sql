@@ -71,8 +71,6 @@ CREATE OR REPLACE FUNCTION create_state_partition_and_insert() RETURNS trigger A
       IF NOT EXISTS(SELECT relname FROM pg_class WHERE relname=lower(partition)) THEN
         RAISE NOTICE 'A partition has been created %', partition;
         EXECUTE 'CREATE TABLE IF NOT EXISTS ' || partition || ' (check (lower(state_postal_abbr) = lower(''' || NEW.state_postal_abbr || '''))) INHERITS (' || TG_RELNAME || ');';
-        EXECUTE 'CREATE INDEX ' || partition || '_idx_agency_id ON ' || partition || '(agency_id)';
-        EXECUTE 'CREATE INDEX ' || partition || '_idx_offense_id ON ' || partition || '(offense_id)';
       END IF;
       EXECUTE 'INSERT INTO ' || partition || ' SELECT(' || TG_RELNAME || ' ' || quote_literal(NEW) || ').* RETURNING agency_id;';
       RETURN NULL;
@@ -107,7 +105,7 @@ CREATE TRIGGER agency_sums_view_insert_state_partition
 BEFORE INSERT ON agency_sums_view
 FOR EACH ROW EXECUTE PROCEDURE create_state_partition_and_insert();
 
-SET work_mem='4GB';
+SET work_mem='3GB';
 INSERT INTO agency_sums_view (id, year, agency_id, offense_id, offense_code, offense_name, reported, unfounded, actual, cleared, juvenile_cleared,ori,ucr_agency_name,ncic_agency_name,pub_agency_name,offense_subcat_name,offense_subcat_code,state_postal_abbr)
   SELECT 
     asums.id,
@@ -128,11 +126,11 @@ INSERT INTO agency_sums_view (id, year, agency_id, offense_id, offense_code, off
     ros.offense_subcat_name,
     ros.offense_subcat_code,
     rs.state_postal_abbr
-    from agency_sums asums 
-    JOIN ref_agency ag ON (asums.agency_id = ag.agency_id)
-    JOIN reta_offense_subcat ros ON (asums.offense_id = ros.offense_subcat_id)
-    JOIN reta_offense ro ON asums.offense_id=ro.offense_id
-    JOIN ref_state rs ON (rs.state_id  = ag.state_id);
+  from agency_sums asums 
+  JOIN ref_agency ag ON (asums.agency_id = ag.agency_id)
+  JOIN reta_offense_subcat ros ON (asums.offense_id = ros.offense_subcat_id)
+  JOIN reta_offense ro ON asums.offense_id=ro.offense_id
+  JOIN ref_state rs ON (rs.state_id  = ag.state_id);
 
 
 DROP SEQUENCE IF EXISTS retacubeseq CASCADE;

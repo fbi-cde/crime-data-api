@@ -108,13 +108,13 @@ class AgenciesSumsCounty(CdeResource):
 
     @use_args(marshmallow_schemas.OffenseCountViewArgsYear)
     @tuning_page
-    def get(self, args, county_fips_code = None, agency_ori = None):
+    def get(self, args, state_abbr = None, county_fips_code = None, agency_ori = None):
         '''''
         Year is a required field atm.
         '''''
         self.verify_api_key(args)
         model = newmodels.AgencySums()
-        agency_sums = model.get(agency = agency_ori, year =  args['year'], county = county_fips_code)
+        agency_sums = model.get(agency = agency_ori, year =  args['year'], county = county_fips_code, state=state_abbr)
         return self.with_metadata(self.schema.dump(agency_sums).data, args)
 
 

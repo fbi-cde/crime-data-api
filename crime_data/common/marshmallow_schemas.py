@@ -75,6 +75,7 @@ class OffenseCountViewArgs(IncidentViewCountArgs):
     offense_name = marsh_fields.String(metadata={'description': 'The NIBRS offense name to subgroup by'})
     explorer_offense = marsh_fields.String(metadata={'description': 'A standardized offense class used by the explorer',
                                                      'enum': ExplorerOffenseMapping.NIBRS_OFFENSE_MAPPING.keys()})
+    year = marsh_fields.String(metadata={'description': 'A year to return data for'})
 # Anything in an ArgumentsSchema will, dangerously ironically,
 # not be filtered for...
 
@@ -85,7 +86,7 @@ class OffenseCountViewArgsYear(IncidentViewCountArgs):
     offense_name = marsh_fields.String(metadata={'description': 'The NIBRS offense name to subgroup by'})
     explorer_offense = marsh_fields.String(metadata={'description': 'A standardized offense class used by the explorer',
                                                      'enum': ExplorerOffenseMapping.NIBRS_OFFENSE_MAPPING.keys()})
-    year = marsh_fields.String(required=True)
+    year = marsh_fields.String(metadata={'description': 'A year to return data for'})
 
 class ViewCountArgs(ArgumentsSchema):
     """The regular arguments shema but also add a year argument"""
