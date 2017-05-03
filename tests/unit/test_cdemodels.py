@@ -47,20 +47,20 @@ class TestCdeRefCounty:
     def test_num_agencies(self, app):
         """Using the test data in the ref_agencies table"""
 
-        county = CdeRefCounty.get(county_id=2271).one()
-        assert county.total_agencies_for_year(1960) == 3
+        county = CdeRefCounty.get(county_id=2402).one()
+        assert county.total_agencies_for_year(2014) == 4
 
     def test_population(self, app):
         """Using the test data in the ref_county_population table"""
 
-        county = CdeRefCounty.get(county_id=74).one()
-        assert county.total_population_for_year(1960) == 24501
+        county = CdeRefCounty.get(county_id=2402).one()
+        assert county.total_population_for_year(2014) == 49251
 
     def test_police_officers(self, app):
         """Using the test data in the database"""
 
-        county = CdeRefCounty.get(county_id=3015).one()
-        assert county.police_officers_for_year(1977) == 19
+        county = CdeRefCounty.get(county_id=2402).one()
+        assert county.police_officers_for_year(2014) == 84
 
     def test_police_officers_missing_data(self, app):
 
@@ -90,32 +90,32 @@ class TestCdeRefState:
         assert s.state_name == 'California'
 
     def test_police_officers(self, app):
-        state = CdeRefState.get(abbr='VA').one()
-        assert state.police_officers_for_year(2008) == 48
+        state = CdeRefState.get(abbr='RI').one()
+        assert state.police_officers_for_year(2014) == 2497
 
     def test_participation(self, app):
-        test_year = 1960
-        state = CdeRefState.get(state_id=55).one()
+        test_year = 2014
+        state = CdeRefState.get(abbr='RI').one()
 
         # SELECT distinct rm.agency_id, ra.pub_agency_name
         # FROM reta_month rm
         # JOIN ref_agency ra ON ra.agency_id = rm.agency_id
-        # WHERE ra.state_id=55 and rm.data_year=1960
-        assert state.total_agencies_for_year(test_year) == 34
+        # WHERE ra.state_id=44 and rm.data_year=2014
+        assert state.total_agencies_for_year(test_year) == 56
 
         # SELECT distinct rm.agency_id, ra.pub_agency_name
         # FROM reta_month rm
         # JOIN ref_agency ra ON ra.agency_id = rm.agency_id
-        # WHERE ra.state_id=55 and rm.data_year=1960 AND
+        # WHERE ra.state_id=44 and rm.data_year=2014 AND
         # rm.reported_flag = 'Y'
-        assert state.reporting_agencies_for_year(test_year) == 13
-        assert state.reporting_rate_for_year(test_year) == pytest.approx(0.382352941)
+        assert state.reporting_agencies_for_year(test_year) == 52
+        assert state.reporting_rate_for_year(test_year) == pytest.approx(0.928571429)
 
         # select SUM(rac.population)
         # from ref_agency_county rac
         # JOIN ref_county rc ON rac.county_id = rc.county_id
-        # WHERE rc.state_id=55 and rac.data_year=1960;
-        assert state.total_population_for_year(test_year) == 706802
+        # WHERE rc.state_id=44 and rac.data_year=2014;
+        assert state.total_population_for_year(test_year) == 1061770
 
         # select SUM(rac.population)::text
         # from ref_agency_county rac
@@ -123,8 +123,8 @@ class TestCdeRefState:
         #                         JOIN ref_agency ra ON rm.agency_id=ra.agency_id
         #                         WHERE rm.reported_flag = 'Y'
         #                         AND rm.data_year=rac.data_year
-        #                         AND rm.data_year=1960 and ra.state_id=55)
-        assert state.covered_population_for_year(test_year) == 177770
+        #                         AND rm.data_year=2014 and ra.state_id=44)
+        assert state.covered_population_for_year(test_year) == 1055173
 
     def test_participation_cache_is_not_global(self, app):
         test_year = 1960
