@@ -217,7 +217,7 @@ class RetaMonthAgencySubcatSummary(db.Model):
         if state:
             query = query.filter(func.lower(RetaMonthAgencySubcatSummary.state_postal_abbr) == state.lower())
         if county:
-            subq = (db.session.query(models.RetaMonthAgencySubcatSummary.agency_id)
+            subq = (db.session.query(RetaMonthAgencySubcatSummary.agency_id)
                     .select_from(models.RefAgencyCounty)
                     .join(models.RefCounty, and_(models.RefAgencyCounty.county_id == models.RefCounty.county_id))
                     .filter(models.RefCounty.county_fips_code == county)
