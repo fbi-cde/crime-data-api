@@ -48,12 +48,12 @@ FROM
            ros.offense_subcat_name AS offense_subcat,
            ros.offense_subcat_code
     FROM   reta_month_offense_subcat rmos
-    LEFT OUTER JOIN   reta_offense_subcat ros ON (rmos.offense_subcat_id = ros.offense_subcat_id)
-    LEFT OUTER JOIN   reta_offense ro ON (ros.offense_id = ro.offense_id)
-    LEFT OUTER JOIN   reta_offense_category roc ON (ro.offense_category_id = roc.offense_category_id)
+    JOIN   reta_offense_subcat ros ON (rmos.offense_subcat_id = ros.offense_subcat_id)
+    JOIN   reta_offense ro ON (ros.offense_id = ro.offense_id)
+    JOIN   reta_offense_category roc ON (ro.offense_category_id = roc.offense_category_id)
     LEFT OUTER JOIN   offense_classification oc ON (ro.classification_id = oc.classification_id)
-    LEFT OUTER JOIN   reta_month rm ON (rmos.reta_month_id = rm.reta_month_id)
-    LEFT OUTER JOIN   ref_agency ra ON (rm.agency_id = ra.agency_id)
+    JOIN   reta_month rm ON (rmos.reta_month_id = rm.reta_month_id)
+    JOIN   ref_agency ra ON (rm.agency_id = ra.agency_id)
     LEFT OUTER JOIN   ref_state rs ON (ra.state_id = rs.state_id))
   UNION
     (SELECT
@@ -74,8 +74,8 @@ FROM
             asuc.subcategory_code AS offense_subcat_code
     FROM arson_month_by_subcat ambs
     JOIN   arson_month am ON ambs.arson_month_id = am.arson_month_id
-    LEFT OUTER JOIN   arson_subcategory asuc ON ambs.subcategory_id = asuc.subcategory_id
-    LEFT OUTER JOIN   ref_agency ra ON am.agency_id = ra.agency_id
+    JOIN   arson_subcategory asuc ON ambs.subcategory_id = asuc.subcategory_id
+    JOIN   ref_agency ra ON am.agency_id = ra.agency_id
     LEFT OUTER JOIN   ref_state rs ON ra.state_id = rs.state_id)
 ) AS u
     GROUP BY CUBE (year, month, (state_name, state)),

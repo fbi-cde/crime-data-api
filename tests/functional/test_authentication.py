@@ -24,7 +24,7 @@ class TestAuthentication:
         monkeypatch.setenv('VCAP_APPLICATION', "foo")
         c.service_credentials.cache_clear()
 
-        res = testapp.get('/geo/states/WY', headers={'X-API-KEY': 'key'})
+        res = testapp.get('/geo/states/RI', headers={'X-API-KEY': 'key'})
         assert res.status_code == 200
 
     def test_query_login(self, monkeypatch, testapp):
@@ -41,7 +41,7 @@ class TestAuthentication:
         monkeypatch.setenv('VCAP_APPLICATION', "foo")
         c.service_credentials.cache_clear()
 
-        res = testapp.get('/geo/states/WY?api_key=key')
+        res = testapp.get('/geo/states/RI?api_key=key')
         assert res.status_code == 200
 
     def test_missing_login(self, monkeypatch, testapp):
@@ -58,9 +58,9 @@ class TestAuthentication:
         monkeypatch.setenv('VCAP_APPLICATION', "foo")
         c.service_credentials.cache_clear()
 
-        res = testapp.get('/geo/states/WY', expect_errors=True)
+        res = testapp.get('/geo/states/RI', expect_errors=True)
         assert res.status_code == 401
 
     def test_optional_login(self, testapp):
-        res = testapp.get('/geo/states/WY')
+        res = testapp.get('/geo/states/RI')
         assert res.status_code == 200
