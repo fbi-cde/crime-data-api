@@ -259,9 +259,11 @@ class AgencySums(db.Model):
                     .select_from(models.RefAgencyCounty)
                     .join(models.RefCounty, and_(models.RefAgencyCounty.county_id == models.RefCounty.county_id))
                     .filter(models.RefCounty.county_fips_code == county)
-                    .filter(models.RefAgencyCounty.data_year == year).subquery()
+                    .subquery()
                 )
-            query = query.filter(AgencySums.agency_id.in_(subq))
+            if year:
+                subq = subq.filter(models.RefAgencyCounty.data_year == year)
+                query = query.filter(AgencySums.agency_id.in_(subq))
         if agency:
             query = query.filter(AgencySums.agency_ori == agency)
         if year:
