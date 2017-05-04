@@ -259,19 +259,18 @@ class AgencySums(db.Model):
                     .select_from(models.RefAgencyCounty)
                     .join(models.RefCounty, and_(models.RefAgencyCounty.county_id == models.RefCounty.county_id))
                     .filter(models.RefCounty.county_fips_code == county)
-                    .subquery()
                 )
             if year:
                 subq = subq.filter(models.RefAgencyCounty.data_year == year)
-            query = query.filter(AgencySums.agency_id.in_(subq))
+            query = query.filter(AgencySums.agency_id.in_(subq.subquery()))
         if agency:
-            query = query.filter(AgencySums.agency_ori == agency)
+            query = query.filter(AgencySums.ori == agency)
         if year:
             query = query.filter(AgencySums.year == year)
 
         # Heads up - This is going to probably make local tests fail, as our sample DB's 
         # only contain a little bit of data - ie. reported may not be 12 (ever).
-        query = query.filter(AgencySums.reported == 12 ) # Agency reported 12 Months.
+        query = query.filter(AgencySums.reported == 12 ).order_by(AgencySums.year.desc()) # Agency reported 12 Months.
         #print(query) # Dubug
         return query
 
