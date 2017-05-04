@@ -2999,11 +2999,176 @@
         }
       }
     },
+    "/agencies/count/states/suboffenses/{state_abbr}/{agency_ori}": {
+      "get": {
+        "tags": [
+          "suboffenses",
+          "states",
+          "agencies"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/hateCrimesCountVariableParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "required": [
+                "pagination",
+                "results"
+              ],
+              "properties": {
+                "pagination": {
+                  "$ref": "#/definitions/Pagination"
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/RetaAgencyCount"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
     "/agencies/count/states/offenses/{state_abbr}": {
       "get": {
         "tags": [
           "offenses",
           "states"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/hateCrimesCountVariableParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "required": [
+                "pagination",
+                "results"
+              ],
+              "properties": {
+                "pagination": {
+                  "$ref": "#/definitions/Pagination"
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/RetaAgencyCountOffense"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
+    "/agencies/count/states/offenses/{state_abbr}/counties/{county_fips_code}": {
+      "get": {
+        "tags": [
+          "offenses",
+          "states",
+          "counties"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/hateCrimesCountVariableParam"
+          },
+          {
+            "$ref": "#/parameters/aggregateManyParam"
+          },
+          {
+            "$ref": "#/parameters/fieldsParam"
+          },
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "required": [
+                "pagination",
+                "results"
+              ],
+              "properties": {
+                "pagination": {
+                  "$ref": "#/definitions/Pagination"
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/RetaAgencyCountOffense"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
+    "/agencies/count/states/offenses/{state_abbr}/{agency_ori}": {
+      "get": {
+        "tags": [
+          "offenses",
+          "states",
+          "agencies"
         ],
         "parameters": [
           {
