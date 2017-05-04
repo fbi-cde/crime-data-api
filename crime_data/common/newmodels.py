@@ -263,7 +263,7 @@ class AgencySums(db.Model):
                 )
             if year:
                 subq = subq.filter(models.RefAgencyCounty.data_year == year)
-                query = query.filter(AgencySums.agency_id.in_(subq))
+            query = query.filter(AgencySums.agency_id.in_(subq))
         if agency:
             query = query.filter(AgencySums.agency_ori == agency)
         if year:
@@ -274,6 +274,7 @@ class AgencySums(db.Model):
         query = query.filter(AgencySums.reported == 12 ) # Agency reported 12 Months.
         #print(query) # Dubug
         return query
+
 
 class RetaMonthOffenseSubcatSummary(db.Model, CreatableModel):
     """
