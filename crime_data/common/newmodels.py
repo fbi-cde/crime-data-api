@@ -210,7 +210,7 @@ class RetaMonthAgencySubcatSummary(db.Model):
     rape_cleared = db.Column(db.BigInteger)
     rape_juvenile_cleared = db.Column(db.BigInteger)
 
-    def get(self, state = None, agency = None, year = None):
+    def get(self, state = None, agency = None, year = None, county = None):
         """Get Agency - Offense counts given some filters."""
         query = RetaMonthAgencySubcatSummary.query
 
