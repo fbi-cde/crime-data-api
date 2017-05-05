@@ -48,7 +48,7 @@ class TestCdeRefCounty:
         """Using the test data in the ref_agencies table"""
 
         county = CdeRefCounty.get(county_id=2402).one()
-        assert county.total_agencies_for_year(2014) == 4
+        assert county.total_agencies_for_year(2014) == 5
 
     def test_population(self, app):
         """Using the test data in the ref_county_population table"""
@@ -101,15 +101,10 @@ class TestCdeRefState:
         # FROM reta_month rm
         # JOIN ref_agency ra ON ra.agency_id = rm.agency_id
         # WHERE ra.state_id=44 and rm.data_year=2014
-        assert state.total_agencies_for_year(test_year) == 56
+        assert state.total_agencies_for_year(test_year) == 62
 
-        # SELECT distinct rm.agency_id, ra.pub_agency_name
-        # FROM reta_month rm
-        # JOIN ref_agency ra ON ra.agency_id = rm.agency_id
-        # WHERE ra.state_id=44 and rm.data_year=2014 AND
-        # rm.reported_flag = 'Y'
-        assert state.reporting_agencies_for_year(test_year) == 52
-        assert state.reporting_rate_for_year(test_year) == pytest.approx(0.928571429)
+        assert state.participating_agencies_for_year(test_year) == 54
+        assert state.participation_rate_for_year(test_year) == pytest.approx(0.870967742)
 
         # select SUM(rac.population)
         # from ref_agency_county rac
@@ -124,7 +119,7 @@ class TestCdeRefState:
         #                         WHERE rm.reported_flag = 'Y'
         #                         AND rm.data_year=rac.data_year
         #                         AND rm.data_year=2014 and ra.state_id=44)
-        assert state.covered_population_for_year(test_year) == 1055173
+        assert state.participating_population_for_year(test_year) == 1055173
 
     def test_participation_cache_is_not_global(self, app):
         test_year = 1960

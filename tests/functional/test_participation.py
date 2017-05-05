@@ -27,7 +27,8 @@ class TestParticipationEndpoint:
         ('state_name', 'Massachusetts'),
         ('state_abbr', 'OH'),
         ('agency_ori', 'TNMPD0000'),
-        ('reported', 1)
+        ('reported', 0),
+        ('nibrs_reported', 0),
     ])
     def test_agencies_endpoint_with_filter(self, testapp, swagger, filter, value):
         res = testapp.get('/participation/agencies?{}={}'.format(filter, value))
@@ -38,7 +39,7 @@ class TestParticipationEndpoint:
     @pytest.mark.parametrize('filter,value', [
         ('year', 2004),
         ('months_reported', 3),
-        ('months_reported_nibrs', 1)
+        ('nibrs_months_reported', 1)
     ])
     def test_agencies_endpoint_with_filter_comparison(self, testapp, swagger, filter, value):
         res = testapp.get('/participation/agencies?{}<={}'.format(filter, value))
