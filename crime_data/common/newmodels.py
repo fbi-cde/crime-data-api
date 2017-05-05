@@ -210,12 +210,21 @@ class RetaMonthAgencySubcatSummary(db.Model):
     rape_cleared = db.Column(db.BigInteger)
     rape_juvenile_cleared = db.Column(db.BigInteger)
 
-    def get(self, state = None, agency = None, year = None):
+    def get(self, state = None, agency = None, year = None, county = None):
         """Get Agency - Offense counts given some filters."""
         query = RetaMonthAgencySubcatSummary.query
 
         if state:
             query = query.filter(func.lower(RetaMonthAgencySubcatSummary.state_postal_abbr) == state.lower())
+        if county:
+            subq = (db.session.query(RetaMonthAgencySubcatSummary.agency_id)
+                    .select_from(models.RefAgencyCounty)
+                    .join(models.RefCounty, and_(models.RefAgencyCounty.county_id == models.RefCounty.county_id))
+                    .filter(models.RefCounty.county_fips_code == county)
+                )
+            if year:
+                subq = subq.filter(models.RefAgencyCounty.data_year == year)
+            query = query.filter(RetaMonthAgencySubcatSummary.agency_id.in_(subq.subquery()))
         if agency:
             query = query.filter(RetaMonthAgencySubcatSummary.agency_ori == agency)
         if year:
@@ -259,19 +268,18 @@ class AgencySums(db.Model):
                     .select_from(models.RefAgencyCounty)
                     .join(models.RefCounty, and_(models.RefAgencyCounty.county_id == models.RefCounty.county_id))
                     .filter(models.RefCounty.county_fips_code == county)
-                    .subquery()
                 )
             if year:
                 subq = subq.filter(models.RefAgencyCounty.data_year == year)
-            query = query.filter(AgencySums.agency_id.in_(subq))
+            query = query.filter(AgencySums.agency_id.in_(subq.subquery()))
         if agency:
-            query = query.filter(AgencySums.agency_ori == agency)
+            query = query.filter(AgencySums.ori == agency)
         if year:
             query = query.filter(AgencySums.year == year)
 
         # Heads up - This is going to probably make local tests fail, as our sample DB's 
         # only contain a little bit of data - ie. reported may not be 12 (ever).
-        query = query.filter(AgencySums.reported == 12 ) # Agency reported 12 Months.
+        query = query.filter(AgencySums.reported == 12 ).order_by(AgencySums.year.desc()) # Agency reported 12 Months.
         #print(query) # Dubug
         return query
 

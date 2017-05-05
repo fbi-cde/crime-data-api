@@ -99,7 +99,8 @@ class AgenciesSumsState(CdeResource):
         if 'year' in args:
             year = args['year']
         agency_sums = model.get(state = state_abbr, agency = agency_ori, year = year)
-        return self.with_metadata(self.schema.dump(agency_sums).data, args)
+        filename = 'agency_sums_state'
+        return self.render_response(self.schema.dump(agency_sums).data, args, csv_filename=filename)
 
 
 class AgenciesSumsCounty(CdeResource):
@@ -120,7 +121,8 @@ class AgenciesSumsCounty(CdeResource):
         if 'year' in args:
             year = args['year']
         agency_sums = model.get(agency = agency_ori, year =  year, county = county_fips_code, state=state_abbr)
-        return self.with_metadata(self.schema.dump(agency_sums).data, args)
+        filename = 'agency_sums_county'
+        return self.render_response(self.schema.dump(agency_sums).data, args, csv_filename=filename)
 
 
 class CachedIncidentsAgenciesCount(CdeResource):
@@ -138,4 +140,23 @@ class CachedIncidentsAgenciesCount(CdeResource):
         if 'year' in args:
             year = args['year']
         reta_offenses = model.get(state = state_abbr, agency = agency_ori, year = year)
-        return self.with_metadata(self.schema.dump(reta_offenses).data, args)
+        filename = 'agency_sums'
+        return self.render_response(self.schema.dump(reta_offenses).data, args, csv_filename=filename)
+
+class CachedIncidentsAgenciesCountyCount(CdeResource):
+    '''''
+    Agency Offense counts by year.
+    '''''
+    schema = marshmallow_schemas.CachedAgencyIncidentCountSchema(many=True)
+
+    @use_args(marshmallow_schemas.OffenseCountViewArgs)
+    @tuning_page
+    def get(self, args, state_abbr = None, agency_ori = None, county_fips_code = None):
+        self.verify_api_key(args)
+        model = newmodels.RetaMonthAgencySubcatSummary()
+        year = None
+        if 'year' in args:
+            year = args['year']
+        reta_offenses = model.get(state = state_abbr, agency = agency_ori, year = year, county = county_fips_code)
+        filename = 'agency_sums'
+        return self.render_response(self.schema.dump(reta_offenses).data, args, csv_filename=filename)
