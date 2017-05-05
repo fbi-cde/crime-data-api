@@ -229,7 +229,6 @@ class RetaMonthAgencySubcatSummary(db.Model):
             query = query.filter(RetaMonthAgencySubcatSummary.agency_ori == agency)
         if year:
             query = query.filter(RetaMonthAgencySubcatSummary.year == year)
-        print(query)
 
         return query
 

@@ -354,7 +354,6 @@ class CdeResource(Resource):
                 if self.fast_count:
                     from sqlalchemy import select
                     count_est_query = select([func.count_estimate(self._compile_query(results))])
-                    print(count_est_query)
                     count_est_query_results = session.execute(count_est_query).fetchall()
                     count = count_est_query_results[0][0]
                     if count < COUNT_QUERY_THRESHOLD:
