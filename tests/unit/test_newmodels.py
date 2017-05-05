@@ -144,6 +144,15 @@ class TestCdeAgencies:
         assert a is not None
         assert a.core_city_flag == 'Y'
 
+    def test_revised_rape_start_not_set(self, app):
+        a = CdeAgency.query.filter(CdeAgency.agency_id == 17382).one()
+        assert a is not None
+        assert a.revised_rape_start == 2013
+
+    def test_revised_rape_start_not_set(self, app):
+        a = CdeAgency.query.filter(CdeAgency.agency_id == 17427).one()
+        assert a is not None
+        assert a.revised_rape_start is None
 
 class TestArsonAdditionsToRetaMonthOffenseSubcatSummary:
     def test_arson_fields_for_state_month_year(self, app):

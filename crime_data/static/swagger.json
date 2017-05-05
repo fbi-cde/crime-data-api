@@ -496,6 +496,7 @@
         "start_year",
         "dormant_year",
         "current_year",
+        "revised_rape_start",
         "population",
         "population_group_code",
         "population_group_desc",
@@ -615,6 +616,14 @@
             "null"
           ],
           "minimum": 1960
+        },
+        "revised_rape_start": {
+          "description": "The year the agency started reporting rapes using the new definition that was revised in 2013. Agencies can report using the legacy definition and this will be nil for agencies that have not changed to the new definition yet.",
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 2013
         },
         "current_year": {
           "type": [
