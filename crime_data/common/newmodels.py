@@ -217,7 +217,7 @@ class RetaMonthAgencySubcatSummary(db.Model):
         if state:
             query = query.filter(func.lower(RetaMonthAgencySubcatSummary.state_postal_abbr) == state.lower())
         if county:
-            subq = (db.session.query(RetaMonthAgencySubcatSummary.agency_id)
+            subq = (db.session.query(models.RefAgencyCounty.agency_id)
                     .select_from(models.RefAgencyCounty)
                     .join(models.RefCounty, and_(models.RefAgencyCounty.county_id == models.RefCounty.county_id))
                     .filter(models.RefCounty.county_fips_code == county)
@@ -229,6 +229,8 @@ class RetaMonthAgencySubcatSummary(db.Model):
             query = query.filter(RetaMonthAgencySubcatSummary.agency_ori == agency)
         if year:
             query = query.filter(RetaMonthAgencySubcatSummary.year == year)
+        print(query)
+
         return query
 
 class AgencySums(db.Model):
@@ -279,7 +281,8 @@ class AgencySums(db.Model):
 
         # Heads up - This is going to probably make local tests fail, as our sample DB's 
         # only contain a little bit of data - ie. reported may not be 12 (ever).
-        query = query.filter(AgencySums.reported == 12 ).order_by(AgencySums.year.desc()) # Agency reported 12 Months.
+        query = query.filter(AgencySums.reported >0 ).order_by(AgencySums.year.desc()) # Agency reported 12 Months.
+
         #print(query) # Dubug
         return query
 

@@ -323,8 +323,6 @@ class CdeResource(Resource):
     def _as_dict(self, fieldTuple, res):
         return dict(zip(fieldTuple, res))
 
-
-
     def _compile_query(self, query):
         """
         Gets String representation of an SQLAlchemy query.
@@ -342,7 +340,7 @@ class CdeResource(Resource):
             params[k] = sqlescape(v)
         return (comp.string % params)
 
-    def with_metadata(self, results, args):
+    def with_metadata(self, results, args, schema = None):
         """Paginates results and wraps them in metadata."""
 
         count = 0
@@ -356,6 +354,7 @@ class CdeResource(Resource):
                 if self.fast_count:
                     from sqlalchemy import select
                     count_est_query = select([func.count_estimate(self._compile_query(results))])
+                    print(count_est_query)
                     count_est_query_results = session.execute(count_est_query).fetchall()
                     count = count_est_query_results[0][0]
                     if count < COUNT_QUERY_THRESHOLD:
@@ -376,6 +375,10 @@ class CdeResource(Resource):
             paginated = results
             count = len(paginated)
             pass
+
+        if schema:
+            paginated = schema.dump(paginated).data
+
         # Close session connection - release to pool.
         session.close()
         
