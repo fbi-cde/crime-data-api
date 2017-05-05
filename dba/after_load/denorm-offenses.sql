@@ -9,6 +9,7 @@ create table nibrs_offense_denorm (
     county_id int,
     incident_date timestamp, -- nibrs_incident.date
     year varchar(4),
+    ori varchar(9),
 
     offense_type_id bigint,
     offense_name varchar(100),

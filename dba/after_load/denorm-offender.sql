@@ -12,6 +12,7 @@ create table nibrs_offender_denorm (
     incident_date timestamp, -- nibrs_incident.date
     race_id int,
     year varchar(4),
+    ori varchar(9),
 
     age_id int, -- nibrs_offener.age_id
     age_num int,
