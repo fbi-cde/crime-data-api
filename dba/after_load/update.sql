@@ -1,37 +1,61 @@
-drop table nibrs_offense_denorm CASCADE;
-create table nibrs_offense_denorm (
-    offense_id bigint, -- nibrs_offender.offender_id
-    incident_id bigint, -- nibrs_offender.incident_id
-    agency_id bigint, -- ref_agency.agency_id
-    state_id int, -- nibrs_incident.state_id
-    county_id int,
-    incident_date timestamp, -- nibrs_incident.date
-    year varchar(4),
 
-    offense_type_id bigint,
-    offense_name varchar(100),
-    location_id int, -- nibrs_location.id
-    location_code varchar(2),
-    location_name varchar(100), -- nibrs_location_type.location_name
-    weapon_id bigint,
-    weapon_name varchar(100), -- nibrs_weapon_type
+SET work_mem='3GB';
+SET synchronous_commit TO OFF;
 
-    method_entry_code varchar(1), -- nibrs_offense
-    num_premises_entered int,  -- nibrs_offense
-    state_code varchar(2), -- ref_state.state_code
-    PRIMARY KEY(offense_id)
-);
+DROP SEQUENCE IF EXISTS retacubeseq CASCADE;
+CREATE SEQUENCE retacubeseq;
 
-CREATE TRIGGER offense_partition_insert_trigger
-BEFORE INSERT ON nibrs_offense_denorm
-FOR EACH ROW EXECUTE PROCEDURE create_partition_and_insert();
-
-INSERT INTO nibrs_offense_denorm (incident_id, agency_id, year, incident_date, offense_id, method_entry_code, num_premises_entered, location_id, offense_type_id) SELECT nibrs_offense.incident_id, nibrs_incident.agency_id, EXTRACT(YEAR FROM nibrs_incident.incident_date) as year, nibrs_incident.incident_date, nibrs_offense.offense_id, nibrs_offense.method_entry_code, nibrs_offense.num_premises_entered, nibrs_offense.location_id, nibrs_offense.offense_type_id from nibrs_offense JOIN nibrs_incident on nibrs_incident.incident_id = nibrs_offense.incident_id;
-
-UPDATE nibrs_offense_denorm SET state_id = ref_agency.state_id, county_id = ref_agency_county.county_id from ref_agency JOIN ref_agency_county ON ref_agency.agency_id = ref_agency_county.agency_id where nibrs_offense_denorm.agency_id = ref_agency.agency_id;
-UPDATE nibrs_offense_denorm SET state_code = ref_state.state_code from ref_state where nibrs_offense_denorm.state_id = ref_state.state_id;
-
-UPDATE nibrs_offense_denorm SET location_name = nibrs_location_type.location_name, location_code=nibrs_location_type.location_code from nibrs_location_type where nibrs_location_type.location_id = nibrs_offense_denorm.location_id;
-UPDATE nibrs_offense_denorm SET offense_name = nibrs_offense_type.offense_name from nibrs_offense_type where nibrs_offense_type.offense_type_id = nibrs_offense_denorm.offense_type_id;
-UPDATE nibrs_offense_denorm SET weapon_id = nibrs_weapon.weapon_id from nibrs_weapon where nibrs_weapon.offense_id = nibrs_offense_denorm.offense_id;
-UPDATE nibrs_offense_denorm SET weapon_name = nibrs_weapon_type.weapon_name from nibrs_weapon_type where nibrs_weapon_type.weapon_id = nibrs_offense_denorm.weapon_id;
+DROP TABLE IF EXISTS reta_agency_offense_summary;
+CREATE TABLE reta_agency_offense_summary AS SELECT 
+NEXTVAL('retacubeseq') AS reta_agency_summary_id,
+ar.data_year AS year,
+rs.state_postal_abbr,
+rs.state_name,
+ra.agency_id,
+ra.ori AS agency_ori,
+ra.pub_agency_name AS agency_name,
+ar.reported AS reported,
+CASE WHEN racb.agency_id IS NOT NULL THEN TRUE ELSE FALSE END AS covered,
+cvring.count AS covering_count,
+rap.population AS agency_population,
+rpg.population_group_code AS population_group_code,
+rpg.population_group_desc AS population_group,
+homicide.reported AS homicide_reported,
+homicide.actual AS homicide_actual,
+homicide.cleared AS homicide_cleared,
+homicide.juvenile_cleared AS homicide_juvenile_cleared,
+rape.reported AS rape_reported,
+rape.actual AS rape_actual,
+rape.cleared AS rape_cleared,
+rape.juvenile_cleared AS rape_juvenile_cleared
+FROM   agency_reporting ar
+JOIN ref_agency ra ON ra.agency_id=ar.agency_id
+LEFT OUTER JOIN ref_state rs ON rs.state_id=ra.state_id
+LEFT OUTER JOIN ref_agency_covered_by racb ON racb.agency_id=ar.agency_id AND racb.data_year=ar.data_year
+LEFT OUTER JOIN covering_counts cvring ON cvring.covered_by_agency_id=ar.agency_id AND cvring.data_year=ar.data_year
+LEFT OUTER JOIN ref_agency_population rap ON rap.agency_id=ar.agency_id AND rap.data_year=ar.data_year
+LEFT OUTER JOIN ref_population_group rpg ON rpg.population_group_id=rap.population_group_id
+LEFT JOIN (
+    SELECT 
+      year,
+      agency_id,
+      sum(agency_sums_view.reported) AS reported,
+      sum(agency_sums_view.actual) AS actual,
+      sum(agency_sums_view.cleared) AS cleared,
+      sum(agency_sums_view.juvenile_cleared) AS juvenile_cleared 
+      FROM  agency_sums_view
+      WHERE offense_code = 'SUM_HOM'
+      GROUP  BY (year, agency_id)
+    ) homicide ON homicide.agency_id=ar.agency_id AND homicide.year=ar.data_year 
+LEFT JOIN (
+    SELECT 
+      year,
+      agency_id,
+      sum(agency_sums_view.reported) AS reported,
+      sum(agency_sums_view.actual) AS actual,
+      sum(agency_sums_view.cleared) AS cleared,
+      sum(agency_sums_view.juvenile_cleared) AS juvenile_cleared 
+      FROM  agency_sums_view
+      WHERE offense_code = 'SUM_RPE'
+      GROUP BY (year, agency_id)
+    ) rape ON rape.agency_id=ar.agency_id AND rape.year=ar.data_year;

@@ -254,10 +254,9 @@ class AgencySums(db.Model):
     agency_id = db.Column(db.BigInteger)
     state_postal_abbr = db.Column(db.Text)
     ori = db.Column(db.Text)
-    ucr_agency_name = db.Column(db.Text)
-    ncic_agency_name = db.Column(db.Text)
     pub_agency_name = db.Column(db.Text)
     offense_id = db.Column(db.BigInteger) # reta_offense_subcat
+    offense_subcat_id = db.Column(db.BigInteger)
     offense_code = db.Column(db.Text) # reta_offense
     offense_subcat_code = db.Column(db.Text)
     offense_subcat_name = db.Column(db.Text)
@@ -267,9 +266,6 @@ class AgencySums(db.Model):
     actual = db.Column(db.BigInteger)
     cleared = db.Column(db.BigInteger)
     juvenile_cleared = db.Column(db.BigInteger)
-    ucr_agency_name = db.Column(db.String(100))
-    ncic_agency_name = db.Column(db.String(100))
-    pub_agency_name = db.Column(db.String(100))
 
     def get(self, state = None, agency = None, year = None, county = None):
         """Get Agency Sums given a state/year/county/agency ori, etc."""

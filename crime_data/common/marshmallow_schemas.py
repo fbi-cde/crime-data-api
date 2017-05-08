@@ -217,8 +217,6 @@ class AgencySumsSchema(Schema):
     agency_id = marsh_fields.Integer()
     ori = marsh_fields.String()
     state_postal_abbr = marsh_fields.String()
-    ucr_agency_name = marsh_fields.String()
-    ncic_agency_name = marsh_fields.String()
     pub_agency_name = marsh_fields.String()
     offense_id = marsh_fields.Integer()
     offense_code = marsh_fields.String() # reta_offense
