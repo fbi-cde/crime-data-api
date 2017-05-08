@@ -178,7 +178,7 @@
     },
     "monthsReportedNibrsParam": {
       "in": "query",
-      "name": "reported_nibrs",
+      "name": "nibrs_reported",
       "description": "Months in a year that an agency has reported NIBRS. This makes the most sense when combined with a `year` argument.",
       "required": false,
       "type": "string"
@@ -1086,13 +1086,13 @@
           "minimum": 0,
           "maximum": 12
         },
-        "reported_nibrs": {
+        "nibrs_reported": {
           "type": "integer",
           "description": "This is 1 if agency reported to NIBRS at least once in the given year",
           "minimum": 0,
           "maximum": 1
         },
-        "months_reported_nibrs": {
+        "nibrs_months_reported": {
           "type": "integer",
           "description": "How many months the agency filed a NIBRS crime report in the given year",
           "minimum": 0,
@@ -1104,14 +1104,13 @@
       "type": "object",
       "required": [
         "year",
-        "reporting_agencies",
+        "participating_agencies",
         "total_agencies",
-        "reporting_rate",
+        "participation_rate",
         "total_population",
-        "nibrs_reporting_agencies",
-        "nibrs_reporting_rate",
-        "covered_population",
-        "nibrs_covered_population"
+        "participating_population",
+        "nibrs_participating_agencies",
+        "nibrs_participation_rate"
       ],
       "prvoperties": {
         "year": {
@@ -1120,9 +1119,10 @@
           "description": "The year that these participation statistics were calculated for",
           "minimum": 1960
         },
-        "reporting_agencies": {
+        "participating_agencies": {
           "format": "int32",
-          "type": "integer"
+          "type": "integer",
+          "description": "How many agencies either reported crime or were covered by another agency that reported"
         },
         "total_agencies": {
           "description": "The total number of agencies for the specific year",
@@ -1130,7 +1130,7 @@
           "type": "integer",
           "minimum": 0
         },
-        "reporting_rate": {
+        "participation_rate": {
           "description": "A rate of which agencies have filed either an SRS or NIBRS report in the given year",
           "format": "float",
           "type": "number",
@@ -1146,22 +1146,25 @@
           ],
           "minimum": 0
         },
-        "nibrs_reporting_agencies": {
-          "description": "The number of agencies who filed a NIBRS report in the given year",
+        "participating_population": {
+          "description": "The sum of the population within the jurisdictions of all agencies that participated for that year",
+          "format": "int32",
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "nibrs_participating_agencies": {
+          "description": "The number of agencies who filed a NIBRS report in the given year or were covered by another agency that filed NIBRS",
           "type": "integer"
         },
-        "nibrs_reporting_rate": {
+        "nibrs_participation_rate": {
           "description": "A rate of how many agencies filed a NIBRS report in a given year",
           "format": "float",
           "type": "number",
           "minimum": 0,
           "maximum": 1
-        },
-        "covered_population": {
-          "description": "The total population within jurisdictions of agencies who filed either a SRS or NIBRS report in the given year. format: int32 type: integer minimum: 0"
-        },
-        "nibrs_covered_population": {
-          "description": "The total population within jurisdictions of agencies who filed either a NIBRS report in the given year. format: int32 type: integer minimum: 0"
         }
       }
     },
@@ -1313,7 +1316,8 @@
   "schemes": [
     "https"
   ],
-  "host": "crime-data-api.fr.cloud.gov",
+  "host": "api.usa.gov",
+  "basePath": "/crime/fbi/ucr/",
   "produces": [
     "application/json",
     "text/csv"

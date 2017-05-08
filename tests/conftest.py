@@ -3,7 +3,7 @@
 
 import pytest
 from webtest import TestApp
-import flex
+import flex.core as flex
 
 from crime_data.app import create_app
 from crime_data.database import db as _db
@@ -42,5 +42,8 @@ def rollback(app):
 @pytest.yield_fixture(scope='session')
 def swagger():
     """Load the swagger specification in a JSON schema object"""
-    schema = flex.load('crime_data/static/swagger.json')
+    # Need to clear the basePath to run tests locally
+    raw_schema = flex.load_source('crime_data/static/swagger.json')
+    raw_schema.pop('basePath', None)
+    schema = flex.parse(raw_schema)
     yield schema

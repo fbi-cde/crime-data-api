@@ -20,12 +20,12 @@ from crime_data.extensions import db
 from sqlalchemy import or_,and_
 
 
-class AgencyAnnualParticipation(db.Model):
+class AgencyParticipation(db.Model):
     """Represents agency participation for a single month."""
 
-    __tablename__ = 'cde_annual_participation'
+    __tablename__ = 'agency_participation'
 
-    data_year = db.Column(db.SmallInteger, nullable=False, primary_key=True)
+    year = db.Column(db.SmallInteger, nullable=False, primary_key=True)
     state_name = db.Column(db.String)
     state_abbr = db.Column(db.String)
     agency_id = db.Column(db.Integer, nullable=False, primary_key=True)
@@ -36,8 +36,11 @@ class AgencyAnnualParticipation(db.Model):
     population_group = db.Column(db.String)
     reported = db.Column(db.SmallInteger, nullable=False)
     months_reported = db.Column(db.SmallInteger, nullable=False)
-    reported_nibrs = db.Column(db.SmallInteger, nullable=False)
-    months_reported_nibrs = db.Column(db.SmallInteger, nullable=False)
+    nibrs_reported = db.Column(db.SmallInteger, nullable=False)
+    nibrs_months_reported = db.Column(db.SmallInteger, nullable=False)
+    covered = db.Column(db.SmallInteger)
+    participated = db.Column(db.SmallInteger)
+    nibrs_participated = db.Column(db.SmallInteger)
 
     @classmethod
     def column_is_string(cls, col_name):
@@ -67,21 +70,31 @@ class AgencyAnnualParticipation(db.Model):
 
 
 class ParticipationRate(db.Model):
-    __tablename__ = 'cde_participation_rates'
+    __tablename__ = 'participation_rates'
 
-    data_year = db.Column(db.SmallInteger, nullable=False, primary_key=True)
-    total_population = db.Column(db.BigInteger)
-    covered_population = db.Column(db.BigInteger)
-    total_agencies = db.Column(db.Integer)
-    reporting_agencies = db.Column(db.Integer)
-    reporting_rate = db.Column(db.Float)
-    nibrs_reporting_agencies = db.Column(db.Integer)
-    nibrs_reporting_rate = db.Column(db.Float)
-    nibrs_covered_population = db.Column(db.BigInteger)
-    state_id = db.Column(db.Integer)
-    county_id = db.Column(db.Integer)
+    participation_id = db.Column(db.Integer, nullable=False, primary_key=True)
+    year = db.Column(db.SmallInteger, nullable=False)
+    state_id = db.Column(db.Integer,
+                         db.ForeignKey(RefState.state_id,
+                                       deferrable=True,
+                                       initially='DEFERRED'),
+                         nullable=True)
+    county_id = db.Column(db.Integer,
+                          db.ForeignKey(RefCounty.county_id,
+                                        deferrable=True,
+                                        initially='DEFERRED'),
+                          nullable=True)
     state_name = db.Column(db.String)
     county_name = db.Column(db.String)
+    total_agencies = db.Column(db.Integer)
+    participating_agencies = db.Column(db.Integer)
+    participation_rate = db.Column(db.Float)
+    nibrs_participating_agencies = db.Column(db.Integer)
+    nibrs_participation_rate = db.Column(db.Float)
+    covered_agencies = db.Column(db.Integer)
+    covered_rate = db.Column(db.Float)
+    total_population = db.Column(db.BigInteger)
+    participating_population = db.Column(db.BigInteger)
 
 
 class CreatableModel:
