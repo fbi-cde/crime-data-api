@@ -16,7 +16,7 @@ class EstimatesState(CdeResource):
     @tuning_page
     def get(self, args, state_id):
         self.verify_api_key(args)
-        estimates = RetaEstimated.query.filter(RetaEstimated.state_abbr == state_id)
+        estimates = RetaEstimated.query.filter(RetaEstimated.state_abbr == state_id).order_by(RetaEstimated.year)
         return self.with_metadata(estimates, args)
 
 
@@ -30,5 +30,5 @@ class EstimatesNational(CdeResource):
     @tuning_page
     def get(self, args):
         self.verify_api_key(args)
-        estimates = RetaEstimated.query.filter(RetaEstimated.state_abbr == None)
+        estimates = RetaEstimated.query.filter(RetaEstimated.state_abbr == None).order_by(RetaEstimated.year)
         return self.with_metadata(estimates, args)
