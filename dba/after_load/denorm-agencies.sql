@@ -86,7 +86,7 @@ rap.source_flag AS population_source_flag,
 rap.suburban_area_flag,
 rac.core_city_flag,
 cap.months_reported,
-cap.months_reported_nibrs AS nibrs_months_reported,
+cap.nibrs_reported AS nibrs_months_reported,
 racp.covered_by_agency_id AS covered_by_id,
 covering.ori AS covered_by_ori,
 covering.pub_agency_name AS covered_by_name,
@@ -100,7 +100,7 @@ LEFT OUTER JOIN (SELECT agency_id, max(data_year) AS staffing_year FROM pe_emplo
 LEFT OUTER JOIN (SELECT agency_id, min(data_year) AS revised_year FROM ref_agency_data_content WHERE summary_rape_def = 'R' GROUP BY agency_id) radc ON radc.agency_id=ra.agency_id
 LEFT OUTER JOIN ref_city rc ON rc.city_id=ra.city_id
 LEFT OUTER JOIN ref_state rs ON rs.state_id=ra.state_id
-LEFT OUTER JOIN cde_annual_participation cap ON cap.agency_id=ra.agency_id AND cap.data_year=y.current_year
+LEFT OUTER JOIN agency_participation cap ON cap.agency_id=ra.agency_id AND cap.year=y.current_year
 LEFT OUTER JOIN ref_submitting_agency rsa ON rsa.agency_id=ra.submitting_agency_id
 LEFT OUTER JOIN ref_state rss ON rss.state_id=rsa.state_id
 LEFT OUTER JOIN ref_agency_population rap ON rap.agency_id=ra.agency_id AND rap.data_year=y.current_year
