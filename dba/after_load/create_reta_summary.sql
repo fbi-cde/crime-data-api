@@ -8,13 +8,12 @@ rm.agency_id,
 SUM(CASE WHEN rm.reported_flag = 'Y' THEN 1 ELSE 0 END) AS reported_months
 FROM reta_month rm
 GROUP BY rm.data_year, rm.agency_id;
-y
+
 DROP SEQUENCE IF EXISTS retacubeseq CASCADE;
 CREATE SEQUENCE retacubeseq;
 
 CREATE TABLE reta_cube_rollup AS
 SELECT
-
 NEXTVAL('retacubeseq') AS reta_month_offense_subcat_summary_id,
 GROUPING(year,
     month,
@@ -24,6 +23,7 @@ GROUPING(year,
     offense, offense_code,
     offense_subcat, offense_subcat_code
     ) AS grouping_bitmap,
+COUNT(DISTINCT u.agency_id) AS agencies,
 SUM(u.reported_count) AS reported,
 SUM(u.unfounded_count) AS unfounded,
 SUM(u.actual_count) AS actual,
@@ -42,6 +42,7 @@ u.offense_subcat_code
 FROM
 (
   (SELECT
+           rm.agency_id,
            rmos.reported_count,
            rmos.unfounded_count,
            rmos.actual_count,
@@ -71,6 +72,7 @@ FROM
     )
   UNION
     (SELECT
+            am.agency_id,
             ambs.reported_count,
             ambs.unfounded_count,
             ambs.actual_count,
@@ -90,10 +92,11 @@ FROM
     JOIN   arson_month am ON ambs.arson_month_id = am.arson_month_id
     LEFT OUTER JOIN   arson_subcategory asuc ON ambs.subcategory_id = asuc.subcategory_id
     JOIN   ref_agency ra ON am.agency_id = ra.agency_id
-    LEFT OUTER JOIN   ref_state rs ON ra.state_id = rs.state_id
+    JOIN   ref_state rs ON ra.state_id = rs.state_id
     JOIN   agency_reporting ar ON ar.agency_id=am.agency_id AND ar.data_year=am.data_year
     WHERE ar.reported_months = 12
-    AND ambs.actual_status = 0)
+    AND ambs.actual_status = 0
+    )
 ) AS u
     GROUP BY CUBE (year, month, (state_name, state)),
              ROLLUP (classification, offense_category,
