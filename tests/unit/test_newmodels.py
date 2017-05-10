@@ -144,6 +144,14 @@ class TestCdeAgencies:
         assert a is not None
         assert a.core_city_flag == 'Y'
 
+    def test_county_name_append(self, app):
+        a = CdeAgency.query.filter(CdeAgency.ori == 'CA0190000').one()
+        assert a.agency_name == 'Los Angeles County'
+
+    def test_county_not_appended_to_other_agency_type(self, app):
+        a = CdeAgency.query.filter(CdeAgency.ori == 'CA0194200').one()
+        assert a.agency_name == 'Los Angeles'
+
     def test_revised_rape_start_not_set(self, app):
         a = CdeAgency.query.filter(CdeAgency.agency_id == 17382).one()
         assert a is not None

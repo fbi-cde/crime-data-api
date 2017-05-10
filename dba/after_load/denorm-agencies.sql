@@ -61,7 +61,7 @@ SELECT
 ra.agency_id,
 ra.ori,
 ra.legacy_ori,
-ra.pub_agency_name AS agency_name,
+ra.pub_agency_name || CASE WHEN ra.agency_type_id = 2 THEN ' County' ELSE '' END AS agency_name,
 ra.agency_type_id,
 rat.agency_type_name,
 ra.tribe_id,
