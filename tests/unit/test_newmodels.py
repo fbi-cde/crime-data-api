@@ -139,6 +139,28 @@ class TestCdeAgencies:
         assert a.total_officers == 116
         assert a.total_civilians == 169
 
+    def test_core_city_flag(self, app):
+        a = CdeAgency.query.filter(CdeAgency.agency_id == 1484).one()
+        assert a is not None
+        assert a.core_city_flag == 'Y'
+
+    def test_county_name_append(self, app):
+        a = CdeAgency.query.filter(CdeAgency.ori == 'CA0190000').one()
+        assert a.agency_name == 'Los Angeles County'
+
+    def test_county_not_appended_to_other_agency_type(self, app):
+        a = CdeAgency.query.filter(CdeAgency.ori == 'CA0194200').one()
+        assert a.agency_name == 'Los Angeles'
+
+    def test_revised_rape_start_not_set(self, app):
+        a = CdeAgency.query.filter(CdeAgency.agency_id == 17382).one()
+        assert a is not None
+        assert a.revised_rape_start == 2013
+
+    def test_revised_rape_start_not_set(self, app):
+        a = CdeAgency.query.filter(CdeAgency.agency_id == 17427).one()
+        assert a is not None
+        assert a.revised_rape_start is None
 
 class TestArsonAdditionsToRetaMonthOffenseSubcatSummary:
     def test_arson_fields_for_state_month_year(self, app):

@@ -125,6 +125,90 @@
         "pattern": "[A-Z]{2}"
       }
     },
+    "oriParam": {
+      "in": "query",
+      "name": "ori",
+      "description": "Search by ORI for the agency. Since ORIs are unique, it might make more sense to use the /agencies/:ori endpoint",
+      "type": "string",
+      "maxLength": 9,
+      "minLength": 9
+    },
+    "agencyNameParam": {
+      "in": "query",
+      "name": "agency_name",
+      "description": "The name of the agency. Currently only supports exact matches.",
+      "required": false,
+      "type": "string"
+    },
+    "agencyTypeNameParam": {
+      "in": "query",
+      "name": "agency_type_name",
+      "description": "Search by agency type name.",
+      "type": "string",
+      "enum": [
+        "City",
+        "County",
+        "Federal",
+        "Other",
+        "Other State Agency",
+        "State Police",
+        "Tribal",
+        "University or College",
+        "Unknown"
+      ]
+    },
+    "tribeIdParam": {
+      "in": "query",
+      "name": "tribe_id",
+      "description": "Find agencies associated with a specific tribe. Use the `/codes/ref_tribe` API call to get a list of tribes",
+      "type": "integer"
+    },
+    "campusIdParam": {
+      "in": "query",
+      "name": "campus_id",
+      "description": "Find agencies associated with a specific university campus.",
+      "type": "integer"
+    },
+    "cityNameParam": {
+      "in": "query",
+      "name": "city_name",
+      "description": "Find agencies associated with a specific city name. This supports exact matches only and you should combine it with the `state_abbr`.",
+      "type": "string"
+    },
+    "stateAbbrParam": {
+      "in": "query",
+      "name": "state_abbr",
+      "description": "Find agencies within a specific state by its postal abbreviation.",
+      "type": "string"
+    },
+    "populationGroupCodeParam": {
+      "in": "query",
+      "name": "population_group_code",
+      "description": "The population group code is used to classify agencies by size of population served. To see the list of all codes, see `/codes/ref_population_group`",
+      "type": "string",
+      "enum": [
+        "0",
+        "1A",
+        "1B",
+        "1C",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8A",
+        "8B",
+        "8C",
+        "8D",
+        "8E",
+        "9A",
+        "9B",
+        "9C",
+        "9D",
+        "9E"
+      ]
+    },
     "stateNameParam": {
       "in": "query",
       "name": "state_name",
@@ -148,13 +232,6 @@
         "pattern": "[A-Z0-9]{9}"
       }
     },
-    "agencyNameParam": {
-      "in": "query",
-      "name": "agency_name",
-      "description": "The name of the agency. Currently only supports exact matches.",
-      "required": false,
-      "type": "string"
-    },
     "reportedParam": {
       "in": "query",
       "name": "reported",
@@ -171,14 +248,14 @@
     },
     "monthsReportedParam": {
       "in": "query",
-      "name": "reported",
+      "name": "months_reported",
       "description": "Months in a year that the agency has reported either SRS or NIBRS. This makes the most sense when combined with a `year` argument.",
       "required": false,
       "type": "string"
     },
     "monthsReportedNibrsParam": {
       "in": "query",
-      "name": "nibrs_reported",
+      "name": "nibrs_months_reported",
       "description": "Months in a year that an agency has reported NIBRS. This makes the most sense when combined with a `year` argument.",
       "required": false,
       "type": "string"
@@ -419,11 +496,13 @@
         "start_year",
         "dormant_year",
         "current_year",
+        "revised_rape_start",
         "population",
         "population_group_code",
         "population_group_desc",
         "population_source_flag",
         "suburban_area_flag",
+        "core_city_flag",
         "months_reported",
         "nibrs_months_reported",
         "covered_by_ori",
@@ -538,6 +617,14 @@
           ],
           "minimum": 1960
         },
+        "revised_rape_start": {
+          "description": "The year the agency started reporting rapes using the new definition that was revised in 2013. Agencies can report using the legacy definition and this will be nil for agencies that have not changed to the new definition yet.",
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 2013
+        },
         "current_year": {
           "type": [
             "integer",
@@ -584,6 +671,14 @@
             "null"
           ],
           "description": "Is the agency in a suburb",
+          "maxLength": 1
+        },
+        "core_city_flag": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Is the agency a core_city agency?",
           "maxLength": 1
         },
         "months_reported": {
@@ -1011,7 +1106,16 @@
 
     "AgencyParticipation": {
       "type": "object",
-      "required": [],
+      "required": [
+        "year",
+        "state_name",
+        "state_abbr",
+        "agency_ori",
+        "agency_name",
+        "agency_population",
+        "population_group_code",
+        "population_group"
+      ],
       "properties": {
         "year": {
           "format": "int32",
@@ -1031,8 +1135,7 @@
             "string",
             "null"
           ],
-          "pattern": "[A-Z]{2}",
-          "decription": "The two-letter postal abbreviation for the state"
+          "description": "The two-letter postal abbreviation for the state"
         },
         "agency_ori": {
           "type": [
@@ -1344,6 +1447,30 @@
           },
           {
             "$ref": "#/parameters/outputParam"
+          },
+          {
+            "$ref": "#/parameters/oriParam"
+          },
+          {
+            "$ref": "#/parameters/agencyNameParam"
+          },
+          {
+            "$ref": "#/parameters/agencyTypeNameParam"
+          },
+          {
+            "$ref": "#/parameters/tribeIdParam"
+          },
+          {
+            "$ref": "#/parameters/campusIdParam"
+          },
+          {
+            "$ref": "#/parameters/cityNameParam"
+          },
+          {
+            "$ref": "#/parameters/stateAbbrParam"
+          },
+          {
+            "$ref": "#/parameters/populationGroupCodeParam"
           }
         ],
         "responses": {

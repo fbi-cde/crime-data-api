@@ -61,7 +61,7 @@ class TestCountsEndpoint:
         assert 'pagination' in res.json
         validate_api_call(swagger, raw_request=res.request, raw_response=res)
 
-    @pytest.mark.parametrize('groupby', ["year", "month", "offense_subcat_code", "offense_code", "offense_category", "classification", "state"])
+    @pytest.mark.parametrize('groupby', ["year", "month", "offense_subcat_code", "offense_code", "offense_category", "state"])
     def test_counts_grouping(self, swagger, testapp, groupby):
         res = testapp.get('/counts?by={}'.format(groupby))
         group_values = [r[groupby] for r in res.json['results']]
