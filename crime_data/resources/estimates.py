@@ -4,7 +4,7 @@ from crime_data.common.newmodels import RetaEstimated
 from crime_data.common.base import CdeResource, tuning_page, ExplorerOffenseMapping
 from crime_data.extensions import DEFAULT_MAX_AGE
 from flask.ext.cachecontrol import cache
-
+from sqlalchemy import func
 
 class EstimatesState(CdeResource):
     """Return the estimates for a state"""
@@ -16,7 +16,7 @@ class EstimatesState(CdeResource):
     @tuning_page
     def get(self, args, state_id):
         self.verify_api_key(args)
-        estimates = RetaEstimated.query.filter(RetaEstimated.state_abbr == state_id).order_by(RetaEstimated.year)
+        estimates = RetaEstimated.query.filter(func.lower(RetaEstimated.state_abbr) == func.lower(state_id)).order_by(RetaEstimated.year)
         return self.with_metadata(estimates, args)
 
 
