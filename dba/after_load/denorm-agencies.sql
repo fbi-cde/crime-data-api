@@ -61,7 +61,7 @@ SELECT
 ra.agency_id,
 ra.ori,
 ra.legacy_ori,
-ra.pub_agency_name || CASE WHEN ra.agency_type_id = 2 THEN ' County' ELSE '' END AS agency_name,
+ra.pub_agency_name || CASE WHEN ra.agency_type_id = 2 AND ra.pub_agency_name NOT LIKE '%County%' THEN ' County' ELSE '' END AS agency_name,
 ra.agency_type_id,
 rat.agency_type_name,
 ra.tribe_id,
@@ -86,7 +86,7 @@ rap.source_flag AS population_source_flag,
 rap.suburban_area_flag,
 rac.core_city_flag,
 cap.months_reported,
-cap.nibrs_reported AS nibrs_months_reported,
+cap.nibrs_months_reported AS nibrs_months_reported,
 racp.covered_by_agency_id AS covered_by_id,
 covering.ori AS covered_by_ori,
 covering.pub_agency_name AS covered_by_name,
@@ -95,7 +95,7 @@ COALESCE(ped.male_officer + ped.female_officer) AS total_officers,
 COALESCE(ped.male_civilian + ped.female_civilian) AS total_civilians
 FROM ref_agency ra
 JOIN ref_agency_type rat ON rat.agency_type_id = ra.agency_type_id
-LEFT OUTER JOIN (SELECT agency_id, min(data_year) AS start_year, max(data_year) AS current_year FROM ref_agency_population GROUP BY agency_id) y ON y.agency_id=ra.agency_id
+LEFT OUTER JOIN (SELECT agency_id, min(data_year) AS start_year, max(data_year) AS current_year FROM reta_month GROUP BY agency_id) y ON y.agency_id=ra.agency_id
 LEFT OUTER JOIN (SELECT agency_id, max(data_year) AS staffing_year FROM pe_employee_data WHERE reported_flag='Y' GROUP BY agency_id) pe ON pe.agency_id=ra.agency_id
 LEFT OUTER JOIN (SELECT agency_id, min(data_year) AS revised_year FROM ref_agency_data_content WHERE summary_rape_def = 'R' GROUP BY agency_id) radc ON radc.agency_id=ra.agency_id
 LEFT OUTER JOIN ref_city rc ON rc.city_id=ra.city_id
