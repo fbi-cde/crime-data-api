@@ -12,5 +12,3 @@ psql $CRIME_DATA_API_DB_URL -f after_load/mat-views/offense.sql
 psql $CRIME_DATA_API_DB_URL -f after_load/mat-views/offense-offenses.sql
 psql $CRIME_DATA_API_DB_URL -f after_load/mat-views/offender-offenses.sql
 psql $CRIME_DATA_API_DB_URL -f after_load/mat-views/victim-offenses.sql
-
-psql $CRIME_DATA_API_DB_URL -f after_load/mat-views/aggregate-views.sql

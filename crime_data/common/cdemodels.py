@@ -299,7 +299,6 @@ class CdeRefCounty(RefCounty):
             .filter(models.PeEmployeeData.reported_flag == 'Y')
         )
 
-        print(query)
         return query.scalar()
 
     @property
@@ -973,6 +972,32 @@ class MultiYearCountView(object):
         if self.state_id is None and self.county_id is None:
             self.national = True
 
+    def get_field_table(self, field):
+        if field in ['weapon_name']:
+            return 'nibrs_weapon_type'
+        if field in ['method_entry_code', 'num_premises_entered']:
+            return 'nibrs_offense'
+        if field in ['bias_name']:
+            return 'hc_bias_motivation'
+        if field in ['victim_type_name']:
+            return 'nibrs_victim_type'
+        if field in ['offense_name']:
+            return 'nibrs_offense_type'
+        if field in ['location_name']:
+            return 'nibrs_location_type'
+        if field in ['prop_desc_name']:
+            return 'nibrs_prop_desc_type'
+        if field in ['ethnicity']:
+            return 'nibrs_ethnicity'
+        if field in ['offender_relationship', 'victim_offender_rel']:
+            return 'nibrs_relationship'
+        if field in ['circumstance_name']:
+            return 'nibrs_circumstances'
+        if field in ['race_code']:
+            return 'ref_race'
+        if field in ['sex_code']:
+            return 'nibrs_victim'
+
     @property
     @abc.abstractmethod
     def view_name(self):
@@ -1008,7 +1033,7 @@ class MultiYearCountView(object):
         return qry
 
     def base_query(self, field):
-        select_query = 'SELECT :field , count, year::text'
+        select_query = 'SELECT * FROM (SELECT :field , count, year::text'
         from_query = ' FROM :view_name'
         where_query = ' WHERE :field IS NOT NULL'
 
@@ -1025,6 +1050,12 @@ class MultiYearCountView(object):
             where_query += ' AND year = :year '
 
         query = select_query + from_query + where_query
+
+        query += ') a '
+        
+        query_gap_fill = ' RIGHT OUTER JOIN (SELECT DISTINCT :field from ' + self.get_field_table(field) + ') b ON (a.:field = b.:field)'
+        query = query + query_gap_fill
+
         return query
 
 
@@ -1065,6 +1096,7 @@ class OffenseCountView(MultiYearCountView):
         return 'offense_counts'
 
 
+
 class HateCrimeCountView(MultiYearCountView):
 
     VARIABLES = ['bias_name']
@@ -1073,7 +1105,6 @@ class HateCrimeCountView(MultiYearCountView):
     def view_name(self):
         """The name of the specific materialized view."""
         return 'hc_counts'
-
 
 class CargoTheftCountView(MultiYearCountView):
     """A class for fetching the counts """
@@ -1085,9 +1116,11 @@ class CargoTheftCountView(MultiYearCountView):
     def view_name(self):
         """The name of the specific materialized view."""
         return 'ct_counts'
+    
 
     def base_query(self, field):
-        query = 'SELECT :field ,stolen_value::text, recovered_value::text, year::text, count'
+
+        query = 'SELECT * from (SELECT :field ,stolen_value::text, recovered_value::text, year::text, count'
         query += ' FROM :view_name '
         query += ' WHERE :field IS NOT NULL'
 
@@ -1103,6 +1136,10 @@ class CargoTheftCountView(MultiYearCountView):
         if self.year:
             query += ' AND year = :year '
 
+        query += ') a '
+        
+        query_gap_fill = ' RIGHT OUTER JOIN (SELECT DISTINCT :field from ' + self.get_field_table(field) + ') b ON (a.:field = b.:field)'
+        query = query + query_gap_fill
         return query
 
 
@@ -1171,9 +1208,9 @@ class OffenseSubCountView(object):
 
     def base_query(self, field):
         if self.explorer_offense:
-            query = 'SELECT year::text, :explorer_offense AS offense_name, :field, SUM(count)::int AS count'
+            query = 'SELECT * from (SELECT year::text, :explorer_offense AS offense_name, :field, SUM(count)::int AS count'
         else:
-            query = 'SELECT year::text, offense_name, :field, count'
+            query = 'SELECT * from (SELECT year::text, offense_name, :field, count'
 
         query += ' FROM :view_name'
         query += ' WHERE :field IS NOT NULL'
@@ -1193,7 +1230,12 @@ class OffenseSubCountView(object):
         if self.explorer_offense:
             query += ' GROUP by year, :field'
 
-        query += ' ORDER by year, offense_name, :field'
+        query += ') a '
+        
+        query_gap_fill = ' RIGHT OUTER JOIN (SELECT DISTINCT :field from ' + self.get_field_table(field) + ') b ON (a.:field = b.:field)'
+        query = query + query_gap_fill
+
+        query += ' ORDER by a.year, a.offense_name, a.:field'
 
         return query
 
@@ -1231,11 +1273,11 @@ class OffenseCargoTheftCountView(OffenseSubCountView):
 
     def base_query(self, field):
         if self.explorer_offense:
-            query = 'SELECT year::text, :explorer_offense AS offense_name, :field, '
+            query = 'SELECT * from (SELECT year::text, :explorer_offense AS offense_name, :field, '
             query += 'SUM(count)::int AS count, SUM(stolen_value)::text AS stolen_value, '
             query += 'SUM(recovered_value)::text AS recovered_value'
         else:
-            query = 'SELECT year::text, offense_name, :field, count, stolen_value::text, recovered_value::text'
+            query = 'SELECT * from (SELECT year::text, offense_name, :field, count, stolen_value::text, recovered_value::text'
         query += ' FROM :view_name'
         query += ' WHERE :field IS NOT NULL'
 
@@ -1254,7 +1296,10 @@ class OffenseCargoTheftCountView(OffenseSubCountView):
         if self.explorer_offense:
             query += ' GROUP by year, :field'
 
-        query += ' ORDER by year, offense_name, :field'
+        query += ') a '
+        query_gap_fill = ' RIGHT OUTER JOIN (SELECT DISTINCT :field from ' + self.get_field_table(field) + ') b ON (a.:field = b.:field)'
+        query = query + query_gap_fill
+        query += ' ORDER by a.year, a.offense_name, a.:field'
         return query
 
     @property
@@ -1268,9 +1313,9 @@ class OffenseHateCrimeCountView(OffenseSubCountView):
 
     def base_query(self, field):
         if self.explorer_offense:
-            query = 'SELECT year::text, :explorer_offense AS offense_name, :field, SUM(count)::int AS count'
+            query = 'SELECT * FROM (SELECT year::text, :explorer_offense AS offense_name, :field, SUM(count)::int AS count'
         else:
-            query = 'SELECT year::text, offense_name, :field, count'
+            query = 'SELECT * FROM (SELECT year::text, offense_name, :field, count'
 
         query += ' FROM :view_name'
         query += ' WHERE :field IS NOT NULL'
@@ -1290,9 +1335,13 @@ class OffenseHateCrimeCountView(OffenseSubCountView):
         if self.explorer_offense:
             query += ' GROUP by year, :field'
 
-        query += ' ORDER by year, offense_name, :field'
+        query += ') a '
+        query_gap_fill = ' RIGHT OUTER JOIN (SELECT DISTINCT :field from ' + self.get_field_table(field) + ') b ON (a.:field = b.:field)'
+        query = query + query_gap_fill
+
+        query += ' ORDER by a.year, a.offense_name, a.:field'
         return query
-    
+
     @property
     def view_name(self):
         return 'offense_hc_counts'
