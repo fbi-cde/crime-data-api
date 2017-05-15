@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file.
 
 ## [2017-05-12]
 ### Added
-- Add core city flag to agencies ([#457](https://github.com/18F/crime-data-api/pull/457))
+- Add core city flag to agencies. Create `revised_rape_start` column to indicate when an agency switched over to revised rape definition. Append " County" to the agency names for county agencies that don't already include it ([#457](https://github.com/18F/crime-data-api/pull/457))
 - Endpoints for offense level counts by ORI, and county FIPS code. Agency level aggregate counts endpoint can return CSV ([#478](https://github.com/18F/crime-data-api/pull/478), [#487](https://github.com/18F/crime-data-api/pull/487))
 
 ### Changed
