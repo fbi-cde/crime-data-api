@@ -24,7 +24,7 @@ from (
     LEFT OUTER JOIN ct_property ON ct_incident.incident_id = ct_property.incident_id
     LEFT OUTER JOIN nibrs_prop_desc_type ON nibrs_prop_desc_type.prop_desc_id = ct_property.prop_desc_id
 
-    JOIN ref_agency ON ref_agency.agency_id = ct_incident.agency_id
+    LEFT OUTER JOIN ref_agency ON ref_agency.agency_id = ct_incident.agency_id
      ) as temp 
 GROUP BY GROUPING SETS (
     (year, prop_desc_name),
@@ -68,8 +68,7 @@ from (
 
     LEFT OUTER JOIN ct_property ON ct_incident.incident_id = ct_property.incident_id
     LEFT OUTER JOIN nibrs_prop_desc_type ON nibrs_prop_desc_type.prop_desc_id = ct_property.prop_desc_id
-
-    JOIN ref_agency ON ref_agency.agency_id = ct_incident.agency_id
+    LEFT OUTER JOIN ref_agency ON ref_agency.agency_id = ct_incident.agency_id
      ) as temp 
 GROUP BY GROUPING SETS (
     (year, offense_name, prop_desc_name),

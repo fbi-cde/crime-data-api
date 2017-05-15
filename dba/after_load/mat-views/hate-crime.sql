@@ -8,7 +8,7 @@ from ( SELECT DISTINCT(hc_incident.incident_id), ref_agency.ori, bias_name, stat
     LEFT OUTER JOIN hc_bias_motivation ON hc_offense.offense_id = hc_bias_motivation.offense_id 
     LEFT OUTER JOIN nibrs_offense_type ON nibrs_offense_type.offense_type_id = hc_offense.offense_type_id 
     LEFT OUTER JOIN nibrs_bias_list ON nibrs_bias_list.bias_id = hc_bias_motivation.bias_id 
-    JOIN ref_agency ON ref_agency.agency_id = hc_incident.agency_id
+    LEFT OUTER JOIN ref_agency ON ref_agency.agency_id = hc_incident.agency_id
      ) as temp 
 GROUP BY GROUPING SETS (
     (year, bias_name),
@@ -23,7 +23,7 @@ from ( SELECT DISTINCT(hc_incident.incident_id), ref_agency.ori, bias_name, offe
     LEFT OUTER JOIN hc_bias_motivation ON hc_offense.offense_id = hc_bias_motivation.offense_id 
     LEFT OUTER JOIN nibrs_offense_type ON nibrs_offense_type.offense_type_id = hc_offense.offense_type_id 
     LEFT OUTER JOIN nibrs_bias_list ON nibrs_bias_list.bias_id = hc_bias_motivation.bias_id 
-    JOIN ref_agency ON ref_agency.agency_id = hc_incident.agency_id
+    LEFT OUTER JOIN ref_agency ON ref_agency.agency_id = hc_incident.agency_id
      ) as temp 
 GROUP BY GROUPING SETS (
     (year, offense_name, bias_name),
