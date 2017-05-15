@@ -1070,7 +1070,7 @@ class MultiYearCountView(object):
         query += ') a '
         join_table,join_field = self.get_field_table(field)
         if join_field:
-            query_gap_fill = ' RIGHT JOIN (SELECT DISTINCT ' + join_field + ' from ' + join_table + ') b ON (a.:field = b.:field)'
+            query_gap_fill = ' RIGHT JOIN (SELECT DISTINCT ' + join_field + ' from ' + join_table + ') b ON (a.:field = b.' + join_field + ')'
             query = query + query_gap_fill
         #SELECT * FROM (SELECT offense_name , count, year::text FROM victim_counts WHERE offense_name IS NOT NULL AND offense_name = 'Robbery' AND state_id is NULL AND county_id is NULL AND year = 2012 ) a  RIGHT JOIN (SELECT DISTINCT offense_name from nibrs_offense_type) b ON (a.offense_name = b.offense_name)
         print(query)
@@ -1157,7 +1157,7 @@ class CargoTheftCountView(MultiYearCountView):
         query += ') a '
         join_table,join_field = self.get_field_table(field)
         if join_field:
-            query_gap_fill = ' RIGHT JOIN (SELECT DISTINCT ' + join_field + ' from ' + join_table + ') b ON (a.:field = b.:field)'
+            query_gap_fill = ' RIGHT JOIN (SELECT DISTINCT ' + join_field + ' from ' + join_table + ') b ON (a.:field = b.' + join_field + ')'
             query = query + query_gap_fill
         return query
 
@@ -1295,7 +1295,7 @@ class OffenseSubCountView(object):
         
         join_table,join_field = self.get_field_table(field)
         if join_field:
-            query_gap_fill = ' RIGHT JOIN (SELECT DISTINCT ' + join_field + ' from ' + join_table + ') b ON (a.:field = b.:field)'
+            query_gap_fill = ' RIGHT JOIN (SELECT DISTINCT ' + join_field + ' from ' + join_table + ') b ON (a.:field = b.' + join_field + ')'
             query = query + query_gap_fill
 
         query += ' ORDER by a.year, a.offense_name, a.:field'
@@ -1362,7 +1362,7 @@ class OffenseCargoTheftCountView(OffenseSubCountView):
         query += ') a '
         join_table,join_field = self.get_field_table(field)
         if join_field:
-            query_gap_fill = ' RIGHT JOIN (SELECT DISTINCT ' + join_field + ' from ' + join_table + ') b ON (a.:field = b.:field)'
+            query_gap_fill = ' RIGHT JOIN (SELECT DISTINCT ' + join_field + ' from ' + join_table + ') b ON (a.:field = b.' + join_field + ')'
             query = query + query_gap_fill
         query += ' ORDER by a.year, a.offense_name, a.:field'
         return query
@@ -1403,7 +1403,7 @@ class OffenseHateCrimeCountView(OffenseSubCountView):
         query += ') a '
         join_table,join_field = self.get_field_table(field)
         if join_field:
-            query_gap_fill = ' RIGHT JOIN (SELECT DISTINCT ' + join_field + ' from ' + join_table + ') b ON (a.:field = b.:field)'
+            query_gap_fill = ' RIGHT JOIN (SELECT DISTINCT ' + join_field + ' from ' + join_table + ') b ON (a.:field = b.' + join_field + ')'
             query = query + query_gap_fill
 
         query += ' ORDER by a.year, a.offense_name, a.:field'
