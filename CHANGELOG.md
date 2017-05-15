@@ -1,6 +1,20 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-05-12]
+### Added
+- Add core city flag to agencies. Create `revised_rape_start` column to indicate when an agency switched over to revised rape definition. Append " County" to the agency names for county agencies that don't already include it ([#457](https://github.com/18F/crime-data-api/pull/457))
+- Endpoints for offense level counts by ORI, and county FIPS code. Agency level aggregate counts endpoint can return CSV ([#478](https://github.com/18F/crime-data-api/pull/478), [#487](https://github.com/18F/crime-data-api/pull/487))
+
+### Changed
+- Change the participation tables are built ([#475](https://github.com/18F/crime-data-api/pull/475))
+- Point swagger documentation to api.usa.gov ([#479](https://github.com/18F/crime-data-api/pull/479))
+- State abbreviation is case-insensitive ([#498](https://github.com/18F/crime-data-api/issues/498))
+
+### Fixed
+- Large request pagination ([#488](https://github.com/18F/crime-data-api/pull/488))
+- Estimated endpoint returns data sorted by year ([#489](https://github.com/18F/crime-data-api/issues/489))
+
 ## [2017-04-26]
 ### Added
 - Create new denormalized table for agency annual counts ([#455](https://github.com/18F/crime-data-api/pull/455))
