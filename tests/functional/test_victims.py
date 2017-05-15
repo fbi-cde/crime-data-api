@@ -16,7 +16,7 @@ class TestVictimsEndpoint:
         assert res.status_code == 200
         assert 'pagination' in res.json
         for r in res.json['results']:
-            assert 'count' in r
+            assert variable in r
         validate_api_call(swagger, raw_request=res.request, raw_response=res)
 
 
@@ -26,7 +26,7 @@ class TestVictimsEndpoint:
         assert res.status_code == 200
         assert 'pagination' in res.json
         for r in res.json['results']:
-            assert 'count' in r
+            assert 'race_code' in r
         validate_api_call(swagger, raw_request=res.request, raw_response=res)
 
     @pytest.mark.parametrize('variable', VictimCountView.VARIABLES)
@@ -36,5 +36,5 @@ class TestVictimsEndpoint:
         assert res.status_code == 200
         assert 'pagination' in res.json
         for r in res.json['results']:
-            assert 'count' in r
+            assert variable in r
         validate_api_call(swagger, raw_request=res.request, raw_response=res)

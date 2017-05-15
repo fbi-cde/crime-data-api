@@ -1073,7 +1073,7 @@ class MultiYearCountView(object):
             query_gap_fill = ' RIGHT JOIN (SELECT DISTINCT ' + join_field + ' from ' + join_table + ') b ON (a.:field = b.:field)'
             query = query + query_gap_fill
         #SELECT * FROM (SELECT offense_name , count, year::text FROM victim_counts WHERE offense_name IS NOT NULL AND offense_name = 'Robbery' AND state_id is NULL AND county_id is NULL AND year = 2012 ) a  RIGHT JOIN (SELECT DISTINCT offense_name from nibrs_offense_type) b ON (a.offense_name = b.offense_name)
-        #print(query)
+        print(query)
         return query
 
 
@@ -1192,6 +1192,48 @@ class OffenseSubCountView(object):
         self.national = False
         if self.state_id is None and self.county_id is None:
             self.national = True
+
+    def get_field_table(self, field):
+        if field in ['weapon_name']:
+            return ('nibrs_weapon_type','weapon_name')
+
+        if field in ['method_entry_code', 'num_premises_entered']:
+            return ('nibrs_offense','method_entry_code')
+
+        if field in ['bias_name']:
+            return ('nibrs_bias_list','bias_name')
+
+        if field in ['resident_status_code']:
+            return ('nibrs_victim','resident_status_code')
+
+        if field in ['victim_type_name']:
+            return ('nibrs_victim_type','victim_type_name')
+
+        if field in ['offense_name']:
+            return ('nibrs_offense_type','offense_name')
+
+        if field in ['location_name']:
+            return ('nibrs_location_type','location_name')
+
+        if field in ['prop_desc_name']:
+            return ('nibrs_prop_desc_type','prop_desc_name')
+
+        if field in ['ethnicity']:
+            return ('nibrs_ethnicity','ethnicity_name')
+
+        if field in ['offender_relationship', 'victim_offender_rel']:
+            return ('nibrs_relationship','relationship_name')
+
+        if field in ['circumstance_name']:
+            return ('nibrs_circumstances', 'circumstance_name')
+
+        if field in ['race_code']:
+            return ('ref_race','race_code')
+
+        if field in ['sex_code']:
+            return ('nibrs_victim','sex_code')
+
+        return (None, None)
 
     def query(self, args):
         base_query = None

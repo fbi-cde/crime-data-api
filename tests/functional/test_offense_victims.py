@@ -14,7 +14,7 @@ class TestVictimsEndpoint:
         assert 'pagination' in res.json
         assert res.status_code == 200
         for r in res.json['results']:
-            assert 'count' in r
+            assert 'race_code' in r
         validate_api_call(swagger, raw_request=res.request, raw_response=res)
 
     @pytest.mark.parametrize('variable', OffenseVictimCountView.VARIABLES)
@@ -24,7 +24,7 @@ class TestVictimsEndpoint:
         validate_api_call(swagger, raw_request=res.request, raw_response=res)
         assert 'pagination' in res.json
         for r in res.json['results']:
-            assert 'count' in r
+            assert variable in r
 
     def test_victims_offenses_endpoint_with_state_postal_code(self, testapp, swagger):
         url = '/victims/count/states/AR/race_code/offenses?year=2014'
@@ -32,7 +32,7 @@ class TestVictimsEndpoint:
         validate_api_call(swagger, raw_request=res.request, raw_response=res)
         assert 'pagination' in res.json
         for r in res.json['results']:
-            assert 'count' in r
+            assert 'race_code' in r
 
     @pytest.mark.parametrize('variable', OffenseVictimCountView.VARIABLES)
     def test_victims_offenses_endpoint_with_state_year_offense(self, testapp, swagger, variable):
@@ -41,7 +41,7 @@ class TestVictimsEndpoint:
         validate_api_call(swagger, raw_request=res.request, raw_response=res)
         assert 'pagination' in res.json
         for r in res.json['results']:
-            assert 'count' in r
+            assert variable in r
 
     @pytest.mark.parametrize('variable', OffenseVictimCountView.VARIABLES)
     @pytest.mark.parametrize('explorer_offense', ExplorerOffenseMapping.NIBRS_OFFENSE_MAPPING.keys())
@@ -51,4 +51,4 @@ class TestVictimsEndpoint:
         validate_api_call(swagger, raw_request=res.request, raw_response=res)
         assert 'pagination' in res.json
         for r in res.json['results']:
-            assert 'count' in r
+            assert variable in r
