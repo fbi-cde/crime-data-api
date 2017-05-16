@@ -952,7 +952,7 @@ class MultiYearCountView(object):
 
     VARIABLES = []
 
-    def __init__(self, field, year=None, state_id=None, state_abbr=None, county_id=None):
+    def __init__(self, field, year=None, state_id=None, state_abbr=None, ori=None):
         if field is None:
             raise ValueError('You must specify a field for the CountView')
 
@@ -966,10 +966,10 @@ class MultiYearCountView(object):
             # Select State ID for State Abbreviation.
             self.state_id = CdeRefState.get(abbr=state_abbr.upper()).one().state_id
             
-        self.county_id = county_id
+        self.ori = ori
         self.field = field
         self.national = False
-        if self.state_id is None and self.county_id is None:
+        if self.state_id is None and self.ori is None:
             self.national = True
 
     def get_field_table(self, field):
@@ -1042,8 +1042,8 @@ class MultiYearCountView(object):
 
             if self.state_id:
                 param_dict['state_id'] = self.state_id
-            if self.county_id:
-                param_dict['county_id'] = self.county_id
+            if self.ori:
+                param_dict['ori'] = self.ori
             if self.year:
                 param_dict['year'] = self.year
             if not param_dict:
@@ -1062,13 +1062,13 @@ class MultiYearCountView(object):
         where_query = ' WHERE :field IS NOT NULL'
 
         if self.state_id:
-            where_query += ' AND state_id = :state_id AND county_id IS NULL'
+            where_query += ' AND state_id = :state_id AND ori IS NULL'
 
-        if self.county_id:
-            where_query += ' AND county_id = :county_id'
+        if self.ori:
+            where_query += ' AND ori = :ori'
 
         if self.national:
-            where_query += ' AND state_id is NULL AND county_id is NULL'
+            where_query += ' AND state_id is NULL AND ori is NULL'
 
         if self.year:
             where_query += ' AND year = :year '
@@ -1156,13 +1156,13 @@ class CargoTheftCountView(MultiYearCountView):
         query += ' WHERE :field IS NOT NULL'
 
         if self.state_id:
-            query += ' AND state_id = :state_id AND county_id IS NULL'
+            query += ' AND state_id = :state_id AND ori IS NULL'
 
-        if self.county_id:
-            query += ' AND county_id = :county_id'
+        if self.ori:
+            query += ' AND ori = :ori'
 
         if self.national:
-            query += ' AND state_id is NULL AND county_id is NULL '
+            query += ' AND state_id is NULL AND ori is NULL '
 
         if self.year:
             query += ' AND year = :year '
@@ -1182,7 +1182,7 @@ class CargoTheftCountView(MultiYearCountView):
 
 class OffenseSubCountView(object):
 
-    def __init__(self, field, year=None, state_id=None, county_id=None,
+    def __init__(self, field, year=None, state_id=None, ori=None,
                  offense_name=None, state_abbr=None, explorer_offense=None):
         if field not in self.VARIABLES:
             raise ValueError('Invalid variable "{}" specified for {}'.format(field, self.view_name))
@@ -1193,7 +1193,7 @@ class OffenseSubCountView(object):
             # Select State ID for State Abbreviation.
             self.state_id = CdeRefState.get(abbr=state_abbr.upper()).one().state_id
 
-        self.county_id = county_id
+        self.ori = ori
         self.field = field
 
         self.explorer_offense = explorer_offense
@@ -1208,7 +1208,7 @@ class OffenseSubCountView(object):
             self.offense_name = (offense_name, )
 
         self.national = False
-        if self.state_id is None and self.county_id is None:
+        if self.state_id is None and self.ori is None:
             self.national = True
 
     def get_field_table(self, field):
@@ -1376,10 +1376,10 @@ class OffenseCargoTheftCountView(OffenseSubCountView):
         query += ' WHERE :field IS NOT NULL'
 
         if self.state_id:
-            query += ' AND state_id = :state_id AND county_id IS NULL'
+            query += ' AND state_id = :state_id AND ori IS NULL'
 
         if self.national:
-            query += ' AND state_id is NULL AND county_id IS NULL'
+            query += ' AND state_id is NULL AND ori IS NULL'
 
         if self.offense_name:
             query += ' AND offense_name IN :offense_name'
@@ -1422,10 +1422,10 @@ class OffenseHateCrimeCountView(OffenseSubCountView):
         query += ' WHERE :field IS NOT NULL'
 
         if self.state_id:
-            query += ' AND state_id = :state_id AND county_id IS NULL'
+            query += ' AND state_id = :state_id AND ori IS NULL'
 
         if self.national:
-            query += ' AND state_id is NULL AND county_id IS NULL'
+            query += ' AND state_id is NULL AND ori IS NULL'
 
         if self.offense_name:
             query += ' AND offense_name IN :offense_name'
