@@ -1,7 +1,7 @@
 SET work_mem='4096MB'; -- Go Super Saiyan.
 
 -- Generates CT stats.
-drop materialized view ct_counts;
+drop materialized view IF EXISTS  ct_counts;
 create materialized view ct_counts as select  count(incident_id), sum(stolen_value) as stolen_value, sum(recovered_value) as recovered_value,  year, ori, state_id,  location_name,  offense_name, victim_type_name, prop_desc_name
 from ( 
     SELECT DISTINCT(ct_incident.incident_id), 
@@ -46,7 +46,7 @@ GROUP BY GROUPING SETS (
 SET work_mem='4096MB'; -- Go Super Saiyan.
 
 -- Generates CT stats.
-drop materialized view offense_ct_counts;
+drop materialized view  IF EXISTS offense_ct_counts;
 create materialized view offense_ct_counts as select  count(incident_id), sum(stolen_value) as stolen_value, sum(recovered_value) as recovered_value,  year, ori, state_id,  location_name,  offense_name, victim_type_name, prop_desc_name
 from ( 
     SELECT DISTINCT(ct_incident.incident_id), 

@@ -198,7 +198,7 @@ def add_resources(app):
                      '/victims/count/states/<string:state_abbr>/<string:variable>')
     api.add_resource(crime_data.resources.offenders.OffendersCountAgencies,
                      '/offenders/count/agencies/<string:ori>/<string:variable>')
-    api.add_resource(crime_data.resources.victims.VictimsCountCounties,
+    api.add_resource(crime_data.resources.victims.VictimsCountAgencies,
                      '/victims/count/agencies/<string:ori>/<string:variable>')
 
     api.add_resource(crime_data.resources.cargo_theft.CargoTheftsCountNational,

@@ -7,7 +7,7 @@ BEGIN
    FOREACH i IN ARRAY arr
    LOOP
     SET work_mem='4096MB';
-    EXECUTE 'drop materialized view offense_counts_' || i::TEXT || ' CASCADE';
+    EXECUTE 'drop materialized view IF EXISTS  offense_counts_' || i::TEXT || ' CASCADE';
     EXECUTE 'create materialized view offense_counts_' || i::TEXT || ' as select count(offense_id), ori, offense_name,weapon_name, method_entry_code, num_premises_entered,location_name, state_id 
     from ( 
         SELECT DISTINCT(offense_id), ref_agency.ori, offense_name, weapon_name, method_entry_code, num_premises_entered,location_name, nibrs_offense_denorm.state_id, year from nibrs_offense_denorm 
@@ -35,7 +35,7 @@ BEGIN
 END
 $do$;
 
-drop materialized view offense_counts;
+drop materialized view  IF EXISTS offense_counts;
 create materialized view offense_counts as 
     SELECT *,2014 as year  FROM offense_counts_2014 UNION 
     SELECT *,2013 as year  FROM offense_counts_2013 UNION
