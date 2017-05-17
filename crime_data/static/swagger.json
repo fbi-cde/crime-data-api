@@ -48,9 +48,6 @@
       "description": "Counts can be provided for statistics grouped by a list of one or more parameters",
       "required": false,
       "type": "array",
-      "default": [
-        "year"
-      ],
       "collectionFormat": "csv",
       "items": {
         "type": "string",
@@ -1207,7 +1204,7 @@
         "nibrs_participating_agencies",
         "nibrs_participation_rate"
       ],
-      "prvoperties": {
+      "properties": {
         "year": {
           "format": "int32",
           "type": "integer",
@@ -1294,7 +1291,7 @@
         },
         "count": {
           "description": "A count for a specific value of a variable in a given year",
-          "type": "integer",
+          "type": ["integer", "null"],
           "minimum": 0
         }
       }
@@ -1306,18 +1303,14 @@
           "$ref": "#/definitions/CountForYear"
         },
         {
-          "required": [
-            "stolen_value",
-            "recovered_value"
-          ],
           "properties": {
             "stolen_value": {
               "description": "The total estimated value for stolen property in that count",
-              "type": "string"
+              "type": ["string", "null"]
             },
             "recovered_value": {
               "description": "The total estimated value for recovered property in that count",
-              "type": "string"
+              "type": ["string", "null"]
             }
           }
         }
