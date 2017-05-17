@@ -5,6 +5,7 @@ crime_data_api
 [![Code Climate status](https://codeclimate.com/github/18F/crime-data-api.svg)](https://codeclimate.com/github/18F/crime-data-api)
 [![Test Coverage](https://codeclimate.com/github/18F/crime-data-api/badges/coverage.svg)](https://codeclimate.com/github/18F/crime-data-api/coverage)
 [![Dependency Status](https://gemnasium.com/18F/crime-data-api.svg)](https://gemnasium.com/18F/crime-data-api)
+[![Swagger Validation](https://online.swagger.io/validator?url=https://raw.githubusercontent.com/18F/crime-data-api/master/crime_data/static/swagger.json)](https://online.swagger.io/validator/debug?url=https://raw.githubusercontent.com/18F/crime-data-api/master/crime_data/static/swagger.json)
 
 This project is the back end for the Crime Data Explorer [18f/crime-data-explorer](https://github.com/18f/crime-data-explorer). The Crime Data Explorer is a website that allows law enforcement and the general public to more easily access uniform crime data. The FBI collects this data from state and local law enforcement agencies and publishes it in the form of annual reports.
 
