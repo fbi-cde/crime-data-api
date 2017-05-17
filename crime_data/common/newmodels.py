@@ -51,6 +51,7 @@ class AgencyParticipation(db.Model):
     def filtered(cls, filters, args=None):
         args = args or []
         qry = cls.query
+
         for filter in filters:
             if isinstance(filter, BinaryExpression):
                 qry = qry.filter(filter)
@@ -434,6 +435,12 @@ class CdeAgency(db.Model):
     def filtered(cls, filters, args=None):
         args = args or []
         qry = cls.query
+
+        # This could be generalized to other places in the future
+        if 'fields' in args:
+            fields = args['fields'].split(',')
+            qry = qry.with_entities(*fields).select_from(CdeAgency)
+
         for filter in filters:
             if isinstance(filter, BinaryExpression):
                 qry = qry.filter(filter)

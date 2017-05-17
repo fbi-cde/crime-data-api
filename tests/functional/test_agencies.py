@@ -16,6 +16,15 @@ class TestAgenciesEndpoint:
         validate_api_call(swagger, raw_request=res.request, raw_response=res)
         assert len(res.json['results']) > 0
         assert 'ori' in res.json['results'][0]
+        assert 'city_name' in res.json['results'][0]
+
+    def test_agencies_endpoint_fields_filtering(self, testapp, swagger):
+        res = testapp.get('/agencies?fields=ori,agency_name')
+        validate_api_call(swagger, raw_request=res.request, raw_response=res)
+        assert len(res.json['results']) > 0
+        assert 'ori' in res.json['results'][0]
+        assert 'agency_name' in res.json['results'][0]
+        assert 'city_name' not in res.json['results'][0]
 
     def _single_ori(self, testapp):
         res = testapp.get('/agencies')
