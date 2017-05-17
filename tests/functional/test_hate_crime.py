@@ -12,7 +12,7 @@ class TestHateCrimeEndpoint:
         url = '/hc/count/states/3/bias_name?year=2014'
         res = testapp.get(url)
         assert res.status_code == 200
-        #validate_api_call(swagger, raw_request=res.request, raw_response=res)
+        validate_api_call(swagger, raw_request=res.request, raw_response=res)
         assert 'pagination' in res.json
         for r in res.json['results']:
             assert 'count' in r
@@ -21,7 +21,7 @@ class TestHateCrimeEndpoint:
         url = '/hc/count/states/AR/bias_name?year=2014'
         res = testapp.get(url)
         assert res.status_code == 200
-        #validate_api_call(swagger, raw_request=res.request, raw_response=res)
+        validate_api_call(swagger, raw_request=res.request, raw_response=res)
         assert 'pagination' in res.json
         for r in res.json['results']:
             assert 'count' in r
@@ -30,7 +30,7 @@ class TestHateCrimeEndpoint:
         url = '/hc/count/national/bias_name?year=2014'
         res = testapp.get(url)
         assert res.status_code == 200
-        #validate_api_call(swagger, raw_request=res.request, raw_response=res)
+        validate_api_call(swagger, raw_request=res.request, raw_response=res)
         assert 'pagination' in res.json
         for r in res.json['results']:
             assert 'count' in r
