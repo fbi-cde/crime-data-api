@@ -1,4 +1,4 @@
-SET work_mem='4096MB'; -- Go Super Saiyan.
+SET work_mem='2GB'; -- Go Super Saiyan.
 
 -- Generates Hate Crime stats.
 drop materialized  IF EXISTS view hc_counts;

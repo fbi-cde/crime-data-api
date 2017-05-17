@@ -1,4 +1,4 @@
-SET work_mem='4096MB'; -- Go Super Saiyan.
+SET work_mem='2GB'; -- Go Super Saiyan.
 
 -- Generates CT stats.
 drop materialized view IF EXISTS  ct_counts;
@@ -43,7 +43,7 @@ GROUP BY GROUPING SETS (
     (year, ori, offense_name)
 );
 
-SET work_mem='4096MB'; -- Go Super Saiyan.
+SET work_mem='2GB'; -- Go Super Saiyan.
 
 -- Generates CT stats.
 drop materialized view  IF EXISTS offense_ct_counts;

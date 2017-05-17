@@ -6,12 +6,14 @@ DECLARE
 BEGIN
    FOREACH i IN ARRAY arr
    LOOP
-    SET work_mem='4096MB';
+    SET work_mem='2GB';
+    RAISE NOTICE 'Dropping view for year: %', i;
     EXECUTE 'drop materialized view IF EXISTS  offense_offense_counts_' || i::TEXT || ' CASCADE';
+    RAISE NOTICE 'Creating view for year: %', i;
     EXECUTE 'create materialized view offense_offense_counts_' || i::TEXT || ' as select count(offense_id), ori, offense_name,weapon_name, method_entry_code, num_premises_entered,location_name, state_id 
     from ( 
-        SELECT DISTINCT(offense_id), ref_agency.ori, offense_name, weapon_name, method_entry_code, num_premises_entered,location_name, nibrs_offense_denorm.state_id, year from nibrs_offense_denorm 
-        JOIN ref_agency ON ref_agency.agency_id = nibrs_offense_denorm.agency_id 
+        SELECT DISTINCT(offense_id), ref_agency.ori, offense_name, weapon_name, method_entry_code, num_premises_entered,location_name, nibrs_offense_denorm_' || i::TEXT || '.state_id, year from nibrs_offense_denorm_' || i::TEXT || ' 
+        JOIN ref_agency ON ref_agency.agency_id = nibrs_offense_denorm_' || i::TEXT || '.agency_id 
         where year::integer = ' || i || ' 
         ) as temp
     GROUP BY GROUPING SETS (

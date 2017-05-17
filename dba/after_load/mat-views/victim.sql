@@ -6,13 +6,16 @@ DECLARE
 BEGIN
    FOREACH i IN ARRAY arr
    LOOP
-    SET work_mem='4096MB';
+    SET work_mem='2GB';
+    RAISE NOTICE 'Dropping view for year: %', i;
     EXECUTE 'drop materialized view IF EXISTS victim_counts_' || i::TEXT || ' CASCADE';
+    RAISE NOTICE 'Creating view for year: %', i;
     EXECUTE 'create materialized view victim_counts_' || i::TEXT || ' as select count(victim_id), ori,resident_status_code,offender_relationship,circumstance_name,ethnicity,offense_name, state_id, race_code, age_num, sex_code,location_name ,prop_desc_name
     from ( 
-        SELECT DISTINCT(victim_id), ref_agency.ori, ethnicity, age_num,race_code,year,resident_status_code,offender_relationship,circumstance_name,offense_name, sex_code, nibrs_victim_denorm.state_id,location_name,prop_desc_name from nibrs_victim_denorm 
-        JOIN ref_agency ON ref_agency.agency_id = nibrs_victim_denorm.agency_id
-        where year::integer = ' || i || '  and nibrs_victim_denorm.state_id is not null
+        SELECT DISTINCT(victim_id), ref_agency.ori, ethnicity, age_num,race_code,year,resident_status_code,offender_relationship,circumstance_name,offense_name, sex_code, nibrs_victim_denorm_' || i::TEXT || '.state_id,location_name,prop_desc_name 
+        from nibrs_victim_denorm_' || i::TEXT || '  
+        JOIN ref_agency ON ref_agency.agency_id = nibrs_victim_denorm_' || i::TEXT || '.agency_id
+        where year::integer = ' || i || '  and nibrs_victim_denorm_' || i::TEXT || '.state_id is not null
         ) as temp
     GROUP BY GROUPING SETS (
         (year, race_code),
@@ -52,7 +55,7 @@ BEGIN
 END
 $do$;
 
-drop materialized view IF EXISTS victim_counts;
+drop materialized view IF EXISTS victim_counts CASCADE;
 create materialized view victim_counts as 
     SELECT *, 2014 as year FROM victim_counts_2014 UNION 
     SELECT *, 2013 as year FROM victim_counts_2013 UNION
