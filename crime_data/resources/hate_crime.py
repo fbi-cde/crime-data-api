@@ -67,11 +67,12 @@ class HateCrimeOffenseSubcounts(CdeResource):
 
     @use_args(marshmallow_schemas.OffenseCountViewArgs)
     @tuning_page
-    def get(self, args, variable, state_id=None, state_abbr=None):
+    def get(self, args, variable, state_id=None, state_abbr=None, ori=None):
         self.verify_api_key(args)
 
         model = cdemodels.OffenseHateCrimeCountView(variable,
                                                     year=args.get('year', None),
+                                                    ori=ori,
                                                     offense_name=args.get('offense_name', None),
                                                     explorer_offense=args.get('explorer_offense', None),
                                                     state_id=state_id,

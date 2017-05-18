@@ -1065,7 +1065,7 @@ class MultiYearCountView(object):
             where_query += ' AND state_id = :state_id AND ori IS NULL'
 
         if self.ori:
-            where_query += ' AND ori = :ori'
+            where_query += ' AND state_id IS NULL AND ori = :ori'
 
         if self.national:
             where_query += ' AND state_id is NULL AND ori is NULL'
@@ -1159,7 +1159,7 @@ class CargoTheftCountView(MultiYearCountView):
             query += ' AND state_id = :state_id AND ori IS NULL'
 
         if self.ori:
-            query += ' AND ori = :ori'
+            query += ' AND state_id IS NULL AND ori = :ori'
 
         if self.national:
             query += ' AND state_id is NULL AND ori is NULL '
@@ -1277,6 +1277,8 @@ class OffenseSubCountView(object):
                 param_dict['state_id'] = self.state_id
             if self.year:
                 param_dict['year'] = self.year
+            if self.ori:
+                param_dict['ori'] = self.ori
             if self.offense_name:
                 param_dict['offense_name'] = self.offense_name
             if self.explorer_offense:
@@ -1306,7 +1308,10 @@ class OffenseSubCountView(object):
             query += ' AND state_id = :state_id '
 
         if self.national:
-            query += ' AND state_id is NULL '
+            query += ' AND state_id is NULL AND ori IS NULL'
+
+        if self.ori:
+            query += ' AND state_id IS NULL AND ori = :ori'
 
         if self.offense_name:
              query += ' AND offense_name IN :offense_name'
@@ -1381,6 +1386,9 @@ class OffenseCargoTheftCountView(OffenseSubCountView):
         if self.national:
             query += ' AND state_id is NULL AND ori IS NULL'
 
+        if self.ori:
+            query += ' AND state_id IS NULL AND ori = :ori'
+
         if self.offense_name:
             query += ' AND offense_name IN :offense_name'
 
@@ -1426,6 +1434,9 @@ class OffenseHateCrimeCountView(OffenseSubCountView):
 
         if self.national:
             query += ' AND state_id is NULL AND ori IS NULL'
+
+        if self.ori:
+            query += ' AND state_id IS NULL AND ori = :ori'
 
         if self.offense_name:
             query += ' AND offense_name IN :offense_name'

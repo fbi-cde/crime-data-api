@@ -71,3 +71,5 @@ create materialized view offender_counts as
     SELECT *, 1993 as year FROM offender_counts_1993 UNION 
     SELECT *, 1992 as year FROM offender_counts_1992 UNION
     SELECT *, 1991 as year FROM offender_counts_1991;
+
+CREATE INDEX offender_counts_state_id_idx ON offender_counts (state_id);

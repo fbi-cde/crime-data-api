@@ -29,6 +29,15 @@ class TestVictimsEndpoint:
             assert 'race_code' in r
         validate_api_call(swagger, raw_request=res.request, raw_response=res)
 
+    def test_state_endpoint_count_with_agencies(self, testapp, swagger):
+        url = '/victims/count/agencies/MI2336700/race_code?year=2014'
+        res = testapp.get(url)
+        assert res.status_code == 200
+        assert 'pagination' in res.json
+        for r in res.json['results']:
+            assert 'race_code' in r
+        #validate_api_call(swagger, raw_request=res.request, raw_response=res)
+
     @pytest.mark.parametrize('variable', VictimCountView.VARIABLES)
     def test_national_endpoint_count(self, testapp, swagger, variable):
         url = '/victims/count/national/{}?year=2014'.format(variable)

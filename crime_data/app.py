@@ -182,7 +182,7 @@ def add_resources(app):
                      '/offenses/count/states/<int:state_id>/<string:variable>',
                      '/offenses/count/states/<string:state_abbr>/<string:variable>')
     api.add_resource(crime_data.resources.offenses.OffensesCountAgencies,
-                     '/offenses/count/agencies/<string:variable>')
+                     '/offenses/count/agencies/<string:ori>/<string:variable>')
 
 
     api.add_resource(crime_data.resources.offenders.OffendersCountNational,
@@ -220,23 +220,28 @@ def add_resources(app):
     api.add_resource(crime_data.resources.victims.VictimOffenseSubcounts,
                      '/victims/count/states/<int:state_id>/<string:variable>/offenses',
                      '/victims/count/states/<string:state_abbr>/<string:variable>/offenses',
+                     '/victims/count/agencies/<string:ori>/<string:variable>/offenses',
                      '/victims/count/national/<string:variable>/offenses')
     api.add_resource(crime_data.resources.offenders.OffenderOffenseSubcounts,
                      '/offenders/count/states/<int:state_id>/<string:variable>/offenses',
                      '/offenders/count/states/<string:state_abbr>/<string:variable>/offenses',
+                     '/offenders/count/agencies/<string:ori>/<string:variable>/offenses',
                      '/offenders/count/national/<string:variable>/offenses')
     api.add_resource(crime_data.resources.offenses.OffenseByOffenseTypeSubcounts,
                      '/offenses/count/states/<int:state_id>/<string:variable>/offenses',
                      '/offenses/count/states/<string:state_abbr>/<string:variable>/offenses',
+                     '/offenses/count/agencies/<string:ori>/<string:variable>/offenses',
                      '/offenses/count/national/<string:variable>/offenses')
     api.add_resource(crime_data.resources.hate_crime.HateCrimeOffenseSubcounts,
                      '/hc/count/states/<int:state_id>/<string:variable>/offenses',
                      '/hc/count/states/<string:state_abbr>/<string:variable>/offenses',
+                     '/hc/count/agencies/<string:ori>/<string:variable>/offenses',
                      '/hc/count/national/<string:variable>/offenses')
     api.add_resource(crime_data.resources.cargo_theft.CargoTheftOffenseSubcounts,
                      '/ct/count/states/<int:state_id>/<string:variable>/offenses',
                      '/ct/count/states/<string:state_abbr>/<string:variable>/offenses',
-                     '/ct/count/national/<string:variable>/offenses')
+                     '/ct/count/national/<string:variable>/offenses',
+                     '/ct/count/agencies/<string:ori>/<string:variable>/offenses')
 
 
 def newrelic_status_endpoint():

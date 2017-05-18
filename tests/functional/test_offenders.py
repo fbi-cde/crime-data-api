@@ -38,6 +38,16 @@ class TestOffendersEndpoint:
         for r in res.json['results']:
             assert 'count' in r
 
+    @pytest.mark.parametrize('variable', OffenderCountView.VARIABLES)
+    def test_agencies_endpoint_count(self, testapp, swagger, variable):
+        url = '/offenders/count/agencies/MI2336700/{}?year=2014'.format(variable)
+        res = testapp.get(url)
+        assert res.status_code == 200
+        # validate_api_call(swagger, raw_request=res.request, raw_response=res)
+        assert 'pagination' in res.json
+        for r in res.json['results']:
+            assert 'count' in r
+
     @pytest.mark.xfail
     def test_state_endpoint_no_year_in_request(self, testapp):
         res = testapp.get('/offenders/count/states/3/race_code')

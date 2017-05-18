@@ -83,3 +83,6 @@ GROUP BY GROUPING SETS (
     (year, ori, offense_name, location_name),
     (year, ori, offense_name, victim_type_name)
 );
+
+CREATE INDEX ct_counts_state_id_idx ON ct_counts (state_id);
+CREATE INDEX offense_ct_counts_state_id_idx ON offense_ct_counts (state_id);

@@ -34,6 +34,27 @@ BEGIN
 END
 $do$;
 
+explain analyze select count(offender_id), ori,ethnicity,offense_name, state_id, race_code, age_num, sex_code 
+    from (
+        SELECT DISTINCT(offender_id), ref_agency.ori, ethnicity, age_num,race_code,year,offense_name, sex_code, nibrs_offender_denorm_1991.state_id from nibrs_offender_denorm_1991 
+        JOIN ref_agency ON ref_agency.agency_id = nibrs_offender_denorm_1991.agency_id 
+        where year::integer = 1991 and nibrs_offender_denorm_1991.state_id is not null
+    ) as temp 
+    GROUP BY GROUPING SETS (
+        (year, offense_name, race_code),
+        (year, offense_name, sex_code),
+        (year, offense_name, age_num),
+        (year, offense_name, ethnicity),
+        (year, state_id, offense_name, race_code),
+        (year, state_id, offense_name, sex_code),
+        (year, state_id, offense_name, age_num),
+        (year, state_id, offense_name, ethnicity),
+        (year, ori, offense_name, race_code),
+        (year, ori, offense_name, sex_code),
+        (year, ori, offense_name, age_num),
+        (year, ori, offense_name, ethnicity)
+    );
+
 drop materialized view IF EXISTS  offense_offender_counts;
 create materialized view offense_offender_counts as 
     SELECT *,2014 as year FROM offense_offender_counts_2014 UNION 
@@ -60,3 +81,6 @@ create materialized view offense_offender_counts as
     SELECT *,1993 as year FROM offense_offender_counts_1993 UNION 
     SELECT *,1992 as year FROM offense_offender_counts_1992 UNION
     SELECT *,1991 as year FROM offense_offender_counts_1991;
+
+CREATE INDEX offense_offender_counts_state_id_idx ON offense_offender_counts (state_id);
+

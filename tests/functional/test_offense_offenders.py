@@ -45,6 +45,15 @@ class TestOffendersOffensesEndpoint:
             assert 'count' in r
 
     @pytest.mark.parametrize('variable', OffenseOffenderCountView.VARIABLES)
+    def test_offenders_offenses_endpoint_with_agencies_year_offense(self, testapp, swagger, variable):
+        url = '/offenders/count/agencies/MI2336700/{}/offenses?offense_name=Aggravated+Assault&year=2014'.format(variable)
+        res = testapp.get(url)
+        #validate_api_call(swagger, raw_request=res.request, raw_response=res)
+        assert 'pagination' in res.json
+        for r in res.json['results']:
+            assert 'count' in r
+
+    @pytest.mark.parametrize('variable', OffenseOffenderCountView.VARIABLES)
     @pytest.mark.parametrize('explorer_offense', ExplorerOffenseMapping.NIBRS_OFFENSE_MAPPING.keys())
     def test_offenders_offenses_endpoint_with_state_year_explorer_offense(self, testapp, swagger, variable, explorer_offense):
         url = '/offenders/count/states/43/{}/offenses?explorer_offense={}&year=2014'.format(variable, explorer_offense)

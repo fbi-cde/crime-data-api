@@ -34,6 +34,14 @@ class TestVictimsEndpoint:
         for r in res.json['results']:
             assert r['race_code'] or r['race_code'] == None
 
+    def test_victims_offenses_endpoint_with_agencies(self, testapp, swagger):
+        url = '/victims/count/agencies/MI2336700/race_code/offenses?year=2014'
+        res = testapp.get(url)
+        #validate_api_call(swagger, raw_request=res.request, raw_response=res)
+        assert 'pagination' in res.json
+        for r in res.json['results']:
+            assert r['race_code'] or r['race_code'] == None
+
     @pytest.mark.parametrize('variable', OffenseVictimCountView.VARIABLES)
     def test_victims_offenses_endpoint_with_state_year_offense(self, testapp, swagger, variable):
         url = '/victims/count/states/43/{}/offenses?offense_name=Aggravated+Assault&year=2014'.format(variable)
