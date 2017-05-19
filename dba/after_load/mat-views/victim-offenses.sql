@@ -70,4 +70,5 @@ create materialized view offense_victim_counts as
     SELECT *, 1992 as year FROM offense_victim_counts_1992 UNION
     SELECT *, 1991 as year FROM offense_victim_counts_1991;
 
-CREATE INDEX offense_victim_counts_state_id_idx ON offense_victim_counts (state_id);
+CREATE INDEX offense_victim_counts_state_id_idx ON offense_victim_counts (state_id, year, offense_name);
+CREATE INDEX offense_victim_counts_ori_idx ON offense_victim_counts (ori, year, offense_name);
