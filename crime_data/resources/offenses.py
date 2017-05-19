@@ -94,4 +94,5 @@ class OffenseByOffenseTypeSubcounts(CdeResource):
                                                         state_id=state_id,
                                                         state_abbr=state_abbr)
         results = model.query(args)
+        print(results)
         return self.with_metadata(results.fetchall(), args)

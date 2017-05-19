@@ -30,3 +30,8 @@ GROUP BY GROUPING SETS (
     (year, state_id, offense_name, bias_name),
     (year, ori, offense_name, bias_name)
 );
+
+CREATE INDEX hc_counts_state_id_year_idx ON hc_counts (state_id, year);
+CREATE INDEX offense_hc_counts_state_id_year_idx ON offense_hc_counts (state_id, year);
+CREATE INDEX hc_counts_ori_year_idx ON hc_counts (ori, year);
+CREATE INDEX offense_hc_counts_ori_year_idx ON offense_hc_counts (ori, year);
