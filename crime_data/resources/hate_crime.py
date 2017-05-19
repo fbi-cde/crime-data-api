@@ -29,7 +29,7 @@ class HateCrimesCountStates(CdeResource):
         return self.with_metadata(results.fetchall(), args)
 
 
-class HateCrimesCountCounties(CdeResource):
+class HateCrimesCountAgencies(CdeResource):
 
     def _stringify(self, data):
         # Override stringify function to fit our needs.
@@ -37,9 +37,9 @@ class HateCrimesCountCounties(CdeResource):
 
     @use_args(marshmallow_schemas.IncidentViewCountArgs)
     @tuning_page
-    def get(self, args, county_id, variable):
+    def get(self, args, ori, variable):
         self.verify_api_key(args)
-        model = cdemodels.HateCrimeCountView(variable, year=args['year'], county_id=county_id)
+        model = cdemodels.HateCrimeCountView(variable, year=args['year'], ori=ori)
         results = model.query(args)
         return self.with_metadata(results.fetchall(), args)
 
@@ -67,11 +67,12 @@ class HateCrimeOffenseSubcounts(CdeResource):
 
     @use_args(marshmallow_schemas.OffenseCountViewArgs)
     @tuning_page
-    def get(self, args, variable, state_id=None, state_abbr=None):
+    def get(self, args, variable, state_id=None, state_abbr=None, ori=None):
         self.verify_api_key(args)
 
         model = cdemodels.OffenseHateCrimeCountView(variable,
                                                     year=args.get('year', None),
+                                                    ori=ori,
                                                     offense_name=args.get('offense_name', None),
                                                     explorer_offense=args.get('explorer_offense', None),
                                                     state_id=state_id,

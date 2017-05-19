@@ -37,6 +37,15 @@ class TestOffenseByOffenseTypesEndpoint:
             assert 'count' in r
 
     @pytest.mark.parametrize('variable', OffenseByOffenseTypeCountView.VARIABLES)
+    def test_offenses_agencies_endpoint_with_postal_code(self, testapp, swagger, variable):
+        url = '/offenses/count/agencies/MI2336700/{}/offenses?year=2014'.format(variable)
+        res = testapp.get(url)
+        #validate_api_call(swagger, raw_request=res.request, raw_response=res)
+        assert 'pagination' in res.json
+        for r in res.json['results']:
+            assert 'count' in r
+
+    @pytest.mark.parametrize('variable', OffenseByOffenseTypeCountView.VARIABLES)
     def test_offenses_endpoint_with_state_year_offense(self, testapp, swagger, variable):
         url = '/offenses/count/states/43/{}/offenses?offense_name=Aggravated+Assault&year=2014'.format(variable)
         res = testapp.get(url)

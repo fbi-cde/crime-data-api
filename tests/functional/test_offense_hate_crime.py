@@ -42,6 +42,14 @@ class TestOffendersOffensesEndpoint:
         for r in res.json['results']:
             assert 'count' in r
 
+    def test_victims_offenses_endpoint_with_just_state_year_and_postal_code(self, testapp, swagger):
+        url = '/hc/count/agencies/MI2336700/bias_name/offenses?year=2014'
+        res = testapp.get(url)
+        #validate_api_call(swagger, raw_request=res.request, raw_response=res)
+        assert 'pagination' in res.json
+        for r in res.json['results']:
+            assert 'count' in r
+
     @pytest.mark.parametrize('variable', OffenseHateCrimeCountView.VARIABLES)
     def test_victims_offenses_endpoint_with_state_year_offense(self, testapp, swagger, variable):
         url = '/hc/count/states/43/{}/offenses?offense_name=Aggravated+Assault&year=2014'.format(variable)

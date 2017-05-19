@@ -11,7 +11,7 @@ class TestOffensesEndpoint:
     def test_offenses_endpoint_exists(self, testapp, swagger):
         res = testapp.get('/offenses/')
         assert res.status_code == 200
-        #validate_api_call(swagger, raw_request=res.request, raw_response=res)
+#        validate_api_call(swagger, raw_request=res.request, raw_response=res)
 
     def test_offenses_endpoint_includes_metadata(self, testapp):
         res = testapp.get('/offenses/')
@@ -44,6 +44,15 @@ class TestOffensesEndpoint:
         res = testapp.get(url)
         assert res.status_code == 200
         validate_api_call(swagger, raw_request=res.request, raw_response=res)
+        assert 'pagination' in res.json
+        for r in res.json['results']:
+            assert 'count' in r
+
+    def test_state_endpoint_count_with_agencies(self, testapp, swagger):
+        url = '/offenses/count/agencies/MI2336700/weapon_name?year=2014'
+        res = testapp.get(url)
+        assert res.status_code == 200
+        #validate_api_call(swagger, raw_request=res.request, raw_response=res)
         assert 'pagination' in res.json
         for r in res.json['results']:
             assert 'count' in r

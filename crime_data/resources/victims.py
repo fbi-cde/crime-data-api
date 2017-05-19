@@ -50,7 +50,7 @@ class VictimsCountStates(CdeResource):
         return self.with_metadata(results.fetchall(), args)
 
 
-class VictimsCountCounties(CdeResource):
+class VictimsCountAgencies(CdeResource):
 
     def _stringify(self, data):
         # Override stringify function to fit our needs.
@@ -59,9 +59,9 @@ class VictimsCountCounties(CdeResource):
     @use_args(marshmallow_schemas.IncidentViewCountArgs)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page
-    def get(self, args, county_id, variable):
+    def get(self, args, ori, variable):
         self.verify_api_key(args)
-        model = cdemodels.VictimCountView(variable, year=args['year'], county_id=county_id)
+        model = cdemodels.VictimCountView(variable, year=args['year'], ori=ori)
         results = model.query(args)
         return self.with_metadata(results.fetchall(), args)
 
@@ -75,10 +75,11 @@ class VictimOffenseSubcounts(CdeResource):
     @use_args(marshmallow_schemas.OffenseCountViewArgs)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page
-    def get(self, args, variable, state_id=None, state_abbr=None):
+    def get(self, args, variable, state_id=None, state_abbr=None, ori=None):
         self.verify_api_key(args)
         model = cdemodels.OffenseVictimCountView(variable,
                                                  year=args.get('year', None),
+                                                 ori=ori,
                                                  offense_name=args.get('offense_name', None),
                                                  explorer_offense=args.get('explorer_offense', None),
                                                  state_id=state_id,
