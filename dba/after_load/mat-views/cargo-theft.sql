@@ -84,6 +84,12 @@ GROUP BY GROUPING SETS (
     (year, ori, offense_name, victim_type_name)
 );
 
+explain analyze SELECT b.year, 'arson' AS offense_name, b.sex_code, a.count AS count from (SELECT year::text, offense_name, sex_code, count FROM offense_offender_counts 
+    WHERE sex_code IS NOT NULL AND state_id = 47  AND offense_name IN ('Arson') AND ori IS NULL) a  RIGHT JOIN (SELECT DISTINCT victim_counts.sex_code AS sex_code, c.year from victim_counts 
+    RIGHT JOIN (
+        SELECT year::text, offense_offender_counts.sex_code from offense_offender_counts  WHERE sex_code IS NOT NULL AND state_id is NULL AND ori is NULL AND offense_name IN ('Arson') GROUP BY year,offense_offender_counts.sex_code ORDER BY year DESC
+    ) c ON (c.sex_code = victim_counts.sex_code) WHERE victim_counts.sex_code IS NOT NULL AND victim_counts.state_id = 47 AND victim_counts.ori IS NULL) b ON (a.sex_code = b.sex_code AND a.year = b.year) ORDER by b.year, offense_name, b.sex_code;
+
 CREATE INDEX ct_counts_state_id_idx ON ct_counts (state_id, year);
 CREATE INDEX offense_ct_counts_state_id_idx ON offense_ct_counts (state_id, year);
 
