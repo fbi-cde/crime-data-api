@@ -17,14 +17,6 @@
     }
   ],
   "parameters": {
-    "aggregateManyParam": {
-      "default": "false",
-      "in": "query",
-      "name": "aggregate_many",
-      "description": "TKTK",
-      "required": false,
-      "type": "string"
-    },
     "fieldsParam": {
       "in": "query",
       "name": "fields",
@@ -56,9 +48,6 @@
       "description": "Counts can be provided for statistics grouped by a list of one or more parameters",
       "required": false,
       "type": "array",
-      "default": [
-        "year"
-      ],
       "collectionFormat": "csv",
       "items": {
         "type": "string",
@@ -1430,9 +1419,6 @@
         "description": "Returns a paginated list of agencies.",
         "parameters": [
           {
-            "$ref": "#/parameters/aggregateManyParam"
-          },
-          {
             "$ref": "#/parameters/fieldsParam"
           },
           {
@@ -1560,9 +1546,6 @@
             "$ref": "#/parameters/codeTablePathParam"
           },
           {
-            "$ref": "#/parameters/aggregateManyParam"
-          },
-          {
             "$ref": "#/parameters/fieldsParam"
           },
           {
@@ -1596,9 +1579,6 @@
         ],
         "description": "This endpoint returns national estimates from the API",
         "parameters": [
-          {
-            "$ref": "#/parameters/aggregateManyParam"
-          },
           {
             "$ref": "#/parameters/fieldsParam"
           },
@@ -1650,9 +1630,6 @@
         "parameters": [
           {
             "$ref": "#/parameters/statePathParam"
-          },
-          {
-            "$ref": "#/parameters/aggregateManyParam"
           },
           {
             "$ref": "#/parameters/fieldsParam"
@@ -1731,9 +1708,6 @@
         "description": "Returns just the participation data for a state",
         "parameters": [
           {
-            "$ref": "#/parameters/aggregateManyParam"
-          },
-          {
             "$ref": "#/parameters/fieldsParam"
           },
           {
@@ -1787,9 +1761,6 @@
         ],
         "description": "Returns participation details for agencies",
         "parameters": [
-          {
-            "$ref": "#/parameters/aggregateManyParam"
-          },
           {
             "$ref": "#/parameters/fieldsParam"
           },
@@ -1871,9 +1842,6 @@
         "description": "Returns counts by year for incidents. Incidents can also be grouped for counting with the `by` parameter, which accepts 1 or more of the following fields in a comma-delimited list: `year`, `month`, `offense_subcat`, `offense_subcat_code`, `offense`, `offense_code`, `offense_category`, `classification`, `state`, `state_name`",
         "parameters": [
           {
-            "$ref": "#/parameters/aggregateManyParam"
-          },
-          {
             "$ref": "#/parameters/fieldsParam"
           },
           {
@@ -1944,9 +1912,6 @@
         "description": "Returns national participation data",
         "parameters": [
           {
-            "$ref": "#/parameters/aggregateManyParam"
-          },
-          {
             "$ref": "#/parameters/fieldsParam"
           },
           {
@@ -2001,9 +1966,6 @@
             "$ref": "#/parameters/offendersCountVariableParam"
           },
           {
-            "$ref": "#/parameters/aggregateManyParam"
-          },
-          {
             "$ref": "#/parameters/fieldsParam"
           },
           {
@@ -2043,9 +2005,6 @@
             "$ref": "#/parameters/offendersCountVariableParam"
           },
           {
-            "$ref": "#/parameters/aggregateManyParam"
-          },
-          {
             "$ref": "#/parameters/fieldsParam"
           },
           {
@@ -2080,9 +2039,6 @@
         "parameters": [
           {
             "$ref": "#/parameters/offensesCountVariableParam"
-          },
-          {
-            "$ref": "#/parameters/aggregateManyParam"
           },
           {
             "$ref": "#/parameters/fieldsParam"
@@ -2124,9 +2080,6 @@
             "$ref": "#/parameters/offensesCountVariableParam"
           },
           {
-            "$ref": "#/parameters/aggregateManyParam"
-          },
-          {
             "$ref": "#/parameters/fieldsParam"
           },
           {
@@ -2161,9 +2114,6 @@
         "parameters": [
           {
             "$ref": "#/parameters/victimsCountVariableParam"
-          },
-          {
-            "$ref": "#/parameters/aggregateManyParam"
           },
           {
             "$ref": "#/parameters/fieldsParam"
@@ -2205,9 +2155,6 @@
             "$ref": "#/parameters/victimsCountVariableParam"
           },
           {
-            "$ref": "#/parameters/aggregateManyParam"
-          },
-          {
             "$ref": "#/parameters/fieldsParam"
           },
           {
@@ -2243,9 +2190,6 @@
         "parameters": [
           {
             "$ref": "#/parameters/cargoTheftsCountVariableParam"
-          },
-          {
-            "$ref": "#/parameters/aggregateManyParam"
           },
           {
             "$ref": "#/parameters/fieldsParam"
@@ -2302,9 +2246,6 @@
             "$ref": "#/parameters/cargoTheftsCountVariableParam"
           },
           {
-            "$ref": "#/parameters/aggregateManyParam"
-          },
-          {
             "$ref": "#/parameters/fieldsParam"
           },
           {
@@ -2355,9 +2296,6 @@
         "parameters": [
           {
             "$ref": "#/parameters/hateCrimesCountVariableParam"
-          },
-          {
-            "$ref": "#/parameters/aggregateManyParam"
           },
           {
             "$ref": "#/parameters/fieldsParam"
@@ -2415,9 +2353,6 @@
             "$ref": "#/parameters/hateCrimesCountVariableParam"
           },
           {
-            "$ref": "#/parameters/aggregateManyParam"
-          },
-          {
             "$ref": "#/parameters/fieldsParam"
           },
           {
@@ -2458,9 +2393,6 @@
           },
           {
             "$ref": "#/parameters/explorerOffenseParam"
-          },
-          {
-            "$ref": "#/parameters/aggregateManyParam"
           },
           {
             "$ref": "#/parameters/fieldsParam"
@@ -2506,9 +2438,6 @@
           },
           {
             "$ref": "#/parameters/explorerOffenseParam"
-          },
-          {
-            "$ref": "#/parameters/aggregateManyParam"
           },
           {
             "$ref": "#/parameters/fieldsParam"
@@ -2566,9 +2495,6 @@
           },
           {
             "$ref": "#/parameters/explorerOffenseParam"
-          },
-          {
-            "$ref": "#/parameters/aggregateManyParam"
           },
           {
             "$ref": "#/parameters/fieldsParam"
@@ -2631,9 +2557,6 @@
             "$ref": "#/parameters/explorerOffenseParam"
           },
           {
-            "$ref": "#/parameters/aggregateManyParam"
-          },
-          {
             "$ref": "#/parameters/fieldsParam"
           },
           {
@@ -2689,9 +2612,6 @@
           },
           {
             "$ref": "#/parameters/explorerOffenseParam"
-          },
-          {
-            "$ref": "#/parameters/aggregateManyParam"
           },
           {
             "$ref": "#/parameters/fieldsParam"
@@ -2754,9 +2674,6 @@
             "$ref": "#/parameters/explorerOffenseParam"
           },
           {
-            "$ref": "#/parameters/aggregateManyParam"
-          },
-          {
             "$ref": "#/parameters/fieldsParam"
           },
           {
@@ -2813,9 +2730,6 @@
           },
           {
             "$ref": "#/parameters/explorerOffenseParam"
-          },
-          {
-            "$ref": "#/parameters/aggregateManyParam"
           },
           {
             "$ref": "#/parameters/fieldsParam"
@@ -2879,9 +2793,6 @@
             "$ref": "#/parameters/explorerOffenseParam"
           },
           {
-            "$ref": "#/parameters/aggregateManyParam"
-          },
-          {
             "$ref": "#/parameters/fieldsParam"
           },
           {
@@ -2940,9 +2851,6 @@
             "$ref": "#/parameters/explorerOffenseParam"
           },
           {
-            "$ref": "#/parameters/aggregateManyParam"
-          },
-          {
             "$ref": "#/parameters/fieldsParam"
           },
           {
@@ -2989,9 +2897,6 @@
             "$ref": "#/parameters/explorerOffenseParam"
           },
           {
-            "$ref": "#/parameters/aggregateManyParam"
-          },
-          {
             "$ref": "#/parameters/fieldsParam"
           },
           {
@@ -3026,9 +2931,6 @@
         "parameters": [
           {
             "$ref": "#/parameters/hateCrimesCountVariableParam"
-          },
-          {
-            "$ref": "#/parameters/aggregateManyParam"
           },
           {
             "$ref": "#/parameters/fieldsParam"
@@ -3083,9 +2985,6 @@
             "$ref": "#/parameters/hateCrimesCountVariableParam"
           },
           {
-            "$ref": "#/parameters/aggregateManyParam"
-          },
-          {
             "$ref": "#/parameters/fieldsParam"
           },
           {
@@ -3138,9 +3037,6 @@
             "$ref": "#/parameters/hateCrimesCountVariableParam"
           },
           {
-            "$ref": "#/parameters/aggregateManyParam"
-          },
-          {
             "$ref": "#/parameters/fieldsParam"
           },
           {
@@ -3190,9 +3086,6 @@
         "parameters": [
           {
             "$ref": "#/parameters/hateCrimesCountVariableParam"
-          },
-          {
-            "$ref": "#/parameters/aggregateManyParam"
           },
           {
             "$ref": "#/parameters/fieldsParam"
@@ -3247,9 +3140,6 @@
             "$ref": "#/parameters/hateCrimesCountVariableParam"
           },
           {
-            "$ref": "#/parameters/aggregateManyParam"
-          },
-          {
             "$ref": "#/parameters/fieldsParam"
           },
           {
@@ -3300,9 +3190,6 @@
         "parameters": [
           {
             "$ref": "#/parameters/hateCrimesCountVariableParam"
-          },
-          {
-            "$ref": "#/parameters/aggregateManyParam"
           },
           {
             "$ref": "#/parameters/fieldsParam"
