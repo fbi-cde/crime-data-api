@@ -797,6 +797,11 @@
         "unfounded"
       ],
       "properties": {
+        "agencies": {
+          "format": "int32",
+          "type": "integer",
+          "description": "How many agencies reported for this particular record"
+        },
         "actual": {
           "format": "int32",
           "readOnly": true,

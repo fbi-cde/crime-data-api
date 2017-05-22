@@ -12,6 +12,7 @@ GROUP BY rm.data_year, rm.agency_id;
 DROP SEQUENCE IF EXISTS retacubeseq CASCADE;
 CREATE SEQUENCE retacubeseq;
 
+DROP TABLE IF EXISTS reta_cube_rollup;
 CREATE TABLE reta_cube_rollup AS
 SELECT
 NEXTVAL('retacubeseq') AS reta_month_offense_subcat_summary_id,
@@ -104,6 +105,11 @@ FROM
                      (offense_subcat, offense_subcat_code))
 ;
 
+-- clean up NULL classifications from the Arson table
+DELETE from reta_cube_rollup
+WHERE grouping_bitmap IN (31, 735, 221, 287, 543, 479, 799, 991)
+AND classification IS NULL;
+
 DROP TABLE IF EXISTS reta_month_offense_subcat_summary CASCADE;
 ALTER TABLE reta_cube_rollup RENAME TO reta_month_offense_subcat_summary;
--- DROP TABLE IF EXISTS agency_reporting;
+DROP TABLE IF EXISTS agency_reporting;
