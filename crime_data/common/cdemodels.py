@@ -1015,7 +1015,7 @@ class MultiYearCountView(object):
             return ('ref_race','race_code')
 
         if field in ['sex_code']:
-            return ('nibrs_victim_denorm_2012','sex_code')
+            return ('victim_counts_2012','sex_code')
 
         if field in ['age_num']:
             return ('victim_counts_2012','age_num')
