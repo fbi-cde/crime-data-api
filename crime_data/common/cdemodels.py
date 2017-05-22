@@ -1015,7 +1015,7 @@ class MultiYearCountView(object):
             return ('ref_race','race_code')
 
         if field in ['sex_code']:
-            return ('nibrs_victim_denorm_2012','sex_code')
+            return ('victim_counts_2012','sex_code')
 
         if field in ['age_num']:
             return ('victim_counts_2012','age_num')
@@ -1083,9 +1083,9 @@ class MultiYearCountView(object):
         join_table,join_field = self.get_field_table(field)
         if join_field:
             if self.year:
-                query_gap_fill = ' RIGHT JOIN (SELECT DISTINCT ' + join_table + '.' + join_field + ' AS :field, c.year from ' + join_table + ' RIGHT JOIN (SELECT year::text, :view_name.:field from :view_name ' + inner_where_query + ' GROUP BY year,:view_name.:field ORDER BY year DESC) c ON (c.:field = ' + join_table +'.' + join_field + ')) b ON (a.:field = b.:field)'
+                query_gap_fill = ' RIGHT JOIN (SELECT DISTINCT ' + join_table + '.' + join_field + ' AS :field, c.year from ' + join_table + ' CROSS JOIN (SELECT year::text from nibrs_years WHERE year::int = :year) c) b ON (a.:field = b.:field)'
             else:
-                query_gap_fill = ' RIGHT JOIN (SELECT DISTINCT ' + join_table + '.' + join_field + ' AS :field, c.year from ' + join_table + ' RIGHT JOIN (SELECT year::text, :view_name.:field from :view_name ' + inner_where_query + ' GROUP BY year,:view_name.:field ORDER BY year DESC) c ON (c.:field = ' + join_table +'.' + join_field + ')) b ON (a.:field = b.:field AND a.year = b.year)'
+                query_gap_fill = ' RIGHT JOIN (SELECT DISTINCT ' + join_table + '.' + join_field + ' AS :field, c.year from ' + join_table + ' CROSS JOIN (SELECT year::text from nibrs_years) c) b ON (a.:field = b.:field AND a.year = b.year)'
             query = query + query_gap_fill
         query += ' ORDER by a.year, a.:field'
         return query
@@ -1175,9 +1175,9 @@ class CargoTheftCountView(MultiYearCountView):
         join_table,join_field = self.get_field_table(field)
         if join_field:
             if self.year:
-                query_gap_fill = ' RIGHT JOIN (SELECT DISTINCT ' + join_table + '.' + join_field + ' AS :field, c.year from ' + join_table + ' RIGHT JOIN (SELECT year::text, :view_name.:field from :view_name ' + inner_where_query + ' GROUP BY year,:view_name.:field ORDER BY year DESC) c ON (c.:field = ' + join_table +'.' + join_field + ')) b ON (a.:field = b.:field)'
+                query_gap_fill = ' RIGHT JOIN (SELECT DISTINCT ' + join_table + '.' + join_field + ' AS :field, c.year from ' + join_table + ' CROSS JOIN (SELECT year::text from nibrs_years WHERE year::int = :year) c) b ON (a.:field = b.:field)'
             else:
-                query_gap_fill = ' RIGHT JOIN (SELECT DISTINCT ' + join_table + '.' + join_field + ' AS :field, c.year from ' + join_table + ' RIGHT JOIN (SELECT year::text, :view_name.:field from :view_name ' + inner_where_query + ' GROUP BY year,:view_name.:field ORDER BY year DESC) c ON (c.:field = ' + join_table +'.' + join_field + ')) b ON (a.:field = b.:field AND a.year = b.year)'
+                query_gap_fill = ' RIGHT JOIN (SELECT DISTINCT ' + join_table + '.' + join_field + ' AS :field, c.year from ' + join_table + ' CROSS JOIN (SELECT year::text from nibrs_years) c) b ON (a.:field = b.:field AND a.year = b.year)'
             query = query + query_gap_fill
 
         query += ' ORDER by b.year, b.:field'
@@ -1258,7 +1258,7 @@ class OffenseSubCountView(object):
             return ('ref_race','race_code')
 
         if field in ['sex_code']:
-            return ('nibrs_victim_denorm_2012','sex_code')
+            return ('victim_counts_2012','sex_code')
 
         if field in ['age_num']:
             return ('victim_counts_2012','age_num')
@@ -1323,7 +1323,7 @@ class OffenseSubCountView(object):
 
         if self.offense_name:
              where_query += ' AND offense_name IN :offense_name'
-             inner_where_query += ' AND offense_name IN :offense_name'
+             #inner_where_query += ' AND offense_name IN :offense_name'
 
         if self.year:
             where_query += ' AND year = :year'
@@ -1334,15 +1334,16 @@ class OffenseSubCountView(object):
         join_table,join_field = self.get_field_table(field)
         if join_field:
             if self.year:
-                query_gap_fill = ' RIGHT JOIN (SELECT DISTINCT ' + join_table + '.' + join_field + ' AS :field, c.year from ' + join_table + ' RIGHT JOIN (SELECT year::text, :view_name.:field from :view_name ' + inner_where_query + ' GROUP BY year,:view_name.:field) c ON (c.:field = ' + join_table +'.' + join_field + ')) b ON (a.:field = b.:field)'
+                query_gap_fill = ' RIGHT JOIN (SELECT DISTINCT ' + join_table + '.' + join_field + ' AS :field, c.year from ' + join_table + '  CROSS JOIN (SELECT year::text from nibrs_years WHERE year::int = :year) c) b ON (a.:field = b.:field)'
             else:
-                query_gap_fill = ' RIGHT JOIN (SELECT DISTINCT ' + join_table + '.' + join_field + ' AS :field, c.year from ' + join_table + ' RIGHT JOIN (SELECT year::text, :view_name.:field from :view_name ' + inner_where_query + ' GROUP BY year,:view_name.:field ORDER BY year DESC) c ON (c.:field = ' + join_table +'.' + join_field + ')) b ON (a.:field = b.:field AND a.year = b.year)'
+                query_gap_fill = ' RIGHT JOIN (SELECT DISTINCT ' + join_table + '.' + join_field + ' AS :field, c.year from ' + join_table + ' CROSS JOIN (SELECT year::text from nibrs_years) c) b ON (a.:field = b.:field AND a.year = b.year)'
             query = query + query_gap_fill
 
         if self.explorer_offense:
             query += ' GROUP by b.year, b.:field, offense_name'
 
         query += ' ORDER by b.year, offense_name, b.:field'
+        #print(query)
         return query
 
 class OffenseVictimCountView(OffenseSubCountView):
@@ -1351,6 +1352,8 @@ class OffenseVictimCountView(OffenseSubCountView):
     VARIABLES = ['resident_status_code', 'offender_relationship',
                  'circumstance_name', 'ethnicity', 'race_code',
                  'age_num', 'sex_code']
+
+    DISTINCT_VTABLE = 'victim_counts'
 
     @property
     def view_name(self):
@@ -1361,12 +1364,16 @@ class OffenseOffenderCountView(OffenseSubCountView):
 
     VARIABLES = ['ethnicity', 'race_code', 'age_num', 'sex_code']
 
+    DISTINCT_VTABLE = 'offender_counts'
+
     @property
     def view_name(self):
         return 'offense_offender_counts'
 
 class OffenseByOffenseTypeCountView(OffenseSubCountView):
     VARIABLES = ['weapon_name', 'method_entry_code', 'num_premises_entered', 'location_name']
+
+    DISTINCT_VTABLE = 'offense_counts'
 
     @property
     def view_name(self):
@@ -1408,9 +1415,9 @@ class OffenseCargoTheftCountView(OffenseSubCountView):
         join_table,join_field = self.get_field_table(field)
         if join_field:
             if self.year:
-                query_gap_fill = ' RIGHT JOIN (SELECT DISTINCT ' + join_table + '.' + join_field + ' AS :field, c.year from ' + join_table + ' RIGHT JOIN (SELECT year::text, :view_name.:field from :view_name ' + inner_where_query + ' GROUP BY year,:view_name.:field ORDER BY year DESC) c ON (c.:field = ' + join_table +'.' + join_field + ')) b ON (a.:field = b.:field)'
+                query_gap_fill = ' RIGHT JOIN (SELECT DISTINCT ' + join_table + '.' + join_field + ' AS :field, c.year from ' + join_table + ' CROSS JOIN (SELECT year::text from nibrs_years WHERE year::int  = :year) c) b ON (a.:field = b.:field)'
             else:
-                query_gap_fill = ' RIGHT JOIN (SELECT DISTINCT ' + join_table + '.' + join_field + ' AS :field, c.year from ' + join_table + ' RIGHT JOIN (SELECT year::text, :view_name.:field from :view_name ' + inner_where_query + ' GROUP BY year,:view_name.:field ORDER BY year DESC) c ON (c.:field = ' + join_table +'.' + join_field + ')) b ON (a.:field = b.:field AND a.year = b.year)'
+                query_gap_fill = ' RIGHT JOIN (SELECT DISTINCT ' + join_table + '.' + join_field + ' AS :field, c.year from ' + join_table + ' CROSS JOIN (SELECT year::text from nibrs_years) c) b ON (a.:field = b.:field AND a.year = b.year)'
             query = query + query_gap_fill
 
         if self.explorer_offense:
@@ -1464,9 +1471,9 @@ class OffenseHateCrimeCountView(OffenseSubCountView):
         join_table,join_field = self.get_field_table(field)
         if join_field:
             if self.year:
-                query_gap_fill = ' RIGHT JOIN (SELECT DISTINCT ' + join_table + '.' + join_field + ' AS :field,c.year from ' + join_table + ' RIGHT JOIN (SELECT year::text, :view_name.:field from :view_name ' + inner_where_query + ' GROUP BY year,:view_name.:field ORDER BY year DESC) c ON (c.:field = ' + join_table +'.' + join_field + ')) b ON (a.:field = b.:field)'
+                query_gap_fill = ' RIGHT JOIN (SELECT DISTINCT ' + join_table + '.' + join_field + ' AS :field,c.year from ' + join_table + ' CROSS JOIN (SELECT year::text from nibrs_years WHERE year::int = :year) c) b ON (a.:field = b.:field)'
             else:
-                query_gap_fill = ' RIGHT JOIN (SELECT DISTINCT ' + join_table + '.' + join_field + ' AS :field, c.year from ' + join_table + ' RIGHT JOIN (SELECT year::text, :view_name.:field from :view_name ' + inner_where_query + ' GROUP BY year,:view_name.:field ORDER BY year DESC) c ON (c.:field = ' + join_table +'.' + join_field + ')) b ON (a.:field = b.:field AND a.year = b.year)'
+                query_gap_fill = ' RIGHT JOIN (SELECT DISTINCT ' + join_table + '.' + join_field + ' AS :field, c.year from ' + join_table + ' CROSS JOIN (SELECT year::text from nibrs_years) c) b ON (a.:field = b.:field AND a.year = b.year)'
             query = query + query_gap_fill
 
         if self.explorer_offense:
