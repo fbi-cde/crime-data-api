@@ -42,8 +42,8 @@ echo -n "Create reta_agency_summary table..."
 psql $CRIME_DATA_API_DB_URL <after_load/create_reta_agency_summary.sql
 echo "DONE"
 
-echo -n "Building NIBRS Years table..."
-psql $CRIME_DATA_API_DB_URL <after_load/years.sql
+echo -n "Building Helper join tables..."
+psql $CRIME_DATA_API_DB_URL <after_load/helper_views.sql
 echo "DONE"
 
 #echo -n "Building cached incident representations (may be slow)..."

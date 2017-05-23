@@ -977,16 +977,16 @@ class MultiYearCountView(object):
             return ('nibrs_weapon_type','weapon_name')
 
         if field in ['method_entry_code']:
-            return ('nibrs_offense_denorm_2012','method_entry_code')
+            return ('nibrs_method_entry_code','method_entry_code')
 
         if field in ['num_premises_entered']:
-            return ('nibrs_offense_denorm_2012', 'num_premises_entered')
+            return ('nibrs_num_premises_entered', 'num_premises_entered')
 
         if field in ['bias_name']:
             return ('nibrs_bias_list','bias_name')
 
         if field in ['resident_status_code']:
-            return ('nibrs_victim_denorm_2012','resident_status_code')
+            return ('nibrs_resident_status_code','resident_status_code')
 
         if field in ['victim_type_name']:
             return ('nibrs_victim_type','victim_type_name')
@@ -1015,10 +1015,10 @@ class MultiYearCountView(object):
             return ('ref_race','race_code')
 
         if field in ['sex_code']:
-            return ('victim_counts_2012','sex_code')
+            return ('nibrs_sex_code','sex_code')
 
         if field in ['age_num']:
-            return ('victim_counts_2012','age_num')
+            return ('nibrs_age_num','age_num')
 
         return (None, None)
 
@@ -1220,16 +1220,16 @@ class OffenseSubCountView(object):
             return ('nibrs_weapon_type','weapon_name')
 
         if field in ['method_entry_code']:
-            return ('nibrs_offense_denorm_2012','method_entry_code')
+            return ('nibrs_method_entry_code','method_entry_code')
 
         if field in ['num_premises_entered']:
-            return ('nibrs_offense_denorm_2012', 'num_premises_entered')
+            return ('nibrs_num_premises_entered', 'num_premises_entered')
 
         if field in ['bias_name']:
             return ('nibrs_bias_list','bias_name')
 
         if field in ['resident_status_code']:
-            return ('nibrs_victim_denorm_2012','resident_status_code')
+            return ('nibrs_resident_status_code','resident_status_code')
 
         if field in ['victim_type_name']:
             return ('nibrs_victim_type','victim_type_name')
@@ -1258,10 +1258,10 @@ class OffenseSubCountView(object):
             return ('ref_race','race_code')
 
         if field in ['sex_code']:
-            return ('victim_counts_2012','sex_code')
+            return ('nibrs_sex_code','sex_code')
 
         if field in ['age_num']:
-            return ('victim_counts_2012','age_num')
+            return ('nibrs_age_num','age_num')
 
         return (None, None)
 
