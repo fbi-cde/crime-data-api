@@ -473,6 +473,17 @@ class ExplorerOffenseMapping(object):
         'arson': 'arson'
     }
 
+    RETA_OFFENSE_CODE_MAPPING = {
+        'aggravated-assault': 'SUM_AST',
+        'burglary': 'SUM_BRG',
+        'larceny': 'SUM_LRC',
+        'motor-vehicle-theft': 'SUM_MVT',
+        'homicide': 'SUM_HOM',
+        'rape': 'SUM_RPE',
+        'robbery': 'SUM_ROB',
+        'arson': 'X_ARS'
+    }
+
     NIBRS_OFFENSE_MAPPING = {
         'aggravated-assault': 'Aggravated Assault',
         'burglary': 'Burglary/Breaking & Entering',
@@ -494,6 +505,10 @@ class ExplorerOffenseMapping(object):
     @property
     def reta_offense(self):
         return self.RETA_OFFENSE_MAPPING[self.offense]
+
+    @property
+    def reta_offense_code(self):
+        return self.RETA_OFFENSE_CODE_MAPPING[self.offense]
 
     @property
     def nibrs_offense(self):

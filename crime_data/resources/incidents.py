@@ -97,10 +97,9 @@ class AgenciesSumsState(CdeResource):
     def get(self, args, state_abbr = None, agency_ori = None):
         self.verify_api_key(args)
         model = newmodels.AgencySums()
-        year = None
-        if 'year' in args:
-            year = args['year']
-        agency_sums = model.get(state = state_abbr, agency = agency_ori, year = year)
+        year = args.get('year', None)
+        explorer_offense = args.get('explorer_offense', None)
+        agency_sums = model.get(state = state_abbr, agency = agency_ori, year = year, explorer_offense = explorer_offense)
         filename = 'agency_sums_state'
         return self.render_response(agency_sums, args, csv_filename=filename)
 

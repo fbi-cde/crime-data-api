@@ -15,6 +15,7 @@ from sqlalchemy.sql import sqltypes
 from flask_restful import abort
 
 from crime_data.common import models
+from crime_data.common.base import ExplorerOffenseMapping
 from crime_data.common.models import RefAgency, RefState, RefCounty
 from crime_data.extensions import db
 from sqlalchemy import or_,and_
@@ -267,7 +268,7 @@ class AgencySums(db.Model):
     cleared = db.Column(db.BigInteger)
     juvenile_cleared = db.Column(db.BigInteger)
 
-    def get(self, state = None, agency = None, year = None, county = None):
+    def get(self, state = None, agency = None, year = None, county = None, explorer_offense = None):
         """Get Agency Sums given a state/year/county/agency ori, etc."""
         query = AgencySums.query
 
@@ -286,10 +287,12 @@ class AgencySums(db.Model):
             query = query.filter(AgencySums.ori == agency)
         if year:
             query = query.filter(AgencySums.year == year)
+        if explorer_offense:
+            offense = ExplorerOffenseMapping(explorer_offense).reta_offense_code
+            query = query.filter(AgencySums.offense_code == offense)
 
-        # Heads up - This is going to probably make local tests fail, as our sample DB's 
-        # only contain a little bit of data - ie. reported may not be 12 (ever).
-        query = query.filter(AgencySums.reported == 12 ).order_by(AgencySums.year.desc()) # Agency reported 12 Months.
+        query = query.join(AgencyParticipation, and_(AgencyParticipation.agency_id == AgencySums.agency_id, AgencyParticipation.year == AgencySums.year)).filter(AgencyParticipation.months_reported == 12)
+        query = query.order_by(AgencySums.year.desc()) # Agency reported 12 Months.
 
         #print(query) # Dubug
         return query
