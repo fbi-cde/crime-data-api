@@ -97,6 +97,7 @@ BEGIN
 END
 $do$;
 
+
 drop materialized view IF EXISTS  offense_offense_counts;
 create materialized view offense_offense_counts as 
     SELECT *,2014 as year FROM offense_offense_counts_2014 UNION 
