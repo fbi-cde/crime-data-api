@@ -110,19 +110,25 @@ class TestCdeAgencies:
         assert a.dormant_year == 1983
 
     def test_agency_covering(self, app):
-        a = CdeAgency.query.filter(CdeAgency.agency_id == 16487).one()
+        a = CdeAgency.query.filter(CdeAgency.agency_id == 17398).one()
         assert a is not None
-        assert a.current_year == 1984
-        assert a.covered_by_id == 16495
-        assert a.covered_by_ori == 'PA030SP00'
-        assert a.covered_by_name == 'State Police: Greene County'
+        assert a.current_year == 2014
+        assert a.covered_by_id == 17439
+        assert a.covered_by_ori == 'RIRSP0500'
+        assert a.covered_by_name == 'State Police: Lincoln'
+        assert a.months_reported == 0
+        assert a.nibrs_months_reported == 0
 
     def test_current_year_and_population(self, app):
-        a = CdeAgency.query.filter(CdeAgency.agency_id == 15909).one()
+        a = CdeAgency.query.filter(CdeAgency.agency_id == 17385).one()
         assert a is not None
-        assert a.current_year == 2013
-        assert a.population == 10479
+        assert a.current_year == 2014
+        assert a.population == 35053
         assert a.suburban_area_flag == 'Y'
+        assert a.population_group_code == '4'
+        assert a.population_group_desc == 'Cities from 25,000 thru 49,999'
+        assert a.months_reported == 12
+        assert a.nibrs_months_reported == 12
 
     def test_city_association(self, app):
         a = CdeAgency.query.filter(CdeAgency.agency_id == 12223).one()
@@ -140,7 +146,7 @@ class TestCdeAgencies:
         assert a.total_civilians == 169
 
     def test_core_city_flag(self, app):
-        a = CdeAgency.query.filter(CdeAgency.agency_id == 1484).one()
+        a = CdeAgency.query.filter(CdeAgency.agency_id == 17407).one()
         assert a is not None
         assert a.core_city_flag == 'Y'
 
