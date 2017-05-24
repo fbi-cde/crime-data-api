@@ -248,7 +248,6 @@ class AgencySums(db.Model):
 
 
 class AgencyOffenses(db.Model):
-
     __tablename__ = 'agency_offenses_view'
 
     id = db.Column(db.BigInteger, autoincrement=True, primary_key=True)
@@ -268,7 +267,7 @@ class AgencyOffenses(db.Model):
 
     def get(self, state = None, agency = None, year = None, county = None, explorer_offense = None):
         """Get Agency Sums given a state/year/county/agency ori, etc."""
-        query = AgencySums.query
+        query = AgencyOffenses.query
 
         if state:
             query = query.filter(func.lower(AgencySums.state_postal_abbr) == state.lower())
@@ -280,17 +279,17 @@ class AgencyOffenses(db.Model):
                 )
             if year:
                 subq = subq.filter(models.RefAgencyCounty.data_year == year)
-            query = query.filter(AgencySums.agency_id.in_(subq.subquery()))
+            query = query.filter(AgencyOffenses.agency_id.in_(subq.subquery()))
         if agency:
-            query = query.filter(AgencySums.ori == agency)
+            query = query.filter(AgencyOffenses.ori == agency)
         if year:
-            query = query.filter(AgencySums.year == year)
+            query = query.filter(AgencyOffenses.year == year)
         if explorer_offense:
             offense = ExplorerOffenseMapping(explorer_offense).reta_offense_code
-            query = query.filter(AgencySums.offense_code == offense)
+            query = query.filter(AgencyOffenses.offense_code == offense)
 
-        query = query.join(AgencyParticipation, and_(AgencyParticipation.agency_id == AgencySums.agency_id, AgencyParticipation.year == AgencySums.year)).filter(AgencyParticipation.months_reported == 12)
-        query = query.order_by(AgencySums.year.desc()) # Agency reported 12 Months.
+        query = query.join(AgencyParticipation, and_(AgencyParticipation.agency_id == AgencyOffenses.agency_id, AgencyParticipation.year == AgencyOffenses.year)).filter(AgencyParticipation.months_reported == 12)
+        query = query.order_by(AgencyOffenses.year.desc()) # Agency reported 12 Months.
 
         #print(query) # Dubug
         return query

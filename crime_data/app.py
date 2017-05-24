@@ -136,10 +136,10 @@ def add_resources(app):
     api.add_resource(crime_data.resources.incidents.AgenciesSumsCounty,
                      '/agencies/count/states/suboffenses/<string:state_abbr>/counties/<string:county_fips_code>' )
 
-    api.add_resource(crime_data.resources.incidents.AgenciesOffensesCountyCount,
+    api.add_resource(crime_data.resources.incidents.AgenciesOffensesCount,
                      '/agencies/count/<string:agency_ori>/offenses','/agencies/count/states/<string:state_abbr>/offenses' )
 
-    api.add_resource(crime_data.resources.incidents.AgenciesOffensesCount,
+    api.add_resource(crime_data.resources.incidents.AgenciesOffensesCountyCount,
                      '/agencies/count/states/offenses/<string:state_abbr>/counties/<string:county_fips_code>' )
 
     # api.add_resource(crime_data.resources.incidents.IncidentsDetail,

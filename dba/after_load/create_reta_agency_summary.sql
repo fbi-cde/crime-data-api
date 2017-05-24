@@ -132,10 +132,39 @@ INSERT INTO agency_sums_view   (id, year, agency_id, offense_subcat_id, offense_
   JOIN reta_offense ro ON ros.offense_id=ro.offense_id
   JOIN ref_state rs ON (rs.state_id  = ag.state_id);
 
+SET work_mem='2GB';
+SET synchronous_commit TO OFF;
+DROP TABLE IF EXISTS agency_sums_by_offense;
+CREATE table agency_sums_by_offense (
+id SERIAL PRIMARY KEY,
+data_year smallint NOT NULL,
+agency_id bigint NOT NULL,
+offense_id bigint NOT NULL,
+reported integer,
+unfounded integer,
+actual integer,
+cleared integer,
+juvenile_cleared integer
+);
 
-DROP TABLE IF EXISTS agency_offenses_view
+INSERT INTO agency_sums_by_offense(data_year, agency_id, offense_id, reported, unfounded, actual, cleared, juvenile_cleared)
+SELECT
+a.data_year,
+a.agency_id,
+ro.offense_id,
+SUM(a.reported) AS reported,
+SUM(a.unfounded) AS unfounded,
+SUM(a.actual) AS actual,
+SUM(a.cleared) AS cleared,
+SUM(a.juvenile_cleared) AS juvenile_cleared
+FROM agency_sums a
+JOIN reta_offense_subcat ros ON a.offense_subcat_id = ros.offense_subcat_id
+JOIN reta_offense ro ON ro.offense_id = ros.offense_id
+GROUP by a.data_year, a.agency_id, ro.offense_id;
+
+DROP TABLE IF EXISTS agency_offenses_view;
 create TABLE agency_offenses_view (
- id bigint,
+ id SERIAL,
  year smallint NOT NULL,
  agency_id bigint NOT NULL, 
  offense_id bigint NOT NULL,
@@ -147,8 +176,6 @@ create TABLE agency_offenses_view (
  cleared integer,
  juvenile_cleared integer,
  ori text,
- ucr_agency_name text,
- ncic_agency_name text,
  pub_agency_name text,
  state_postal_abbr varchar(2)
 );
@@ -158,27 +185,23 @@ CREATE TRIGGER agency_offenses_view_insert_state_partition
 BEFORE INSERT ON agency_offenses_view
 FOR EACH ROW EXECUTE PROCEDURE create_state_partition_and_insert();
 
-SET work_mem='3GB';
-SET synchronous_commit TO OFF;
-INSERT INTO agency_offenses_view(id, year, agency_id, offense_id, offense_code, offense_name, reported, unfounded, actual, cleared, juvenile_cleared, ori, pub_agency_name, state_postal_abbr)
+INSERT INTO agency_offenses_view(year, agency_id, offense_id, offense_code, offense_name, reported, unfounded, actual, cleared, juvenile_cleared, ori, pub_agency_name, state_postal_abbr)
   SELECT 
-    asums.id,
-    asums.data_year as year,
-    asums.agency_id,
-    ro.offense_id,
+    a.data_year,
+    a.agency_id,
+    a.offense_id,
     ro.offense_code,
     ro.offense_name,
-    asums.reported,
-    asums.unfounded,
-    asums.actual,
-    asums.cleared,
-    asums.juvenile_cleared,
-    ag.ori,
-    ag.pub_agency_name,
-    rs.state_postal_abbr
-  from agency_sums asums 
-  JOIN ref_agency ag ON (asums.agency_id = ag.agency_id)
-  JOIN agency_participation ap ON ap.year=asums.data_year AND ap.agency_id=asums.agency_id
-  JOIN reta_offense ro ON ros.offense_id=ro.offense_id
-  JOIN ref_state rs ON (rs.state_id  = ag.state_id);
-  WHERE ap.reported
+    a.reported,
+    a.unfounded,
+    a.actual,
+    a.cleared,
+    a.juvenile_cleared,
+    c.ori,
+    c.agency_name,
+    c.state_abbr
+FROM agency_sums_by_offense a
+JOIN cde_agencies c ON c.agency_id=a.agency_id
+JOIN reta_offense ro ON ro.offense_id = a.offense_id;
+
+--DROP TABLE agency_sums_by_offense;

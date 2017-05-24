@@ -2898,9 +2898,6 @@
         ],
         "parameters": [
           {
-            "$ref": "#/parameters/hateCrimesCountVariableParam"
-          },
-          {
             "$ref": "#/parameters/fieldsParam"
           },
           {
@@ -2949,9 +2946,6 @@
           "counties"
         ],
         "parameters": [
-          {
-            "$ref": "#/parameters/hateCrimesCountVariableParam"
-          },
           {
             "$ref": "#/parameters/fieldsParam"
           },
@@ -3053,9 +3047,6 @@
         ],
         "parameters": [
           {
-            "$ref": "#/parameters/hateCrimesCountVariableParam"
-          },
-          {
             "$ref": "#/parameters/fieldsParam"
           },
           {
@@ -3148,7 +3139,7 @@
         }
       }
     },
-    "/agencies/count/states/offenses/{state_abbr}/{agency_ori}": {
+    "/agencies/count/{ori}/offenses": {
       "get": {
         "tags": [
           "offenses",
@@ -3157,7 +3148,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/parameters/hateCrimesCountVariableParam"
+            "$ref": "#/parameters/oriPathParam"
           },
           {
             "$ref": "#/parameters/fieldsParam"
