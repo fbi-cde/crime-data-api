@@ -133,97 +133,52 @@ INSERT INTO agency_sums_view   (id, year, agency_id, offense_subcat_id, offense_
   JOIN ref_state rs ON (rs.state_id  = ag.state_id);
 
 
-DROP SEQUENCE IF EXISTS retacubeseq CASCADE;
-CREATE SEQUENCE retacubeseq;
+DROP TABLE IF EXISTS agency_offenses_view
+create TABLE agency_offenses_view (
+ id bigint,
+ year smallint NOT NULL,
+ agency_id bigint NOT NULL, 
+ offense_id bigint NOT NULL,
+ offense_code varchar(20),
+ offense_name text,
+ reported integer, 
+ unfounded integer,
+ actual integer,
+ cleared integer,
+ juvenile_cleared integer,
+ ori text,
+ ucr_agency_name text,
+ ncic_agency_name text,
+ pub_agency_name text,
+ state_postal_abbr varchar(2)
+);
 
-DROP TABLE IF EXISTS reta_agency_offense_summary;
-CREATE TABLE reta_agency_offense_summary AS SELECT 
-NEXTVAL('retacubeseq') AS reta_agency_summary_id,
-ar.data_year AS year,
-rs.state_postal_abbr,
-rs.state_name,
-ra.agency_id,
-ra.ori AS agency_ori,
-ra.pub_agency_name AS agency_name,
-ar.reported AS reported,
-CASE WHEN racb.agency_id IS NOT NULL THEN TRUE ELSE FALSE END AS covered,
-cvring.count AS covering_count,
-rap.population AS agency_population,
-rpg.population_group_code AS population_group_code,
-rpg.population_group_desc AS population_group,
-homicide.reported AS homicide_reported,
-homicide.actual AS homicide_actual,
-homicide.cleared AS homicide_cleared,
-homicide.juvenile_cleared AS homicide_juvenile_cleared,
-rape.reported AS rape_reported,
-rape.actual AS rape_actual,
-rape.cleared AS rape_cleared,
-rape.juvenile_cleared AS rape_juvenile_cleared
-FROM   agency_reporting ar
-JOIN ref_agency ra ON ra.agency_id=ar.agency_id
-LEFT OUTER JOIN ref_state rs ON rs.state_id=ra.state_id
-LEFT OUTER JOIN ref_agency_covered_by racb ON racb.agency_id=ar.agency_id AND racb.data_year=ar.data_year
-LEFT OUTER JOIN covering_counts cvring ON cvring.covered_by_agency_id=ar.agency_id AND cvring.data_year=ar.data_year
-LEFT OUTER JOIN ref_agency_population rap ON rap.agency_id=ar.agency_id AND rap.data_year=ar.data_year
-LEFT OUTER JOIN ref_population_group rpg ON rpg.population_group_id=rap.population_group_id
-LEFT JOIN (
-    SELECT 
-      year,
-      agency_id,
-      sum(agency_sums_view.reported) AS reported,
-      sum(agency_sums_view.actual) AS actual,
-      sum(agency_sums_view.cleared) AS cleared,
-      sum(agency_sums_view.juvenile_cleared) AS juvenile_cleared 
-      FROM  agency_sums_view
-      WHERE offense_code = 'SUM_HOM'
-      GROUP  BY (year, agency_id)
-    ) homicide ON homicide.agency_id=ar.agency_id AND homicide.year=ar.data_year 
-LEFT JOIN (
-    SELECT 
-      year,
-      agency_id,
-      sum(agency_sums_view.reported) AS reported,
-      sum(agency_sums_view.actual) AS actual,
-      sum(agency_sums_view.cleared) AS cleared,
-      sum(agency_sums_view.juvenile_cleared) AS juvenile_cleared 
-      FROM  agency_sums_view
-      WHERE offense_code = 'SUM_RPE'
-      GROUP BY (year, agency_id)
-    ) rape ON rape.agency_id=ar.agency_id AND rape.year=ar.data_year;
+DROP TRIGGER IF EXISTS agency_offenses_view_insert_state_partition ON agency_offenses_view;
+CREATE TRIGGER agency_offenses_view_insert_state_partition
+BEFORE INSERT ON agency_offenses_view
+FOR EACH ROW EXECUTE PROCEDURE create_state_partition_and_insert();
 
-
-CREATE UNIQUE INDEX reta_offense_agency_year_idx ON  reta_agency_offense_summary (year, agency_id);
-
--- DROP TABLE IF EXISTS reta_agency_offense_summary;
--- CREATE TABLE reta_agency_offense_summary AS
--- SELECT
--- NEXTVAL('retacubeseq') AS reta_agency_summary_id,
--- ar.data_year AS year,
--- rs.state_postal_abbr,
--- rs.state_name,
--- ra.agency_id,
--- ra.ori AS agency_ori,
--- ra.pub_agency_name AS agency_name,
--- ar.reported AS reported,
--- CASE WHEN racb.agency_id IS NOT NULL THEN TRUE ELSE FALSE END AS covered,
--- cvring.count AS covering_count,
--- rap.population AS agency_population,
--- rpg.population_group_code AS population_group_code,
--- rpg.population_group_desc AS population_group,
--- sum(homicide.reported) AS homicide_reported,
--- sum(homicide.actual) AS homicide_actual,
--- sum(homicide.cleared) AS homicide_cleared,
--- sum(homicide.juvenile_cleared) AS homicide_juvenile_cleared,
--- sum(rape.reported) AS rape_reported,
--- sum(rape.actual) AS rape_actual,
--- sum(rape.cleared) AS rape_cleared,
--- sum(rape.juvenile_cleared) AS rape_juvenile_cleared
--- FROM agency_reporting ar
--- JOIN ref_agency ra ON ra.agency_id=ar.agency_id
--- LEFT OUTER JOIN ref_state rs ON rs.state_id=ra.state_id
--- LEFT OUTER JOIN ref_agency_covered_by racb ON racb.agency_id=ar.agency_id AND racb.data_year=ar.data_year
--- LEFT OUTER JOIN covering_counts cvring ON cvring.covered_by_agency_id=ar.agency_id AND cvring.data_year=ar.data_year
--- LEFT OUTER JOIN ref_agency_population rap ON rap.agency_id=ar.agency_id AND rap.data_year=ar.data_year
--- LEFT OUTER JOIN ref_population_group rpg ON rpg.population_group_id=rap.population_group_id
--- LEFT OUTER JOIN agency_sums_view homicide ON homicide.agency_id=ar.agency_id AND homicide.data_year=ar.data_year AND homicide.offense_code='SUM_HOM'
--- LEFT OUTER JOIN agency_sums_view rape ON rape.agency_id=ar.agency_id AND rape.data_year=ar.data_year AND rape.offense_code='SUM_RPE';
+SET work_mem='3GB';
+SET synchronous_commit TO OFF;
+INSERT INTO agency_offenses_view(id, year, agency_id, offense_id, offense_code, offense_name, reported, unfounded, actual, cleared, juvenile_cleared, ori, pub_agency_name, state_postal_abbr)
+  SELECT 
+    asums.id,
+    asums.data_year as year,
+    asums.agency_id,
+    ro.offense_id,
+    ro.offense_code,
+    ro.offense_name,
+    asums.reported,
+    asums.unfounded,
+    asums.actual,
+    asums.cleared,
+    asums.juvenile_cleared,
+    ag.ori,
+    ag.pub_agency_name,
+    rs.state_postal_abbr
+  from agency_sums asums 
+  JOIN ref_agency ag ON (asums.agency_id = ag.agency_id)
+  JOIN agency_participation ap ON ap.year=asums.data_year AND ap.agency_id=asums.agency_id
+  JOIN reta_offense ro ON ros.offense_id=ro.offense_id
+  JOIN ref_state rs ON (rs.state_id  = ag.state_id);
+  WHERE ap.reported
