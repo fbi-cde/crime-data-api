@@ -150,6 +150,12 @@ class TestCdeAgencies:
         assert a is not None
         assert a.core_city_flag == 'Y'
 
+    def test_primary_county(self, app):
+        a = CdeAgency.query.filter(CdeAgency.agency_id == 17382).one()
+        assert a.primary_county_id == 2402
+        assert a.primary_county == 'Bristol'
+        assert a.primary_county_fips == '44001'
+
     def test_county_name_append(self, app):
         a = CdeAgency.query.filter(CdeAgency.ori == 'CA0190000').one()
         assert a.agency_name == 'Los Angeles County'
