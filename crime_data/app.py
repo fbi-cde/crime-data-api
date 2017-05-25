@@ -6,6 +6,7 @@ from os import getenv
 
 import flask_restful as restful
 from flask import Flask, render_template
+from flask_cors import CORS
 
 import crime_data.resources.agencies
 #import crime_data.resources.arrests
@@ -61,6 +62,7 @@ def register_extensions(app):
     debug_toolbar.init_app(app)
     migrate.init_app(app, db)
     cache_control.init_app(app)
+    CORS(app)
     return None
 
 
