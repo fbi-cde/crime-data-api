@@ -177,6 +177,7 @@ class CachedIncidentCountSchema(Schema):
     classification = marsh_fields.String(load_only=True)
     state_name = marsh_fields.String(load_only=True)
     state = marsh_fields.String(load_only=True)
+    agencies = marsh_fields.Integer()
     reported = marsh_fields.Integer()
     unfounded = marsh_fields.Integer()
     actual = marsh_fields.Integer()

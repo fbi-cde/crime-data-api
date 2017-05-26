@@ -350,6 +350,7 @@ class RetaMonthOffenseSubcatSummary(db.Model, CreatableModel):
 
     reta_month_offense_subcat_summary_id = db.Column(db.BigInteger, autoincrement=True, primary_key=True)
     grouping_bitmap = db.Column(db.Integer)
+    agencies = db.Column(db.Integer)
     reported = db.Column(db.BigInteger)
     unfounded = db.Column(db.BigInteger)
     actual = db.Column(db.BigInteger)
