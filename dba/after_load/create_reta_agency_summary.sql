@@ -1,5 +1,7 @@
-DROP TABLE IF EXISTS agency_reporting;
 SET work_mem='2GB';
+SET synchronous_commit TO OFF;
+
+DROP TABLE IF EXISTS agency_reporting;
 CREATE TABLE agency_reporting AS
 SELECT rm.data_year,
 rm.agency_id,
@@ -105,9 +107,8 @@ CREATE TRIGGER agency_sums_view_insert_state_partition
 BEFORE INSERT ON agency_sums_view
 FOR EACH ROW EXECUTE PROCEDURE create_state_partition_and_insert();
 
-SET work_mem='3GB';
-SET synchronous_commit TO OFF;
-INSERT INTO agency_sums_view   (id, year, agency_id, offense_subcat_id, offense_id, offense_code, offense_name, reported, unfounded, actual, cleared, juvenile_cleared,ori,pub_agency_name,offense_subcat_name,offense_subcat_code,state_postal_abbr)
+
+INSERT INTO agency_sums_view(id, year, agency_id, offense_subcat_id, offense_id, offense_code, offense_name, reported, unfounded, actual, cleared, juvenile_cleared,ori,pub_agency_name,offense_subcat_name,offense_subcat_code,state_postal_abbr)
   SELECT 
     asums.id,
     asums.data_year as year,
@@ -132,8 +133,6 @@ INSERT INTO agency_sums_view   (id, year, agency_id, offense_subcat_id, offense_
   JOIN reta_offense ro ON ros.offense_id=ro.offense_id
   JOIN ref_state rs ON (rs.state_id  = ag.state_id);
 
-SET work_mem='2GB';
-SET synchronous_commit TO OFF;
 DROP TABLE IF EXISTS agency_sums_by_offense;
 CREATE table agency_sums_by_offense (
 id SERIAL PRIMARY KEY,
@@ -162,7 +161,7 @@ JOIN reta_offense_subcat ros ON a.offense_subcat_id = ros.offense_subcat_id
 JOIN reta_offense ro ON ro.offense_id = ros.offense_id
 GROUP by a.data_year, a.agency_id, ro.offense_id;
 
-DROP TABLE IF EXISTS agency_offenses_view;
+DROP TABLE IF EXISTS agency_offenses_view CASCADE;
 create TABLE agency_offenses_view (
  id SERIAL,
  year smallint NOT NULL,
