@@ -494,7 +494,7 @@ class ExplorerOffenseMapping(object):
                     'Theft From Coin-Operated Machine or Device'],
         'motor-vehicle-theft': 'Motor Vehicle Theft',
         'homicide': 'Murder and Nonnegligent Manslaughter',
-        'rape': 'Rape',
+        'rape': ['Rape', 'Sexual Assault With An Object', 'Incest'],
         'robbery': 'Robbery',
         'arson': 'Arson'
     }
