@@ -47,3 +47,17 @@ class TestAgenciesEndpoint:
         res = testapp.get('/agencies?per_page=5')
         validate_api_call(swagger, raw_request=res.request, raw_response=res)
         assert len(res.json['results']) == 5
+
+    def test_agencies_offenses(self, testapp, swagger):
+        res = testapp.get('/agencies/count/RI0040200/offenses?explorer_offense=robbery')
+        validate_api_call(swagger, raw_request=res.request, raw_response=res)
+        assert len(res.json['results']) == 1
+
+        result = res.json['results'][0]
+        assert result['ori'] == 'RI0040200'
+        assert result['offense_code'] == 'SUM_ROB'
+        assert result['offense_name'] == 'Robbery'
+        assert result['reported'] == 22
+        assert result['actual'] == 22
+        assert result['cleared'] == 12
+        assert result['juvenile_cleared'] == 1

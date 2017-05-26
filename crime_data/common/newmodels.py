@@ -194,58 +194,6 @@ class RetaEstimated(db.Model):
 
     state = relationship(RefState)
 
-class RetaMonthAgencySubcatSummary(db.Model):
-    """
-    Precalculated sums for RETA Agency level data (offense level).
-
-    Create and populate with `dba/create_reta_agency_summary.sql`
-    """
-
-    __tablename__ = 'reta_agency_offense_summary'
-
-    reta_agency_summary_id = db.Column(db.BigInteger, autoincrement=True, primary_key=True)
-    year = db.Column(db.SmallInteger)
-    state_postal_abbr = db.Column(db.Text)
-    state_name = db.Column(db.Text)
-    agency_id = db.Column(db.BigInteger)
-    agency_ori = db.Column(db.Text)
-    agency_name = db.Column(db.Text)
-    reported = db.Column(db.BigInteger)
-    covered = db.Column(db.BigInteger)
-    covering_count = db.Column(db.BigInteger)
-    agency_population = db.Column(db.BigInteger)
-    population_group_code = db.Column(db.Text)
-    population_group = db.Column(db.Text)
-    homicide_reported = db.Column(db.BigInteger)
-    homicide_actual = db.Column(db.BigInteger)
-    homicide_cleared = db.Column(db.BigInteger)
-    homicide_juvenile_cleared = db.Column(db.BigInteger)
-    rape_reported = db.Column(db.BigInteger)
-    rape_actual = db.Column(db.BigInteger)
-    rape_cleared = db.Column(db.BigInteger)
-    rape_juvenile_cleared = db.Column(db.BigInteger)
-
-    def get(self, state = None, agency = None, year = None, county = None):
-        """Get Agency - Offense counts given some filters."""
-        query = RetaMonthAgencySubcatSummary.query
-
-        if state:
-            query = query.filter(func.lower(RetaMonthAgencySubcatSummary.state_postal_abbr) == state.lower())
-        if county:
-            subq = (db.session.query(models.RefAgencyCounty.agency_id)
-                    .select_from(models.RefAgencyCounty)
-                    .join(models.RefCounty, and_(models.RefAgencyCounty.county_id == models.RefCounty.county_id))
-                    .filter(models.RefCounty.county_fips_code == county)
-                )
-            if year:
-                subq = subq.filter(models.RefAgencyCounty.data_year == year)
-            query = query.filter(RetaMonthAgencySubcatSummary.agency_id.in_(subq.subquery()))
-        if agency:
-            query = query.filter(RetaMonthAgencySubcatSummary.agency_ori == agency)
-        if year:
-            query = query.filter(RetaMonthAgencySubcatSummary.year == year)
-
-        return query
 
 class AgencySums(db.Model):
 
@@ -294,6 +242,54 @@ class AgencySums(db.Model):
 
         query = query.join(AgencyParticipation, and_(AgencyParticipation.agency_id == AgencySums.agency_id, AgencyParticipation.year == AgencySums.year)).filter(AgencyParticipation.months_reported == 12)
         query = query.order_by(AgencySums.year.desc()) # Agency reported 12 Months.
+
+        #print(query) # Dubug
+        return query
+
+
+class AgencyOffenses(db.Model):
+    __tablename__ = 'agency_offenses_view'
+
+    id = db.Column(db.BigInteger, autoincrement=True, primary_key=True)
+    year = db.Column(db.SmallInteger)
+    agency_id = db.Column(db.BigInteger)
+    state_postal_abbr = db.Column(db.Text)
+    ori = db.Column(db.Text)
+    pub_agency_name = db.Column(db.Text)
+    offense_id = db.Column(db.BigInteger) # reta_offense_subcat
+    offense_code = db.Column(db.Text) # reta_offense
+    offense_name = db.Column(db.Text)
+    reported = db.Column(db.BigInteger)
+    unfounded = db.Column(db.BigInteger)
+    actual = db.Column(db.BigInteger)
+    cleared = db.Column(db.BigInteger)
+    juvenile_cleared = db.Column(db.BigInteger)
+
+    def get(self, state = None, agency = None, year = None, county = None, explorer_offense = None):
+        """Get Agency Sums given a state/year/county/agency ori, etc."""
+        query = AgencyOffenses.query
+
+        if state:
+            query = query.filter(func.lower(AgencySums.state_postal_abbr) == state.lower())
+        if county:
+            subq = (db.session.query(models.RefAgencyCounty.agency_id)
+                    .select_from(models.RefAgencyCounty)
+                    .join(models.RefCounty, and_(models.RefAgencyCounty.county_id == models.RefCounty.county_id))
+                    .filter(models.RefCounty.county_fips_code == county)
+                )
+            if year:
+                subq = subq.filter(models.RefAgencyCounty.data_year == year)
+            query = query.filter(AgencyOffenses.agency_id.in_(subq.subquery()))
+        if agency:
+            query = query.filter(AgencyOffenses.ori == agency)
+        if year:
+            query = query.filter(AgencyOffenses.year == year)
+        if explorer_offense:
+            offense = ExplorerOffenseMapping(explorer_offense).reta_offense_code
+            query = query.filter(AgencyOffenses.offense_code == offense)
+
+        query = query.join(AgencyParticipation, and_(AgencyParticipation.agency_id == AgencyOffenses.agency_id, AgencyParticipation.year == AgencyOffenses.year)).filter(AgencyParticipation.months_reported == 12)
+        query = query.order_by(AgencyOffenses.year.desc()) # Agency reported 12 Months.
 
         #print(query) # Dubug
         return query
