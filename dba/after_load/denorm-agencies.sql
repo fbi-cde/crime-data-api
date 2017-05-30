@@ -15,6 +15,9 @@ CREATE TABLE denorm_agencies_temp
     city_name character varying(100),
     state_id smallint NOT NULL,
     state_abbr character(2) NOT NULL,
+    primary_county_id bigint,
+    primary_county character varying(100),
+    primary_county_fips character varying(5),
     agency_status character(1) NOT NULL,
     submitting_agency_id bigint,
     submitting_sai character varying(9),
@@ -47,6 +50,9 @@ ADD CONSTRAINT agencies_tribe_fk FOREIGN KEY (tribe_id) REFERENCES ref_tribe(tri
 ALTER TABLE ONLY denorm_agencies_temp
 ADD CONSTRAINT agencies_city_fk FOREIGN KEY (city_id) REFERENCES ref_city(city_id);
 
+-- ALTER TABLE ONLY denorm_agencies_temp
+-- ADD CONSTRAINT agencies_county_fk FOREIGN KEY (primary_county_id) REFERENCES cde_counties(county_id);
+
 ALTER TABLE ONLY denorm_agencies_temp
 ADD CONSTRAINT agencies_campus_fk FOREIGN KEY (campus_id) REFERENCES ref_university_campus(campus_id);
 
@@ -70,6 +76,9 @@ ra.city_id,
 rc.city_name,
 ra.state_id,
 rs.state_postal_abbr AS state_abbr,
+rac.county_id AS primary_county_id,
+cc.county_name AS primary_county,
+cc.fips AS primary_county_fips,
 ra.agency_status,
 ra.submitting_agency_id,
 rsa.sai AS submitting_sai,
@@ -104,7 +113,8 @@ LEFT OUTER JOIN agency_participation cap ON cap.agency_id=ra.agency_id AND cap.y
 LEFT OUTER JOIN ref_submitting_agency rsa ON rsa.agency_id=ra.submitting_agency_id
 LEFT OUTER JOIN ref_state rss ON rss.state_id=rsa.state_id
 LEFT OUTER JOIN ref_agency_population rap ON rap.agency_id=ra.agency_id AND rap.data_year=y.current_year
-LEFT OUTER JOIN (SELECT DISTINCT ON (agency_id, data_year) agency_id, data_year, core_city_flag FROM ref_agency_county ORDER BY agency_id, data_year, core_city_flag DESC) rac ON rac.agency_id=ra.agency_id AND rac.data_year=y.current_year
+LEFT OUTER JOIN (SELECT DISTINCT ON (agency_id, data_year) agency_id, data_year, county_id, core_city_flag FROM ref_agency_county ORDER BY agency_id, data_year, core_city_flag DESC) rac ON rac.agency_id=ra.agency_id AND rac.data_year=y.current_year
+LEFT OUTER JOIN cde_counties cc ON cc.county_id=rac.county_id
 LEFT OUTER JOIN ref_population_group rpg ON rpg.population_group_id=rap.population_group_id
 LEFT OUTER JOIN ref_agency_covered_by_flat racp ON racp.agency_id=ra.agency_id AND racp.data_year=y.current_year
 LEFT OUTER JOIN ref_agency covering ON covering.agency_id=racp.covered_by_agency_id

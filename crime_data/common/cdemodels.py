@@ -190,8 +190,9 @@ class CdeRefState(RefState):
         return CdeParticipationRate(state_id=self.state_id).query.order_by('year DESC').all()
 
 
-class CdeRefCounty(RefCounty):
-    """A wrapper around the RefCounty model with extra methods."""
+class CdeRefCounty(db.Model):
+    """This uses our denormalized cde_counties table"""
+    __tablename__ = 'cde_counties'
 
     def get(county_id=None, fips=None, name=None):
         """Find matching counties by id, fips code or name."""
@@ -200,116 +201,25 @@ class CdeRefCounty(RefCounty):
         if county_id:
             query = query.filter(CdeRefCounty.county_id == county_id)
         elif fips:
-            if isinstance(fips, str) and len(fips) == 5:
-                state = CdeRefState.get(fips=fips).one()
-                # This is because FBI stores county FIPS as string of
-                # int coercion of county FIPS code so that full FIPS
-                # 05003 you'd expect is stored as '3'
-                county_fips = str(int(fips[2:5]))
-                query = query.filter(
-                    and_(CdeRefCounty.state_id == state.state_id,
-                         CdeRefCounty.county_fips_code == county_fips))
-            else:
-                raise ValueError('The FIPS code must be a 5-character string')
+            query = query.filter(CdeRefCounty.fips == fips)
         elif name:
             query = query.filter(func.lower(CdeRefCounty.county_name) ==
                                  func.lower(name))
-
         return query
 
-    @property
-    def current_year(self):
-        try:
-            return self._current_year
-        except AttributeError:
-            self._current_year = session.execute('select max(data_year) from cde_participation_rates where county_id = :county_id', {'county_id': self.county_id}).scalar()
-            return self._current_year
-
-    @property
-    def state_name(self):
-        """Returns the state name or None if no state record is found."""
-        if self.state is None:
-            None
-        else:
-            self.state.name
-
-    @property
-    def state_abbr(self):
-        """Returns the state postal abbrev or None is no state record is found."""
-
-        if self.state is None:
-            None
-        else:
-            self.state.state_postal_abbr
-
-    @property
-    def fips(self):
-        """Builds a FIPS code string for the county."""
-        # the int coercion is necessary because of how FBI stores county FIPS
-        return '{}{:03d}'.format(self.state.state_fips_code,
-                                 int(self.county_fips_code))
-
-    def total_agencies_for_year(self, data_year):
-        """Counts the number of agencies for that county in a year."""
-        return self._participation_for_year(data_year).total_agencies
-
-    @property
-    def participating_agencies(self):
-        """Returns the number of agencies for the most recent year"""
-        return self.participating_agencies_for_year(self.current_year)
-
-    def participating_agencies_for_year(self, data_year):
-        """Counts the number of agencies for that county in a year."""
-        return self._participation_for_year(data_year).participating_agencies
-
-    @property
-    def participating_population(self):
-        """Returns the population for the given year"""
-        return self.participating_population_for_year(self.current_year)
-
-    def participating_population_for_year(self, data_year):
-        """Returns the population for a given year"""
-        return self._participation_for_year(data_year).participating_population
-
-    @property
-    def total_agencies(self):
-        """Returns the number of agencies for the most recent year"""
-        return self.total_agencies_for_year(self.current_year)
-
-    def total_population_for_year(self, data_year):
-        """Returns the population for a given year"""
-        return self._participation_for_year(data_year).total_population
-
-    @property
-    def total_population(self):
-        """Returns the most recent reported population for the county"""
-        return self.total_population_for_year(self.current_year)
-
-    def police_officers_for_year(self, data_year):
-        """Returns the number of police officers for a given year"""
-        query = session.query(func.sum(models.PeEmployeeData.male_officer +
-                                       models.PeEmployeeData.female_officer))
-        query = (
-            query.join(CdeRefAgency)
-            .join(CdeRefAgencyCounty)
-            .filter(CdeRefAgencyCounty.data_year == data_year)
-            .filter(CdeRefAgencyCounty.county_id == self.county_id)
-            .filter(CdeRefAgency.agency_id == models.PeEmployeeData.agency_id)
-            .filter(models.PeEmployeeData.data_year == data_year)
-            .filter(models.PeEmployeeData.reported_flag == 'Y')
-        )
-
-        return query.scalar()
-
-    @property
-    def police_officers(self):
-        """Returns the total police officers for the current year"""
-        return self.police_officers_for_year(self.current_year)
-
-    def _participation_for_year(self, year):
-        """Internal method for loading the participation data"""
-        l = CdeParticipationRate(county_id=self.county_id, year=year).query.one()
-        return l
+    county_id = db.Column(db.BigInteger, primary_key=True)
+    fips = db.Column(db.String(5))
+    county_name = db.Column(db.String(100))
+    state_id = db.Column(db.SmallInteger)
+    state_name = db.Column(db.String(100))
+    state_abbr = db.Column(db.String(2))
+    current_year = db.Column(db.SmallInteger)
+    total_population = db.Column(db.BigInteger)
+    total_agencies = db.Column(db.Integer)
+    participating_agencies = db.Column(db.Integer)
+    nibrs_participating_agencies = db.Column(db.Integer)
+    covered_agencies = db.Column(db.Integer)
+    participating_population = db.Column(db.BigInteger)
 
 
 class CdeRefAgency(models.RefAgency):

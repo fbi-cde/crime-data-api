@@ -533,6 +533,21 @@
           ],
           "maxLength": 2
         },
+        "primary_county": {
+          "description": "The name of the main county that the agency is located within",
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 100
+        },
+        "primary_county_fips": {
+          "description": "The 5-character FIPS code for the primary county",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "agency_status": {
           "description": "A code for the agency status",
           "type": "string",

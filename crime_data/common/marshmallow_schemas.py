@@ -1043,7 +1043,9 @@ class AgencySchema(ma.ModelSchema):
     class Meta:
         model = newmodels.CdeAgency
         ordered = True
-        exclude = ('agency_id', 'state_id', 'city_id', 'submitting_agency_id', 'covered_by_id', )
+        exclude = ('agency_id', 'state_id', 'city_id',
+                   'submitting_agency_id', 'covered_by_id', 'primary_county_id',
+        )
 
 
 class EstimateSchema(ma.ModelSchema):
