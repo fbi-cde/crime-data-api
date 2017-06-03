@@ -226,6 +226,7 @@ class AgencyOffensesSchema(Schema):
     offense_id = marsh_fields.Integer()
     offense_code = marsh_fields.String() # reta_offense
     offense_name = marsh_fields.String()
+    classification = marsh_fields.String()
     reported = marsh_fields.Integer()
     unfounded = marsh_fields.Integer()
     actual = marsh_fields.Integer()

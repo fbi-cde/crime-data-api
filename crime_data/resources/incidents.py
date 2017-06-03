@@ -137,10 +137,15 @@ class AgenciesOffensesCount(CdeResource):
     @tuning_page
     def get(self, args, state_abbr = None, agency_ori = None):
         self.verify_api_key(args)
-        model = newmodels.AgencyOffenses()
         year = args.get('year', None)
         explorer_offense = args.get('explorer_offense', None)
-        agency_sums = model.get(state = state_abbr, agency = agency_ori, year = year, explorer_offense = explorer_offense)
+        agency_sums = None
+
+        # ugh
+        if explorer_offense == 'violent' or explorer_offense == 'property':
+            agency_sums = newmodels.AgencyClassificationCounts().get(state = state_abbr, agency = agency_ori, year = year, classification = explorer_offense)
+        else:
+            agency_sums = newmodels.AgencyOffenseCounts().get(state = state_abbr, agency = agency_ori, year = year, explorer_offense = explorer_offense)
         filename = 'agency_offenses_state'
         return self.render_response(agency_sums, args, csv_filename=filename)
 

@@ -203,4 +203,73 @@ FROM agency_sums_by_offense a
 JOIN cde_agencies c ON c.agency_id=a.agency_id
 JOIN reta_offense ro ON ro.offense_id = a.offense_id;
 
---DROP TABLE agency_sums_by_offense;
+DROP TABLE agency_sums_by_offense;
+
+-- classifications grouping
+DROP TABLE IF EXISTS agency_sums_by_classification;
+CREATE table agency_sums_by_classification (
+id SERIAL PRIMARY KEY,
+data_year smallint NOT NULL,
+agency_id bigint NOT NULL,
+classification TEXT NOT NULL,
+reported integer,
+unfounded integer,
+actual integer,
+cleared integer,
+juvenile_cleared integer
+);
+
+INSERT INTO agency_sums_by_classification(data_year, agency_id, classification, reported, unfounded, actual, cleared, juvenile_cleared)
+SELECT
+a.data_year,
+a.agency_id,
+oc.classification_name AS classification,
+SUM(a.reported) AS reported,
+SUM(a.unfounded) AS unfounded,
+SUM(a.actual) AS actual,
+SUM(a.cleared) AS cleared,
+SUM(a.juvenile_cleared) AS juvenile_cleared
+FROM agency_sums a
+JOIN reta_offense_subcat ros ON a.offense_subcat_id = ros.offense_subcat_id
+JOIN reta_offense ro ON ro.offense_id = ros.offense_id
+JOIN offense_classification oc ON oc.classification_id = ro.classification_id
+GROUP by a.data_year, a.agency_id, oc.classification_name;
+
+DROP TABLE IF EXISTS agency_classification_view CASCADE;
+create TABLE agency_classification_view (
+ id SERIAL,
+ year smallint NOT NULL,
+ agency_id bigint NOT NULL,
+ classification text,
+ reported integer,
+ unfounded integer,
+ actual integer,
+ cleared integer,
+ juvenile_cleared integer,
+ ori text,
+ pub_agency_name text,
+ state_postal_abbr varchar(2)
+);
+
+DROP TRIGGER IF EXISTS agency_classification_view_insert_state_partition ON agency_classification_view;
+CREATE TRIGGER agency_classification_view_insert_state_partition
+BEFORE INSERT ON agency_classification_view
+FOR EACH ROW EXECUTE PROCEDURE create_state_partition_and_insert();
+
+INSERT INTO agency_classification_view(year, agency_id, classification, reported, unfounded, actual, cleared, juvenile_cleared, ori, pub_agency_name, state_postal_abbr)
+  SELECT
+    a.data_year,
+    a.agency_id,
+    a.classification,
+    a.reported,
+    a.unfounded,
+    a.actual,
+    a.cleared,
+    a.juvenile_cleared,
+    c.ori,
+    c.agency_name,
+    c.state_abbr
+FROM agency_sums_by_classification a
+JOIN cde_agencies c ON c.agency_id=a.agency_id;
+
+DROP TABLE agency_sums_by_classification;

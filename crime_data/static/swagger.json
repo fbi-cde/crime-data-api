@@ -925,6 +925,11 @@
           "format": "string",
           "readOnly": true,
           "type": "string"
+        },
+        "classification": {
+          "type": "string",
+          "description": "A classification of the criminal offenses",
+          "enum": ["Violent", "Property"]
         }
       },
       "type": "object"

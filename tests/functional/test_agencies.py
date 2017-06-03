@@ -61,3 +61,17 @@ class TestAgenciesEndpoint:
         assert result['actual'] == 22
         assert result['cleared'] == 12
         assert result['juvenile_cleared'] == 1
+
+    def test_agencies_classification(self, testapp, swagger):
+        res = testapp.get('/agencies/count/RI0040200/offenses?explorer_offense=property')
+        validate_api_call(swagger, raw_request=res.request, raw_response=res)
+        assert len(res.json['results']) == 1
+
+        result = res.json['results'][0]
+        assert result['ori'] == 'RI0040200'
+        assert result['classification'] == 'Property'
+        assert result['reported'] == 1595
+        assert result['unfounded'] == 0
+        assert result['actual'] == 1595
+        assert result['cleared'] == 419
+        assert result['juvenile_cleared'] == 43
