@@ -492,3 +492,97 @@ class CdeAgency(db.Model):
     staffing_year = db.Column(db.SmallInteger)
     total_officers = db.Column(db.Integer)
     total_civilians = db.Column(db.Integer)
+
+
+class HtAgency(db.Model):
+    """Represents human trafficking counts reported by a single agency in a given year"""
+    class Meta:
+        __tablename__ = 'ht_agency'
+
+    @classmethod
+    def column_is_string(cls, col_name):
+        col = getattr(cls.__table__.c, col_name)
+        return isinstance(col.type, sqltypes.String)
+
+    @classmethod
+    def filtered(cls, filters, args=None):
+        args = args or []
+        qry = cls.query
+
+        # This could be generalized to other places in the future
+        if 'fields' in args:
+            fields = args['fields'].split(',')
+            qry = qry.with_entities(*fields).select_from(CdeAgency)
+
+        for filter in filters:
+            if isinstance(filter, BinaryExpression):
+                qry = qry.filter(filter)
+            else:
+                (col_name, comparitor, values) = filter
+                col = getattr(cls, col_name)
+                if cls.column_is_string(col_name):
+                    col = func.lower(col)
+                operation = getattr(col, comparitor)
+                qry = qry.filter(or_(operation(v) for v in values)).order_by(
+                    col)
+        return qry
+
+    id = db.Column(db.Integer, primary_key=True)
+    year = db.Column(db.SmallInteger)
+    ori = db.Column(db.Text)
+    agency_id = db.Column(db.BigInteger)
+    agency_name = db.Column(db.Text)
+    population = db.Column(db.BigInteger)
+    state_id = db.Column(db.Integer)
+    state_abbr = db.Column(db.Text)
+    months_reported = db.Column(db.SmallInteger)
+    sex_acts = db.Column(db.Integer)
+    sex_acts_cleared = db.Column(db.Integer)
+    sex_acts_juvenile_cleared = db.Column(db.Integer)
+    servitude = db.Column(db.Integer)
+    servitude_cleared = db.Column(db.Integer)
+    servitude_juvenile_cleared = db.Column(db.Integer)
+
+
+class HtSummary(db.Model):
+    """Collects rollups of multiple HtAgency reports. You can use this
+       table to get counts of human trafficking for a given agency, a
+       specific state or national on a single or all years. Note that
+       counts from US Territories are not available in this table (the
+       FBI says they shouldn't be included."""
+    class Meta:
+        __tablename__ = 'ht_summary'
+
+    ht_summary_id = db.Column(db.Integer, primary_key=True)
+    grouping_bitmap = db.Column(db.Integer)
+    year = db.Column(db.SmallInteger)
+    ori = db.Column(db.Text)
+    agency_id = db.Column(db.BigInteger)
+    agency_name = db.Column(db.Text)
+    agencies = db.Column(db.Integer)
+    population = db.Column(db.BigInteger)
+    state_id = db.Column(db.Integer)
+    state_abbr = db.Column(db.Text)
+    months_reported = db.Column(db.SmallInteger)
+    sex_acts = db.Column(db.Integer)
+    sex_acts_cleared = db.Column(db.Integer)
+    sex_acts_juvenile_cleared = db.Column(db.Integer)
+    servitude = db.Column(db.Integer)
+    servitude_cleared = db.Column(db.Integer)
+    servitude_juvenile_cleared = db.Column(db.Integer)
+
+    @classmethod
+    def grouped_by_state(cls, year=None, state_abbr=None):
+        query = HtSummary.query
+
+        query = query.filter(HtSummary.state_id != None)
+        query = query.filter(HtSummary.agency_id == None)
+
+        if year is not None:
+            query = query.filter(HtSummary.year == year)
+
+        if state_abbr is not None:
+            query = query.filter(HtSummary.state_abbr == state_abbr)
+
+        query = query.order_by(HtSummary.year, HtSummary.state_abbr)
+        return query

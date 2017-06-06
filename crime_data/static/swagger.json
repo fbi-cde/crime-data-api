@@ -961,6 +961,114 @@
         }
       ]
     },
+    "TraffickingReport": {
+      "type": "object",
+      "required": [
+        "sex_acts",
+        "sex_acts_cleared",
+        "sex_acts_juvenile_cleared",
+        "servitude",
+        "servitude_cleared",
+        "servitude_juvenile_cleared"
+      ],
+      "properties": {
+        "year": {
+          "type": "integer",
+          "description": "The year an agency is reporting human trafficking numbers for",
+          "minimum": 2013
+        },
+        "population": {
+          "type": ["integer", "null"],
+          "description": "The population served by the agency in the year of its report. Because of how the UCR program uniquely apportions populations to agencies, this number may be significantly lower than the actual population that lies within the agency's jurisdiction or even 0"
+        },
+        "state_abbr": {
+          "type": "string",
+          "description": "The 2-letter postal code for the state",
+          "minLength": 2,
+          "maxLength": 2
+        },
+        "sex_acts": {
+          "type": "integer",
+          "description": "Total cases, commercial sex acts",
+          "minimum": 0
+        },
+        "sex_acts_cleared": {
+          "type": "integer",
+          "description": "Total cleared cases, commercial sex acts",
+          "minimum": 0
+        },
+        "sex_acts_juvenile_cleared": {
+          "type": "integer",
+          "description": "Total juvenile cleared cases, commercial sex acts",
+          "minimum": 0
+        },
+        "servitude": {
+          "type": "integer",
+          "description": "Total cases, involuntary servitude",
+          "minimum": 0
+        },
+        "servitude_cleared": {
+          "type": "integer",
+          "description": "Total cleared cases, involuntary servitude",
+          "minimum": 0
+        },
+        "servitude_juvenile_cleared": {
+          "type": "integer",
+          "description": "Total juvenile cleared cases, involuntary servitude",
+          "minimum": 0
+        }
+      }
+    },
+    "SummaryTraffickingReport": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/TraffickingReport"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "months_reported": {
+              "type": "integer",
+              "description": "How many months in the year all participating agencies within the given state reported human trafficking statistics to the FBI. To get an average number of months reported by each agency, you can divide by the agencies parameter",
+              "minimum": 1
+            },
+            "agencies": {
+              "type": "integer",
+              "description": "The number of agencies reporting in the given state and year",
+              "minimum": 1
+            }
+          }
+        }
+      ]
+    },
+    "AgencyTraffickingReport": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/TraffickingReport"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "months_reported": {
+              "type": "integer",
+              "description": "How many months the agency reported human trafficking statistics to the FBI. The FBI includes counts from agencies that have not reported a full year, and you should avoid extrapoliting annual counts from a partial year of reporting.",
+              "minimum": 1,
+              "maximum": 12
+            },
+            "ori": {
+              "type": "string",
+              "description": "The agency ORI",
+              "minLength": 9,
+              "maxLength": 9
+            },
+            "agency_name": {
+              "type": "string",
+              "description": "The agency's name"
+            }
+          }
+        }
+      ]
+    },
     "AgencyParticipation": {
       "type": "object",
       "required": [
@@ -3087,6 +3195,120 @@
           }
         }
       }
+    },
+    "/ht/agencies": {
+      "get": {
+        "tags": [
+          "human trafficking"
+        ],
+        "description": "Returns a paginated list of annual agency counts for human trafficking. Not all agencies submit reports nor they necessarily submit for all months of a given year. Human trafficking data has only been collected from 2013 onwards. Any field returned in the response can be used to filter down searches.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          },
+          {
+            "$ref": "#/parameters/oriParam"
+          },
+          {
+            "$ref": "#/parameters/agencyNameParam"
+          },
+          {
+            "$ref": "#/parameters/stateAbbrParam"
+          },
+          {
+            "$ref": "#/parameters/yearParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "For success, returns a paginated list of agency reports on human trafficking",
+            "schema": {
+              "type": "object",
+              "required": [
+                "pagination",
+                "results"
+              ],
+              "properties": {
+                "pagination": {
+                  "$ref": "#/definitions/Pagination"
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/AgencyTraffickingReport"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "The standard error response",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/ht/states": {
+      "get": {
+        "tags": [
+          "human trafficking"
+        ],
+        "description": "Returns a paginated list of state counts for human trafficking. Not all agencies submit reports nor they necessarily submit for all months of a given year. Human trafficking data has only been collected from 2013 onwards. Only reports from states and Washington, DC are included in these counts (territories are excluded). Any field returned in the response can be use to filter down searches.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          },
+          {
+            "$ref": "#/parameters/stateAbbrParam"
+          },
+          {
+            "$ref": "#/parameters/yearParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "For success, returns a paginated list of state totals on human trafficking",
+            "schema": {
+              "type": "object",
+              "required": [
+                "pagination",
+                "results"
+              ],
+              "properties": {
+                "pagination": {
+                  "$ref": "#/definitions/Pagination"
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/SummaryTraffickingReport"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "The standard error response",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
     }
   },
   "swagger": "2.0",
@@ -3105,6 +3327,14 @@
       "externalDocs": {
         "description": "About Hate Crime Statistics",
         "url": "https://ucr.fbi.gov/hate-crime/2015/resource-pages/abouthatecrime_final"
+      }
+    },
+    {
+      "name": "human trafficking",
+      "description": "These endpoints return statistics about human trafficking reported into the FBI since 2013",
+      "externalDocs": {
+        "description": "Human Trafficking - Questions and Answers",
+        "url": "https://ucr.fbi.gov/crime-in-the-u.s/2015/crime-in-the-u.s.-2015/additional-reports/human-trafficking/human-trafficking-questions-and-answers"
       }
     },
     {
