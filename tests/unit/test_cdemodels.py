@@ -42,6 +42,12 @@ class TestCdeRefCounty:
         county = CdeRefCounty.get(county_id=2402).one()
         assert county.total_population == 49251
 
+    def test_unspecified_county(self, app):
+        """Special 'unspecified counties' should not have a FIPS"""
+
+        county = CdeRefCounty.get(county_id=3311).one()
+        assert county.fips is None
+
     # Not sure we need this
     # def test_police_officers(self, app):
     #     """Using the test data in the database"""
