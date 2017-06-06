@@ -17,6 +17,9 @@ class TestParticipationEndpoint:
         assert res.status_code == 200
         validate_api_call(swagger, raw_request=res.request, raw_response=res)
 
+        res = testapp.get('/participation/states/ny')
+        assert res.status_code == 200
+
     def test_agencies_endpoint(self, testapp, swagger):
         res = testapp.get('/participation/agencies?year=2014')
         assert res.status_code == 200

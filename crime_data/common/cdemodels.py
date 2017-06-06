@@ -73,10 +73,9 @@ class CdeRefAgencyCounty(models.RefAgencyCounty):
 class CdeParticipationRate(newmodels.ParticipationRate):
     """Class for querying the cde_participation_rate"""
 
-    def __init__(self, year=None, state_id=None, state_abbr=None, county_id=None):
+    def __init__(self, year=None, state_id=None, county_id=None):
         self.year = year
         self.state_id = state_id
-        self.state_abbr = state_abbr
         self.county_id = county_id
 
     @property
@@ -109,7 +108,7 @@ class CdeRefState(RefState):
         if state_id:
             query = query.filter(CdeRefState.state_id == state_id)
         elif abbr:
-            query = query.filter(CdeRefState.state_postal_abbr == abbr)
+            query = query.filter(func.lower(CdeRefState.state_postal_abbr) == func.lower(abbr))
         elif fips:
             query = query.filter(CdeRefState.state_fips_code == fips[0:2])
 
@@ -874,7 +873,7 @@ class MultiYearCountView(object):
 
         if state_abbr and state_id is None:
             # Select State ID for State Abbreviation.
-            self.state_id = CdeRefState.get(abbr=state_abbr.upper()).one().state_id
+            self.state_id = CdeRefState.get(abbr=state_abbr).one().state_id
             
         self.ori = ori
         self.field = field
@@ -1105,7 +1104,7 @@ class OffenseSubCountView(object):
 
         if state_abbr and state_id is None:
             # Select State ID for State Abbreviation.
-            self.state_id = CdeRefState.get(abbr=state_abbr.upper()).one().state_id
+            self.state_id = CdeRefState.get(abbr=state_abbr).one().state_id
 
         self.ori = ori
         self.field = field
