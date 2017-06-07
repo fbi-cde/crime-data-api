@@ -37,3 +37,14 @@ UPDATE nibrs_offense_denorm SET location_name = nibrs_location_type.location_nam
 UPDATE nibrs_offense_denorm SET offense_name = nibrs_offense_type.offense_name from nibrs_offense_type where nibrs_offense_type.offense_type_id = nibrs_offense_denorm.offense_type_id;
 UPDATE nibrs_offense_denorm SET weapon_id = nibrs_weapon.weapon_id from nibrs_weapon where nibrs_weapon.offense_id = nibrs_offense_denorm.offense_id;
 UPDATE nibrs_offense_denorm SET weapon_name = nibrs_weapon_type.weapon_name from nibrs_weapon_type where nibrs_weapon_type.weapon_id = nibrs_offense_denorm.weapon_id;
+
+
+
+-- Bias, Offense attempted/completed.
+-- Offender(s) Suspected of Using (many to many?)
+ALTER TABLE nibrs_offense_denorm ADD COLUMN bias_name text, ADD COLUMN attempt_complete_flag varchar(1), ADD COLUMN suspected_using text;
+UPDATE nibrs_offense_denorm SET bias_name = nibrs_bias_list.bias_name, attempt_complete_flag = nibrs_offense.attempt_complete_flag, suspected_using = nibrs_using_list.suspect_using_name from nibrs_offense JOIN nibrs_bias_motivation ON (nibrs_offense.offense_id = nibrs_bias_motivation.offense_id) JOIN nibrs_bias_list ON (nibrs_bias_motivation.bias_id = nibrs_bias_list.bias_id) JOIN nibrs_suspect_using ON (nibrs_suspect_using.offense_id = nibrs_offense.offense_id) JOIN nibrs_using_list ON (nibrs_using_list.suspect_using_id = nibrs_suspect_using.suspect_using_id) where nibrs_offense_denorm.offense_id = nibrs_offense.offense_id;
+
+
+
+CREATE INDEX nibrs_offense_denorm_state_year_id_idx ON nibrs_offense_denorm (state_code, year);

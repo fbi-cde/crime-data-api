@@ -41,7 +41,7 @@ FOR EACH ROW EXECUTE PROCEDURE create_partition_and_insert();
 
 SET synchronous_commit='off'; -- Go Super Saiyan.
 
-INSERT INTO nibrs_offender_denorm (incident_id, agency_id, year, incident_date, offender_id, age_id, age_num, sex_code, race_id) SELECT nibrs_offender.incident_id, nibrs_incident.agency_id, EXTRACT(YEAR FROM nibrs_incident.incident_date) as year, nibrs_incident.incident_date, nibrs_offender.offender_id, nibrs_offender.age_id, ceil(nibrs_offender.age_num::numeric / 10) * 10, nibrs_offender.sex_code,nibrs_offender.race_id from nibrs_offender JOIN nibrs_incident on nibrs_incident.incident_id = nibrs_offender.incident_id;
+INSERT INTO nibrs_offender_denorm (incident_id, agency_id, year, incident_date, offender_id, age_id, age_num, sex_code, race_id) SELECT nibrs_offender.incident_id, nibrs_incident.agency_id, EXTRACT(YEAR FROM nibrs_incident.incident_date) as year, nibrs_incident.incident_date, nibrs_offender.offender_id, nibrs_offender.age_id, nibrs_offender.age_num::numeric, nibrs_offender.sex_code,nibrs_offender.race_id from nibrs_offender JOIN nibrs_incident on nibrs_incident.incident_id = nibrs_offender.incident_id;
 
 -- UPDATE nibrs_offender_denorm SET agency_id = nibrs_incident.agency_id, incident_date=nibrs_incident.incident_date from nibrs_incident where nibrs_offender_denorm.incident_id = nibrs_incident.incident_id;
 UPDATE nibrs_offender_denorm SET state_id = ref_agency.state_id, county_id = ref_agency_county.county_id from ref_agency JOIN ref_agency_county ON ref_agency.agency_id = ref_agency_county.agency_id where nibrs_offender_denorm.agency_id = ref_agency.agency_id;
@@ -63,5 +63,6 @@ UPDATE nibrs_offender_denorm SET bias_name = nibrs_bias_list.bias_name from nibr
 ALTER TABLE nibrs_offender_denorm ADD COLUMN ethnicity varchar(100);
 UPDATE nibrs_offender_denorm SET ethnicity = nibrs_ethnicity.ethnicity_name from nibrs_offender JOIN nibrs_ethnicity ON nibrs_ethnicity.ethnicity_id = nibrs_offender.ethnicity_id where nibrs_offender.offender_id = nibrs_offender_denorm.offender_id;
 
+CREATE INDEX nibrs_offender_denorm_state_year_id_idx ON nibrs_offender_denorm (state_code, year);
 
 
