@@ -6,7 +6,6 @@ from os import getenv
 
 import flask_restful as restful
 from flask import Flask, render_template
-from flask_cors import CORS
 
 import crime_data.resources.agencies
 #import crime_data.resources.arrests
@@ -22,7 +21,7 @@ import crime_data.resources.hate_crime
 import crime_data.resources.geo
 import crime_data.resources.participation
 import crime_data.resources.estimates
-from werkzeug.contrib.fixers import ProxyFix
+
 from crime_data import commands
 from crime_data.assets import assets
 from crime_data.common.marshmallow_schemas import ma
@@ -33,7 +32,6 @@ from crime_data.settings import ProdConfig
 
 if __name__ == '__main__':
     app.run(debug=True)  # nosec, this isn't called on production
-    #app.wsgi_app = ProxyFix(app.wsgi_app)
 
 
 def create_app(config_object=ProdConfig):
@@ -63,7 +61,6 @@ def register_extensions(app):
     debug_toolbar.init_app(app)
     migrate.init_app(app, db)
     cache_control.init_app(app)
-    CORS(app)
     return None
 
 
@@ -137,10 +134,10 @@ def add_resources(app):
     api.add_resource(crime_data.resources.incidents.AgenciesSumsCounty,
                      '/agencies/count/states/suboffenses/<string:state_abbr>/counties/<string:county_fips_code>' )
 
-    api.add_resource(crime_data.resources.incidents.AgenciesOffensesCount,
-                     '/agencies/count/<string:agency_ori>/offenses','/agencies/count/states/<string:state_abbr>/offenses' )
+    api.add_resource(crime_data.resources.incidents.CachedIncidentsAgenciesCount,
+                     '/agencies/count/states/offenses/<string:state_abbr>/<string:agency_ori>','/agencies/count/states/offenses/<string:state_abbr>' )
 
-    api.add_resource(crime_data.resources.incidents.AgenciesOffensesCountyCount,
+    api.add_resource(crime_data.resources.incidents.CachedIncidentsAgenciesCountyCount,
                      '/agencies/count/states/offenses/<string:state_abbr>/counties/<string:county_fips_code>' )
 
     # api.add_resource(crime_data.resources.incidents.IncidentsDetail,
@@ -264,13 +261,3 @@ def register_newrelic(app):
         newrelic.agent.initialize()
     except: #nosec
         pass
-
-
-from flask.helpers import get_debug_flag
-
-from crime_data.settings import DevConfig, ProdConfig
-
-CONFIG = DevConfig if get_debug_flag() else ProdConfig
-
-app = create_app(CONFIG)
-app.wsgi_app = ProxyFix(app.wsgi_app)
