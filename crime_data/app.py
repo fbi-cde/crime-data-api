@@ -22,7 +22,10 @@ import crime_data.resources.hate_crime
 import crime_data.resources.geo
 import crime_data.resources.participation
 import crime_data.resources.estimates
+
+import crime_data.resources.human_traffic
 from werkzeug.contrib.fixers import ProxyFix
+
 from crime_data import commands
 from crime_data.assets import assets
 from crime_data.common.marshmallow_schemas import ma
@@ -219,6 +222,11 @@ def add_resources(app):
     api.add_resource(crime_data.resources.hate_crime.HateCrimesCountStates,
                      '/hc/count/states/<int:state_id>/<string:variable>',
                      '/hc/count/states/<string:state_abbr>/<string:variable>')
+
+    api.add_resource(crime_data.resources.human_traffic.HtAgencyList,
+                     '/ht/agencies')
+    api.add_resource(crime_data.resources.human_traffic.HtStatesList,
+                     '/ht/states')
 
     api.add_resource(crime_data.resources.victims.VictimOffenseSubcounts,
                      '/victims/count/states/<int:state_id>/<string:variable>/offenses',

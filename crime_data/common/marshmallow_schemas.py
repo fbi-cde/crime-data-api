@@ -1049,6 +1049,22 @@ class AgencySchema(ma.ModelSchema):
         )
 
 
+class HtAgencySchema(ma.ModelSchema):
+    """Response schema for the human trafficking endpoints"""
+    class Meta:
+        model = newmodels.HtAgency
+        ordered = True
+        exclude = ('id', 'agency_id', 'state_id', )
+
+
+class HtSummarySchema(ma.ModelSchema):
+    """Response schema for the summary endpoint"""
+    class Meta:
+        model = newmodels.HtSummary
+        ordered = True
+        exclude = ('id', 'agency_id', 'state_id', )
+
+
 class EstimateSchema(ma.ModelSchema):
    """Response schema for the RetaEstimated table"""
 
