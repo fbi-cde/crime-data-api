@@ -22,7 +22,7 @@ import crime_data.resources.hate_crime
 import crime_data.resources.geo
 import crime_data.resources.participation
 import crime_data.resources.estimates
-
+from werkzeug.contrib.fixers import ProxyFix
 from crime_data import commands
 from crime_data.assets import assets
 from crime_data.common.marshmallow_schemas import ma
@@ -33,6 +33,7 @@ from crime_data.settings import ProdConfig
 
 if __name__ == '__main__':
     app.run(debug=True)  # nosec, this isn't called on production
+    #app.wsgi_app = ProxyFix(app.wsgi_app)
 
 
 def create_app(config_object=ProdConfig):
@@ -263,3 +264,13 @@ def register_newrelic(app):
         newrelic.agent.initialize()
     except: #nosec
         pass
+
+
+from flask.helpers import get_debug_flag
+
+from crime_data.settings import DevConfig, ProdConfig
+
+CONFIG = DevConfig if get_debug_flag() else ProdConfig
+
+app = create_app(CONFIG)
+app.wsgi_app = ProxyFix(app.wsgi_app)
