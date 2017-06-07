@@ -1,1 +1,1 @@
-web: bin/run.sh
+web: bin/start.sh
