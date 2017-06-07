@@ -23,6 +23,7 @@ Flask-Migrate==2.0.0
 
 # Deployment
 gunicorn>=19.1.1
+gevent==1.2.1
 Flask-Cors==3.0.2
 
 # Assets
