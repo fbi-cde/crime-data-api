@@ -10,7 +10,7 @@ tests/
 build
 eggs
 parts
-bin
+sql
 var
 sdist
 develop-eggs
