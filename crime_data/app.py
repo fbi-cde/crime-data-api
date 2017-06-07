@@ -22,7 +22,7 @@ import crime_data.resources.hate_crime
 import crime_data.resources.geo
 import crime_data.resources.participation
 import crime_data.resources.estimates
-#from werkzeug.contrib.fixers import ProxyFix
+from werkzeug.contrib.fixers import ProxyFix
 from crime_data import commands
 from crime_data.assets import assets
 from crime_data.common.marshmallow_schemas import ma
@@ -266,11 +266,26 @@ def register_newrelic(app):
         pass
 
 
-# from flask.helpers import get_debug_flag
+from flask.helpers import get_debug_flag
 
-# from crime_data.settings import DevConfig, ProdConfig
+from crime_data.settings import DevConfig, ProdConfig
 
-# CONFIG = DevConfig if get_debug_flag() else ProdConfig
+CONFIG = DevConfig if get_debug_flag() else ProdConfig
 
-# app = create_app(CONFIG)
-# app.wsgi_app = ProxyFix(app.wsgi_app)
+app = create_app(CONFIG)
+app.wsgi_app = ProxyFix(app.wsgi_app)
+
+# This lets you see the /__sqltap__ debugging console on develop
+if get_debug_flag():
+    import sqltap.wsgi
+    app.wsgi_app = sqltap.wsgi.SQLTapMiddleware(app.wsgi_app)
+
+
+# Add some static routing
+@app.route('/')
+def swagger_ui():
+    return app.send_static_file('swagger-ui.html')
+
+@app.route('/swagger.json')
+def swagger_json():
+    return app.send_static_file('swagger.json')
