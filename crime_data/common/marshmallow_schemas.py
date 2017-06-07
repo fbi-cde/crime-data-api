@@ -215,7 +215,8 @@ class AgencySumsSchema(Schema):
 
 class AgencyOffensesSchema(Schema):
     class Meta:
-        model = newmodels.AgencySums
+        model = newmodels.AgencyOffenseCounts
+        exclude = ('offense_id', )
 
     id = marsh_fields.Integer()
     year = marsh_fields.Integer()
@@ -223,9 +224,9 @@ class AgencyOffensesSchema(Schema):
     ori = marsh_fields.String()
     state_postal_abbr = marsh_fields.String()
     pub_agency_name = marsh_fields.String()
-    offense_id = marsh_fields.Integer()
     offense_code = marsh_fields.String() # reta_offense
     offense_name = marsh_fields.String()
+    classification = marsh_fields.String()
     reported = marsh_fields.Integer()
     unfounded = marsh_fields.Integer()
     actual = marsh_fields.Integer()

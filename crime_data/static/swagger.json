@@ -911,11 +911,6 @@
           "readOnly": true,
           "type": "string"
         },
-        "offense_id": {
-          "format": "int32",
-          "readOnly": true,
-          "type": "integer"
-        },
         "offense_code": {
           "format": "string",
           "readOnly": true,
@@ -925,6 +920,11 @@
           "format": "string",
           "readOnly": true,
           "type": "string"
+        },
+        "classification": {
+          "type": "string",
+          "description": "A classification of the criminal offenses",
+          "enum": ["Violent", "Property"]
         }
       },
       "type": "object"

@@ -247,7 +247,7 @@ class AgencySums(db.Model):
         return query
 
 
-class AgencyOffenses(db.Model):
+class AgencyOffenseCounts(db.Model):
     __tablename__ = 'agency_offenses_view'
 
     id = db.Column(db.BigInteger, autoincrement=True, primary_key=True)
@@ -267,10 +267,10 @@ class AgencyOffenses(db.Model):
 
     def get(self, state = None, agency = None, year = None, county = None, explorer_offense = None):
         """Get Agency Sums given a state/year/county/agency ori, etc."""
-        query = AgencyOffenses.query
+        query = AgencyOffenseCounts.query
 
         if state:
-            query = query.filter(func.lower(AgencySums.state_postal_abbr) == state.lower())
+            query = query.filter(func.lower(AgencyOffenseCounts.state_postal_abbr) == state.lower())
         if county:
             subq = (db.session.query(models.RefAgencyCounty.agency_id)
                     .select_from(models.RefAgencyCounty)
@@ -279,17 +279,66 @@ class AgencyOffenses(db.Model):
                 )
             if year:
                 subq = subq.filter(models.RefAgencyCounty.data_year == year)
-            query = query.filter(AgencyOffenses.agency_id.in_(subq.subquery()))
+            query = query.filter(AgencyOffenseCounts.agency_id.in_(subq.subquery()))
         if agency:
-            query = query.filter(AgencyOffenses.ori == agency)
+            query = query.filter(AgencyOffenseCounts.ori == agency)
         if year:
-            query = query.filter(AgencyOffenses.year == year)
+            query = query.filter(AgencyOffenseCounts.year == year)
         if explorer_offense:
             offense = ExplorerOffenseMapping(explorer_offense).reta_offense_code
-            query = query.filter(AgencyOffenses.offense_code == offense)
+            query = query.filter(AgencyOffenseCounts.offense_code == offense)
 
-        query = query.join(AgencyParticipation, and_(AgencyParticipation.agency_id == AgencyOffenses.agency_id, AgencyParticipation.year == AgencyOffenses.year)).filter(AgencyParticipation.months_reported == 12)
-        query = query.order_by(AgencyOffenses.year.desc()) # Agency reported 12 Months.
+        query = query.join(AgencyParticipation,
+                           and_(AgencyParticipation.agency_id == AgencyOffenseCounts.agency_id,
+                                AgencyParticipation.year == AgencyOffenseCounts.year)).filter(AgencyParticipation.months_reported == 12)
+        query = query.order_by(AgencyOffenseCounts.year.desc()) # Agency reported 12 Months.
+
+        #print(query) # Dubug
+        return query
+
+
+class AgencyClassificationCounts(db.Model):
+    __tablename__ = 'agency_classification_view'
+
+    id = db.Column(db.BigInteger, autoincrement=True, primary_key=True)
+    year = db.Column(db.SmallInteger)
+    agency_id = db.Column(db.BigInteger)
+    state_postal_abbr = db.Column(db.Text)
+    ori = db.Column(db.Text)
+    pub_agency_name = db.Column(db.Text)
+    classification = db.Column(db.Text)
+    reported = db.Column(db.BigInteger)
+    unfounded = db.Column(db.BigInteger)
+    actual = db.Column(db.BigInteger)
+    cleared = db.Column(db.BigInteger)
+    juvenile_cleared = db.Column(db.BigInteger)
+
+    def get(self, state = None, agency = None, year = None, county = None, classification = None):
+        """Get Agency Sums given a state/year/county/agency ori, etc."""
+        query = AgencyClassificationCounts.query
+
+        if state:
+            query = query.filter(func.lower(AgencyClassificationCounts.state_postal_abbr) == state.lower())
+        if county:
+            subq = (db.session.query(models.RefAgencyCounty.agency_id)
+                    .select_from(models.RefAgencyCounty)
+                    .join(models.RefCounty, and_(models.RefAgencyCounty.county_id == models.RefCounty.county_id))
+                    .filter(models.RefCounty.county_fips_code == county)
+                )
+            if year:
+                subq = subq.filter(models.RefAgencyCounty.data_year == year)
+            query = query.filter(AgencyClassificationCounts.agency_id.in_(subq.subquery()))
+        if agency:
+            query = query.filter(AgencyClassificationCounts.ori == agency)
+        if year:
+            query = query.filter(AgencyClassificationCounts.year == year)
+        if classification:
+            query = query.filter(func.lower(AgencyClassificationCounts.classification) == func.lower(classification))
+
+        query = query.join(AgencyParticipation,
+                           and_(AgencyParticipation.agency_id == AgencyClassificationCounts.agency_id,
+                                AgencyParticipation.year == AgencyClassificationCounts.year)).filter(AgencyParticipation.months_reported == 12)
+        query = query.order_by(AgencyClassificationCounts.year.desc()) # Agency reported 12 Months.
 
         #print(query) # Dubug
         return query

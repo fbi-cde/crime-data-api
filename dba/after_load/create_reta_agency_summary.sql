@@ -166,7 +166,7 @@ create TABLE agency_offenses_view (
  id SERIAL,
  year smallint NOT NULL,
  agency_id bigint NOT NULL, 
- offense_id bigint NOT NULL,
+ offense_id integer,
  offense_code varchar(20),
  offense_name text,
  reported integer, 
@@ -203,4 +203,169 @@ FROM agency_sums_by_offense a
 JOIN cde_agencies c ON c.agency_id=a.agency_id
 JOIN reta_offense ro ON ro.offense_id = a.offense_id;
 
---DROP TABLE agency_sums_by_offense;
+DROP TABLE agency_sums_by_offense;
+
+-- classifications grouping
+DROP TABLE IF EXISTS agency_sums_by_classification;
+CREATE table agency_sums_by_classification (
+id SERIAL PRIMARY KEY,
+data_year smallint NOT NULL,
+agency_id bigint NOT NULL,
+classification TEXT NOT NULL,
+reported integer,
+unfounded integer,
+actual integer,
+cleared integer,
+juvenile_cleared integer
+);
+
+INSERT INTO agency_sums_by_classification(data_year, agency_id, classification, reported, unfounded, actual, cleared, juvenile_cleared)
+SELECT
+a.data_year,
+a.agency_id,
+oc.classification_name AS classification,
+SUM(a.reported) AS reported,
+SUM(a.unfounded) AS unfounded,
+SUM(a.actual) AS actual,
+SUM(a.cleared) AS cleared,
+SUM(a.juvenile_cleared) AS juvenile_cleared
+FROM agency_sums a
+JOIN reta_offense_subcat ros ON a.offense_subcat_id = ros.offense_subcat_id
+JOIN reta_offense ro ON ro.offense_id = ros.offense_id
+JOIN offense_classification oc ON oc.classification_id = ro.classification_id
+GROUP by a.data_year, a.agency_id, oc.classification_name;
+
+DROP TABLE IF EXISTS agency_classification_view CASCADE;
+create TABLE agency_classification_view (
+ id SERIAL,
+ year smallint NOT NULL,
+ agency_id bigint NOT NULL,
+ classification text,
+ reported integer,
+ unfounded integer,
+ actual integer,
+ cleared integer,
+ juvenile_cleared integer,
+ ori text,
+ pub_agency_name text,
+ state_postal_abbr varchar(2)
+);
+
+DROP TRIGGER IF EXISTS agency_classification_view_insert_state_partition ON agency_classification_view;
+CREATE TRIGGER agency_classification_view_insert_state_partition
+BEFORE INSERT ON agency_classification_view
+FOR EACH ROW EXECUTE PROCEDURE create_state_partition_and_insert();
+
+INSERT INTO agency_classification_view(year, agency_id, classification, reported, unfounded, actual, cleared, juvenile_cleared, ori, pub_agency_name, state_postal_abbr)
+  SELECT
+    a.data_year,
+    a.agency_id,
+    a.classification,
+    a.reported,
+    a.unfounded,
+    a.actual,
+    a.cleared,
+    a.juvenile_cleared,
+    c.ori,
+    c.agency_name,
+    c.state_abbr
+FROM agency_sums_by_classification a
+JOIN cde_agencies c ON c.agency_id=a.agency_id;
+
+DROP TABLE agency_sums_by_classification;
+
+----- Add arson to agency sums
+DROP TABLE IF EXISTS arson_agency_reporting;
+CREATE TABLE arson_agency_reporting AS
+SELECT rm.data_year,
+rm.agency_id,
+SUM(CASE WHEN rm.reported_flag = 'Y' THEN 1 ELSE 0 END) AS months_reported
+FROM arson_month rm
+GROUP BY rm.data_year, rm.agency_id;
+
+DROP TABLE IF EXISTS arson_agency_sums CASCADE;
+CREATE TABLE arson_agency_sums (
+id SERIAL PRIMARY KEY,
+data_year smallint NOT NULL,
+agency_id bigint NOT NULL, 
+reported integer, 
+unfounded integer,
+actual integer,
+cleared integer,
+juvenile_cleared integer,
+uninhabited bigint,
+est_damage_value bigint
+);
+
+INSERT INTO arson_agency_sums (data_year, agency_id, reported, unfounded, actual, cleared, juvenile_cleared, uninhabited, est_damage_value)  
+SELECT am.data_year,
+am.agency_id,
+SUM(ambs.reported_count) AS reported,
+SUM(ambs.unfounded_count) AS unfounded,
+SUM(ambs.actual_count) AS actual,
+SUM(ambs.cleared_count) AS cleared,
+SUM(ambs.juvenile_cleared_count) AS juvenile_cleared,
+SUM(ambs.uninhabited_count) AS uninhabited,
+SUM(ambs.est_damage_value) AS est_damage_value
+FROM arson_month_by_subcat ambs
+JOIN arson_month am ON ambs.arson_month_id = am.arson_month_id
+JOIN arson_agency_reporting rep ON rep.agency_id=am.agency_id AND rep.data_year=am.data_year
+WHERE rep.months_reported = 12
+AND ambs.actual_status = 0
+GROUP BY am.data_year, am.agency_id;
+
+DROP TABLE IF EXISTS agency_arson_view CASCADE;
+
+create TABLE agency_arson_view (
+id SERIAL PRIMARY KEY,
+year smallint NOT NULL,
+agency_id bigint NOT NULL, 
+reported integer, 
+unfounded integer,
+actual integer,
+cleared integer,
+juvenile_cleared integer,
+uninhabited integer,
+est_damage_value bigint,
+ori text,
+pub_agency_name text,
+state_postal_abbr text
+);
+
+INSERT INTO agency_arson_view(year, agency_id, reported, unfounded, actual, cleared, juvenile_cleared, uninhabited, est_damage_value, ori, pub_agency_name, state_postal_abbr)
+SELECT
+a.data_year,
+a.agency_id,
+a.reported,
+a.unfounded,
+a.actual,
+a.cleared,
+a.juvenile_cleared,
+a.uninhabited,
+a.est_damage_value,
+c.ori,
+c.agency_name,
+c.state_abbr
+FROM arson_agency_sums a
+JOIN cde_agencies c ON c.agency_id=a.agency_id;
+
+DROP TABLE arson_agency_sums;
+DROP TABLE arson_agency_reporting;
+
+--- Add arsons to the offense table
+INSERT INTO agency_offenses_view(year, agency_id, offense_id, offense_code, offense_name, reported, unfounded, actual, cleared, juvenile_cleared, ori, pub_agency_name, state_postal_abbr)
+SELECT
+  a.year,
+  a.agency_id,
+  NULL as offense_id,
+  'X_ARS' as offense_code,
+  'Arson' as offense_name,
+  a.reported,
+  a.unfounded,
+  a.actual,
+  a.cleared,
+  a.juvenile_cleared,
+  a.ori,
+  a.pub_agency_name,
+  a.state_postal_abbr
+FROM agency_arson_view a;
