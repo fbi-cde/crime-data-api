@@ -1,0 +1,1 @@
+gunicorn -k gevent -w 2 crime_data:app
