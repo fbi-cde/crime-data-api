@@ -85,11 +85,3 @@ create materialized view offense_offender_counts as
 CREATE INDEX offense_offender_counts_state_id_idx ON offense_offender_counts (state_id, year, offense_name);
 CREATE INDEX offense_offender_counts_ori_idx ON offense_offender_counts (ori, year, offense_name);
 
-CREATE INDEX offense_offender_counts_offense_name_idx ON offense_offender_counts (offense_name);
-CREATE INDEX offense_offender_counts_ori_offense_name_idx ON offense_offender_counts (ori, offense_name);
-
-EXPLAIN ANALYZE SELECT b.year, 'larceny' AS offense_name, b.race_code, SUM(a.count)::int AS count from (SELECT year::text, offense_name, race_code, count FROM offense_offender_counts WHERE race_code IS NOT NULL AND state_id is NULL AND ori IS NULL AND offense_name IN ('Not Specified', 'Theft of Motor Vehicle Parts or Accessories', 'Pocket-picking', 'Theft From Motor Vehicle', 'Purse-snatching', 'Shoplifting', 'All Other Larceny', 'Theft From Building', 'Theft From Coin-Operated Machine or Device')) a  RIGHT JOIN (SELECT DISTINCT ref_race.race_code AS race_code, c.year from ref_race CROSS JOIN (SELECT year::text from nibrs_years) c) b ON (a.race_code = b.race_code AND a.year = b.year) GROUP by b.year, b.race_code, offense_name ORDER by b.year, offense_name, b.race_code
-
-EXPLAIN ANALYZE SELECT b.year, 'larceny' AS offense_name, b.race_code, SUM(a.count)::int AS count from (SELECT year::text, offense_name, race_code, count FROM offense_offender_counts WHERE race_code IS NOT NULL AND state_id is NULL AND ori IS NULL AND offense_name IN ('Not Specified', 'Theft of Motor Vehicle Parts or Accessories', 'Pocket-picking', 'Theft From Motor Vehicle', 'Purse-snatching', 'Shoplifting', 'All Other Larceny', 'Theft From Building', 'Theft From Coin-Operated Machine or Device')) a  RIGHT JOIN (SELECT DISTINCT ref_race.race_code AS race_code, c.year from ref_race CROSS JOIN (SELECT year::text from nibrs_years) c) b ON (a.race_code = b.race_code AND a.year = b.year) GROUP by b.year, b.race_code, offense_name ORDER by b.year, offense_name, b.race_code
-;
-
