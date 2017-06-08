@@ -1,6 +1,19 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-05-25]
+### Added
+- Endpoints for ORI Return A data and aggregated totals based on NIBRS dimensions ([#507](https://github.com/18F/crime-data-api/pull/507))
+
+### Changed
+- Suboffense endpoint accepts `explorer_offense` argument ([#523](https://github.com/18F/crime-data-api/pull/523))
+
+### Fixed
+
+### Removed
+- The `aggregate_many` param removed from documentation
+
+
 ## [2017-05-12]
 ### Added
 - Add core city flag to agencies. Create `revised_rape_start` column to indicate when an agency switched over to revised rape definition. Append " County" to the agency names for county agencies that don't already include it ([#457](https://github.com/18F/crime-data-api/pull/457))
