@@ -3,8 +3,16 @@
 from flask_caching import Cache
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_migrate import Migrate
-from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy as SQLAlchemyBase
 from flask.ext.cachecontrol import FlaskCacheControl
+from sqlalchemy.pool import NullPool
+
+class SQLAlchemy(SQLAlchemyBase):
+  def apply_driver_hacks(self, app, info, options):
+    super(SQLAlchemy, self).apply_driver_hacks(app, info, options)
+    # A DB pool is unnescessary.
+    options['poolclass'] = NullPool 
+    options.pop('pool_size', None)
 
 db = SQLAlchemy()
 migrate = Migrate()
