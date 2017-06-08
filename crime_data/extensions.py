@@ -5,6 +5,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy as SQLAlchemyBase
 from flask.ext.cachecontrol import FlaskCacheControl
+from sqlalchemy.pool import NullPool
 
 class SQLAlchemy(SQLAlchemyBase):
   def apply_driver_hacks(self, app, info, options):
