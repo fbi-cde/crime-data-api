@@ -84,3 +84,10 @@ class TestCdeAgencies:
         a = CdeAgency.query.filter(CdeAgency.agency_id == 17427).one()
         assert a is not None
         assert a.revised_rape_start is None
+
+    def test_agency_has_unmapped_county(self, app):
+        a = CdeAgency.query.filter(CdeAgency.ori == 'RIRSP0000').one()
+        assert a is not None
+        assert a.primary_county_id is not None
+        assert a.primary_county is None
+        assert a.primary_county_fips is None
