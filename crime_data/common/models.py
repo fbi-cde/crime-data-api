@@ -3,14 +3,14 @@ import datetime
 from decimal import Decimal
 
 import flask_restful as restful
-from flask_sqlalchemy import SQLAlchemy
+from crime_data.extensions import db
 from sqlalchemy import (BigInteger, Boolean, Column, DateTime, Float,
                         ForeignKey, Integer, SmallInteger, String, Text,
                         UniqueConstraint, func, text)
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import backref, relationship
 
-db = SQLAlchemy()
+# db = SQLAlchemy()
 
 #Base = declarative_base()
 #metadata = Base.metadata
