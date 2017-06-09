@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-06-09]
+### Fixed
+- Explicitly release connections on thrown exceptions and use correct imported database class in `models.py` ([#550](https://github.com/18F/crime-data-api/pull/550))
+
+
 ## [2017-06-08]
 ### Added
 - Endpoints for ORI Return A data and aggregated totals based on NIBRS dimensions ([#507](https://github.com/18F/crime-data-api/pull/507))
@@ -38,6 +43,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - Large request pagination ([#488](https://github.com/18F/crime-data-api/pull/488))
 - Estimated endpoint returns data sorted by year ([#489](https://github.com/18F/crime-data-api/issues/489))
+
 
 ## [2017-04-26]
 ### Added
