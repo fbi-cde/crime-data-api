@@ -7,16 +7,16 @@ class TestOffenseOffenderCountView:
     """Test the OffenseOffenderCountView"""
 
     def test_count_for_a_state(self, app):
-        v = OffenseOffenderCountView('race_code', year=2013, state_id=47, offense_name='Aggravated Assault')
+        v = OffenseOffenderCountView('race_code', year=2014, state_id=44, offense_name='Impersonation')
         results = v.query({}).fetchall()
-        expected = [
-            ('2013', 'Aggravated Assault', 'W', 4)
-        ]
-        # assert len(results) == len(expected)
-        # for row, expect in zip(results, expected):
-        #     assert row == expect
+        expected = {
+            'U': 1
+        }
+        assert len(results) == 10 # all the race code options
         for row in results:
             assert 'count' in row
+            if row['count']:
+                assert row['count'] == expected[row['race_code']]
 
     @pytest.mark.parametrize('year', [2014, None])
     @pytest.mark.parametrize('state_id', [41, None])
@@ -28,12 +28,11 @@ class TestOffenseOffenderCountView:
         assert len(results) > 0
 
         seen_values = set()
-        # for row in results:
-        #     row_key = (row.year, row.offense_name, row[variable], )
-        #     assert row_key not in seen_values
-        #     seen_values.add(row_key)
         for row in results:
             assert 'count' in row
+            row_key = (row.year, row[variable], )
+            assert row_key not in seen_values
+            seen_values.add(row_key)
 
     @pytest.mark.parametrize('explorer_offense', ExplorerOffenseMapping.NIBRS_OFFENSE_MAPPING.keys())
     @pytest.mark.parametrize('variable', OffenseOffenderCountView.VARIABLES)
