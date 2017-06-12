@@ -8,20 +8,6 @@ import flask_restful as restful
 from flask import Flask, render_template
 from flask_cors import CORS
 
-import crime_data.resources.agencies
-import crime_data.resources.incidents
-import crime_data.resources.offenses
-import crime_data.resources.codes
-import crime_data.resources.arson
-import crime_data.resources.offenders
-import crime_data.resources.victims
-import crime_data.resources.cargo_theft
-import crime_data.resources.hate_crime
-import crime_data.resources.geo
-import crime_data.resources.participation
-import crime_data.resources.estimates
-
-import crime_data.resources.human_traffic
 from werkzeug.contrib.fixers import ProxyFix
 
 from crime_data import commands
@@ -30,6 +16,8 @@ from crime_data.common.models import db
 from crime_data.common.credentials import get_credential
 from crime_data.extensions import (cache, cache_control)
 from crime_data.settings import ProdConfig
+
+from crime_data.resources import beta
 
 if __name__ == '__main__':
     app.run(debug=True)  # nosec, this isn't called on production
@@ -48,7 +36,7 @@ def create_app(config_object=ProdConfig):
     register_errorhandlers(app)
     register_shellcontext(app)
     register_newrelic(app)
-    add_resources(app)
+    register_api_endpoints(app)
     register_commands(app)
     db.init_app(app)
     return app
@@ -101,140 +89,9 @@ def register_commands(app):
     app.cli.add_command(commands.urls)
 
 
-def add_resources(app):
-    """Register API routes and Swagger endpoints"""
+def register_api_endpoints(app):
     api = restful.Api(app)
-
-    @api.representation('text/csv')
-    def output_csv(data, code, headers=None):
-        """Curl with -H "Accept: text/csv" """
-        outfile = io.StringIO()
-        keys = data[0].keys()
-        writer = csv.DictWriter(outfile, keys)
-        writer.writerows(data)
-        outfile.seek(0)
-        resp = api.make_response(outfile.read(), code)
-        resp.headers.extend(headers or {})
-        return resp
-
-    api.add_resource(crime_data.resources.agencies.AgenciesList, '/agencies')
-    api.add_resource(crime_data.resources.participation.AgenciesParticipation,
-                     '/agencies/participation',
-                     '/participation/agencies')
-    api.add_resource(crime_data.resources.agencies.AgenciesDetail,
-                     '/agencies/<string:ori>')
-
-    api.add_resource(crime_data.resources.incidents.AgenciesSumsState,
-                     '/agencies/count/states/suboffenses/<string:state_abbr>/<string:agency_ori>','/agencies/count/states/suboffenses/<string:state_abbr>' )
-
-    api.add_resource(crime_data.resources.incidents.AgenciesSumsCounty,
-                     '/agencies/count/states/suboffenses/<string:state_abbr>/counties/<string:county_fips_code>' )
-
-    api.add_resource(crime_data.resources.incidents.AgenciesOffensesCount,
-                     '/agencies/count/<string:agency_ori>/offenses','/agencies/count/states/<string:state_abbr>/offenses' )
-
-    api.add_resource(crime_data.resources.incidents.AgenciesOffensesCountyCount,
-                     '/agencies/count/states/offenses/<string:state_abbr>/counties/<string:county_fips_code>' )
-
-    api.add_resource(crime_data.resources.offenses.OffensesList, '/offenses/')
-    api.add_resource(crime_data.resources.codes.CodeReferenceIndex,
-                     '/codes')
-    api.add_resource(crime_data.resources.codes.CodeReferenceList,
-                     '/codes/<string:code_table>.<string:output>',
-                     '/codes/<string:code_table>')
-
-    api.add_resource(crime_data.resources.arson.ArsonStateCounts,
-                     '/arson/national', '/arson/states/<string:state_abbr>')
-
-    api.add_resource(crime_data.resources.geo.StateDetail,
-                     '/geo/states/<string:id>')
-    api.add_resource(crime_data.resources.participation.StateParticipation,
-                     '/participation/states/<string:state_abbr>')
-
-    api.add_resource(crime_data.resources.geo.CountyDetail,
-                     '/geo/counties/<string:fips>')
-
-
-    api.add_resource(crime_data.resources.participation.NationalParticipation,
-                     '/participation/national')
-
-    api.add_resource(crime_data.resources.estimates.EstimatesNational,
-                     '/estimates/national')
-    api.add_resource(crime_data.resources.estimates.EstimatesState,
-                     '/estimates/states/<string:state_id>')
-
-
-    api.add_resource(crime_data.resources.offenses.OffensesCountNational,
-                     '/offenses/count/national/<string:variable>')
-    api.add_resource(crime_data.resources.offenses.OffensesCountStates,
-                     '/offenses/count/states/<int:state_id>/<string:variable>',
-                     '/offenses/count/states/<string:state_abbr>/<string:variable>')
-    api.add_resource(crime_data.resources.offenses.OffensesCountAgencies,
-                     '/offenses/count/agencies/<string:ori>/<string:variable>')
-
-
-    api.add_resource(crime_data.resources.offenders.OffendersCountNational,
-                     '/offenders/count/national/<string:variable>')
-    api.add_resource(crime_data.resources.offenders.OffendersCountStates,
-                     '/offenders/count/states/<int:state_id>/<string:variable>',
-                     '/offenders/count/states/<string:state_abbr>/<string:variable>')
-
-    api.add_resource(crime_data.resources.victims.VictimsCountNational,
-                     '/victims/count/national/<string:variable>')
-    api.add_resource(crime_data.resources.victims.VictimsCountStates,
-                     '/victims/count/states/<int:state_id>/<string:variable>',
-                     '/victims/count/states/<string:state_abbr>/<string:variable>')
-    api.add_resource(crime_data.resources.offenders.OffendersCountAgencies,
-                     '/offenders/count/agencies/<string:ori>/<string:variable>')
-    api.add_resource(crime_data.resources.victims.VictimsCountAgencies,
-                     '/victims/count/agencies/<string:ori>/<string:variable>')
-
-    api.add_resource(crime_data.resources.cargo_theft.CargoTheftsCountNational,
-                     '/ct/count/national/<string:variable>')
-    api.add_resource(crime_data.resources.cargo_theft.CargoTheftsCountAgencies,
-                     '/ct/count/agencies/<string:ori>/<string:variable>')
-    api.add_resource(crime_data.resources.cargo_theft.CargoTheftsCountStates,
-                     '/ct/count/states/<int:state_id>/<string:variable>',
-                     '/ct/count/states/<string:state_abbr>/<string:variable>')
-
-    api.add_resource(crime_data.resources.hate_crime.HateCrimesCountNational,
-                     '/hc/count/national/<string:variable>')
-    api.add_resource(crime_data.resources.hate_crime.HateCrimesCountAgencies,
-                     '/hc/count/agencies/<string:ori>/<string:variable>')
-    api.add_resource(crime_data.resources.hate_crime.HateCrimesCountStates,
-                     '/hc/count/states/<int:state_id>/<string:variable>',
-                     '/hc/count/states/<string:state_abbr>/<string:variable>')
-
-    api.add_resource(crime_data.resources.human_traffic.HtAgencyList,
-                     '/ht/agencies')
-    api.add_resource(crime_data.resources.human_traffic.HtStatesList,
-                     '/ht/states')
-
-    api.add_resource(crime_data.resources.victims.VictimOffenseSubcounts,
-                     '/victims/count/states/<int:state_id>/<string:variable>/offenses',
-                     '/victims/count/states/<string:state_abbr>/<string:variable>/offenses',
-                     '/victims/count/agencies/<string:ori>/<string:variable>/offenses',
-                     '/victims/count/national/<string:variable>/offenses')
-    api.add_resource(crime_data.resources.offenders.OffenderOffenseSubcounts,
-                     '/offenders/count/states/<int:state_id>/<string:variable>/offenses',
-                     '/offenders/count/states/<string:state_abbr>/<string:variable>/offenses',
-                     '/offenders/count/agencies/<string:ori>/<string:variable>/offenses',
-                     '/offenders/count/national/<string:variable>/offenses')
-    api.add_resource(crime_data.resources.offenses.OffenseByOffenseTypeSubcounts,
-                     '/offenses/count/states/<int:state_id>/<string:variable>/offenses',
-                     '/offenses/count/states/<string:state_abbr>/<string:variable>/offenses',
-                     '/offenses/count/agencies/<string:ori>/<string:variable>/offenses',
-                     '/offenses/count/national/<string:variable>/offenses')
-    api.add_resource(crime_data.resources.hate_crime.HateCrimeOffenseSubcounts,
-                     '/hc/count/states/<int:state_id>/<string:variable>/offenses',
-                     '/hc/count/states/<string:state_abbr>/<string:variable>/offenses',
-                     '/hc/count/agencies/<string:ori>/<string:variable>/offenses',
-                     '/hc/count/national/<string:variable>/offenses')
-    api.add_resource(crime_data.resources.cargo_theft.CargoTheftOffenseSubcounts,
-                     '/ct/count/states/<int:state_id>/<string:variable>/offenses',
-                     '/ct/count/states/<string:state_abbr>/<string:variable>/offenses',
-                     '/ct/count/national/<string:variable>/offenses',
-                     '/ct/count/agencies/<string:ori>/<string:variable>/offenses')
+    beta.register_api_endpoints(api)
 
 
 def newrelic_status_endpoint():

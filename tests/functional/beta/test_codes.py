@@ -4,7 +4,7 @@
 See: http://webtest.readthedocs.org/
 """
 import pytest
-from crime_data.resources.codes import CODE_MODELS
+from crime_data.resources.beta.codes import CODE_MODELS
 from flex.core import validate_api_call
 
 
