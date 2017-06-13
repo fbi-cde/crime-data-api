@@ -124,6 +124,7 @@ class ParticipationRate(db.Model):
     covered_rate = db.Column(db.Float)
     total_population = db.Column(db.BigInteger)
     participating_population = db.Column(db.BigInteger)
+    nibrs_participating_population = db.Column(db.BigInteger)
 
 
 class CreatableModel:
