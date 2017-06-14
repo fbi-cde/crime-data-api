@@ -12,6 +12,7 @@ import crime_data.resources.agencies
 import crime_data.resources.incidents
 import crime_data.resources.offenses
 import crime_data.resources.codes
+import crime_data.resources.arson
 import crime_data.resources.offenders
 import crime_data.resources.victims
 import crime_data.resources.cargo_theft
@@ -149,6 +150,10 @@ def add_resources(app):
     api.add_resource(crime_data.resources.codes.CodeReferenceList,
                      '/codes/<string:code_table>.<string:output>',
                      '/codes/<string:code_table>')
+
+    api.add_resource(crime_data.resources.arson.ArsonStateCounts,
+                     '/arson/national', '/arson/states/<string:state_abbr>')
+
     api.add_resource(crime_data.resources.geo.StateDetail,
                      '/geo/states/<string:id>')
     api.add_resource(crime_data.resources.participation.StateParticipation,

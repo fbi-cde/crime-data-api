@@ -146,8 +146,8 @@ class PaginationSchema(Schema):
 # Schemas for data serialization
 class ArsonSummarySchema(ma.ModelSchema):
     class Meta:
-        model = models.ArsonSummary
-        exclude = ('state_id', 'agency_id', )
+        model = newmodels.ArsonSummary
+        exclude = ('arson_summary_id', 'state_id', 'agency_id', )
         ordered = True
 
 

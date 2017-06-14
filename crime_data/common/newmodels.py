@@ -78,7 +78,7 @@ class AgencyParticipation(db.Model, FilterableModel):
 
 
 class ArsonSummary(db.Model):
-    __tablename__ == 'arson_summary'
+    __tablename__ = 'arson_summary'
 
     arson_summary_id = db.Column(db.Integer, nullable=False, primary_key=True)
     grouping_bitmap = db.Column(db.Integer)
