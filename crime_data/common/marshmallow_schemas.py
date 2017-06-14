@@ -144,6 +144,12 @@ class PaginationSchema(Schema):
     per_page = marsh_fields.Integer(dumpOnly=True)
 
 # Schemas for data serialization
+class ArsonSummarySchema(ma.ModelSchema):
+    class Meta:
+        model = models.ArsonSummary
+        exclude = ('state_id', 'agency_id', )
+        ordered = True
+
 
 class ArsonSubclassificationSchema(ma.ModelSchema):
     class Meta:
