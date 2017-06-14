@@ -9,12 +9,9 @@ from flask import Flask, render_template
 from flask_cors import CORS
 
 import crime_data.resources.agencies
-#import crime_data.resources.arrests
 import crime_data.resources.incidents
 import crime_data.resources.offenses
 import crime_data.resources.codes
-#import crime_data.resources.arson
-import crime_data.resources.meta
 import crime_data.resources.offenders
 import crime_data.resources.victims
 import crime_data.resources.cargo_theft
@@ -146,24 +143,12 @@ def add_resources(app):
     api.add_resource(crime_data.resources.incidents.AgenciesOffensesCountyCount,
                      '/agencies/count/states/offenses/<string:state_abbr>/counties/<string:county_fips_code>' )
 
-    # api.add_resource(crime_data.resources.incidents.IncidentsDetail,
-    #                  '/incidents/<int:id>/')
     api.add_resource(crime_data.resources.offenses.OffensesList, '/offenses/')
     api.add_resource(crime_data.resources.codes.CodeReferenceIndex,
                      '/codes')
     api.add_resource(crime_data.resources.codes.CodeReferenceList,
                      '/codes/<string:code_table>.<string:output>',
                      '/codes/<string:code_table>')
-    # api.add_resource(crime_data.resources.arrests.ArrestsCountByRace,
-    #                  '/arrests/race/')
-    # api.add_resource(crime_data.resources.arrests.ArrestsCountByEthnicity,
-    #                  '/arrests/ethnicity/')
-    # api.add_resource(crime_data.resources.arrests.ArrestsCountByAgeSex,
-    #                  '/arrests/age_sex/')
-    # api.add_resource(crime_data.resources.arson.ArsonCountResource,
-    #                  '/arson/')
-    api.add_resource(crime_data.resources.meta.MetaDetail,
-                     '/meta/<path:endpoint>')
     api.add_resource(crime_data.resources.geo.StateDetail,
                      '/geo/states/<string:id>')
     api.add_resource(crime_data.resources.participation.StateParticipation,
