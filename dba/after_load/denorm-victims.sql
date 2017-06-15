@@ -36,7 +36,7 @@ FOR EACH ROW EXECUTE PROCEDURE create_partition_and_insert();
 
 SET synchronous_commit='off'; -- Go Super Saiyan.
 
-INSERT INTO nibrs_victim_denorm (incident_id, agency_id, year, incident_date, victim_id, age_id, age_num, sex_code, race_id) SELECT nibrs_victim.incident_id, nibrs_incident.agency_id, EXTRACT(YEAR FROM nibrs_incident.incident_date) as year, nibrs_incident.incident_date, nibrs_victim.victim_id, nibrs_victim.age_id, ceil(nibrs_victim.age_num::numeric / 10) * 10, nibrs_victim.sex_code,nibrs_victim.race_id from nibrs_victim JOIN nibrs_incident on nibrs_incident.incident_id = nibrs_victim.incident_id;
+INSERT INTO nibrs_victim_denorm (incident_id, agency_id, year, incident_date, victim_id, age_id, age_num, sex_code, race_id) SELECT nibrs_victim.incident_id, nibrs_incident.agency_id, EXTRACT(YEAR FROM nibrs_incident.incident_date) as year, nibrs_incident.incident_date, nibrs_victim.victim_id, nibrs_victim.age_id, nibrs_victim.age_num::numeric, nibrs_victim.sex_code,nibrs_victim.race_id from nibrs_victim JOIN nibrs_incident on nibrs_incident.incident_id = nibrs_victim.incident_id;
 
 --UPDATE nibrs_victim_denorm SET agency_id = nibrs_incident.agency_id, incident_date=nibrs_incident.incident_date from nibrs_incident where nibrs_victim_denorm.incident_id = nibrs_incident.incident_id;
 UPDATE nibrs_victim_denorm SET state_id = ref_agency.state_id, county_id = ref_agency_county.county_id from ref_agency JOIN ref_agency_county ON ref_agency.agency_id = ref_agency_county.agency_id where nibrs_victim_denorm.agency_id = ref_agency.agency_id;
@@ -61,4 +61,8 @@ UPDATE nibrs_victim_denorm SET offender_relationship = nibrs_relationship.relati
 UPDATE nibrs_victim_denorm SET ethnicity = nibrs_ethnicity.ethnicity_name, resident_status_code=nibrs_victim.resident_status_code, circumstance_name = nibrs_circumstances.circumstances_name from nibrs_victim  JOIN  nibrs_victim_circumstances ON nibrs_victim_circumstances.victim_id = nibrs_victim.victim_id JOIN nibrs_circumstances ON nibrs_circumstances.circumstances_id = nibrs_victim_circumstances.circumstances_id JOIN nibrs_ethnicity ON nibrs_ethnicity.ethnicity_id = nibrs_victim.ethnicity_id where nibrs_victim.victim_id = nibrs_victim_denorm.victim_id;
 
 
+ALTER TABLE nibrs_victim_denorm ADD COLUMN victim_type text;
+UPDATE nibrs_victim_denorm SET victim_type = nibrs_victim_type.ethnicity_name from nibrs_victim JOIN nibrs_victim_type ON nibrs_victim.victim_type_id = nibrs_victim_type.victim_type_id;
 
+
+CREATE INDEX nibrs_victim_denorm_state_year_id_idx ON nibrs_victim_denorm (state_code, year);
