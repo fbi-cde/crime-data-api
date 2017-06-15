@@ -11,48 +11,6 @@ def _is_string(col):
     return issubclass(col0.type.python_type, str)
 
 
-class IncidentsList(CdeResource):
-
-    schema = marshmallow_schemas.NibrsIncidentSchema(many=False) 
-    _serialize = CdeResource._serialize_from_representation
-    tables = cdemodels.IncidentTableFamily()
-    # Enable fast counting.
-    fast_count = True
-
-    @use_args(marshmallow_schemas.ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    @tuning_page
-    def get(self, args):
-        return self._get(args)
-
-
-class IncidentsDetail(CdeResource):
-
-    schema = marshmallow_schemas.NibrsIncidentSchema(many=True)
-
-    # Enable fast counting.
-    fast_count = True
-
-    @use_args(marshmallow_schemas.ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    @tuning_page
-    def get(self, args, id):
-        self.verify_api_key(args)
-        incidents = models.NibrsIncident.query.filter_by(incident_id=id)
-        return self.with_metadata(incidents, args)
-
-
-class IncidentsCount(CdeResource):
-    tables = cdemodels.IncidentCountTableFamily()
-    is_groupable = True
-
-    @use_args(marshmallow_schemas.GroupableArgsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    @tuning_page
-    def get(self, args):
-        return self._get(args)
-
-
 class CachedIncidentsCount(CdeResource):
 
     tables = newmodels.RetaMonthOffenseSubcatSummary

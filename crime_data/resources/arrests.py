@@ -6,50 +6,6 @@ from crime_data.common import cdemodels, marshmallow_schemas
 from crime_data.common.base import CdeResource, tuning_page
 
 
-class ArrestsCountResource(CdeResource):
-
-    is_groupable = True
-
-    @use_args(marshmallow_schemas.GroupableArgsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    @tuning_page
-    def get(self, args):
-        return self._get(args)
-
-
-class ArrestsCountByRace(ArrestsCountResource):
-
-    tables = cdemodels.ArrestsByRaceTableFamily()
-
-    @use_args(marshmallow_schemas.GroupableArgsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    @tuning_page
-    def get(self, args):
-        return self._get(args)
-
-
-class ArrestsCountByEthnicity(ArrestsCountResource):
-
-    tables = cdemodels.ArrestsByEthnicityTableFamily()
-
-    @use_args(marshmallow_schemas.GroupableArgsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    @tuning_page
-    def get(self, args):
-        return self._get(args)
-
-
-class ArrestsCountByAgeSex(ArrestsCountResource):
-
-    tables = cdemodels.ArrestsByAgeSexTableFamily()
-
-    @use_args(marshmallow_schemas.GroupableArgsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    @tuning_page
-    def get(self, args):
-        return self._get(args)
-
-
 
 """
 Big (?) problem here: whole different set of classification codes

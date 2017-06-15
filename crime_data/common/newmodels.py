@@ -20,8 +20,41 @@ from crime_data.common.models import RefAgency, RefState, RefCounty
 from crime_data.extensions import db
 from sqlalchemy import or_,and_
 
+class FilterableModel:
+    @classmethod
+    def column_is_string(cls, col_name):
+        col = getattr(cls.__table__.c, col_name)
+        return isinstance(col.type, sqltypes.String)
 
-class AgencyParticipation(db.Model):
+    @classmethod
+    def filtered(cls, filters, args=None):
+        args = args or []
+        qry = cls.query
+
+        # This could be generalized to other places in the future
+        if 'fields' in args:
+            fields = args['fields'].split(',')
+            qry = qry.with_entities(*fields).select_from(cls)
+
+        for filter in filters:
+            if isinstance(filter, BinaryExpression):
+                qry = qry.filter(filter)
+            else:
+                (col_name, comparitor, values) = filter
+                col = getattr(cls, col_name)
+                if cls.column_is_string(col_name):
+                    col = func.lower(col)
+                operation = getattr(col, comparitor)
+                qry = qry.filter(or_(operation(v) for v in values)).order_by(
+                    col)
+        if 'by' in args:
+            for col_name in args['by'].split(','):
+                col = getattr(cls, col_name)
+                qry = qry.order_by(col)
+        return qry
+
+
+class AgencyParticipation(db.Model, FilterableModel):
     """Represents agency participation for a single month."""
 
     __tablename__ = 'agency_participation'
@@ -43,32 +76,6 @@ class AgencyParticipation(db.Model):
     participated = db.Column(db.SmallInteger)
     nibrs_participated = db.Column(db.SmallInteger)
 
-    @classmethod
-    def column_is_string(cls, col_name):
-        col = getattr(cls.__table__.c, col_name)
-        return isinstance(col.type, sqltypes.String)
-
-    @classmethod
-    def filtered(cls, filters, args=None):
-        args = args or []
-        qry = cls.query
-
-        for filter in filters:
-            if isinstance(filter, BinaryExpression):
-                qry = qry.filter(filter)
-            else:
-                (col_name, comparitor, values) = filter
-                col = getattr(cls, col_name)
-                if cls.column_is_string(col_name):
-                    col = func.lower(col)
-                operation = getattr(col, comparitor)
-                qry = qry.filter(or_(operation(v) for v in values)).order_by(
-                    col)
-        if 'by' in args:
-            for col_name in args['by'].split(','):
-                col = getattr(cls, col_name)
-                qry = qry.order_by(col)
-        return qry
 
 
 class ParticipationRate(db.Model):
@@ -344,7 +351,7 @@ class AgencyClassificationCounts(db.Model):
         return query
 
 
-class RetaMonthOffenseSubcatSummary(db.Model, CreatableModel):
+class RetaMonthOffenseSubcatSummary(db.Model, CreatableModel, FilterableModel):
     """
     Precalculated sums for RETA data.
 
@@ -442,65 +449,11 @@ class RetaMonthOffenseSubcatSummary(db.Model, CreatableModel):
 
         return filters
 
-    @classmethod
-    def column_is_string(cls, col_name):
-        col = getattr(cls.__table__.c, col_name)
-        return isinstance(col.type, sqltypes.String)
 
-    @classmethod
-    def filtered(cls, filters, args=None):
-        args = args or []
-        qry = cls.query
-        for filter in filters:
-            if isinstance(filter, BinaryExpression):
-                qry = qry.filter(filter)
-            else:
-                (col_name, comparitor, values) = filter
-                col = getattr(cls, col_name)
-                if cls.column_is_string(col_name):
-                    col = func.lower(col)
-                operation = getattr(col, comparitor)
-                qry = qry.filter(or_(operation(v) for v in values)).order_by(
-                    col)
-        if 'by' in args:
-            for col_name in args['by'].split(','):
-                col = getattr(cls, col_name)
-                qry = qry.order_by(col)
-        return qry
-
-
-class CdeAgency(db.Model):
+class CdeAgency(db.Model, FilterableModel):
     """A class for the denormalized cde_agencies table"""
     __tablename__ = 'cde_agencies'
     __table_args__ = (UniqueConstraint('agency_id'), )
-
-    @classmethod
-    def column_is_string(cls, col_name):
-        col = getattr(cls.__table__.c, col_name)
-        return isinstance(col.type, sqltypes.String)
-
-    @classmethod
-    def filtered(cls, filters, args=None):
-        args = args or []
-        qry = cls.query
-
-        # This could be generalized to other places in the future
-        if 'fields' in args:
-            fields = args['fields'].split(',')
-            qry = qry.with_entities(*fields).select_from(CdeAgency)
-
-        for filter in filters:
-            if isinstance(filter, BinaryExpression):
-                qry = qry.filter(filter)
-            else:
-                (col_name, comparitor, values) = filter
-                col = getattr(cls, col_name)
-                if cls.column_is_string(col_name):
-                    col = func.lower(col)
-                operation = getattr(col, comparitor)
-                qry = qry.filter(or_(operation(v) for v in values)).order_by(
-                    col)
-        return qry
 
     agency_id = db.Column(db.BigInteger, primary_key=True)
     ori = db.Column(db.String(9))
@@ -543,38 +496,10 @@ class CdeAgency(db.Model):
     total_civilians = db.Column(db.Integer)
 
 
-class HtAgency(db.Model):
+class HtAgency(db.Model, FilterableModel):
     """Represents human trafficking counts reported by a single agency in a given year"""
     class Meta:
         __tablename__ = 'ht_agency'
-
-    @classmethod
-    def column_is_string(cls, col_name):
-        col = getattr(cls.__table__.c, col_name)
-        return isinstance(col.type, sqltypes.String)
-
-    @classmethod
-    def filtered(cls, filters, args=None):
-        args = args or []
-        qry = cls.query
-
-        # This could be generalized to other places in the future
-        if 'fields' in args:
-            fields = args['fields'].split(',')
-            qry = qry.with_entities(*fields).select_from(CdeAgency)
-
-        for filter in filters:
-            if isinstance(filter, BinaryExpression):
-                qry = qry.filter(filter)
-            else:
-                (col_name, comparitor, values) = filter
-                col = getattr(cls, col_name)
-                if cls.column_is_string(col_name):
-                    col = func.lower(col)
-                operation = getattr(col, comparitor)
-                qry = qry.filter(or_(operation(v) for v in values)).order_by(
-                    col)
-        return qry
 
     id = db.Column(db.Integer, primary_key=True)
     year = db.Column(db.SmallInteger)

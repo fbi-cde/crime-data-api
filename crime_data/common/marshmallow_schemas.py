@@ -769,7 +769,7 @@ class OffenseClassificationSchema(ma.ModelSchema):
 
 class RetaOffenseSubcatSchema(ma.ModelSchema):
     class Meta:
-        model = cdemodels.CdeRetaOffenseSubcat
+        model = models.RetaOffenseSubcat
         exclude = ('offense',
                    'offense_subcat_sort_order',
                    'offense_subcat_xml_path', )
@@ -777,13 +777,13 @@ class RetaOffenseSubcatSchema(ma.ModelSchema):
 
 class RetaOffenseClassSchema(ma.ModelSchema):
     class Meta:
-        model = cdemodels.CdeOffenseClassification
+        model = models.OffenseClassification
         exclude = ('class_sort_order', )
 
 
 class RetaOffenseSchema(ma.ModelSchema):
     class Meta:
-        model = cdemodels.CdeRetaOffense
+        model = models.RetaOffense
         exclude = ('category',
                    'offense_category',
                    'offense_sort_order',
@@ -795,7 +795,7 @@ class RetaOffenseSchema(ma.ModelSchema):
 
 class RetaOffenseCategorySchema(ma.ModelSchema):
     class Meta:
-        model = cdemodels.CdeRetaOffenseCategory
+        model = models.RetaOffenseCategory
         exclude = ('crime_type', 'offense_category_sort_order', )
 
     offenses = ma.Nested(RetaOffenseSchema, many=True)
@@ -803,7 +803,7 @@ class RetaOffenseCategorySchema(ma.ModelSchema):
 
 class CrimeTypeSchema(ma.ModelSchema):
     class Meta:
-        model = cdemodels.CdeCrimeType
+        model = models.CrimeType
         exclude = ('crime_type_sort_order', )
 
     categories = ma.Nested(RetaOffenseCategorySchema, many=True)
