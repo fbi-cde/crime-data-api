@@ -251,8 +251,15 @@
     },
     "statePathParam": {
       "in": "path",
-      "name": "state_id",
+      "name": "state_abbr",
       "description": "The two-letter postal abbreviation for the state",
+      "required": true,
+      "type": "string"
+    },
+    "fipsPathParam": {
+      "in": "path",
+      "name": "fips_code",
+      "description": "The 5-character FIPS code for a county",
       "required": true,
       "type": "string"
     },
@@ -525,6 +532,21 @@
             "null"
           ],
           "maxLength": 2
+        },
+        "primary_county": {
+          "description": "The name of the main county that the agency is located within",
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 100
+        },
+        "primary_county_fips": {
+          "description": "The 5-character FIPS code for the primary county",
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "agency_status": {
           "description": "A code for the agency status",
@@ -830,7 +852,7 @@
       },
       "type": "object"
     },
-    "RetaAgencyCount": {
+    "AgencyOffenseCounts": {
       "description": "",
       "required": [
         "actual",
@@ -884,37 +906,12 @@
           "readOnly": true,
           "type": "string"
         },
-        "ucr_agency_name": {
-          "format": "string",
-          "readOnly": true,
-          "type": "string"
-        },
-        "ncic_agency_name": {
-          "format": "string",
-          "readOnly": true,
-          "type": "string"
-        },
         "pub_agency_name": {
           "format": "string",
           "readOnly": true,
           "type": "string"
         },
-        "offense_id": {
-          "format": "int32",
-          "readOnly": true,
-          "type": "integer"
-        },
         "offense_code": {
-          "format": "string",
-          "readOnly": true,
-          "type": "string"
-        },
-        "offense_subcat_code": {
-          "format": "string",
-          "readOnly": true,
-          "type": "string"
-        },
-        "offense_subcat_name": {
           "format": "string",
           "readOnly": true,
           "type": "string"
@@ -923,144 +920,155 @@
           "format": "string",
           "readOnly": true,
           "type": "string"
+        },
+        "classification": {
+          "type": "string",
+          "description": "A classification of the criminal offenses",
+          "enum": ["Violent", "Property"]
         }
       },
       "type": "object"
     },
-    "RetaAgencyCountOffense": {
-      "description": "",
+    "AgencySuboffenseCounts": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/AgencyOffenseCounts"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "ucr_agency_name": {
+              "format": "string",
+              "readOnly": true,
+              "type": "string"
+            },
+            "ncic_agency_name": {
+              "format": "string",
+              "readOnly": true,
+              "type": "string"
+            },
+            "offense_subcat_code": {
+              "format": "string",
+              "readOnly": true,
+              "type": "string"
+            },
+            "offense_subcat_name": {
+              "format": "string",
+              "readOnly": true,
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "TraffickingReport": {
+      "type": "object",
       "required": [
-        "actual",
-        "cleared",
-        "reported",
-        "unfounded"
+        "sex_acts",
+        "sex_acts_cleared",
+        "sex_acts_juvenile_cleared",
+        "servitude",
+        "servitude_cleared",
+        "servitude_juvenile_cleared"
       ],
       "properties": {
-        "reported": {
-          "format": "int32",
-          "readOnly": true,
-          "type": "integer"
-        },
-        "covered": {
-          "format": "int32",
-          "readOnly": true,
-          "type": "integer"
-        },
-        "covering_count": {
-          "format": "int32",
-          "readOnly": true,
-          "type": "integer"
-        },
-        "homicide_actual": {
-          "format": "int32",
-          "readOnly": true,
-          "type": "integer"
-        },
-        "homicide_cleared": {
-          "format": "int32",
-          "readOnly": true,
-          "type": "integer"
-        },
-        "homicide_juvenile_cleared": {
-          "format": "int32",
-          "readOnly": true,
-          "type": "integer"
-        },
-        "homicide_reported": {
-          "format": "int32",
-          "readOnly": true,
-          "type": "integer"
-        },
-        "rape_actual": {
-          "format": "int32",
-          "readOnly": true,
-          "type": "integer"
-        },
-        "rape_cleared": {
-          "format": "int32",
-          "readOnly": true,
-          "type": "integer"
-        },
-        "rape_juvenile_cleared": {
-          "format": "int32",
-          "readOnly": true,
-          "type": "integer"
-        },
-        "rape_reported": {
-          "format": "int32",
-          "readOnly": true,
-          "type": "integer"
-        },
         "year": {
-          "format": "int32",
-          "readOnly": true,
-          "type": "integer"
+          "type": "integer",
+          "description": "The year an agency is reporting human trafficking numbers for",
+          "minimum": 2013
         },
-        "agency_id": {
-          "format": "int32",
-          "readOnly": true,
-          "type": "integer"
+        "population": {
+          "type": ["integer", "null"],
+          "description": "The population served by the agency in the year of its report. Because of how the UCR program uniquely apportions populations to agencies, this number may be significantly lower than the actual population that lies within the agency's jurisdiction or even 0"
         },
-        "agency_population": {
-          "format": "int32",
-          "readOnly": true,
-          "type": "integer"
+        "state_abbr": {
+          "type": "string",
+          "description": "The 2-letter postal code for the state",
+          "minLength": 2,
+          "maxLength": 2
         },
-        "population_group_code": {
-          "format": "string",
-          "readOnly": true,
-          "type": "string"
+        "sex_acts": {
+          "type": "integer",
+          "description": "Total cases, commercial sex acts",
+          "minimum": 0
         },
-        "population_group": {
-          "format": "string",
-          "readOnly": true,
-          "type": "string"
+        "sex_acts_cleared": {
+          "type": "integer",
+          "description": "Total cleared cases, commercial sex acts",
+          "minimum": 0
         },
-        "agency_ori": {
-          "format": "string",
-          "readOnly": true,
-          "type": "string"
+        "sex_acts_juvenile_cleared": {
+          "type": "integer",
+          "description": "Total juvenile cleared cases, commercial sex acts",
+          "minimum": 0
         },
-        "state_name": {
-          "format": "string",
-          "readOnly": true,
-          "type": "string"
+        "servitude": {
+          "type": "integer",
+          "description": "Total cases, involuntary servitude",
+          "minimum": 0
         },
-        "agency_name": {
-          "format": "string",
-          "readOnly": true,
-          "type": "string"
+        "servitude_cleared": {
+          "type": "integer",
+          "description": "Total cleared cases, involuntary servitude",
+          "minimum": 0
         },
-
-        "offense_id": {
-          "format": "int32",
-          "readOnly": true,
-          "type": "integer"
-        },
-        "offense_code": {
-          "format": "string",
-          "readOnly": true,
-          "type": "string"
-        },
-        "offense_subcat_code": {
-          "format": "string",
-          "readOnly": true,
-          "type": "string"
-        },
-        "offense_subcat_name": {
-          "format": "string",
-          "readOnly": true,
-          "type": "string"
-        },
-        "offense_name": {
-          "format": "string",
-          "readOnly": true,
-          "type": "string"
+        "servitude_juvenile_cleared": {
+          "type": "integer",
+          "description": "Total juvenile cleared cases, involuntary servitude",
+          "minimum": 0
         }
-      },
-      "type": "object"
+      }
     },
-
+    "SummaryTraffickingReport": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/TraffickingReport"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "months_reported": {
+              "type": "integer",
+              "description": "How many months in the year all participating agencies within the given state reported human trafficking statistics to the FBI. To get an average number of months reported by each agency, you can divide by the agencies parameter",
+              "minimum": 1
+            },
+            "agencies": {
+              "type": "integer",
+              "description": "The number of agencies reporting in the given state and year",
+              "minimum": 1
+            }
+          }
+        }
+      ]
+    },
+    "AgencyTraffickingReport": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/TraffickingReport"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "months_reported": {
+              "type": "integer",
+              "description": "How many months the agency reported human trafficking statistics to the FBI. The FBI includes counts from agencies that have not reported a full year, and you should avoid extrapoliting annual counts from a partial year of reporting.",
+              "minimum": 1,
+              "maximum": 12
+            },
+            "ori": {
+              "type": "string",
+              "description": "The agency ORI",
+              "minLength": 9,
+              "maxLength": 9
+            },
+            "agency_name": {
+              "type": "string",
+              "description": "The agency's name"
+            }
+          }
+        }
+      ]
+    },
     "AgencyParticipation": {
       "type": "object",
       "required": [
@@ -1329,7 +1337,7 @@
       "type": "object"
     },
     "GeoStateDetail": {
-      "description": "The record of metadata returned by the /geo/states/<state_id> endpoint to describe a single state",
+      "description": "The record of metadata returned by the /geo/states/<state_abbr> endpoint to describe a single state",
       "type": "object",
       "properties": {
         "counties": {
@@ -1588,7 +1596,7 @@
         }
       }
     },
-    "/estimates/states/{state_id}": {
+    "/estimates/states/{state_abbr}": {
       "get": {
         "tags": [
           "estimates",
@@ -1640,7 +1648,7 @@
         }
       }
     },
-    "/geo/states/{state_id}": {
+    "/geo/states/{state_abbr}": {
       "get": {
         "tags": [
           "state"
@@ -1667,7 +1675,7 @@
         }
       }
     },
-    "/participation/states/{state_id}": {
+    "/participation/states/{state_abbr}": {
       "get": {
         "tags": [
           "state",
@@ -1959,7 +1967,7 @@
         }
       }
     },
-    "/offenders/count/states/{state_id}/{variable}": {
+    "/offenders/count/states/{state_abbr}/{variable}": {
       "get": {
         "tags": [
           "nibrs summaries",
@@ -2034,7 +2042,7 @@
         }
       }
     },
-    "/offenses/count/states/{state_id}/{variable}": {
+    "/offenses/count/states/{state_abbr}/{variable}": {
       "get": {
         "tags": [
           "nibrs summaries",
@@ -2109,7 +2117,7 @@
         }
       }
     },
-    "/victims/count/states/{state_id}/{variable}": {
+    "/victims/count/states/{state_abbr}/{variable}": {
       "get": {
         "tags": [
           "nibrs summaries",
@@ -2200,7 +2208,7 @@
         }
       }
     },
-    "/ct/count/states/{state_id}/{variable}": {
+    "/ct/count/states/{state_abbr}/{variable}": {
       "get": {
         "tags": [
           "nibrs summaries",
@@ -2306,7 +2314,7 @@
         }
       }
     },
-    "/hc/count/states/{state_id}/{variable}": {
+    "/hc/count/states/{state_abbr}/{variable}": {
       "get": {
         "tags": [
           "nibrs summaries",
@@ -2388,7 +2396,7 @@
         }
       }
     },
-    "/offenders/count/states/{state_id}/{variable}/offenses": {
+    "/offenders/count/states/{state_abbr}/{variable}/offenses": {
       "get": {
         "tags": [
           "nibrs summaries",
@@ -2505,7 +2513,7 @@
         }
       }
     },
-    "/offenses/count/states/{state_id}/{variable}/offenses": {
+    "/offenses/count/states/{state_abbr}/{variable}/offenses": {
       "get": {
         "tags": [
           "nibrs summaries",
@@ -2622,7 +2630,7 @@
         }
       }
     },
-    "/victims/count/states/{state_id}/{variable}/offenses": {
+    "/victims/count/states/{state_abbr}/{variable}/offenses": {
       "get": {
         "tags": [
           "nibrs summaries",
@@ -2740,7 +2748,7 @@
         }
       }
     },
-    "/ct/count/states/{state_id}/{variable}/offenses": {
+    "/ct/count/states/{state_abbr}/{variable}/offenses": {
       "get": {
         "tags": [
           "nibrs summaries",
@@ -2844,7 +2852,7 @@
         }
       }
     },
-    "/hc/count/states/{state_id}/{variable}/offenses": {
+    "/hc/count/states/{state_abbr}/{variable}/offenses": {
       "get": {
         "tags": [
           "nibrs summaries",
@@ -2898,12 +2906,6 @@
         ],
         "parameters": [
           {
-            "$ref": "#/parameters/hateCrimesCountVariableParam"
-          },
-          {
-            "$ref": "#/parameters/fieldsParam"
-          },
-          {
             "$ref": "#/parameters/pageParam"
           },
           {
@@ -2929,7 +2931,7 @@
                 "results": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/definitions/RetaAgencyCount"
+                    "$ref": "#/definitions/AgencySuboffenseCounts"
                   }
                 }
               }
@@ -2941,7 +2943,7 @@
         }
       }
     },
-    "/agencies/count/states/suboffenses/{state_abbr}/counties/{county_fips_code}": {
+    "/agencies/count/states/suboffenses/{state_abbr}/counties/{fips_code}": {
       "get": {
         "tags": [
           "suboffenses",
@@ -2950,10 +2952,10 @@
         ],
         "parameters": [
           {
-            "$ref": "#/parameters/hateCrimesCountVariableParam"
+            "$ref": "#/parameters/statePathParam"
           },
           {
-            "$ref": "#/parameters/fieldsParam"
+            "$ref": "#/parameters/fipsPathParam"
           },
           {
             "$ref": "#/parameters/pageParam"
@@ -2981,7 +2983,7 @@
                 "results": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/definitions/RetaAgencyCount"
+                    "$ref": "#/definitions/AgencySuboffenseCounts"
                   }
                 }
               }
@@ -2993,7 +2995,7 @@
         }
       }
     },
-    "/agencies/count/states/suboffenses/{state_abbr}/{agency_ori}": {
+    "/agencies/count/states/suboffenses/{state_abbr}/{ori}": {
       "get": {
         "tags": [
           "suboffenses",
@@ -3002,10 +3004,10 @@
         ],
         "parameters": [
           {
-            "$ref": "#/parameters/hateCrimesCountVariableParam"
+            "$ref": "#/parameters/statePathParam"
           },
           {
-            "$ref": "#/parameters/fieldsParam"
+            "$ref": "#/parameters/oriPathParam"
           },
           {
             "$ref": "#/parameters/pageParam"
@@ -3033,7 +3035,7 @@
                 "results": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/definitions/RetaAgencyCount"
+                    "$ref": "#/definitions/AgencySuboffenseCounts"
                   }
                 }
               }
@@ -3053,10 +3055,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/parameters/hateCrimesCountVariableParam"
-          },
-          {
-            "$ref": "#/parameters/fieldsParam"
+            "$ref": "#/parameters/statePathParam"
           },
           {
             "$ref": "#/parameters/pageParam"
@@ -3084,7 +3083,7 @@
                 "results": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/definitions/RetaAgencyCountOffense"
+                    "$ref": "#/definitions/AgencyOffenseCounts"
                   }
                 }
               }
@@ -3096,7 +3095,7 @@
         }
       }
     },
-    "/agencies/count/states/offenses/{state_abbr}/counties/{county_fips_code}": {
+    "/agencies/count/states/offenses/{state_abbr}/counties/{fips_code}": {
       "get": {
         "tags": [
           "offenses",
@@ -3105,10 +3104,10 @@
         ],
         "parameters": [
           {
-            "$ref": "#/parameters/hateCrimesCountVariableParam"
+            "$ref": "#/parameters/statePathParam"
           },
           {
-            "$ref": "#/parameters/fieldsParam"
+            "$ref": "#/parameters/fipsPathParam"
           },
           {
             "$ref": "#/parameters/pageParam"
@@ -3136,7 +3135,7 @@
                 "results": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/definitions/RetaAgencyCountOffense"
+                    "$ref": "#/definitions/AgencyOffenseCounts"
                   }
                 }
               }
@@ -3148,7 +3147,7 @@
         }
       }
     },
-    "/agencies/count/states/offenses/{state_abbr}/{agency_ori}": {
+    "/agencies/count/{ori}/offenses": {
       "get": {
         "tags": [
           "offenses",
@@ -3157,10 +3156,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/parameters/hateCrimesCountVariableParam"
-          },
-          {
-            "$ref": "#/parameters/fieldsParam"
+            "$ref": "#/parameters/oriPathParam"
           },
           {
             "$ref": "#/parameters/pageParam"
@@ -3188,7 +3184,7 @@
                 "results": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/definitions/RetaAgencyCountOffense"
+                    "$ref": "#/definitions/AgencyOffenseCounts"
                   }
                 }
               }
@@ -3196,6 +3192,120 @@
           },
           "default": {
             "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
+    "/ht/agencies": {
+      "get": {
+        "tags": [
+          "human trafficking"
+        ],
+        "description": "Returns a paginated list of annual agency counts for human trafficking. Not all agencies submit reports nor they necessarily submit for all months of a given year. Human trafficking data has only been collected from 2013 onwards. Any field returned in the response can be used to filter down searches.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          },
+          {
+            "$ref": "#/parameters/oriParam"
+          },
+          {
+            "$ref": "#/parameters/agencyNameParam"
+          },
+          {
+            "$ref": "#/parameters/stateAbbrParam"
+          },
+          {
+            "$ref": "#/parameters/yearParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "For success, returns a paginated list of agency reports on human trafficking",
+            "schema": {
+              "type": "object",
+              "required": [
+                "pagination",
+                "results"
+              ],
+              "properties": {
+                "pagination": {
+                  "$ref": "#/definitions/Pagination"
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/AgencyTraffickingReport"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "The standard error response",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/ht/states": {
+      "get": {
+        "tags": [
+          "human trafficking"
+        ],
+        "description": "Returns a paginated list of state counts for human trafficking. Not all agencies submit reports nor they necessarily submit for all months of a given year. Human trafficking data has only been collected from 2013 onwards. Only reports from states and Washington, DC are included in these counts (territories are excluded). Any field returned in the response can be use to filter down searches.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/pageParam"
+          },
+          {
+            "$ref": "#/parameters/perPageParam"
+          },
+          {
+            "$ref": "#/parameters/outputParam"
+          },
+          {
+            "$ref": "#/parameters/stateAbbrParam"
+          },
+          {
+            "$ref": "#/parameters/yearParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "For success, returns a paginated list of state totals on human trafficking",
+            "schema": {
+              "type": "object",
+              "required": [
+                "pagination",
+                "results"
+              ],
+              "properties": {
+                "pagination": {
+                  "$ref": "#/definitions/Pagination"
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/SummaryTraffickingReport"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "The standard error response",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       }
@@ -3217,6 +3327,14 @@
       "externalDocs": {
         "description": "About Hate Crime Statistics",
         "url": "https://ucr.fbi.gov/hate-crime/2015/resource-pages/abouthatecrime_final"
+      }
+    },
+    {
+      "name": "human trafficking",
+      "description": "These endpoints return statistics about human trafficking reported into the FBI since 2013",
+      "externalDocs": {
+        "description": "Human Trafficking - Questions and Answers",
+        "url": "https://ucr.fbi.gov/crime-in-the-u.s/2015/crime-in-the-u.s.-2015/additional-reports/human-trafficking/human-trafficking-questions-and-answers"
       }
     },
     {

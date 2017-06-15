@@ -1,6 +1,35 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-06-09]
+### Fixed
+- Explicitly release connections on thrown exceptions and use correct imported database class in `models.py` ([#550](https://github.com/18F/crime-data-api/pull/550))
+
+
+## [2017-06-08]
+### Added
+- Endpoints for ORI Return A data and aggregated totals based on NIBRS dimensions ([#507](https://github.com/18F/crime-data-api/pull/507))
+- Agency endpoints support `fields` parameter ([#511](https://github.com/18F/crime-data-api/pull/511))
+- Add CORS header to the endpoints and `swagger.json` ([#520](https://github.com/18F/crime-data-api/pull/520))
+- Create an offense-grouped version of agency_sums table ([#524](https://github.com/18F/crime-data-api/pull/524))
+- Endpoints for human trafficking data (`/ht/agencies` and `/ht/states`) ([#533](https://github.com/18F/crime-data-api/pull/533))
+
+### Changed
+- Rename `/agencies/count/states/offenses/:state/:ori` endpoint ([#492](https://github.com/18F/crime-data-api/issues/492))
+- Performance improvements for endpoints that return large response ([#521](https://github.com/18F/crime-data-api/pull/521), [#522](https://github.com/18F/crime-data-api/pull/522))
+- Suboffense endpoint accepts `explorer_offense` argument ([#523](https://github.com/18F/crime-data-api/pull/523))
+- Agency offenses endpoint support classification (property, violent) and arson ([#529](https://github.com/18F/crime-data-api/issues/529))
+- Use gunicorn for the production web server ([#542](https://github.com/18F/crime-data-api/pull/542))
+
+### Fixed
+- Include NIBRS offenses of "incest" and "sexual assault with an object" in response for "rape" ([#129](https://github.com/18F/crime-data-explorer/issues/129))
+- Use `reta_month` to get `current_year` for `cde_agencies` ([#501](https://github.com/18F/crime-data-api/issues/501))
+- Participation endpoint is now case-insensitive ([#526](https://github.com/18F/crime-data-api/issues/526))
+
+### Removed
+- The `aggregate_many` param removed from documentation
+
+
 ## [2017-05-12]
 ### Added
 - Add core city flag to agencies. Create `revised_rape_start` column to indicate when an agency switched over to revised rape definition. Append " County" to the agency names for county agencies that don't already include it ([#457](https://github.com/18F/crime-data-api/pull/457))
@@ -14,6 +43,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - Large request pagination ([#488](https://github.com/18F/crime-data-api/pull/488))
 - Estimated endpoint returns data sorted by year ([#489](https://github.com/18F/crime-data-api/issues/489))
+
 
 ## [2017-04-26]
 ### Added

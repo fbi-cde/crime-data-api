@@ -184,29 +184,6 @@ class CachedIncidentCountSchema(Schema):
     juvenile_cleared = marsh_fields.Integer()
     total_population = marsh_fields.Integer(load_only=True)
 
-class CachedAgencyIncidentCountSchema(Schema):
-    class Meta:
-        model = newmodels.RetaMonthAgencySubcatSummary
-    year = marsh_fields.Integer()
-    state_name = marsh_fields.String()
-    agency_id = marsh_fields.Integer()
-    agency_ori = marsh_fields.String()
-    agency_name = marsh_fields.String()
-    reported = marsh_fields.Integer()
-    covered = marsh_fields.Integer()
-    covering_count = marsh_fields.Integer()
-    agency_population = marsh_fields.Integer()
-    population_group_code = marsh_fields.String()
-    population_group = marsh_fields.String()
-    homicide_reported = marsh_fields.Integer()
-    homicide_actual = marsh_fields.Integer()
-    homicide_cleared = marsh_fields.Integer()
-    homicide_juvenile_cleared = marsh_fields.Integer()
-    rape_reported = marsh_fields.Integer()
-    rape_actual = marsh_fields.Integer()
-    rape_cleared = marsh_fields.Integer()
-    rape_juvenile_cleared = marsh_fields.Integer()
-
 
 class AgencySumsSchema(Schema):
     class Meta:
@@ -236,6 +213,29 @@ class AgencySumsSchema(Schema):
     # county_fips_code = marsh_fields.String()
     # legacy_county_code = marsh_fields.String()
 
+class AgencyOffensesSchema(Schema):
+    class Meta:
+        model = newmodels.AgencyOffenseCounts
+        exclude = ('offense_id', )
+
+    id = marsh_fields.Integer()
+    year = marsh_fields.Integer()
+    agency_id = marsh_fields.Integer()
+    ori = marsh_fields.String()
+    state_postal_abbr = marsh_fields.String()
+    pub_agency_name = marsh_fields.String()
+    offense_code = marsh_fields.String() # reta_offense
+    offense_name = marsh_fields.String()
+    classification = marsh_fields.String()
+    reported = marsh_fields.Integer()
+    unfounded = marsh_fields.Integer()
+    actual = marsh_fields.Integer()
+    cleared = marsh_fields.Integer()
+    juvenile_cleared = marsh_fields.Integer()
+    ucr_agency_name = marsh_fields.String()
+    ncic_agency_name = marsh_fields.String()
+    pub_agency_name = marsh_fields.String()
+    
 
 class NibrsRelationshipSchema(ma.ModelSchema):
     class Meta:
@@ -1044,7 +1044,25 @@ class AgencySchema(ma.ModelSchema):
     class Meta:
         model = newmodels.CdeAgency
         ordered = True
-        exclude = ('agency_id', 'state_id', 'city_id', 'submitting_agency_id', 'covered_by_id', )
+        exclude = ('agency_id', 'state_id', 'city_id',
+                   'submitting_agency_id', 'covered_by_id', 'primary_county_id',
+        )
+
+
+class HtAgencySchema(ma.ModelSchema):
+    """Response schema for the human trafficking endpoints"""
+    class Meta:
+        model = newmodels.HtAgency
+        ordered = True
+        exclude = ('id', 'agency_id', 'state_id', )
+
+
+class HtSummarySchema(ma.ModelSchema):
+    """Response schema for the summary endpoint"""
+    class Meta:
+        model = newmodels.HtSummary
+        ordered = True
+        exclude = ('id', 'agency_id', 'state_id', )
 
 
 class EstimateSchema(ma.ModelSchema):

@@ -367,6 +367,8 @@ class CdeResource(Resource):
                 current_app.logger.warning(str(count_exception))
                 current_app.logger.warning('Falling back to full count')
                 session.rollback()
+                session.close()
+                session.remove()
                 count = results.count()
                 pass
 
@@ -380,6 +382,7 @@ class CdeResource(Resource):
 
         # Close session connection - release to pool.
         session.close()
+        session.remove()
         
         serialized = self._serialize(paginated)
 
@@ -494,7 +497,7 @@ class ExplorerOffenseMapping(object):
                     'Theft From Coin-Operated Machine or Device'],
         'motor-vehicle-theft': 'Motor Vehicle Theft',
         'homicide': 'Murder and Nonnegligent Manslaughter',
-        'rape': 'Rape',
+        'rape': ['Rape', 'Sexual Assault With An Object', 'Incest'],
         'robbery': 'Robbery',
         'arson': 'Arson'
     }

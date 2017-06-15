@@ -6,6 +6,7 @@ from os import getenv
 
 import flask_restful as restful
 from flask import Flask, render_template
+from flask_cors import CORS
 
 import crime_data.resources.agencies
 #import crime_data.resources.arrests
@@ -22,6 +23,9 @@ import crime_data.resources.geo
 import crime_data.resources.participation
 import crime_data.resources.estimates
 
+import crime_data.resources.human_traffic
+from werkzeug.contrib.fixers import ProxyFix
+
 from crime_data import commands
 from crime_data.assets import assets
 from crime_data.common.marshmallow_schemas import ma
@@ -32,6 +36,7 @@ from crime_data.settings import ProdConfig
 
 if __name__ == '__main__':
     app.run(debug=True)  # nosec, this isn't called on production
+    #app.wsgi_app = ProxyFix(app.wsgi_app)
 
 
 def create_app(config_object=ProdConfig):
@@ -61,6 +66,7 @@ def register_extensions(app):
     debug_toolbar.init_app(app)
     migrate.init_app(app, db)
     cache_control.init_app(app)
+    CORS(app)
     return None
 
 
@@ -134,10 +140,10 @@ def add_resources(app):
     api.add_resource(crime_data.resources.incidents.AgenciesSumsCounty,
                      '/agencies/count/states/suboffenses/<string:state_abbr>/counties/<string:county_fips_code>' )
 
-    api.add_resource(crime_data.resources.incidents.CachedIncidentsAgenciesCount,
-                     '/agencies/count/states/offenses/<string:state_abbr>/<string:agency_ori>','/agencies/count/states/offenses/<string:state_abbr>' )
+    api.add_resource(crime_data.resources.incidents.AgenciesOffensesCount,
+                     '/agencies/count/<string:agency_ori>/offenses','/agencies/count/states/<string:state_abbr>/offenses' )
 
-    api.add_resource(crime_data.resources.incidents.CachedIncidentsAgenciesCountyCount,
+    api.add_resource(crime_data.resources.incidents.AgenciesOffensesCountyCount,
                      '/agencies/count/states/offenses/<string:state_abbr>/counties/<string:county_fips_code>' )
 
     # api.add_resource(crime_data.resources.incidents.IncidentsDetail,
@@ -217,6 +223,11 @@ def add_resources(app):
                      '/hc/count/states/<int:state_id>/<string:variable>',
                      '/hc/count/states/<string:state_abbr>/<string:variable>')
 
+    api.add_resource(crime_data.resources.human_traffic.HtAgencyList,
+                     '/ht/agencies')
+    api.add_resource(crime_data.resources.human_traffic.HtStatesList,
+                     '/ht/states')
+
     api.add_resource(crime_data.resources.victims.VictimOffenseSubcounts,
                      '/victims/count/states/<int:state_id>/<string:variable>/offenses',
                      '/victims/count/states/<string:state_abbr>/<string:variable>/offenses',
@@ -261,3 +272,28 @@ def register_newrelic(app):
         newrelic.agent.initialize()
     except: #nosec
         pass
+
+
+from flask.helpers import get_debug_flag
+
+from crime_data.settings import DevConfig, ProdConfig
+
+CONFIG = DevConfig if get_debug_flag() else ProdConfig
+
+app = create_app(CONFIG)
+app.wsgi_app = ProxyFix(app.wsgi_app)
+
+# This lets you see the /__sqltap__ debugging console on develop
+if get_debug_flag():
+    import sqltap.wsgi
+    app.wsgi_app = sqltap.wsgi.SQLTapMiddleware(app.wsgi_app)
+
+
+# Add some static routing
+@app.route('/')
+def swagger_ui():
+    return app.send_static_file('swagger-ui.html')
+
+@app.route('/swagger.json')
+def swagger_json():
+    return app.send_static_file('swagger.json')
