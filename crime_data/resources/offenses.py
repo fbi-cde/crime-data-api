@@ -2,7 +2,7 @@ from webargs.flaskparser import use_args
 from crime_data.extensions import DEFAULT_MAX_AGE
 from flask.ext.cachecontrol import cache
 
-from crime_data.common import cdemodels, marshmallow_schemas
+from crime_data.common import models, cdemodels, marshmallow_schemas
 from crime_data.common.base import CdeResource, tuning_page
 from crime_data.common.marshmallow_schemas import ArgumentsSchema
 
@@ -19,7 +19,7 @@ class OffensesList(CdeResource):
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
     def get(self, args):
         self.verify_api_key(args)
-        result = cdemodels.CdeCrimeType.query
+        result = models.CrimeType.query
         return self.with_metadata(result, args)
 
 

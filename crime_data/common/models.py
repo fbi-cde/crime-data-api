@@ -2519,7 +2519,7 @@ class RetaOffenseCategory(db.Model):
                               nullable=False,
                               index=True)
 
-    crime_type = db.relationship('CrimeType')
+    crime_type = db.relationship('CrimeType', backref='categories')
 
 
 class RetaOffenseSubcat(db.Model):
@@ -2539,7 +2539,7 @@ class RetaOffenseSubcat(db.Model):
                            nullable=False,
                            index=True)
 
-    offense = db.relationship('RetaOffense')
+    offense = db.relationship('RetaOffense', backref='subcategories')
 
 
 class ShrCircumstance(db.Model):

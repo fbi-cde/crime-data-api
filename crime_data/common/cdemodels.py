@@ -24,41 +24,6 @@ def get_sql_count(q):
     return count
 
 
-#class CdeRefState(RefState):
-#    pass
-
-#class CdeRefCounty(RefCounty):
-#    pass
-
-
-class CdeNibrsAge(models.NibrsAge):
-    pass
-
-
-class CdeNibrsOffenseType(models.NibrsOffenseType):
-    pass
-
-
-class CdeNibrsWeapon(models.NibrsWeapon):
-    pass
-
-
-class CdeNibrsWeaponType(models.NibrsWeaponType):
-    pass
-
-
-class CdeRefRace(models.RefRace):
-    pass
-
-
-class CdeRefCity(models.RefCity):
-    pass
-
-
-class CdeRetaMonthOffenseSubcat(models.RetaMonthOffenseSubcat):
-    pass
-
-
 class CdeRefAgencyCounty(models.RefAgencyCounty):
     """A wrapper around the RefAgencyCounty model"""
 
@@ -233,61 +198,6 @@ class CdeRefAgency(models.RefAgency):
         return query
 
     pass
-
-
-class CdeNibrsEthnicity(models.NibrsEthnicity):
-    pass
-
-
-class CdeNibrsVictim(models.NibrsVictim):
-    pass
-
-
-class CdeNibrsOffender(models.NibrsOffender):
-    pass
-
-
-class CdeNibrsMonth(models.NibrsMonth):
-    pass
-
-
-class CdeNibrsOffense(models.NibrsOffense):
-    pass
-
-
-class CdeNibrsLocationType(models.NibrsLocationType):
-    pass
-
-
-class CdeNibrsIncident(models.NibrsIncident):
-    pass
-
-
-class CdeRetaMonth(models.RetaMonth):
-    pass
-
-
-class CdeCrimeType(models.CrimeType):
-    pass
-
-
-class CdeRetaOffenseCategory(models.RetaOffenseCategory):
-    crime_type = db.relationship(CdeCrimeType, backref='categories')
-
-
-class CdeRetaOffense(models.RetaOffense):
-
-    category = db.relationship(CdeRetaOffenseCategory, backref='offenses')
-
-
-class CdeRetaOffenseSubcat(models.RetaOffenseSubcat):
-
-    offense = db.relationship(CdeRetaOffense, backref='subcategories')
-
-
-class CdeOffenseClassification(models.OffenseClassification):
-
-    offense = db.relationship(CdeRetaOffense, backref='classifications')
 
 
 def _is_string(col):
