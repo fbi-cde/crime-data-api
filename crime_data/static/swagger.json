@@ -718,6 +718,106 @@
         }
       }
     },
+    "SummaryCount": {
+      "description": "Several endpoints in the Crime Data Explorer return aggregated counts related to the offense.",
+      "type": "object",
+      "required": [
+        "reported",
+        "actual",
+        "unfounded",
+        "cleared",
+        "juvenile_cleared"
+      ],
+      "properties": {
+        "year": {
+          "description": "Usually counts are aggregated on an annual basis among other measures. This field contains the year the counts are valid for.",
+          "type": "integer",
+          "minimum": 1960
+        },
+        "reported": {
+          "description": "How many incidents were reported for the specified offense.",
+          "type": ["integer", "null"],
+          "minimum": 0
+        },
+        "actual": {
+          "description": "The number of reported incidents that were deemed credible.",
+          "type": ["integer", "null"],
+          "minimum": 0
+        },
+        "unfounded": {
+          "description": "The number of reported incidents that were deemed unfounded. This should add up with `actual` to return the total number of reported offenses.",
+          "type": ["integer", "null"],
+          "minimum": 0
+        },
+        "cleared": {
+          "description": "The number of incidents that were cleared by law enforcement. Note that clearances are counted in the year they are made and not added to previous years for old cases.",
+          "type": ["integer", "null"],
+          "minimum": 0
+        },
+        "juvenile_cleared": {
+          "description": "The number of clearances made that involved a juvenile (generally someone < 18 years old)",
+          "type": ["integer", "null"],
+          "minimum": 0
+        }
+      }
+    },
+    "ArsonSummary": {
+      "description": "Represents arson counts for a specific year returned by the arson endpoints.",
+      "allOf": [
+        {
+          "type": "object",
+          "required": [
+            "year",
+            "reported",
+            "cleared",
+            "actual",
+            "unfounded",
+            "uninhabited",
+            "est_damage_value"
+          ],
+          "properties": {
+            "year": {
+              "description": "The year the count is from",
+              "type": "integer",
+              "minimum": 1960
+            },
+            "state_abbr": {
+              "description": "The 2-letter postal abbreviation of the state the arson count is for. May be NULL for nationwide counts",
+              "type": ["string", "null"],
+              "minLength": 2,
+              "maxLength": 2
+            },
+            "ori": {
+              "description": "For arson requests at the agency level, returns the ORI for the agency. Always null for statewide and national counts",
+              "type": ["string", "null"],
+              "minLength": 9,
+              "maxLength": 9
+            },
+            "subcategory_code": {
+              "description": "For counts taken at the subcategory level, this is the code for the subcategory. Otherwise, null.",
+              "type": ["string", "null"]
+            },
+            "subcategory_name": {
+              "description": "For counts at the subcategory level, this returns a description for the subcategory of structure affected. Otherwise, null.",
+              "type": ["string", "null"]
+            },
+            "uninhabited": {
+              "description": "The number of affected buildings that were uninhabited.",
+              "type": "integer",
+              "minimum": 0
+            },
+            "est_damage_value": {
+              "description": "Estimated damage in dollars from the arson cases in that year.",
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        {
+          "$ref": "#/definitions/SummaryCount"
+        }
+      ]
+    },
     "EstimatedCount": {
       "type": "object",
       "required": [
@@ -810,124 +910,53 @@
         }
       }
     },
-    "IncidentCount": {
-      "description": "",
-      "required": [
-        "actual",
-        "cleared",
-        "reported",
-        "unfounded"
-      ],
-      "properties": {
-        "actual": {
-          "format": "int32",
-          "readOnly": true,
-          "type": "integer"
-        },
-        "cleared": {
-          "format": "int32",
-          "readOnly": true,
-          "type": "integer"
-        },
-        "juvenile_cleared": {
-          "format": "int32",
-          "readOnly": true,
-          "type": "integer"
-        },
-        "reported": {
-          "format": "int32",
-          "readOnly": true,
-          "type": "integer"
-        },
-        "unfounded": {
-          "format": "int32",
-          "readOnly": true,
-          "type": "integer"
-        },
-        "year": {
-          "format": "int32",
-          "readOnly": true,
-          "type": "integer"
-        }
-      },
-      "type": "object"
-    },
     "AgencyOffenseCounts": {
       "description": "",
-      "required": [
-        "actual",
-        "cleared",
-        "reported",
-        "unfounded"
-      ],
-      "properties": {
-        "actual": {
-          "format": "int32",
-          "readOnly": true,
-          "type": "integer"
+      "allOf": [
+        {
+          "$ref": "#/definitions/SummaryCount"
         },
-        "cleared": {
-          "format": "int32",
-          "readOnly": true,
-          "type": "integer"
-        },
-        "juvenile_cleared": {
-          "format": "int32",
-          "readOnly": true,
-          "type": "integer"
-        },
-        "reported": {
-          "format": "int32",
-          "readOnly": true,
-          "type": "integer"
-        },
-        "unfounded": {
-          "format": "int32",
-          "readOnly": true,
-          "type": "integer"
-        },
-        "year": {
-          "format": "int32",
-          "readOnly": true,
-          "type": "integer"
-        },
-        "agency_id": {
-          "format": "int32",
-          "readOnly": true,
-          "type": "integer"
-        },
-        "ori": {
-          "format": "string",
-          "readOnly": true,
-          "type": "string"
-        },
-        "state_postal_abbr": {
-          "format": "string",
-          "readOnly": true,
-          "type": "string"
-        },
-        "pub_agency_name": {
-          "format": "string",
-          "readOnly": true,
-          "type": "string"
-        },
-        "offense_code": {
-          "format": "string",
-          "readOnly": true,
-          "type": "string"
-        },
-        "offense_name": {
-          "format": "string",
-          "readOnly": true,
-          "type": "string"
-        },
-        "classification": {
-          "type": "string",
-          "description": "A classification of the criminal offenses",
-          "enum": ["Violent", "Property"]
+        {
+          "type": "object",
+          "properties": {
+            "agency_id": {
+              "format": "int32",
+              "readOnly": true,
+              "type": "integer"
+            },
+            "ori": {
+              "format": "string",
+              "readOnly": true,
+              "type": "string"
+            },
+            "state_postal_abbr": {
+              "format": "string",
+              "readOnly": true,
+              "type": "string"
+            },
+            "pub_agency_name": {
+              "format": "string",
+              "readOnly": true,
+              "type": "string"
+            },
+            "offense_code": {
+              "format": "string",
+              "readOnly": true,
+              "type": "string"
+            },
+            "offense_name": {
+              "format": "string",
+              "readOnly": true,
+              "type": "string"
+            },
+            "classification": {
+              "type": "string",
+              "description": "A classification of the criminal offenses",
+              "enum": ["Violent", "Property"]
+            }
+          }
         }
-      },
-      "type": "object"
+      ]
     },
     "AgencySuboffenseCounts": {
       "allOf": [
@@ -1489,6 +1518,85 @@
         }
       }
     },
+    "/arson/national": {
+      "get": {
+        "tags": [
+          "arson"
+        ],
+        "description": "Returns annual counts of arsons nationwide per each year.",
+        "responses": {
+          "200": {
+            "description": "Returns a paginated list of arson counts",
+            "schema": {
+              "type": "object",
+              "required": [
+                "pagination",
+                "results"
+              ],
+              "properties": {
+                "pagination": {
+                  "$ref": "#/definitions/Pagination"
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/ArsonSummary"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "The standard error response",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/arson/states/{state_abbr}": {
+      "get": {
+        "tags": [
+          "arson"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/statePathParam"
+          }
+        ],
+        "description": "Returns counts of arsons in a given state per year.",
+        "responses": {
+          "200": {
+            "description": "Returns a paginated list of arson counts",
+            "schema": {
+              "type": "object",
+              "required": [
+                "pagination",
+                "results"
+              ],
+              "properties": {
+                "pagination": {
+                  "$ref": "#/definitions/Pagination"
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/ArsonSummary"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "The standard error response",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/codes": {
       "get": {
         "tags": [
@@ -1864,7 +1972,7 @@
                 "results": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/definitions/IncidentCount"
+                    "$ref": "#/definitions/SummaryCount"
                   }
                 }
               }

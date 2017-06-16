@@ -77,6 +77,26 @@ class AgencyParticipation(db.Model, FilterableModel):
     nibrs_participated = db.Column(db.SmallInteger)
 
 
+class ArsonSummary(db.Model):
+    __tablename__ = 'arson_summary'
+
+    arson_summary_id = db.Column(db.Integer, nullable=False, primary_key=True)
+    grouping_bitmap = db.Column(db.Integer)
+    year = db.Column(db.SmallInteger)
+    state_id = db.Column(db.Integer)
+    state_abbr = db.Column(db.Text)
+    agency_id = db.Column(db.Integer)
+    ori = db.Column(db.Text)
+    subcategory_code = db.Column(db.Text)
+    subcategory_name = db.Column(db.Text)
+    reported = db.Column(db.Integer)
+    unfounded = db.Column(db.Integer)
+    actual = db.Column(db.Integer)
+    cleared = db.Column(db.Integer)
+    juvenile_cleared = db.Column(db.Integer)
+    uninhabited = db.Column(db.Integer)
+    est_damage_value = db.Column(db.Integer)
+
 
 class ParticipationRate(db.Model):
     __tablename__ = 'participation_rates'

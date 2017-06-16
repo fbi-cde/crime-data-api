@@ -18,8 +18,12 @@ echo -n "Loading additional functions..."
 psql $CRIME_DATA_API_DB_URL <after_load/functions.sql >/dev/null
 echo "DONE"
 
-echo -n "Create RET A Summaries..."
-after_load/reta_summary.sh >/dev/null
+#echo -n "Create RET A Summaries..."
+#after_load/reta_summary.sh >/dev/null
+#echo "DONE"
+
+echo -n "Arson tables..."
+psql $CRIME_DATA_API_DB_URL <after_load/create_arson_table.sql
 echo "DONE"
 
 echo -n "Create View Count tables from NIBRS..."
