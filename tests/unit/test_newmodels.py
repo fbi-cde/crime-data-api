@@ -174,6 +174,13 @@ class TestCdeAgencies:
         assert a is not None
         assert a.revised_rape_start is None
 
+    def test_agency_has_unmapped_county(self, app):
+        a = CdeAgency.query.filter(CdeAgency.ori == 'RIRSP0000').one()
+        assert a is not None
+        assert a.primary_county_id is not None
+        assert a.primary_county is None
+        assert a.primary_county_fips is None
+
 class TestArsonAdditionsToRetaMonthOffenseSubcatSummary:
     def test_arson_fields_for_state_month_year(self, app):
         q = RetaMonthOffenseSubcatSummary.query
