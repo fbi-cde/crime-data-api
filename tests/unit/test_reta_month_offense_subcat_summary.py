@@ -52,11 +52,11 @@ class TestArsonAdditionsToRetaMonthOffenseSubcatSummary:
         q = q.filter(RetaMonthOffenseSubcatSummary.year == None)
         q = q.filter(RetaMonthOffenseSubcatSummary.state == None)
         q = q.filter(RetaMonthOffenseSubcatSummary.offense_subcat_code == None).one()
-        assert q.reported == 4287
-        assert q.unfounded == 482
-        assert q.actual == 3805
-        assert q.cleared == 700
-        assert q.juvenile_cleared == 259
+        assert q.reported == 257
+        assert q.unfounded == 1
+        assert q.actual == 256
+        assert q.cleared == 93
+        assert q.juvenile_cleared == 45
 
     def test_arson_fields_for_state_month_year(self, app):
         q = RetaMonthOffenseSubcatSummary.query
@@ -165,8 +165,8 @@ class TestArsonAdditionsToRetaMonthOffenseSubcatSummary:
         q = q.filter(RetaMonthOffenseSubcatSummary.year == None)
         q = q.filter(RetaMonthOffenseSubcatSummary.state == None)
         q = q.filter(RetaMonthOffenseSubcatSummary.offense_category == None).one()
-        assert q.reported == 10025
-        assert q.unfounded == 482
-        assert q.actual == 9543
-        assert q.cleared == 1367
-        assert q.juvenile_cleared == 350
+        assert q.reported == 5925
+        assert q.unfounded == 1
+        assert q.actual == 5924
+        assert q.cleared == 760
+        assert q.juvenile_cleared == 136

@@ -46,6 +46,7 @@ class TestOffenderCountView:
         results = ocv.query({}).fetchall()
         assert len(results) > 0
 
+        print(results)
         # test that grouping is working
         seen_values = set()
         for row in results:

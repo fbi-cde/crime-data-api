@@ -62,7 +62,7 @@ UPDATE nibrs_victim_denorm SET ethnicity = nibrs_ethnicity.ethnicity_name, resid
 
 
 ALTER TABLE nibrs_victim_denorm ADD COLUMN victim_type text;
-UPDATE nibrs_victim_denorm SET victim_type = nibrs_victim_type.ethnicity_name from nibrs_victim JOIN nibrs_victim_type ON nibrs_victim.victim_type_id = nibrs_victim_type.victim_type_id;
+UPDATE nibrs_victim_denorm SET victim_type = nibrs_victim_type.victim_type_name from nibrs_victim JOIN nibrs_victim_type ON nibrs_victim.victim_type_id = nibrs_victim_type.victim_type_id;
 
 
 CREATE INDEX nibrs_victim_denorm_state_year_id_idx ON nibrs_victim_denorm (state_code, year);

@@ -18,7 +18,7 @@ CREATE TRIGGER property_partition_insert_trigger
 BEFORE INSERT ON nibrs_property_denorm
 FOR EACH ROW EXECUTE PROCEDURE create_partition_and_insert();
 
-INSERT INTO nibrs_property_denorm (incident_id, agency_id, year, incident_date, property_id) SELECT nibrs_offender.incident_id, nibrs_incident.agency_id, EXTRACT(YEAR FROM nibrs_incident.incident_date) as year, nibrs_incident.incident_date, nibrs_property.property_id from nibrs_property JOIN nibrs_incident on nibrs_incident.incident_id = nibrs_property.incident_id;
+INSERT INTO nibrs_property_denorm (incident_id, agency_id, year, incident_date, property_id) SELECT nibrs_incident.incident_id, nibrs_incident.agency_id, EXTRACT(YEAR FROM nibrs_incident.incident_date) as year, nibrs_incident.incident_date, nibrs_property.property_id from nibrs_property JOIN nibrs_incident on nibrs_incident.incident_id = nibrs_property.incident_id;
 
 UPDATE nibrs_property_denorm SET state_id = ref_agency.state_id, ori = ref_agency.ori from ref_agency where nibrs_property_denorm.agency_id = ref_agency.agency_id;
 UPDATE nibrs_property_denorm SET state_code = ref_state.state_code from ref_state where nibrs_property_denorm.state_id = ref_state.state_id;

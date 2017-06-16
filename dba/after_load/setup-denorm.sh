@@ -2,6 +2,10 @@
 psql $CRIME_DATA_API_DB_URL -f after_load/denorm-offender.sql
 psql $CRIME_DATA_API_DB_URL -f after_load/denorm-offenses.sql
 psql $CRIME_DATA_API_DB_URL -f after_load/denorm-victims.sql
+psql $CRIME_DATA_API_DB_URL -f after_load/denorm-incidents.sql
+psql $CRIME_DATA_API_DB_URL -f after_load/denorm-property.sql
+psql $CRIME_DATA_API_DB_URL -f after_load/denorm-arrestee.sql
+psql $CRIME_DATA_API_DB_URL -f after_load/denorm-agencies.sql
 
 # Setup Materialized views.
 psql $CRIME_DATA_API_DB_URL -f after_load/mat-views/cargo-theft.sql
