@@ -305,6 +305,7 @@ class MultiYearCountView(object):
                 param_dict['state_id'] = self.state_id
             if self.ori:
                 param_dict['ori'] = self.ori
+                param_dict['view_name'] = AsIs(self.view_name_ori)
             if self.year:
                 param_dict['year'] = self.year
             if not param_dict:
@@ -323,20 +324,16 @@ class MultiYearCountView(object):
         where_query = ' WHERE :field IS NOT NULL'
 
         if self.state_id:
-            where_query += ' AND state_id = :state_id AND ori IS NULL'
+            where_query += ' AND state_id = :state_id '
 
         if self.ori:
-            where_query += ' AND state_id IS NULL AND ori = :ori'
+            where_query += ' AND ori = :ori'
 
         if self.national:
-            where_query += ' AND state_id is NULL AND ori is NULL'
-
-        # Use National level aggregations to select distinct values.
-        inner_where_query = ' WHERE :field IS NOT NULL AND state_id is NULL AND ori is NULL '
+            where_query += ' AND state_id is NULL'
 
         if self.year:
             where_query += ' AND year = :year '
-            inner_where_query += ' AND year = :year '
 
         query = select_query + from_query + where_query
 
@@ -349,6 +346,7 @@ class MultiYearCountView(object):
                 query_gap_fill = ' RIGHT JOIN (SELECT DISTINCT ' + join_table + '.' + join_field + ' AS :field, c.year from ' + join_table + ' CROSS JOIN (SELECT year::text from nibrs_years) c) b ON (a.:field = b.:field AND a.year = b.year)'
             query = query + query_gap_fill
         query += ' ORDER by a.year, a.:field'
+        query = 'SELECT array_to_json(array_agg(row_to_json(m))) as json_data from ( ' + query + ') m'
         return query
 
 class OffenderCountView(MultiYearCountView):
@@ -358,10 +356,14 @@ class OffenderCountView(MultiYearCountView):
                  'race_code', 'location_name', 'age_num', 'sex_code']
 
     @property
-    def view_name(self):
+    def view_name(self, ori = None):
         """The name of the specific materialized view for this year."""
         return 'offender_counts'
 
+    @property
+    def view_name_ori(self):
+        """The name of the specific materialized view for this year."""
+        return 'offender_counts_ori'
 
 class VictimCountView(MultiYearCountView):
     """A class for fetching the counts """
@@ -376,6 +378,11 @@ class VictimCountView(MultiYearCountView):
         """The name of the specific materialized view."""
         return 'victim_counts'
 
+    @property
+    def view_name_ori(self):
+        """The name of the specific materialized view."""
+        return 'victim_counts_ori'
+
 
 class OffenseCountView(MultiYearCountView):
     """A class for fetching the counts broken down by offense"""
@@ -386,7 +393,10 @@ class OffenseCountView(MultiYearCountView):
     def view_name(self):
         """The name of the specific materialized view."""
         return 'offense_counts'
-
+    @property
+    def view_name_ori(self):
+        """The name of the specific materialized view."""
+        return 'offense_counts_ori'
 
 
 class HateCrimeCountView(MultiYearCountView):
@@ -398,6 +408,11 @@ class HateCrimeCountView(MultiYearCountView):
         """The name of the specific materialized view."""
         return 'hc_counts'
 
+    @property
+    def view_name_ori(self):
+        """The name of the specific materialized view."""
+        return 'hc_counts_ori'
+
 class CargoTheftCountView(MultiYearCountView):
     """A class for fetching the counts """
 
@@ -408,7 +423,10 @@ class CargoTheftCountView(MultiYearCountView):
     def view_name(self):
         """The name of the specific materialized view."""
         return 'ct_counts'
-    
+
+    def view_name_ori(self):
+        """The name of the specific materialized view."""
+        return 'ct_counts_ori'
 
     def base_query(self, field):
 
@@ -417,20 +435,16 @@ class CargoTheftCountView(MultiYearCountView):
         where_query = ' WHERE :field IS NOT NULL'
 
         if self.state_id:
-            where_query += ' AND state_id = :state_id AND ori IS NULL'
+            where_query += ' AND state_id = :state_id '
 
         if self.ori:
-            where_query += ' AND state_id IS NULL AND ori = :ori'
+            where_query += ' AND ori = :ori'
 
         if self.national:
-            where_query += ' AND state_id is NULL AND ori is NULL '
-
-        inner_where_query = ' WHERE :field IS NOT NULL AND state_id is NULL AND ori is NULL '
+            where_query += ' AND state_id is NULL '
 
         if self.year:
             where_query += ' AND year = :year '
-            inner_where_query += ' AND year = :year '
-
 
         query = query + where_query + ') a '
         join_table,join_field = self.get_field_table(field)
@@ -442,6 +456,7 @@ class CargoTheftCountView(MultiYearCountView):
             query = query + query_gap_fill
 
         query += ' ORDER by b.year, b.:field'
+        query = 'SELECT array_to_json(array_agg(row_to_json(m))) as json_data from ( ' + query + ') m'
         return query
 
 
@@ -544,6 +559,7 @@ class OffenseSubCountView(object):
                 param_dict['year'] = self.year
             if self.ori:
                 param_dict['ori'] = self.ori
+                param_dict['view_name'] = AsIs(self.view_name_ori)
             if self.offense_name:
                 param_dict['offense_name'] = self.offense_name
             if self.explorer_offense:
@@ -575,20 +591,16 @@ class OffenseSubCountView(object):
             where_query += ' AND state_id = :state_id '
 
         if self.national:
-            where_query += ' AND state_id is NULL AND ori IS NULL'
+            where_query += ' AND state_id is NULL '
 
         if self.ori:
-            where_query += ' AND state_id IS NULL AND ori = :ori'
-
-        inner_where_query = ' WHERE :field IS NOT NULL AND state_id is NULL AND ori is NULL '
+            where_query += ' AND ori = :ori'
 
         if self.offense_name:
              where_query += ' AND offense_name IN :offense_name'
-             #inner_where_query += ' AND offense_name IN :offense_name'
 
         if self.year:
             where_query += ' AND year = :year'
-            inner_where_query += ' AND year = :year'
 
         query = query + where_query + ') a '
         
@@ -604,7 +616,9 @@ class OffenseSubCountView(object):
             query += ' GROUP by b.year, b.:field, offense_name'
 
         query += ' ORDER by b.year, offense_name, b.:field'
-        #print(query)
+        # Select as JSON.
+        query = 'SELECT array_to_json(array_agg(row_to_json(m))) as json_data from ( ' + query + ') m'
+
         return query
 
 class OffenseVictimCountView(OffenseSubCountView):
@@ -620,6 +634,10 @@ class OffenseVictimCountView(OffenseSubCountView):
     def view_name(self):
         return 'offense_victim_counts'
 
+    @property
+    def view_name_ori(self):
+        return 'offense_victim_counts_ori'
+
 
 class OffenseOffenderCountView(OffenseSubCountView):
 
@@ -631,6 +649,10 @@ class OffenseOffenderCountView(OffenseSubCountView):
     def view_name(self):
         return 'offense_offender_counts'
 
+    @property
+    def view_name_ori(self):
+        return 'offense_offender_counts_ori'
+
 class OffenseByOffenseTypeCountView(OffenseSubCountView):
     VARIABLES = ['weapon_name', 'method_entry_code', 'num_premises_entered', 'location_name']
 
@@ -639,6 +661,10 @@ class OffenseByOffenseTypeCountView(OffenseSubCountView):
     @property
     def view_name(self):
         return 'offense_offense_counts'
+
+    @property
+    def view_name_ori(self):
+        return 'offense_offense_counts_ori'
 
 class OffenseCargoTheftCountView(OffenseSubCountView):
 
@@ -654,23 +680,19 @@ class OffenseCargoTheftCountView(OffenseSubCountView):
         where_query = ' WHERE :field IS NOT NULL'
 
         if self.state_id:
-            where_query += ' AND state_id = :state_id AND ori IS NULL'
+            where_query += ' AND state_id = :state_id '
 
         if self.national:
-            where_query += ' AND state_id is NULL AND ori IS NULL'
+            where_query += ' AND state_id is NULL '
 
         if self.ori:
-            where_query += ' AND state_id IS NULL AND ori = :ori'
-
-        inner_where_query = ' WHERE :field IS NOT NULL AND state_id is NULL AND ori is NULL '
+            where_query += ' AND ori = :ori '
 
         if self.offense_name:
             where_query += ' AND offense_name IN :offense_name'
-            inner_where_query += ' AND offense_name IN :offense_name'
 
         if self.year:
             where_query += ' AND year = :year'
-            inner_where_query += ' AND year = :year'
 
         query = query + where_query + ') a '
         join_table,join_field = self.get_field_table(field)
@@ -685,11 +707,16 @@ class OffenseCargoTheftCountView(OffenseSubCountView):
             query += ' GROUP by b.year, b.:field, offense_name'
 
         query += ' ORDER by b.year, offense_name, b.:field'
+        query = 'SELECT array_to_json(array_agg(row_to_json(m))) as json_data from ( ' + query + ') m'
         return query
 
     @property
     def view_name(self):
         return 'offense_ct_counts'
+
+    @property
+    def view_name_ori(self):
+        return 'offense_ct_counts_ori'
 
 
 class OffenseHateCrimeCountView(OffenseSubCountView):
@@ -707,23 +734,19 @@ class OffenseHateCrimeCountView(OffenseSubCountView):
         where_query = ' WHERE :field IS NOT NULL'
 
         if self.state_id:
-            where_query += ' AND state_id = :state_id AND ori IS NULL'
+            where_query += ' AND state_id = :state_id '
 
         if self.national:
-            where_query += ' AND state_id is NULL AND ori IS NULL'
+            where_query += ' AND state_id is NULL '
 
         if self.ori:
-            where_query += ' AND state_id IS NULL AND ori = :ori'
-
-        inner_where_query = ' WHERE :field IS NOT NULL AND state_id is NULL AND ori is NULL '
+            where_query += ' AND ori = :ori'
 
         if self.offense_name:
             where_query += ' AND offense_name IN :offense_name'
-            inner_where_query += ' AND offense_name IN :offense_name'
 
         if self.year:
             where_query += ' AND year = :year'
-            inner_where_query += ' AND year = :year'
 
         # if self.explorer_offense:
         #     query += ' GROUP by year, :field'
@@ -741,8 +764,14 @@ class OffenseHateCrimeCountView(OffenseSubCountView):
             query += ' GROUP by b.year, b.:field, offense_name'
 
         query += ' ORDER by b.year, b.:field'
+        query = 'SELECT array_to_json(array_agg(row_to_json(m))) as json_data from ( ' + query + ') m'
         return query
 
     @property
     def view_name(self):
         return 'offense_hc_counts'
+
+    @property
+    def view_name_ori(self):
+        return 'offense_hc_counts_ori'
+

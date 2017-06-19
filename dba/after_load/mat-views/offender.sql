@@ -45,32 +45,59 @@ BEGIN
 END
 $do$;
 
-drop materialized view  IF EXISTS offender_counts;
-create materialized view offender_counts as 
-    SELECT *, 2014 as year FROM offender_counts_2014 UNION 
-    SELECT *, 2013 as year FROM offender_counts_2013 UNION
-    SELECT *, 2012 as year FROM offender_counts_2012 UNION 
-    SELECT *, 2011 as year FROM offender_counts_2011 UNION 
-    SELECT *, 2010 as year FROM offender_counts_2010 UNION
-    SELECT *, 2009 as year FROM offender_counts_2009 UNION 
-    SELECT *, 2008 as year FROM offender_counts_2008 UNION 
-    SELECT *, 2007 as year FROM offender_counts_2007 UNION
-    SELECT *, 2006 as year FROM offender_counts_2006 UNION 
-    SELECT *, 2005 as year FROM offender_counts_2005 UNION 
-    SELECT *, 2004 as year FROM offender_counts_2004 UNION
-    SELECT *, 2003 as year FROM offender_counts_2003 UNION 
-    SELECT *, 2002 as year FROM offender_counts_2002 UNION 
-    SELECT *, 2001 as year FROM offender_counts_2001 UNION
-    SELECT *, 2000 as year FROM offender_counts_2000 UNION 
-    SELECT *, 1999 as year FROM offender_counts_1999 UNION 
-    SELECT *, 1998 as year FROM offender_counts_1998 UNION
-    SELECT *, 1997 as year FROM offender_counts_1997 UNION 
-    SELECT *, 1996 as year FROM offender_counts_1996 UNION 
-    SELECT *, 1995 as year FROM offender_counts_1995 UNION
-    SELECT *, 1994 as year FROM offender_counts_1994 UNION 
-    SELECT *, 1993 as year FROM offender_counts_1993 UNION 
-    SELECT *, 1992 as year FROM offender_counts_1992 UNION
-    SELECT *, 1991 as year FROM offender_counts_1991;
+drop materialized view  IF EXISTS offender_counts_states;
+create materialized view offender_counts_states as 
+    SELECT *, 2014 as year FROM offender_counts_2014 WHERE ori IS NULL UNION 
+    SELECT *, 2013 as year FROM offender_counts_2013 WHERE ori IS NULL  UNION
+    SELECT *, 2012 as year FROM offender_counts_2012 WHERE ori IS NULL  UNION 
+    SELECT *, 2011 as year FROM offender_counts_2011 WHERE ori IS NULL  UNION 
+    SELECT *, 2010 as year FROM offender_counts_2010 WHERE ori IS NULL  UNION
+    SELECT *, 2009 as year FROM offender_counts_2009 WHERE ori IS NULL  UNION 
+    SELECT *, 2008 as year FROM offender_counts_2008 WHERE ori IS NULL  UNION 
+    SELECT *, 2007 as year FROM offender_counts_2007 WHERE ori IS NULL  UNION
+    SELECT *, 2006 as year FROM offender_counts_2006 WHERE ori IS NULL  UNION 
+    SELECT *, 2005 as year FROM offender_counts_2005 WHERE ori IS NULL  UNION 
+    SELECT *, 2004 as year FROM offender_counts_2004 WHERE ori IS NULL  UNION
+    SELECT *, 2003 as year FROM offender_counts_2003 WHERE ori IS NULL  UNION 
+    SELECT *, 2002 as year FROM offender_counts_2002 WHERE ori IS NULL  UNION 
+    SELECT *, 2001 as year FROM offender_counts_2001 WHERE ori IS NULL  UNION
+    SELECT *, 2000 as year FROM offender_counts_2000 WHERE ori IS NULL  UNION 
+    SELECT *, 1999 as year FROM offender_counts_1999 WHERE ori IS NULL  UNION 
+    SELECT *, 1998 as year FROM offender_counts_1998 WHERE ori IS NULL  UNION
+    SELECT *, 1997 as year FROM offender_counts_1997 WHERE ori IS NULL  UNION 
+    SELECT *, 1996 as year FROM offender_counts_1996 WHERE ori IS NULL  UNION 
+    SELECT *, 1995 as year FROM offender_counts_1995 WHERE ori IS NULL  UNION
+    SELECT *, 1994 as year FROM offender_counts_1994 WHERE ori IS NULL  UNION 
+    SELECT *, 1993 as year FROM offender_counts_1993 WHERE ori IS NULL  UNION 
+    SELECT *, 1992 as year FROM offender_counts_1992 WHERE ori IS NULL  UNION
+    SELECT *, 1991 as year FROM offender_counts_1991 WHERE ori IS NULL ;
 
-CREATE INDEX offender_counts_state_year_id_idx ON offender_counts (state_id, year);
-CREATE INDEX offender_counts_ori_year_idx ON offender_counts (ori, year);
+drop materialized view  IF EXISTS offender_counts_ori;
+create materialized view offender_counts_ori as 
+    SELECT *, 2014 as year FROM offender_counts_2014 WHERE ori IS NOT NULL UNION 
+    SELECT *, 2013 as year FROM offender_counts_2013 WHERE ori IS NOT NULL  UNION
+    SELECT *, 2012 as year FROM offender_counts_2012 WHERE ori IS NOT NULL  UNION 
+    SELECT *, 2011 as year FROM offender_counts_2011 WHERE ori IS NOT NULL  UNION 
+    SELECT *, 2010 as year FROM offender_counts_2010 WHERE ori IS NOT NULL  UNION
+    SELECT *, 2009 as year FROM offender_counts_2009 WHERE ori IS NOT NULL  UNION 
+    SELECT *, 2008 as year FROM offender_counts_2008 WHERE ori IS NOT NULL  UNION 
+    SELECT *, 2007 as year FROM offender_counts_2007 WHERE ori IS NOT NULL  UNION
+    SELECT *, 2006 as year FROM offender_counts_2006 WHERE ori IS NOT NULL  UNION 
+    SELECT *, 2005 as year FROM offender_counts_2005 WHERE ori IS NOT NULL  UNION 
+    SELECT *, 2004 as year FROM offender_counts_2004 WHERE ori IS NOT NULL  UNION
+    SELECT *, 2003 as year FROM offender_counts_2003 WHERE ori IS NOT NULL  UNION 
+    SELECT *, 2002 as year FROM offender_counts_2002 WHERE ori IS NOT NULL  UNION 
+    SELECT *, 2001 as year FROM offender_counts_2001 WHERE ori IS NOT NULL  UNION
+    SELECT *, 2000 as year FROM offender_counts_2000 WHERE ori IS NOT NULL  UNION 
+    SELECT *, 1999 as year FROM offender_counts_1999 WHERE ori IS NOT NULL  UNION 
+    SELECT *, 1998 as year FROM offender_counts_1998 WHERE ori IS NOT NULL  UNION
+    SELECT *, 1997 as year FROM offender_counts_1997 WHERE ori IS NOT NULL  UNION 
+    SELECT *, 1996 as year FROM offender_counts_1996 WHERE ori IS NOT NULL  UNION 
+    SELECT *, 1995 as year FROM offender_counts_1995 WHERE ori IS NOT NULL  UNION
+    SELECT *, 1994 as year FROM offender_counts_1994 WHERE ori IS NOT NULL  UNION 
+    SELECT *, 1993 as year FROM offender_counts_1993 WHERE ori IS NOT NULL  UNION 
+    SELECT *, 1992 as year FROM offender_counts_1992 WHERE ori IS NOT NULL  UNION
+    SELECT *, 1991 as year FROM offender_counts_1991 WHERE ori IS NOT NULL ;
+
+CREATE INDEX offender_counts_state_year_id_idx ON offender_count_states (state_id, year);
+CREATE INDEX offender_counts_ori_year_idx ON offender_counts_ori (ori, year);
