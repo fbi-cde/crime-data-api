@@ -39,4 +39,4 @@ UPDATE nibrs_arrestee_denorm SET arrest_type_code = nibrs_arrest_type.arrest_typ
 
 
 
-CREATE INDEX nibrs_arrestee_denorm_state_year_id_idx ON nibrs_arrestee_denorm (state_code, year);
+CREATE INDEX nibrs_arrestee_denorm_year_id_idx ON nibrs_arrestee_denorm (year);
