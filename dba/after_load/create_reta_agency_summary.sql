@@ -203,6 +203,52 @@ FROM agency_sums_by_offense a
 JOIN cde_agencies c ON c.agency_id=a.agency_id
 JOIN reta_offense ro ON ro.offense_id = a.offense_id;
 
+DROP TABLE IF EXISTS agency_sums_aggravated;
+CREATE table agency_sums_aggravated (
+id SERIAL PRIMARY KEY,
+data_year smallint NOT NULL,
+agency_id bigint NOT NULL,
+reported integer,
+unfounded integer,
+actual integer,
+cleared integer,
+juvenile_cleared integer
+);
+
+INSERT INTO agency_sums_aggravated(data_year, agency_id, reported, unfounded, actual, cleared, juvenile_cleared)
+SELECT
+a.data_year,
+a.agency_id,
+SUM(a.reported) AS reported,
+SUM(a.unfounded) AS unfounded,
+SUM(a.actual) AS actual,
+SUM(a.cleared) AS cleared,
+SUM(a.juvenile_cleared) AS juvenile_cleared
+FROM agency_sums a
+JOIN reta_offense_subcat ros ON a.offense_subcat_id = ros.offense_subcat_id
+JOIN reta_offense ro ON ro.offense_id = ros.offense_id
+WHERE a.offense_subcat_id IN (40, 41, 42, 43, 44)
+GROUP by a.data_year, a.agency_id, ro.offense_id;
+
+INSERT INTO agency_offenses_view(year, agency_id, offense_id, offense_code, offense_name, reported, unfounded, actual, cleared, juvenile_cleared, ori, pub_agency_name, state_postal_abbr)
+SELECT
+a.data_year,
+a.agency_id,
+40 as offense_id,
+'X_AGG' AS offense_code,
+'Aggravated Assault' as offense_name,
+a.reported,
+a.unfounded,
+a.actual,
+a.cleared,
+a.juvenile_cleared,
+c.ori,
+c.agency_name,
+c.state_abbr
+FROM agency_sums_aggravated a
+JOIN cde_agencies c ON c.agency_id=a.agency_id;
+
+DROP TABLE agency_sums_aggravated;
 DROP TABLE agency_sums_by_offense;
 
 -- classifications grouping
@@ -233,6 +279,7 @@ FROM agency_sums a
 JOIN reta_offense_subcat ros ON a.offense_subcat_id = ros.offense_subcat_id
 JOIN reta_offense ro ON ro.offense_id = ros.offense_id
 JOIN offense_classification oc ON oc.classification_id = ro.classification_id
+WHERE a.offense_subcat_id <> 45
 GROUP by a.data_year, a.agency_id, oc.classification_name;
 
 DROP TABLE IF EXISTS agency_classification_view CASCADE;
