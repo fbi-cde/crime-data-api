@@ -78,6 +78,7 @@ done
 
 \copy (SELECT ref_state.state_postal_abbr, year, prop_desc_name as property_type, stolen_value, recovered_value from ct_counts JOIN ref_state ON (ref_state.state_id = ct_counts.state_id) WHERE ct_counts.state_id IS NOT NULL and ori IS NULL) To 'cargo_theft.csv' with CSV DELIMITER ',' HEADER;
 
+\copy (select year, state_name, total_agencies, participating_agencies, round(CAST(participation_rate*100 AS NUMERIC), 2) participation_pct, nibrs_participating_agencies, round(CAST(nibrs_participation_rate*100 AS NUMERIC), 2) nibrs_participation_pct, covered_agencies, ROUND(CAST(covered_rate*100 AS NUMERIC), 2) AS covered_pct, total_population, participating_population nibrs_participating_population from participation_rates WHERE state_id IS NOT NULL and county_id IS NULL ORDER by year DESC, state_name) TO 'ucr_participation.csv' with CSV DELIMITER ',' HEADER;
 
 export S3_CREDENTIALS="`cf service-key fbi-cde-s3  colin-key | tail -n +2`"
 export AWS_ACCESS_KEY_ID=`echo "${S3_CREDENTIALS}" | jq -r .access_key_id`
@@ -87,7 +88,7 @@ export AWS_DEFAULT_REGION=`echo "${S3_CREDENTIALS}" | jq -r '.region'`
 aws s3 cp cargo_theft.csv s3://${BUCKET_NAME}/cargo_theft.csv
 aws s3 cp lka_sum_full.csv s3://${BUCKET_NAME}/leoka.csv
 aws s3 cp pe_employee_data.csv s3://${BUCKET_NAME}/pe_employee_data.csv
-
+aws s3 cp ucr_participation.csv s3://${BUCKET_NAME}/ucr_participation.csv
 
 for i in "${arr_years[@]}"
     aws s3 cp --recursive nibrs-$i/ s3://${BUCKET_NAME}/$i
