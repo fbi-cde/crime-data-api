@@ -509,6 +509,7 @@ class CdeAgency(db.Model, FilterableModel):
     core_city_flag = db.Column(db.String(1))
     months_reported = db.Column(db.SmallInteger)
     nibrs_months_reported = db.Column(db.SmallInteger)
+    past_10_years_reported = db.Column(db.SmallInteger)
     covered_by_id = db.Column(db.BigInteger)
     covered_by_ori = db.Column(db.String(9))
     covered_by_name = db.Column(db.String(100))
