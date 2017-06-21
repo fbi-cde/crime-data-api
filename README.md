@@ -6,18 +6,41 @@ crime_data_api
 [![Test Coverage](https://codeclimate.com/github/18F/crime-data-api/badges/coverage.svg)](https://codeclimate.com/github/18F/crime-data-api/coverage)
 [![Dependency Status](https://gemnasium.com/18F/crime-data-api.svg)](https://gemnasium.com/18F/crime-data-api)
 
-This project is the back end for the Crime Data Explorer [18f/crime-data-explorer](https://github.com/18f/crime-data-explorer). The Crime Data Explorer is a website that allows law enforcement and the general public to more easily access uniform crime data. The FBI collects this data from state and local law enforcement agencies and publishes it in the form of annual reports.
+This project is the back end for the Crime Data
+Explorer
+[18f/crime-data-explorer](https://github.com/18f/crime-data-explorer). The
+Crime Data Explorer is a website that allows law enforcement and the
+general public to more easily access uniform crime data. The FBI
+collects this data from state and local law enforcement agencies and
+publishes it in the form of annual reports. This API allows users to
+look at multiple years of data as well as other information only
+provided as a master file from the FBI.
 
-This project is a python flask app.
+This project is a Python flask app that uses SqlAlchemy to wrap a
+Postgres database.
+
+The Sample Database
+-------------------
+
+The full database of UCR crime data is too large to include in this
+repository or as a download -- over many hundreds of gigabytes in size
+-- comprising many tables that are linked together by primary and
+foreign key constraints. Instead, this project includes a small
+excerpt of the database that mainly comprises only data for Rhode
+Island in 2014. This slice means that API endpoints will return some
+data and that we can run our tests, but you will have to load the full
+database to see more data.
+
+See the section of "Loading the Full Database" for information about
+loading the full database and the tasks we run after loading to add
+additional data and derive new tables.
+
+Note: if you have a full database running somewhere on cloud.gov or
+the like, it's possible to setup a SSH tunnel to use that database
+instead. It's recommended you don't do this for development though.
 
 Quickstart
 ----------
-
-First, set your app’s secret key as an environment variable. For example, add the following to `.bashrc` or `.bash_profile`.
-
-```
-export CRIME_DATA_SECRET='something-really-secret'
-```
 
 Before running shell commands, set the `FLASK_APP` and `FLASK_DEBUG` environment variables :
 
