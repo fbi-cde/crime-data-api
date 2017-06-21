@@ -1207,7 +1207,8 @@
         "total_population",
         "participating_population",
         "nibrs_participating_agencies",
-        "nibrs_participation_rate"
+        "nibrs_participation_rate",
+        "nibrs_participating_population"
       ],
       "properties": {
         "year": {
@@ -1262,6 +1263,15 @@
           "type": "number",
           "minimum": 0,
           "maximum": 1
+        },
+        "nibrs_participating_population": {
+          "description": "The sum of the population within the jurisdictions of all agencies that participated in NIBRS for that year",
+          "format": "int32",
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
         }
       }
     },
