@@ -213,7 +213,10 @@ class MultiYearCountView(object):
 
     VARIABLES = []
 
-    def __init__(self, field, year=None, state_id=None, state_abbr=None, ori=None):
+    def __init__(self, field, year=None, state_id=None, state_abbr=None, ori=None, as_json=True):
+
+        self.as_json = as_json
+
         if field is None:
             raise ValueError('You must specify a field for the CountView')
 
@@ -308,7 +311,7 @@ class MultiYearCountView(object):
                 param_dict['view_name'] = AsIs(self.view_name_ori)
             if self.year:
                 param_dict['year'] = self.year
-            print(base_query)
+            
             qry = session.execute(base_query, param_dict)
         except Exception as e:
             session.rollback()
@@ -344,7 +347,8 @@ class MultiYearCountView(object):
                 query_gap_fill = ' RIGHT JOIN (SELECT DISTINCT ' + join_table + '.' + join_field + ' AS :field, c.year from ' + join_table + ' CROSS JOIN (SELECT year::text from nibrs_years) c) b ON (a.:field = b.:field AND a.year = b.year)'
             query = query + query_gap_fill
         query += ' ORDER by a.year, a.:field'
-        query = 'SELECT array_to_json(array_agg(row_to_json(m))) as json_data from ( ' + query + ') m'
+        if self.as_json:
+            query = 'SELECT array_to_json(array_agg(row_to_json(m))) as json_data from ( ' + query + ') m'
         return query
 
 class OffenderCountView(MultiYearCountView):
@@ -356,7 +360,7 @@ class OffenderCountView(MultiYearCountView):
     @property
     def view_name(self, ori = None):
         """The name of the specific materialized view for this year."""
-        return 'offender_counts'
+        return 'offender_counts_states'
 
     @property
     def view_name_ori(self):
@@ -374,7 +378,7 @@ class VictimCountView(MultiYearCountView):
     @property
     def view_name(self):
         """The name of the specific materialized view."""
-        return 'victim_counts'
+        return 'victim_counts_states'
 
     @property
     def view_name_ori(self):
@@ -390,7 +394,7 @@ class OffenseCountView(MultiYearCountView):
     @property
     def view_name(self):
         """The name of the specific materialized view."""
-        return 'offense_counts'
+        return 'offense_counts_states'
     @property
     def view_name_ori(self):
         """The name of the specific materialized view."""
@@ -404,7 +408,7 @@ class HateCrimeCountView(MultiYearCountView):
     @property
     def view_name(self):
         """The name of the specific materialized view."""
-        return 'hc_counts'
+        return 'hc_counts_states'
 
     @property
     def view_name_ori(self):
@@ -420,7 +424,7 @@ class CargoTheftCountView(MultiYearCountView):
     @property
     def view_name(self):
         """The name of the specific materialized view."""
-        return 'ct_counts'
+        return 'ct_counts_states'
 
     def view_name_ori(self):
         """The name of the specific materialized view."""
@@ -461,7 +465,10 @@ class CargoTheftCountView(MultiYearCountView):
 class OffenseSubCountView(object):
 
     def __init__(self, field, year=None, state_id=None, ori=None,
-                 offense_name=None, state_abbr=None, explorer_offense=None):
+                 offense_name=None, state_abbr=None, explorer_offense=None, as_json=True):
+
+        self.as_json = as_json
+
         if field not in self.VARIABLES:
             raise ValueError('Invalid variable "{}" specified for {}'.format(field, self.view_name))
         self.year = year
@@ -615,7 +622,8 @@ class OffenseSubCountView(object):
 
         query += ' ORDER by b.year, offense_name, b.:field'
         # Select as JSON.
-        query = 'SELECT array_to_json(array_agg(row_to_json(m))) as json_data from ( ' + query + ') m'
+        if self.as_json:
+            query = 'SELECT array_to_json(array_agg(row_to_json(m))) as json_data from ( ' + query + ') m'
 
         return query
 
@@ -630,7 +638,7 @@ class OffenseVictimCountView(OffenseSubCountView):
 
     @property
     def view_name(self):
-        return 'offense_victim_counts'
+        return 'offense_victim_counts_states'
 
     @property
     def view_name_ori(self):
@@ -645,7 +653,7 @@ class OffenseOffenderCountView(OffenseSubCountView):
 
     @property
     def view_name(self):
-        return 'offense_offender_counts'
+        return 'offense_offender_counts_states'
 
     @property
     def view_name_ori(self):
@@ -658,7 +666,7 @@ class OffenseByOffenseTypeCountView(OffenseSubCountView):
 
     @property
     def view_name(self):
-        return 'offense_offense_counts'
+        return 'offense_offense_counts_states'
 
     @property
     def view_name_ori(self):
@@ -705,12 +713,13 @@ class OffenseCargoTheftCountView(OffenseSubCountView):
             query += ' GROUP by b.year, b.:field, offense_name'
 
         query += ' ORDER by b.year, offense_name, b.:field'
-        query = 'SELECT array_to_json(array_agg(row_to_json(m))) as json_data from ( ' + query + ') m'
+        if self.as_json:
+            query = 'SELECT array_to_json(array_agg(row_to_json(m))) as json_data from ( ' + query + ') m'
         return query
 
     @property
     def view_name(self):
-        return 'offense_ct_counts'
+        return 'offense_ct_counts_states'
 
     @property
     def view_name_ori(self):
@@ -762,12 +771,13 @@ class OffenseHateCrimeCountView(OffenseSubCountView):
             query += ' GROUP by b.year, b.:field, offense_name'
 
         query += ' ORDER by b.year, b.:field'
-        query = 'SELECT array_to_json(array_agg(row_to_json(m))) as json_data from ( ' + query + ') m'
+        if self.as_json:
+            query = 'SELECT array_to_json(array_agg(row_to_json(m))) as json_data from ( ' + query + ') m'
         return query
 
     @property
     def view_name(self):
-        return 'offense_hc_counts'
+        return 'offense_hc_counts_states'
 
     @property
     def view_name_ori(self):

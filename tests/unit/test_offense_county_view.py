@@ -7,7 +7,7 @@ class TestOffenseCountView:
     """Test the OffenseCountView"""
 
     def test_offense_count_for_a_state(self, app):
-        ocv = OffenseCountView('weapon_name', year=2014, state_id=3)
+        ocv = OffenseCountView('weapon_name', year=2014, state_id=3, as_json=False)
         results = ocv.query({}).fetchall()
 
         expected = {'Handgun': 2, 'Firearm': 1, 'Rifle': 1, 'Personal Weapons': 3, 'None': 3, 'Motor Vehicle': 1}
@@ -17,7 +17,7 @@ class TestOffenseCountView:
         #     assert row.count == expected[row.weapon_name]
 
     def test_offense_count_for_a_state_abbr(self, app):
-        ocv = OffenseCountView('weapon_name', year=2014, state_abbr='AR')
+        ocv = OffenseCountView('weapon_name', year=2014, state_abbr='AR', as_json=False)
         results = ocv.query({}).fetchall()
 
         expected = {'Handgun': 2, 'Firearm': 1, 'Rifle': 1, 'Personal Weapons': 3, 'None': 3, 'Motor Vehicle': 1}
@@ -32,7 +32,7 @@ class TestOffenseCountView:
 
     @pytest.mark.parametrize('variable', OffenseCountView.VARIABLES)
     def test_offense_count_variables(self, app, variable):
-        ocv = OffenseCountView(variable, year=2014, state_id=3)
+        ocv = OffenseCountView(variable, year=2014, state_id=3, as_json=False)
         results = ocv.query({}).fetchall()
         assert len(results) > 0
 
@@ -44,7 +44,7 @@ class TestOffenseCountView:
 
     @pytest.mark.parametrize('variable', OffenseCountView.VARIABLES)
     def test_offender_count_variables(self, app, variable):
-        ocv = OffenseCountView(variable, year=2014)
+        ocv = OffenseCountView(variable, year=2014, as_json=False)
         results = ocv.query({}).fetchall()
         assert len(results) > 0
 

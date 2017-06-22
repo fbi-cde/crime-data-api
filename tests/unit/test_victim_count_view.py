@@ -6,7 +6,7 @@ class TestVictimCountView:
     """Test the VictimCountView"""
 
     def test_victim_count_for_a_state(self, app):
-        vcv = VictimCountView('offense_name', year=2014, state_id=3)
+        vcv = VictimCountView('offense_name', year=2014, state_id=3, as_json=False)
 
         expected = {
             'Aggravated Assault': 12,
@@ -31,7 +31,7 @@ class TestVictimCountView:
 
     @pytest.mark.parametrize('variable', VictimCountView.VARIABLES)
     def test_victim_count_variables(self, app, variable):
-        vcv = VictimCountView(variable, year=2014, state_id=3)
+        vcv = VictimCountView(variable, year=2014, state_id=3, as_json=False)
         results = vcv.query({}).fetchall()
 
         # test that grouping is working
