@@ -1,5 +1,21 @@
 \set ON_ERROR_STOP on
 
+DO $$
+DECLARE
+max_year smallint;
+BEGIN
+max_year := (SELECT MAX(year) from agency_participation);
+
+DROP TABLE IF EXISTS ten_year_participation;
+CREATE TABLE ten_year_participation AS
+SELECT agency_id,
+SUM(reported) AS years_reporting
+FROM agency_participation
+WHERE year <= max_year
+AND year > max_year - 10
+GROUP BY agency_id;
+END $$;
+
 DROP TABLE IF EXISTS denorm_agencies_temp CASCADE;
 CREATE TABLE denorm_agencies_temp
 (
@@ -35,6 +51,7 @@ CREATE TABLE denorm_agencies_temp
     core_city_flag character varying(1),
     months_reported smallint,
     nibrs_months_reported smallint,
+    past_10_years_reported smallint,
     covered_by_id bigint,
     covered_by_ori character(9),
     covered_by_name character varying(100),
@@ -77,8 +94,8 @@ rc.city_name,
 ra.state_id,
 rs.state_postal_abbr AS state_abbr,
 rac.county_id AS primary_county_id,
-cc.county_name AS primary_county,
-cc.fips AS primary_county_fips,
+CASE WHEN cc.fips IS NOT NULL THEN cc.county_name ELSE NULL END AS primary_county,
+CASE WHEN cc.fips IS NOT NULL THEN cc.fips ELSE NULL END AS primary_county_fips,
 ra.agency_status,
 ra.submitting_agency_id,
 rsa.sai AS submitting_sai,
@@ -96,6 +113,7 @@ rap.suburban_area_flag,
 rac.core_city_flag,
 cap.months_reported,
 cap.nibrs_months_reported AS nibrs_months_reported,
+tp.years_reporting AS past_10_years_reported,
 racp.covered_by_agency_id AS covered_by_id,
 covering.ori AS covered_by_ori,
 covering.pub_agency_name AS covered_by_name,
@@ -118,7 +136,10 @@ LEFT OUTER JOIN cde_counties cc ON cc.county_id=rac.county_id
 LEFT OUTER JOIN ref_population_group rpg ON rpg.population_group_id=rap.population_group_id
 LEFT OUTER JOIN ref_agency_covered_by_flat racp ON racp.agency_id=ra.agency_id AND racp.data_year=y.current_year
 LEFT OUTER JOIN ref_agency covering ON covering.agency_id=racp.covered_by_agency_id
-LEFT OUTER JOIN pe_employee_data ped ON ped.agency_id=ra.agency_id AND ped.data_year=pe.staffing_year;
+LEFT OUTER JOIN pe_employee_data ped ON ped.agency_id=ra.agency_id AND ped.data_year=pe.staffing_year
+LEFT OUTER JOIN ten_year_participation tp ON tp.agency_id = ra.agency_id;
+
+DROP TABLE ten_year_participation;
 
 ALTER TABLE denorm_agencies_temp ENABLE TRIGGER ALL;
 DROP TABLE IF EXISTS cde_agencies CASCADE;

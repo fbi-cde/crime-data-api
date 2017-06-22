@@ -7,6 +7,7 @@ BEGIN
    FOREACH i IN ARRAY arr
    LOOP
     SET work_mem='2GB';
+--    EXECUTE 'CREATE TABLE IF NOT EXISTS nibrs_offender_denorm_' || i::TEXT || ' () INHERITS (nibrs_offender_denorm)';
     RAISE NOTICE 'Dropping view for year: %', i;
     EXECUTE 'drop materialized view IF EXISTS offender_counts_' || i::TEXT || ' CASCADE';
     RAISE NOTICE 'Creating view for year: %', i;
@@ -101,3 +102,4 @@ create materialized view offender_counts_ori as
 
 CREATE INDEX offender_counts_state_year_id_idx ON offender_count_states (state_id, year);
 CREATE INDEX offender_counts_ori_year_idx ON offender_counts_ori (ori, year);
+

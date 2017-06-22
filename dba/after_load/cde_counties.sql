@@ -19,7 +19,7 @@ CREATE TABLE cde_counties_temp (
 INSERT INTO cde_counties_temp
 SELECT
 rc.county_id,
-LPAD(rs.state_fips_code, 2, '0') || LPAD(rc.county_fips_code, 3, '0') AS fips,
+CASE WHEN rc.county_fips_code::int > 0 THEN LPAD(rs.state_fips_code, 2, '0') || LPAD(rc.county_fips_code, 3, '0') ELSE NULL END AS fips,
 INITCAP(rc.county_name) AS county_name,
 rs.state_id,
 rs.state_name,

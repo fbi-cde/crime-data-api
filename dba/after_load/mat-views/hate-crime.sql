@@ -60,10 +60,3 @@ CREATE INDEX hc_counts_state_id_year_idx ON hc_counts_states (state_id, year);
 CREATE INDEX offense_hc_counts_state_id_year_idx ON offense_hc_counts_states (state_id, year);
 CREATE INDEX hc_counts_ori_year_idx ON hc_counts_ori (ori, year);
 CREATE INDEX offense_hc_counts_ori_year_idx ON offense_hc_counts_ori (ori, year);
-
-
-
-
-
-
-

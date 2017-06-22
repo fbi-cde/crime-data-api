@@ -308,10 +308,8 @@ class MultiYearCountView(object):
                 param_dict['view_name'] = AsIs(self.view_name_ori)
             if self.year:
                 param_dict['year'] = self.year
-            if not param_dict:
-                qry = session.execute(base_query)
-            else:
-                qry = session.execute(base_query, param_dict)
+            print(base_query)
+            qry = session.execute(base_query, param_dict)
         except Exception as e:
             session.rollback()
             session.close()

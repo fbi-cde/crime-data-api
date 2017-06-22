@@ -468,7 +468,6 @@ class ExplorerOffenseMapping(object):
     """For mapping from explorer offenses to SRS and NIBRS"""
 
     RETA_OFFENSE_MAPPING = {
-        'aggravated-assault': 'assault',
         'burglary': 'burglary',
         'larceny': 'larceny',
         'motor-vehicle-theft': 'motor vehicle theft',
@@ -479,7 +478,7 @@ class ExplorerOffenseMapping(object):
     }
 
     RETA_OFFENSE_CODE_MAPPING = {
-        'aggravated-assault': 'SUM_AST',
+        'aggravated-assault': 'X_AGG',
         'burglary': 'SUM_BRG',
         'larceny': 'SUM_LRC',
         'motor-vehicle-theft': 'SUM_MVT',

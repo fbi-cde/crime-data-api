@@ -7,6 +7,7 @@ BEGIN
    FOREACH i IN ARRAY arr
    LOOP
     SET work_mem='2GB';
+--    EXECUTE 'CREATE TABLE IF NOT EXISTS nibrs_offense_denorm_' || i::TEXT || ' () INHERITS (nibrs_offense_denorm)';
     RAISE NOTICE 'Dropping view for year: %', i;
     EXECUTE 'drop materialized view IF EXISTS  offense_counts_' || i::TEXT || ' CASCADE';
     RAISE NOTICE 'Creating view for year: %', i;
