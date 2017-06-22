@@ -347,8 +347,9 @@ class MultiYearCountView(object):
                 query_gap_fill = ' RIGHT JOIN (SELECT DISTINCT ' + join_table + '.' + join_field + ' AS :field, c.year from ' + join_table + ' CROSS JOIN (SELECT year::text from nibrs_years) c) b ON (a.:field = b.:field AND a.year = b.year)'
             query = query + query_gap_fill
         query += ' ORDER by a.year, a.:field'
+
         if self.as_json:
-            query = 'SELECT array_to_json(array_agg(row_to_json(m))) as json_data from ( ' + query + ') m'
+            query = 'SELECT array_to_json(array_agg(row_to_json(m))) as json_data from ( ' + query + ') m' # nosec
         return query
 
 class OffenderCountView(MultiYearCountView):
@@ -458,7 +459,7 @@ class CargoTheftCountView(MultiYearCountView):
             query = query + query_gap_fill
 
         query += ' ORDER by b.year, b.:field'
-        query = 'SELECT array_to_json(array_agg(row_to_json(m))) as json_data from ( ' + query + ') m'
+        query = 'SELECT array_to_json(array_agg(row_to_json(m))) as json_data from ( ' + query + ') m' # nosec
         return query
 
 
@@ -623,7 +624,7 @@ class OffenseSubCountView(object):
         query += ' ORDER by b.year, offense_name, b.:field'
         # Select as JSON.
         if self.as_json:
-            query = 'SELECT array_to_json(array_agg(row_to_json(m))) as json_data from ( ' + query + ') m'
+            query = 'SELECT array_to_json(array_agg(row_to_json(m))) as json_data from ( ' + query + ') m' # nosec
 
         return query
 
@@ -714,7 +715,7 @@ class OffenseCargoTheftCountView(OffenseSubCountView):
 
         query += ' ORDER by b.year, offense_name, b.:field'
         if self.as_json:
-            query = 'SELECT array_to_json(array_agg(row_to_json(m))) as json_data from ( ' + query + ') m'
+            query = 'SELECT array_to_json(array_agg(row_to_json(m))) as json_data from ( ' + query + ') m' # nosec
         return query
 
     @property
@@ -772,7 +773,7 @@ class OffenseHateCrimeCountView(OffenseSubCountView):
 
         query += ' ORDER by b.year, b.:field'
         if self.as_json:
-            query = 'SELECT array_to_json(array_agg(row_to_json(m))) as json_data from ( ' + query + ') m'
+            query = 'SELECT array_to_json(array_agg(row_to_json(m))) as json_data from ( ' + query + ') m' # nosec
         return query
 
     @property
