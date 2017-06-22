@@ -128,10 +128,6 @@ def add_resources(app):
     api.add_resource(crime_data.resources.agencies.AgenciesDetail,
                      '/agencies/<string:ori>')
 
-    # api.add_resource(crime_data.resources.incidents.IncidentsList,
-    #                  '/incidents/')
-    api.add_resource(crime_data.resources.incidents.CachedIncidentsCount,
-                     '/counts')
     api.add_resource(crime_data.resources.incidents.AgenciesSumsState,
                      '/agencies/count/states/suboffenses/<string:state_abbr>/<string:agency_ori>','/agencies/count/states/suboffenses/<string:state_abbr>' )
 

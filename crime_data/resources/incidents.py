@@ -11,38 +11,6 @@ def _is_string(col):
     return issubclass(col0.type.python_type, str)
 
 
-class CachedIncidentsCount(CdeResource):
-
-    tables = newmodels.RetaMonthOffenseSubcatSummary
-    schema = marshmallow_schemas.CachedIncidentCountSchema(many=True)
-
-    def postprocess_filters(self, filters, args):
-        explorer_offenses = [x for x in filters if x[0] == 'explorer_offense']
-
-        if explorer_offenses:
-            eo = explorer_offenses[0]
-            mapped = [ExplorerOffenseMapping(x).reta_offense for x in eo[2]]
-            filters = [x for x in filters if x[0] != 'explorer_offense']
-            filters.append(('offense', eo[1], mapped))
-
-        group_by_column_names = [c.strip() for c in args.get('by').split(',')]
-        filters = newmodels.RetaMonthOffenseSubcatSummary.determine_grouping(filters, group_by_column_names, self.schema)
-        return filters
-
-    def use_filters(self, filters):
-        "Ensure that filtered fields appear in serialization"
-        filtered_names = [f[0] for f in filters]
-        for (field_name, field) in self.schema.fields.items():
-            if field_name in newmodels.RetaMonthOffenseSubcatSummary.grouping_sets:
-                field.load_only = field_name not in filtered_names
-
-    @use_args(marshmallow_schemas.GroupableArgsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    @tuning_page
-    def get(self, args):
-        return self._get(args)
-
-
 class AgenciesSumsState(CdeResource):
     '''''
     Agency Suboffense Sums by (year, agency) - Only agencies reporting all 12 months.
