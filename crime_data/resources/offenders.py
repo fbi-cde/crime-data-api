@@ -16,7 +16,7 @@ def _is_string(col):
 
 
 class OffendersCountNational(CdeResource):
-
+    schema = False
     def _stringify(self, data):
         # Override stringify function to fit our needs.
         return [dict(r) for r in data]
@@ -28,11 +28,11 @@ class OffendersCountNational(CdeResource):
         self.verify_api_key(args)
         model = cdemodels.OffenderCountView(variable, year=args['year'])
         results = model.query(args)
-        return self.with_metadata(results.fetchall(), args)
+        return self.with_metadata(results.fetchall(), args, self.schema)
 
 
 class OffendersCountStates(CdeResource):
-
+    schema = False
     def _stringify(self, data):
         # Override stringify function to fit our needs.
         return [dict(r) for r in data]
@@ -44,10 +44,10 @@ class OffendersCountStates(CdeResource):
         self.verify_api_key(args)
         model = cdemodels.OffenderCountView(variable, year=args['year'], state_id=state_id, state_abbr=state_abbr)
         results = model.query(args)
-        return self.with_metadata(results.fetchall(), args)
+        return self.with_metadata(results.fetchall(), args, self.schema)
 
 class OffendersCountAgencies(CdeResource):
-
+    schema = False
     def _stringify(self, data):
         # Override stringify function to fit our needs.
         return [dict(r) for r in data]
@@ -59,11 +59,11 @@ class OffendersCountAgencies(CdeResource):
         self.verify_api_key(args)
         model = cdemodels.OffenderCountView(variable, year=args['year'], ori=ori)
         results = model.query(args)
-        return self.with_metadata(results.fetchall(), args)
+        return self.with_metadata(results.fetchall(), args, self.schema)
 
 
 class OffenderOffenseSubcounts(CdeResource):
-
+    schema = False
     def _stringify(self, data):
         # Override stringify function to fit our needs.
         return [dict(r) for r in data]
@@ -81,4 +81,4 @@ class OffenderOffenseSubcounts(CdeResource):
                                                    state_id=state_id,
                                                    state_abbr=state_abbr)
         results = model.query(args)
-        return self.with_metadata(results.fetchall(), args)
+        return self.with_metadata(results.fetchall(), args, self.schema)
