@@ -28,7 +28,7 @@ class CargoTheftsCountStates(CdeResource):
         self.verify_api_key(args)
         model = cdemodels.CargoTheftCountView(variable, year=args['year'], state_id=state_id, state_abbr=state_abbr)
         results = model.query(args)
-        return self.with_metadata(results.fetchall(), args, self.schema)
+        return self.with_metadata(results.fetchall(), args, self.schema), 200, {'Surrogate-Control':3600}
 
 
 class CargoTheftsCountAgencies(CdeResource):
@@ -44,7 +44,7 @@ class CargoTheftsCountAgencies(CdeResource):
         self.verify_api_key(args)
         model = cdemodels.CargoTheftCountView(variable, year=args['year'], ori=ori)
         results = model.query(args)
-        return self.with_metadata(results.fetchall(), args, self.schema)
+        return self.with_metadata(results.fetchall(), args, self.schema), 200, {'Surrogate-Control':3600}
 
 
 class CargoTheftsCountNational(CdeResource):
@@ -60,7 +60,7 @@ class CargoTheftsCountNational(CdeResource):
         self.verify_api_key(args)
         model = cdemodels.CargoTheftCountView(variable, year=args['year'])
         results = model.query(args)
-        return self.with_metadata(results.fetchall(), args, self.schema)
+        return self.with_metadata(results.fetchall(), args, self.schema), 200, {'Surrogate-Control':3600}
 
 
 class CargoTheftOffenseSubcounts(CdeResource):
@@ -82,4 +82,4 @@ class CargoTheftOffenseSubcounts(CdeResource):
                                                      state_id=state_id,
                                                      state_abbr=state_abbr)
         results = model.query(args)
-        return self.with_metadata(results.fetchall(), args, self.schema)
+        return self.with_metadata(results.fetchall(), args, self.schema), 200, {'Surrogate-Control':3600}

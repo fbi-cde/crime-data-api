@@ -59,7 +59,7 @@ class AgenciesSumsState(CdeResource):
         explorer_offense = args.get('explorer_offense', None)
         agency_sums = model.get(state = state_abbr, agency = agency_ori, year = year, explorer_offense = explorer_offense)
         filename = 'agency_sums_state'
-        return self.render_response(agency_sums, args, csv_filename=filename)
+        return self.render_response(agency_sums, args, csv_filename=filename), 200, {'Surrogate-Control':3600}
 
 
 class AgenciesSumsCounty(CdeResource):
@@ -81,7 +81,7 @@ class AgenciesSumsCounty(CdeResource):
         explorer_offense = args.get('explorer_offense', None)
         agency_sums = model.get(agency = agency_ori, year =  year, county = county_fips_code, state=state_abbr, explorer_offense=explorer_offense)
         filename = 'agency_sums_county'
-        return self.render_response(agency_sums, args, csv_filename=filename)
+        return self.render_response(agency_sums, args, csv_filename=filename), 200, {'Surrogate-Control':3600}
 
 
 class AgenciesOffensesCount(CdeResource):
@@ -105,7 +105,7 @@ class AgenciesOffensesCount(CdeResource):
         else:
             agency_sums = newmodels.AgencyOffenseCounts().get(state = state_abbr, agency = agency_ori, year = year, explorer_offense = explorer_offense)
         filename = 'agency_offenses_state'
-        return self.render_response(agency_sums, args, csv_filename=filename)
+        return self.render_response(agency_sums, args, csv_filename=filename), 200, {'Surrogate-Control':3600}
 
 
 class AgenciesOffensesCountyCount(CdeResource):
@@ -127,4 +127,4 @@ class AgenciesOffensesCountyCount(CdeResource):
         explorer_offense = args.get('explorer_offense', None)
         agency_sums = model.get(agency = agency_ori, year =  year, county = county_fips_code, state=state_abbr, explorer_offense=explorer_offense)
         filename = 'agency_sums_county'
-        return self.render_response(agency_sums, args, csv_filename=filename)
+        return self.render_response(agency_sums, args, csv_filename=filename), 200, {'Surrogate-Control':3600}

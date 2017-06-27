@@ -20,7 +20,7 @@ class OffensesList(CdeResource):
     def get(self, args):
         self.verify_api_key(args)
         result = models.CrimeType.query
-        return self.with_metadata(result, args)
+        return self.with_metadata(result, args), 200, {'Surrogate-Control':3600}
 
 
 class OffensesCountNational(CdeResource):
@@ -38,7 +38,7 @@ class OffensesCountNational(CdeResource):
         self.verify_api_key(args)
         model = cdemodels.OffenseCountView(variable, year=args['year'])
         results = model.query(args)
-        return self.with_metadata(results.fetchall(), args, self.schema)
+        return self.with_metadata(results.fetchall(), args, self.schema), 200, {'Surrogate-Control':3600}
 
 
 class OffensesCountStates(CdeResource):
@@ -56,7 +56,7 @@ class OffensesCountStates(CdeResource):
         self.verify_api_key(args)
         model = cdemodels.OffenseCountView(variable, year=args['year'], state_id=state_id, state_abbr=state_abbr)
         results = model.query(args)
-        return self.with_metadata(results.fetchall(), args, self.schema)
+        return self.with_metadata(results.fetchall(), args, self.schema), 200, {'Surrogate-Control':3600}
 
 
 class OffensesCountAgencies(CdeResource):
@@ -72,7 +72,7 @@ class OffensesCountAgencies(CdeResource):
         self.verify_api_key(args)
         model = cdemodels.OffenseCountView(variable, year=args['year'], ori=ori)
         results = model.query(args)
-        return self.with_metadata(results.fetchall(), args, self.schema)
+        return self.with_metadata(results.fetchall(), args, self.schema), 200, {'Surrogate-Control':3600}
 
 
 class OffenseByOffenseTypeSubcounts(CdeResource):
@@ -96,4 +96,4 @@ class OffenseByOffenseTypeSubcounts(CdeResource):
                                                         state_abbr=state_abbr)
         results = model.query(args)
         print(results)
-        return self.with_metadata(results.fetchall(), args, self.schema)
+        return self.with_metadata(results.fetchall(), args, self.schema), 200, {'Surrogate-Control':3600}

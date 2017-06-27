@@ -25,7 +25,7 @@ class StateParticipation(CdeResource):
         state = cdemodels.CdeRefState.get(abbr=state_abbr, state_id=state_id).one()
         rates = cdemodels.CdeParticipationRate(state_id=state.state_id).query.order_by('year DESC').all()
         filename = '{}_state_participation'.format(state.state_postal_abbr)
-        return self.render_response(rates, args, csv_filename=filename)
+        return self.render_response(rates, args, csv_filename=filename), 200, {'Surrogate-Control':3600}
 
 
 class NationalParticipation(CdeResource):
@@ -43,7 +43,7 @@ class NationalParticipation(CdeResource):
         rates = rates.filter(newmodels.ParticipationRate.county_id == None)
         rates = rates.order_by('year DESC').all()
         filename = 'participation_rates'
-        return self.render_response(rates, args, csv_filename=filename)
+        return self.render_response(rates, args, csv_filename=filename), 200, {'Surrogate-Control':3600}
 
 
 class AgenciesParticipation(CdeResource):
@@ -56,4 +56,4 @@ class AgenciesParticipation(CdeResource):
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page
     def get(self, args):
-        return self._get(args, csv_filename='agency_participation')
+        return self._get(args, csv_filename='agency_participation'), 200, {'Surrogate-Control':3600}
