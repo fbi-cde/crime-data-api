@@ -38,6 +38,10 @@ echo -n "Create cde_counties table..."
 psql $CRIME_DATA_API_DB_URL <after_load/cde_counties.sql
 echo "DONE"
 
+echo -n "Create cde_states table..."
+psql $CRIME_DATA_API_DB_URL <after_load/cde_states.sql
+echo "DONE"
+
 echo -n "Create reta_agency_summary table..."
 psql $CRIME_DATA_API_DB_URL <after_load/create_reta_agency_summary.sql
 echo "DONE"
