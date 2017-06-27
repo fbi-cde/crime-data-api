@@ -72,10 +72,9 @@ SET work_mem='2GB'; -- Go Super Saiyan.
 
 -- Generates CT stats.
 drop materialized view  IF EXISTS offense_ct_counts_states;
-create materialized view offense_ct_counts_states as select  count(incident_id), sum(stolen_value) as stolen_value, sum(recovered_value) as recovered_value,  year, ori, state_id,  location_name,  offense_name, victim_type_name, prop_desc_name
+create materialized view offense_ct_counts_states as select  count(incident_id), sum(stolen_value) as stolen_value, sum(recovered_value) as recovered_value,  year, state_id,  location_name,  offense_name, victim_type_name, prop_desc_name
 from ( 
     SELECT DISTINCT(ct_incident.incident_id), 
-    ref_agency.ori, 
     state_id, 
     location_name,
     offense_name,
@@ -106,11 +105,10 @@ GROUP BY GROUPING SETS (
 );
 
 drop materialized view  IF EXISTS offense_ct_counts_ori;
-create materialized view offense_ct_counts_ori as select  count(incident_id), sum(stolen_value) as stolen_value, sum(recovered_value) as recovered_value,  year, ori, state_id,  location_name,  offense_name, victim_type_name, prop_desc_name
+create materialized view offense_ct_counts_ori as select  count(incident_id), sum(stolen_value) as stolen_value, sum(recovered_value) as recovered_value,  year, ori,  location_name,  offense_name, victim_type_name, prop_desc_name
 from ( 
     SELECT DISTINCT(ct_incident.incident_id), 
     ref_agency.ori, 
-    state_id, 
     location_name,
     offense_name,
     victim_type_name,
@@ -133,6 +131,11 @@ GROUP BY GROUPING SETS (
     (year, ori, offense_name, location_name),
     (year, ori, offense_name, victim_type_name)
 );
+
+DROP INDEX IF EXISTS ct_counts_state_id_idx;
+DROP INDEX IF EXISTS offense_ct_counts_state_id_idx;
+DROP INDEX IF EXISTS ct_counts_ori_idx;
+DROP INDEX IF EXISTS offense_ct_counts_ori_idx;
 
 CREATE INDEX ct_counts_state_id_idx ON ct_counts_states (state_id, year);
 CREATE INDEX offense_ct_counts_state_id_idx ON offense_ct_counts_states (state_id, year);
