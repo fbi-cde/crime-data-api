@@ -93,5 +93,7 @@ create materialized view offense_counts_ori as
     SELECT *,1992 as year  FROM offense_counts_1992 WHERE ori IS NOT NULL UNION
     SELECT *,1991 as year  FROM offense_counts_1991 WHERE ori IS NOT NULL;
 
+DROP INDEX IF EXISTS offense_counts_state_year_id_idx;
+DROP INDEX IF EXISTS offense_counts_ori_year_idx;
 CREATE INDEX offense_counts_state_year_id_idx ON offense_counts_states (state_id, year);
 CREATE INDEX offense_counts_ori_year_idx ON offense_counts_ori (ori, year);
