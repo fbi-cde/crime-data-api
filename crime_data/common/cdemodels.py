@@ -59,11 +59,41 @@ class CdeParticipationRate(newmodels.ParticipationRate):
         return qry
 
 
+class CdeRefCounty(db.Model):
+    """This uses our denormalized cde_counties table"""
+    __tablename__ = 'cde_counties'
+
+    def get(county_id=None, fips=None, name=None):
+        """Find matching counties by id, fips code or name."""
+        query = CdeRefCounty.query
+
+        if county_id:
+            query = query.filter(CdeRefCounty.county_id == county_id)
+        elif fips:
+            query = query.filter(CdeRefCounty.fips == fips)
+        elif name:
+            query = query.filter(func.lower(CdeRefCounty.county_name) ==
+                                 func.lower(name))
+        return query
+
+    county_id = db.Column(db.BigInteger, primary_key=True)
+    fips = db.Column(db.String(5))
+    county_name = db.Column(db.String(100))
+    state_id = db.Column(db.SmallInteger)
+    state_name = db.Column(db.String(100))
+    state_abbr = db.Column(db.String(2))
+    current_year = db.Column(db.SmallInteger)
+    total_population = db.Column(db.BigInteger)
+    total_agencies = db.Column(db.Integer)
+    participating_agencies = db.Column(db.Integer)
+    nibrs_participating_agencies = db.Column(db.Integer)
+    covered_agencies = db.Column(db.Integer)
+    participating_population = db.Column(db.BigInteger)
+
+
 class CdeRefState(db.Model):
     """A wrapper around the RefState model with extra finder methods"""
     __tablename__ = 'cde_states'
-
-    # counties = db.relationship(CdeRefCounty, lazy='dynamic')
 
     def get(state_id=None, abbr=None, fips=None):
         """
@@ -97,41 +127,15 @@ class CdeRefState(db.Model):
     police_officers = db.Column(db.Integer)
     civilian_employees = db.Column(db.Integer)
 
+    counties = db.relationship('CdeRefCounty',
+                               foreign_keys=[CdeRefCounty.state_id],
+                               primaryjoin='CdeRefState.state_id==CdeRefCounty.state_id',
+                               lazy='dynamic',
+                               backref='state')
+
     @property
     def participation_rates(self):
         return CdeParticipationRate(state_id=self.state_id).query.order_by('year DESC').all()
-
-
-class CdeRefCounty(db.Model):
-    """This uses our denormalized cde_counties table"""
-    __tablename__ = 'cde_counties'
-
-    def get(county_id=None, fips=None, name=None):
-        """Find matching counties by id, fips code or name."""
-        query = CdeRefCounty.query
-
-        if county_id:
-            query = query.filter(CdeRefCounty.county_id == county_id)
-        elif fips:
-            query = query.filter(CdeRefCounty.fips == fips)
-        elif name:
-            query = query.filter(func.lower(CdeRefCounty.county_name) ==
-                                 func.lower(name))
-        return query
-
-    county_id = db.Column(db.BigInteger, primary_key=True)
-    fips = db.Column(db.String(5))
-    county_name = db.Column(db.String(100))
-    state_id = db.Column(db.SmallInteger)
-    state_name = db.Column(db.String(100))
-    state_abbr = db.Column(db.String(2))
-    current_year = db.Column(db.SmallInteger)
-    total_population = db.Column(db.BigInteger)
-    total_agencies = db.Column(db.Integer)
-    participating_agencies = db.Column(db.Integer)
-    nibrs_participating_agencies = db.Column(db.Integer)
-    covered_agencies = db.Column(db.Integer)
-    participating_population = db.Column(db.BigInteger)
 
 
 class CdeRefAgency(models.RefAgency):
