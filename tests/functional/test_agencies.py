@@ -82,7 +82,7 @@ class TestAgenciesEndpoint:
         assert len(res.json['results']) == 1
 
         result = res.json['results'][0]
-        assert result['pub_agency_name'] == 'Barrington'
+        assert result['pub_agency_name'] == 'Barrington Police Department'
         assert result['ori'] == 'RI0010100'
         assert result['offense_code'] == 'X_ARS'
         assert result['offense_name'] == 'Arson'
