@@ -69,11 +69,13 @@ class TestCdeAgencies:
 
     def test_county_name_append(self, app):
         a = CdeAgency.query.filter(CdeAgency.ori == 'CA0190000').one()
-        assert a.agency_name == 'Los Angeles County'
+        assert a.agency_name == "Los Angeles County Sheriff's Office"
+        assert a.short_name == 'Los Angeles'
 
-    def test_county_not_appended_to_other_agency_type(self, app):
+    def test_city_name(self, app):
         a = CdeAgency.query.filter(CdeAgency.ori == 'CA0194200').one()
-        assert a.agency_name == 'Los Angeles'
+        assert a.agency_name == 'Los Angeles Police Department'
+        assert a.short_name == 'Los Angeles'
 
     def test_revised_rape_start_not_set(self, app):
         a = CdeAgency.query.filter(CdeAgency.agency_id == 17382).one()
