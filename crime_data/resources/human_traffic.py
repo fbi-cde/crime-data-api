@@ -16,7 +16,7 @@ class HtAgencyList(CdeResource):
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page
     def get(self, args):
-        return self._get(args), 200, {'Surrogate-Control':3600}
+        return self._get(args)
 
 
 class HtStatesList(CdeResource):
@@ -30,4 +30,4 @@ class HtStatesList(CdeResource):
         year = args.get('year', None)
         state_abbr = args.get('state_abbr', None)
         counts = HtSummary.grouped_by_state(year=year, state_abbr=state_abbr)
-        return self.render_response(counts, args, csv_filename='human_trafficking'), 200, {'Surrogate-Control':3600}
+        return self.render_response(counts, args, csv_filename='human_trafficking')

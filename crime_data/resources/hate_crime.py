@@ -26,7 +26,7 @@ class HateCrimesCountStates(CdeResource):
         self.verify_api_key(args)
         model = cdemodels.HateCrimeCountView(variable, year=args['year'], state_id=state_id, state_abbr=state_abbr)
         results = model.query(args)
-        return self.with_metadata(results.fetchall(), args, self.schema), 200, {'Surrogate-Control':3600}
+        return self.with_metadata(results.fetchall(), args, self.schema)
 
 
 class HateCrimesCountAgencies(CdeResource):
@@ -41,7 +41,7 @@ class HateCrimesCountAgencies(CdeResource):
         self.verify_api_key(args)
         model = cdemodels.HateCrimeCountView(variable, year=args['year'], ori=ori)
         results = model.query(args)
-        return self.with_metadata(results.fetchall(), args, self.schema), 200, {'Surrogate-Control':3600}
+        return self.with_metadata(results.fetchall(), args, self.schema)
 
 
 class HateCrimesCountNational(CdeResource):
@@ -56,7 +56,7 @@ class HateCrimesCountNational(CdeResource):
         self.verify_api_key(args)
         model = cdemodels.HateCrimeCountView(variable, year=args['year'])
         results = model.query(args)
-        return self.with_metadata(results.fetchall(), args, self.schema), 200, {'Surrogate-Control':3600}
+        return self.with_metadata(results.fetchall(), args, self.schema)
 
 
 class HateCrimeOffenseSubcounts(CdeResource):
@@ -78,4 +78,4 @@ class HateCrimeOffenseSubcounts(CdeResource):
                                                     state_id=state_id,
                                                     state_abbr=state_abbr)
         results = model.query(args)
-        return self.with_metadata(results.fetchall(), args, self.schema), 200, {'Surrogate-Control':3600}
+        return self.with_metadata(results.fetchall(), args, self.schema)
