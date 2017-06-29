@@ -17,9 +17,6 @@ Flask-SQLAlchemy==2.1
 psycopg2==2.6.1
 SQLAlchemy==1.1.5
 
-# Migrations
-Flask-Migrate==2.0.0
-
 # Deployment
 gunicorn>=19.1.1
 gevent==1.2.1
@@ -31,10 +28,6 @@ jsmin>=2.0.11
 
 # Caching
 Flask-Caching>=1.0.0
-
-# Debug toolbar
-Flask-DebugToolbar==0.10.0
-IPython>=5.0.0
 
 # RESTful
 Flask-RESTful==0.3.5

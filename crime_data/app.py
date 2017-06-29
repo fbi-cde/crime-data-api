@@ -29,7 +29,7 @@ from crime_data.assets import assets
 from crime_data.common.marshmallow_schemas import ma
 from crime_data.common.models import db
 from crime_data.common.credentials import get_credential
-from crime_data.extensions import (cache, debug_toolbar, migrate, cache_control)
+from crime_data.extensions import (cache, cache_control)
 from crime_data.settings import ProdConfig
 
 if __name__ == '__main__':
@@ -61,8 +61,6 @@ def register_extensions(app):
     cache.init_app(app)
     db.init_app(app)
     ma.init_app(app)
-    debug_toolbar.init_app(app)
-    migrate.init_app(app, db)
     cache_control.init_app(app)
     CORS(app)
     return None
@@ -274,12 +272,6 @@ CONFIG = DevConfig if get_debug_flag() else ProdConfig
 
 app = create_app(CONFIG)
 app.wsgi_app = ProxyFix(app.wsgi_app)
-
-# This lets you see the /__sqltap__ debugging console on develop
-if get_debug_flag():
-    import sqltap.wsgi
-    app.wsgi_app = sqltap.wsgi.SQLTapMiddleware(app.wsgi_app)
-
 
 # Add some static routing
 @app.route('/')
