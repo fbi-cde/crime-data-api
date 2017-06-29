@@ -25,7 +25,6 @@ import crime_data.resources.human_traffic
 from werkzeug.contrib.fixers import ProxyFix
 
 from crime_data import commands
-from crime_data.assets import assets
 from crime_data.common.marshmallow_schemas import ma
 from crime_data.common.models import db
 from crime_data.common.credentials import get_credential
@@ -57,7 +56,6 @@ def create_app(config_object=ProdConfig):
 
 def register_extensions(app):
     """Register Flask extensions."""
-    assets.init_app(app)
     cache.init_app(app)
     db.init_app(app)
     ma.init_app(app)

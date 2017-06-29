@@ -8,7 +8,6 @@ class Config(object):
 
     APP_DIR = os.path.abspath(os.path.dirname(__file__))  # This directory
     PROJECT_ROOT = os.path.abspath(os.path.join(APP_DIR, os.pardir))
-    ASSETS_DEBUG = False
     DEBUG_TB_ENABLED = False  # Disable Debug toolbar
     DEBUG_TB_INTERCEPT_REDIRECTS = False
     CACHE_TYPE = 'simple'  # Can be "memcached", "redis", etc.
@@ -33,7 +32,6 @@ class DevConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.getenv('CRIME_DATA_API_DEV_DB_URL') or 'postgres:///crime_data_api_dev'
     DEBUG_TB_ENABLED = True
-    ASSETS_DEBUG = True  # Don't bundle/minify static assets
     CACHE_TYPE = 'simple'  # Can be "memcached", "redis", etc.
 
 
