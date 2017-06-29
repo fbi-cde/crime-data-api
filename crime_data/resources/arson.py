@@ -28,4 +28,4 @@ class ArsonStateCounts(CdeResource):
         query = query.filter(ArsonSummary.year != None)
         query = query.filter(ArsonSummary.subcategory_code == None)
         query = query.order_by(ArsonSummary.year)
-        return self.with_metadata(query, args), 200, {'Surrogate-Control':3600}
+        return self.with_metadata(query, args)
