@@ -166,31 +166,6 @@ class ArsonSubcategorySchema(ma.ModelSchema):
     subclass = ma.Nested(ArsonSubclassificationSchema)
 
 
-class CachedIncidentCountSchema(Schema):
-    class Meta:
-        model = newmodels.RetaMonthOffenseSubcatSummary
-
-    # We hack `load_only` to prevent a field from being serialized
-    # (even though this schema is never used for loading);
-    # later we can change it to False to enable output for that field
-    year = marsh_fields.Integer(load_only=True)
-    month = marsh_fields.Integer(load_only=True)
-    offense_subcat = marsh_fields.String(load_only=True)
-    offense_subcat_code = marsh_fields.String(load_only=True)
-    offense = marsh_fields.String(load_only=True)
-    offense_code = marsh_fields.String(load_only=True)
-    offense_category = marsh_fields.String(load_only=True)
-    classification = marsh_fields.String(load_only=True)
-    state_name = marsh_fields.String(load_only=True)
-    state = marsh_fields.String(load_only=True)
-    reported = marsh_fields.Integer()
-    unfounded = marsh_fields.Integer()
-    actual = marsh_fields.Integer()
-    cleared = marsh_fields.Integer()
-    juvenile_cleared = marsh_fields.Integer()
-    total_population = marsh_fields.Integer(load_only=True)
-
-
 class AgencySumsSchema(Schema):
     class Meta:
         model = newmodels.AgencySums
