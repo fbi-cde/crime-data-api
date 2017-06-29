@@ -8,7 +8,6 @@ Werkzeug==0.12.2
 Jinja2==2.9.4
 itsdangerous==0.24
 click>=5.0
-flask-httpauth
 Flask-Script>=0.6
 Flask-CacheControl==0.1.2
 Flask-cors==3.0.2
