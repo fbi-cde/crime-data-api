@@ -1,10 +1,9 @@
 from webargs.flaskparser import use_args
-from crime_data.extensions import DEFAULT_MAX_AGE
-from flask.ext.cachecontrol import cache
+from crime_data.extensions import DEFAULT_MAX_AGE, DEFAULT_SURROGATE_AGE
 from sqlalchemy import func
 
 from crime_data.common import cdemodels, marshmallow_schemas
-from crime_data.common.base import CdeResource, tuning_page
+from crime_data.common.base import CdeResource, tuning_page, cache_for
 from crime_data.common.newmodels import ArsonSummary
 
 
@@ -13,19 +12,22 @@ class ArsonStateCounts(CdeResource):
     schema = marshmallow_schemas.ArsonSummarySchema(many=True,
                                                     exclude=('subcategory_code', 'subcategory_name',))
     @use_args(marshmallow_schemas.ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
+    @cache_for(DEFAULT_MAX_AGE, DEFAULT_SURROGATE_AGE)
     @tuning_page
     def get(self, args, state_abbr=None):
         self.verify_api_key(args)
         query = ArsonSummary.query
+        csv_filename = 'national_arson'
 
         if state_abbr is None:
             query = query.filter(ArsonSummary.state_abbr == None)
         else:
             query = query.filter(func.lower(ArsonSummary.state_abbr) == func.lower(state_abbr))
+            csv_filename = '{}_arson'.format(state_abbr)
 
         query = query.filter(ArsonSummary.ori == None)
         query = query.filter(ArsonSummary.year != None)
         query = query.filter(ArsonSummary.subcategory_code == None)
         query = query.order_by(ArsonSummary.year)
-        return self.with_metadata(query, args), 200, {'Surrogate-Control':3600}
+
+        return self.render_response(query, args, csv_filename=csv_filename)

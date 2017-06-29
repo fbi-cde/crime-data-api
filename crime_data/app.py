@@ -20,8 +20,8 @@ import crime_data.resources.hate_crime
 import crime_data.resources.geo
 import crime_data.resources.participation
 import crime_data.resources.estimates
-
 import crime_data.resources.human_traffic
+
 from werkzeug.contrib.fixers import ProxyFix
 
 from crime_data import commands
@@ -29,7 +29,7 @@ from crime_data.assets import assets
 from crime_data.common.marshmallow_schemas import ma
 from crime_data.common.models import db
 from crime_data.common.credentials import get_credential
-from crime_data.extensions import (cache, debug_toolbar, migrate, cache_control)
+from crime_data.extensions import (cache, debug_toolbar, migrate)
 from crime_data.settings import ProdConfig
 
 if __name__ == '__main__':
@@ -63,7 +63,6 @@ def register_extensions(app):
     ma.init_app(app)
     debug_toolbar.init_app(app)
     migrate.init_app(app, db)
-    cache_control.init_app(app)
     CORS(app)
     return None
 
@@ -120,7 +119,6 @@ def add_resources(app):
         resp = api.make_response(outfile.read(), code)
         resp.headers.extend(headers or {})
         return resp
-
 
 
     api.add_resource(crime_data.resources.agencies.AgenciesList, '/agencies')

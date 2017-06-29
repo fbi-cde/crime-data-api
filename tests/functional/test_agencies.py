@@ -9,6 +9,8 @@ class TestAgenciesEndpoint:
     def test_agencies_endpoint_exists(self, testapp, swagger):
         res = testapp.get('/agencies')
         assert res.status_code == 200
+        assert res.headers['Cache-Control'] is not None
+        assert res.headers['Surrogate-Control'] is not None
         validate_api_call(swagger, raw_request=res.request, raw_response=res)
 
     def test_agencies_endpoint_returns_agencies(self, testapp, swagger):
@@ -34,6 +36,8 @@ class TestAgenciesEndpoint:
         id_no = self._single_ori(testapp)
         res = testapp.get('/agencies/{}'.format(id_no))
         assert res.status_code == 200
+        assert res.headers['Cache-Control'] is not None
+        assert res.headers['Surrogate-Control'] is not None
         validate_api_call(swagger, raw_request=res.request, raw_response=res)
 
     def test_agencies_paginate(self, testapp, swagger):
@@ -50,6 +54,9 @@ class TestAgenciesEndpoint:
 
     def test_agencies_offenses(self, testapp, swagger):
         res = testapp.get('/agencies/count/RI0040200/offenses?explorer_offense=robbery')
+        assert res.status_code == 200
+        assert res.headers['Cache-Control'] is not None
+        assert res.headers['Surrogate-Control'] is not None
         validate_api_call(swagger, raw_request=res.request, raw_response=res)
         assert len(res.json['results']) == 1
 

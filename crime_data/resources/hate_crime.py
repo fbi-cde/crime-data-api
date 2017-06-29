@@ -1,7 +1,8 @@
 from webargs.flaskparser import use_args
 
 from crime_data.common import cdemodels, marshmallow_schemas
-from crime_data.common.base import CdeResource, tuning_page
+from crime_data.common.base import CdeResource, tuning_page, cache_for
+from crime_data.extensions import DEFAULT_MAX_AGE, DEFAULT_SURROGATE_AGE
 
 # Template
 # variable => [bias_name]
@@ -21,12 +22,13 @@ class HateCrimesCountStates(CdeResource):
     # schema = marshmallow_schemas.IncidentCountSchema()
 
     @use_args(marshmallow_schemas.IncidentViewCountArgs)
+    @cache_for(DEFAULT_MAX_AGE, DEFAULT_SURROGATE_AGE)
     @tuning_page
     def get(self, args, state_id=None, state_abbr=None, variable=None):
         self.verify_api_key(args)
         model = cdemodels.HateCrimeCountView(variable, year=args['year'], state_id=state_id, state_abbr=state_abbr)
         results = model.query(args)
-        return self.with_metadata(results.fetchall(), args, self.schema), 200, {'Surrogate-Control':3600}
+        return self.render_response(results.fetchall(), args, self.schema, csv_filename='{}_hate_crime'.format(state_abbr))
 
 
 class HateCrimesCountAgencies(CdeResource):
@@ -36,12 +38,13 @@ class HateCrimesCountAgencies(CdeResource):
         return [dict(r) for r in data]
 
     @use_args(marshmallow_schemas.IncidentViewCountArgs)
+    @cache_for(DEFAULT_MAX_AGE, DEFAULT_SURROGATE_AGE)
     @tuning_page
     def get(self, args, ori, variable):
         self.verify_api_key(args)
         model = cdemodels.HateCrimeCountView(variable, year=args['year'], ori=ori)
         results = model.query(args)
-        return self.with_metadata(results.fetchall(), args, self.schema), 200, {'Surrogate-Control':3600}
+        return self.render_response(results.fetchall(), args, self.schema)
 
 
 class HateCrimesCountNational(CdeResource):
@@ -51,12 +54,13 @@ class HateCrimesCountNational(CdeResource):
         return [dict(r) for r in data]
 
     @use_args(marshmallow_schemas.IncidentViewCountArgs)
+    @cache_for(DEFAULT_MAX_AGE, DEFAULT_SURROGATE_AGE)
     @tuning_page
     def get(self, args, variable):
         self.verify_api_key(args)
         model = cdemodels.HateCrimeCountView(variable, year=args['year'])
         results = model.query(args)
-        return self.with_metadata(results.fetchall(), args, self.schema), 200, {'Surrogate-Control':3600}
+        return self.render_response(results.fetchall(), args, self.schema, csv_filename='ht_national')
 
 
 class HateCrimeOffenseSubcounts(CdeResource):
@@ -66,6 +70,7 @@ class HateCrimeOffenseSubcounts(CdeResource):
         return [dict(r) for r in data]
 
     @use_args(marshmallow_schemas.OffenseCountViewArgs)
+    @cache_for(DEFAULT_MAX_AGE, DEFAULT_SURROGATE_AGE)
     @tuning_page
     def get(self, args, variable, state_id=None, state_abbr=None, ori=None):
         self.verify_api_key(args)
@@ -78,4 +83,4 @@ class HateCrimeOffenseSubcounts(CdeResource):
                                                     state_id=state_id,
                                                     state_abbr=state_abbr)
         results = model.query(args)
-        return self.with_metadata(results.fetchall(), args, self.schema), 200, {'Surrogate-Control':3600}
+        return self.render_response(results.fetchall(), args, self.schema, csv_filename='ht_suboffense')

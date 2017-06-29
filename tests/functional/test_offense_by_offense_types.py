@@ -47,7 +47,7 @@ class TestOffenseByOffenseTypesEndpoint:
 
     @pytest.mark.parametrize('variable', OffenseByOffenseTypeCountView.VARIABLES)
     def test_offenses_endpoint_with_state_year_offense(self, testapp, swagger, variable):
-        url = '/offenses/count/states/43/{}/offenses?offense_name=Aggravated+Assault&year=2014'.format(variable)
+        url = '/offenses/count/states/44/{}/offenses?offense_name=Aggravated+Assault&year=2014'.format(variable)
         res = testapp.get(url)
         validate_api_call(swagger, raw_request=res.request, raw_response=res)
         assert 'pagination' in res.json
@@ -57,7 +57,7 @@ class TestOffenseByOffenseTypesEndpoint:
     @pytest.mark.parametrize('variable', OffenseByOffenseTypeCountView.VARIABLES)
     @pytest.mark.parametrize('explorer_offense', ExplorerOffenseMapping.NIBRS_OFFENSE_MAPPING.keys())
     def test_offenses_endpoint_with_state_year_explorer_offense(self, testapp, swagger, variable, explorer_offense):
-        url = '/offenses/count/states/43/{}/offenses?explorer_offense={}&year=2014'.format(variable, explorer_offense)
+        url = '/offenses/count/states/44/{}/offenses?explorer_offense={}&year=2014'.format(variable, explorer_offense)
         res = testapp.get(url)
         validate_api_call(swagger, raw_request=res.request, raw_response=res)
         assert 'pagination' in res.json

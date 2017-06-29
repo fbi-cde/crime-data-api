@@ -1,9 +1,8 @@
 from webargs.flaskparser import use_args
-from crime_data.extensions import DEFAULT_MAX_AGE
-from flask.ext.cachecontrol import cache
+from crime_data.extensions import DEFAULT_MAX_AGE, DEFAULT_SURROGATE_AGE
 
 from crime_data.common import cdemodels, marshmallow_schemas
-from crime_data.common.base import CdeResource, tuning_page
+from crime_data.common.base import CdeResource, tuning_page, cache_for
 
 
 
@@ -102,5 +101,5 @@ for different domains.
  ASR_VAG             | Vagrancy
  ASR_VAN             | Vandalism
  ASR_WEAP            | Weapons: Carrying, Possessing, Etc.
- ASR_ZERO            | Zero Report
+ ASR_ZERO            | Zero Reporty
 """

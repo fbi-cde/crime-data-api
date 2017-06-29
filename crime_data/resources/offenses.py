@@ -1,9 +1,8 @@
 from webargs.flaskparser import use_args
-from crime_data.extensions import DEFAULT_MAX_AGE
-from flask.ext.cachecontrol import cache
+from crime_data.extensions import DEFAULT_MAX_AGE, DEFAULT_SURROGATE_AGE
 
 from crime_data.common import models, cdemodels, marshmallow_schemas
-from crime_data.common.base import CdeResource, tuning_page
+from crime_data.common.base import CdeResource, tuning_page, cache_for
 from crime_data.common.marshmallow_schemas import ArgumentsSchema
 
 
@@ -16,11 +15,11 @@ class OffensesList(CdeResource):
     schema = marshmallow_schemas.CrimeTypeSchema(many=True)
 
     @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
+    @cache_for(DEFAULT_MAX_AGE, DEFAULT_SURROGATE_AGE)
     def get(self, args):
         self.verify_api_key(args)
         result = models.CrimeType.query
-        return self.with_metadata(result, args), 200, {'Surrogate-Control':3600}
+        return self.with_metadata(result, args)
 
 
 class OffensesCountNational(CdeResource):
@@ -32,13 +31,13 @@ class OffensesCountNational(CdeResource):
     # schema = marshmallow_schemas.IncidentCountSchema()
 
     @use_args(marshmallow_schemas.IncidentViewCountArgs)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
+    @cache_for(DEFAULT_MAX_AGE, DEFAULT_SURROGATE_AGE)
     @tuning_page
     def get(self, args, variable):
         self.verify_api_key(args)
         model = cdemodels.OffenseCountView(variable, year=args['year'])
         results = model.query(args)
-        return self.with_metadata(results.fetchall(), args, self.schema), 200, {'Surrogate-Control':3600}
+        return self.render_response(results.fetchall(), args, self.schema)
 
 
 class OffensesCountStates(CdeResource):
@@ -50,13 +49,13 @@ class OffensesCountStates(CdeResource):
     # schema = marshmallow_schemas.IncidentCountSchema()
 
     @use_args(marshmallow_schemas.IncidentViewCountArgs)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
+    @cache_for(DEFAULT_MAX_AGE, DEFAULT_SURROGATE_AGE)
     @tuning_page
     def get(self, args, state_id=None, state_abbr=None, variable=None):
         self.verify_api_key(args)
         model = cdemodels.OffenseCountView(variable, year=args['year'], state_id=state_id, state_abbr=state_abbr)
         results = model.query(args)
-        return self.with_metadata(results.fetchall(), args, self.schema), 200, {'Surrogate-Control':3600}
+        return self.render_response(results.fetchall(), args, self.schema)
 
 
 class OffensesCountAgencies(CdeResource):
@@ -66,13 +65,13 @@ class OffensesCountAgencies(CdeResource):
         return [dict(r) for r in data]
 
     @use_args(marshmallow_schemas.IncidentViewCountArgs)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
+    @cache_for(DEFAULT_MAX_AGE, DEFAULT_SURROGATE_AGE)
     @tuning_page
     def get(self, args, ori, variable):
         self.verify_api_key(args)
         model = cdemodels.OffenseCountView(variable, year=args['year'], ori=ori)
         results = model.query(args)
-        return self.with_metadata(results.fetchall(), args, self.schema), 200, {'Surrogate-Control':3600}
+        return self.render_response(results.fetchall(), args, self.schema)
 
 
 class OffenseByOffenseTypeSubcounts(CdeResource):
@@ -83,7 +82,7 @@ class OffenseByOffenseTypeSubcounts(CdeResource):
         return [dict(r) for r in data]
 
     @use_args(marshmallow_schemas.OffenseCountViewArgs)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
+    @cache_for(DEFAULT_MAX_AGE, DEFAULT_SURROGATE_AGE)
     @tuning_page
     def get(self, args, variable, state_id=None, state_abbr=None, ori=None):
         self.verify_api_key(args)
@@ -96,4 +95,4 @@ class OffenseByOffenseTypeSubcounts(CdeResource):
                                                         state_abbr=state_abbr)
         results = model.query(args)
         print(results)
-        return self.with_metadata(results.fetchall(), args, self.schema), 200, {'Surrogate-Control':3600}
+        return self.render_response(results.fetchall(), args, self.schema)

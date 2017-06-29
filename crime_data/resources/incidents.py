@@ -1,9 +1,8 @@
 from webargs.flaskparser import use_args
 from itertools import filterfalse
 from crime_data.common import cdemodels, marshmallow_schemas, models, newmodels
-from crime_data.common.base import CdeResource, tuning_page, ExplorerOffenseMapping
-from crime_data.extensions import DEFAULT_MAX_AGE
-from flask.ext.cachecontrol import cache
+from crime_data.common.base import CdeResource, tuning_page, ExplorerOffenseMapping, cache_for
+from crime_data.extensions import DEFAULT_MAX_AGE, DEFAULT_SURROGATE_AGE
 from flask import jsonify
 
 def _is_string(col):
@@ -37,7 +36,7 @@ class CachedIncidentsCount(CdeResource):
                 field.load_only = field_name not in filtered_names
 
     @use_args(marshmallow_schemas.GroupableArgsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
+    @cache_for(DEFAULT_MAX_AGE, DEFAULT_SURROGATE_AGE)
     @tuning_page
     def get(self, args):
         return self._get(args)
@@ -51,6 +50,7 @@ class AgenciesSumsState(CdeResource):
     fast_count = True
 
     @use_args(marshmallow_schemas.OffenseCountViewArgs)
+    @cache_for(DEFAULT_MAX_AGE, DEFAULT_SURROGATE_AGE)
     @tuning_page
     def get(self, args, state_abbr = None, agency_ori = None):
         self.verify_api_key(args)
@@ -59,7 +59,7 @@ class AgenciesSumsState(CdeResource):
         explorer_offense = args.get('explorer_offense', None)
         agency_sums = model.get(state = state_abbr, agency = agency_ori, year = year, explorer_offense = explorer_offense)
         filename = 'agency_sums_state'
-        return self.render_response(agency_sums, args, csv_filename=filename), 200, {'Surrogate-Control':3600}
+        return self.render_response(agency_sums, args, csv_filename=filename)
 
 
 class AgenciesSumsCounty(CdeResource):
@@ -70,6 +70,7 @@ class AgenciesSumsCounty(CdeResource):
     fast_count = True
 
     @use_args(marshmallow_schemas.OffenseCountViewArgsYear)
+    @cache_for(DEFAULT_MAX_AGE, DEFAULT_SURROGATE_AGE)
     @tuning_page
     def get(self, args, state_abbr = None, county_fips_code = None, agency_ori = None):
         '''''
@@ -81,7 +82,7 @@ class AgenciesSumsCounty(CdeResource):
         explorer_offense = args.get('explorer_offense', None)
         agency_sums = model.get(agency = agency_ori, year =  year, county = county_fips_code, state=state_abbr, explorer_offense=explorer_offense)
         filename = 'agency_sums_county'
-        return self.render_response(agency_sums, args, csv_filename=filename), 200, {'Surrogate-Control':3600}
+        return self.render_response(agency_sums, args, csv_filename=filename)
 
 
 class AgenciesOffensesCount(CdeResource):
@@ -92,6 +93,7 @@ class AgenciesOffensesCount(CdeResource):
     fast_count = True
 
     @use_args(marshmallow_schemas.OffenseCountViewArgs)
+    @cache_for(DEFAULT_MAX_AGE, DEFAULT_SURROGATE_AGE)
     @tuning_page
     def get(self, args, state_abbr = None, agency_ori = None):
         self.verify_api_key(args)
@@ -105,7 +107,7 @@ class AgenciesOffensesCount(CdeResource):
         else:
             agency_sums = newmodels.AgencyOffenseCounts().get(state = state_abbr, agency = agency_ori, year = year, explorer_offense = explorer_offense)
         filename = 'agency_offenses_state'
-        return self.render_response(agency_sums, args, csv_filename=filename), 200, {'Surrogate-Control':3600}
+        return self.render_response(agency_sums, args, csv_filename=filename)
 
 
 class AgenciesOffensesCountyCount(CdeResource):
@@ -116,6 +118,7 @@ class AgenciesOffensesCountyCount(CdeResource):
     fast_count = True
 
     @use_args(marshmallow_schemas.OffenseCountViewArgsYear)
+    @cache_for(DEFAULT_MAX_AGE, DEFAULT_SURROGATE_AGE)
     @tuning_page
     def get(self, args, state_abbr = None, county_fips_code = None, agency_ori = None):
         '''''
@@ -127,4 +130,4 @@ class AgenciesOffensesCountyCount(CdeResource):
         explorer_offense = args.get('explorer_offense', None)
         agency_sums = model.get(agency = agency_ori, year =  year, county = county_fips_code, state=state_abbr, explorer_offense=explorer_offense)
         filename = 'agency_sums_county'
-        return self.render_response(agency_sums, args, csv_filename=filename), 200, {'Surrogate-Control':3600}
+        return self.render_response(agency_sums, args, csv_filename=filename)

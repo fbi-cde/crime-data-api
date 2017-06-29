@@ -1,9 +1,8 @@
 from flask import url_for, jsonify
 from webargs.flaskparser import use_args
-from flask.ext.cachecontrol import cache_for
 
 from crime_data.common import marshmallow_schemas, models
-from crime_data.common.base import CdeResource
+from crime_data.common.base import CdeResource, cache_for
 from crime_data.common.marshmallow_schemas import (ArgumentsSchema,
                                                    CodeIndexResponseSchema)
 
@@ -107,7 +106,7 @@ CODE_SCHEMAS = {
 
 
 class CodeReferenceIndex(CdeResource):
-    @cache_for(hours=1)
+    @cache_for(3600)
     def get(self):
         endpoints = {key: url_for('codereferencelist', code_table=key)
                      for key in CODE_SCHEMAS}
@@ -116,7 +115,7 @@ class CodeReferenceIndex(CdeResource):
 
 class CodeReferenceList(CdeResource):
     @use_args(ArgumentsSchema)
-    @cache_for(hours=1)
+    @cache_for(3600)
     def get(self, args, code_table, output=None):
         self.schema = CODE_SCHEMAS[code_table](many=True)
         output = args['output'] if output is None else output

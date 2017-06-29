@@ -9,7 +9,7 @@ from functools import wraps
 from collections import OrderedDict
 
 import sqltap
-from flask import make_response, request
+from flask import make_response, request, jsonify
 from flask_restful import Resource, abort, current_app
 # import celery
 from flask_sqlalchemy import SignallingSession, SQLAlchemy
@@ -54,6 +54,22 @@ def tuning_page_kwargs(f):
 
     return decorated_get
 
+
+def cache_for(max_age, surrogate_age=None):
+    """This decorator adds a SurrogateControl cache header"""
+
+    def decorate(f):
+        @wraps(f)
+        def decorated_get(*args, **kwargs):
+            resp = f(*args, **kwargs)
+            h = resp.headers
+            h['Cache-Control'] = 'max-age={}, public'.format(max_age)
+            if surrogate_age is not None:
+                h['Surrogate-Control'] = 'max-age={}'.format(surrogate_age)
+            return resp
+
+        return decorated_get
+    return decorate
 
 class RoutingSession(SignallingSession):
     """Route requests to database leader or follower as appropriate.
@@ -170,7 +186,7 @@ class CdeResource(Resource):
             qry = self.set_ordering(qry, args)
         return self.render_response(qry, args, csv_filename=csv_filename)
 
-    def render_response(self, qry, args, csv_filename='incidents'):
+    def render_response(self, qry, args, csv_filename='cde_data'):
         if args['output'] == 'csv':
             aggregate_many = False
 
@@ -186,9 +202,11 @@ class CdeResource(Resource):
             output.headers[
                 'Content-Disposition'] = 'attachment; filename={}.csv'.format(csv_filename)
             output.headers['Content-type'] = 'text/csv'
+
             return output
         else:
-            return self.with_metadata(qry, args)
+            # print(self.with_metadata(qry, args))
+            return make_response(jsonify(self.with_metadata(qry, args)), 200, {'Content-type': 'application/json'})
 
     def _serialize_dict(self,
                         data,
