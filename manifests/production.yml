@@ -1,8 +1,8 @@
 applications:
-- name: crime-data-api-demo
+- name: crime-data-api
   memory: 512M
   buildpack: python_buildpack
-  host: crime-data-api-demo
+  host: crime-data-api
   domain: fr.cloud.gov
 env:
   FLASK_APP: autoapp.py
