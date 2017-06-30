@@ -1,0 +1,127 @@
+year,name,state_abbr,locality,population,violent_crime,homicde,rape_legacy,rape_revised,robbery,aggravated_assault,property_crime,burglary,larceny,motor_vehicle_theft,arson,caveats
+1995,Puerto Rico,PR,,,"22450",864,324,,"15753","5509","83638","27689","39960","15989",,
+1996,Puerto Rico,PR,,,"20147",868,316,,"13900","5063","79641","27866","35652","16123",,
+1997,Puerto Rico,PR,,,"19595",723,278,,"13642","4952","75280","26942","32715","15623",,
+1998,Puerto Rico,PR,,,"16439",652,243,,"11448","4096","70581","24512","30493","15576",,
+1999,Puerto Rico,PR,,"3889507","14180",567,223,,"9827","3563","67674","23033","30206","14435",,
+2000,Puerto Rico,PR,,"3808610","12404",693,228,,"8757","2726","62973","21057","28940","12976",,
+2001,Puerto Rico,PR,,"3839810","11403",744,187,,"7999","2473","58714","19931","26140","12643",,
+2002,Puerto Rico,PR,,"3859523","13471",774,241,,"8978","3478","77312","24737","39640","12935",,
+2003,Puerto Rico,PR,,"3878532","11885",779,204,,"7737","3165","69895","20857","36827","12211",,
+2004,Puerto Rico,PR,,"3894855","10045",793,199,,"6030","3023","60073","18264","31681","10128",,
+2005,Puerto Rico,PR,,"3911810","9579",766,169,,"5550","3094","55466","17191","28976","9299",,
+2006,Puerto Rico,PR,,"3927776","8929",739,118,,"5245","2827","53197","16668","27936","8593",,
+2007,Puerto Rico,PR,,"3941459","8942",728,97,,"5134","2983","53937","17160","28955","7822",,
+2008,Puerto Rico,PR,,"3954553","9484",807,95,,"5467","3115","59254","19138","33113","7003",,
+2009,Puerto Rico,PR,,"3967288","10492",894,65,,"6093","3440","55937","18521","30584","6832",,
+2010,Puerto Rico,PR,,"3721978","10246",977,39,,"6516","2714","51036","17494","26773","6769",,Not Available
+2011,Puerto Rico,PR,,"3706690","10540","1136",45,,"6465","2894","51717","16591","29273","5853",,
+2012,Puerto Rico,PR,,"3651545","10041",978,32,,"6298","2733","51679","15287","30545","5847",,
+2013,Puerto Rico,PR,,"3595839","9320",883,26,,"6016","2395","48851","13961","29360","5530",,
+2014,Puerto Rico,PR,,"3534888","8368",681,41,,"5171","2475","45622","12035","28948","4639",,
+2015,Puerto Rico,PR,,"3474182","7836",584,165,,"4122","2965","38721","9427","25165","4129",,
+1995,American Samoa,AS,,,126,1,4,,4,117,382,253,124,5,12,
+1996,American Samoa,AS,,,170,4,17,,7,142,401,259,136,6,13,
+1997,American Samoa,AS,,,196,3,6,,5,182,428,254,163,11,0,
+1998,American Samoa,AS,,,205,1,9,,12,183,390,234,144,12,4,
+1999,American Samoa,AS,,,,,,,,,,,,,,Not Available
+2000,American Samoa,AS,,,162,4,13,,2,143,348,244,99,5,4,
+2001,American Samoa,AS,,,183,1,27,,3,152,323,215,98,10,4,
+2002,American Samoa,AS,,,154,6,22,,2,124,338,235,98,5,2,
+2003,American Samoa,AS,,,125,3,19,,1,102,317,196,110,11,0,
+2004,American Samoa,AS,,,105,4,11,,3,87,274,192,76,6,2,
+2005,American Samoa,AS,,,123,5,16,,2,100,228,159,65,4,2,
+2006,American Samoa,AS,,,,,,,,,,,,,,Not Available
+2007,American Samoa,AS,,,,,,,,,,,,,,Not Available
+2008,American Samoa,AS,,,,,,,,,,,,,,Not Available
+2009,American Samoa,AS,,,,,,,,,,,,,,Not Available
+2010,American Samoa,AS,,,,,,,,,,,,,,Not Available
+2011,American Samoa,AS,,,,,,,,,,,,,,Not Available
+2012,American Samoa,AS,,,,,,,,,,,,,,Not Available
+2013,American Samoa,AS,,,,,,,,,,,,,,Not Available
+2014,American Samoa,AS,,,,,,,,,,,,,,Not Available
+2015,American Samoa,AS,,,,,,,,,,,,,,Not Available
+1995,Guam,GU,,,488,7,112,,127,242,"7893","2149","5077",667,30,
+1996,Guam,GU,,,521,15,168,,107,231,"7473","2202","4526",745,13,
+1997,Guam,GU,,,481,11,86,,144,240,"9555","2467","6010","1078",10,
+1998,Guam,GU,,,447,9,87,,146,205,"6490","1325","4554",611,9,
+1999,Guam,GU,,,,,,,,,,,,,,Not Available
+2000,Guam,GU,,,,,,,,,,,,,,Not Available
+2001,Guam,GU,,,,,,,,,,,,,,Not Available
+2002,Guam,GU,,,,,,,,,,,,,,Not Available
+2003,Guam,GU,,,,,,,,,,,,,,Not Available
+2004,Guam,GU,,,,,,,,,,,,,,Not Available
+2005,Guam,GU,,,,,,,,,,,,,,Not Available
+2006,Guam,GU,,,,,,,,,,,,,,Not Available
+2007,Guam,GU,,,,,,,,,,,,,,Not Available
+2008,Guam,GU,,,,,,,,,,,,,,Not Available
+2009,Guam,GU,,,,,,,,,,,,,,Not Available
+2010,Guam,GU,,,,,,,,,,,,,,Not Available
+2011,Guam,GU,,,,,,,,,,,,,,Not Available
+2012,Guam,GU,,,,,,,,,,,,,,Not Available
+2013,Guam,GU,,,660,9,106,,145,400,"4519","1620","2521",378,9,
+2014,Guam,GU,,,545,6,117,,128,294,"3805","1577","1970",258,,
+2015,Guam,GU,,,,,,,,,,,,,,Not Available
+1995,Virgin Islands,VI,,,"2035",21,60,,482,"1472","6397","2893","2903",601,62,
+1996,Virgin Islands,VI,,,,,,,,,,,,,,Not Available
+1997,Virgin Islands,VI,,,,,,,,,,,,,,Not Available
+1998,Virgin Islands,VI,,,,,,,,,,,,,,Not Available
+1999,Virgin Islands,VI,,,,,,,,,,,,,,Not Available
+2000,Virgin Islands,VI,,,,,,,,,,,,,,Not Available
+2001,Virgin Islands,VI,,,,,,,,,,,,,,Not Available
+2002,Virgin Islands,VI,,,,,,,,,,,,,,Not Available
+2003,Virgin Islands,VI,,,,,,,,,,,,,,Not Available
+2004,Virgin Islands,VI,,,,,,,,,,,,,,Not Available
+2005,Virgin Islands,VI,,,,,,,,,,,,,,Not Available
+2006,Virgin Islands,VI,,,,,,,,,,,,,,Not Available
+2007,Virgin Islands,VI,,,,,,,,,,,,,,Not Available
+2008,Virgin Islands,VI,,,,,,,,,,,,,,Not Available
+2009,Virgin Islands,VI,,,,,,,,,,,,,,Not Available
+2010,Virgin Islands,VI,,,,,,,,,,,,,,Started Submitting by agency
+2011,Virgin Islands,VI,,,,,,,,,,,,,,Started Submitting by agency
+2012,Virgin Islands,VI,,,,,,,,,,,,,,Started Submitting by agency
+2013,Virgin Islands,VI,,,,,,,,,,,,,,Started Submitting by agency
+2014,Virgin Islands,VI,,,,,,,,,,,,,,Started Submitting by agency
+2015,Virgin Islands,VI,,,,,,,,,,,,,,Started Submitting by agency
+1995,Virgin Islands,VI,St. Croix,,,,,,,,,,,,,Not Available
+1996,Virgin Islands,VI,St. Croix,,,,,,,,,,,,,Not Available
+1997,Virgin Islands,VI,St. Croix,,,,,,,,,,,,,Not Available
+1998,Virgin Islands,VI,St. Croix,,,,,,,,,,,,,Not Available
+1999,Virgin Islands,VI,St. Croix,,,,,,,,,,,,,Not Available
+2000,Virgin Islands,VI,St. Croix,,,,,,,,,,,,,Not Available
+2001,Virgin Islands,VI,St. Croix,,,,,,,,,,,,,Not Available
+2002,Virgin Islands,VI,St. Croix,,,,,,,,,,,,,Not Available
+2003,Virgin Islands,VI,St. Croix,,,,,,,,,,,,,Not Available
+2004,Virgin Islands,VI,St. Croix,,,,,,,,,,,,,Not Available
+2005,Virgin Islands,VI,St. Croix,,,,,,,,,,,,,Not Available
+2006,Virgin Islands,VI,St. Croix,,,,,,,,,,,,,Not Available
+2007,Virgin Islands,VI,St. Croix,,,,,,,,,,,,,Not Available
+2008,Virgin Islands,VI,St. Croix,,,,,,,,,,,,,Not Available
+2009,Virgin Islands,VI,St. Croix,,,,,,,,,,,,,Not Available
+2010,Virgin Islands,VI,St. Croix,,573,29,21,,118,405,"1385",585,659,141,31,
+2011,Virgin Islands,VI,St. Croix,,593,27,20,,114,432,"1280",545,633,102,32,
+2012,Virgin Islands,VI,St. Croix,,457,24,21,,101,311,"1387",634,629,124,78,
+2013,Virgin Islands,VI,St. Croix,,350,18,17,,103,212,"1248",571,563,114,58,
+2014,Virgin Islands,VI,St. Croix,,250,19,18,,64,149,"1072",462,510,100,50,
+2015,Virgin Islands,VI,St. Croix,,291,23,,19,77,172,932,440,403,89,49,
+1995,Virgin Islands,VI,St. Thomas,,,,,,,,,,,,,Not Available
+1996,Virgin Islands,VI,St. Thomas,,,,,,,,,,,,,Not Available
+1997,Virgin Islands,VI,St. Thomas,,,,,,,,,,,,,Not Available
+1998,Virgin Islands,VI,St. Thomas,,,,,,,,,,,,,Not Available
+1999,Virgin Islands,VI,St. Thomas,,,,,,,,,,,,,Not Available
+2000,Virgin Islands,VI,St. Thomas,,,,,,,,,,,,,Not Available
+2001,Virgin Islands,VI,St. Thomas,,,,,,,,,,,,,Not Available
+2002,Virgin Islands,VI,St. Thomas,,,,,,,,,,,,,Not Available
+2003,Virgin Islands,VI,St. Thomas,,,,,,,,,,,,,Not Available
+2004,Virgin Islands,VI,St. Thomas,,,,,,,,,,,,,Not Available
+2005,Virgin Islands,VI,St. Thomas,,,,,,,,,,,,,Not Available
+2006,Virgin Islands,VI,St. Thomas,,,,,,,,,,,,,Not Available
+2007,Virgin Islands,VI,St. Thomas,,,,,,,,,,,,,Not Available
+2008,Virgin Islands,VI,St. Thomas,,,,,,,,,,,,,Not Available
+2009,Virgin Islands,VI,St. Thomas,,,,,,,,,,,,,Not Available
+2010,Virgin Islands,VI,St. Thomas,,"1176",31,45,,252,848,"1609",788,699,122,36,
+2011,Virgin Islands,VI,St. Thomas,,735,14,35,,167,519,"1674",823,739,112,18,
+2012,Virgin Islands,VI,St. Thomas,,563,28,26,,142,367,"1468",678,676,114,27,
+2013,Virgin Islands,VI,St. Thomas,,754,15,35,,128,576,"1403",564,727,112,44,
+2014,Virgin Islands,VI,St. Thomas,,693,18,,36,144,495,"1224",400,712,112,67,
+2015,Virgin Islands,VI,St. Thomas,,608,23,,32,77,476,"1189",456,639,94,72,
