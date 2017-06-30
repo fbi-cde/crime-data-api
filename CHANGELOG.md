@@ -1,6 +1,25 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-06-30]
+### Added
+- Territory data ([#575](https://github.com/18F/crime-data-api/pull/575))
+
+### Changed
+- Partitioned NIBRS count views into ORI and State/national counts ([#573](https://github.com/18F/crime-data-api/pull/573))
+- Documentation updated ([#579](https://github.com/18F/crime-data-api/pull/579))
+- Augment `cde_agencies` with edited names, ICPSR geocoding ([#584](https://github.com/18F/crime-data-api/issues/584),  [#588](https://github.com/18F/crime-data-api/pull/588))
+- Deployment URLs ([#595](https://github.com/18F/crime-data-api/pull/595))
+- Use the cf connect-to-service plugin for DB tunnels ([#602](https://github.com/18F/crime-data-api/pull/602))
+
+### Fixed
+- `victim_count_ori` query ([#589](https://github.com/18F/crime-data-api/pull/589))
+
+### Removed
+- `/counts` endpoint and `reta_month_offense_subcat_summary` table ([#583](https://github.com/18F/crime-data-api/pull/583))
+- Remove some remaining authentication remnants ([#593](https://github.com/18F/crime-data-api/pull/593))
+
+
 ## [2017-06-22]
 ### Added
 - Add participating population for NIBRS to `participation_rate` ([#558](https://github.com/18F/crime-data-api/pull/558))
