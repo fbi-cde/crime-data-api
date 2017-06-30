@@ -190,19 +190,18 @@ a long time to build. Note that the script will output a fair amount
 of debugging text under normal operation.
 
 To run the after_load tasks, first you need to set an environment
-variable with the location of the DB you want to target. I find it's
-sometimes easiest to set up a SSH tunnel to the remote database
-running in cloud.gov. Use the `cf env crime-data-api` (or whatever
-your app name is) to get the username, password, host and DB of the
-database in cloud (it'll likely be named `aws-rds` as a service) and
-fill in the values below with actual values.
+variable with a database URL with the location of the production
+database. I find the easiest way to do this is to setup a tunnel using
+the [cf-service-connect](https://github.com/18F/cf-service-connect)
+plugin, which you must install to do this. You can then run it with
+the name of an running app service and the name of its database to get
+a list of connection values.
 
 ``` sh
-alias crime_db_tunnel='cf ssh -N -L 65432:HOSTNAME:5432 $APP_NAME-api'
-export CRIME_DATA_API_DB_URL=postgres://USERNAME:PASSWORD@localhost:65432/DBNAME
+cf connect-to-service --no-client crime-data-api crime-data-upload-db
+export CRIME_DATA_API_DB_URL=postgres://USERNAME:PASSWORD@localhost:PORT/DBNAME
 ```
 
-You can see if it's working by running `crime_db_tunnel` in a shell
 and in another terminal running `psql $CRIME_DATA_API_DB_URL` to
 connect to the database through the tunnel. Make sure of course that
 you aren't doing any of these steps to a production database serving
