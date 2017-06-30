@@ -59,6 +59,11 @@ team:
   id: Nicole Fenton
   role: Content Designer
 
+
+- github: ryansibley
+  id: Ryan Sibley
+  role: Content Designer
+  
 - github: harrisj
   id: Jacob Harris
   role: Back-End Developer
@@ -99,7 +104,7 @@ stack:
 
 # Brief description of the project's outcomes
 impact: >
-  The crime data explorer is a website that will make crime data more
+  The Crime Data Explorer is a website that will make crime data more
   accessible and easier to understand for law enforcement and the
   general public. As part of the FBI\'s broader effort to modernize
   crime reporting, the CDE will promote greater awareness of local,
