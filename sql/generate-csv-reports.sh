@@ -66,7 +66,9 @@ EOF
 done
 
 #\copy (select data_year,state_postal_abbr, sum(leoka_assault) as assault, sum(leoka_felony) as felony, sum(leoka_accident) as accident from reta_month JOIN ref_agency on (reta_month.agency_id = ref_agency.agency_id) JOIN ref_state ON (ref_agency.state_id = ref_state.state_id) group by data_year, state_postal_abbr) To 'leoka_assaults_full.csv' With CSV DELIMITER ',' HEADER;
-\copy (select ref_state.state_postal_abbr, LM.DATA_YEAR, sum(LM.LEOKA_FELONY) as felony, sum(LM.LEOKA_ACCIDENT) as accident from LKASUM_MONTH LM JOIN ref_agency RA ON RA.agency_id = LM.agency_id join ref_state on (RA.state_id = ref_state.state_id) GROUP BY data_year, ref_state.state_postal_abbr ) To 'lka_sum_full.csv' with CSV DELIMITER ',' HEADER;
+
+cf connect-to-service crime-data-api crime-data-upload-db <<EOF
+#\copy (select ref_state.state_postal_abbr, LM.DATA_YEAR, sum(LM.LEOKA_FELONY) as felony, sum(LM.LEOKA_ACCIDENT) as accident from LKASUM_MONTH LM JOIN ref_agency RA ON RA.agency_id = LM.agency_id join ref_state on (RA.state_id = ref_state.state_id) GROUP BY data_year, ref_state.state_postal_abbr ) To 'lka_sum_full.csv' with CSV DELIMITER ',' HEADER;
 
 \copy (SELECT q.state_postal_abbr as state_postal_abbr, q.data_year as data_year,q.officer_count as officer_count, round( ( (q.officer_count / population) * 1000)::numeric, 2) as officer_rate_per_1000,q.civilian_count as civilian_count, round( ( (q.civilian_count / population) * 1000)::numeric, 2) as civilian_rate_per_1000, population from (SELECT * from (SELECT state_postal_abbr from ref_state where ref_agency.state_id = ref_state.state_id limit 1) as state_postal_abbr,
         (SELECT population from ref_state_population where ref_agency.state_id = ref_state_population.state_id and pe_employee_data.data_year = ref_state_population.data_year limit 1) as population,
@@ -85,6 +87,7 @@ done
 \copy (SELECT year, state_name, state_postal_abbr, population, agencies, round((CAST(months_reported AS numeric)/agencies), 2) avg_months_reported, sex_acts, sex_acts_cleared, sex_acts_juvenile_cleared, servitude, servitude_cleared, servitude_juvenile_cleared from ht_summary
        JOIN ref_state ON ref_state.state_postal_abbr=ht_summary.state_abbr
        WHERE year IS NOT NULL AND ori IS NULL ORDER by year, state_name) To 'human_trafficking.csv' with CSV DELIMITER ',' HEADER;
+EOF
 
 export S3_CREDENTIALS="`cf service-key fbi-cde-s3  colin-key | tail -n +2`"
 export AWS_ACCESS_KEY_ID=`echo "${S3_CREDENTIALS}" | jq -r .access_key_id`
@@ -92,7 +95,7 @@ export AWS_SECRET_ACCESS_KEY=`echo "${S3_CREDENTIALS}" | jq -r .secret_access_ke
 export BUCKET_NAME=`echo "${S3_CREDENTIALS}" | jq -r .bucket`
 export AWS_DEFAULT_REGION=`echo "${S3_CREDENTIALS}" | jq -r '.region'`
 aws s3 cp cargo_theft.csv s3://${BUCKET_NAME}/cargo_theft.csv
-aws s3 cp lka_sum_full.csv s3://${BUCKET_NAME}/leoka.csv
+aws s3 cp lka_sum_full.csv s3://${BUCKET_NAME}/Assaults_on_Law_Enforcement_Officers.csv
 aws s3 cp pe_employee_data.csv s3://${BUCKET_NAME}/pe_employee_data.csv
 aws s3 cp agencies.csv s3://${BUCKET_NAME}/agencies.csv
 aws s3 cp territories.csv s3://${BUCKET_NAME}/territories.csv

@@ -227,6 +227,24 @@ Also, please note that the after_load.sh runs a bunch of queries that
 might be quite slow. It might be better to run the commands inside
 individually if you have a lower-powered DB instance.
 
+Regenerating Data Downloads
+---------------------------
+
+In addition to the standard interface, the Crime Data Explorer has a
+page
+for
+[pregenerated data downloads](https://crime-data-explorer.fr.cloud.gov/downloads-and-docs) for
+datasets that supplement the data in the explorer. These are generated using SQL commands against the database and are uploaded to the S3 bucket that is attached to the application as an application. To regenerate these files, you can run.
+
+``` sh
+cd sql
+./generate-csv-reports.sh
+```
+
+This will run the queries to save CSV files locally and then upload
+them to S3. Maybe comment out the lines for the S3 CP if you want to
+just test out the CSV generation.
+
 Security Scans
 --------------
 
