@@ -3,12 +3,8 @@ wheel==0.29.0
 
 # Flask
 Flask==0.12
-MarkupSafe==0.23
 Werkzeug==0.12.2
-Jinja2==2.9.4
-itsdangerous==0.24
 click>=5.0
-flask-httpauth
 Flask-Script>=0.6
 Flask-CacheControl==0.1.2
 Flask-cors==3.0.2
@@ -18,24 +14,12 @@ Flask-SQLAlchemy==2.1
 psycopg2==2.6.1
 SQLAlchemy==1.1.5
 
-# Migrations
-Flask-Migrate==2.0.0
-
 # Deployment
 gunicorn>=19.1.1
 gevent==1.2.1
 
-# Assets
-Flask-Assets==0.12
-cssmin>=0.2.0
-jsmin>=2.0.11
-
 # Caching
 Flask-Caching>=1.0.0
-
-# Debug toolbar
-Flask-DebugToolbar==0.10.0
-IPython>=5.0.0
 
 # RESTful
 Flask-RESTful==0.3.5

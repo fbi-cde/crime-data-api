@@ -5,7 +5,7 @@ class TestOffenderCountView:
     """Test the OffenderCountView"""
 
     def test_offender_count_for_a_state(self, app):
-        ocv = OffenderCountView('race_code', year=2014, state_id=3)
+        ocv = OffenderCountView('race_code', year=2014, state_id=3, as_json=False)
         results = ocv.query({}).fetchall()
 
         expected = {'B': 14, 'U': 5, 'W': 4}
@@ -15,7 +15,7 @@ class TestOffenderCountView:
         #     assert row.count == expected[row.race_code]
 
     def test_offender_count_for_a_state_abbr(self, app):
-        ocv = OffenderCountView('race_code', year=2014, state_abbr='AR')
+        ocv = OffenderCountView('race_code', year=2014, state_abbr='AR', as_json=False)
         results = ocv.query({}).fetchall()
 
         expected = {'B': 14, 'U': 5, 'W': 4}
@@ -30,7 +30,7 @@ class TestOffenderCountView:
 
     @pytest.mark.parametrize('variable', OffenderCountView.VARIABLES)
     def test_offender_count_variables(self, app, variable):
-        ocv = OffenderCountView(variable, year=2014, state_id=3)
+        ocv = OffenderCountView(variable, year=2014, state_id=3, as_json=False)
         results = ocv.query({}).fetchall()
         assert len(results) > 0
 
@@ -42,7 +42,7 @@ class TestOffenderCountView:
 
     @pytest.mark.parametrize('variable', OffenderCountView.VARIABLES)
     def test_offender_count_variables(self, app, variable):
-        ocv = OffenderCountView(variable, year=2014)
+        ocv = OffenderCountView(variable, year=2014, as_json=False)
         results = ocv.query({}).fetchall()
         assert len(results) > 0
 

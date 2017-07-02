@@ -372,105 +372,6 @@ class AgencyClassificationCounts(db.Model):
         return query
 
 
-class RetaMonthOffenseSubcatSummary(db.Model, CreatableModel, FilterableModel):
-    """
-    Precalculated sums for RETA data.
-
-    Create and populate with `sql/create_reta_summary.sql`
-    """
-
-    __tablename__ = 'reta_month_offense_subcat_summary'
-
-    xgrouping_sets = {'grouping_bitmap': [],
-                     'year': [],
-                     'month': [],
-                     'offense_subcat': ['offense_subcat_code', 'offense', 'offense_code', 'offense_category', 'classification'],
-                     'offense_subcat_code': ['offense_subcat', 'offense', 'offense_code', 'offense_category', 'classification'],
-                     'offense': ['offense_subcat', 'offense_subcat_code', 'offense_code', 'offense_category', 'classification'],
-                     'offense_code': ['offense_subcat', 'offense_subcat_code', 'offense', 'offense_category', 'classification'],
-                     'offense_category': ['offense_subcat', 'offense_subcat_code', 'offense', 'offense_code', 'classification'],
-                     'classification': ['offense_subcat', 'offense_subcat_code', 'offense', 'offense_code', 'offense_category'],
-                     'state_name': ['state'],
-                     'state': ['state_name'], }
-
-
-    grouping_sets = {'grouping_bitmap': [],
-                     'year': [],
-                     'month': [],
-                     'offense_subcat': ['offense_subcat_code', 'offense', 'offense_code', 'offense_category', 'classification'],
-                     'offense_subcat_code': ['offense_subcat', 'offense', 'offense_code', 'offense_category', 'classification'],
-                     'offense': ['offense_code', 'offense_category', 'classification'],
-                     'offense_code': ['offense', 'offense_category', 'classification'],
-                     'offense_category': ['classification'],
-                     'classification': [],
-                     'state_name': ['state'],
-                     'state': ['state_name'], }
-
-
-    # filterables *must* be in the same order as the GROUPING clause used
-    # to create the `grouping_bitmap` field
-    filterables = ['year',
-                   'month',
-                   'state_name',
-                   'state',
-                   'classification',
-                   'offense_category',
-                   'offense',
-                   'offense_code',
-                   'offense_subcat',
-                   'offense_subcat_code',
-                   ]
-
-    reta_month_offense_subcat_summary_id = db.Column(db.BigInteger, autoincrement=True, primary_key=True)
-    grouping_bitmap = db.Column(db.Integer)
-    reported = db.Column(db.BigInteger)
-    unfounded = db.Column(db.BigInteger)
-    actual = db.Column(db.BigInteger)
-    cleared = db.Column(db.BigInteger)
-    juvenile_cleared = db.Column(db.BigInteger)
-    year = db.Column(db.SmallInteger)
-    month = db.Column(db.SmallInteger)
-    offense_subcat = db.Column(db.Text)
-    offense_subcat_code = db.Column(db.Text)
-    offense = db.Column(db.Text)
-    offense_code = db.Column(db.Text)
-    offense_category = db.Column(db.Text)
-    classification = db.Column(db.Text)
-    state_name = db.Column(db.Text)
-    state = db.Column(db.Text)
-
-    @classmethod
-    def determine_grouping(cls, filters, group_by_column_names, schema):
-        """
-
-        Return: (filters, )
-        Side effect: sets visibility of fields in schema
-        """
-
-        # columns in grouping sets must be grouped together
-        filtered_names = [f[0] for f in filters]
-        group_columns = group_by_column_names + filtered_names
-        for col in group_columns[:]:
-            if col not in cls.grouping_sets:
-                abort(400, message='field {} not found'.format(col))
-            for sibling in cls.grouping_sets[col]:
-                if sibling not in group_columns:
-                    group_columns.append(sibling)
-
-        field_names = reversed(cls.filterables)
-        for (idx, field_name) in enumerate(field_names):
-            show_field = field_name in group_columns
-            marshmallow_field = schema.fields[field_name]
-            marshmallow_field.load_only = not show_field
-            bit_val = 2**idx
-            if show_field:
-                filters.append(cls.grouping_bitmap.op('&')(bit_val) == 0)
-            else:
-                filters.append(cls.grouping_bitmap.op('&')(bit_val) == bit_val)
-
-        return filters
-
-
 class CdeAgency(db.Model, FilterableModel):
     """A class for the denormalized cde_agencies table"""
     __tablename__ = 'cde_agencies'
@@ -479,23 +380,24 @@ class CdeAgency(db.Model, FilterableModel):
     agency_id = db.Column(db.BigInteger, primary_key=True)
     ori = db.Column(db.String(9))
     legacy_ori = db.Column(db.String(9))
-    agency_name = db.Column(db.String(100))
+    agency_name = db.Column(db.Text)
+    short_name = db.Column(db.Text)
     agency_type_id = db.Column(db.String(1))
     agency_type_name = db.Column(db.String(100))
     # FIXME: can add associations when we need them
     tribe_id = db.Column(db.BigInteger)
     campus_id = db.Column(db.BigInteger)
     city_id = db.Column(db.BigInteger)
-    city_name = db.Column(db.String(100))
+    city_name = db.Column(db.Text)
     state_id = db.Column(db.SmallInteger)
     state_abbr = db.Column(db.String(2))
     primary_county_id = db.Column(db.BigInteger)
-    primary_county = db.Column(db.String(100))
+    primary_county = db.Column(db.Text)
     primary_county_fips = db.Column(db.String(5))
     agency_status = db.Column(db.String(1))
     submitting_agency_id = db.Column(db.BigInteger)
     submitting_sai = db.Column(db.String(9))
-    submitting_name = db.Column(db.String(150))
+    submitting_name = db.Column(db.Text)
     submitting_state_abbr = db.Column(db.String(2))
     start_year = db.Column(db.SmallInteger)
     dormant_year = db.Column(db.SmallInteger)
@@ -503,7 +405,7 @@ class CdeAgency(db.Model, FilterableModel):
     current_year = db.Column(db.SmallInteger)
     population = db.Column(db.BigInteger)
     population_group_code = db.Column(db.String(2))
-    population_group_desc = db.Column(db.String(150))
+    population_group_desc = db.Column(db.Text)
     population_source_flag = db.Column(db.String(1))
     suburban_area_flag = db.Column(db.String(1))
     core_city_flag = db.Column(db.String(1))
@@ -512,10 +414,13 @@ class CdeAgency(db.Model, FilterableModel):
     past_10_years_reported = db.Column(db.SmallInteger)
     covered_by_id = db.Column(db.BigInteger)
     covered_by_ori = db.Column(db.String(9))
-    covered_by_name = db.Column(db.String(100))
+    covered_by_name = db.Column(db.Text)
     staffing_year = db.Column(db.SmallInteger)
     total_officers = db.Column(db.Integer)
     total_civilians = db.Column(db.Integer)
+    icpsr_zip = db.Column(db.String(5))
+    icpsr_lat = db.Column(db.Float)
+    icpsr_lng = db.Column(db.Float)
 
 
 class HtAgency(db.Model, FilterableModel):

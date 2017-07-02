@@ -8,7 +8,7 @@ class TestCargoTheftCountView:
     """Test the CargoTheftCountView"""
 
     def test_cargo_theft_count_for_a_state(self, app):
-        ctv = CargoTheftCountView('prop_desc_name', year=2014, state_id=3)
+        ctv = CargoTheftCountView('prop_desc_name', year=2014, state_id=3, as_json=False)
 
         CtRecord = namedtuple('ct_record', ['count', 'stolen_value', 'recovered_value'])
         expected = {
@@ -29,7 +29,7 @@ class TestCargoTheftCountView:
         #     assert row.recovered_value == expected[row.prop_desc_name].recovered_value
 
     def test_cargo_theft_count_for_nation(self, app):
-        ctv = CargoTheftCountView('victim_type_name', year=2014)
+        ctv = CargoTheftCountView('victim_type_name', year=2014, as_json=False)
         CtRecord = namedtuple('ct_record', ['count', 'stolen_value', 'recovered_value'])
         expected = {
             'Business': CtRecord(63, '7328091', '792831'),
@@ -49,7 +49,7 @@ class TestCargoTheftCountView:
 
     @pytest.mark.parametrize('variable', CargoTheftCountView.VARIABLES)
     def test_victim_count_variables(self, app, variable):
-        ctcv = CargoTheftCountView(variable, year=2014, state_id=3)
+        ctcv = CargoTheftCountView(variable, year=2014, state_id=3, as_json=False)
         results = ctcv.query({}).fetchall()
         assert len(results) > 0
 

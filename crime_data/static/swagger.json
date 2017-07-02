@@ -490,6 +490,10 @@
         },
         "agency_name": {
           "description": "The name of the agency",
+          "type": "string"
+        },
+        "short_name": {
+          "description": "A shorter name for the agency",
           "type": "string",
           "maxLength": 100
         },
@@ -597,7 +601,7 @@
           "minimum": 1960
         },
         "revised_rape_start": {
-          "description": "The year the agency started reporting rapes using the new definition that was revised in 2013. Agencies can report using the legacy definition and this will be nil for agencies that have not changed to the new definition yet.",
+          "description": "The year the agency started reporting rapes using the new definition that was revised in 2013. Agencies can switch over at any time to the new definition during the indicated year and rapes reported that year will be a mix of the old and new definition. NULL indicates the agency has not switched over yet.",
           "type": [
             "integer",
             "null"
@@ -724,6 +728,27 @@
             "null"
           ],
           "minimum": 0
+        },
+        "icpsr_zip": {
+          "description": "A zip code for the agency from the ICPSR 2012 crosswalk",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "icpsr_lat": {
+          "description": "A geocoded decimal latitude for the agency from the ICPSR 2012 crosswalk. Locations will be approximate and may be the centroid for the locality.",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "icpsr_lng": {
+          "description": "A geocoded decimal longitude for the ageny from the ICPSR 2012 crosswalk. Locations will be approximate and may be the centroid for the locality.",
+          "type": [
+            "number",
+            "null"
+          ]
         }
       }
     },
@@ -1928,77 +1953,6 @@
           },
           "500": {
             "description": "The standard error response",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      }
-    },
-    "/counts": {
-      "get": {
-        "tags": [
-          "trends",
-          "state",
-          "national"
-        ],
-        "description": "Returns counts by year for incidents. Incidents can also be grouped for counting with the `by` parameter, which accepts 1 or more of the following fields in a comma-delimited list: `year`, `month`, `offense_subcat`, `offense_subcat_code`, `offense`, `offense_code`, `offense_category`, `classification`, `state`, `state_name`",
-        "parameters": [
-          {
-            "$ref": "#/parameters/fieldsParam"
-          },
-          {
-            "$ref": "#/parameters/pageParam"
-          },
-          {
-            "$ref": "#/parameters/perPageParam"
-          },
-          {
-            "$ref": "#/parameters/outputParam"
-          },
-          {
-            "$ref": "#/parameters/incidentCountGroupByParam"
-          },
-          {
-            "$ref": "#/parameters/yearParam"
-          },
-          {
-            "$ref": "#/parameters/monthParam"
-          },
-          {
-            "$ref": "#/parameters/stateParam"
-          },
-          {
-            "$ref": "#/parameters/offenseCategoryParam"
-          },
-          {
-            "$ref": "#/parameters/explorerOffenseParam"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "schema": {
-              "type": "object",
-              "required": [
-                "pagination",
-                "results"
-              ],
-              "properties": {
-                "pagination": {
-                  "$ref": "#/definitions/Pagination"
-                },
-                "results": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/SummaryCount"
-                  }
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "",
             "schema": {
               "$ref": "#/definitions/Error"
             }

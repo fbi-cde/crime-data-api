@@ -1,6 +1,24 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-06-22]
+### Added
+- Add participating population for NIBRS to `participation_rate` ([#558](https://github.com/18F/crime-data-api/pull/558))
+- Add `/arson` endpoints ([#559](https://github.com/18F/crime-data-api/pull/559))
+- Scripts to generate NIBRS downloads ([#563](https://github.com/18F/crime-data-api/pull/563))
+- Add `past_10_years_reported` to `cde_agencies` ([#572](https://github.com/18F/crime-data-api/pull/572))
+- Add territory data ([#575](https://github.com/18F/crime-data-api/pull/575))
+
+### Changed
+- Return `null` if the primary county for an agency is unspecified ([#534](https://github.com/18F/crime-data-api/pull/534))
+- Aggravated assault should not include simple assault ([#570](https://github.com/18F/crime-data-api/pull/570))
+- Reduce size of test database slice ([#571](https://github.com/18F/crime-data-api/pull/571))
+- Upgrade Werkzeug to 0.12.22 ([#574](https://github.com/18F/crime-data-api/pull/574))
+
+### Removed
+- Support for open ended queries of the database using `TableFamily` ([#555](https://github.com/18F/crime-data-api/issues/555))
+
+
 ## [2017-06-09]
 ### Fixed
 - Explicitly release connections on thrown exceptions and use correct imported database class in `models.py` ([#550](https://github.com/18F/crime-data-api/pull/550))

@@ -379,12 +379,16 @@ class CdeResource(Resource):
 
         if schema:
             paginated = schema.dump(paginated).data
+            serialized = self._serialize(paginated)
+        elif schema == False:
+            # It's a regular ole' query result.
+            serialized = paginated[0][0]
+        else:
+            serialized = self._serialize(paginated)
 
         # Close session connection - release to pool.
         session.close()
         session.remove()
-        
-        serialized = self._serialize(paginated)
 
         max_page = math.ceil(count / args['per_page'])
 
