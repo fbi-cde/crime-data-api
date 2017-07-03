@@ -108,6 +108,37 @@ from
 for functional testing of the API. As part of its testing, it also
 will output coverage statistics for the tests.
 
+Versioning the API
+------------------
+
+The current version of the API is `beta`. This means it might break at
+various points of time. Sorry.
+
+To allow for the development of new features of the API, we are
+switching to a versioned approach. Under this scheme, all API
+endpoints will include a version in their path like `/v1/agencies` and
+the app will likely support multiple endpoints at a single time when a
+new endpoint is created and an old one is deprecated (the exact policy
+for deprecating an old version of the API is still to be determined).
+
+In the codebase, we have to implement this through
+duplication. Currently, all API endpoints are defined as named
+directories within the `crime_data/resources` directory. Every version
+of the endpoint must define the `register_api_endpoints` method within
+its `__init__.py` file at its root to include and declare all of its
+endpoints.
+
+Swagger files can be similarly versioned within the
+`crime_data/resources` directory for that version of the API. Be sure
+to symlink `/crime_data/static/swagger.json` to the current production
+version of the API that should be served. Similarly, functional tests
+should be versioned within the `crime_data/test/functional` directory
+so you can test multiple versions of the API simultaneously.
+
+Since the API isn't likely to change radically between two versions,
+this will mean duplicated code across two versions while the old
+version hasn't yet been disabled, but this approach should keep things
+fully separated.
 
 Swagger
 -------
