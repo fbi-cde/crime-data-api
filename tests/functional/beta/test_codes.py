@@ -11,10 +11,10 @@ from flex.core import validate_api_call
 class TestCodesIndex:
     """Test the /codes URL endpoint"""
 
-    def test_codes_index_exists(self, testapp, swagger):
+    def test_codes_index_exists(self, testapp, swagger_beta):
         res = testapp.get('/codes')
         assert res.status_code == 200
-        validate_api_call(swagger, raw_request=res.request, raw_response=res)
+        validate_api_call(swagger_beta, raw_request=res.request, raw_response=res)
 
 class TestCodesEndpoint:
     """Test the /codes/* methods"""
@@ -67,9 +67,9 @@ class TestCodesEndpoint:
         ('supp_larceny_type', 'larceny_type_code'),
         ('supp_property_type', 'prop_type_code')
     ])
-    def test_codes_endpoint_exists(self, testapp, swagger, table, id_col):
+    def test_codes_endpoint_exists(self, testapp, swagger_beta, table, id_col):
         res = testapp.get('/codes/{0}'.format(table))
-        validate_api_call(swagger, raw_request=res.request, raw_response=res)
+        validate_api_call(swagger_beta, raw_request=res.request, raw_response=res)
         assert res.status_code == 200
         assert id_col in res.json[0]
 
