@@ -44,7 +44,7 @@ def rollback(app):
 def swagger_beta():
     """Load the swagger specification in a JSON schema object"""
     # Need to clear the basePath to run tests locally
-    swagger_path = os.path.abspath(os.path.join(TestConfig.APP_DIR, 'static', 'swaggers', 'beta', 'swagger.json'))
+    swagger_path = os.path.abspath(os.path.join(TestConfig.APP_DIR, 'resources', 'beta', 'swagger.json'))
     raw_schema = flex.load_source(swagger_path)
     raw_schema.pop('basePath', None)
     schema = flex.parse(raw_schema)
