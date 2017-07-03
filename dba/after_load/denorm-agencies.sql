@@ -142,7 +142,7 @@ LEFT OUTER JOIN cde_counties cc ON cc.county_id=rac.county_id
 LEFT OUTER JOIN ref_population_group rpg ON rpg.population_group_id=rap.population_group_id
 LEFT OUTER JOIN ref_agency_covered_by_flat racp ON racp.agency_id=ra.agency_id AND racp.data_year=y.current_year
 LEFT OUTER JOIN ref_agency covering ON covering.agency_id=racp.covered_by_agency_id
-LEFT OUTER JOIN pe_employee_data ped ON ped.agency_id=ra.agency_id AND ped.data_year=pe.staffing_year
+LEFT OUTER JOIN pe_employee_data ped ON ped.agency_id=ra.agency_id AND ped.data_year=pe.staffing_year AND ped.reported_flag = 'Y'
 LEFT OUTER JOIN ten_year_participation tp ON tp.agency_id = ra.agency_id
 LEFT OUTER JOIN agency_name_edits edit ON edit.ori = ra.ori
 LEFT OUTER JOIN icpsr_2012 icpsr ON icpsr.ori = ra.ori

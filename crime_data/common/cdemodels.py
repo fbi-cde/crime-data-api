@@ -59,101 +59,6 @@ class CdeParticipationRate(newmodels.ParticipationRate):
         return qry
 
 
-class CdeRefState(RefState):
-    """A wrapper around the RefState model with extra finder methods"""
-
-    counties = db.relationship('RefCounty', lazy='dynamic')
-
-    def get(state_id=None, abbr=None, fips=None):
-        """
-        A method to find a state by its database ID, postal abbr or FIPS code
-        """
-        query = CdeRefState.query
-
-        if state_id:
-            query = query.filter(CdeRefState.state_id == state_id)
-        elif abbr:
-            query = query.filter(func.lower(CdeRefState.state_postal_abbr) == func.lower(abbr))
-        elif fips:
-            query = query.filter(CdeRefState.state_fips_code == fips[0:2])
-
-        return query
-
-    @property
-    def current_year(self):
-        try:
-            return self._current_year
-        except AttributeError:
-            self._current_year = session.execute('select max(data_year) from cde_participation_rates where state_id = :state_id', {'state_id': self.state_id}).scalar()
-            return self._current_year
-
-    @property
-    def total_agencies(self):
-        return self.total_agencies_for_year(self.current_year)
-
-    def total_agencies_for_year(self, data_year):
-        return self._participation_for_year(data_year).total_agencies
-
-    @property
-    def participating_agencies(self):
-        return self.participating_agencies_for_year(self.current_year)
-
-    def participating_agencies_for_year(self, data_year):
-        return self._participation_for_year(data_year).participating_agencies
-
-    @property
-    def participation_rate(self):
-        return self.participating_rate_for_year(self.current_year)
-
-    def participation_rate_for_year(self, data_year):
-        return self._participation_for_year(data_year).participation_rate
-
-    @property
-    def total_population(self):
-        """Returns the population for the given year"""
-        return self.total_population_for_year(self.current_year)
-
-    def total_population_for_year(self, data_year):
-        """Returns the population for a given year"""
-        return self._participation_for_year(data_year).total_population
-
-    @property
-    def participating_population(self):
-        """Returns the population for the given year"""
-        return self.participating_population_for_year(self.current_year)
-
-    def participating_population_for_year(self, data_year):
-        """Returns the population for a given year"""
-        return self._participation_for_year(data_year).participating_population
-
-    def police_officers_for_year(self, data_year):
-        """Returns the number of police officers for a given year"""
-        query = session.query(func.sum(models.PeEmployeeData.male_officer +
-                                       models.PeEmployeeData.female_officer))
-        query = (
-            query.join(CdeRefAgency)
-            .filter(CdeRefAgency.state_id == self.state_id)
-            .filter(CdeRefAgency.agency_id == models.PeEmployeeData.agency_id)
-            .filter(models.PeEmployeeData.data_year == data_year)
-            .filter(models.PeEmployeeData.reported_flag == 'Y')
-        )
-
-        return query.scalar()
-
-    @property
-    def police_officers(self):
-        """Returns the total police officers for the current year"""
-        return self.police_officers_for_year(self.current_year)
-
-    def _participation_for_year(self, year):
-        l = CdeParticipationRate(state_id=self.state_id, year=year).query.one()
-        return l
-
-    @property
-    def participation_rates(self):
-        return CdeParticipationRate(state_id=self.state_id).query.order_by('year DESC').all()
-
-
 class CdeRefCounty(db.Model):
     """This uses our denormalized cde_counties table"""
     __tablename__ = 'cde_counties'
@@ -184,6 +89,53 @@ class CdeRefCounty(db.Model):
     nibrs_participating_agencies = db.Column(db.Integer)
     covered_agencies = db.Column(db.Integer)
     participating_population = db.Column(db.BigInteger)
+
+
+class CdeRefState(db.Model):
+    """A wrapper around the RefState model with extra finder methods"""
+    __tablename__ = 'cde_states'
+
+    def get(state_id=None, abbr=None, fips=None):
+        """
+        A method to find a state by its database ID, postal abbr or FIPS code
+        """
+        query = CdeRefState.query
+
+        if state_id:
+            query = query.filter(CdeRefState.state_id == state_id)
+        elif abbr:
+            query = query.filter(func.lower(CdeRefState.state_abbr) == func.lower(abbr))
+
+        return query
+
+    state_id = db.Column(db.SmallInteger, primary_key=True)
+    state_name = db.Column(db.String(100))
+    state_abbr = db.Column(db.String(2))
+    current_year = db.Column(db.SmallInteger)
+    total_population = db.Column(db.BigInteger)
+    total_agencies = db.Column(db.Integer)
+    participating_agencies = db.Column(db.Integer)
+    participation_pct = db.Column(db.Numeric(5, 2))
+    nibrs_participating_agencies = db.Column(db.Integer)
+    nibrs_participation_pct = db.Column(db.Numeric(5, 2))
+    covered_agencies = db.Column(db.Integer)
+    covered_pct = db.Column(db.Numeric(5, 2))
+    participating_population = db.Column(db.BigInteger)
+    participating_population_pct = db.Column(db.Numeric(5, 2))
+    nibrs_participating_population = db.Column(db.BigInteger)
+    nibrs_population_pct = db.Column(db.Numeric(5, 2))
+    police_officers = db.Column(db.Integer)
+    civilian_employees = db.Column(db.Integer)
+
+    counties = db.relationship('CdeRefCounty',
+                               foreign_keys=[CdeRefCounty.state_id],
+                               primaryjoin='CdeRefState.state_id==CdeRefCounty.state_id',
+                               lazy='dynamic',
+                               backref='state')
+
+    @property
+    def participation_rates(self):
+        return CdeParticipationRate(state_id=self.state_id).query.order_by('year DESC').all()
 
 
 class CdeRefAgency(models.RefAgency):

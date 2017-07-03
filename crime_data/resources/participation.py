@@ -24,7 +24,7 @@ class StateParticipation(CdeResource):
 
         state = cdemodels.CdeRefState.get(abbr=state_abbr, state_id=state_id).one()
         rates = cdemodels.CdeParticipationRate(state_id=state.state_id).query.order_by('year DESC').all()
-        filename = '{}_state_participation'.format(state.state_postal_abbr)
+        filename = '{}_state_participation'.format(state.state_abbr)
         return self.render_response(rates, args, csv_filename=filename)
 
 

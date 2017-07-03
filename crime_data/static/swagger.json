@@ -1401,8 +1401,8 @@
           "type": "string"
         },
         "fips": {
-          "description": "The five character numeric code used to identify the county in the TK",
-          "type": "string",
+          "description": "The five character numeric code used to identify the county under the FIPS standards. The UCR database also contains multiple special unmapped counties that hold statewide and tribal entities that do not belong to real counties. These will have a FIPS code of NULL.",
+          "type": ["string", "null"],
           "minLength": 5,
           "maxLength": 5
         }
@@ -1424,13 +1424,11 @@
           "format": "int32",
           "type": "integer"
         },
-        "fips_code": {
-          "description": "The two-digit FIPS code for the state",
-          "minLength": 2,
-          "maxLength": 2,
+        "state_abbr": {
+          "description": "The 2-letter postal abbreviation for the state",
           "type": "string"
         },
-        "name": {
+        "state_name": {
           "description": "The name of the state",
           "type": "string"
         },
@@ -1439,14 +1437,88 @@
           "items": {
             "$ref": "#/definitions/ParticipationRate"
           }
+        },
+        "total_population": {
+          "type": "integer",
+          "description": "The reported population for the state in the current_year",
+          "minimum": 0
+        },
+        "total_agencies": {
+          "type": "integer",
+          "description": "The total number of agencies in the state in the current_year",
+          "minimum": 0
+        },
+        "participating_agencies": {
+          "type": "integer",
+          "description": "The number of agencies in the current year that either reported 12 months of data or were covered by another agency that reported for 12 months",
+          "minimum": 0
+        },
+        "participation_pct": {
+          "type": "number",
+          "description": "The percentage of agencies the participated in the current year",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "nibrs_participating_agencies": {
+          "type": "integer",
+          "description": "The number of agencies that reported 12 months of NIBRS data or were covered by an agency that reported NIBRS data in the current year",
+          "minimum": 0
+        },
+        "nibrs_participation_pct": {
+          "type": "number",
+          "description": "The percentage of agencies the participated in NIBRS for the current year",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "covered_agencies": {
+          "type": "integer",
+          "description": "The number of agencies that were covered by another agency (i.e., the covering agency included counts for the covered agencies in its own statistics) in the current year",
+          "minimum": 0
+        },
+        "covered_pct": {
+          "type": "number",
+          "description": "The percentage of agencies that were covered by other agencies in the current year",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "participating_population": {
+          "type": "integer",
+          "description": "The total populations of all agencies that participated in the current year. Note that this should be used as an approximate measure of reporting coverage rather than an exact number.",
+          "minimum": 0
+        },
+        "participating_population_pct": {
+          "type": "number",
+          "description": "The percentage of the state population that is within participating agencies. Since the UCR program assigns populations in a special way, this should be used as an approximate heuristic rather than an exact statistic.",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "nibrs_participating_population": {
+          "type": "integer",
+          "description": "The total populations of all agencies that participated in NIBRS for the current year. Note that this should be used as an approximate measure of reporting coverage rather than an exact number.",
+          "minimum": 0
+        },
+        "nibrs_population_pct": {
+          "type": "number",
+          "description": "The percentage of the state population that is within NIBRS participating agencies. Since the UCR program assigns populations in a special way, this should be used as an approximate heuristic rather than an exact statistic.",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "police_officers": {
+          "type": "integer",
+          "description": "The number of police officers reported by agencies in the current year. Not all agencies report their staffing every year.",
+          "minimum": 0
+        },
+        "civilian_employees": {
+          "type": "integer",
+          "description": "The number of civilian employees reported by agencies in the current year. Not all agencies report their staffing every year.",
+          "minimum": 0
         }
       },
       "required": [
         "name",
         "current_year",
         "participation",
-        "counties",
-        "fips_code"
+        "counties"
       ]
     }
   },

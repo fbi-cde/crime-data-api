@@ -19,9 +19,6 @@ SUM(CASE WHEN reported_status IN ('I', 'Z') THEN 1 ELSE 0 END)::int AS months_re
 FROM nibrs_month
 GROUP by data_year, agency_id;
 
-DROP SEQUENCE IF EXISTS retacubeseq CASCADE;
-CREATE SEQUENCE retacubeseq;
-
 DROP TABLE IF EXISTS agency_participation CASCADE;
 CREATE TABLE agency_participation AS
 SELECT
