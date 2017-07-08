@@ -1058,3 +1058,12 @@ class EstimateSchema(ma.ModelSchema):
 class NationalEstimateSchema(EstimateSchema):
     class Meta:
         exclude = ('estimate_id', 'state_id', 'state', 'state_abbr', )
+
+
+class ArrestsNationalSchema(ma.ModelSchema):
+    """Schema for the arrests national schema"""
+
+    class Meta:
+        model = newmodels.ArrestsNational
+        ordered = True
+        exclude = ('id', )
