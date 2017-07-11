@@ -986,6 +986,15 @@ CREATE TABLE nibrs_weapon_temp (
 
 \COPY nibrs_weapon_temp (weapon_id, offense_id, nibrs_weapon_id) FROM 'NIBRS_W.csv' WITH DELIMITER ',';
 
+
+-----------------------------
+--
+--
+-- DATA MERGE BLOCK - Merges the new data with existing tables.
+--
+--
+------------------------------
+
 -- Save this task for last. Be sure everything lines up.
 INSERT INTO nibrs_incident (SELECT convert_to_integer(agency_id), convert_to_integer(incident_id), convert_to_integer(nibrs_month_id), convert_to_integer(incident_number), cargo_theft_flag, to_timestamp_ucr(submission_date), to_timestamp_ucr(incident_date), report_date_flag, convert_to_integer(incident_hour), convert_to_integer(cleared_except_id), to_timestamp_ucr(cleared_except_date), convert_to_integer(incident_status), data_home, ddocname, orig_format, convert_to_integer(ff_line_number), convert_to_integer(did) FROM nibrs_incident_temp);
 INSERT INTO nibrs_month (SELECT convert_to_integer(nibrs_month_id), convert_to_integer(agency_id), convert_to_integer(month_num), convert_to_integer(data_year), reported_status, to_timestamp_ucr(report_date), to_timestamp_ucr(prepared_date), update_flag, orig_format, convert_to_integer(ff_line_number), data_home, ddocname, convert_to_integer(did) FROM nibrs_month_temp);
@@ -1006,10 +1015,4 @@ INSERT INTO nibrs_victim_offense (SELECT convert_to_integer(victim_id), convert_
 INSERT INTO nibrs_victim_offender_rel (SELECT convert_to_integer(victim_id), convert_to_integer(offender_id), convert_to_integer(relationship_id), convert_to_integer(nibrs_victim_offender_id) FROM nibrs_victim_offender_rel);
 INSERT INTO nibrs_weapon (SELECT convert_to_integer(weapon_id), convert_to_integer(offense_id), convert_to_integer(nibrs_weapon_id) FROM nibrs_weapon_temp);
 
-------------------------
---
---
--- TABLE REPLACEMENT BLOCK (REF_* tables only)
--- TODO: Replace tables. Re-add indexes.
---
---------------------------
+
