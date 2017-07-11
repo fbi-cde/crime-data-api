@@ -122,7 +122,7 @@ END;
 $do$;
 
 DROP TABLE IF EXISTS asr_offense_summary_temp;
-CREATE TABLE IF NOT EXISTS asr_offense_summary_temp (
+CREATE TABLE asr_offense_summary_temp (
    id serial PRIMARY KEY,
    year smallint NOT NULL,
    juvenile_flag character(1),
@@ -140,144 +140,73 @@ CREATE TABLE IF NOT EXISTS asr_offense_summary_temp (
    population bigint
 );
 
-INSERT INTO asr_offense_summary_temp(year, offense_code, offense_name, offense_subcat_code, offense_subcat_name, juvenile_flag, arrest_count)
-SELECT aass.data_year, offense_code, offense_name, offense_subcat_code, offense_subcat_name, aar.juvenile_flag, SUM(aass.arrest_count)
+INSERT INTO asr_offense_summary_temp(year, offense_code, offense_name, offense_subcat_code, offense_subcat_name, juvenile_flag, sex, age_range_code, age_range_name, arrest_count)
+SELECT aass.data_year, offense_code, offense_name, offense_subcat_code, offense_subcat_name, aar.juvenile_flag, aar.age_sex, aar.age_range_code, aar.age_range_name, SUM(aass.arrest_count)
 FROM asr_age_suboffense_summary aass
 JOIN asr_offense_subcat aos ON aos.offense_subcat_id = aass.offense_subcat_id
 JOIN asr_offense ao ON ao.offense_id = aos.offense_id
 JOIN asr_age_range aar ON aar.age_range_id = aass.age_range_id
-GROUP BY aass.data_year, offense_code, offense_name, offense_subcat_code, offense_subcat_name, aar.juvenile_flag;
+GROUP BY GROUPING SETS(
+(aass.data_year),
+(aass.data_year, aar.juvenile_flag),
+(aass.data_year, aar.age_sex),
+(aass.data_year, aar.juvenile_flag, aar.age_sex),
+(aass.data_year, aar.juvenile_flag, aar.age_sex, aar.age_range_code, aar.age_range_name),
+(aass.data_year, offense_code, offense_name),
+(aass.data_year, aar.juvenile_flag, offense_code, offense_name),
+(aass.data_year, aar.age_sex, offense_code, offense_name),
+(aass.data_year, aar.juvenile_flag, aar.age_sex, offense_code, offense_name),
+(aass.data_year, aar.juvenile_flag, aar.age_sex, aar.age_range_code, aar.age_range_name, offense_code, offense_name),
+(aass.data_year, offense_code, offense_name, offense_subcat_code, offense_subcat_name),
+(aass.data_year, aar.juvenile_flag, offense_code, offense_name, offense_subcat_code, offense_subcat_name),
+(aass.data_year, aar.age_sex, offense_code, offense_name, offense_subcat_code, offense_subcat_name),
+(aass.data_year, aar.juvenile_flag, aar.age_sex, offense_code, offense_name, offense_subcat_code, offense_subcat_name),
+(aass.data_year, aar.juvenile_flag, aar.age_sex, aar.age_range_code, aar.age_range_name, offense_code, offense_name, offense_subcat_code, offense_subcat_name)
+);
 
-INSERT INTO asr_offense_summary_temp(year, offense_code, offense_name, juvenile_flag, arrest_count)
-SELECT aass.data_year, offense_code, offense_name, aar.juvenile_flag, SUM(aass.arrest_count)
-FROM asr_age_suboffense_summary aass
-JOIN asr_offense_subcat aos ON aos.offense_subcat_id = aass.offense_subcat_id
-JOIN asr_offense ao ON ao.offense_id = aos.offense_id
-JOIN asr_age_range aar ON aar.age_range_id = aass.age_range_id
-GROUP BY aass.data_year, offense_code, offense_name, aar.juvenile_flag;
-
-INSERT INTO asr_offense_summary_temp(year, juvenile_flag, arrest_count)
-SELECT aass.data_year, aar.juvenile_flag, SUM(aass.arrest_count)
-FROM asr_age_suboffense_summary aass
-JOIN asr_age_range aar ON aar.age_range_id = aass.age_range_id
-GROUP BY aass.data_year, aar.juvenile_flag;
-
-INSERT INTO asr_offense_summary_temp(year, offense_code, offense_name, offense_subcat_code, offense_subcat_name, sex, arrest_count)
-SELECT aass.data_year, offense_code, offense_name, offense_subcat_code, offense_subcat_name, aar.age_sex, SUM(aass.arrest_count)
-FROM asr_age_suboffense_summary aass
-JOIN asr_offense_subcat aos ON aos.offense_subcat_id = aass.offense_subcat_id
-JOIN asr_offense ao ON ao.offense_id = aos.offense_id
-JOIN asr_age_range aar ON aar.age_range_id = aass.age_range_id
-GROUP BY aass.data_year, offense_code, offense_name, offense_subcat_code, offense_subcat_name, aar.age_sex;
-
-INSERT INTO asr_offense_summary_temp(year, offense_code, offense_name, sex, arrest_count)
-SELECT aass.data_year, offense_code, offense_name, aar.age_sex, SUM(aass.arrest_count)
-FROM asr_age_suboffense_summary aass
-JOIN asr_offense_subcat aos ON aos.offense_subcat_id = aass.offense_subcat_id
-JOIN asr_offense ao ON ao.offense_id = aos.offense_id
-JOIN asr_age_range aar ON aar.age_range_id = aass.age_range_id
-GROUP BY aass.data_year, offense_code, offense_name, aar.age_sex;
-
-INSERT INTO asr_offense_summary_temp(year, sex, arrest_count)
-SELECT aass.data_year, aar.age_sex, SUM(aass.arrest_count)
-FROM asr_age_suboffense_summary aass
-JOIN asr_age_range aar ON aar.age_range_id = aass.age_range_id
-GROUP BY aass.data_year, aar.age_sex;
-
-INSERT INTO asr_offense_summary_temp(year, offense_code, offense_name, offense_subcat_code, offense_subcat_name, age_range_code, age_range_name, arrest_count)
-SELECT aass.data_year, offense_code, offense_name, offense_subcat_code, offense_subcat_name, aar.age_range_code, aar.age_range_name, SUM(aass.arrest_count)
-FROM asr_age_suboffense_summary aass
-JOIN asr_offense_subcat aos ON aos.offense_subcat_id = aass.offense_subcat_id
-JOIN asr_offense ao ON ao.offense_id = aos.offense_id
-JOIN asr_age_range aar ON aar.age_range_id = aass.age_range_id
-GROUP BY aass.data_year, offense_code, offense_name, offense_subcat_code, offense_subcat_name, aar.age_range_code, aar.age_range_name;
-
-INSERT INTO asr_offense_summary_temp(year, offense_code, offense_name, age_range_code, age_range_name, arrest_count)
-SELECT aass.data_year, offense_code, offense_name, aar.age_range_code, aar.age_range_name, SUM(aass.arrest_count)
-FROM asr_age_suboffense_summary aass
-JOIN asr_offense_subcat aos ON aos.offense_subcat_id = aass.offense_subcat_id
-JOIN asr_offense ao ON ao.offense_id = aos.offense_id
-JOIN asr_age_range aar ON aar.age_range_id = aass.age_range_id
-GROUP BY aass.data_year, offense_code, offense_name, aar.age_range_code, aar.age_range_name;
-
-INSERT INTO asr_offense_summary_temp(year, age_range_code, age_range_name, arrest_count)
-SELECT aass.data_year, aar.age_range_code, aar.age_range_name, SUM(aass.arrest_count)
-FROM asr_age_suboffense_summary aass
-JOIN asr_age_range aar ON aar.age_range_id = aass.age_range_id
-GROUP BY aass.data_year, aar.age_range_code, aar.age_range_name;
-
-INSERT INTO asr_offense_summary_temp(year, offense_code, offense_name, offense_subcat_code, offense_subcat_name, race_code, race_name, arrest_count)
-SELECT aass.data_year, offense_code, offense_name, offense_subcat_code, offense_subcat_name, rr.race_code, rr.race_desc, SUM(aass.arrest_count)
+INSERT INTO asr_offense_summary_temp(year, offense_code, offense_name, offense_subcat_code, offense_subcat_name, juvenile_flag, race_code, race_name, arrest_count)
+SELECT aass.data_year, offense_code, offense_name, offense_subcat_code, offense_subcat_name, juvenile_flag, rr.race_code, rr.race_desc, SUM(arrest_count)
 FROM asr_race_suboffense_summary aass
 JOIN asr_offense_subcat aos ON aos.offense_subcat_id = aass.offense_subcat_id
 JOIN asr_offense ao ON ao.offense_id = aos.offense_id
-JOIN ref_race rr ON aass.race_id = rr.race_id
-GROUP BY aass.data_year, offense_code, offense_name, offense_subcat_code, offense_subcat_name, rr.race_code, rr.race_desc;
-
-INSERT INTO asr_offense_summary_temp(year, offense_code, offense_name, race_code, race_name, arrest_count)
-SELECT aass.data_year, offense_code, offense_name, rr.race_code, rr.race_desc, SUM(aass.arrest_count)
-FROM asr_race_suboffense_summary aass
-JOIN asr_offense_subcat aos ON aos.offense_subcat_id = aass.offense_subcat_id
-JOIN asr_offense ao ON ao.offense_id = aos.offense_id
-JOIN ref_race rr ON aass.race_id = rr.race_id
-GROUP BY aass.data_year, offense_code, offense_name, rr.race_code, rr.race_desc;
-
-INSERT INTO asr_offense_summary_temp(year, race_code, race_name, arrest_count)
-SELECT aass.data_year, rr.race_code, rr.race_desc, SUM(aass.arrest_count)
-FROM asr_race_suboffense_summary aass
-JOIN ref_race rr ON aass.race_id = rr.race_id
-GROUP BY aass.data_year, rr.race_code, rr.race_desc;
-
-INSERT INTO asr_offense_summary_temp(year, offense_code, offense_name, offense_subcat_code, offense_subcat_name, race_code, race_name, juvenile_flag, arrest_count)
-SELECT aass.data_year, offense_code, offense_name, offense_subcat_code, offense_subcat_name, rr.race_code, rr.race_desc, aass.juvenile_flag, SUM(aass.arrest_count)
-FROM asr_race_suboffense_summary aass
-JOIN asr_offense_subcat aos ON aos.offense_subcat_id = aass.offense_subcat_id
-JOIN asr_offense ao ON ao.offense_id = aos.offense_id
-JOIN ref_race rr ON aass.race_id = rr.race_id
-GROUP BY aass.data_year, offense_code, offense_name, offense_subcat_code, offense_subcat_name, rr.race_code, rr.race_desc, aass.juvenile_flag;
-
-INSERT INTO asr_offense_summary_temp(year, offense_code, offense_name, race_code, race_name, juvenile_flag, arrest_count)
-SELECT aass.data_year, offense_code, offense_name, rr.race_code, rr.race_desc, aass.juvenile_flag, SUM(aass.arrest_count)
-FROM asr_race_suboffense_summary aass
-JOIN asr_offense_subcat aos ON aos.offense_subcat_id = aass.offense_subcat_id
-JOIN asr_offense ao ON ao.offense_id = aos.offense_id
-JOIN ref_race rr ON aass.race_id = rr.race_id
-GROUP BY aass.data_year, offense_code, offense_name, rr.race_code, rr.race_desc, aass.juvenile_flag;
-
-INSERT INTO asr_offense_summary_temp(year, race_code, race_name, juvenile_flag, arrest_count)
-SELECT aass.data_year, rr.race_code, rr.race_desc, aass.juvenile_flag, SUM(aass.arrest_count)
-FROM asr_race_suboffense_summary aass
-JOIN ref_race rr ON aass.race_id = rr.race_id
-GROUP BY aass.data_year, rr.race_code, rr.race_desc, aass.juvenile_flag;
-
-
-CREATE INDEX asr_offense_juvenile_idx ON asr_offense_summary_temp (juvenile_flag);
-CREATE INDEX asr_offense_sex_idx ON asr_offense_summary_temp (sex);
-CREATE INDEX asr_offense_age_range_code_idx ON asr_offense_summary_temp (age_range_code);
-CREATE INDEX asr_offense_race_code_idx ON asr_offense_summary_temp (race_code);
-CREATE INDEX asr_offense_offense_code_idx ON asr_offense_summary_temp (offense_code);
-CREATE INDEX asr_offense_offense_subcat_code_idx ON asr_offense_summary_temp (offense_subcat_code);
+JOIN ref_race rr ON rr.race_id = aass.race_id
+GROUP BY GROUPING SETS(
+(aass.data_year, race_code, race_desc),
+(aass.data_year, juvenile_flag, race_code, race_desc),
+(aass.data_year, race_code, race_desc, offense_code, offense_name),
+(aass.data_year, juvenile_flag, race_code, race_desc, offense_code, offense_name),
+(aass.data_year, race_code, race_desc, offense_code, offense_name, offense_subcat_code, offense_subcat_name),
+(aass.data_year, juvenile_flag, race_code, race_desc, offense_code, offense_name, offense_subcat_code, offense_subcat_name)
+);
 
 UPDATE asr_offense_summary_temp
-SET agencies=asr_aas_populations.agencies, population=asr_aas_populations.population
-FROM asr_aas_populations
-WHERE data_year=asr_aas_populations.data_year
-AND state_abbr IS NULL;
+SET agencies=p.agencies, population=p.population
+FROM asr_aas_populations p
+WHERE data_year=p.data_year
+AND p.state_abbr IS NULL;
 
 UPDATE asr_offense_summary_temp
-SET agencies=asr_race_populations.agencies, population=asr_race_populations.population
-FROM asr_race_populations
-WHERE data_year=asr_race_populations.data_year
-AND state_abbr IS NULL AND race_code IS NOT NULL;
+SET agencies=p.agencies, population=p.population
+FROM asr_race_populations p
+WHERE data_year=p.data_year
+AND p.state_abbr IS NULL AND race_code IS NOT NULL;
 
+DROP TABLE IF EXISTS asr_offense_summary CASCADE;
 ALTER TABLE asr_offense_summary_temp RENAME TO asr_offense_summary;
+
+CREATE INDEX asr_offense_juvenile_idx ON asr_offense_summary (juvenile_flag);
+CREATE INDEX asr_offense_sex_idx ON asr_offense_summary (sex);
+CREATE INDEX asr_offense_age_range_code_idx ON asr_offense_summary (age_range_code);
+CREATE INDEX asr_offense_race_code_idx ON asr_offense_summary (race_code);
+CREATE INDEX asr_offense_offense_code_idx ON asr_offense_summary (offense_code);
+CREATE INDEX asr_offense_offense_subcat_code_idx ON asr_offense_summary (offense_subcat_code);
 
 -------
 DROP TABLE IF EXISTS asr_state_offense_summary_temp;
 CREATE TABLE asr_state_offense_summary_temp (
    id serial PRIMARY KEY,
    year smallint NOT NULL,
-   state_abbr character(2),
+   state_abbr character(2) NOT NULL,
    juvenile_flag character(1),
    sex character(1),
    age_range_code text,
@@ -293,148 +222,65 @@ CREATE TABLE asr_state_offense_summary_temp (
    population bigint
 );
 
-INSERT INTO asr_state_offense_summary_temp(year, state_abbr, offense_code, offense_name, offense_subcat_code, offense_subcat_name, juvenile_flag, arrest_count)
-SELECT aass.data_year, rs.state_postal_abbr, offense_code, offense_name, offense_subcat_code, offense_subcat_name, aar.juvenile_flag, SUM(aass.arrest_count)
+INSERT INTO asr_state_offense_summary_temp(year, state_abbr, offense_code, offense_name, offense_subcat_code, offense_subcat_name, juvenile_flag, sex, age_range_code, age_range_name, arrest_count)
+SELECT aass.data_year, rs.state_postal_abbr, offense_code, offense_name, offense_subcat_code, offense_subcat_name, aar.juvenile_flag, aar.age_sex, aar.age_range_code, aar.age_range_name, SUM(aass.arrest_count)
 FROM asr_age_suboffense_summary aass
 JOIN asr_offense_subcat aos ON aos.offense_subcat_id = aass.offense_subcat_id
 JOIN asr_offense ao ON ao.offense_id = aos.offense_id
 JOIN asr_age_range aar ON aar.age_range_id = aass.age_range_id
 JOIN ref_state rs ON rs.state_id = aass.state_id
-GROUP BY aass.data_year, rs.state_postal_abbr, offense_code, offense_name, offense_subcat_code, offense_subcat_name, aar.juvenile_flag;
+GROUP BY GROUPING SETS(
+(aass.data_year, rs.state_postal_abbr),
+(aass.data_year, rs.state_postal_abbr, aar.juvenile_flag),
+(aass.data_year, rs.state_postal_abbr, aar.age_sex),
+(aass.data_year, rs.state_postal_abbr, aar.juvenile_flag, aar.age_sex),
+(aass.data_year, rs.state_postal_abbr, aar.juvenile_flag, aar.age_sex, aar.age_range_code, aar.age_range_name),
+(aass.data_year, rs.state_postal_abbr, offense_code, offense_name),
+(aass.data_year, rs.state_postal_abbr, aar.juvenile_flag, offense_code, offense_name),
+(aass.data_year, rs.state_postal_abbr, aar.age_sex, offense_code, offense_name),
+(aass.data_year, rs.state_postal_abbr, aar.juvenile_flag, aar.age_sex, offense_code, offense_name),
+(aass.data_year, rs.state_postal_abbr, aar.juvenile_flag, aar.age_sex, aar.age_range_code, aar.age_range_name, offense_code, offense_name),
+(aass.data_year, rs.state_postal_abbr, offense_code, offense_name, offense_subcat_code, offense_subcat_name),
+(aass.data_year, rs.state_postal_abbr, aar.juvenile_flag, offense_code, offense_name, offense_subcat_code, offense_subcat_name),
+(aass.data_year, rs.state_postal_abbr, aar.age_sex, offense_code, offense_name, offense_subcat_code, offense_subcat_name),
+(aass.data_year, rs.state_postal_abbr, aar.juvenile_flag, aar.age_sex, offense_code, offense_name, offense_subcat_code, offense_subcat_name),
+(aass.data_year, rs.state_postal_abbr, aar.juvenile_flag, aar.age_sex, aar.age_range_code, aar.age_range_name, offense_code, offense_name, offense_subcat_code, offense_subcat_name)
+);
 
-INSERT INTO asr_state_offense_summary_temp(year, state_abbr, offense_code, offense_name, juvenile_flag, arrest_count)
-SELECT aass.data_year, rs.state_postal_abbr, offense_code, offense_name, aar.juvenile_flag, SUM(aass.arrest_count)
-FROM asr_age_suboffense_summary aass
-JOIN asr_offense_subcat aos ON aos.offense_subcat_id = aass.offense_subcat_id
-JOIN asr_offense ao ON ao.offense_id = aos.offense_id
-JOIN asr_age_range aar ON aar.age_range_id = aass.age_range_id
-JOIN ref_state rs ON rs.state_id = aass.state_id
-GROUP BY aass.data_year, rs.state_postal_abbr, offense_code, offense_name, aar.juvenile_flag;
-
-INSERT INTO asr_state_offense_summary_temp(year, state_abbr, juvenile_flag, arrest_count)
-SELECT aass.data_year, rs.state_postal_abbr, aar.juvenile_flag, SUM(aass.arrest_count)
-FROM asr_age_suboffense_summary aass
-JOIN asr_age_range aar ON aar.age_range_id = aass.age_range_id
-JOIN ref_state rs ON rs.state_id = aass.state_id
-GROUP BY aass.data_year, rs.state_postal_abbr, aar.juvenile_flag;
-
-INSERT INTO asr_state_offense_summary_temp(year, state_abbr, offense_code, offense_name, offense_subcat_code, offense_subcat_name, sex, arrest_count)
-SELECT aass.data_year, rs.state_postal_abbr, offense_code, offense_name, offense_subcat_code, offense_subcat_name, aar.age_sex, SUM(aass.arrest_count)
-FROM asr_age_suboffense_summary aass
-JOIN asr_offense_subcat aos ON aos.offense_subcat_id = aass.offense_subcat_id
-JOIN asr_offense ao ON ao.offense_id = aos.offense_id
-JOIN asr_age_range aar ON aar.age_range_id = aass.age_range_id
-JOIN ref_state rs ON rs.state_id = aass.state_id
-GROUP BY aass.data_year, rs.state_postal_abbr, offense_code, offense_name, offense_subcat_code, offense_subcat_name, aar.age_sex;
-
-INSERT INTO asr_state_offense_summary_temp(year, state_abbr, offense_code, offense_name, sex, arrest_count)
-SELECT aass.data_year, rs.state_postal_abbr, offense_code, offense_name, aar.age_sex, SUM(aass.arrest_count)
-FROM asr_age_suboffense_summary aass
-JOIN asr_offense_subcat aos ON aos.offense_subcat_id = aass.offense_subcat_id
-JOIN asr_offense ao ON ao.offense_id = aos.offense_id
-JOIN asr_age_range aar ON aar.age_range_id = aass.age_range_id
-JOIN ref_state rs ON rs.state_id = aass.state_id
-GROUP BY aass.data_year, rs.state_postal_abbr, offense_code, offense_name, aar.age_sex;
-
-INSERT INTO asr_state_offense_summary_temp(year, state_abbr, sex, arrest_count)
-SELECT aass.data_year, rs.state_postal_abbr, aar.age_sex, SUM(aass.arrest_count)
-FROM asr_age_suboffense_summary aass
-JOIN asr_age_range aar ON aar.age_range_id = aass.age_range_id
-JOIN ref_state rs ON rs.state_id = aass.state_id
-GROUP BY aass.data_year, rs.state_postal_abbr, aar.age_sex;
-
-INSERT INTO asr_state_offense_summary_temp(year, state_abbr, offense_code, offense_name, offense_subcat_code, offense_subcat_name, age_range_code, age_range_name, arrest_count)
-SELECT aass.data_year, rs.state_postal_abbr, offense_code, offense_name, offense_subcat_code, offense_subcat_name, aar.age_range_code, aar.age_range_name, SUM(aass.arrest_count)
-FROM asr_age_suboffense_summary aass
-JOIN asr_offense_subcat aos ON aos.offense_subcat_id = aass.offense_subcat_id
-JOIN asr_offense ao ON ao.offense_id = aos.offense_id
-JOIN asr_age_range aar ON aar.age_range_id = aass.age_range_id
-JOIN ref_state rs ON rs.state_id = aass.state_id
-GROUP BY aass.data_year, rs.state_postal_abbr, offense_code, offense_name, offense_subcat_code, offense_subcat_name, aar.age_range_code, aar.age_range_name;
-
-INSERT INTO asr_state_offense_summary_temp(year, state_abbr, offense_code, offense_name, age_range_code, age_range_name, arrest_count)
-SELECT aass.data_year, rs.state_postal_abbr, offense_code, offense_name, aar.age_range_code, aar.age_range_name, SUM(aass.arrest_count)
-FROM asr_age_suboffense_summary aass
-JOIN asr_offense_subcat aos ON aos.offense_subcat_id = aass.offense_subcat_id
-JOIN asr_offense ao ON ao.offense_id = aos.offense_id
-JOIN asr_age_range aar ON aar.age_range_id = aass.age_range_id
-JOIN ref_state rs ON rs.state_id = aass.state_id
-GROUP BY aass.data_year, rs.state_postal_abbr, offense_code, offense_name, aar.age_range_code, aar.age_range_name;
-
-INSERT INTO asr_state_offense_summary_temp(year, state_abbr, age_range_code, age_range_name, arrest_count)
-SELECT aass.data_year, rs.state_postal_abbr, aar.age_range_code, aar.age_range_name, SUM(aass.arrest_count)
-FROM asr_age_suboffense_summary aass
-JOIN asr_age_range aar ON aar.age_range_id = aass.age_range_id
-JOIN ref_state rs ON rs.state_id = aass.state_id
-GROUP BY aass.data_year, rs.state_postal_abbr, aar.age_range_code, aar.age_range_name;
-
-INSERT INTO asr_state_offense_summary_temp(year, state_abbr, offense_code, offense_name, offense_subcat_code, offense_subcat_name, race_code, race_name, arrest_count)
-SELECT aass.data_year, rs.state_postal_abbr, offense_code, offense_name, offense_subcat_code, offense_subcat_name, rr.race_code, rr.race_desc, SUM(aass.arrest_count)
+INSERT INTO asr_state_offense_summary_temp(year, state_abbr, offense_code, offense_name, offense_subcat_code, offense_subcat_name, juvenile_flag, race_code, race_name, arrest_count)
+SELECT aass.data_year, rs.state_postal_abbr, offense_code, offense_name, offense_subcat_code, offense_subcat_name, juvenile_flag, rr.race_code, rr.race_desc, SUM(arrest_count)
 FROM asr_race_suboffense_summary aass
 JOIN asr_offense_subcat aos ON aos.offense_subcat_id = aass.offense_subcat_id
 JOIN asr_offense ao ON ao.offense_id = aos.offense_id
-JOIN ref_race rr ON aass.race_id = rr.race_id
+JOIN ref_race rr ON rr.race_id = aass.race_id
 JOIN ref_state rs ON rs.state_id = aass.state_id
-GROUP BY aass.data_year, rs.state_postal_abbr, offense_code, offense_name, offense_subcat_code, offense_subcat_name, rr.race_code, rr.race_desc;
-
-INSERT INTO asr_state_offense_summary_temp(year, state_abbr, offense_code, offense_name, race_code, race_name, arrest_count)
-SELECT aass.data_year, rs.state_postal_abbr, offense_code, offense_name, rr.race_code, rr.race_desc, SUM(aass.arrest_count)
-FROM asr_race_suboffense_summary aass
-JOIN asr_offense_subcat aos ON aos.offense_subcat_id = aass.offense_subcat_id
-JOIN asr_offense ao ON ao.offense_id = aos.offense_id
-JOIN ref_race rr ON aass.race_id = rr.race_id
-JOIN ref_state rs ON rs.state_id = aass.state_id
-GROUP BY aass.data_year, rs.state_postal_abbr, offense_code, offense_name, rr.race_code, rr.race_desc;
-
-INSERT INTO asr_state_offense_summary_temp(year, state_abbr, race_code, race_name, arrest_count)
-SELECT aass.data_year, rs.state_postal_abbr, rr.race_code, rr.race_desc, SUM(aass.arrest_count)
-FROM asr_race_suboffense_summary aass
-JOIN ref_race rr ON aass.race_id = rr.race_id
-JOIN ref_state rs ON rs.state_id = aass.state_id
-GROUP BY aass.data_year, rs.state_postal_abbr, rr.race_code, rr.race_desc;
-
-INSERT INTO asr_state_offense_summary_temp(year, state_abbr, offense_code, offense_name, offense_subcat_code, offense_subcat_name, race_code, race_name, juvenile_flag, arrest_count)
-SELECT aass.data_year, rs.state_postal_abbr, offense_code, offense_name, offense_subcat_code, offense_subcat_name, rr.race_code, rr.race_desc, aass.juvenile_flag, SUM(aass.arrest_count)
-FROM asr_race_suboffense_summary aass
-JOIN asr_offense_subcat aos ON aos.offense_subcat_id = aass.offense_subcat_id
-JOIN asr_offense ao ON ao.offense_id = aos.offense_id
-JOIN ref_race rr ON aass.race_id = rr.race_id
-JOIN ref_state rs ON rs.state_id = aass.state_id
-GROUP BY aass.data_year, rs.state_postal_abbr, offense_code, offense_name, offense_subcat_code, offense_subcat_name, rr.race_code, rr.race_desc, aass.juvenile_flag;
-
-INSERT INTO asr_state_offense_summary_temp(year, state_abbr, offense_code, offense_name, race_code, race_name, juvenile_flag, arrest_count)
-SELECT aass.data_year, rs.state_postal_abbr, offense_code, offense_name, rr.race_code, rr.race_desc, aass.juvenile_flag, SUM(aass.arrest_count)
-FROM asr_race_suboffense_summary aass
-JOIN asr_offense_subcat aos ON aos.offense_subcat_id = aass.offense_subcat_id
-JOIN asr_offense ao ON ao.offense_id = aos.offense_id
-JOIN ref_race rr ON aass.race_id = rr.race_id
-JOIN ref_state rs ON rs.state_id = aass.state_id
-GROUP BY aass.data_year, rs.state_postal_abbr, offense_code, offense_name, rr.race_code, rr.race_desc, aass.juvenile_flag;
-
-INSERT INTO asr_state_offense_summary_temp(year, state_abbr, race_code, race_name, juvenile_flag, arrest_count)
-SELECT aass.data_year, rs.state_postal_abbr, rr.race_code, rr.race_desc, aass.juvenile_flag, SUM(aass.arrest_count)
-FROM asr_race_suboffense_summary aass
-JOIN ref_race rr ON aass.race_id = rr.race_id
-JOIN ref_state rs ON rs.state_id = aass.state_id
-GROUP BY aass.data_year, rs.state_postal_abbr, rr.race_code, rr.race_desc, aass.juvenile_flag;
-
-CREATE INDEX asr_state_offense_juvenile_idx ON asr_state_offense_summary_temp (state_abbr, juvenile_flag);
-CREATE INDEX asr_state_offense_sex_idx ON asr_state_offense_summary_temp (state_abbr, sex);
-CREATE INDEX asr_state_offense_age_range_code_idx ON asr_state_offense_summary_temp (state_abbr, age_range_code);
-CREATE INDEX asr_state_offense_race_code_idx ON asr_state_offense_summary_temp (state_abbr, race_code);
-CREATE INDEX asr_state_offense_offense_code_idx ON asr_state_offense_summary_temp (state_abbr, offense_code);
-CREATE INDEX asr_state_offense_offense_subcat_code_idx ON asr_state_offense_summary_temp (state_abbr, offense_subcat_code);
+GROUP BY GROUPING SETS(
+(aass.data_year, rs.state_postal_abbr, race_code, race_desc),
+(aass.data_year, rs.state_postal_abbr, juvenile_flag, race_code, race_desc),
+(aass.data_year, rs.state_postal_abbr, race_code, race_desc, offense_code, offense_name),
+(aass.data_year, rs.state_postal_abbr, juvenile_flag, race_code, race_desc, offense_code, offense_name),
+(aass.data_year, rs.state_postal_abbr, race_code, race_desc, offense_code, offense_name, offense_subcat_code, offense_subcat_name),
+(aass.data_year, rs.state_postal_abbr, juvenile_flag, race_code, race_desc, offense_code, offense_name, offense_subcat_code, offense_subcat_name)
+);
 
 UPDATE asr_state_offense_summary_temp
-SET agencies=asr_aas_populations.agencies, population=asr_aas_populations.population
-FROM asr_aas_populations
-WHERE data_year=asr_aas_populations.data_year
-AND asr_state_offense_summary_temp.state_abbr=asr_aas_populations.state_abbr;
+SET agencies=p.agencies, population=p.population
+FROM asr_aas_populations p
+WHERE data_year=p.data_year
+AND asr_state_offense_summary_temp.state_abbr=p.state_abbr;
 
 UPDATE asr_state_offense_summary_temp
-SET agencies=asr_race_populations.agencies, population=asr_race_populations.population
-FROM asr_race_populations
-WHERE data_year=asr_race_populations.data_year
-AND asr_state_offense_summary_temp.state_abbr=asr_race_populations.state_abbr AND race_code IS NOT NULL;
+SET agencies=p.agencies, population=p.population
+FROM asr_race_populations p
+WHERE data_year=p.data_year
+AND asr_state_offense_summary_temp.state_abbr=p.state_abbr AND race_code IS NOT NULL;
 
+DROP TABLE IF EXISTS asr_state_offense_summary CASCADE;
 ALTER TABLE asr_state_offense_summary_temp RENAME TO asr_state_offense_summary;
+
+CREATE INDEX asr_state_offense_juvenile_idx ON asr_state_offense_summary (state_abbr, juvenile_flag);
+CREATE INDEX asr_state_offense_sex_idx ON asr_state_offense_summary (state_abbr, sex);
+CREATE INDEX asr_state_offense_age_range_code_idx ON asr_state_offense_summary (state_abbr, age_range_code);
+CREATE INDEX asr_state_offense_race_code_idx ON asr_state_offense_summary (state_abbr, race_code);
+CREATE INDEX asr_state_offense_offense_code_idx ON asr_state_offense_summary (state_abbr, offense_code);
+CREATE INDEX asr_state_offense_offense_subcat_code_idx ON asr_state_offense_summary (state_abbr, offense_subcat_code);
