@@ -95,6 +95,7 @@ CREATE TABLE asr_race_suboffense_summary (
    data_year smallint NOT NULL,
    state_id INTEGER NOT NULL,
    race_id integer,
+   juvenile_flag char(1),
    offense_subcat_id int,
    arrest_count bigint
 );
@@ -108,14 +109,14 @@ BEGIN
   SET work_mem = '3GB';
   FOREACH y IN ARRAY years
   LOOP
-    EXECUTE 'INSERT INTO asr_race_suboffense_summary(data_year, state_id, race_id, offense_subcat_id, arrest_count)
-             SELECT am.data_year, ra.state_id, aas.race_id, aas.offense_subcat_id, SUM(arrest_count)
+    EXECUTE 'INSERT INTO asr_race_suboffense_summary(data_year, state_id, race_id, juvenile_flag, offense_subcat_id, arrest_count)
+             SELECT am.data_year, ra.state_id, aas.race_id, aas.juvenile_flag, aas.offense_subcat_id, SUM(arrest_count)
              FROM asr_race_offense_subcat aas
              JOIN asr_month am ON aas.asr_month_id = am.asr_month_id
              JOIN ref_agency ra ON ra.agency_id = am.agency_id
              JOIN asr_reporting ar ON ar.agency_id = am.agency_id AND ar.data_year = am.data_year
              WHERE am.data_year = ' || y || ' AND ar.months_reported = 12
-             GROUP BY am.data_year, ra.state_id, aas.race_id, aas.offense_subcat_id;';
+             GROUP BY am.data_year, ra.state_id, aas.race_id, aas.juvenile_flag, aas.offense_subcat_id;';
   END LOOP;
 END;
 $do$;
@@ -226,6 +227,28 @@ SELECT aass.data_year, rr.race_code, rr.race_desc, SUM(aass.arrest_count)
 FROM asr_race_suboffense_summary aass
 JOIN ref_race rr ON aass.race_id = rr.race_id
 GROUP BY aass.data_year, rr.race_code, rr.race_desc;
+
+INSERT INTO asr_offense_summary_temp(year, offense_code, offense_name, offense_subcat_code, offense_subcat_name, race_code, race_name, juvenile_flag, arrest_count)
+SELECT aass.data_year, offense_code, offense_name, offense_subcat_code, offense_subcat_name, rr.race_code, rr.race_desc, aass.juvenile_flag, SUM(aass.arrest_count)
+FROM asr_race_suboffense_summary aass
+JOIN asr_offense_subcat aos ON aos.offense_subcat_id = aass.offense_subcat_id
+JOIN asr_offense ao ON ao.offense_id = aos.offense_id
+JOIN ref_race rr ON aass.race_id = rr.race_id
+GROUP BY aass.data_year, offense_code, offense_name, offense_subcat_code, offense_subcat_name, rr.race_code, rr.race_desc, aass.juvenile_flag;
+
+INSERT INTO asr_offense_summary_temp(year, offense_code, offense_name, race_code, race_name, juvenile_flag, arrest_count)
+SELECT aass.data_year, offense_code, offense_name, rr.race_code, rr.race_desc, aass.juvenile_flag, SUM(aass.arrest_count)
+FROM asr_race_suboffense_summary aass
+JOIN asr_offense_subcat aos ON aos.offense_subcat_id = aass.offense_subcat_id
+JOIN asr_offense ao ON ao.offense_id = aos.offense_id
+JOIN ref_race rr ON aass.race_id = rr.race_id
+GROUP BY aass.data_year, offense_code, offense_name, rr.race_code, rr.race_desc, aass.juvenile_flag;
+
+INSERT INTO asr_offense_summary_temp(year, race_code, race_name, juvenile_flag, arrest_count)
+SELECT aass.data_year, rr.race_code, rr.race_desc, aass.juvenile_flag, SUM(aass.arrest_count)
+FROM asr_race_suboffense_summary aass
+JOIN ref_race rr ON aass.race_id = rr.race_id
+GROUP BY aass.data_year, rr.race_code, rr.race_desc, aass.juvenile_flag;
 
 
 CREATE INDEX asr_offense_juvenile_idx ON asr_offense_summary_temp (juvenile_flag);
@@ -369,6 +392,31 @@ FROM asr_race_suboffense_summary aass
 JOIN ref_race rr ON aass.race_id = rr.race_id
 JOIN ref_state rs ON rs.state_id = aass.state_id
 GROUP BY aass.data_year, rs.state_postal_abbr, rr.race_code, rr.race_desc;
+
+INSERT INTO asr_state_offense_summary_temp(year, state_abbr, offense_code, offense_name, offense_subcat_code, offense_subcat_name, race_code, race_name, juvenile_flag, arrest_count)
+SELECT aass.data_year, rs.state_postal_abbr, offense_code, offense_name, offense_subcat_code, offense_subcat_name, rr.race_code, rr.race_desc, aass.juvenile_flag, SUM(aass.arrest_count)
+FROM asr_race_suboffense_summary aass
+JOIN asr_offense_subcat aos ON aos.offense_subcat_id = aass.offense_subcat_id
+JOIN asr_offense ao ON ao.offense_id = aos.offense_id
+JOIN ref_race rr ON aass.race_id = rr.race_id
+JOIN ref_state rs ON rs.state_id = aass.state_id
+GROUP BY aass.data_year, rs.state_postal_abbr, offense_code, offense_name, offense_subcat_code, offense_subcat_name, rr.race_code, rr.race_desc, aass.juvenile_flag;
+
+INSERT INTO asr_state_offense_summary_temp(year, state_abbr, offense_code, offense_name, race_code, race_name, juvenile_flag, arrest_count)
+SELECT aass.data_year, rs.state_postal_abbr, offense_code, offense_name, rr.race_code, rr.race_desc, aass.juvenile_flag, SUM(aass.arrest_count)
+FROM asr_race_suboffense_summary aass
+JOIN asr_offense_subcat aos ON aos.offense_subcat_id = aass.offense_subcat_id
+JOIN asr_offense ao ON ao.offense_id = aos.offense_id
+JOIN ref_race rr ON aass.race_id = rr.race_id
+JOIN ref_state rs ON rs.state_id = aass.state_id
+GROUP BY aass.data_year, rs.state_postal_abbr, offense_code, offense_name, rr.race_code, rr.race_desc, aass.juvenile_flag;
+
+INSERT INTO asr_state_offense_summary_temp(year, state_abbr, race_code, race_name, juvenile_flag, arrest_count)
+SELECT aass.data_year, rs.state_postal_abbr, rr.race_code, rr.race_desc, aass.juvenile_flag, SUM(aass.arrest_count)
+FROM asr_race_suboffense_summary aass
+JOIN ref_race rr ON aass.race_id = rr.race_id
+JOIN ref_state rs ON rs.state_id = aass.state_id
+GROUP BY aass.data_year, rs.state_postal_abbr, rr.race_code, rr.race_desc, aass.juvenile_flag;
 
 CREATE INDEX asr_state_offense_juvenile_idx ON asr_state_offense_summary_temp (state_abbr, juvenile_flag);
 CREATE INDEX asr_state_offense_sex_idx ON asr_state_offense_summary_temp (state_abbr, sex);
