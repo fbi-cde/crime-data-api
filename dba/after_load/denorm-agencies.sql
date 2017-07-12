@@ -16,6 +16,21 @@ AND year > max_year - 10
 GROUP BY agency_id;
 END $$;
 
+DROP TABLE IF EXISTS nibrs_start_years;
+CREATE TABLE nibrs_start_years (
+agency_id bigint PRIMARY KEY,
+year smallint
+);
+
+WITH last_non_nibrs AS (select agency_id, max(year) AS year from agency_participation where nibrs_participated = 0 group by agency_id)
+INSERT INTO nibrs_start_years(agency_id, year)
+SELECT ap.agency_id, min(ap.year) AS nibrs_start_year
+from agency_participation ap
+JOIN last_non_nibrs l ON l.agency_id = ap.agency_id
+where ap.nibrs_participated = 1
+AND ap.year > l.year
+GROUP BY ap.agency_id;
+
 DROP TABLE IF EXISTS denorm_agencies_temp CASCADE;
 CREATE TABLE denorm_agencies_temp
 (
@@ -44,6 +59,7 @@ CREATE TABLE denorm_agencies_temp
     dormant_year smallint,
     current_year smallint,
     revised_rape_start smallint,
+    current_nibrs_start_year smallint,
     population bigint,
     population_group_code character varying(2),
     population_group_desc text,
@@ -108,6 +124,7 @@ y.start_year,
 ra.dormant_year,
 y.current_year AS current_year,
 radc.revised_year AS revised_rape_start,
+nsy.year AS current_nibrs_start_year,
 rap.population,
 rpg.population_group_code,
 rpg.population_group_desc,
@@ -146,11 +163,12 @@ LEFT OUTER JOIN pe_employee_data ped ON ped.agency_id=ra.agency_id AND ped.data_
 LEFT OUTER JOIN ten_year_participation tp ON tp.agency_id = ra.agency_id
 LEFT OUTER JOIN agency_name_edits edit ON edit.ori = ra.ori
 LEFT OUTER JOIN icpsr_2012 icpsr ON icpsr.ori = ra.ori
+LEFT OUTER JOIN nibrs_start_years nsy ON nsy.agency_id = ra.agency_id
 WHERE ra.agency_status = 'A';
 
 DROP TABLE ten_year_participation;
-DROP TABLE icpsr_2012;
-DROP TABLE agency_name_edits;
+-- DROP TABLE icpsr_2012;
+-- DROP TABLE agency_name_edits;
 
 ALTER TABLE denorm_agencies_temp ENABLE TRIGGER ALL;
 DROP TABLE IF EXISTS cde_agencies CASCADE;
