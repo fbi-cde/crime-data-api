@@ -154,7 +154,7 @@ LEFT OUTER JOIN agency_participation cap ON cap.agency_id=ra.agency_id AND cap.y
 LEFT OUTER JOIN ref_submitting_agency rsa ON rsa.agency_id=ra.submitting_agency_id
 LEFT OUTER JOIN ref_state rss ON rss.state_id=rsa.state_id
 LEFT OUTER JOIN ref_agency_population rap ON rap.agency_id=ra.agency_id AND rap.data_year=y.current_year
-LEFT OUTER JOIN (SELECT DISTINCT ON (agency_id, data_year) agency_id, data_year, county_id, core_city_flag FROM ref_agency_county ORDER BY agency_id, data_year, core_city_flag DESC) rac ON rac.agency_id=ra.agency_id AND rac.data_year=y.current_year
+LEFT OUTER JOIN (SELECT DISTINCT ON (agency_id, data_year) agency_id, data_year, county_id, core_city_flag FROM ref_agency_county ORDER BY agency_id, data_year, population DESC) rac ON rac.agency_id=ra.agency_id AND rac.data_year=y.current_year
 LEFT OUTER JOIN cde_counties cc ON cc.county_id=rac.county_id
 LEFT OUTER JOIN ref_population_group rpg ON rpg.population_group_id=rap.population_group_id
 LEFT OUTER JOIN ref_agency_covered_by_flat racp ON racp.agency_id=ra.agency_id AND racp.data_year=y.current_year
