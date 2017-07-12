@@ -608,6 +608,13 @@
           ],
           "minimum": 2013
         },
+        "current_nibrs_start_year": {
+          "description": "If the agency is currently reporting 12 months of NIBRS data to the FBI, this is the first year that current run of reporting NIBRS data started. Because there are many agencies that reported NIBRS data in 1991 then stopped for many years before resuming in the 2000s, this is a better measure than the first year of NIBRS reporting.",
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
         "current_year": {
           "type": [
             "integer",

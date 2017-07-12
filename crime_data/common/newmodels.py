@@ -402,6 +402,7 @@ class CdeAgency(db.Model, FilterableModel):
     start_year = db.Column(db.SmallInteger)
     dormant_year = db.Column(db.SmallInteger)
     revised_rape_start = db.Column(db.SmallInteger)
+    current_nibrs_start_year = db.Column(db.SmallInteger)
     current_year = db.Column(db.SmallInteger)
     population = db.Column(db.BigInteger)
     population_group_code = db.Column(db.String(2))
