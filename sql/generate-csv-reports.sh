@@ -80,6 +80,8 @@ cf connect-to-service crime-data-api crime-data-upload-db <<EOF
 
 \copy (SELECT ref_state.state_postal_abbr, year, prop_desc_name as property_type, stolen_value, recovered_value from ct_counts JOIN ref_state ON (ref_state.state_id = ct_counts.state_id) WHERE ct_counts.state_id IS NOT NULL and ori IS NULL) To 'cargo_theft.csv' with CSV DELIMITER ',' HEADER;
 
+\copy (select year, state_name, total_agencies, participating_agencies, round(CAST(participation_rate*100 AS NUMERIC), 2) participation_pct, nibrs_participating_agencies, round(CAST(nibrs_participation_rate*100 AS NUMERIC), 2) nibrs_participation_pct, covered_agencies, ROUND(CAST(covered_rate*100 AS NUMERIC), 2) AS covered_pct, total_population, participating_population nibrs_participating_population from participation_rates WHERE state_id IS NOT NULL and county_id IS NULL ORDER by year DESC, state_name) TO 'ucr_participation.csv' with CSV DELIMITER ',' HEADER;
+
 \copy (SELECT year, rs.state_name, t.state_abbr, locality, population, violent_crime, homicide, rape_legacy, rape_revised, robbery, aggravated_assault, property_crime, burglary, larceny, motor_vehicle_theft, arson, caveats from reta_territories t JOIN ref_state rs ON rs.state_postal_abbr=t.state_abbr order by state_name, locality, year) To 'territories.csv' with CSV DELIMITER ',' HEADER;
 
 \copy (SELECT ori, legacy_ori, agency_name, agency_type_id, agency_type_name, city_name, state_abbr, primary_county, primary_county_fips, submitting_sai, submitting_name, submitting_state_abbr, start_year, dormant_year, current_year, revised_rape_state, population, population_group_code, population_group_desc, suburban_area_flag, core_city_flag, months_reported, nibrs_months_reported, reported_past_10_years, covered_by_ori, covered_by_name, staffing_year, total_officers, total_civilians from cde_agencies order by state_abbr, agency_name) To 'agencies.csv' with CSV DELIMITER ',' HEADER;
@@ -97,6 +99,7 @@ export AWS_DEFAULT_REGION=`echo "${S3_CREDENTIALS}" | jq -r '.region'`
 aws s3 cp cargo_theft.csv s3://${BUCKET_NAME}/cargo_theft.csv
 aws s3 cp lka_sum_full.csv s3://${BUCKET_NAME}/Assaults_on_Law_Enforcement_Officers.csv
 aws s3 cp pe_employee_data.csv s3://${BUCKET_NAME}/pe_employee_data.csv
+aws s3 cp ucr_participation.csv s3://${BUCKET_NAME}/ucr_participation.csv
 aws s3 cp agencies.csv s3://${BUCKET_NAME}/agencies.csv
 aws s3 cp territories.csv s3://${BUCKET_NAME}/territories.csv
 aws s3 cp human_trafficking.csv s3://${BUCKET_NAME}/human_trafficking.csv

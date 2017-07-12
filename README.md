@@ -245,6 +245,29 @@ This will run the queries to save CSV files locally and then upload
 them to S3. Maybe comment out the lines for the S3 CP if you want to
 just test out the CSV generation.
 
+Updating Police Agency Names
+----------------------------
+
+The master list of edited police names is located in
+`dba/after_load/ext/agency_name_edits.csv`. To update the names of
+agencies, make changes to the `edited_agency_name` column in the
+CSV. Then do the following with an open tunnel to the production
+database.
+
+``` sh
+cd dba/after_load/ext
+psql $CRIME_DATA_API_DB_URL < update_agency_names.sql
+```
+
+This will load in the agencies CSV from your machine than update a few
+tables where the agency name is displayed. Don't be alarmed if the
+same number of rows is not updated in every table, since some agencies
+may not be in various derived tables or may be present multiple times
+in others.
+
+Don't forget to check in your changes to the agency_name_edits.csv and
+file a pull request when you are done.
+
 Security Scans
 --------------
 
