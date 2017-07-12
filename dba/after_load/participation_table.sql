@@ -46,7 +46,7 @@ LEFT OUTER JOIN ref_agency_population rap ON rap.agency_id=ar.agency_id AND rap.
 LEFT OUTER JOIN ref_population_group rpg ON rpg.population_group_id = rap.population_group_id
 LEFT OUTER JOIN ref_agency_covered_by_flat racbf ON racbf.agency_id=ar.agency_id AND racbf.data_year=ar.data_year
 LEFT OUTER JOIN agency_reporting covered_ar ON covered_ar.agency_id=racbf.covered_by_agency_id AND covered_ar.data_year=racbf.data_year
-LEFT OUTER JOIN agency_reporting covered_nr ON covered_nr.agency_id=racbf.covered_by_agency_id AND covered_nr.data_year=racbf.data_year
+LEFT OUTER JOIN agency_reporting_nibrs covered_nr ON covered_nr.agency_id=racbf.covered_by_agency_id AND covered_nr.data_year=racbf.data_year
 ORDER by ar.data_year, rs.state_name, ra.pub_agency_name;
 
 ALTER TABLE ONLY agency_participation
