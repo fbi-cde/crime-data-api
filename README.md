@@ -70,6 +70,60 @@ at [http://127.0.0.1:5000/](http://127.0.0.1:5000/). To test out the
 API, make a request
 to [http://127.0.0.1:5000/agencies](http://127.0.0.1:5000/agencies)
 
+
+
+Connecting to DB via Proxy
+----------
+*The user will need to install the cloud foundry cli application as well as connect-to-server cf plugin
+
+```cf login -a api.fr.cloud.gov --sso```
+
+*Go to url output in terminal, log into cloud.gov utilizing two factor authentication, get passcode, insert into terminal window
+
+*Press 1 for crime-data-explorer
+
+```cf connect-to-service --no-client crime-data-api crime-data-upload-db```
+
+*This will supposedly set up an ssh tunnel, but will eventually fail. It will give you a username/password/dbname to be used later
+
+*In another terminal execute the following command and take note of the servername
+
+```ps aux | grep cf```
+
+*One of the lines will be ```cf ssh ~~~``` save  the really long servername between the ports
+
+*Go back to the terminal that the failing ssh tunnel lives
+
+```ctrl+c``` to kill the attempt at opening the tunnel
+
+*Remember the output for the following command, it will be needed later on
+
+```cf app crime-data-api --guid```
+
+*Remember the output for the following command as it will be needed later
+
+```cf curl /v2/info```
+
+*Run the following command to generate a temporary ssh password, remember it/need to copy it later
+
+```cf ssh-code```
+
+*Perform the following command to open up an ssh shell into the server; I am sure there is a way to keep it from opening an actual shell, as we only need it to open the tunnel
+
+```ssh cf:<APP-GUID>/<APP Instance Index... I used 0?>@ssh.fr.cloud.gov -L <Port number of your choosing, just remember it>:<Really long servername from the ps aux command above>:5432 -o "ProxyCommand=nc --proxy <proxy server>:<proxy port> --proxy-auth <proxy-username>:'<proxy-pword>'"```
+
+*it will ask for a password, type/paste in the result of the ```cf ssh-code``` command above
+
+*You should now be in a shell on the box
+
+*In another terminal window perform the following command to connect to the DB
+
+```psql postgres://<uname from the cf connect-to-service command above>:<pword from the connect-to-service command above>:<random port you choose in the SSH command>/<DB name from connect-to-service command above>```
+
+*You are now connected into the DB
+
+
+
 Deployment
 ----------
 
