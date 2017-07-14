@@ -1109,30 +1109,30 @@ CREATE TABLE asr_offense_subcat_temp (
 -- hc_incident
 DROP TABLE IF EXISTS hc_incident_temp;
 CREATE TABLE hc_incident_temp (
-    incident_id bigint NOT NULL,
-    agency_id bigint NOT NULL,
-    incident_no character varying(20),
-    incident_date timestamp without time zone,
-    data_home character(1),
-    source_flag character(1),
-    ddocname character varying(100),
-    report_date timestamp without time zone,
-    prepared_date timestamp without time zone,
-    victim_count smallint,
-    adult_victim_count smallint,
-    incident_status smallint,
-    juvenile_victim_count smallint,
-    offender_count smallint,
-    adult_offender_count smallint,
-    juvenile_offender_count smallint,
-    offender_race_id smallint,
-    offender_ethnicity_id smallint,
-    update_flag character(1),
-    hc_quarter_id bigint NOT NULL,
-    ff_line_number bigint,
-    orig_format character(1),
-    did bigint,
-    nibrs_incident_id bigint
+    incident_id text,
+    agency_id text,
+    incident_no text,
+    incident_date text,
+    data_home text,
+    source_flag text,
+    ddocname text,
+    report_date text,
+    prepared_date text,
+    victim_count text,
+    adult_victim_count text,
+    incident_status text,
+    juvenile_victim_count text,
+    offender_count text,
+    adult_offender_count text,
+    juvenile_offender_count text,
+    offender_race_id text,
+    offender_ethnicity_id text,
+    update_flag text,
+    hc_quarter_id text,
+    ff_line_number text,
+    orig_format text,
+    did text,
+    nibrs_incident_id text
 );
 
 \COPY hc_incident_temp (incident_id, agency_id, incident_no, incident_date, data_home, source_flag, ddocname, report_date, prepared_date, victim_count, adult_victim_count, incident_status, juvenile_victim_count, offender_count, adult_offender_count, juvenile_offender_count, offender_race_id, offender_ethnicity_id, update_flag, hc_quarter_id, ff_line_number, orig_format, did, nibrs_incident_id) FROM 'HC_I.csv' WITH DELIMITER ',';
@@ -1141,8 +1141,8 @@ CREATE TABLE hc_incident_temp (
 -- hc_bias_motivation
 DROP TABLE IF EXISTS hc_bias_motivation_temp;
 CREATE TABLE hc_bias_motivation_temp (
-    offense_id bigint NOT NULL,
-    bias_id smallint NOT NULL
+    offense_id text,
+    bias_id text
 );
 
 \COPY hc_bias_motivation_temp (offense_id, bias_id) FROM 'Hate_BM.csv' WITH DELIMITER ',';
@@ -1150,12 +1150,12 @@ CREATE TABLE hc_bias_motivation_temp (
 -- hc_offense
 DROP TABLE IF EXISTS hc_offense_temp;
 CREATE TABLE hc_offense_temp (
-    offense_id bigint NOT NULL,
-    incident_id bigint NOT NULL,
-    offense_type_id bigint,
-    victim_count smallint,
-    location_id bigint,
-    nibrs_offense_id bigint
+    offense_id text,
+    incident_id text,
+    offense_type_id text,
+    victim_count text,
+    location_id text,
+    nibrs_offense_id text
 );
 
 \COPY hc_offense_temp (offense_id, incident_id, offense_type_id, victim_count, location_id, nibrs_offense_id) FROM 'HC_O.csv' WITH DELIMITER ',';
@@ -1163,8 +1163,8 @@ CREATE TABLE hc_offense_temp (
 -- hc_victim
 DROP TABLE IF EXISTS hc_victim_temp;
 CREATE TABLE hc_victim_temp (
-    offense_id bigint NOT NULL,
-    victim_type_id smallint NOT NULL
+    offense_id text,
+    victim_type_id text
 );
 
 \COPY hc_victim_temp (offense_id, victim_type_id) FROM 'Hate_V.csv' WITH DELIMITER ',';
@@ -1181,36 +1181,35 @@ CREATE TABLE hc_victim_temp (
 -- ct_incident
 DROP TABLE IF EXISTS ct_incident_temp;
 CREATE TABLE ct_incident_temp (
-    incident_id integer NOT NULL,
-    agency_id bigint NOT NULL,
-    data_year smallint NOT NULL,
-    incident_number character varying(15),
-    incident_date timestamp without time zone,
-    source_flag character(1) NOT NULL,
-    ddocname character varying(100),
-    report_date timestamp without time zone,
-    prepared_date timestamp without time zone,
-    report_date_flag character(1),
-    incident_hour smallint,
-    cleared_except_flag character(1),
-    update_flag character(1),
-    ct_month_id bigint,
-    ff_line_number bigint,
-    data_home character(1) DEFAULT 'T'::bpchar NOT NULL,
-    orig_format character(1),
-    unknown_offender character(2),
-    did bigint,
-    nibrs_incident_id bigint
+    incident_id text,
+    agency_id text,
+    data_year text,
+    incident_number text,
+    incident_date text,
+    source_flag text,
+    ddocname text,
+    report_date text,
+    prepared_date text,
+    report_date_flag text,
+    incident_hour text,
+    cleared_except_flag text,
+    update_flag text,
+    ct_month_id text,
+    ff_line_number text,
+    data_home text,
+    orig_format text,
+    unknown_offender text,
+    did text,
+    nibrs_incident_id text
 );
-
 
 \COPY ct_incident_temp (incident_id, agency_id, data_year, incident_number, incident_date, source_flag, ddocname, report_date, prepared_date, report_date_flag, incident_hour, cleared_except_flag, update_flag, ct_month_id, ff_line_number, data_home, orig_format, unknown_offender, did, nibrs_incident_id) FROM 'Cargo_I.csv' WITH DELIMITER ',';
 
 -- ct_victim
 DROP TABLE IF EXISTS ct_victim_temp;
 CREATE TABLE ct_victim_temp (
-    incident_id integer NOT NULL,
-    victim_type_id smallint NOT NULL
+    incident_id text,
+    victim_type_id text
 );
 
 \COPY ct_offense_temp (incident_id, victim_type_id) FROM 'Cargo_V.csv' WITH DELIMITER ',';
@@ -1219,11 +1218,11 @@ CREATE TABLE ct_victim_temp (
 -- ct_offense
 DROP TABLE IF EXISTS ct_offense_temp;
 CREATE TABLE ct_offense_temp (
-    offense_id integer NOT NULL,
-    incident_id bigint NOT NULL,
-    offense_type_id bigint NOT NULL,
-    location_id bigint NOT NULL,
-    ct_offense_flag character(1)
+    offense_id text,
+    incident_id text,
+    offense_type_id text,
+    location_id text,
+    ct_offense_flag text
 );
 
 \COPY ct_offense_temp (offense_id, incident_id, offense_type_id, location_id, ct_offense_flag) FROM 'Cargo_OO.csv' WITH DELIMITER ',';
@@ -1232,12 +1231,12 @@ CREATE TABLE ct_offense_temp (
 -- ct_offender
 DROP TABLE IF EXISTS ct_offender_temp;
 CREATE TABLE ct_offender_temp (
-    offender_id integer NOT NULL,
-    incident_id bigint NOT NULL,
-    age smallint,
-    sex_code character(1),
-    ethnicity_id smallint,
-    race_id smallint
+    offender_id text,
+    incident_id text,
+    age text,
+    sex_code text,
+    ethnicity_id text,
+    race_id text
 );
 
 \COPY ct_offender_temp (offender_id, incident_id, age, sex_code, ethnicity_id, race_id) FROM 'Cargo_O.csv' WITH DELIMITER ',';
@@ -1245,22 +1244,22 @@ CREATE TABLE ct_offender_temp (
 -- ct_arrestee_temp
 DROP TABLE IF EXISTS ct_arrestee_temp;
 CREATE TABLE ct_arrestee_temp (
-    arrestee_id integer NOT NULL,
-    incident_id bigint NOT NULL,
-    age smallint,
-    sex_code character(1),
-    ethnicity_id smallint,
-    race_id smallint
+    arrestee_id text,
+    incident_id text,
+    age text,
+    sex_code text,
+    ethnicity_id text,
+    race_id text
 );
 
-\COPY ct_offender_temp (arrestee_id, incident_id, age, sex_code, ethnicity_id, race_id) FROM 'Cargo_A.csv' WITH DELIMITER ',';
+\COPY ct_arrestee_temp (arrestee_id, incident_id, age, sex_code, ethnicity_id, race_id) FROM 'Cargo_A.csv' WITH DELIMITER ',';
 
 -- ct_weapon
 DROP TABLE IF EXISTS ct_weapon_temp;
 CREATE TABLE ct_weapon_temp (
-    incident_id bigint NOT NULL,
-    weapon_id smallint NOT NULL,
-    ct_weapon_id bigint NOT NULL
+    incident_id text,
+    weapon_id text,
+    ct_weapon_id text
 );
 
 \COPY ct_weapon_temp (incident_id, weapon_id, ct_weapon_id) FROM 'Cargo_W.csv' WITH DELIMITER ',';
@@ -1268,13 +1267,13 @@ CREATE TABLE ct_weapon_temp (
 -- ct_property
 DROP TABLE IF EXISTS ct_property_temp;
 CREATE TABLE ct_property_temp (
-    property_id integer NOT NULL,
-    prop_desc_id smallint NOT NULL,
-    incident_id bigint NOT NULL,
-    stolen_value bigint,
-    recovered_flag character(1),
-    date_recovered timestamp without time zone,
-    recovered_value bigint
+    property_id text,
+    prop_desc_id text,
+    incident_id text,
+    stolen_value text,
+    recovered_flag text,
+    date_recovered text,
+    recovered_value text
 );
 
 \COPY ct_property_temp (property_id, prop_desc_id, incident_id, stolen_value, recovered_flag, date_recovered, recovered_value) FROM 'Cargo_P.csv' WITH DELIMITER ',';
@@ -1293,21 +1292,21 @@ CREATE TABLE ct_property_temp (
 -- arson_month
 DROP TABLE IF EXISTS arson_month_temp;
 CREATE TABLE arson_month_temp (
-    arson_month_id bigint NOT NULL,
-    agency_id bigint NOT NULL,
-    data_year smallint NOT NULL,
-    month_num smallint NOT NULL,
-    data_home character(1) DEFAULT 'T'::bpchar NOT NULL,
-    source_flag character(1) NOT NULL,
-    reported_flag character(1),
-    ddocname character varying(100),
-    month_included_in smallint,
-    report_date timestamp without time zone,
-    prepared_date timestamp without time zone,
-    orig_format character(1),
-    update_flag character(1),
-    did bigint,
-    ff_line_number bigint
+    arson_month_id text,
+    agency_id text,
+    data_year text,
+    month_num text,
+    data_home text,
+    source_flag text,
+    reported_flag text,
+    ddocname text,
+    month_included_in text,
+    report_date text,
+    prepared_date text,
+    orig_format text,
+    update_flag text,
+    did text,
+    ff_line_number text
 );
 
 \COPY arson_month_temp (arson_month_id, agency_id, data_year, month_num, data_home, source_flag, reported_flag, ddocname, month_included_in, report_date, prepared_date, orig_format, update_flag, did, ff_line_number) FROM 'Arson_M.csv' WITH DELIMITER ',';
@@ -1316,22 +1315,22 @@ CREATE TABLE arson_month_temp (
 -- arson_month_by_subcat
 DROP TABLE IF EXISTS arson_month_by_subcat_temp;
 CREATE TABLE arson_month_by_subcat_temp (
-    arson_month_id bigint NOT NULL,
-    subcategory_id bigint NOT NULL,
-    reported_count integer,
-    reported_status smallint,
-    unfounded_count integer,
-    unfounded_status smallint,
-    actual_count integer,
-    actual_status smallint,
-    cleared_count integer,
-    cleared_status smallint,
-    juvenile_cleared_count integer,
-    juvenile_cleared_status smallint,
-    uninhabited_count integer,
-    uninhabited_status smallint,
-    est_damage_value bigint,
-    est_damage_value_status smallint
+    arson_month_id text,
+    subcategory_id text,
+    reported_count text,
+    reported_status text,
+    unfounded_count text,
+    unfounded_status text,
+    actual_count text,
+    actual_status text,
+    cleared_count text,
+    cleared_status text,
+    juvenile_cleared_count text,
+    juvenile_cleared_status text,
+    uninhabited_count text,
+    uninhabited_status text,
+    est_damage_value text,
+    est_damage_value_status text
 );
 
 \COPY arson_month_by_subcat_temp (arson_month_id, subcategory_id, reported_count, reported_status, unfounded_count, unfounded_status, actual_count, actual_status, cleared_count, cleared_status, juvenile_cleared_count, juvenile_cleared_status, uninhabited_count, uninhabited_status, est_damage_value, est_damage_value_status) FROM 'Arson_MOS.csv' WITH DELIMITER ',';
@@ -1369,6 +1368,23 @@ INSERT INTO reta_month_offense_subcat (SELECT convert_to_integer(reta_month_id),
 INSERT INTO asr_month (SELECT convert_to_integer(asr_month_id), convert_to_integer(agency_id), convert_to_integer(data_year), convert_to_integer(month_num), source_flag, reported_flag, orig_format, update_flag, convert_to_integer(ff_line_number), ddocname, convert_to_integer(did), data_home FROM asr_month_temp);
 INSERT INTO asr_offense_subcat (SELECT convert_to_integer(offense_subcat_id), convert_to_integer(offense_id), offense_subcat_name, offense_subcat_code, srs_offense_code, convert_to_integer(master_offense_code), total_flag, adult_juv_flag FROM asr_offense_subcat_temp);
 
+-- TODO: (Don't forget to replace temp table fields with text)
+-- hc_*
+INSERT INTO hc_incident (SELECT convert_to_integer(incident_id), convert_to_integer(agency_id), incident_no, to_timestamp_ucr(incident_date), data_home, source_flag, ddocname, to_timestamp_ucr(report_date), to_timestamp_ucr(prepared_date), convert_to_integer(victim_count), convert_to_integer(adult_victim_count), convert_to_integer(incident_status), convert_to_integer(juvenile_victim_count), convert_to_integer(offender_count), convert_to_integer(adult_offender_count), convert_to_integer(juvenile_offender_count), convert_to_integer(offender_race_id), convert_to_integer(offender_ethnicity_id), update_flag, convert_to_integer(hc_quarter_id), convert_to_integer(ff_line_number), orig_format, convert_to_integer(did), convert_to_integer(nibrs_incident_id) from hc_incident_temp);
+INSERT INTO hc_bias_motivation (SELECT convert_to_integer(offense_id), convert_to_integer(bias_id) from hc_bias_motivation_temp);
+INSERT INTO hc_offense (SELECT convert_to_integer(offense_id), convert_to_integer(incident_id), convert_to_integer(offense_type_id), convert_to_integer(victim_count), convert_to_integer(location_id), convert_to_integer(nibrs_offense_id) from hc_offense_temp);
+INSERT INTO hc_victim (SELECT convert_to_integer(offense_id), convert_to_integer(victim_type_id) from hc_victim_temp);
 
+-- ct_*
+INSERT INTO ct_incident (SELECT convert_to_integer(incident_id), convert_to_integer(agency_id), convert_to_integer(data_year), incident_number, to_timestamp_ucr(incident_date), source_flag, ddocname, to_timestamp_ucr(report_date), to_timestamp_ucr(prepared_date), report_date_flag, convert_to_integer(incident_hour), cleared_except_flag, update_flag, convert_to_integer(ct_month_id), convert_to_integer(ff_line_number), data_home, orig_format, unknown_offender, convert_to_integer(did), convert_to_integer(nibrs_incident_id) from ct_incident_temp);
+INSERT INTO ct_victim (SELECT convert_to_integer(incident_id), convert_to_integer(victim_type_id) from ct_victim_temp);
+INSERT INTO ct_offense (SELECT convert_to_integer(offense_id), convert_to_integer(incident_id), convert_to_integer(offense_type_id), convert_to_integer(location_id), ct_offense_flag from ct_offense_temp);
+INSERT INTO ct_offender (SELECT convert_to_integer(offender_id), convert_to_integer(incident_id), convert_to_integer(age), sex_code, convert_to_integer(ethnicity_id), convert_to_integer(race_id) from ct_offender_temp);
+INSERT INTO ct_property (SELECT convert_to_integer(property_id), convert_to_integer(prop_desc_id), convert_to_integer(incident_id), convert_to_integer(stolen_value), recovered_flag, to_timestamp_ucr(date_recovered), convert_to_integer(recovered_value) from ct_property_temp);
+INSERT INTO ct_arrestee (SELECT convert_to_integer(arrestee_id), convert_to_integer(incident_id), convert_to_integer(age), sex_code, convert_to_integer(ethnicity_id), convert_to_integer(race_id) from ct_arrestee_temp);
+INSERT INTO ct_weapon (SELECT convert_to_integer(incident_id), convert_to_integer(weapon_id), convert_to_integer(ct_weapon_id) from ct_weapon_temp);
 
+-- arson_*
+INSERT INTO arson_month (SELECT convert_to_integer(arson_month_id), convert_to_integer(agency_id), convert_to_integer(data_year), convert_to_integer(month_num), data_home, source_flag, reported_flag, ddocname, convert_to_integer(month_included_in), to_timestamp_ucr(report_date), to_timestamp_ucr(prepared_date), orig_format, update_flag, convert_to_integer(did), convert_to_integer(ff_line_number) from arson_month_temp);
+INSERT INTO arson_month_by_subcat (SELECT convert_to_integer(arson_month_id), convert_to_integer(subcategory_id), convert_to_integer(reported_count), convert_to_integer(reported_status), convert_to_integer(unfounded_count), convert_to_integer(unfounded_status), convert_to_integer(actual_count), convert_to_integer(actual_status), convert_to_integer(cleared_count), convert_to_integer(cleared_status), convert_to_integer(juvenile_cleared_count), convert_to_integer(juvenile_cleared_status), convert_to_integer(uninhabited_count), convert_to_integer(uninhabited_status), convert_to_integer(est_damage_value), convert_to_integer(est_damage_value_status) from arson_month_by_subcat_temp);
 
