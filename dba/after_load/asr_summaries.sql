@@ -284,3 +284,126 @@ CREATE INDEX asr_state_offense_age_range_code_idx ON asr_state_offense_summary (
 CREATE INDEX asr_state_offense_race_code_idx ON asr_state_offense_summary (state_abbr, race_code);
 CREATE INDEX asr_state_offense_offense_code_idx ON asr_state_offense_summary (state_abbr, offense_code);
 CREATE INDEX asr_state_offense_offense_subcat_code_idx ON asr_state_offense_summary (state_abbr, offense_subcat_code);
+
+---- DRUG ARRESTS
+
+DROP TABLE If EXISTS asr_drug_crosstab;
+CREATE TABLE asr_drug_crosstab(
+id serial PRIMARY KEY,
+year smallint,
+state_abbr character(2),
+agencies bigint,
+population bigint,
+total_arrests bigint,
+total_manufacture bigint,
+opioid_manufacture bigint,
+marijuana_manufacture bigint,
+synthetic_manufacture bigint,
+other_manufacture bigint,
+total_possess bigint,
+opioid_possess bigint,
+marijuana_possess bigint,
+synthetic_possess bigint,
+other_possess bigint,
+UNIQUE(year, state_abbr)
+);
+
+DROP TABLE IF EXISTS asr_drug_labels;
+CREATE TEMPORARY TABLE asr_drug_labels (
+  code text,
+  label text
+);
+
+INSERT INTO asr_drug_labels VALUES
+('ASR_DRG', 'total_arrests'),
+('ASR_DRG_MAN', 'total_manufacture'),
+('ASR_DRG_MAN_CKE', 'opioid_manufacture'),
+('ASR_DRG_MAN_MAR', 'marijuana_manufacture'),
+('ASR_DRG_MAN_SYN', 'synthetic_manufacture'),
+('ASR_DRG_MAN_OTH', 'other_manufacture'),
+('ASR_DRG_POS', 'total_possess'),
+('ASR_DRG_POS_CKE', 'opioid_possess'),
+('ASR_DRG_POS_MAR', 'marijuana_possess'),
+('ASR_DRG_POS_SYN', 'synthetic_possess'),
+('ASR_DRG_POS_OTH', 'other_possess');
+
+DROP TABLE IF EXISTS asr_drug_rollup;
+CREATE TEMPORARY TABLE asr_drug_rollup AS
+SELECT s.data_year AS year, s.state_id, d.label, SUM(arrest_count) AS arrest_count
+FROM asr_age_suboffense_summary s
+JOIN asr_offense_subcat aos ON aos.offense_subcat_id = s.offense_subcat_id
+JOIN asr_drug_labels d ON d.code = aos.offense_subcat_code
+GROUP BY GROUPING SETS(
+(s.data_year, s.state_id, d.label),
+(s.data_year, d.label)
+);
+
+INSERT INTO asr_drug_crosstab(year, total_arrests, total_manufacture, opioid_manufacture, marijuana_manufacture, synthetic_manufacture, other_manufacture, total_possess, opioid_possess, marijuana_possess, synthetic_possess, other_possess)
+SELECT *
+FROM CROSSTAB(
+$$ SELECT year,
+label,
+arrest_count
+FROM asr_drug_rollup
+WHERE state_id IS NULL
+ORDER BY 1,2$$,
+$$ SELECT label from asr_drug_labels $$
+) AS ct (
+"year" smallint,
+"total_arrests" bigint,
+"total_manufacture" bigint,
+"opioid_manufacture" bigint,
+"marijuana_manufacture" bigint,
+"synthetic_manufacture" bigint,
+"other_manufacture" bigint,
+"total_possess" bigint,
+"opioid_possess" bigint,
+"marijuana_possess" bigint,
+"synthetic_possess" bigint,
+"other_possess" bigint
+);
+
+DO
+$do$
+DECLARE
+states text[] := array['AK', 'AL', 'AR', 'AZ', 'CA', 'CO', 'CT', 'DC', 'DE', 'FL', 'GA', 'HI', 'IA', 'ID', 'IL', 'IN', 'KS', 'KY', 'LA', 'MA', 'MD', 'ME', 'MI', 'MN', 'MO', 'MS',
+'MT', 'NE', 'NC', 'ND', 'NH', 'NJ', 'NM', 'NV',  'NY', 'OH', 'OK', 'OR', 'PA', 'PR', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VA', 'VT', 'WA', 'WI', 'WV', 'WY'];
+st text;
+BEGIN
+FOREACH st IN ARRAY states
+LOOP
+INSERT INTO asr_drug_crosstab(state_abbr, year, total_arrests, total_manufacture, opioid_manufacture, marijuana_manufacture, synthetic_manufacture, other_manufacture, total_posses
+s, opioid_possess, marijuana_possess, synthetic_possess, other_possess)
+SELECT st AS state_abbr, ct.* FROM CROSSTAB(
+$$ SELECT year,
+label,
+arrest_count
+FROM asr_drug_rollup a
+JOIN ref_state rs ON rs.state_id = a.state_id
+WHERE rs.state_postal_abbr = '$$ || st || $$'
+ORDER BY 1,2$$,
+$$ SELECT label from asr_drug_labels $$
+) AS ct (
+"year" smallint,
+"total_arrests" bigint,
+"total_manufacture" bigint,
+"opioid_manufacture" bigint,
+"marijuana_manufacture" bigint,
+"synthetic_manufacture" bigint,
+"other_manufacture" bigint,
+"total_possess" bigint,
+"opioid_possess" bigint,
+"marijuana_possess" bigint,
+"synthetic_possess" bigint,
+"other_possess" bigint
+);
+
+END LOOP;
+END
+$do$;
+
+UPDATE asr_drug_crosstab
+SET agencies=p.agencies, population=p.population
+FROM asr_aas_populations p
+WHERE asr_drug_crosstab.year=p.data_year
+AND asr_drug_crosstab.state_abbr=p.state_abbr;
