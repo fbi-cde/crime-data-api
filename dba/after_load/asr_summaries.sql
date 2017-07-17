@@ -146,7 +146,7 @@ FROM asr_age_suboffense_summary aass
 JOIN asr_offense_subcat aos ON aos.offense_subcat_id = aass.offense_subcat_id
 JOIN asr_offense ao ON ao.offense_id = aos.offense_id
 JOIN asr_age_range aar ON aar.age_range_id = aass.age_range_id
-WHERE aos.offense_subcat_id IN (11, 12, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 18, 190, 200, 210, 220, 230, 240, 250, 260, 270, 280)
+WHERE aos.offense_subcat_id IN (11, 12, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 18, 190, 200, 210, 220, 230, 240, 250, 260, 270, 280, 290, 301, 302)
 GROUP BY GROUPING SETS(
 (aass.data_year),
 (aass.data_year, aar.juvenile_flag),
@@ -171,7 +171,7 @@ FROM asr_race_suboffense_summary aass
 JOIN asr_offense_subcat aos ON aos.offense_subcat_id = aass.offense_subcat_id
 JOIN asr_offense ao ON ao.offense_id = aos.offense_id
 JOIN ref_race rr ON rr.race_id = aass.race_id
-WHERE aos.offense_subcat_id IN (11, 12, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 18, 190, 200, 210, 220, 230, 240, 250, 260, 270, 280)
+WHERE aos.offense_subcat_id IN (11, 12, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 18, 190, 200, 210, 220, 230, 240, 250, 260, 270, 280, 290, 301, 302)
 GROUP BY GROUPING SETS(
 (aass.data_year, race_code, race_desc),
 (aass.data_year, juvenile_flag, race_code, race_desc),
