@@ -9,6 +9,7 @@ JOIN ref_agency ra ON ra.agency_id = m.agency_id
 JOIN nibrs_weapon_type w ON o.weapon_id = w.weapon_id
 JOIN shr_circumstances c ON c.circumstances_id = o.circumstances_id
 WHERE c.circumstances_code NOT IN ('50', '51', '52', '53', '59', '80', '81') -- remove negligent manslaughter
+AND i.homicide_code = 'A'
 GROUP by m.data_year, ra.state_id, w.weapon_code, w.weapon_name;
 
 DROP TABLE IF EXISTS shr_populations;
@@ -22,6 +23,7 @@ JOIN ref_agency ra ON ra.agency_id = m.agency_id
 LEFT OUTER JOIN ref_agency_population rap ON rap.agency_id = m.agency_id AND rap.data_year = m.data_year
 JOIN shr_circumstances c ON c.circumstances_id = o.circumstances_id
 WHERE c.circumstances_code NOT IN ('50', '51', '52', '53', '59', '80', '81') -- remove negligent manslaughter
+WHERE c.circumstances_code NOT IN ('80', '81')
 GROUP BY m.data_year, ra.state_id;
 
 DROP TABLE IF EXISTS shr_weapon_crosstab;
@@ -186,6 +188,7 @@ JOIN shr_month m ON i.shr_month_id = m.shr_month_id
 JOIN ref_agency ra ON ra.agency_id = m.agency_id
 JOIN shr_circumstances c ON c.circumstances_id = o.circumstances_id
 WHERE c.circumstances_code NOT IN ('50', '51', '52', '53', '59', '80', '81') -- remove negligent manslaughter
+AND i.homicide_code = 'A'
 GROUP by m.data_year, ra.state_id, c.circumstances_code, c.circumstances_name;
 
 DROP TABLE IF EXISTS shr_circumstance_labels;
@@ -193,7 +196,6 @@ CREATE TEMPORARY TABLE shr_circumstance_labels (
   code text,
   label text
 );
-
 
 INSERT INTO shr_circumstance_labels VALUES
 ('02', 'rape'),
@@ -248,7 +250,7 @@ not_specified bigint,
 lovers_triangle bigint,
 child_killed_by_sitter bigint,
 brawl_alcohol bigint,
-brawl_drugs bigint
+brawl_drugs bigint,
 money_property_argument bigint,
 other_argument bigint,
 gang_killing bigint,
@@ -262,7 +264,7 @@ human_trafficking bigint
 );
 
 INSERT INTO shr_circumstance_crosstab(year, rape, robbery, burglary, larceny, motor_vehicle_theft, arson, prostitution, other_sex_offenses, abortion, drug, gambling, not_specified, lovers_triangle, child_killed_by_sitter, brawl_alcohol, brawl_drugs, money_property_argument, other_argument, gang_killing, juvenile_gang_killing, institutional_killing, sniper, other, all_suspected_felony, undetermined, human_trafficking)
-SELECT year, rape, robbery, burglary, larceny, motor_vehicle_theft, arson, prostitution, other_sex_offenses, abortion, drug, gambling, not_specified, lovers_triangle, child_killed_by_sitter, brawl_alcohol, brawl_drugs, money_property_argument, other_argument, gang_killing, juvenile_gang_killing, institutional_killing, sniper, other, all_suspected_felony, undetermined, human_trafficking)
+SELECT year, rape, robbery, burglary, larceny, motor_vehicle_theft, arson, prostitution, other_sex_offenses, abortion, drug, gambling, not_specified, lovers_triangle, child_killed_by_sitter, brawl_alcohol, brawl_drugs, money_property_argument, other_argument, gang_killing, juvenile_gang_killing, institutional_killing, sniper, other, all_suspected_felony, undetermined, human_trafficking
 FROM CROSSTAB(
 $$ SELECT s.year,
           c.label,
@@ -271,27 +273,27 @@ $$ SELECT s.year,
           JOIN shr_circumstance_labels c ON c.code = s.circumstances_code
           GROUP by s.year, c.label
           ORDER by 1, 2$$,
-$$ select label from shr_circumstance_labels ORDER by label $$
+$$ select DISTINCT label from shr_circumstance_labels ORDER by label $$
 ) AS ct (
   "year" smallint,
   "abortion" bigint,
   "all_suspected_felony" bigint,
   "arson" bigint,
   "brawl_alcohol" bigint,
-  "brawl_drugs" bigint
+  "brawl_drugs" bigint,
   "burglary" bigint,
   "child_killed_by_sitter" bigint,
   "drug" bigint,
   "gambling" bigint,
   "gang_killing" bigint,
-  "human_trafficking" bigint
+  "human_trafficking" bigint,
   "institutional_killing" bigint,
   "juvenile_gang_killing" bigint,
   "larceny" bigint,
   "lovers_triangle" bigint,
   "money_property_argument" bigint,
   "motor_vehicle_theft" bigint,
-  "not_specified"" bigint,
+  "not_specified" bigint,
   "other" bigint,
   "other_argument" bigint,
   "other_sex_offenses" bigint,
@@ -299,14 +301,77 @@ $$ select label from shr_circumstance_labels ORDER by label $$
   "rape" bigint,
   "robbery" bigint,
   "sniper" bigint,
-  "unetermined" bigint
+  "undetermined" bigint
 );
 
-UPDATE shr_weapon_crosstab
+UPDATE shr_circumstance_crosstab
 SET agencies = sp.agencies,
     incidents = sp.incidents,
     population = sp.population,
     victims = sp.victims
 FROM (SELECT year, SUM(agencies) AS agencies, SUM(incidents) AS incidents, SUM(population) AS population, SUM(victims) AS victims
       FROM shr_populations GROUP by year) AS sp
-WHERE sp.year = shr_weapon_crosstab.year;
+WHERE sp.year = shr_circumstance_crosstab.year;
+
+DO
+$do$
+DECLARE
+states text[] := array['AK', 'AL', 'AR', 'AZ', 'CA', 'CO', 'CT', 'DC', 'DE', 'FL', 'GA', 'HI', 'IA', 'ID', 'IL', 'IN', 'KS', 'KY', 'LA', 'MA', 'MD', 'ME', 'MI', 'MN', 'MO', 'MS', 'MT', 'NE', 'NC', 'ND', 'NH', 'NJ', 'NM', 'NV',  'NY', 'OH', 'OK', 'OR', 'PA', 'PR', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VA', 'VT', 'WA', 'WI', 'WV', 'WY'];
+st text;
+BEGIN
+FOREACH st IN ARRAY states
+LOOP
+INSERT INTO shr_circumstance_crosstab(state_abbr, year, rape, robbery, burglary, larceny, motor_vehicle_theft, arson, prostitution, other_sex_offenses, abortion, drug, gambling, not_specified, lovers_triangle, child_killed_by_sitter, brawl_alcohol, brawl_drugs, money_property_argument, other_argument, gang_killing, juvenile_gang_killing, institutional_killing, sniper, other, all_suspected_felony, undetermined, human_trafficking)
+SELECT st AS state_abbr, year, rape, robbery, burglary, larceny, motor_vehicle_theft, arson, prostitution, other_sex_offenses, abortion, drug, gambling, not_specified, lovers_triangle, child_killed_by_sitter, brawl_alcohol, brawl_drugs, money_property_argument, other_argument, gang_killing, juvenile_gang_killing, institutional_killing, sniper, other, all_suspected_felony, undetermined, human_trafficking
+FROM CROSSTAB(
+$$ SELECT s.year,
+          c.label,
+          SUM(total) AS total
+          FROM shr_circumstance_rollup s
+          JOIN shr_circumstance_labels c ON c.code = s.circumstances_code
+          GROUP by s.year, c.label
+          ORDER by 1, 2$$,
+$$ select DISTINCT label from shr_circumstance_labels ORDER by label $$
+) AS ct (
+  "year" smallint,
+  "abortion" bigint,
+  "all_suspected_felony" bigint,
+  "arson" bigint,
+  "brawl_alcohol" bigint,
+  "brawl_drugs" bigint,
+  "burglary" bigint,
+  "child_killed_by_sitter" bigint,
+  "drug" bigint,
+  "gambling" bigint,
+  "gang_killing" bigint,
+  "human_trafficking" bigint,
+  "institutional_killing" bigint,
+  "juvenile_gang_killing" bigint,
+  "larceny" bigint,
+  "lovers_triangle" bigint,
+  "money_property_argument" bigint,
+  "motor_vehicle_theft" bigint,
+  "not_specified" bigint,
+  "other" bigint,
+  "other_argument" bigint,
+  "other_sex_offenses" bigint,
+  "prostitution" bigint,
+  "rape" bigint,
+  "robbery" bigint,
+  "sniper" bigint,
+  "undetermined" bigint
+);
+END LOOP;
+END
+$do$;
+
+UPDATE shr_circumstance_crosstab
+SET agencies = sp.agencies,
+incidents = sp.incidents,
+population = sp.population,
+victims = sp.victims
+FROM (SELECT year, rs.state_postal_abbr AS state_abbr, SUM(agencies) AS agencies, SUM(incidents) AS incidents, SUM(population) AS population, SUM(victims) AS victims
+FROM shr_populations p
+JOIN ref_state rs ON rs.state_id = p.state_id GROUP by year, rs.state_postal_abbr) AS sp
+WHERE sp.year = shr_circumstance_crosstab.year AND
+sp.state_abbr = shr_circumstance_crosstab.state_abbr;

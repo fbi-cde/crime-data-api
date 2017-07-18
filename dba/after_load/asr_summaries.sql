@@ -1,3 +1,4 @@
+-- Only include agencies that have reported ASR for 12 months in the ASR crosstabs
 DROP TABLE IF EXISTS asr_reporting;
 CREATE TABLE asr_reporting (
    data_year smallint NOT NULL,
@@ -34,7 +35,8 @@ GROUP BY GROUPING SETS(
 (asr.data_year, rs.state_postal_abbr)
 );
 
--- Race reporting is a bit more complicated. You need to look at what was filed
+-- Race reporting is a bit more complicated. You need to look at what
+-- was filed to get a count of the agencies that provided racial data
 DROP TABLE IF EXISTS asr_race_populations;
 CREATE TABLE asr_race_populations(
 data_year smallint NOT NULL,
@@ -60,6 +62,7 @@ GROUP BY GROUPING SETS(
 (asr.data_year, rs.state_postal_abbr)
 );
 
+-- Build a rollup at the suboffense level. These queries take the longest to run (about 3-4 hours)
 DROP TABLE IF EXISTS asr_age_suboffense_summary;
 CREATE TABLE asr_age_suboffense_summary (
    id serial PRIMARY KEY,
@@ -121,6 +124,7 @@ BEGIN
 END;
 $do$;
 
+-- Add up suboffenses to the offense level.
 DROP TABLE IF EXISTS asr_offense_summary_temp;
 CREATE TABLE asr_offense_summary_temp (
    id serial PRIMARY KEY,
@@ -140,6 +144,10 @@ CREATE TABLE asr_offense_summary_temp (
    population bigint
 );
 
+-- Some suboffenses are actually subtotals and totals of other
+-- offenses. So the offense_subcat_id WHERE clause is there to limit
+-- to only the lowest-level counts. You could use these tables in an
+-- API response.
 INSERT INTO asr_offense_summary_temp(year, offense_code, offense_name, offense_subcat_code, offense_subcat_name, juvenile_flag, sex, age_range_code, age_range_name, arrest_count)
 SELECT aass.data_year, offense_code, offense_name, offense_subcat_code, offense_subcat_name, aar.juvenile_flag, aar.age_sex, aar.age_range_code, aar.age_range_name, SUM(aass.arrest_count)
 FROM asr_age_suboffense_summary aass
@@ -181,6 +189,7 @@ GROUP BY GROUPING SETS(
 (aass.data_year, juvenile_flag, race_code, race_desc, offense_code, offense_name, offense_subcat_code, offense_subcat_name)
 );
 
+-- Apply the agencies and population counts to the table
 UPDATE asr_offense_summary_temp
 SET agencies=p.agencies, population=p.population
 FROM asr_aas_populations p
@@ -203,7 +212,7 @@ CREATE INDEX asr_offense_race_code_idx ON asr_offense_summary (race_code);
 CREATE INDEX asr_offense_offense_code_idx ON asr_offense_summary (offense_code);
 CREATE INDEX asr_offense_offense_subcat_code_idx ON asr_offense_summary (offense_subcat_code);
 
--------
+------- Same thing but at the state level
 DROP TABLE IF EXISTS asr_state_offense_summary_temp;
 CREATE TABLE asr_state_offense_summary_temp (
    id serial PRIMARY KEY,
@@ -231,6 +240,7 @@ JOIN asr_offense_subcat aos ON aos.offense_subcat_id = aass.offense_subcat_id
 JOIN asr_offense ao ON ao.offense_id = aos.offense_id
 JOIN asr_age_range aar ON aar.age_range_id = aass.age_range_id
 JOIN ref_state rs ON rs.state_id = aass.state_id
+WHERE aos.offense_subcat_id IN (11, 12, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 18, 190, 200, 210, 220, 230, 240, 250, 260, 270, 280, 290, 301, 302)
 GROUP BY GROUPING SETS(
 (aass.data_year, rs.state_postal_abbr),
 (aass.data_year, rs.state_postal_abbr, aar.juvenile_flag),
@@ -256,6 +266,7 @@ JOIN asr_offense_subcat aos ON aos.offense_subcat_id = aass.offense_subcat_id
 JOIN asr_offense ao ON ao.offense_id = aos.offense_id
 JOIN ref_race rr ON rr.race_id = aass.race_id
 JOIN ref_state rs ON rs.state_id = aass.state_id
+WHERE aos.offense_subcat_id IN (11, 12, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 18, 190, 200, 210, 220, 230, 240, 250, 260, 270, 280, 290, 301, 302)
 GROUP BY GROUPING SETS(
 (aass.data_year, rs.state_postal_abbr, race_code, race_desc),
 (aass.data_year, rs.state_postal_abbr, juvenile_flag, race_code, race_desc),
@@ -289,6 +300,11 @@ CREATE INDEX asr_state_offense_offense_subcat_code_idx ON asr_state_offense_summ
 
 ---- JUVENILE CROSSTAB
 
+--- Crosstabs are pivots of the sumamry tables where each row is a
+--- single year, state_abbr, offense_code and the columns are the
+--- count. I assemble these crosstabs from two smaller crosstabs
+--- actually because Postgres has limited support for joining on
+--- crosstabs.
 DROP TABLE IF EXISTS asr_juvenile_crosstab;
 CREATE TABLE asr_juvenile_crosstab(
   id serial PRIMARY KEY,
@@ -427,7 +443,7 @@ UNIQUE(year, state_abbr, offense_code)
 DO
 $do$
 DECLARE
-offense_codes text[] := ARRAY['ASR_HOM', 'ASR_MAN', 'ASR_RPE', 'ASR_ROB', 'ASR_AST', 'ASR_BRG', 'ASR_LRC', 'ASR_MVT', 'ASR_AST_SMP', 'ASR_ARSON', 'ASR_FOR', 'ASR_FRD', 'ASR_EMB', 'ASR_STP', 'ASR_VAN', 'ASR_WEAP', 'ASR_PRS', 'ASR_SEX', 'ASR_DRG', 'ASR_GAM', 'ASR_FAM', 'ASR_DUI', 'ASR_LIQ', 'ASR_DRK', 'ASR_DIS', 'ASR_VAG', 'ASR_OTH', 'ASR_SUS', 'ASR_CUR'];
+offense_codes text[] := ARRAY['ASR_HOM', 'ASR_MAN', 'ASR_RPE', 'ASR_ROB', 'ASR_AST', 'ASR_BRG', 'ASR_LRC', 'ASR_MVT', 'ASR_AST_SMP', 'ASR_ARSON', 'ASR_FOR', 'ASR_FRD', 'ASR_EMB', 'ASR_STP', 'ASR_VAN', 'ASR_WEAP', 'ASR_PRS', 'ASR_SEX', 'ASR_DRG', 'ASR_GAM', 'ASR_FAM', 'ASR_DUI', 'ASR_LIQ', 'ASR_DRK', 'ASR_DIS', 'ASR_VAG', 'ASR_OTH', 'ASR_SUS', 'ASR_CUR', 'ASR_RUN', 'ASR_HT'];
 oc text;
 states text[] := array['AK', 'AL', 'AR', 'AZ', 'CA', 'CO', 'CT', 'DC', 'DE', 'FL', 'GA', 'HI', 'IA', 'ID', 'IL', 'IN', 'KS', 'KY', 'LA', 'MA', 'MD', 'ME', 'MI', 'MN', 'MO', 'MS',
 'MT', 'NE', 'NC', 'ND', 'NH', 'NJ', 'NM', 'NV',  'NY', 'OH', 'OK', 'OR', 'PA', 'PR', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VA', 'VT', 'WA', 'WI', 'WV', 'WY'];
@@ -453,6 +469,7 @@ BEGIN
   $$ select label from asr_age_labels where juvenile_flag='Y' order by label $$
   ) as ct (
   "year" smallint,
+  -- these must be in the same order as the 2 queries above
   "f_0_9" bigint,
   "f_10_12" bigint,
   "f_13_14" bigint,
@@ -485,11 +502,11 @@ BEGIN
   $$ select label from asr_race_labels order by label $$
   ) as ct (
   "year" smallint,
-  "white" bigint,
-  "black" bigint,
+  "american_indian" bigint,
   "asian" bigint,
   "asian_pacific_islander" bigint,
-  "american_indian" bigint
+  "black" bigint,
+  "white" bigint
   );
 
 
@@ -547,11 +564,11 @@ BEGIN
     $$ select label from asr_race_labels order by label $$
     ) as ct (
       "year" smallint,
-      "white" bigint,
-      "black" bigint,
+      "american_indian" bigint,
       "asian" bigint,
       "asian_pacific_islander" bigint,
-      "american_indian" bigint
+      "black" bigint,
+      "white" bigint
     );
     END LOOP;
   END LOOP;
@@ -689,7 +706,7 @@ CREATE TEMPORARY TABLE asr_adult_race_crosstab(
 DO
 $do$
 DECLARE
-offense_codes text[] := ARRAY['ASR_HOM', 'ASR_MAN', 'ASR_RPE', 'ASR_ROB', 'ASR_AST', 'ASR_BRG', 'ASR_LRC', 'ASR_MVT', 'ASR_AST_SMP', 'ASR_ARSON', 'ASR_FOR', 'ASR_FRD', 'ASR_EMB', 'ASR_STP', 'ASR_VAN', 'ASR_WEAP', 'ASR_PRS', 'ASR_SEX', 'ASR_DRG', 'ASR_GAM', 'ASR_FAM', 'ASR_DUI', 'ASR_LIQ', 'ASR_DRK', 'ASR_DIS', 'ASR_VAG', 'ASR_OTH', 'ASR_SUS', 'ASR_CUR'];
+offense_codes text[] := ARRAY['ASR_HOM', 'ASR_MAN', 'ASR_RPE', 'ASR_ROB', 'ASR_AST', 'ASR_BRG', 'ASR_LRC', 'ASR_MVT', 'ASR_AST_SMP', 'ASR_ARSON', 'ASR_FOR', 'ASR_FRD', 'ASR_EMB', 'ASR_STP', 'ASR_VAN', 'ASR_WEAP', 'ASR_PRS', 'ASR_SEX', 'ASR_DRG', 'ASR_GAM', 'ASR_FAM', 'ASR_DUI', 'ASR_LIQ', 'ASR_DRK', 'ASR_DIS', 'ASR_VAG', 'ASR_OTH', 'ASR_SUS', 'ASR_CUR', 'ASR_RUN', 'ASR_HT'];
 oc text;
 states text[] := array['AK', 'AL', 'AR', 'AZ', 'CA', 'CO', 'CT', 'DC', 'DE', 'FL', 'GA', 'HI', 'IA', 'ID', 'IL', 'IN', 'KS', 'KY', 'LA', 'MA', 'MD', 'ME', 'MI', 'MN', 'MO', 'MS',
 'MT', 'NE', 'NC', 'ND', 'NH', 'NJ', 'NM', 'NV',  'NY', 'OH', 'OK', 'OR', 'PA', 'PR', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VA', 'VT', 'WA', 'WI', 'WV', 'WY'];
@@ -767,11 +784,11 @@ BEGIN
       $$ select label from asr_race_labels ORDER by label $$
     ) as ct (
       "year" smallint,
-      "white" bigint,
-      "black" bigint,
+      "american_indian" bigint,
       "asian" bigint,
       "asian_pacific_islander" bigint,
-      "american_indian" bigint
+      "black" bigint,
+      "white" bigint
     );
 
     FOREACH st IN ARRAY states
@@ -848,11 +865,11 @@ BEGIN
         $$ select label from asr_race_labels ORDER by label $$
       ) as ct (
         "year" smallint,
-        "white" bigint,
-        "black" bigint,
+        "american_indian" bigint,
         "asian" bigint,
         "asian_pacific_islander" bigint,
-        "american_indian" bigint
+        "black" bigint,
+        "white" bigint
       );
     END LOOP;
   END LOOP;
@@ -878,6 +895,81 @@ JOIN asr_race_populations rp ON rp.data_year = a.year and rp.state_abbr = r.stat
 
 
 ------------- DRUG CROSSTAB
+DROP TABLE If EXISTS asr_drug_crosstab;
+CREATE TABLE asr_drug_crosstab(
+id serial PRIMARY KEY,
+year smallint,
+state_abbr character(2),
+agencies bigint,
+population bigint,
+total_arrests bigint,
+total_manufacture bigint,
+opioid_manufacture bigint,
+marijuana_manufacture bigint,
+synthetic_manufacture bigint,
+other_manufacture bigint,
+total_possess bigint,
+opioid_possess bigint,
+marijuana_possess bigint,
+synthetic_possess bigint,
+other_possess bigint,
+UNIQUE(year, state_abbr)
+);
+
+DROP TABLE IF EXISTS asr_drug_labels;
+CREATE TEMPORARY TABLE asr_drug_labels (
+  code text,
+  label text
+);
+
+INSERT INTO asr_drug_labels VALUES
+('ASR_DRG', 'total_arrests'),
+('ASR_DRG_MAN', 'total_manufacture'),
+('ASR_DRG_MAN_CKE', 'opioid_manufacture'),
+('ASR_DRG_MAN_MAR', 'marijuana_manufacture'),
+('ASR_DRG_MAN_SYN', 'synthetic_manufacture'),
+('ASR_DRG_MAN_OTH', 'other_manufacture'),
+('ASR_DRG_POS', 'total_possess'),
+('ASR_DRG_POS_CKE', 'opioid_possess'),
+('ASR_DRG_POS_MAR', 'marijuana_possess'),
+('ASR_DRG_POS_SYN', 'synthetic_possess'),
+('ASR_DRG_POS_OTH', 'other_possess');
+
+DROP TABLE IF EXISTS asr_drug_rollup;
+CREATE TEMPORARY TABLE asr_drug_rollup AS
+SELECT s.data_year AS year, s.state_id, d.label, SUM(arrest_count) AS arrest_count
+FROM asr_age_suboffense_summary s
+JOIN asr_offense_subcat aos ON aos.offense_subcat_id = s.offense_subcat_id
+JOIN asr_drug_labels d ON d.code = aos.offense_subcat_code
+GROUP BY GROUPING SETS(
+(s.data_year, s.state_id, d.label),
+(s.data_year, d.label));
+
+INSERT INTO asr_drug_crosstab(year, total_arrests, total_manufacture, opioid_manufacture, marijuana_manufacture, synthetic_manufacture, other_manufacture, total_possess, opioid_possess, marijuana_possess, synthetic_possess, other_possess)
+SELECT year, total_arrests, total_manufacture, opioid_manufacture, marijuana_manufacture, synthetic_manufacture, other_manufacture, total_possess, opioid_possess, marijuana_possess, synthetic_possess, other_possess
+FROM CROSSTAB(
+$$ SELECT year,
+label,
+arrest_count
+FROM asr_drug_rollup
+WHERE state_id IS NULL
+ORDER BY 1,2$$,
+$$ SELECT label from asr_drug_labels order by label $$
+) AS ct (
+"year" smallint,
+"marijuana_manufacture" bigint,
+"marijuana_possess" bigint,
+"opioid_manufacture" bigint,
+"opioid_possess" bigint,
+"other_manufacture" bigint,
+"other_possess" bigint,
+"synthetic_manufacture" bigint,
+"synthetic_possess" bigint,
+"total_arrests" bigint,
+"total_manufacture" bigint,
+"total_possess" bigint
+);
+
 DO
 $do$
 DECLARE
@@ -887,9 +979,8 @@ st text;
 BEGIN
 FOREACH st IN ARRAY states
 LOOP
-INSERT INTO asr_drug_crosstab(state_abbr, year, total_arrests, total_manufacture, opioid_manufacture, marijuana_manufacture, synthetic_manufacture, other_manufacture, total_posses
-s, opioid_possess, marijuana_possess, synthetic_possess, other_possess)
-SELECT st AS state_abbr, ct.* FROM CROSSTAB(
+INSERT INTO asr_drug_crosstab(state_abbr, year, total_arrests, total_manufacture, opioid_manufacture, marijuana_manufacture, synthetic_manufacture, other_manufacture, total_possess, opioid_possess, marijuana_possess, synthetic_possess, other_possess)
+SELECT st AS state_abbr, ct.year, total_arrests, total_manufacture, opioid_manufacture, marijuana_manufacture, synthetic_manufacture, other_manufacture, total_possess, opioid_possess, marijuana_possess, synthetic_possess, other_possess FROM CROSSTAB(
 $$ SELECT year,
 label,
 arrest_count
@@ -897,20 +988,20 @@ FROM asr_drug_rollup a
 JOIN ref_state rs ON rs.state_id = a.state_id
 WHERE rs.state_postal_abbr = '$$ || st || $$'
 ORDER BY 1,2$$,
-$$ SELECT label from asr_drug_labels $$
+$$ SELECT label from asr_drug_labels order by label $$
 ) AS ct (
 "year" smallint,
+"marijuana_manufacture" bigint,
+"marijuana_possess" bigint,
+"opioid_manufacture" bigint,
+"opioid_possess" bigint,
+"other_manufacture" bigint,
+"other_possess" bigint,
+"synthetic_manufacture" bigint,
+"synthetic_possess" bigint,
 "total_arrests" bigint,
 "total_manufacture" bigint,
-"opioid_manufacture" bigint,
-"marijuana_manufacture" bigint,
-"synthetic_manufacture" bigint,
-"other_manufacture" bigint,
-"total_possess" bigint,
-"opioid_possess" bigint,
-"marijuana_possess" bigint,
-"synthetic_possess" bigint,
-"other_possess" bigint
+"total_possess" bigint
 );
 
 END LOOP;
