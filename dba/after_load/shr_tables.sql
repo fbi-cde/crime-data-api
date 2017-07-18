@@ -8,8 +8,8 @@ JOIN shr_month m ON i.shr_month_id = m.shr_month_id
 JOIN ref_agency ra ON ra.agency_id = m.agency_id
 JOIN nibrs_weapon_type w ON o.weapon_id = w.weapon_id
 JOIN shr_circumstances c ON c.circumstances_id = o.circumstances_id
-WHERE c.circumstances_code NOT IN ('50', '51', '52', '53', '59', '80', '81') -- remove negligent manslaughter
-AND i.homicide_code = 'A'
+WHERE i.homicide_code = 'A'
+AND c.circumstances_code NOT IN ('50', '51', '52', '53', '59', '80', '81') -- remove negligent manslaughter
 GROUP by m.data_year, ra.state_id, w.weapon_code, w.weapon_name;
 
 DROP TABLE IF EXISTS shr_populations;
@@ -23,7 +23,7 @@ JOIN ref_agency ra ON ra.agency_id = m.agency_id
 LEFT OUTER JOIN ref_agency_population rap ON rap.agency_id = m.agency_id AND rap.data_year = m.data_year
 JOIN shr_circumstances c ON c.circumstances_id = o.circumstances_id
 WHERE c.circumstances_code NOT IN ('50', '51', '52', '53', '59', '80', '81') -- remove negligent manslaughter
-WHERE c.circumstances_code NOT IN ('80', '81')
+AND i.homicide_code = 'A'
 GROUP BY m.data_year, ra.state_id;
 
 DROP TABLE IF EXISTS shr_weapon_crosstab;
