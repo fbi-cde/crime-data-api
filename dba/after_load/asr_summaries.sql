@@ -332,7 +332,6 @@ CREATE TABLE asr_juvenile_crosstab(
   race_population bigint,
   white bigint,
   black bigint,
-  asian bigint,
   asian_pacific_islander bigint,
   american_indian bigint,
   UNIQUE(year, state_abbr, offense_code)
@@ -422,7 +421,7 @@ label text
 INSERT INTO asr_race_labels VALUES
 ('W', 'white'),
 ('B', 'black'),
-('A', 'asian'),
+('A', 'asian_pacific_islander'),  -- CJIS informed me that this field has pacific islander counts in it still
 ('AP', 'asian_pacific_islander'),
 ('I', 'american_indian');
 
@@ -434,7 +433,6 @@ state_abbr character(2),
 offense_code text,
 white bigint,
 black bigint,
-asian bigint,
 asian_pacific_islander bigint,
 american_indian bigint,
 UNIQUE(year, state_abbr, offense_code)
@@ -457,16 +455,17 @@ BEGIN
   $$
   SELECT year,
   l.label,
-  arrest_count
+  SUM(arrest_count)
   FROM asr_offense_summary a
   JOIN asr_age_labels l ON l.code = a.age_range_code
   WHERE a.juvenile_flag = 'Y'
   AND age_range_code IS NOT NULL
   AND offense_code = '$$ || oc || $$'
   AND offense_subcat_code IS NULL
+  GROUP by year, l.label
   ORDER by 1,2;
   $$,
-  $$ select label from asr_age_labels where juvenile_flag='Y' order by label $$
+  $$ select DISTINCT label from asr_age_labels where juvenile_flag='Y' order by label $$
   ) as ct (
   "year" smallint,
   -- these must be in the same order as the 2 queries above
@@ -484,26 +483,26 @@ BEGIN
   "m_17" bigint
   );
 
-  INSERT INTO asr_juvenile_race_crosstab(offense_code, year, white, black, asian, asian_pacific_islander, american_indian)
+  INSERT INTO asr_juvenile_race_crosstab(offense_code, year, white, black, asian_pacific_islander, american_indian)
   SELECT oc AS offense_code, ct.*
   FROM CROSSTAB(
   $$
   SELECT year,
   l.label,
-  arrest_count
+  SUM(arrest_count) AS arrest_count
   FROM asr_offense_summary a
   JOIN asr_race_labels l ON l.code = a.race_code
   WHERE juvenile_flag = 'Y'
   AND race_code IS NOT NULL
   AND offense_code = '$$ || oc || $$'
   AND offense_subcat_code IS NULL
+  GROUP by year, l.label
   ORDER by 1,2;
   $$,
-  $$ select label from asr_race_labels order by label $$
+  $$ select DISTINCT label from asr_race_labels order by label $$
   ) as ct (
   "year" smallint,
   "american_indian" bigint,
-  "asian" bigint,
   "asian_pacific_islander" bigint,
   "black" bigint,
   "white" bigint
@@ -545,13 +544,13 @@ BEGIN
       "m_17" bigint
     );
 
-    INSERT INTO asr_juvenile_race_crosstab(offense_code, state_abbr, year, white, black, asian, asian_pacific_islander, american_indian)
+    INSERT INTO asr_juvenile_race_crosstab(offense_code, state_abbr, year, white, black, asian_pacific_islander, american_indian)
     SELECT oc AS offense_code, st AS state_abbr, ct.*
     FROM CROSSTAB(
     $$
     SELECT year,
     l.label,
-    arrest_count
+    SUM(arrest_count) AS arrest_count
     FROM asr_state_offense_summary a
     JOIN asr_race_labels l ON l.code = a.race_code
     WHERE juvenile_flag = 'Y'
@@ -559,13 +558,13 @@ BEGIN
     AND offense_code = '$$ || oc || $$'
     AND state_abbr = '$$ || st || $$'
     AND offense_subcat_code IS NULL
+    GROUP by year, l.label
     ORDER by 1,2;
     $$,
-    $$ select label from asr_race_labels order by label $$
+    $$ select DISTINCT label from asr_race_labels order by label $$
     ) as ct (
       "year" smallint,
       "american_indian" bigint,
-      "asian" bigint,
       "asian_pacific_islander" bigint,
       "black" bigint,
       "white" bigint
@@ -575,8 +574,8 @@ BEGIN
 END
 $do$;
 
-INSERT INTO asr_juvenile_crosstab(year, offense_code, offense_name, agencies, population, total_male, total_female, m_0_9, m_10_12, m_13_14, m_15, m_16, m_17, f_0_9, f_10_12, f_13_14, f_15, f_16, f_17, race_agencies, race_population, white, black, asian, asian_pacific_islander, american_indian)
-SELECT a.year, a.offense_code, o.offense_name, ap.agencies, ap.population, COALESCE(m_0_9,0)+COALESCE(m_10_12,0)+COALESCE(m_13_14,0)+COALESCE(m_15,0)+COALESCE(m_16,0)+COALESCE(m_17,0) AS total_male, COALESCE(f_0_9, 0)+COALESCE(f_10_12, 0)+COALESCE(f_13_14, 0)+COALESCE(f_15,0)+COALESCE(f_16,0)+COALESCE(f_17,0) AS total_female, m_0_9, m_10_12, m_13_14, m_15, m_16, m_17, f_0_9, f_10_12, f_13_14, f_15, f_16, f_17, rp.agencies, rp.population, white, black, asian, asian_pacific_islander, american_indian
+INSERT INTO asr_juvenile_crosstab(year, offense_code, offense_name, agencies, population, total_male, total_female, m_0_9, m_10_12, m_13_14, m_15, m_16, m_17, f_0_9, f_10_12, f_13_14, f_15, f_16, f_17, race_agencies, race_population, white, black, asian_pacific_islander, american_indian)
+SELECT a.year, a.offense_code, o.offense_name, ap.agencies, ap.population, COALESCE(m_0_9,0)+COALESCE(m_10_12,0)+COALESCE(m_13_14,0)+COALESCE(m_15,0)+COALESCE(m_16,0)+COALESCE(m_17,0) AS total_male, COALESCE(f_0_9, 0)+COALESCE(f_10_12, 0)+COALESCE(f_13_14, 0)+COALESCE(f_15,0)+COALESCE(f_16,0)+COALESCE(f_17,0) AS total_female, m_0_9, m_10_12, m_13_14, m_15, m_16, m_17, f_0_9, f_10_12, f_13_14, f_15, f_16, f_17, rp.agencies, rp.population, white, black, asian_pacific_islander, american_indian
 FROM asr_juvenile_age_crosstab a
 JOIN asr_juvenile_race_crosstab r ON r.year = a.year AND r.offense_code = a.offense_code
 JOIN asr_offense o ON o.offense_code = a.offense_code
@@ -586,8 +585,8 @@ WHERE r.state_abbr IS NULL
 AND a.state_abbr IS NULL;
 
 
-INSERT INTO asr_juvenile_crosstab(year, state_abbr, offense_code, offense_name, agencies, population, total_male, total_female, m_0_9, m_10_12, m_13_14, m_15, m_16, m_17, f_0_9, f_10_12, f_13_14, f_15, f_16, f_17, race_agencies, race_population, white, black, asian, asian_pacific_islander, american_indian)
-SELECT a.year, a.state_abbr, a.offense_code, o.offense_name, ap.agencies, ap.population, COALESCE(m_0_9,0)+COALESCE(m_10_12,0)+COALESCE(m_13_14,0)+COALESCE(m_15,0)+COALESCE(m_16,0)+COALESCE(m_17,0) AS total_male, COALESCE(f_0_9, 0)+COALESCE(f_10_12, 0)+COALESCE(f_13_14, 0)+COALESCE(f_15,0)+COALESCE(f_16,0)+COALESCE(f_17,0) AS total_female, m_0_9, m_10_12, m_13_14, m_15, m_16, m_17, f_0_9, f_10_12, f_13_14, f_15, f_16, f_17, rp.agencies, rp.population, white, black, asian, asian_pacific_islander, american_indian
+INSERT INTO asr_juvenile_crosstab(year, state_abbr, offense_code, offense_name, agencies, population, total_male, total_female, m_0_9, m_10_12, m_13_14, m_15, m_16, m_17, f_0_9, f_10_12, f_13_14, f_15, f_16, f_17, race_agencies, race_population, white, black, asian_pacific_islander, american_indian)
+SELECT a.year, a.state_abbr, a.offense_code, o.offense_name, ap.agencies, ap.population, COALESCE(m_0_9,0)+COALESCE(m_10_12,0)+COALESCE(m_13_14,0)+COALESCE(m_15,0)+COALESCE(m_16,0)+COALESCE(m_17,0) AS total_male, COALESCE(f_0_9, 0)+COALESCE(f_10_12, 0)+COALESCE(f_13_14, 0)+COALESCE(f_15,0)+COALESCE(f_16,0)+COALESCE(f_17,0) AS total_female, m_0_9, m_10_12, m_13_14, m_15, m_16, m_17, f_0_9, f_10_12, f_13_14, f_15, f_16, f_17, rp.agencies, rp.population, white, black, asian_pacific_islander, american_indian
 FROM asr_juvenile_age_crosstab a
 JOIN asr_juvenile_race_crosstab r ON r.year = a.year AND r.offense_code = a.offense_code AND r.state_abbr = a.state_abbr
 JOIN asr_offense o ON o.offense_code = a.offense_code
@@ -642,7 +641,6 @@ CREATE TABLE asr_adult_crosstab(
   race_population bigint,
   white bigint,
   black bigint,
-  asian bigint,
   asian_pacific_islander bigint,
   american_indian bigint,
   UNIQUE(year, state_abbr, offense_code)
@@ -697,7 +695,6 @@ CREATE TEMPORARY TABLE asr_adult_race_crosstab(
   offense_code text,
   white bigint,
   black bigint,
-  asian bigint,
   asian_pacific_islander bigint,
   american_indian bigint,
   UNIQUE(year, state_abbr, offense_code)
@@ -766,26 +763,26 @@ BEGIN
       "m_65p"   bigint
     );
 
-    INSERT INTO asr_adult_race_crosstab(offense_code, year, white, black, asian, asian_pacific_islander, american_indian)
+    INSERT INTO asr_adult_race_crosstab(offense_code, year, white, black, asian_pacific_islander, american_indian)
     SELECT oc AS offense_code, ct.*
     FROM CROSSTAB(
       $$
       SELECT year,
       l.label,
-      arrest_count
+      SUM(arrest_count) AS arrest_count
       FROM asr_offense_summary a
       JOIN asr_race_labels l ON l.code = a.race_code
       WHERE juvenile_flag = 'N'
       AND race_code IS NOT NULL
       AND offense_code = '$$ || oc || $$'
       AND offense_subcat_code IS NULL
+      GROUP by year, l.label
       ORDER by 1,2;
       $$,
-      $$ select label from asr_race_labels ORDER by label $$
+      $$ select DISTINCT label from asr_race_labels ORDER by label $$
     ) as ct (
       "year" smallint,
       "american_indian" bigint,
-      "asian" bigint,
       "asian_pacific_islander" bigint,
       "black" bigint,
       "white" bigint
@@ -846,13 +843,13 @@ BEGIN
         "m_65p"   bigint
       );
 
-      INSERT INTO asr_adult_race_crosstab(offense_code, state_abbr, year, white, black, asian, asian_pacific_islander, american_indian)
+      INSERT INTO asr_adult_race_crosstab(offense_code, state_abbr, year, white, black, asian_pacific_islander, american_indian)
       SELECT oc AS offense_code, st AS state_abbr, ct.*
       FROM CROSSTAB(
         $$
         SELECT year,
         l.label,
-        arrest_count
+        SUM(arrest_count) AS arrest_count
         FROM asr_state_offense_summary a
         JOIN asr_race_labels l ON l.code = a.race_code
         WHERE juvenile_flag = 'N'
@@ -860,13 +857,13 @@ BEGIN
         AND offense_code = '$$ || oc || $$'
         AND state_abbr = '$$ || st || $$'
         AND offense_subcat_code IS NULL
+        GROUP by year, l.label
         ORDER by 1,2;
         $$,
-        $$ select label from asr_race_labels ORDER by label $$
+        $$ select DISTINCT label from asr_race_labels ORDER by label $$
       ) as ct (
         "year" smallint,
         "american_indian" bigint,
-        "asian" bigint,
         "asian_pacific_islander" bigint,
         "black" bigint,
         "white" bigint
@@ -876,8 +873,8 @@ BEGIN
 END
 $do$;
 
-INSERT INTO asr_adult_crosstab(year, offense_code, offense_name, agencies, population, total_female, total_male, f_18, f_19, f_20, f_21, f_22, f_23, f_24, f_25_29, f_30_34, f_35_39, f_40_44, f_45_49, f_50_54, f_55_59, f_60_64, f_65p, m_18, m_19, m_20, m_21, m_22, m_23, m_24, m_25_29, m_30_34, m_35_39, m_40_44, m_45_49, m_50_54, m_55_59, m_60_64, m_65p, race_agencies, race_population, white, black, asian, asian_pacific_islander, american_indian)
-SELECT a.year, a.offense_code, o.offense_name, ap.agencies, ap.population, COALESCE(f_18, 0)+COALESCE(f_19, 0)+COALESCE(f_20, 0)+COALESCE(f_21, 0)+COALESCE(f_22, 0)+COALESCE(f_23, 0)+COALESCE(f_24, 0)+COALESCE(f_25_29, 0)+COALESCE(f_30_34, 0)+COALESCE(f_35_39, 0)+COALESCE(f_40_44, 0)+COALESCE(f_45_49, 0)+COALESCE(f_50_54, 0)+COALESCE(f_55_59, 0)+COALESCE(f_60_64, 0)+COALESCE(f_65p, 0) AS total_female, COALESCE(m_18, 0)+COALESCE(m_19, 0)+COALESCE(m_20, 0)+COALESCE(m_21, 0)+COALESCE(m_22, 0)+COALESCE(m_23, 0)+COALESCE(m_24, 0)+COALESCE(m_25_29, 0)+COALESCE(m_30_34, 0)+COALESCE(m_35_39, 0)+COALESCE(m_40_44, 0)+COALESCE(m_45_49, 0)+COALESCE(m_50_54, 0)+COALESCE(m_55_59, 0)+COALESCE(m_60_64, 0)+COALESCE(m_65p, 0) AS total_male, f_18, f_19, f_20, f_21, f_22, f_23, f_24, f_25_29, f_30_34, f_35_39, f_40_44, f_45_49, f_50_54, f_55_59, f_60_64, f_65p, m_18, m_19, m_20, m_21, m_22, m_23, m_24, m_25_29, m_30_34, m_35_39, m_40_44, m_45_49, m_50_54, m_55_59, m_60_64, m_65p, rp.agencies, rp.population, white, black, asian, asian_pacific_islander, american_indian
+INSERT INTO asr_adult_crosstab(year, offense_code, offense_name, agencies, population, total_female, total_male, f_18, f_19, f_20, f_21, f_22, f_23, f_24, f_25_29, f_30_34, f_35_39, f_40_44, f_45_49, f_50_54, f_55_59, f_60_64, f_65p, m_18, m_19, m_20, m_21, m_22, m_23, m_24, m_25_29, m_30_34, m_35_39, m_40_44, m_45_49, m_50_54, m_55_59, m_60_64, m_65p, race_agencies, race_population, white, black, asian_pacific_islander, american_indian)
+SELECT a.year, a.offense_code, o.offense_name, ap.agencies, ap.population, COALESCE(f_18, 0)+COALESCE(f_19, 0)+COALESCE(f_20, 0)+COALESCE(f_21, 0)+COALESCE(f_22, 0)+COALESCE(f_23, 0)+COALESCE(f_24, 0)+COALESCE(f_25_29, 0)+COALESCE(f_30_34, 0)+COALESCE(f_35_39, 0)+COALESCE(f_40_44, 0)+COALESCE(f_45_49, 0)+COALESCE(f_50_54, 0)+COALESCE(f_55_59, 0)+COALESCE(f_60_64, 0)+COALESCE(f_65p, 0) AS total_female, COALESCE(m_18, 0)+COALESCE(m_19, 0)+COALESCE(m_20, 0)+COALESCE(m_21, 0)+COALESCE(m_22, 0)+COALESCE(m_23, 0)+COALESCE(m_24, 0)+COALESCE(m_25_29, 0)+COALESCE(m_30_34, 0)+COALESCE(m_35_39, 0)+COALESCE(m_40_44, 0)+COALESCE(m_45_49, 0)+COALESCE(m_50_54, 0)+COALESCE(m_55_59, 0)+COALESCE(m_60_64, 0)+COALESCE(m_65p, 0) AS total_male, f_18, f_19, f_20, f_21, f_22, f_23, f_24, f_25_29, f_30_34, f_35_39, f_40_44, f_45_49, f_50_54, f_55_59, f_60_64, f_65p, m_18, m_19, m_20, m_21, m_22, m_23, m_24, m_25_29, m_30_34, m_35_39, m_40_44, m_45_49, m_50_54, m_55_59, m_60_64, m_65p, rp.agencies, rp.population, white, black, asian_pacific_islander, american_indian
 FROM asr_adult_age_crosstab a
 JOIN asr_adult_race_crosstab r ON r.year = a.year AND r.offense_code = a.offense_code
 JOIN asr_offense o ON o.offense_code = a.offense_code
@@ -885,8 +882,8 @@ JOIN asr_aas_populations ap ON ap.data_year = a.year and ap.state_abbr IS NULL
 JOIN asr_race_populations rp ON rp.data_year = a.year and rp.state_abbr IS NULL
 WHERE a.state_abbr IS NULL AND r.state_abbr IS NULL;
 
-INSERT INTO asr_adult_crosstab(year, state_abbr, offense_code, offense_name, agencies, population, total_female, total_male, f_18, f_19, f_20, f_21, f_22, f_23, f_24, f_25_29, f_30_34, f_35_39, f_40_44, f_45_49, f_50_54, f_55_59, f_60_64, f_65p, m_18, m_19, m_20, m_21, m_22, m_23, m_24, m_25_29, m_30_34, m_35_39, m_40_44, m_45_49, m_50_54, m_55_59, m_60_64, m_65p, race_agencies, race_population, white, black, asian, asian_pacific_islander, american_indian)
-SELECT a.year, a.state_abbr, a.offense_code, o.offense_name, ap.agencies, ap.population, COALESCE(f_18, 0)+COALESCE(f_19, 0)+COALESCE(f_20, 0)+COALESCE(f_21, 0)+COALESCE(f_22, 0)+COALESCE(f_23, 0)+COALESCE(f_24, 0)+COALESCE(f_25_29, 0)+COALESCE(f_30_34, 0)+COALESCE(f_35_39, 0)+COALESCE(f_40_44, 0)+COALESCE(f_45_49, 0)+COALESCE(f_50_54, 0)+COALESCE(f_55_59, 0)+COALESCE(f_60_64, 0)+COALESCE(f_65p, 0) AS total_female, COALESCE(m_18, 0)+COALESCE(m_19, 0)+COALESCE(m_20, 0)+COALESCE(m_21, 0)+COALESCE(m_22, 0)+COALESCE(m_23, 0)+COALESCE(m_24, 0)+COALESCE(m_25_29, 0)+COALESCE(m_30_34, 0)+COALESCE(m_35_39, 0)+COALESCE(m_40_44, 0)+COALESCE(m_45_49, 0)+COALESCE(m_50_54, 0)+COALESCE(m_55_59, 0)+COALESCE(m_60_64, 0)+COALESCE(m_65p, 0) AS total_male, f_18, f_19, f_20, f_21, f_22, f_23, f_24, f_25_29, f_30_34, f_35_39, f_40_44, f_45_49, f_50_54, f_55_59, f_60_64, f_65p, m_18, m_19, m_20, m_21, m_22, m_23, m_24, m_25_29, m_30_34, m_35_39, m_40_44, m_45_49, m_50_54, m_55_59, m_60_64, m_65p, rp.agencies, rp.population, white, black, asian, asian_pacific_islander, american_indian
+INSERT INTO asr_adult_crosstab(year, state_abbr, offense_code, offense_name, agencies, population, total_female, total_male, f_18, f_19, f_20, f_21, f_22, f_23, f_24, f_25_29, f_30_34, f_35_39, f_40_44, f_45_49, f_50_54, f_55_59, f_60_64, f_65p, m_18, m_19, m_20, m_21, m_22, m_23, m_24, m_25_29, m_30_34, m_35_39, m_40_44, m_45_49, m_50_54, m_55_59, m_60_64, m_65p, race_agencies, race_population, white, black, asian_pacific_islander, american_indian)
+SELECT a.year, a.state_abbr, a.offense_code, o.offense_name, ap.agencies, ap.population, COALESCE(f_18, 0)+COALESCE(f_19, 0)+COALESCE(f_20, 0)+COALESCE(f_21, 0)+COALESCE(f_22, 0)+COALESCE(f_23, 0)+COALESCE(f_24, 0)+COALESCE(f_25_29, 0)+COALESCE(f_30_34, 0)+COALESCE(f_35_39, 0)+COALESCE(f_40_44, 0)+COALESCE(f_45_49, 0)+COALESCE(f_50_54, 0)+COALESCE(f_55_59, 0)+COALESCE(f_60_64, 0)+COALESCE(f_65p, 0) AS total_female, COALESCE(m_18, 0)+COALESCE(m_19, 0)+COALESCE(m_20, 0)+COALESCE(m_21, 0)+COALESCE(m_22, 0)+COALESCE(m_23, 0)+COALESCE(m_24, 0)+COALESCE(m_25_29, 0)+COALESCE(m_30_34, 0)+COALESCE(m_35_39, 0)+COALESCE(m_40_44, 0)+COALESCE(m_45_49, 0)+COALESCE(m_50_54, 0)+COALESCE(m_55_59, 0)+COALESCE(m_60_64, 0)+COALESCE(m_65p, 0) AS total_male, f_18, f_19, f_20, f_21, f_22, f_23, f_24, f_25_29, f_30_34, f_35_39, f_40_44, f_45_49, f_50_54, f_55_59, f_60_64, f_65p, m_18, m_19, m_20, m_21, m_22, m_23, m_24, m_25_29, m_30_34, m_35_39, m_40_44, m_45_49, m_50_54, m_55_59, m_60_64, m_65p, rp.agencies, rp.population, white, black, asian_pacific_islander, american_indian
 FROM asr_adult_age_crosstab a
 JOIN asr_adult_race_crosstab r ON r.year = a.year AND r.offense_code = a.offense_code AND a.state_abbr = r.state_abbr
 JOIN asr_offense o ON o.offense_code = a.offense_code
