@@ -1,26 +1,7 @@
--- # Load in all new data into temporary tables.
-
--- # cf connect-to-service crime-data-api crime-data-upload-db <<EOF
--- # SET work_mem='3GB';
-
--- # \copy (SELECT incident_id as incident_key, ori, race_code, sex_code, age_num, location_name from nibrs_offender_denorm where year='$i' and state_code::integer=$k) To 'offender.csv' With CSV DELIMITER ',' HEADER;
--- # EOF
-
-
-
--- ISSUES:
--- REF_CP.csv - Seems malformed. Columns don't align, and there are weird values.
--- ASRS.csv - What table is this for ???
--- Cargo_M.csv - What is this for ????
-
-
 -- Process.
--- (1) Remove last rows of file
--- (2) Get list of columns:
---           SELECT column_name || ',' FROM information_schema.columns WHERE table_schema='public' AND table_name='ref_agency_county';
--- (3) Build temp table statements.
--- (4) Merge or replace tables.
--- (5) Re-add all indexes (for replaced tables only).
+-- (1) Build temp table statements.
+-- (2) Merge or replace tables.
+-- (3) Re-add all indexes (for replaced tables only).
 
 -----------------------
 -- Helper functions
