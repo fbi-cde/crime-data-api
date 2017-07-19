@@ -342,7 +342,7 @@ class VictimCountView(MultiYearCountView):
 class OffenseCountView(MultiYearCountView):
     """A class for fetching the counts broken down by offense"""
 
-    VARIABLES = ['weapon_name', 'method_entry_code', 'num_premises_entered', 'location_name']
+    VARIABLES = ['weapon_name', 'method_entry_code', 'num_premises_entered', 'location_name', 'offense_name']
 
     @property
     def view_name(self):
