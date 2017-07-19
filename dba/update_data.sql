@@ -177,7 +177,7 @@ CREATE TABLE ref_agency_replace (
 );
 
 -- Insert into replacement table.
-INSERT INTO ref_agency_replace (SELECT convert_to_integer(agency_id), ori, legacy_ori, ucr_agency_name, ncic_agency_name, pub_agency_name, convert_to_integer(agency_type_id), special_mailing_group, special_mailing_address, convert_to_integer(tribe_id), convert_to_integer(city_id), convert_to_integer(state_id), convert_to_integer(campus_id), agency_status, judicial_dist_code, convert_to_integer(submitting_agency_id), fid_code, convert_to_integer(department_id), to_timestamp_ucr(added_date), to_timestamp_ucr1(change_timestamp), change_user, legacy_notify_agency, convert_to_integer(dormant_year), convert_to_integer(population_family_id), convert_to_integer(field_office_id) from ref_agency_new);
+INSERT INTO ref_agency_replace (SELECT convert_to_integer(agency_id), ori, legacy_ori, ucr_agency_name, ncic_agency_name, pub_agency_name, convert_to_integer(agency_type_id), special_mailing_group, special_mailing_address, convert_to_integer(tribe_id), convert_to_integer(city_id), convert_to_integer(state_id), convert_to_integer(campus_id), agency_status, judicial_dist_code, convert_to_integer(submitting_agency_id), fid_code, convert_to_integer(department_id), to_timestamp_ucr(added_date), to_timestamp_ucr1(change_timestamp), change_user, legacy_notify_agency, convert_to_integer(dormant_year), convert_to_integer(population_family_id), convert_to_integer(field_office_id) from ref_agency_temp);
 
 
 -- Create temp shell.
@@ -218,7 +218,7 @@ CREATE TABLE ref_agency_county_replace (
 );
 
 -- insert into replacement.
-INSERT INTO ref_agency_county_replace (SELECT agency_id, county_id, convert_to_integer(metro_div_id), core_city_flag, convert_to_integer(data_year), convert_to_integer(population), convert_to_integer(census), legacy_county_code, legacy_msa_code, source_flag, to_timestamp_ucr1(change_timestamp), change_user from ref_agency_county_temp); 
+INSERT INTO ref_agency_county_replace (SELECT convert_to_integer(agency_id), convert_to_integer(county_id), convert_to_integer(metro_div_id), core_city_flag, convert_to_integer(data_year), convert_to_integer(population), convert_to_integer(census), legacy_county_code, legacy_msa_code, source_flag, to_timestamp_ucr1(change_timestamp), change_user from ref_agency_county_temp); 
 
 -- Shell for ref_agency_covered_by.
 DROP TABLE IF EXISTS ref_agency_covered_by_temp;
@@ -831,7 +831,7 @@ CREATE TABLE nibrs_criminal_act_temp (
 
 \COPY nibrs_criminal_act_temp (criminal_act_id, offense_id) FROM 'NIBRS_CA.csv' WITH DELIMITER ',';
 
-
+OFFENSE_ID  INCIDENT_ID OFFENSE_TYPE_ID ATTEMPT_COMPLETE_FLAG   LOCATION_ID NUM_PREMISES_ENTERED    METHOD_ENTRY_CODE   FF_LINE_NUMBER
 -- nibrs_offense
 DROP TABLE IF EXISTS nibrs_offense_temp;
 CREATE TABLE nibrs_offense_temp (
@@ -845,7 +845,7 @@ CREATE TABLE nibrs_offense_temp (
     ff_line_number text
 );
 
-\COPY nibrs_offense_temp (offense_id, incident_id, offense_type_id, attempt_complete_flag, location_id, num_premises_entered, method_entry_code, ff_line_number) FROM 'NIBRS_OF.csv' WITH DELIMITER ',';
+\COPY nibrs_offense_temp (offense_id, incident_id, offense_type_id, attempt_complete_flag, location_id, num_premises_entered, method_entry_code, ff_line_number) FROM 'NIBRS_OFF.csv' WITH DELIMITER ',';
 
 DROP TABLE IF EXISTS nibrs_offender_temp;
 CREATE TABLE nibrs_offender_temp (
@@ -862,7 +862,7 @@ CREATE TABLE nibrs_offender_temp (
     age_range_high_num text
 );
 
-\COPY nibrs_offender_temp (offender_id, incident_id, offender_seq_num, age_id, age_num, sex_code, race_id, ethnicity_id, ff_line_number, age_range_low_num, age_range_high_num) FROM 'NIBRS_OFF.csv' WITH DELIMITER ',';
+\COPY nibrs_offender_temp (offender_id, incident_id, offender_seq_num, age_id, age_num, sex_code, race_id, ethnicity_id, ff_line_number, age_range_low_num, age_range_high_num) FROM 'NIBRS_OF.csv' WITH DELIMITER ',';
 
 -- nibrs_property
 DROP TABLE IF EXISTS nibrs_property_temp;
@@ -1014,22 +1014,18 @@ CREATE TABLE reta_month_temp (
     prepared_by_user text,
     prepared_by_email text,
     orig_format text,
-    total_reported_count text,
-    total_unfounded_count text,
-    total_actual_count text,
-    total_cleared_count text,
-    total_juvenile_cleared_count text,
     leoka_felony text,
     leoka_accident text,
     leoka_assault text,
     leoka_status text,
     update_flag text,
     did text,
-    ff_line_number text
+    ff_line_number text,
+    extra text
 );
 
-
-\COPY reta_month_temp (reta_month_id, agency_id, data_year, month_num, data_home, source_flag, reported_flag, ddocname, month_included_in, report_date, prepared_date, prepared_by_user, prepared_by_email, orig_format, total_reported_count, total_unfounded_count, total_actual_count, total_cleared_count, total_juvenile_cleared_count, leoka_felony, leoka_accident, leoka_assault, leoka_status, update_flag, did, ff_line_number) FROM 'RetAM.csv' WITH DELIMITER ',';
+--RETA_MONTH_ID   AGENCY_ID   DATA_YEAR   MONTH_NUM   DATA_HOME   SOURCE_FLAG REPORTED_FLAG   DDOCNAME    MONTH_INCLUDED_IN   REPORT_DATE PREPARED_DATE   PREPARED_BY_USER    PREPARED_BY_EMAIL   ORIG_FORMAT LEOKA_FELONY    LEOKA_ACCIDENT  LEOKA_ASSAULT   LEOKA_STATUS    UPDATE_FLAG DID FF_LINE_NUMBER  MONTH_PUB_STATUS
+\COPY reta_month_temp (reta_month_id, agency_id, data_year, month_num, data_home, source_flag, reported_flag, ddocname, month_included_in, report_date, prepared_date, prepared_by_user, prepared_by_email, orig_format, leoka_felony, leoka_accident, leoka_assault, leoka_status, update_flag, did, ff_line_number, extra) FROM 'RetAM.csv' WITH DELIMITER ',';
 
 -- reta_month_offense_subcat
 DROP TABLE IF EXISTS reta_month_offense_subcat_temp;
@@ -1048,6 +1044,7 @@ CREATE TABLE reta_month_offense_subcat_temp (
     juvenile_cleared_status text
 );
 
+-- RETA_MONTH_ID   OFFENSE_SUBCAT_ID   REPORTED_COUNT  REPORTED_STATUS UNFOUNDED_COUNT UNFOUNDED_STATUS    ACTUAL_COUNT    ACTUAL_STATUS   CLEARED_COUNT   CLEARED_STATUS  JUVENILE_CLEARED_COUNT  JUVENILE_CLEARED_STATUS
 \COPY reta_month_offense_subcat_temp (reta_month_id, offense_subcat_id, reported_count, reported_status, unfounded_count, unfounded_status, actual_count, actual_status, cleared_count, cleared_status, juvenile_cleared_count, juvenile_cleared_status) FROM 'RetAMOS.csv' WITH DELIMITER ',';
 
 -----------------------------
@@ -1072,30 +1069,78 @@ CREATE TABLE asr_month_temp (
     ff_line_number text,
     ddocname text,
     did text,
-    data_home text
+    data_home text,
+    extra text
 );
 
-\COPY asr_month_temp (asr_month_id, agency_id, data_year, month_num, source_flag, reported_flag, orig_format, update_flag, ff_line_number, ddocname, did, data_home) FROM 'ASRM.csv' WITH DELIMITER ',';
+\COPY asr_month_temp (asr_month_id, agency_id, data_year, month_num, source_flag, reported_flag, orig_format, update_flag, ff_line_number, ddocname, did, data_home, extra) FROM 'ASRM.csv' WITH DELIMITER ',';
 
 
 
 -- asr_offense_subcat
-DROP TABLE IF EXISTS asr_offense_subcat_temp;
-CREATE TABLE asr_offense_subcat_temp (
+DROP TABLE IF EXISTS asr_race_offense_subcat_temp;
+CREATE TABLE asr_race_offense_subcat_temp (
+    asr_month_id text,
     offense_subcat_id text,
-    offense_id text,
-    offense_subcat_name text,
-    offense_subcat_code text,
-    srs_offense_code text,
-    master_offense_code text,
-    total_flag text,
-    adult_juv_flag text
+    race_id text,
+    juvenile_flag text,
+    arrest_count text,
+    arrest_status text,
+    active_flag text,
+    prepared_date text,
+    report_date text,
+    ff_line_number text,
+    asr_month_id_1 text,
+    agency_id text,
+    data_year text,
+    month_num text,
+    source_flag text,
+    reported_flag text,
+    orig_format text,
+    update_flag text,
+    ff_line_number_1 text,
+    ddocname text,
+    did text,
+    data_home text,
+    month_pub_status text
 );
 
-\COPY asr_offense_subcat_temp (offense_subcat_id, offense_id, offense_subcat_name, offense_subcat_code, srs_offense_code, master_offense_code, total_flag, adult_juv_flag) FROM 'ASROS.csv' WITH DELIMITER ',';
+
+\COPY asr_race_offense_subcat_temp (asr_month_id , offense_subcat_id ,    race_id ,    juvenile_flag ,    arrest_count ,    arrest_status ,    active_flag ,    prepared_date ,    report_date ,    ff_line_number ,    asr_month_id_1,    agency_id,    data_year,    month_num,    source_flag,    reported_flag,    orig_format,    update_flag,    ff_line_number_1,    ddocname,    did,    data_home,    month_pub_status) FROM 'ASROS.csv' WITH DELIMITER ',';
 
 
 -- ASRS.csv?????
+-- ASR_AGE_SEX_SUBCAT
+DROP TABLE IF EXISTS asr_age_sex_subcat_temp;
+CREATE TABLE asr_age_sex_subcat_temp (
+    asr_month_id text,
+    offense_subcat_id text,
+    age_range_id text,
+    arrest_count text,
+    arrest_status text,
+    active_flag text,
+    prepared_date text,
+    report_date text,
+    ff_line_number text,
+    asr_month_id_1 text,
+    agency_id text,
+    data_year text,
+    month_num text,
+    source_flag text,
+    reported_flag text,
+    orig_format text,
+    update_flag text,
+    ff_line_number_1 text,
+    ddocname text,
+    did text,
+    data_home text,
+    month_pub_status text
+);
+
+
+\COPY asr_age_sex_subcat_temp (asr_month_id ,    offense_subcat_id ,    age_range_id ,    arrest_count ,    arrest_status ,    active_flag ,    prepared_date ,    report_date ,    ff_line_number ,    asr_month_id_1,    agency_id,    data_year,    month_num,    source_flag,    reported_flag,    orig_format,    update_flag,    ff_line_number_1,    ddocname,    did,    data_home,    month_pub_status) FROM 'ASRS.csv' WITH DELIMITER ',';
+
+
 
 
 -----------------------------
@@ -1135,7 +1180,7 @@ CREATE TABLE hc_incident_temp (
     nibrs_incident_id text
 );
 
-\COPY hc_incident_temp (incident_id, agency_id, incident_no, incident_date, data_home, source_flag, ddocname, report_date, prepared_date, victim_count, adult_victim_count, incident_status, juvenile_victim_count, offender_count, adult_offender_count, juvenile_offender_count, offender_race_id, offender_ethnicity_id, update_flag, hc_quarter_id, ff_line_number, orig_format, did, nibrs_incident_id) FROM 'HC_I.csv' WITH DELIMITER ',';
+\COPY hc_incident_temp (incident_id, agency_id, incident_no, incident_date, data_home, source_flag, ddocname, report_date, prepared_date, victim_count, adult_victim_count, incident_status, juvenile_victim_count, offender_count, adult_offender_count, juvenile_offender_count, offender_race_id, offender_ethnicity_id, update_flag, hc_quarter_id, ff_line_number, orig_format, did, nibrs_incident_id) FROM 'Hate_I.csv' WITH DELIMITER ',';
 
 
 -- hc_bias_motivation
@@ -1158,7 +1203,7 @@ CREATE TABLE hc_offense_temp (
     nibrs_offense_id text
 );
 
-\COPY hc_offense_temp (offense_id, incident_id, offense_type_id, victim_count, location_id, nibrs_offense_id) FROM 'HC_O.csv' WITH DELIMITER ',';
+\COPY hc_offense_temp (offense_id, incident_id, offense_type_id, victim_count, location_id, nibrs_offense_id) FROM 'Hate_O.csv' WITH DELIMITER ',';
 
 -- hc_victim
 DROP TABLE IF EXISTS hc_victim_temp;
@@ -1212,7 +1257,7 @@ CREATE TABLE ct_victim_temp (
     victim_type_id text
 );
 
-\COPY ct_offense_temp (incident_id, victim_type_id) FROM 'Cargo_V.csv' WITH DELIMITER ',';
+\COPY ct_victim_temp (incident_id, victim_type_id) FROM 'Cargo_V.csv' WITH DELIMITER ',';
 
 
 -- ct_offense
@@ -1306,10 +1351,11 @@ CREATE TABLE arson_month_temp (
     orig_format text,
     update_flag text,
     did text,
-    ff_line_number text
+    ff_line_number text,
+    extra text
 );
 
-\COPY arson_month_temp (arson_month_id, agency_id, data_year, month_num, data_home, source_flag, reported_flag, ddocname, month_included_in, report_date, prepared_date, orig_format, update_flag, did, ff_line_number) FROM 'Arson_M.csv' WITH DELIMITER ',';
+\COPY arson_month_temp (arson_month_id, agency_id, data_year, month_num, data_home, source_flag, reported_flag, ddocname, month_included_in, report_date, prepared_date, orig_format, update_flag, did, ff_line_number, extra) FROM 'ArsonM.csv' WITH DELIMITER ',';
 
 
 -- arson_month_by_subcat
@@ -1333,7 +1379,7 @@ CREATE TABLE arson_month_by_subcat_temp (
     est_damage_value_status text
 );
 
-\COPY arson_month_by_subcat_temp (arson_month_id, subcategory_id, reported_count, reported_status, unfounded_count, unfounded_status, actual_count, actual_status, cleared_count, cleared_status, juvenile_cleared_count, juvenile_cleared_status, uninhabited_count, uninhabited_status, est_damage_value, est_damage_value_status) FROM 'Arson_MOS.csv' WITH DELIMITER ',';
+\COPY arson_month_by_subcat_temp (arson_month_id, subcategory_id, reported_count, reported_status, unfounded_count, unfounded_status, actual_count, actual_status, cleared_count, cleared_status, juvenile_cleared_count, juvenile_cleared_status, uninhabited_count, uninhabited_status, est_damage_value, est_damage_value_status) FROM 'ArsonMOS.csv' WITH DELIMITER ',';
 
 
 -----------------------------
@@ -1363,12 +1409,12 @@ INSERT INTO nibrs_victim_injury (SELECT convert_to_integer(victim_id), convert_t
 INSERT INTO nibrs_victim_offense (SELECT convert_to_integer(victim_id), convert_to_integer(offense_id) FROM nibrs_victim_offense_temp);
 INSERT INTO nibrs_victim_offender_rel (SELECT convert_to_integer(victim_id), convert_to_integer(offender_id), convert_to_integer(relationship_id), convert_to_integer(nibrs_victim_offender_id) FROM nibrs_victim_offender_rel);
 INSERT INTO nibrs_weapon (SELECT convert_to_integer(weapon_id), convert_to_integer(offense_id), convert_to_integer(nibrs_weapon_id) FROM nibrs_weapon_temp);
-INSERT INTO reta_month (SELECT convert_to_integer(reta_month_id), convert_to_integer(agency_id), convert_to_integer(data_year), convert_to_integer(month_num), data_home, source_flag, reported_flag, ddocname, convert_to_integer(month_included_in), to_timestamp_ucr(report_date), to_timestamp_ucr(prepared_date), prepared_by_user, prepared_by_email, orig_format, convert_to_integer(total_reported_count), convert_to_integer(total_unfounded_count), convert_to_integer(total_actual_count), convert_to_integer(total_cleared_count), convert_to_integer(total_juvenile_cleared_count), convert_to_integer(leoka_felony), convert_to_integer(leoka_accident), convert_to_integer(leoka_assault), convert_to_integer(leoka_status), update_flag, convert_to_integer(did), convert_to_integer(ff_line_number) FROM reta_month_temp);
+INSERT INTO reta_month (SELECT convert_to_integer(reta_month_id), convert_to_integer(agency_id), convert_to_integer(data_year), convert_to_integer(month_num), data_home, source_flag, reported_flag, ddocname, convert_to_integer(month_included_in), to_timestamp_ucr(report_date), to_timestamp_ucr(prepared_date), prepared_by_user, prepared_by_email, orig_format, convert_to_integer(leoka_felony), convert_to_integer(leoka_accident), convert_to_integer(leoka_assault), convert_to_integer(leoka_status), update_flag, convert_to_integer(did), convert_to_integer(ff_line_number) FROM reta_month_temp);
 INSERT INTO reta_month_offense_subcat (SELECT convert_to_integer(reta_month_id), convert_to_integer(offense_subcat_id), convert_to_integer(reported_count), convert_to_integer(reported_status), convert_to_integer(unfounded_count), convert_to_integer(unfounded_status), convert_to_integer(actual_count), convert_to_integer(actual_status), convert_to_integer(cleared_count), convert_to_integer(cleared_status), convert_to_integer(juvenile_cleared_count), convert_to_integer(juvenile_cleared_status) FROM reta_month_offense_subcat_temp);
 INSERT INTO asr_month (SELECT convert_to_integer(asr_month_id), convert_to_integer(agency_id), convert_to_integer(data_year), convert_to_integer(month_num), source_flag, reported_flag, orig_format, update_flag, convert_to_integer(ff_line_number), ddocname, convert_to_integer(did), data_home FROM asr_month_temp);
-INSERT INTO asr_offense_subcat (SELECT convert_to_integer(offense_subcat_id), convert_to_integer(offense_id), offense_subcat_name, offense_subcat_code, srs_offense_code, convert_to_integer(master_offense_code), total_flag, adult_juv_flag FROM asr_offense_subcat_temp);
+INSERT INTO asr_offense_subcat (SELECT convert_to_integer(asr_month_id) ,    convert_to_integer(offense_subcat_id) ,    convert_to_integer(race_id) ,    juvenile_flag ,    convert_to_integer(arrest_count) ,    convert_to_integer(arrest_status) ,    active_flag ,    to_timestamp_ucr(prepared_date) ,    to_timestamp_ucr(report_date) ,   convert_to_integer(ff_line_number) FROM asr_offense_subcat_temp);
+INSERT INTO asr_age_sex_subcat (SELECT convert_to_integer(asr_month_id), convert_to_integer(offense_subcat_id), convert_to_integer(age_range_id),  convert_to_integer(arrest_count) ,    convert_to_integer(arrest_status) , active_flag ,    to_timestamp_ucr(prepared_date) ,    to_timestamp_ucr(report_date) ,   convert_to_integer(ff_line_number)   FROM asr_age_sex_subcat_temp);
 
--- TODO: (Don't forget to replace temp table fields with text)
 -- hc_*
 INSERT INTO hc_incident (SELECT convert_to_integer(incident_id), convert_to_integer(agency_id), incident_no, to_timestamp_ucr(incident_date), data_home, source_flag, ddocname, to_timestamp_ucr(report_date), to_timestamp_ucr(prepared_date), convert_to_integer(victim_count), convert_to_integer(adult_victim_count), convert_to_integer(incident_status), convert_to_integer(juvenile_victim_count), convert_to_integer(offender_count), convert_to_integer(adult_offender_count), convert_to_integer(juvenile_offender_count), convert_to_integer(offender_race_id), convert_to_integer(offender_ethnicity_id), update_flag, convert_to_integer(hc_quarter_id), convert_to_integer(ff_line_number), orig_format, convert_to_integer(did), convert_to_integer(nibrs_incident_id) from hc_incident_temp);
 INSERT INTO hc_bias_motivation (SELECT convert_to_integer(offense_id), convert_to_integer(bias_id) from hc_bias_motivation_temp);
