@@ -355,7 +355,8 @@
         "weapon_name",
         "method_entry_code",
         "num_premises_entered",
-        "location_name"
+        "location_name",
+        "offense_name"
       ]
     },
     "cargoTheftsCountVariableParam": {
