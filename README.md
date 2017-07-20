@@ -110,7 +110,7 @@ Connecting to DB via Proxy
 
 *Perform the following command to open up an ssh shell into the server; I am sure there is a way to keep it from opening an actual shell, as we only need it to open the tunnel
 
-```ssh cf:<APP-GUID>/<APP Instance Index... I used 0?>@ssh.fr.cloud.gov -L <Port number of your choosing, just remember it>:<Really long servername from the ps aux command above>:5432 -o "ProxyCommand=nc --proxy <proxy server>:<proxy port> --proxy-auth <proxy-username>:'<proxy-pword>'"```
+```ssh cf:<APP-GUID>/<APP Instance Index... I used 0?>@ssh.fr.cloud.gov -L <Port number of your choosing, just remember it>:<Really long servername from the ps aux command above>:5432 -o "ProxyCommand=nc --proxy <proxy server>:<proxy port> %h %p --proxy-auth <proxy-username>:'<proxy-pword>'"```
 
 *it will ask for a password, type/paste in the result of the ```cf ssh-code``` command above
 
@@ -118,7 +118,7 @@ Connecting to DB via Proxy
 
 *In another terminal window perform the following command to connect to the DB
 
-```psql postgres://<uname from the cf connect-to-service command above>:<pword from the connect-to-service command above>:<random port you choose in the SSH command>/<DB name from connect-to-service command above>```
+```psql postgres://<uname from the cf connect-to-service command above>:<pword from the connect-to-service command above>@localhost:<random port you choose in the SSH command>/<DB name from connect-to-service command above>```
 
 *You are now connected into the DB
 
