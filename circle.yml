@@ -38,5 +38,4 @@ deployment:
       - cf install-plugin autopilot -f -r CF-Community
       - cf api $CF_API
       - cf auth $CF_USERNAME $CF_PASSWORD && cf target -o $CF_ORGANIZATION -s $CF_SPACE
-      - npm run build
       - cf zero-downtime-push crime-data-api -f manifests/production.yml
