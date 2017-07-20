@@ -1,6 +1,21 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-07-20]
+### Added
+- UCR participation to S3 reports file ([#577](https://github.com/18F/crime-data-api/pull/577))
+- A script for updating agency names from CSV ([#603](https://github.com/18F/crime-data-api/pull/603))
+- Arrest data ([#608](https://github.com/18F/crime-data-api/pull/608))
+- `nibrs_start_year` to agencies to represent the first year of reporting NIBRS ([#614](https://github.com/18F/crime-data-api/pull/614))
+- Offense API endpoint allows `offense_name` as a variable ([#618](https://github.com/18F/crime-data-api/pull/618))
+
+### Changed
+- "LEOKA" changed to "assaults on law enforcement officers" in API documentation ([#619](https://github.com/18F/crime-data-api/pull/619))
+
+### Fixed
+- NIBRS participation years for some agencies ([#612](https://github.com/18F/crime-data-api/issues/612))
+
+
 ## [2017-06-30]
 ### Added
 - Territory data ([#575](https://github.com/18F/crime-data-api/pull/575))
