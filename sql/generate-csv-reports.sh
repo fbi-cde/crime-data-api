@@ -88,6 +88,8 @@ done
        JOIN ref_state ON ref_state.state_postal_abbr=ht_summary.state_abbr
        WHERE year IS NOT NULL AND ori IS NULL ORDER by year, state_name) To 'human_trafficking.csv' with CSV DELIMITER ',' HEADER;
 
+\copy (SELECT * from asr_national ORDER by year DESC) TO 'arrests_national.csv' with CSV DELIMITER ',' HEADER;
+
 export S3_CREDENTIALS="`cf service-key fbi-cde-s3  colin-key | tail -n +2`"
 export AWS_ACCESS_KEY_ID=`echo "${S3_CREDENTIALS}" | jq -r .access_key_id`
 export AWS_SECRET_ACCESS_KEY=`echo "${S3_CREDENTIALS}" | jq -r .secret_access_key`
@@ -100,6 +102,7 @@ aws s3 cp ucr_participation.csv s3://${BUCKET_NAME}/ucr_participation.csv
 aws s3 cp agencies.csv s3://${BUCKET_NAME}/agencies.csv
 aws s3 cp territories.csv s3://${BUCKET_NAME}/territories.csv
 aws s3 cp human_trafficking.csv s3://${BUCKET_NAME}/human_trafficking.csv
+aws s3 cp arrests_national.csv s3://${BUCKET_NAME}/arrests_national.csv
 
 for i in "${arr_years[@]}"
     aws s3 cp --recursive nibrs-$i/ s3://${BUCKET_NAME}/$i

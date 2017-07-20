@@ -223,6 +223,46 @@ class RetaEstimated(db.Model):
     state = relationship(RefState)
 
 
+class ArrestsNational(db.Model):
+    """Estimated data about national arrest totals"""
+    __tablename__ = 'asr_national'
+
+    id = db.Column(db.BigInteger, autoincrement=True, primary_key=True)
+    year = db.Column(db.SmallInteger)
+    population = db.Column(db.BigInteger)
+    total_arrests = db.Column(db.BigInteger)
+    homicide = db.Column(db.BigInteger)
+    rape = db.Column(db.BigInteger)
+    robbery = db.Column(db.BigInteger)
+    aggravated_assault = db.Column(db.BigInteger)
+    burglary = db.Column(db.BigInteger)
+    larceny = db.Column(db.BigInteger)
+    motor_vehicle_theft = db.Column(db.BigInteger)
+    arson = db.Column(db.BigInteger)
+    violent_crime = db.Column(db.BigInteger)
+    property_crime = db.Column(db.BigInteger)
+    other_assault = db.Column(db.BigInteger)
+    forgery = db.Column(db.BigInteger)
+    fraud = db.Column(db.BigInteger)
+    embezzlement = db.Column(db.BigInteger)
+    stolen_property = db.Column(db.BigInteger)
+    vandalism = db.Column(db.BigInteger)
+    weapons = db.Column(db.BigInteger)
+    prostitution = db.Column(db.BigInteger)
+    other_sex_offenses = db.Column(db.BigInteger)
+    drug_abuse = db.Column(db.BigInteger)
+    gambling = db.Column(db.BigInteger)
+    against_family = db.Column(db.BigInteger)
+    dui = db.Column(db.BigInteger)
+    liquor_laws = db.Column(db.BigInteger)
+    drunkenness = db.Column(db.BigInteger)
+    disorderly_conduct = db.Column(db.BigInteger)
+    vagrancy = db.Column(db.BigInteger)
+    other = db.Column(db.BigInteger)
+    suspicion = db.Column(db.BigInteger)
+    curfew_loitering = db.Column(db.BigInteger)
+
+
 class AgencySums(db.Model):
 
     __tablename__ = 'agency_sums_view'
