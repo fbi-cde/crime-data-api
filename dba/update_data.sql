@@ -13,7 +13,7 @@ DECLARE v_int_value INTEGER DEFAULT NULL;
 BEGIN
     BEGIN
         IF (v_input = '') IS NOT FALSE THEN
-            v_int_value := 0;
+            v_int_value := NULL;
         ELSE
             v_int_value := v_input::BIGINT;
         END IF;
@@ -88,7 +88,7 @@ $$ LANGUAGE plpgsql;
 ----------------------
 ---
 ---
---- REFERENCE TABLE UPLOAD + REPLACEMENT.
+--- MERGE NEW REF DATA WITH EXISTING REF DATA.
 --- 
 ---
 ----------------------
@@ -159,7 +159,7 @@ CREATE TABLE ref_agency_replace (
 
 -- Insert into replacement table.
 INSERT INTO ref_agency_replace (SELECT convert_to_integer(agency_id), ori, legacy_ori, ucr_agency_name, ncic_agency_name, pub_agency_name, convert_to_integer(agency_type_id), special_mailing_group, special_mailing_address, convert_to_integer(tribe_id), convert_to_integer(city_id), convert_to_integer(state_id), convert_to_integer(campus_id), agency_status, judicial_dist_code, convert_to_integer(submitting_agency_id), fid_code, convert_to_integer(department_id), to_timestamp_ucr(added_date), to_timestamp_ucr1(change_timestamp), change_user, legacy_notify_agency, convert_to_integer(dormant_year), convert_to_integer(population_family_id), convert_to_integer(field_office_id) from ref_agency_temp);
-
+INSERT INTO ref_agency SELECT * from ref_agency_replace where not exists (select * from ref_agency where ref_agency.agency_id = ref_agency_replace.agency_id);
 
 -- Create temp shell.
 DROP TABLE IF EXISTS ref_agency_county_temp;
@@ -201,6 +201,8 @@ CREATE TABLE ref_agency_county_replace (
 -- insert into replacement.
 INSERT INTO ref_agency_county_replace (SELECT convert_to_integer(agency_id), convert_to_integer(county_id), convert_to_integer(metro_div_id), core_city_flag, convert_to_integer(data_year), convert_to_integer(population), convert_to_integer(census), legacy_county_code, legacy_msa_code, source_flag, to_timestamp_ucr1(change_timestamp), change_user from ref_agency_county_temp); 
 
+INSERT INTO ref_agency_county SELECT * from ref_agency_county_replace where not exists (select * from ref_agency_county where ref_agency_county.agency_id = ref_agency_county_replace.agency_id and ref_agency_county_replace.county_id = ref_agency_county.county_id);
+
 -- Shell for ref_agency_covered_by.
 DROP TABLE IF EXISTS ref_agency_covered_by_temp;
 CREATE TABLE ref_agency_covered_by_temp (
@@ -220,7 +222,7 @@ CREATE TABLE ref_agency_covered_by_replace (
 );
 
 INSERT INTO ref_agency_covered_by_replace (SELECT convert_to_integer(agency_id), convert_to_integer(data_year), convert_to_integer(covered_by_agency_id) FROM ref_agency_covered_by_temp);
-
+INSERT INTO ref_agency_covered_by SELECT * from ref_agency_covered_by_replace where not exists (select * from ref_agency_covered_by where ref_agency_covered_by.agency_id = ref_agency_covered_by_replace.agency_id and ref_agency_covered_by_replace.data_year = ref_agency_covered_by.data_year);
 
 -- ref_county
 DROP TABLE IF EXISTS ref_county_temp;
@@ -248,6 +250,7 @@ CREATE TABLE ref_county_replace (
 );
 
 INSERT INTO ref_county_replace (SELECT convert_to_integer(county_id), convert_to_integer(state_id), county_name, county_ansi_code, county_fips_code, legacy_county_code, comments from ref_county_temp);
+INSERT INTO ref_county SELECT * from ref_county_replace where not exists (select * from ref_county where ref_county_replace.county_id = ref_county.county_id);
 
 -- ref_country
 DROP TABLE IF EXISTS ref_country_temp;
@@ -267,6 +270,7 @@ CREATE TABLE ref_country_replace (
 );
 
 INSERT INTO ref_country_replace (SELECT convert_to_integer(country_id), convert_to_integer(continent_id), country_desc from ref_country_temp);
+INSERT INTO ref_country SELECT * from ref_country_replace where not exists (select * from ref_country where ref_country_replace.country_id = ref_country.country_id);
 
 -- ref_county_population
 
@@ -296,6 +300,9 @@ CREATE TABLE ref_county_population_replace (
 );
 
 INSERT INTO ref_county_population_replace (SELECT convert_to_integer(county_id), convert_to_integer(data_year), convert_to_integer(population), source_flag, to_timestamp_ucr1(change_timestamp), change_user, convert_to_integer(reporting_population) FROM ref_county_population_temp);
+INSERT INTO ref_county_population SELECT * from ref_county_population_replace where not exists (select * from ref_county_population where ref_county_population_replace.county_id = ref_county_population.county_id and ref_county_population_replace.data_year = ref_county_population.data_year);
+
+
 
 -- ref_agency_population
 DROP TABLE IF EXISTS ref_agency_population_temp;
@@ -313,6 +320,7 @@ CREATE TABLE ref_agency_population_temp (
 
 \COPY ref_agency_population_temp (agency_id, data_year, population_group_id, population, source_flag, change_timestamp, change_user, city_sequence, suburban_area_flag) FROM 'REF_AP.csv' WITH DELIMITER '|';
 
+
 DROP TABLE IF EXISTS ref_agency_population_replace;
 CREATE TABLE ref_agency_population_replace (
     agency_id bigint NOT NULL,
@@ -327,7 +335,7 @@ CREATE TABLE ref_agency_population_replace (
 );
 
 INSERT INTO ref_agency_population_replace (SELECT convert_to_integer(agency_id), convert_to_integer(data_year), convert_to_integer(population_group_id), convert_to_integer(population), source_flag, to_timestamp_ucr1(change_timestamp), change_user, convert_to_integer(city_sequence), suburban_area_flag FROM ref_agency_population_temp);
-
+INSERT INTO ref_agency_population SELECT * from ref_agency_population_replace where not exists (select * from ref_agency_population where ref_agency_population_replace.agency_id = ref_agency_population.agency_id and ref_agency_population_replace.data_year = ref_agency_population.data_year);
 
 -- ref_tribe_population
 DROP TABLE IF EXISTS ref_tribe_population_temp;
@@ -357,349 +365,7 @@ CREATE TABLE ref_tribe_population_replace (
 );
 
 INSERT INTO ref_tribe_population_replace (SELECT convert_to_integer(tribe_id), convert_to_integer(data_year), convert_to_integer(population), source_flag, convert_to_integer(census), to_timestamp_ucr1(change_timestamp), change_user, convert_to_integer(reporting_population) FROM ref_tribe_population_temp);
-
-
----------------------------
---
--- 
--- REPLACE REF TABLES.
---
---
----------------------------
-
--- Replace table safely.
-ALTER TABLE ref_agency RENAME TO ref_agency_old;
-ALTER TABLE ref_agency_replace RENAME TO ref_agency;
-DROP TABLE ref_agency_old;
-
-ALTER TABLE ref_agency_county RENAME TO ref_agency_county_old;
-ALTER TABLE ref_agency_county_replace RENAME TO ref_agency_county;
-DROP TABLE ref_agency_county_old;
-
-ALTER TABLE ref_agency_covered_by RENAME TO ref_agency_covered_by_old;
-ALTER TABLE ref_agency_covered_by_replace RENAME TO ref_agency_covered_by;
-DROP TABLE ref_agency_covered_by_old;
-
-ALTER TABLE ref_county RENAME TO ref_county_old;
-ALTER TABLE ref_county_replace RENAME TO ref_county;
-DROP TABLE ref_county_old;
-
-ALTER TABLE ref_country RENAME TO ref_country_old;
-ALTER TABLE ref_country_replace RENAME TO ref_country;
-DROP TABLE ref_country;
-
-ALTER TABLE ref_county_population RENAME TO ref_county_population_old;
-ALTER TABLE ref_county_population_replace RENAME TO ref_county_population;
-DROP TABLE ref_county_population_old;
-
-ALTER TABLE ref_agency_population RENAME TO ref_agency_population_old;
-ALTER TABLE ref_agency_population_replace RENAME TO ref_agency_population;
-DROP TABLE ref_agency_population_old;
-
-ALTER TABLE ref_tribe_population RENAME TO ref_tribe_population_old;
-ALTER TABLE ref_tribe_population_replace RENAME TO ref_tribe_population;
-DROP TABLE ref_tribe_population_old;
-
----------------------------
--- 
--- 
--- REF TABLE INDEX BLOCK
--- 
--- 
----------------------------
-
---
--- Name: ref_agency_ori_key; Type: CONSTRAINT; Schema: public; Owner: colincraig
---
-
-ALTER TABLE ONLY ref_agency
-    ADD CONSTRAINT ref_agency_ori_key UNIQUE (ori);
-
-
---
--- Name: ref_agency_pkey; Type: CONSTRAINT; Schema: public; Owner: colincraig
---
-
-ALTER TABLE ONLY ref_agency
-    ADD CONSTRAINT ref_agency_pkey PRIMARY KEY (agency_id);
-
-
---
--- Name: agency_uni_campus_ix; Type: INDEX; Schema: public; Owner: colincraig
---
-
-CREATE INDEX agency_uni_campus_ix ON ref_agency USING btree (campus_id);
-
-
---
--- Name: ra_state_id; Type: INDEX; Schema: public; Owner: colincraig
---
-
-CREATE INDEX ra_state_id ON ref_agency USING btree (state_id);
-
-
---
--- Name: ref_agency_city_id_idx; Type: INDEX; Schema: public; Owner: colincraig
---
-
-CREATE INDEX ref_agency_city_id_idx ON ref_agency USING btree (city_id);
-
-
---
--- Name: ref_agency_city_ix; Type: INDEX; Schema: public; Owner: colincraig
---
-
-CREATE INDEX ref_agency_city_ix ON ref_agency USING btree (city_id);
-
-
---
--- Name: ref_agency_department_ix; Type: INDEX; Schema: public; Owner: colincraig
---
-
-CREATE INDEX ref_agency_department_ix ON ref_agency USING btree (department_id);
-
-
---
--- Name: ref_agency_field_office_idx; Type: INDEX; Schema: public; Owner: colincraig
---
-
-CREATE INDEX ref_agency_field_office_idx ON ref_agency USING btree (field_office_id);
-
-
---
--- Name: ref_agency_pop_family_idx; Type: INDEX; Schema: public; Owner: colincraig
---
-
-CREATE INDEX ref_agency_pop_family_idx ON ref_agency USING btree (population_family_id);
-
-
---
--- Name: ref_agency_short_ori_idx; Type: INDEX; Schema: public; Owner: colincraig
---
-
-CREATE INDEX ref_agency_short_ori_idx ON ref_agency USING btree ("substring"((legacy_ori)::text, 0, 7));
-
-
---
--- Name: ref_agency_state_id_idx; Type: INDEX; Schema: public; Owner: colincraig
---
-
-CREATE INDEX ref_agency_state_id_idx ON ref_agency USING btree (state_id);
-
-
---
--- Name: ref_agency_sub_agency_ix; Type: INDEX; Schema: public; Owner: colincraig
---
-
-CREATE INDEX ref_agency_sub_agency_ix ON ref_agency USING btree (submitting_agency_id);
-
-
---
--- Name: ref_agency_tribe_ix; Type: INDEX; Schema: public; Owner: colincraig
---
-
-CREATE INDEX ref_agency_tribe_ix ON ref_agency USING btree (tribe_id);
-
-
---
--- Name: ref_agency_type_ix; Type: INDEX; Schema: public; Owner: colincraig
---
-
-CREATE INDEX ref_agency_type_ix ON ref_agency USING btree (agency_type_id);
-
-
---
--- Name: agency_state_fk; Type: FK CONSTRAINT; Schema: public; Owner: colincraig
---
-
-ALTER TABLE ONLY ref_agency
-    ADD CONSTRAINT agency_state_fk FOREIGN KEY (state_id) REFERENCES ref_state(state_id);
-
-
---
--- Name: ref_agency_department_fk; Type: FK CONSTRAINT; Schema: public; Owner: colincraig
---
-
-ALTER TABLE ONLY ref_agency
-    ADD CONSTRAINT ref_agency_department_fk FOREIGN KEY (department_id) REFERENCES ref_department(department_id);
-
-
---
--- Name: ref_agency_field_office_fk; Type: FK CONSTRAINT; Schema: public; Owner: colincraig
---
-
-ALTER TABLE ONLY ref_agency
-    ADD CONSTRAINT ref_agency_field_office_fk FOREIGN KEY (field_office_id) REFERENCES ref_field_office(field_office_id);
-
-
---
--- Name: ref_agency_pop_family_fk; Type: FK CONSTRAINT; Schema: public; Owner: colincraig
---
-
-ALTER TABLE ONLY ref_agency
-    ADD CONSTRAINT ref_agency_pop_family_fk FOREIGN KEY (population_family_id) REFERENCES ref_population_family(population_family_id);
-
-
---
--- Name: ref_agency_sub_agency_fk; Type: FK CONSTRAINT; Schema: public; Owner: colincraig
---
-
-ALTER TABLE ONLY ref_agency
-    ADD CONSTRAINT ref_agency_sub_agency_fk FOREIGN KEY (submitting_agency_id) REFERENCES ref_submitting_agency(agency_id);
-
-
---
--- Name: ref_agency_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: colincraig
---
-
-ALTER TABLE ONLY ref_agency
-    ADD CONSTRAINT ref_agency_type_fk FOREIGN KEY (agency_type_id) REFERENCES ref_agency_type(agency_type_id);
-
-
---
--- Name: ref_agency_county_pkey; Type: CONSTRAINT; Schema: public; Owner: colincraig
---
-
-ALTER TABLE ONLY ref_agency_county
-    ADD CONSTRAINT ref_agency_county_pkey PRIMARY KEY (agency_id, county_id, metro_div_id, data_year);
-
-
---
--- Name: agency_county_county_ix; Type: INDEX; Schema: public; Owner: colincraig
---
-
-CREATE INDEX agency_county_county_ix ON ref_agency_county USING btree (county_id);
-
-
---
--- Name: ref_agency_county_met_div_ix; Type: INDEX; Schema: public; Owner: colincraig
---
-
-CREATE INDEX ref_agency_county_met_div_ix ON ref_agency_county USING btree (metro_div_id);
-
-
---
--- Name: agency_county_agency_fk; Type: FK CONSTRAINT; Schema: public; Owner: colincraig
---
-
-ALTER TABLE ONLY ref_agency_county
-    ADD CONSTRAINT agency_county_agency_fk FOREIGN KEY (agency_id) REFERENCES ref_agency(agency_id);
-
-
---
--- Name: ref_agency_county_met_div_fk; Type: FK CONSTRAINT; Schema: public; Owner: colincraig
---
-
-ALTER TABLE ONLY ref_agency_county
-    ADD CONSTRAINT ref_agency_county_met_div_fk FOREIGN KEY (metro_div_id) REFERENCES ref_metro_division(metro_div_id);
-
-
---
--- Name: ref_agency_covered_by_pkey; Type: CONSTRAINT; Schema: public; Owner: colincraig
---
-
-ALTER TABLE ONLY ref_agency_covered_by
-    ADD CONSTRAINT ref_agency_covered_by_pkey PRIMARY KEY (agency_id, data_year);
-
-
---
--- Name: ref_agency_cov_agency_ix; Type: INDEX; Schema: public; Owner: colincraig
---
-
-CREATE INDEX ref_agency_cov_agency_ix ON ref_agency_covered_by USING btree (covered_by_agency_id);
-
-
---
--- Name: ref_agency_agency_fk; Type: FK CONSTRAINT; Schema: public; Owner: colincraig
---
-
-ALTER TABLE ONLY ref_agency_covered_by
-    ADD CONSTRAINT ref_agency_agency_fk FOREIGN KEY (agency_id) REFERENCES ref_agency(agency_id);
-
-
---
--- Name: ref_agency_cov_agency_fk; Type: FK CONSTRAINT; Schema: public; Owner: colincraig
---
-
-ALTER TABLE ONLY ref_agency_covered_by
-    ADD CONSTRAINT ref_agency_cov_agency_fk FOREIGN KEY (covered_by_agency_id) REFERENCES ref_agency(agency_id);
-
-
---
--- Name: ref_county_pkey; Type: CONSTRAINT; Schema: public; Owner: colincraig
---
-
-ALTER TABLE ONLY ref_county
-    ADD CONSTRAINT ref_county_pkey PRIMARY KEY (county_id);
-
-
---
--- Name: ref_county_state_ix; Type: INDEX; Schema: public; Owner: colincraig
---
-
-CREATE INDEX ref_county_state_ix ON ref_county USING btree (state_id);
-
-
---
--- Name: ref_county_state_fk; Type: FK CONSTRAINT; Schema: public; Owner: colincraig
---
-
-ALTER TABLE ONLY ref_county
-    ADD CONSTRAINT ref_county_state_fk FOREIGN KEY (state_id) REFERENCES ref_state(state_id);
-
-
--- Name: ref_country_pkey; Type: CONSTRAINT; Schema: public; Owner: colincraig
---
-
-ALTER TABLE ONLY ref_country
-    ADD CONSTRAINT ref_country_pkey PRIMARY KEY (country_id);
-
-
---
--- Name: ref_country_continent_ix; Type: INDEX; Schema: public; Owner: colincraig
---
-
-CREATE INDEX ref_country_continent_ix ON ref_country USING btree (continent_id);
-
-
---
--- Name: ref_country_continent_fk; Type: FK CONSTRAINT; Schema: public; Owner: colincraig
---
-
-ALTER TABLE ONLY ref_country
-    ADD CONSTRAINT ref_country_continent_fk FOREIGN KEY (continent_id) REFERENCES ref_continent(continent_id);
-
-
---
--- Name: ref_county_population_pkey; Type: CONSTRAINT; Schema: public; Owner: colincraig
---
-
-ALTER TABLE ONLY ref_county_population
-    ADD CONSTRAINT ref_county_population_pkey PRIMARY KEY (county_id, data_year);
-
-
---
--- Name: ref_county_pop_county_fk; Type: FK CONSTRAINT; Schema: public; Owner: colincraig
---
-
-ALTER TABLE ONLY ref_county_population
-    ADD CONSTRAINT ref_county_pop_county_fk FOREIGN KEY (county_id) REFERENCES ref_county(county_id);
-
---
--- Name: ref_tribe_population_pkey; Type: CONSTRAINT; Schema: public; Owner: colincraig
---
-
-ALTER TABLE ONLY ref_tribe_population
-    ADD CONSTRAINT ref_tribe_population_pkey PRIMARY KEY (tribe_id, data_year);
-
-
---
--- Name: ref_tribe_pop_tribe_fk; Type: FK CONSTRAINT; Schema: public; Owner: colincraig
---
-
-ALTER TABLE ONLY ref_tribe_population
-    ADD CONSTRAINT ref_tribe_pop_tribe_fk FOREIGN KEY (tribe_id) REFERENCES ref_tribe(tribe_id);
-
+INSERT INTO ref_tribe_population SELECT * from ref_tribe_population_replace where not exists (select * from ref_tribe_population where ref_tribe_population_replace.tribe_id = ref_tribe_population.tribe_id and ref_tribe_population_replace.data_year = ref_tribe_population.data_year);
 
 
 --------------------------
@@ -734,6 +400,30 @@ CREATE TABLE nibrs_incident_temp (
 );
 
 \COPY nibrs_incident_temp (agency_id, incident_id, nibrs_month_id, incident_number, cargo_theft_flag, submission_date, incident_date, report_date_flag, incident_hour, cleared_except_id, cleared_except_date, incident_status, data_home, ddocname, orig_format, ff_line_number, did) FROM 'NIBRS_I.csv' WITH DELIMITER ',';
+
+
+CREATE TABLE nibrs_incident_new (
+    agency_id bigint NOT NULL,
+    incident_id bigint NOT NULL,
+    nibrs_month_id bigint NOT NULL,
+    incident_number character varying(15),
+    cargo_theft_flag character(1),
+    submission_date timestamp without time zone,
+    incident_date timestamp without time zone,
+    report_date_flag character(1),
+    incident_hour smallint,
+    cleared_except_id smallint NOT NULL,
+    cleared_except_date timestamp without time zone,
+    incident_status smallint,
+    data_home character(1),
+    ddocname character varying(100),
+    orig_format character(1),
+    ff_line_number bigint,
+    did bigint
+);
+
+
+
 
 -- nibrs_month
 DROP TABLE IF EXISTS nibrs_month_temp;
@@ -782,6 +472,28 @@ CREATE TABLE nibrs_arrestee_temp (
 
 \COPY nibrs_arrestee_temp (arrestee_id, incident_id, arrestee_seq_num, arrest_num, arrest_date, arrest_type_id, multiple_indicator, offense_type_id, age_id, age_num, sex_code, race_id, ethnicity_id, resident_code, under_18_disposition_code, clearance_ind, ff_line_number, age_range_low_num, age_range_high_num) FROM 'NIBRS_A.csv' WITH DELIMITER ',';
 
+CREATE TABLE nibrs_arrestee_new (
+    arrestee_id bigint NOT NULL,
+    incident_id bigint NOT NULL,
+    arrestee_seq_num bigint,
+    arrest_num character varying(12),
+    arrest_date timestamp without time zone,
+    arrest_type_id smallint,
+    multiple_indicator character(1),
+    offense_type_id bigint NOT NULL,
+    age_id smallint NOT NULL,
+    age_num smallint,
+    sex_code character(1),
+    race_id smallint NOT NULL,
+    ethnicity_id smallint,
+    resident_code character(1),
+    under_18_disposition_code character(1),
+    clearance_ind character(1),
+    ff_line_number bigint,
+    age_range_low_num smallint,
+    age_range_high_num smallint
+);
+
 
 -- nibrs_arrestee_weapon
 DROP TABLE IF EXISTS nibrs_arrestee_weapon_temp;
@@ -812,7 +524,6 @@ CREATE TABLE nibrs_criminal_act_temp (
 
 \COPY nibrs_criminal_act_temp (criminal_act_id, offense_id) FROM 'NIBRS_CA.csv' WITH DELIMITER ',';
 
-OFFENSE_ID  INCIDENT_ID OFFENSE_TYPE_ID ATTEMPT_COMPLETE_FLAG   LOCATION_ID NUM_PREMISES_ENTERED    METHOD_ENTRY_CODE   FF_LINE_NUMBER
 -- nibrs_offense
 DROP TABLE IF EXISTS nibrs_offense_temp;
 CREATE TABLE nibrs_offense_temp (
@@ -827,6 +538,17 @@ CREATE TABLE nibrs_offense_temp (
 );
 
 \COPY nibrs_offense_temp (offense_id, incident_id, offense_type_id, attempt_complete_flag, location_id, num_premises_entered, method_entry_code, ff_line_number) FROM 'NIBRS_OFF.csv' WITH DELIMITER ',';
+
+CREATE TABLE nibrs_offense_new (
+    offense_id bigint NOT NULL,
+    incident_id bigint NOT NULL,
+    offense_type_id bigint NOT NULL,
+    attempt_complete_flag character(1),
+    location_id bigint NOT NULL,
+    num_premises_entered smallint,
+    method_entry_code character(1),
+    ff_line_number bigint
+);
 
 DROP TABLE IF EXISTS nibrs_offender_temp;
 CREATE TABLE nibrs_offender_temp (
@@ -845,6 +567,22 @@ CREATE TABLE nibrs_offender_temp (
 
 \COPY nibrs_offender_temp (offender_id, incident_id, offender_seq_num, age_id, age_num, sex_code, race_id, ethnicity_id, ff_line_number, age_range_low_num, age_range_high_num) FROM 'NIBRS_OF.csv' WITH DELIMITER ',';
 
+
+CREATE TABLE nibrs_offender_new (
+    offender_id bigint NOT NULL,
+    incident_id bigint NOT NULL,
+    offender_seq_num smallint,
+    age_id smallint,
+    age_num smallint,
+    sex_code character(1),
+    race_id smallint,
+    ethnicity_id smallint,
+    ff_line_number bigint,
+    age_range_low_num smallint,
+    age_range_high_num smallint
+);
+
+
 -- nibrs_property
 DROP TABLE IF EXISTS nibrs_property_temp;
 CREATE TABLE nibrs_property_temp (
@@ -859,6 +597,15 @@ CREATE TABLE nibrs_property_temp (
 \COPY nibrs_property_temp (property_id, incident_id, prop_loss_id, stolen_count, recovered_count, ff_line_number) FROM 'NIBRS_P.csv' WITH DELIMITER ',';
 
 
+CREATE TABLE nibrs_property_new (
+    property_id bigint NOT NULL,
+    incident_id bigint NOT NULL,
+    prop_loss_id smallint NOT NULL,
+    stolen_count smallint,
+    recovered_count smallint,
+    ff_line_number bigint
+);
+
 -- nibrs_property_desc
 DROP TABLE IF EXISTS nibrs_property_desc_temp;
 CREATE TABLE nibrs_property_desc_temp (
@@ -870,6 +617,15 @@ CREATE TABLE nibrs_property_desc_temp (
 );
 
 \COPY nibrs_property_desc_temp (property_id, prop_desc_id, property_value, date_recovered, nibrs_prop_desc_id) FROM 'NIBRS_PD.csv' WITH DELIMITER ',';
+
+DROP TABLE IF EXISTS nibrs_property_desc_new;
+CREATE TABLE nibrs_property_desc_new (
+    property_id bigint,
+    prop_desc_id bigint,
+    property_value int,
+    date_recovered timestamp,
+    nibrs_prop_desc_id int
+);
 
 
 -- nibrs_suspected_drug
@@ -917,6 +673,26 @@ CREATE TABLE nibrs_victim_temp (
 );
 
 \COPY nibrs_victim_temp (victim_id, incident_id, victim_seq_num, victim_type_id, assignment_type_id, activity_type_id, outside_agency_id, age_id, age_num, sex_code, race_id, ethnicity_id, resident_status_code, agency_data_year, ff_line_number, age_range_low_num, age_range_high_num) FROM 'NIBRS_V.csv' WITH DELIMITER ',';
+
+CREATE TABLE nibrs_victim_new (
+    victim_id bigint NOT NULL,
+    incident_id bigint NOT NULL,
+    victim_seq_num smallint,
+    victim_type_id smallint NOT NULL,
+    assignment_type_id smallint,
+    activity_type_id smallint,
+    outside_agency_id bigint,
+    age_id smallint,
+    age_num smallint,
+    sex_code character(1),
+    race_id smallint,
+    ethnicity_id smallint,
+    resident_status_code character(1),
+    agency_data_year smallint,
+    ff_line_number bigint,
+    age_range_low_num smallint,
+    age_range_high_num smallint
+);
 
 -- nibrs_victim_circumstances
 DROP TABLE IF EXISTS nibrs_victim_circumstances_temp;
@@ -1163,6 +939,27 @@ CREATE TABLE hc_incident_temp (
 
 \COPY hc_incident_temp (incident_id, agency_id, incident_no, incident_date, data_home, source_flag, ddocname, report_date, prepared_date, victim_count, adult_victim_count, incident_status, juvenile_victim_count, offender_count, adult_offender_count, juvenile_offender_count, offender_race_id, offender_ethnicity_id, update_flag, hc_quarter_id, ff_line_number, orig_format, did, nibrs_incident_id) FROM 'Hate_I.csv' WITH DELIMITER ',';
 
+-- hc_quarter
+DROP TABLE IF EXISTS hc_quarter_temp;
+CREATE TABLE hc_quarter_temp (
+    agency_id text,
+    quarter_num text,
+    data_year text,
+    reported_status text,
+    reported_count text,
+    hc_quarter_id text,
+    update_flag text,
+    orig_format text,
+    ff_line_number text,
+    ddocname text,
+    did text,
+    data_home text,
+    quarter_pub_status text
+);
+
+
+\COPY hc_quarter_temp (agency_id, quarter_num, data_year, reported_status, reported_count, hc_quarter_id, update_flag, orig_format, ff_line_number, ddocname, did, data_home, quarter_pub_status) FROM 'Hate_Q.csv' WITH DELIMITER ',';
+
 
 -- hc_bias_motivation
 DROP TABLE IF EXISTS hc_bias_motivation_temp;
@@ -1371,36 +1168,63 @@ CREATE TABLE arson_month_by_subcat_temp (
 --
 ------------------------------
 
+INSERT INTO ref_agency_old SELECT * from ref_agency where not exists (select * from ref_agency_old where ref_agency_old.agency_id = ref_agency.agency_id);
+
+
+
+
 -- Save this task for last. Be sure everything lines up.
-INSERT INTO nibrs_incident (SELECT convert_to_integer(agency_id), convert_to_integer(incident_id), convert_to_integer(nibrs_month_id), convert_to_integer(incident_number), cargo_theft_flag, to_timestamp_ucr(submission_date), to_timestamp_ucr(incident_date), report_date_flag, convert_to_integer(incident_hour), convert_to_integer(cleared_except_id), to_timestamp_ucr(cleared_except_date), convert_to_integer(incident_status), data_home, ddocname, orig_format, convert_to_integer(ff_line_number), convert_to_integer(did) FROM nibrs_incident_temp);
+
+-- DONE!
+UPDATE nibrs_incident_new SET incident_number = '';
 INSERT INTO nibrs_month (SELECT convert_to_integer(nibrs_month_id), convert_to_integer(agency_id), convert_to_integer(month_num), convert_to_integer(data_year), reported_status, to_timestamp_ucr(report_date), to_timestamp_ucr(prepared_date), update_flag, orig_format, convert_to_integer(ff_line_number), data_home, ddocname, convert_to_integer(did) FROM nibrs_month_temp);
-INSERT INTO nibrs_arrestee (SELECT convert_to_integer(arrestee_id), convert_to_integer(incident_id), convert_to_integer(arrestee_seq_num), arrest_num, to_timestamp_ucr(arrest_date), convert_to_integer(arrest_type_id), multiple_indicator, convert_to_integer(offense_type_id), convert_to_integer(age_id), convert_to_integer(age_num), sex_code, convert_to_integer(race_id), convert_to_integer(ethnicity_id), resident_code, under_18_disposition_code, clearance_ind, convert_to_integer(ff_line_number), convert_to_integer(age_range_low_num), convert_to_integer(age_range_high_num) FROM nibrs_arrestee_temp);
+
+-- For some really messy relationships - we add data to mirrored tables, rather than the master data.
+INSERT INTO nibrs_arrestee_new (SELECT convert_to_integer(arrestee_id), convert_to_integer(incident_id), convert_to_integer(arrestee_seq_num), arrest_num, to_timestamp_ucr(arrest_date), convert_to_integer(arrest_type_id), multiple_indicator, convert_to_integer(offense_type_id), convert_to_integer(age_id), convert_to_integer(age_num), sex_code, convert_to_integer(race_id), convert_to_integer(ethnicity_id), resident_code, under_18_disposition_code, clearance_ind, convert_to_integer(ff_line_number), convert_to_integer(age_range_low_num), convert_to_integer(age_range_high_num) FROM nibrs_arrestee_temp);
+INSERT INTO nibrs_incident_new (SELECT convert_to_integer(agency_id), convert_to_integer(incident_id), convert_to_integer(nibrs_month_id), incident_number, cargo_theft_flag, to_timestamp_ucr(submission_date), to_timestamp_ucr(incident_date), report_date_flag, convert_to_integer(incident_hour), convert_to_integer(cleared_except_id), to_timestamp_ucr(cleared_except_date), convert_to_integer(incident_status), data_home, ddocname, orig_format, convert_to_integer(ff_line_number), convert_to_integer(did) FROM nibrs_incident_temp);
+INSERT INTO nibrs_offense_new (SELECT convert_to_integer(offense_id), convert_to_integer(incident_id), convert_to_integer(offense_type_id), attempt_complete_flag, convert_to_integer(location_id), convert_to_integer(num_premises_entered), method_entry_code, convert_to_integer(ff_line_number) FROM nibrs_offense_temp);
+INSERT INTO nibrs_offender_new (SELECT convert_to_integer(offender_id), convert_to_integer(incident_id), convert_to_integer(offender_seq_num), convert_to_integer(age_id), convert_to_integer(age_num), sex_code, convert_to_integer(race_id), convert_to_integer(ethnicity_id), convert_to_integer(ff_line_number), convert_to_integer(age_range_low_num), convert_to_integer(age_range_high_num) FROM nibrs_offender_temp);
+INSERT INTO nibrs_property_new (SELECT convert_to_integer(property_id), convert_to_integer(incident_id), convert_to_integer(prop_loss_id), convert_to_integer(stolen_count), convert_to_integer(recovered_count), convert_to_integer(ff_line_number) FROM nibrs_property_temp);
+INSERT INTO nibrs_victim_new (SELECT convert_to_integer(victim_id), convert_to_integer(incident_id), convert_to_integer(victim_seq_num), convert_to_integer(victim_type_id), convert_to_integer(assignment_type_id), convert_to_integer(activity_type_id), convert_to_integer(outside_agency_id), convert_to_integer(age_id), convert_to_integer(age_num), sex_code, convert_to_integer(race_id), convert_to_integer(ethnicity_id), resident_status_code, convert_to_integer(agency_data_year), convert_to_integer(ff_line_number), convert_to_integer(age_range_low_num), convert_to_integer(age_range_high_num) FROM nibrs_victim_temp);
 INSERT INTO nibrs_arrestee_weapon (SELECT convert_to_integer(arrestee_id), convert_to_integer(weapon_id), convert_to_integer(nibrs_arrestee_weapon_id) FROM nibrs_arrestee_weapon_temp);
+INSERT INTO nibrs_property_desc_new (SELECT convert_to_integer(property_id), convert_to_integer(prop_desc_id), convert_to_integer(property_value), to_timestamp_ucr(date_recovered), convert_to_integer(nibrs_prop_desc_id) FROM nibrs_property_desc_temp);
+
+INSERT INTO nibrs_victim_offense (SELECT convert_to_integer(victim_id), convert_to_integer(offense_id) FROM nibrs_victim_offense_temp);
 INSERT INTO nibrs_bias_motivation (SELECT convert_to_integer(bias_id), convert_to_integer(offense_id) FROM nibrs_bias_motivation_temp);
 INSERT INTO nibrs_criminal_act (SELECT convert_to_integer(criminal_act_id), convert_to_integer(offense_id) FROM nibrs_criminal_act_temp);
-INSERT INTO nibrs_offense (SELECT convert_to_integer(offense_id), convert_to_integer(incident_id), convert_to_integer(offense_type_id), attempt_complete_flag, convert_to_integer(location_id), convert_to_integer(num_premises_entered), method_entry_code, convert_to_integer(ff_line_number) FROM nibrs_offense_temp);
-INSERT INTO nibrs_offender (SELECT convert_to_integer(offender_id), convert_to_integer(incident_id), convert_to_integer(offender_seq_num), convert_to_integer(age_id), convert_to_integer(age_num), sex_code, convert_to_integer(race_id), convert_to_integer(ethnicity_id), convert_to_integer(ff_line_number), convert_to_integer(age_range_low_num), convert_to_integer(age_range_high_num) FROM nibrs_offender_temp);
-INSERT INTO nibrs_property (SELECT convert_to_integer(property_id), convert_to_integer(incident_id), convert_to_integer(prop_loss_id), convert_to_integer(stolen_count), convert_to_integer(recovered_count), convert_to_integer(ff_line_number) FROM nibrs_property_temp);
-INSERT INTO nibrs_property_desc (SELECT convert_to_integer(property_id), convert_to_integer(prop_desc_id), convert_to_integer(property_value), to_timestamp_ucr(date_recovered), convert_to_integer(nibrs_prop_desc_id) FROM nibrs_property_desc_temp);
 INSERT INTO nibrs_suspected_drug (SELECT convert_to_integer(suspected_drug_type_id), convert_to_integer(property_id), convert_to_double(est_drug_qty), convert_to_integer(drug_measure_type_id), convert_to_integer(nibrs_suspected_drug_id) FROM nibrs_suspected_drug_temp);
 INSERT INTO nibrs_suspect_using (SELECT convert_to_integer(suspect_using_id), convert_to_integer(offense_id) FROM nibrs_suspect_using_temp);
-INSERT INTO nibrs_victim (SELECT convert_to_integer(victim_id), convert_to_integer(incident_id), convert_to_integer(victim_seq_num), convert_to_integer(victim_type_id), convert_to_integer(assignment_type_id), convert_to_integer(activity_type_id), convert_to_integer(outside_agency_id), convert_to_integer(age_id), convert_to_integer(age_num), sex_code, convert_to_integer(race_id), convert_to_integer(ethnicity_id), resident_status_code, convert_to_integer(agency_data_year), convert_to_integer(ff_line_number), convert_to_integer(age_range_low_num), convert_to_integer(age_range_high_num) FROM nibrs_victim_temp);
 INSERT INTO nibrs_victim_circumstances (SELECT convert_to_integer(victim_id), convert_to_integer(circumstances_id), convert_to_integer(justifiable_force_id) FROM nibrs_victim_circumstances_temp);
 INSERT INTO nibrs_victim_injury (SELECT convert_to_integer(victim_id), convert_to_integer(injury_id) FROM nibrs_victim_injury_temp);
-INSERT INTO nibrs_victim_offense (SELECT convert_to_integer(victim_id), convert_to_integer(offense_id) FROM nibrs_victim_offense_temp);
-INSERT INTO nibrs_victim_offender_rel (SELECT convert_to_integer(victim_id), convert_to_integer(offender_id), convert_to_integer(relationship_id), convert_to_integer(nibrs_victim_offender_id) FROM nibrs_victim_offender_rel);
+INSERT INTO nibrs_victim_offender_rel (SELECT convert_to_integer(victim_id), convert_to_integer(offender_id), convert_to_integer(relationship_id), convert_to_integer(nibrs_victim_offender_id) FROM nibrs_victim_offender_rel_temp);
 INSERT INTO nibrs_weapon (SELECT convert_to_integer(weapon_id), convert_to_integer(offense_id), convert_to_integer(nibrs_weapon_id) FROM nibrs_weapon_temp);
+
+-------
+
+
+-- ALTER TABLE nibrs_incident SET (autovacuum_enabled = false, toast.autovacuum_enabled = false);
+-- ALTER TABLE nibrs_victim SET (autovacuum_enabled = false, toast.autovacuum_enabled = false);
+-- ALTER TABLE nibrs_offender SET (autovacuum_enabled = false, toast.autovacuum_enabled = false);
+-- ALTER TABLE nibrs_offense SET (autovacuum_enabled = false, toast.autovacuum_enabled = false);
+-- ALTER TABLE nibrs_victim_offense SET (autovacuum_enabled = false, toast.autovacuum_enabled = false);
+
+--
+-- Not ready (drop FK's)
+
 INSERT INTO reta_month (SELECT convert_to_integer(reta_month_id), convert_to_integer(agency_id), convert_to_integer(data_year), convert_to_integer(month_num), data_home, source_flag, reported_flag, ddocname, convert_to_integer(month_included_in), to_timestamp_ucr(report_date), to_timestamp_ucr(prepared_date), prepared_by_user, prepared_by_email, orig_format, convert_to_integer(leoka_felony), convert_to_integer(leoka_accident), convert_to_integer(leoka_assault), convert_to_integer(leoka_status), update_flag, convert_to_integer(did), convert_to_integer(ff_line_number) FROM reta_month_temp);
 INSERT INTO reta_month_offense_subcat (SELECT convert_to_integer(reta_month_id), convert_to_integer(offense_subcat_id), convert_to_integer(reported_count), convert_to_integer(reported_status), convert_to_integer(unfounded_count), convert_to_integer(unfounded_status), convert_to_integer(actual_count), convert_to_integer(actual_status), convert_to_integer(cleared_count), convert_to_integer(cleared_status), convert_to_integer(juvenile_cleared_count), convert_to_integer(juvenile_cleared_status) FROM reta_month_offense_subcat_temp);
 INSERT INTO asr_month (SELECT convert_to_integer(asr_month_id), convert_to_integer(agency_id), convert_to_integer(data_year), convert_to_integer(month_num), source_flag, reported_flag, orig_format, update_flag, convert_to_integer(ff_line_number), ddocname, convert_to_integer(did), data_home FROM asr_month_temp);
 INSERT INTO asr_offense_subcat (SELECT convert_to_integer(asr_month_id) ,    convert_to_integer(offense_subcat_id) ,    convert_to_integer(race_id) ,    juvenile_flag ,    convert_to_integer(arrest_count) ,    convert_to_integer(arrest_status) ,    active_flag ,    to_timestamp_ucr(prepared_date) ,    to_timestamp_ucr(report_date) ,   convert_to_integer(ff_line_number) FROM asr_offense_subcat_temp);
 INSERT INTO asr_age_sex_subcat (SELECT convert_to_integer(asr_month_id), convert_to_integer(offense_subcat_id), convert_to_integer(age_range_id),  convert_to_integer(arrest_count) ,    convert_to_integer(arrest_status) , active_flag ,    to_timestamp_ucr(prepared_date) ,    to_timestamp_ucr(report_date) ,   convert_to_integer(ff_line_number)   FROM asr_age_sex_subcat_temp);
 
--- hc_*
+
+-- hc_*  - DONE!
+INSERT INTO hc_quarter (SELECT convert_to_integer(agency_id), convert_to_integer(quarter_num), convert_to_integer(data_year), reported_status, convert_to_integer(reported_count), convert_to_integer(hc_quarter_id), update_flag, orig_format, convert_to_integer(ff_line_number), ddocname, convert_to_integer(did), data_home from hc_quarter_temp);
 INSERT INTO hc_incident (SELECT convert_to_integer(incident_id), convert_to_integer(agency_id), incident_no, to_timestamp_ucr(incident_date), data_home, source_flag, ddocname, to_timestamp_ucr(report_date), to_timestamp_ucr(prepared_date), convert_to_integer(victim_count), convert_to_integer(adult_victim_count), convert_to_integer(incident_status), convert_to_integer(juvenile_victim_count), convert_to_integer(offender_count), convert_to_integer(adult_offender_count), convert_to_integer(juvenile_offender_count), convert_to_integer(offender_race_id), convert_to_integer(offender_ethnicity_id), update_flag, convert_to_integer(hc_quarter_id), convert_to_integer(ff_line_number), orig_format, convert_to_integer(did), convert_to_integer(nibrs_incident_id) from hc_incident_temp);
-INSERT INTO hc_bias_motivation (SELECT convert_to_integer(offense_id), convert_to_integer(bias_id) from hc_bias_motivation_temp);
 INSERT INTO hc_offense (SELECT convert_to_integer(offense_id), convert_to_integer(incident_id), convert_to_integer(offense_type_id), convert_to_integer(victim_count), convert_to_integer(location_id), convert_to_integer(nibrs_offense_id) from hc_offense_temp);
 INSERT INTO hc_victim (SELECT convert_to_integer(offense_id), convert_to_integer(victim_type_id) from hc_victim_temp);
+INSERT INTO hc_bias_motivation (SELECT convert_to_integer(offense_id), convert_to_integer(bias_id) from hc_bias_motivation_temp);
+
 
 -- ct_*
 INSERT INTO ct_incident (SELECT convert_to_integer(incident_id), convert_to_integer(agency_id), convert_to_integer(data_year), incident_number, to_timestamp_ucr(incident_date), source_flag, ddocname, to_timestamp_ucr(report_date), to_timestamp_ucr(prepared_date), report_date_flag, convert_to_integer(incident_hour), cleared_except_flag, update_flag, convert_to_integer(ct_month_id), convert_to_integer(ff_line_number), data_home, orig_format, unknown_offender, convert_to_integer(did), convert_to_integer(nibrs_incident_id) from ct_incident_temp);

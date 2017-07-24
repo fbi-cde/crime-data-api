@@ -106,3 +106,11 @@ for i in "${arr_years[@]}"
 done
 
 
+\copy (select * from asr_juvenile_crosstab where state_abbr IS NULL and year >= 1994 order by year DESC, offense_code) TO 'asr_national_juvenile.csv' with CSV DELIMITER ',' HEADER;
+\copy (select * from asr_adult_crosstab where state_abbr IS NULL and year >= 1994 order by year DESC, offense_code) TO 'asr_national_adults.csv' with CSV DELIMITER ',' HEADER;
+\copy (select * from asr_drug_crosstab where state_abbr IS NULL and year >= 1994 ORDER by year DESC) TO 'asr_national_drug.csv' with CSV DELIMITER ',' HEADER;
+aws s3 cp arrests_national_juvenile.csv s3://${BUCKET_NAME}/arrests_national_juvenile.csv
+aws s3 cp arrests_national_adults.csv s3://${BUCKET_NAME}/arrests_national_adults.csv
+aws s3 cp arrests_national_drug.csv s3://${BUCKET_NAME}/arrests_national_drug.csv
+aws s3 cp arrests_national.csv s3://${BUCKET_NAME}/arrests_national.csv
+
