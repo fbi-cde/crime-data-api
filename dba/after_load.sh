@@ -54,7 +54,13 @@ echo -n "Building Helper join tables..."
 psql $CRIME_DATA_API_DB_URL <after_load/helper_views.sql
 echo "DONE"
 
+echo -n "Updating lat long for icpsr coordinates issue 617..."
+psql $CRIME_DATA_API_DB_URL <after_load/lat_long_update_617.sql 
+echo "DONE" 
+
 #echo -n "Building cached incident representations (may be slow)..."
 #psql $CRIME_DATA_API_DB_URL <after_load/cache_representations.sql >/dev/null
 #after_load/cache_representation.sh >/dev/null
 #echo "DONE"
+
+
