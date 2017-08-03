@@ -80,7 +80,7 @@ INSERT INTO nibrs_incident_denorm_2015 (incident_id, agency_id, state_id, ori, y
 
 -- Insert directly into a single partition to bypass the partition trigger (faster).
 -- DONE (~5 min per update)
-INSERT INTO nibrs_victim_denorm_2015 (incident_id, agency_id, year, incident_date, victim_id, age_id, age_num, sex_code, race_id, victim_type_id,resident_status_code) SELECT nibrs_victim_new.incident_id, nibrs_incident_new.agency_id, EXTRACT(YEAR FROM nibrs_incident_new.incident_date) as year, nibrs_incident_new.incident_date, nibrs_victim_new.victim_id, nibrs_victim_new.age_id, nibrs_victim_new.age_num::numeric, nibrs_victim_new.sex_code,nibrs_victim_new.race_id, nibrs_victim_new.victim_type_id, nibrs_victim_new.resident_status_code from nibrs_victim_new JOIN nibrs_incident_new on nibrs_incident_new.incident_id = nibrs_victim_new.incident_id where nibrs_incident_new.incident_date >= to_timestamp('01-01-2015', 'MM-DD-YYYY');
+INSERT INTO nibrs_victim_denorm_2015 (incident_id, agency_id, year, incident_date, victim_id, age_id, age_num, sex_code, race_id, victim_type_id,resident_status_code) SELECT nibrs_victim_new.incident_id, nibrs_incident_new.agency_id, EXTRACT(YEAR FROM nibrs_incident_new.incident_date) as year, nibrs_incident_new.incident_date, nibrs_victim_new.victim_id, nibrs_victim_new.age_id, nibrs_victim_new.age_num::numeric, nibrs_victim_new.sex_code,nibrs_victim_new.race_id, nibrs_victim_new.victim_type_id, nibrs_victim_new.resident_status_code from nibrs_victim_new LEFT JOIN nibrs_incident_new on nibrs_incident_new.incident_id = nibrs_victim_new.incident_id where nibrs_incident_new.incident_date >= to_timestamp('01-01-2015', 'MM-DD-YYYY');
 UPDATE nibrs_victim_denorm_2015 SET state_id = ref_agency.state_id, county_id = ref_agency_county.county_id from ref_agency JOIN ref_agency_county ON ref_agency.agency_id = ref_agency_county.agency_id where nibrs_victim_denorm_2015.agency_id = ref_agency.agency_id and nibrs_victim_denorm_2015.year = '2015';
 UPDATE nibrs_victim_denorm_2015 SET state_code = ref_state.state_code from ref_state where nibrs_victim_denorm_2015.state_id = ref_state.state_id and nibrs_victim_denorm_2015.year = '2015';
 UPDATE nibrs_victim_denorm_2015 SET race_code = ref_race.race_code from ref_race where nibrs_victim_denorm_2015.race_id = ref_race.race_id and nibrs_victim_denorm_2015.year = '2015'; 
@@ -97,7 +97,7 @@ UPDATE nibrs_victim_denorm_2015 SET offender_relationship = nibrs_relationship.r
 
 
 -- denorm offender
-INSERT INTO nibrs_offender_denorm_2015 (incident_id, agency_id, year, incident_date, offender_id, age_id, age_num, sex_code, race_id, ethnicity) SELECT nibrs_offender_new.incident_id, nibrs_incident_new.agency_id, EXTRACT(YEAR FROM nibrs_incident_new.incident_date) as year, nibrs_incident_new.incident_date, nibrs_offender_new.offender_id, nibrs_offender_new.age_id, nibrs_offender_new.age_num::numeric, nibrs_offender_new.sex_code,nibrs_offender_new.race_id, nibrs_ethnicity.ethnicity_name from nibrs_offender_new  JOIN nibrs_incident_new on nibrs_incident_new.incident_id = nibrs_offender_new.incident_id  JOIN nibrs_ethnicity ON nibrs_ethnicity.ethnicity_id = nibrs_offender_new.ethnicity_id where nibrs_incident_new.incident_date >= to_timestamp('01-01-2015', 'MM-DD-YYYY');
+INSERT INTO nibrs_offender_denorm_2015 (incident_id, agency_id, year, incident_date, offender_id, age_id, age_num, sex_code, race_id, ethnicity) SELECT nibrs_offender_new.incident_id, nibrs_incident_new.agency_id, EXTRACT(YEAR FROM nibrs_incident_new.incident_date) as year, nibrs_incident_new.incident_date, nibrs_offender_new.offender_id, nibrs_offender_new.age_id, nibrs_offender_new.age_num::numeric, nibrs_offender_new.sex_code,nibrs_offender_new.race_id, nibrs_ethnicity.ethnicity_name from nibrs_offender_new  LEFT JOIN nibrs_incident_new on nibrs_incident_new.incident_id = nibrs_offender_new.incident_id  LEFT JOIN nibrs_ethnicity ON nibrs_ethnicity.ethnicity_id = nibrs_offender_new.ethnicity_id where nibrs_incident_new.incident_date >= to_timestamp('01-01-2015', 'MM-DD-YYYY');
 UPDATE nibrs_offender_denorm_2015 SET state_id = ref_agency.state_id, county_id = ref_agency_county.county_id from ref_agency JOIN ref_agency_county ON ref_agency.agency_id = ref_agency_county.agency_id where nibrs_offender_denorm_2015.agency_id = ref_agency.agency_id and nibrs_offender_denorm_2015.year = '2015';
 UPDATE nibrs_offender_denorm_2015 SET state_code = ref_state.state_code from ref_state where nibrs_offender_denorm_2015.state_id = ref_state.state_id and nibrs_offender_denorm_2015.year = '2015';
 UPDATE nibrs_offender_denorm_2015 SET race_code = ref_race.race_code from ref_race where nibrs_offender_denorm_2015.race_id = ref_race.race_id and nibrs_offender_denorm_2015.year = '2015'; 
@@ -142,6 +142,83 @@ UPDATE nibrs_property_denorm_2015 SET est_drug_qty = nibrs_suspected_drug.est_dr
 
 -- 
 
+--------------
+-- HATE CRIME
+--------------
+SET work_mem='2GB'; -- Go Super Saiyan.
+
+-- Generates Hate Crime stats.
+
+drop materialized view  IF EXISTS hc_counts_states_new;
+create materialized view hc_counts_states_new as select count(incident_id), bias_name, year, state_id 
+from ( SELECT DISTINCT(hc_incident.incident_id), bias_name, state_id, EXTRACT(YEAR FROM hc_incident.incident_date) as year from hc_incident 
+    LEFT OUTER JOIN hc_offense ON hc_incident.incident_id = hc_offense.incident_id 
+    LEFT OUTER JOIN hc_bias_motivation ON hc_offense.offense_id = hc_bias_motivation.offense_id 
+    LEFT OUTER JOIN nibrs_offense_type ON nibrs_offense_type.offense_type_id = hc_offense.offense_type_id 
+    LEFT OUTER JOIN nibrs_bias_list ON nibrs_bias_list.bias_id = hc_bias_motivation.bias_id 
+    LEFT OUTER JOIN ref_agency ON ref_agency.agency_id = hc_incident.agency_id
+     ) as temp 
+GROUP BY GROUPING SETS (
+    (year, bias_name),
+    (year, state_id, bias_name)
+);
+
+drop materialized view  IF EXISTS hc_counts_ori_new;
+create materialized view hc_counts_ori_new as select count(incident_id), ori, bias_name, year  
+from ( SELECT DISTINCT(hc_incident.incident_id), ref_agency.ori, bias_name, EXTRACT(YEAR FROM hc_incident.incident_date) as year from hc_incident 
+    LEFT OUTER JOIN hc_offense ON hc_incident.incident_id = hc_offense.incident_id 
+    LEFT OUTER JOIN hc_bias_motivation ON hc_offense.offense_id = hc_bias_motivation.offense_id 
+    LEFT OUTER JOIN nibrs_offense_type ON nibrs_offense_type.offense_type_id = hc_offense.offense_type_id 
+    LEFT OUTER JOIN nibrs_bias_list ON nibrs_bias_list.bias_id = hc_bias_motivation.bias_id 
+    LEFT OUTER JOIN ref_agency ON ref_agency.agency_id = hc_incident.agency_id
+     ) as temp 
+GROUP BY GROUPING SETS (
+    (year, ori, bias_name)
+);
+
+drop materialized view  IF EXISTS offense_hc_counts_states_new;
+create materialized view offense_hc_counts_states_new as select count(incident_id), offense_name, bias_name, year, state_id 
+from ( SELECT DISTINCT(hc_incident.incident_id), bias_name, offense_name, state_id, EXTRACT(YEAR FROM hc_incident.incident_date) as year from hc_incident 
+    LEFT OUTER JOIN hc_offense ON hc_incident.incident_id = hc_offense.incident_id 
+    LEFT OUTER JOIN hc_bias_motivation ON hc_offense.offense_id = hc_bias_motivation.offense_id 
+    LEFT OUTER JOIN nibrs_offense_type ON nibrs_offense_type.offense_type_id = hc_offense.offense_type_id 
+    LEFT OUTER JOIN nibrs_bias_list ON nibrs_bias_list.bias_id = hc_bias_motivation.bias_id 
+    LEFT OUTER JOIN ref_agency ON ref_agency.agency_id = hc_incident.agency_id
+     ) as temp 
+GROUP BY GROUPING SETS (
+    (year, offense_name, bias_name),
+    (year, state_id, offense_name, bias_name)
+);
+
+drop materialized view  IF EXISTS offense_hc_counts_ori_new;
+create materialized view offense_hc_counts_ori_new as select count(incident_id), ori, offense_name, bias_name, year  
+from ( SELECT DISTINCT(hc_incident.incident_id), ref_agency.ori, bias_name, offense_name, EXTRACT(YEAR FROM hc_incident.incident_date) as year from hc_incident 
+    LEFT OUTER JOIN hc_offense ON hc_incident.incident_id = hc_offense.incident_id 
+    LEFT OUTER JOIN hc_bias_motivation ON hc_offense.offense_id = hc_bias_motivation.offense_id 
+    LEFT OUTER JOIN nibrs_offense_type ON nibrs_offense_type.offense_type_id = hc_offense.offense_type_id 
+    LEFT OUTER JOIN nibrs_bias_list ON nibrs_bias_list.bias_id = hc_bias_motivation.bias_id 
+    LEFT OUTER JOIN ref_agency ON ref_agency.agency_id = hc_incident.agency_id
+     ) as temp 
+GROUP BY GROUPING SETS (
+    (year, ori, offense_name, bias_name)
+);
+
+
+drop materialized view IF EXISTS hc_counts_states;
+ALTER MATERIALIZED VIEW hc_counts_states_new RENAME TO hc_counts_states;
+drop materialized view IF EXISTS offense_hc_counts_ori;
+ALTER MATERIALIZED VIEW offense_hc_counts_ori_new RENAME TO offense_hc_counts_ori;
+drop materialized view IF EXISTS offense_hc_counts_states;
+ALTER MATERIALIZED VIEW offense_hc_counts_states_new RENAME TO offense_hc_counts_states;
+drop materialized view IF EXISTS hc_counts_ori;
+ALTER MATERIALIZED VIEW hc_counts_ori_new RENAME TO hc_counts_ori;
+
+
+CREATE INDEX hc_counts_state_id_year_idx ON hc_counts_states (state_id, year);
+CREATE INDEX offense_hc_counts_state_id_year_idx ON offense_hc_counts_states (state_id, year);
+CREATE INDEX hc_counts_ori_year_idx ON hc_counts_ori (ori, year);
+CREATE INDEX offense_hc_counts_ori_year_idx ON offense_hc_counts_ori (ori, year);
+
 
 ---------
 -- CARGO THEFT
@@ -149,8 +226,8 @@ UPDATE nibrs_property_denorm_2015 SET est_drug_qty = nibrs_suspected_drug.est_dr
 SET work_mem='2GB'; -- Go Super Saiyan.
 
 -- Generates CT stats.
-drop materialized view IF EXISTS ct_counts_states;
-create materialized view ct_counts_states as select  count(incident_id), sum(stolen_value) as stolen_value, sum(recovered_value) as recovered_value,  year, state_id,  location_name,  offense_name, victim_type_name, prop_desc_name
+drop materialized view IF EXISTS ct_counts_states_new;
+create materialized view ct_counts_states_new as select  count(incident_id), sum(stolen_value) as stolen_value, sum(recovered_value) as recovered_value,  year, state_id,  location_name,  offense_name, victim_type_name, prop_desc_name
 from ( 
     SELECT DISTINCT(ct_incident.incident_id), 
     state_id, 
@@ -185,8 +262,8 @@ GROUP BY GROUPING SETS (
     (year, state_id, offense_name)
 );
 
-drop materialized view IF EXISTS  ct_counts_ori;
-create materialized view ct_counts_ori as select  count(incident_id), sum(stolen_value) as stolen_value, sum(recovered_value) as recovered_value,  year, ori,  location_name,  offense_name, victim_type_name, prop_desc_name
+drop materialized view IF EXISTS  ct_counts_ori_new;
+create materialized view ct_counts_ori_new as select  count(incident_id), sum(stolen_value) as stolen_value, sum(recovered_value) as recovered_value,  year, ori,  location_name,  offense_name, victim_type_name, prop_desc_name
 from ( 
     SELECT DISTINCT(ct_incident.incident_id), 
     ref_agency.ori, 
@@ -279,97 +356,20 @@ GROUP BY GROUPING SETS (
 );
 
 
-
+drop materialized view  IF EXISTS ct_counts_ori;
+ALTER materialized view ct_counts_ori_new RENAME TO ct_counts_ori; 
+drop materialized view  IF EXISTS ct_counts_states;
+ALTER materialized view ct_counts_states_new RENAME TO ct_counts_states; 
 drop materialized view  IF EXISTS offense_ct_counts_states;
+ALTER materialized view offense_ct_counts_states_new RENAME TO offense_ct_counts_states; 
 drop materialized view  IF EXISTS offense_ct_counts_ori;
-DROP INDEX IF EXISTS ct_counts_state_id_idx;
-DROP INDEX IF EXISTS offense_ct_counts_state_id_idx;
-DROP INDEX IF EXISTS ct_counts_ori_idx;
-DROP INDEX IF EXISTS offense_ct_counts_ori_idx;
+ALTER materialized view offense_ct_counts_ori_new RENAME TO offense_ct_counts_ori; 
 
-ALTER view offense_ct_counts_states_new RENAME TO offense_ct_counts_states; 
-ALTER view offense_ct_counts_ori_new RENAME TO offense_ct_counts_ori; 
 CREATE INDEX ct_counts_state_id_idx ON ct_counts_states (state_id, year);
 CREATE INDEX offense_ct_counts_state_id_idx ON offense_ct_counts_states (state_id, year);
 CREATE INDEX ct_counts_ori_idx ON ct_counts_ori (ori, year);
 CREATE INDEX offense_ct_counts_ori_idx ON offense_ct_counts_ori (ori, year);
 
-
---------------
--- HATE CRIME
---------------
-SET work_mem='2GB'; -- Go Super Saiyan.
-
--- Generates Hate Crime stats.
-
-create materialized view hc_counts_states_new as select count(incident_id), bias_name, year, state_id 
-from ( SELECT DISTINCT(hc_incident.incident_id), bias_name, state_id, EXTRACT(YEAR FROM hc_incident.incident_date) as year from hc_incident 
-    LEFT OUTER JOIN hc_offense ON hc_incident.incident_id = hc_offense.incident_id 
-    LEFT OUTER JOIN hc_bias_motivation ON hc_offense.offense_id = hc_bias_motivation.offense_id 
-    LEFT OUTER JOIN nibrs_offense_type ON nibrs_offense_type.offense_type_id = hc_offense.offense_type_id 
-    LEFT OUTER JOIN nibrs_bias_list ON nibrs_bias_list.bias_id = hc_bias_motivation.bias_id 
-    LEFT OUTER JOIN ref_agency ON ref_agency.agency_id = hc_incident.agency_id
-     ) as temp 
-GROUP BY GROUPING SETS (
-    (year, bias_name),
-    (year, state_id, bias_name)
-);
-
-
-create materialized view hc_counts_ori_new as select count(incident_id), ori, bias_name, year  
-from ( SELECT DISTINCT(hc_incident.incident_id), ref_agency.ori, bias_name, EXTRACT(YEAR FROM hc_incident.incident_date) as year from hc_incident 
-    LEFT OUTER JOIN hc_offense ON hc_incident.incident_id = hc_offense.incident_id 
-    LEFT OUTER JOIN hc_bias_motivation ON hc_offense.offense_id = hc_bias_motivation.offense_id 
-    LEFT OUTER JOIN nibrs_offense_type ON nibrs_offense_type.offense_type_id = hc_offense.offense_type_id 
-    LEFT OUTER JOIN nibrs_bias_list ON nibrs_bias_list.bias_id = hc_bias_motivation.bias_id 
-    LEFT OUTER JOIN ref_agency ON ref_agency.agency_id = hc_incident.agency_id
-     ) as temp 
-GROUP BY GROUPING SETS (
-    (year, ori, bias_name)
-);
-
-
-create materialized view offense_hc_counts_states_new as select count(incident_id), offense_name, bias_name, year, state_id 
-from ( SELECT DISTINCT(hc_incident.incident_id), bias_name, offense_name, state_id, EXTRACT(YEAR FROM hc_incident.incident_date) as year from hc_incident 
-    LEFT OUTER JOIN hc_offense ON hc_incident.incident_id = hc_offense.incident_id 
-    LEFT OUTER JOIN hc_bias_motivation ON hc_offense.offense_id = hc_bias_motivation.offense_id 
-    LEFT OUTER JOIN nibrs_offense_type ON nibrs_offense_type.offense_type_id = hc_offense.offense_type_id 
-    LEFT OUTER JOIN nibrs_bias_list ON nibrs_bias_list.bias_id = hc_bias_motivation.bias_id 
-    LEFT OUTER JOIN ref_agency ON ref_agency.agency_id = hc_incident.agency_id
-     ) as temp 
-GROUP BY GROUPING SETS (
-    (year, offense_name, bias_name),
-    (year, state_id, offense_name, bias_name)
-);
-
-
-create materialized view offense_hc_counts_ori_new as select count(incident_id), ori, offense_name, bias_name, year  
-from ( SELECT DISTINCT(hc_incident.incident_id), ref_agency.ori, bias_name, offense_name, EXTRACT(YEAR FROM hc_incident.incident_date) as year from hc_incident 
-    LEFT OUTER JOIN hc_offense ON hc_incident.incident_id = hc_offense.incident_id 
-    LEFT OUTER JOIN hc_bias_motivation ON hc_offense.offense_id = hc_bias_motivation.offense_id 
-    LEFT OUTER JOIN nibrs_offense_type ON nibrs_offense_type.offense_type_id = hc_offense.offense_type_id 
-    LEFT OUTER JOIN nibrs_bias_list ON nibrs_bias_list.bias_id = hc_bias_motivation.bias_id 
-    LEFT OUTER JOIN ref_agency ON ref_agency.agency_id = hc_incident.agency_id
-     ) as temp 
-GROUP BY GROUPING SETS (
-    (year, ori, offense_name, bias_name)
-);
-
-
-drop materialized view IF EXISTS hc_counts_states;
-drop materialized view IF EXISTS offense_hc_counts_ori;
-drop materialized view IF EXISTS offense_hc_counts_states;
-drop materialized view IF EXISTS hc_counts_ori;
-
-ALTER VIEW hc_counts_states_new RENAME TO hc_counts_states;
-ALTER VIEW offense_hc_counts_ori_new RENAME TO offense_hc_counts_ori;
-ALTER VIEW offense_hc_counts_states_new RENAME TO offense_hc_counts_states;
-ALTER VIEW hc_counts_ori_new RENAME TO hc_counts_ori;
-
-CREATE INDEX hc_counts_state_id_year_idx ON hc_counts_states (state_id, year);
-CREATE INDEX offense_hc_counts_state_id_year_idx ON offense_hc_counts_states (state_id, year);
-CREATE INDEX hc_counts_ori_year_idx ON hc_counts_ori (ori, year);
-CREATE INDEX offense_hc_counts_ori_year_idx ON offense_hc_counts_ori (ori, year);
 
 
 --------------
@@ -385,8 +385,6 @@ BEGIN
    FOREACH i IN ARRAY arr
    LOOP
     SET work_mem='2GB';
-    EXECUTE 'CREATE TABLE IF NOT EXISTS nibrs_offender_denorm_' || i::TEXT || ' () INHERITS (nibrs_offender_denorm)';
-    RAISE NOTICE 'Dropping view for year: %', i;
     EXECUTE 'drop materialized view IF EXISTS offender_counts_' || i::TEXT || ' CASCADE';
     RAISE NOTICE 'Creating view for year: %', i;
     EXECUTE 'create materialized view offender_counts_' || i::TEXT || ' as select count(offender_id),ethnicity, prop_desc_name,offense_name, state_id, race_code,location_name, age_num, sex_code, ori  
@@ -428,7 +426,7 @@ drop materialized view  IF EXISTS offender_counts_states;
 create materialized view offender_counts_states as 
     SELECT *, 2015 as year FROM offender_counts_2015 WHERE ori IS NULL UNION 
     SELECT *, 2014 as year FROM offender_counts_2014 WHERE ori IS NULL UNION 
-    SELECT *, 2013 as year FROM offender_counts_2013 WHERE ori IS NULL  UNION
+    SELECT *, 2013 as year FROM offender_counts_2013 WHERE ori IS NULL  UNION 
     SELECT *, 2012 as year FROM offender_counts_2012 WHERE ori IS NULL  UNION 
     SELECT *, 2011 as year FROM offender_counts_2011 WHERE ori IS NULL  UNION 
     SELECT *, 2010 as year FROM offender_counts_2010 WHERE ori IS NULL  UNION
@@ -480,8 +478,8 @@ create materialized view offender_counts_ori as
     SELECT *, 1992 as year FROM offender_counts_1992 WHERE ori IS NOT NULL  UNION
     SELECT *, 1991 as year FROM offender_counts_1991 WHERE ori IS NOT NULL ;
 
-CREATE INDEX offender_counts_state_year_id_idx ON offender_count_states (state_id, year);
-CREATE INDEX offender_counts_ori_year_idx ON offender_counts_ori (ori, year);
+CREATE INDEX CONCURRENTLY offender_counts_state_year_id_idx ON offender_counts_states (state_id, year);
+CREATE INDEX CONCURRENTLY offender_counts_ori_year_idx ON offender_counts_ori (ori, year);
 
 --------------
 -- OFFENDER - OFFENSES
@@ -524,9 +522,9 @@ $do$;
 
 drop materialized view IF EXISTS  offense_offender_counts_states;
 create materialized view offense_offender_counts_states as 
-    SELECT *,2015 as year FROM offense_offender_counts_2015 WHERE ori IS NULL  UNION
+    SELECT *,2015 as year FROM offense_offender_counts_2015 WHERE ori IS NULL  UNION 
     SELECT *,2014 as year FROM offense_offender_counts_2014 WHERE ori IS NULL  UNION 
-    SELECT *,2013 as year FROM offense_offender_counts_2013 WHERE ori IS NULL  UNION
+    SELECT *,2013 as year FROM offense_offender_counts_2013 WHERE ori IS NULL  UNION 
     SELECT *,2012 as year FROM offense_offender_counts_2012 WHERE ori IS NULL  UNION 
     SELECT *,2011 as year FROM offense_offender_counts_2011 WHERE ori IS NULL  UNION 
     SELECT *,2010 as year FROM offense_offender_counts_2010 WHERE ori IS NULL  UNION
@@ -553,9 +551,9 @@ create materialized view offense_offender_counts_states as
 
 drop materialized view IF EXISTS  offense_offender_counts_ori;
 create materialized view offense_offender_counts_ori as 
-    SELECT *,2014 as year FROM offense_offender_counts_2015 WHERE ori IS NOT NULL  UNION 
+    SELECT *,2015 as year FROM offense_offender_counts_2015 WHERE ori IS NOT NULL  UNION 
     SELECT *,2014 as year FROM offense_offender_counts_2014 WHERE ori IS NOT NULL  UNION 
-    SELECT *,2013 as year FROM offense_offender_counts_2013 WHERE ori IS NOT NULL  UNION
+    SELECT *,2013 as year FROM offense_offender_counts_2013 WHERE ori IS NOT NULL  UNION 
     SELECT *,2012 as year FROM offense_offender_counts_2012 WHERE ori IS NOT NULL  UNION 
     SELECT *,2011 as year FROM offense_offender_counts_2011 WHERE ori IS NOT NULL  UNION 
     SELECT *,2010 as year FROM offense_offender_counts_2010 WHERE ori IS NOT NULL  UNION
@@ -579,10 +577,8 @@ create materialized view offense_offender_counts_ori as
     SELECT *,1992 as year FROM offense_offender_counts_1992 WHERE ori IS NOT NULL  UNION
     SELECT *,1991 as year FROM offense_offender_counts_1991 WHERE ori IS NOT NULL ;
 
-DROP INDEX offense_offender_counts_state_id_idx;
-DROP INDEX offense_offender_counts_ori_idx;
-CREATE INDEX offense_offender_counts_state_id_idx ON offense_offender_counts_states (state_id, year, offense_name);
-CREATE INDEX offense_offender_counts_ori_idx ON offense_offender_counts_ori (ori, year, offense_name);
+CREATE INDEX CONCURRENTLY offense_offender_counts_state_id_idx ON offense_offender_counts_states (state_id, year, offense_name);
+CREATE INDEX CONCURRENTLY offense_offender_counts_ori_idx ON offense_offender_counts_ori (ori, year, offense_name);
 
 --------------
 -- VICTIMS
@@ -619,7 +615,6 @@ BEGIN
         (year, offender_relationship),
         (year, circumstance_name),
         (year, ethnicity),
-
         (year, state_id, race_code),
         (year, state_id, sex_code),
         (year, state_id, age_num),
@@ -630,7 +625,6 @@ BEGIN
         (year, state_id, offender_relationship),
         (year, state_id, circumstance_name),
         (year, state_id, ethnicity),
-
         (year, ori, race_code),
         (year, ori, sex_code),
         (year, ori, age_num),
@@ -646,37 +640,35 @@ BEGIN
 END
 $do$;
 
-drop materialized view IF EXISTS victim_counts_states CASCADE;
-create materialized view victim_counts_states as 
-    SELECT *, 2015 as year FROM victim_counts_2014 WHERE ori IS NULL UNION  
+create materialized view victim_counts_states_temp as 
+    SELECT *, 2015 as year FROM victim_counts_2015 WHERE ori IS NULL UNION  
     SELECT *, 2014 as year FROM victim_counts_2014 WHERE ori IS NULL UNION 
-    SELECT *, 2013 as year FROM victim_counts_2013 WHERE ori IS NULL UNION
+    SELECT *, 2013 as year FROM victim_counts_2013 WHERE ori IS NULL UNION 
     SELECT *, 2012 as year FROM victim_counts_2012 WHERE ori IS NULL UNION 
     SELECT *, 2011 as year FROM victim_counts_2011 WHERE ori IS NULL UNION 
-    SELECT *, 2010 as year FROM victim_counts_2010 WHERE ori IS NULL UNION
+    SELECT *, 2010 as year FROM victim_counts_2010 WHERE ori IS NULL UNION 
     SELECT *, 2009 as year FROM victim_counts_2009 WHERE ori IS NULL UNION 
     SELECT *, 2008 as year FROM victim_counts_2008 WHERE ori IS NULL UNION 
-    SELECT *, 2007 as year FROM victim_counts_2007 WHERE ori IS NULL UNION
+    SELECT *, 2007 as year FROM victim_counts_2007 WHERE ori IS NULL UNION 
     SELECT *, 2006 as year FROM victim_counts_2006 WHERE ori IS NULL UNION 
     SELECT *, 2005 as year FROM victim_counts_2005 WHERE ori IS NULL UNION 
-    SELECT *, 2004 as year FROM victim_counts_2004 WHERE ori IS NULL UNION
+    SELECT *, 2004 as year FROM victim_counts_2004 WHERE ori IS NULL UNION 
     SELECT *, 2003 as year FROM victim_counts_2003 WHERE ori IS NULL UNION 
     SELECT *, 2002 as year FROM victim_counts_2002 WHERE ori IS NULL UNION 
-    SELECT *, 2001 as year FROM victim_counts_2001 WHERE ori IS NULL UNION
+    SELECT *, 2001 as year FROM victim_counts_2001 WHERE ori IS NULL UNION 
     SELECT *, 2000 as year FROM victim_counts_2000 WHERE ori IS NULL UNION 
     SELECT *, 1999 as year FROM victim_counts_1999 WHERE ori IS NULL UNION 
-    SELECT *, 1998 as year FROM victim_counts_1998 WHERE ori IS NULL UNION
+    SELECT *, 1998 as year FROM victim_counts_1998 WHERE ori IS NULL UNION 
     SELECT *, 1997 as year FROM victim_counts_1997 WHERE ori IS NULL UNION 
     SELECT *, 1996 as year FROM victim_counts_1996 WHERE ori IS NULL UNION 
-    SELECT *, 1995 as year FROM victim_counts_1995 WHERE ori IS NULL UNION
+    SELECT *, 1995 as year FROM victim_counts_1995 WHERE ori IS NULL UNION 
     SELECT *, 1994 as year FROM victim_counts_1994 WHERE ori IS NULL UNION 
     SELECT *, 1993 as year FROM victim_counts_1993 WHERE ori IS NULL UNION 
-    SELECT *, 1992 as year FROM victim_counts_1992 WHERE ori IS NULL UNION
+    SELECT *, 1992 as year FROM victim_counts_1992 WHERE ori IS NULL UNION 
     SELECT *, 1991 as year FROM victim_counts_1991 WHERE ori IS NULL;
 
-drop materialized view IF EXISTS victim_counts_ori CASCADE;
-create materialized view victim_counts_ori as 
-    SELECT *, 2015 as year FROM victim_counts_2014 WHERE ori IS NOT NULL UNION 
+create materialized view victim_counts_ori_temp as 
+    SELECT *, 2015 as year FROM victim_counts_2015 WHERE ori IS NOT NULL UNION 
     SELECT *, 2014 as year FROM victim_counts_2014 WHERE ori IS NOT NULL UNION 
     SELECT *, 2013 as year FROM victim_counts_2013 WHERE ori IS NOT NULL UNION
     SELECT *, 2012 as year FROM victim_counts_2012 WHERE ori IS NOT NULL UNION 
@@ -701,10 +693,6 @@ create materialized view victim_counts_ori as
     SELECT *, 1993 as year FROM victim_counts_1993 WHERE ori IS NOT NULL UNION 
     SELECT *, 1992 as year FROM victim_counts_1992 WHERE ori IS NOT NULL UNION
     SELECT *, 1991 as year FROM victim_counts_1991 WHERE ori IS NOT NULL;
-
-CREATE INDEX victim_counts_state_year_id_idx ON victim_counts_states (state_id, year);
-CREATE INDEX victim_counts_ori_year_idx ON victim_counts_ori (ori, year);
-
 
 --------------
 -- VICTIMS - OFFENSES
@@ -755,35 +743,34 @@ BEGIN
 END
 $do$;
 
-drop materialized view  IF EXISTS offense_victim_counts_states;
-create materialized view offense_victim_counts_states as 
-    SELECT *, 2015 as year FROM offense_victim_counts_2015 WHERE ori IS NULL UNION 
-    SELECT *, 2013 as year FROM offense_victim_counts_2013 WHERE ori IS NULL UNION
-    SELECT *, 2012 as year FROM offense_victim_counts_2012 WHERE ori IS NULL UNION 
-    SELECT *, 2011 as year FROM offense_victim_counts_2011 WHERE ori IS NULL UNION 
-    SELECT *, 2010 as year FROM offense_victim_counts_2010 WHERE ori IS NULL UNION
-    SELECT *, 2009 as year FROM offense_victim_counts_2009 WHERE ori IS NULL UNION 
-    SELECT *, 2008 as year FROM offense_victim_counts_2008 WHERE ori IS NULL UNION 
-    SELECT *, 2007 as year FROM offense_victim_counts_2007 WHERE ori IS NULL UNION
-    SELECT *, 2006 as year FROM offense_victim_counts_2006 WHERE ori IS NULL UNION 
-    SELECT *, 2005 as year FROM offense_victim_counts_2005 WHERE ori IS NULL UNION 
-    SELECT *, 2004 as year FROM offense_victim_counts_2004 WHERE ori IS NULL UNION
-    SELECT *, 2003 as year FROM offense_victim_counts_2003 WHERE ori IS NULL UNION 
-    SELECT *, 2002 as year FROM offense_victim_counts_2002 WHERE ori IS NULL UNION 
-    SELECT *, 2001 as year FROM offense_victim_counts_2001 WHERE ori IS NULL UNION
-    SELECT *, 2000 as year FROM offense_victim_counts_2000 WHERE ori IS NULL UNION 
-    SELECT *, 1999 as year FROM offense_victim_counts_1999 WHERE ori IS NULL UNION 
-    SELECT *, 1998 as year FROM offense_victim_counts_1998 WHERE ori IS NULL UNION
-    SELECT *, 1997 as year FROM offense_victim_counts_1997 WHERE ori IS NULL UNION 
-    SELECT *, 1996 as year FROM offense_victim_counts_1996 WHERE ori IS NULL UNION 
-    SELECT *, 1995 as year FROM offense_victim_counts_1995 WHERE ori IS NULL UNION
-    SELECT *, 1994 as year FROM offense_victim_counts_1994 WHERE ori IS NULL UNION 
-    SELECT *, 1993 as year FROM offense_victim_counts_1993 WHERE ori IS NULL UNION 
-    SELECT *, 1992 as year FROM offense_victim_counts_1992 WHERE ori IS NULL UNION
-    SELECT *, 1991 as year FROM offense_victim_counts_1991 WHERE ori IS NULL;
+create materialized view offense_victim_counts_states_temp as 
+SELECT *, 2015 as year FROM offense_victim_counts_2015 WHERE ori IS NULL UNION 
+SELECT *, 2014 as year FROM offense_victim_counts_2014 WHERE ori IS NULL UNION 
+SELECT *, 2013 as year FROM offense_victim_counts_2013 WHERE ori IS NULL UNION
+SELECT *, 2012 as year FROM offense_victim_counts_2012 WHERE ori IS NULL UNION 
+SELECT *, 2011 as year FROM offense_victim_counts_2011 WHERE ori IS NULL UNION 
+SELECT *, 2010 as year FROM offense_victim_counts_2010 WHERE ori IS NULL UNION
+SELECT *, 2009 as year FROM offense_victim_counts_2009 WHERE ori IS NULL UNION 
+SELECT *, 2008 as year FROM offense_victim_counts_2008 WHERE ori IS NULL UNION 
+SELECT *, 2007 as year FROM offense_victim_counts_2007 WHERE ori IS NULL UNION
+SELECT *, 2006 as year FROM offense_victim_counts_2006 WHERE ori IS NULL UNION 
+SELECT *, 2005 as year FROM offense_victim_counts_2005 WHERE ori IS NULL UNION 
+SELECT *, 2004 as year FROM offense_victim_counts_2004 WHERE ori IS NULL UNION
+SELECT *, 2003 as year FROM offense_victim_counts_2003 WHERE ori IS NULL UNION 
+SELECT *, 2002 as year FROM offense_victim_counts_2002 WHERE ori IS NULL UNION 
+SELECT *, 2001 as year FROM offense_victim_counts_2001 WHERE ori IS NULL UNION
+SELECT *, 2000 as year FROM offense_victim_counts_2000 WHERE ori IS NULL UNION 
+SELECT *, 1999 as year FROM offense_victim_counts_1999 WHERE ori IS NULL UNION 
+SELECT *, 1998 as year FROM offense_victim_counts_1998 WHERE ori IS NULL UNION
+SELECT *, 1997 as year FROM offense_victim_counts_1997 WHERE ori IS NULL UNION 
+SELECT *, 1996 as year FROM offense_victim_counts_1996 WHERE ori IS NULL UNION 
+SELECT *, 1995 as year FROM offense_victim_counts_1995 WHERE ori IS NULL UNION
+SELECT *, 1994 as year FROM offense_victim_counts_1994 WHERE ori IS NULL UNION 
+SELECT *, 1993 as year FROM offense_victim_counts_1993 WHERE ori IS NULL UNION 
+SELECT *, 1992 as year FROM offense_victim_counts_1992 WHERE ori IS NULL UNION
+SELECT *, 1991 as year FROM offense_victim_counts_1991 WHERE ori IS NULL;
 
-drop materialized view  IF EXISTS offense_victim_counts_ori;
-create materialized view offense_victim_counts_ori as 
+create materialized view offense_victim_counts_ori_temp as 
     SELECT *, 2015 as year FROM offense_victim_counts_2015 WHERE ori IS NOT NULL UNION 
     SELECT *, 2014 as year FROM offense_victim_counts_2014 WHERE ori IS NOT NULL UNION 
     SELECT *, 2013 as year FROM offense_victim_counts_2013 WHERE ori IS NOT NULL UNION
@@ -809,11 +796,6 @@ create materialized view offense_victim_counts_ori as
     SELECT *, 1993 as year FROM offense_victim_counts_1993 WHERE ori IS NOT NULL UNION 
     SELECT *, 1992 as year FROM offense_victim_counts_1992 WHERE ori IS NOT NULL UNION
     SELECT *, 1991 as year FROM offense_victim_counts_1991 WHERE ori IS NOT NULL;
-
-DROP INDEX IF EXISTS offense_victim_counts_state_id_idx;
-DROP INDEX IF EXISTS offense_victim_counts_ori_idx;
-CREATE INDEX offense_victim_counts_state_id_idx ON offense_victim_counts_states (state_id, year, offense_name);
-CREATE INDEX offense_victim_counts_ori_idx ON offense_victim_counts_ori (ori, year, offense_name);
 
 --------------
 -- OFFENSES
@@ -860,36 +842,35 @@ BEGIN
 END
 $do$;
 
-drop materialized view  IF EXISTS offense_counts_states CASCADE;
-create materialized view offense_counts_states as 
+
+create materialized view offense_counts_states_temp as 
     SELECT *,2015 as year  FROM offense_counts_2015 WHERE ori IS NULL UNION 
     SELECT *,2014 as year  FROM offense_counts_2014 WHERE ori IS NULL UNION 
-    SELECT *,2013 as year  FROM offense_counts_2013 WHERE ori IS NULL UNION
+    SELECT *,2013 as year  FROM offense_counts_2013 WHERE ori IS NULL UNION 
     SELECT *,2012 as year  FROM offense_counts_2012 WHERE ori IS NULL UNION 
     SELECT *,2011 as year  FROM offense_counts_2011 WHERE ori IS NULL UNION 
-    SELECT *,2010 as year  FROM offense_counts_2010 WHERE ori IS NULL UNION
+    SELECT *,2010 as year  FROM offense_counts_2010 WHERE ori IS NULL UNION 
     SELECT *,2009 as year  FROM offense_counts_2009 WHERE ori IS NULL UNION 
     SELECT *,2008 as year  FROM offense_counts_2008 WHERE ori IS NULL UNION 
-    SELECT *,2007 as year  FROM offense_counts_2007 WHERE ori IS NULL UNION
+    SELECT *,2007 as year  FROM offense_counts_2007 WHERE ori IS NULL UNION 
     SELECT *,2006 as year  FROM offense_counts_2006 WHERE ori IS NULL UNION 
     SELECT *,2005 as year  FROM offense_counts_2005 WHERE ori IS NULL UNION 
-    SELECT *,2004 as year  FROM offense_counts_2004 WHERE ori IS NULL UNION
+    SELECT *,2004 as year  FROM offense_counts_2004 WHERE ori IS NULL UNION 
     SELECT *,2003 as year  FROM offense_counts_2003 WHERE ori IS NULL UNION 
     SELECT *,2002 as year  FROM offense_counts_2002 WHERE ori IS NULL UNION 
-    SELECT *,2001 as year  FROM offense_counts_2001 WHERE ori IS NULL UNION
+    SELECT *,2001 as year  FROM offense_counts_2001 WHERE ori IS NULL UNION 
     SELECT *,2000 as year  FROM offense_counts_2000 WHERE ori IS NULL UNION 
     SELECT *,1999 as year  FROM offense_counts_1999 WHERE ori IS NULL UNION 
-    SELECT *,1998 as year  FROM offense_counts_1998 WHERE ori IS NULL UNION
+    SELECT *,1998 as year  FROM offense_counts_1998 WHERE ori IS NULL UNION 
     SELECT *,1997 as year  FROM offense_counts_1997 WHERE ori IS NULL UNION 
     SELECT *,1996 as year  FROM offense_counts_1996 WHERE ori IS NULL UNION 
-    SELECT *,1995 as year  FROM offense_counts_1995 WHERE ori IS NULL UNION
+    SELECT *,1995 as year  FROM offense_counts_1995 WHERE ori IS NULL UNION 
     SELECT *,1994 as year  FROM offense_counts_1994 WHERE ori IS NULL UNION 
     SELECT *,1993 as year  FROM offense_counts_1993 WHERE ori IS NULL UNION 
-    SELECT *,1992 as year  FROM offense_counts_1992 WHERE ori IS NULL UNION
+    SELECT *,1992 as year  FROM offense_counts_1992 WHERE ori IS NULL UNION 
     SELECT *,1991 as year  FROM offense_counts_1991 WHERE ori IS NULL;
 
-drop materialized view  IF EXISTS offense_counts_ori CASCADE;
-create materialized view offense_counts_ori as 
+create materialized view offense_counts_ori_temp as 
     SELECT *,2015 as year  FROM offense_counts_2015 WHERE ori IS NOT NULL UNION 
     SELECT *,2014 as year  FROM offense_counts_2014 WHERE ori IS NOT NULL UNION 
     SELECT *,2013 as year  FROM offense_counts_2013 WHERE ori IS NOT NULL UNION
@@ -915,12 +896,6 @@ create materialized view offense_counts_ori as
     SELECT *,1993 as year  FROM offense_counts_1993 WHERE ori IS NOT NULL UNION 
     SELECT *,1992 as year  FROM offense_counts_1992 WHERE ori IS NOT NULL UNION
     SELECT *,1991 as year  FROM offense_counts_1991 WHERE ori IS NOT NULL;
-
-DROP INDEX IF EXISTS offense_counts_state_year_id_idx;
-DROP INDEX IF EXISTS offense_counts_ori_year_idx;
-CREATE INDEX offense_counts_state_year_id_idx ON offense_counts_states (state_id, year);
-CREATE INDEX offense_counts_ori_year_idx ON offense_counts_ori (ori, year);
-
 
 --------------
 -- OFFENSE - OFFENSES
@@ -961,67 +936,115 @@ BEGIN
 END
 $do$;
 
-drop materialized view IF EXISTS  offense_offense_counts_states;
-create materialized view offense_offense_counts_states as 
+create materialized view offense_offense_counts_states_temp as 
     SELECT *,2015 as year FROM offense_offense_counts_2015 WHERE ori IS NULL UNION 
     SELECT *,2014 as year FROM offense_offense_counts_2014 WHERE ori IS NULL UNION 
-    SELECT *,2013 as year  FROM offense_offense_counts_2013 WHERE ori IS NULL UNION
+    SELECT *,2013 as year  FROM offense_offense_counts_2013 WHERE ori IS NULL UNION 
     SELECT *,2012 as year  FROM offense_offense_counts_2012 WHERE ori IS NULL UNION 
     SELECT *,2011 as year  FROM offense_offense_counts_2011 WHERE ori IS NULL UNION 
-    SELECT *,2010 as year  FROM offense_offense_counts_2010 WHERE ori IS NULL UNION
+    SELECT *,2010 as year  FROM offense_offense_counts_2010 WHERE ori IS NULL UNION 
     SELECT *,2009 as year  FROM offense_offense_counts_2009 WHERE ori IS NULL UNION 
     SELECT *,2008 as year  FROM offense_offense_counts_2008 WHERE ori IS NULL UNION 
-    SELECT *,2007 as year  FROM offense_offense_counts_2007 WHERE ori IS NULL UNION
+    SELECT *,2007 as year  FROM offense_offense_counts_2007 WHERE ori IS NULL UNION 
     SELECT *,2006 as year  FROM offense_offense_counts_2006 WHERE ori IS NULL UNION 
     SELECT *,2005 as year  FROM offense_offense_counts_2005 WHERE ori IS NULL UNION 
-    SELECT *,2004 as year  FROM offense_offense_counts_2004 WHERE ori IS NULL UNION
+    SELECT *,2004 as year  FROM offense_offense_counts_2004 WHERE ori IS NULL UNION 
     SELECT *,2003 as year  FROM offense_offense_counts_2003 WHERE ori IS NULL UNION 
     SELECT *,2002 as year  FROM offense_offense_counts_2002 WHERE ori IS NULL UNION 
-    SELECT *,2001 as year  FROM offense_offense_counts_2001 WHERE ori IS NULL UNION
+    SELECT *,2001 as year  FROM offense_offense_counts_2001 WHERE ori IS NULL UNION 
     SELECT *,2000 as year  FROM offense_offense_counts_2000 WHERE ori IS NULL UNION 
     SELECT *,1999 as year  FROM offense_offense_counts_1999 WHERE ori IS NULL UNION 
-    SELECT *,1998 as year  FROM offense_offense_counts_1998 WHERE ori IS NULL UNION
+    SELECT *,1998 as year  FROM offense_offense_counts_1998 WHERE ori IS NULL UNION 
     SELECT *,1997 as year  FROM offense_offense_counts_1997 WHERE ori IS NULL UNION 
     SELECT *,1996 as year  FROM offense_offense_counts_1996 WHERE ori IS NULL UNION 
-    SELECT *,1995 as year  FROM offense_offense_counts_1995 WHERE ori IS NULL UNION
+    SELECT *,1995 as year  FROM offense_offense_counts_1995 WHERE ori IS NULL UNION 
     SELECT *,1994 as year  FROM offense_offense_counts_1994 WHERE ori IS NULL UNION 
     SELECT *,1993 as year  FROM offense_offense_counts_1993 WHERE ori IS NULL UNION 
-    SELECT *,1992 as year  FROM offense_offense_counts_1992 WHERE ori IS NULL UNION
+    SELECT *,1992 as year  FROM offense_offense_counts_1992 WHERE ori IS NULL UNION 
     SELECT *,1991 as year  FROM offense_offense_counts_1991 WHERE ori IS NULL;
 
-drop materialized view IF EXISTS  offense_offense_counts_ori;
-create materialized view offense_offense_counts_ori as 
+
+
+create materialized view offense_offense_counts_ori_temp as 
     SELECT *,2015 as year FROM offense_offense_counts_2015 WHERE ori IS NOT NULL UNION 
     SELECT *,2014 as year FROM offense_offense_counts_2014 WHERE ori IS NOT NULL UNION 
-    SELECT *,2013 as year  FROM offense_offense_counts_2013 WHERE ori IS NOT NULL UNION
+    SELECT *,2013 as year  FROM offense_offense_counts_2013 WHERE ori IS NOT NULL UNION 
     SELECT *,2012 as year  FROM offense_offense_counts_2012 WHERE ori IS NOT NULL UNION 
     SELECT *,2011 as year  FROM offense_offense_counts_2011 WHERE ori IS NOT NULL UNION 
-    SELECT *,2010 as year  FROM offense_offense_counts_2010 WHERE ori IS NOT NULL UNION
+    SELECT *,2010 as year  FROM offense_offense_counts_2010 WHERE ori IS NOT NULL UNION 
     SELECT *,2009 as year  FROM offense_offense_counts_2009 WHERE ori IS NOT NULL UNION 
     SELECT *,2008 as year  FROM offense_offense_counts_2008 WHERE ori IS NOT NULL UNION 
-    SELECT *,2007 as year  FROM offense_offense_counts_2007 WHERE ori IS NOT NULL UNION
+    SELECT *,2007 as year  FROM offense_offense_counts_2007 WHERE ori IS NOT NULL UNION 
     SELECT *,2006 as year  FROM offense_offense_counts_2006 WHERE ori IS NOT NULL UNION 
     SELECT *,2005 as year  FROM offense_offense_counts_2005 WHERE ori IS NOT NULL UNION 
-    SELECT *,2004 as year  FROM offense_offense_counts_2004 WHERE ori IS NOT NULL UNION
+    SELECT *,2004 as year  FROM offense_offense_counts_2004 WHERE ori IS NOT NULL UNION 
     SELECT *,2003 as year  FROM offense_offense_counts_2003 WHERE ori IS NOT NULL UNION 
     SELECT *,2002 as year  FROM offense_offense_counts_2002 WHERE ori IS NOT NULL UNION 
-    SELECT *,2001 as year  FROM offense_offense_counts_2001 WHERE ori IS NOT NULL UNION
+    SELECT *,2001 as year  FROM offense_offense_counts_2001 WHERE ori IS NOT NULL UNION 
     SELECT *,2000 as year  FROM offense_offense_counts_2000 WHERE ori IS NOT NULL UNION 
     SELECT *,1999 as year  FROM offense_offense_counts_1999 WHERE ori IS NOT NULL UNION 
-    SELECT *,1998 as year  FROM offense_offense_counts_1998 WHERE ori IS NOT NULL UNION
+    SELECT *,1998 as year  FROM offense_offense_counts_1998 WHERE ori IS NOT NULL UNION 
     SELECT *,1997 as year  FROM offense_offense_counts_1997 WHERE ori IS NOT NULL UNION 
     SELECT *,1996 as year  FROM offense_offense_counts_1996 WHERE ori IS NOT NULL UNION 
-    SELECT *,1995 as year  FROM offense_offense_counts_1995 WHERE ori IS NOT NULL UNION
+    SELECT *,1995 as year  FROM offense_offense_counts_1995 WHERE ori IS NOT NULL UNION 
     SELECT *,1994 as year  FROM offense_offense_counts_1994 WHERE ori IS NOT NULL UNION 
     SELECT *,1993 as year  FROM offense_offense_counts_1993 WHERE ori IS NOT NULL UNION 
-    SELECT *,1992 as year  FROM offense_offense_counts_1992 WHERE ori IS NOT NULL UNION
+    SELECT *,1992 as year  FROM offense_offense_counts_1992 WHERE ori IS NOT NULL UNION 
     SELECT *,1991 as year  FROM offense_offense_counts_1991 WHERE ori IS NOT NULL;
 
-DROP INDEX IF EXISTS offense_offense_counts_state_id_idx;
-DROP INDEX IF EXISTS offense_offense_counts_ori_idx;
-CREATE INDEX offense_offense_counts_state_id_idx ON offense_counts_states (state_id, year, offense_name);
-CREATE INDEX offense_offense_counts_ori_idx ON offense_counts_ori (ori, year, offense_name);
+-- Rename/replace views.
+
+drop materialized view IF EXISTS offender_counts_states CASCADE;
+ALTER MATERIALIZED VIEW offender_counts_states_temp RENAME TO offender_counts_states;
+CREATE INDEX CONCURRENTLY offender_counts_state_year_id_idx ON offender_counts_states (state_id, year);
+
+drop materialized view IF EXISTS offender_counts_ori CASCADE;
+ALTER MATERIALIZED VIEW offender_counts_ori_temp RENAME TO offender_counts_ori;
+CREATE INDEX CONCURRENTLY offender_counts_ori_year_idx ON offender_counts_ori (ori, year);
+
+
+drop materialized view  IF EXISTS offense_offender_counts_states;
+ALTER MATERIALIZED VIEW offense_offender_counts_states_temp RENAME TO offense_offender_counts_states;
+CREATE INDEX CONCURRENTLY offense_offender_counts_state_id_idx ON offense_offender_counts_states (state_id, year, offense_name);
+
+drop materialized view  IF EXISTS offense_offender_counts_ori;
+ALTER MATERIALIZED VIEW offense_offender_counts_ori_temp RENAME TO offense_offender_counts_ori;
+CREATE INDEX CONCURRENTLY offense_offender_counts_ori_idx ON offense_offender_counts_ori (ori, year, offense_name);
+
+drop materialized view IF EXISTS victim_counts_states CASCADE;
+ALTER MATERIALIZED VIEW victim_counts_states_temp RENAME TO victim_counts_states;
+CREATE INDEX CONCURRENTLY victim_counts_state_year_id_idx ON victim_counts_states (state_id, year);
+
+drop materialized view IF EXISTS victim_counts_ori CASCADE;
+ALTER MATERIALIZED VIEW victim_counts_ori_temp RENAME TO victim_counts_ori;
+CREATE INDEX CONCURRENTLY victim_counts_ori_year_idx ON victim_counts_ori (ori, year);
+
+drop materialized view  IF EXISTS offense_victim_counts_states;
+ALTER MATERIALIZED VIEW offense_victim_counts_states_temp RENAME TO offense_victim_counts_states;
+CREATE INDEX CONCURRENTLY offense_victim_counts_state_id_idx ON offense_victim_counts_states (state_id, year, offense_name);
+
+drop materialized view  IF EXISTS offense_victim_counts_ori;
+ALTER MATERIALIZED VIEW offense_victim_counts_ori_temp RENAME TO offense_victim_counts_ori;
+CREATE INDEX CONCURRENTLY offense_victim_counts_ori_idx ON offense_victim_counts_ori (ori, year, offense_name);
+
+drop materialized view  IF EXISTS offense_counts_states CASCADE;
+ALTER MATERIALIZED VIEW offense_counts_states_temp RENAME TO offense_counts_states;
+CREATE INDEX CONCURRENTLY offense_counts_state_year_id_idx ON offense_counts_states (state_id, year);
+
+drop materialized view  IF EXISTS offense_counts_ori CASCADE;
+ALTER MATERIALIZED VIEW offense_counts_ori_temp RENAME TO offense_counts_ori;
+CREATE INDEX CONCURRENTLY offense_counts_ori_year_idx ON offense_counts_ori (ori, year);
+
+drop materialized view IF EXISTS  offense_offense_counts_states;
+ALTER MATERIALIZED VIEW offense_offense_counts_states_temp RENAME TO offense_offense_counts_states;
+CREATE INDEX CONCURRENTLY offense_offense_counts_state_id_idx ON offense_counts_states (state_id, year, offense_name);
+
+drop materialized view IF EXISTS  offense_offense_counts_ori;
+ALTER MATERIALIZED VIEW offense_offense_counts_ori_temp RENAME TO offense_offense_counts_ori;
+CREATE INDEX CONCURRENTLY offense_offense_counts_ori_idx ON offense_counts_ori (ori, year, offense_name);
+
+-- DONE.
 
 
 
--- Rebuild any aggregate views
+
