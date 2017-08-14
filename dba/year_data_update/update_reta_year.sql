@@ -1,7 +1,60 @@
 -- These:
 
 -- echo -n "Create flat ref_agency_covered_by table..."
-SET work_mem='4096MB'; -- Go Super Saiyan.
+SET work_mem='3GB'; -- Go Super Saiyan.
+
+
+DO $$
+DECLARE
+max_year smallint;
+BEGIN
+max_year := (SELECT MAX(year) from agency_participation);
+
+DROP TABLE IF EXISTS ten_year_participation;
+CREATE TABLE ten_year_participation AS
+SELECT agency_id,
+SUM(reported) AS years_reporting
+FROM agency_participation
+WHERE year <= max_year
+AND year > max_year - 10
+GROUP BY agency_id;
+END $$;
+
+DROP TABLE IF EXISTS denorm_agencies_temp CASCADE;
+CREATE TABLE denorm_agencies_temp
+(    agency_id bigint PRIMARY KEY,
+ori character(9) NOT NULL,legacy_ori character(9) NOT NULL,agency_name text,short_name text,agency_type_id smallint NOT NULL,agency_type_name text,tribe_id bigint,campus_id bigint,city_id bigint,city_name text,state_id smallint NOT NULL,state_abbr character(2) NOT NULL,primary_county_id bigint,primary_county text,primary_county_fips character varying(5),agency_status character(1),submitting_agency_id bigint,submitting_sai character varying(9),submitting_name text,submitting_state_abbr character varying(2),start_year smallint,dormant_year smallint,current_year smallint,revised_rape_start smallint,population bigint,population_group_code character varying(2),population_group_desc text,population_source_flag character varying(1),suburban_area_flag character varying(1),core_city_flag character varying(1),months_reported smallint,nibrs_months_reported smallint,past_10_years_reported smallint,covered_by_id bigint,covered_by_ori character(9),covered_by_name character varying(100),staffing_year smallint,total_officers int,total_civilians int,icpsr_zip character(5),icpsr_lat numeric,
+    icpsr_lng numeric);
+--- foreign keys
+
+ALTER TABLE denorm_agencies_temp DISABLE TRIGGER ALL;
+INSERT INTO denorm_agencies_temp SELECT ra.agency_id, ra.ori, ra.legacy_ori, CASE WHEN edit.edited_name IS NOT NULL THEN edit.edited_name ELSE ra.pub_agency_name END as agency_name, ra.pub_agency_name AS short_name, ra.agency_type_id, rat.agency_type_name, ra.tribe_id, ra.campus_id, ra.city_id, rc.city_name, ra.state_id, rs.state_postal_abbr AS state_abbr, rac.county_id AS primary_county_id, CASE WHEN cc.fips IS NOT NULL THEN cc.county_name ELSE NULL END AS primary_county, CASE WHEN cc.fips IS NOT NULL THEN cc.fips ELSE NULL END AS primary_county_fips, ra.agency_status, ra.submitting_agency_id, rsa.sai AS submitting_sai, rsa.agency_name AS submitting_name, rss.state_postal_abbr AS submitting_state_abbr, y.start_year, ra.dormant_year, y.current_year AS current_year, radc.revised_year AS revised_rape_start, rap.population, rpg.population_group_code, rpg.population_group_desc, rap.source_flag AS population_source_flag, rap.suburban_area_flag, rac.core_city_flag, cap.months_reported, cap.nibrs_months_reported AS nibrs_months_reported, tp.years_reporting AS past_10_years_reported, racp.covered_by_agency_id AS covered_by_id, covering.ori AS covered_by_ori, covering.pub_agency_name AS covered_by_name, pe.staffing_year AS staffing_year, COALESCE(ped.male_officer + ped.female_officer) AS total_officers, COALESCE(ped.male_civilian + ped.female_civilian) AS total_civilians, icpsr.zip as icpsr_zip, icpsr.lat as icpsr_lat, icpsr.lng as icpsr_lng FROM ref_agency ra JOIN ref_agency_type rat ON rat.agency_type_id = ra.agency_type_id LEFT OUTER JOIN (SELECT agency_id, min(data_year) AS start_year, max(data_year) AS current_year FROM reta_month GROUP BY agency_id) y ON y.agency_id=ra.agency_id LEFT OUTER JOIN (SELECT agency_id, max(data_year) AS staffing_year FROM pe_employee_data WHERE reported_flag='Y' GROUP BY agency_id) pe ON pe.agency_id=ra.agency_id LEFT OUTER JOIN (SELECT agency_id, min(data_year) AS revised_year FROM ref_agency_data_content WHERE summary_rape_def = 'R' GROUP BY agency_id) radc ON radc.agency_id=ra.agency_id LEFT OUTER JOIN ref_city rc ON rc.city_id=ra.city_id LEFT OUTER JOIN ref_state rs ON rs.state_id=ra.state_id LEFT OUTER JOIN agency_participation cap ON cap.agency_id=ra.agency_id AND cap.year=y.current_year LEFT OUTER JOIN ref_submitting_agency rsa ON rsa.agency_id=ra.submitting_agency_id LEFT OUTER JOIN ref_state rss ON rss.state_id=rsa.state_id LEFT OUTER JOIN ref_agency_population rap ON rap.agency_id=ra.agency_id AND rap.data_year=y.current_year LEFT OUTER JOIN (SELECT DISTINCT ON (agency_id, data_year) agency_id, data_year, county_id, core_city_flag FROM ref_agency_county ORDER BY agency_id, data_year, core_city_flag DESC) rac ON rac.agency_id=ra.agency_id AND rac.data_year=y.current_year LEFT OUTER JOIN cde_counties cc ON cc.county_id=rac.county_id LEFT OUTER JOIN ref_population_group rpg ON rpg.population_group_id=rap.population_group_id LEFT OUTER JOIN ref_agency_covered_by_flat racp ON racp.agency_id=ra.agency_id AND racp.data_year=y.current_year LEFT OUTER JOIN ref_agency covering ON covering.agency_id=racp.covered_by_agency_id LEFT OUTER JOIN pe_employee_data ped ON ped.agency_id=ra.agency_id AND ped.data_year=pe.staffing_year AND ped.reported_flag = 'Y' LEFT OUTER JOIN ten_year_participation tp ON tp.agency_id = ra.agency_id LEFT OUTER JOIN agency_name_edits edit ON edit.ori = ra.ori LEFT OUTER JOIN icpsr_2012 icpsr ON icpsr.ori = ra.ori WHERE ra.agency_status = 'A';
+
+ALTER TABLE ONLY denorm_agencies_temp
+ADD CONSTRAINT agencies_tribe_fk FOREIGN KEY (tribe_id) REFERENCES ref_tribe(tribe_id);
+
+ALTER TABLE ONLY denorm_agencies_temp
+ADD CONSTRAINT agencies_city_fk FOREIGN KEY (city_id) REFERENCES ref_city(city_id);
+
+-- ALTER TABLE ONLY denorm_agencies_temp
+-- ADD CONSTRAINT agencies_county_fk FOREIGN KEY (primary_county_id) REFERENCES cde_counties(county_id);
+
+ALTER TABLE ONLY denorm_agencies_temp
+ADD CONSTRAINT agencies_campus_fk FOREIGN KEY (campus_id) REFERENCES ref_university_campus(campus_id);
+
+ALTER TABLE ONLY denorm_agencies_temp
+ADD CONSTRAINT agencies_state_fk FOREIGN KEY (state_id) REFERENCES ref_state(state_id);
+
+
+DROP TABLE ten_year_participation;
+DROP TABLE icpsr_2012;
+DROP TABLE agency_name_edits;
+
+ALTER TABLE denorm_agencies_temp ENABLE TRIGGER ALL;
+DROP TABLE IF EXISTS cde_agencies CASCADE;
+ALTER TABLE denorm_agencies_temp RENAME TO cde_agencies;
+
+
 
 DROP TABLE IF EXISTS flat_covered_by_temp CASCADE;
 
@@ -57,33 +110,31 @@ FROM nibrs_month
 GROUP by data_year, agency_id;
 
 DROP TABLE IF EXISTS agency_participation CASCADE;
-CREATE TABLE agency_participation AS
-SELECT
-ar.data_year AS year,
-rs.state_name AS state_name,
-rs.state_postal_abbr AS state_abbr,
-ar.agency_id,
-ra.ori as agency_ori,
-ra.pub_agency_name as agency_name,
-rap.population AS agency_population,
-rpg.population_group_code AS population_group_code,
-rpg.population_group_desc AS population_group,
-CASE WHEN ar.months_reported = 12 THEN 1 ELSE 0 END AS reported,
-COALESCE(ar.months_reported, 0) AS months_reported,
-CASE WHEN nr.months_reported = 12 THEN 1 ELSE 0 END AS nibrs_reported,
-COALESCE(nr.months_reported, 0) AS nibrs_months_reported,
-CASE WHEN racbf.agency_id IS NOT NULL THEN 1 ELSE 0 END AS covered,
-CASE WHEN ar.months_reported = 12 OR covered_ar.months_reported = 12 THEN 1 ELSE 0 END AS participated,
-CASE WHEN nr.months_reported = 12 OR covered_nr.months_reported = 12 THEN 1 ELSE 0 END AS nibrs_participated
-FROM agency_reporting ar
-JOIN ref_agency ra ON ra.agency_id=ar.agency_id
-JOIN ref_state rs ON rs.state_id=ra.state_id
-LEFT OUTER JOIN agency_reporting_nibrs nr ON ar.agency_id=nr.agency_id AND ar.data_year=nr.data_year
-LEFT OUTER JOIN ref_agency_population rap ON rap.agency_id=ar.agency_id AND rap.data_year=ar.data_year
-LEFT OUTER JOIN ref_population_group rpg ON rpg.population_group_id = rap.population_group_id
-LEFT OUTER JOIN ref_agency_covered_by_flat racbf ON racbf.agency_id=ar.agency_id AND racbf.data_year=ar.data_year
-LEFT OUTER JOIN agency_reporting covered_ar ON covered_ar.agency_id=racbf.covered_by_agency_id AND covered_ar.data_year=racbf.data_year
-LEFT OUTER JOIN agency_reporting covered_nr ON covered_nr.agency_id=racbf.covered_by_agency_id AND covered_nr.data_year=racbf.data_year
+CREATE TABLE agency_participation AS SELECT ar.data_year AS year,
+rs.state_name AS state_name, 
+rs.state_postal_abbr AS state_abbr, 
+ar.agency_id, 
+ra.ori as agency_ori, 
+ra.pub_agency_name as agency_name, 
+rap.population AS agency_population, 
+rpg.population_group_code AS population_group_code, 
+rpg.population_group_desc AS population_group, 
+CASE WHEN ar.months_reported = 12 THEN 1 ELSE 0 END AS reported, 
+COALESCE(ar.months_reported, 0) AS months_reported, 
+CASE WHEN nr.months_reported = 12 THEN 1 ELSE 0 END AS nibrs_reported, 
+COALESCE(nr.months_reported, 0) AS nibrs_months_reported, 
+CASE WHEN racbf.agency_id IS NOT NULL THEN 1 ELSE 0 END AS covered, 
+CASE WHEN ar.months_reported = 12 OR covered_ar.months_reported = 12 THEN 1 ELSE 0 END AS participated, 
+CASE WHEN nr.months_reported = 12 OR covered_nr.months_reported = 12 THEN 1 ELSE 0 END AS nibrs_participated 
+FROM agency_reporting ar 
+JOIN ref_agency ra ON ra.agency_id=ar.agency_id 
+JOIN ref_state rs ON rs.state_id=ra.state_id 
+LEFT OUTER JOIN agency_reporting_nibrs nr ON ar.agency_id=nr.agency_id AND ar.data_year=nr.data_year 
+LEFT OUTER JOIN ref_agency_population rap ON rap.agency_id=ar.agency_id AND rap.data_year=ar.data_year 
+LEFT OUTER JOIN ref_population_group rpg ON rpg.population_group_id = rap.population_group_id 
+LEFT OUTER JOIN ref_agency_covered_by_flat racbf ON racbf.agency_id=ar.agency_id AND racbf.data_year=ar.data_year 
+LEFT OUTER JOIN agency_reporting covered_ar ON covered_ar.agency_id=racbf.covered_by_agency_id AND covered_ar.data_year=racbf.data_year 
+LEFT OUTER JOIN agency_reporting covered_nr ON covered_nr.agency_id=racbf.covered_by_agency_id AND covered_nr.data_year=racbf.data_year 
 ORDER by ar.data_year, rs.state_name, ra.pub_agency_name;
 
 ALTER TABLE ONLY agency_participation
@@ -113,11 +164,7 @@ CREATE TABLE participation_rates_temp
     nibrs_participating_population bigint
 );
 
-ALTER TABLE ONLY participation_rates_temp
-ADD CONSTRAINT participation_rates_state_fk FOREIGN KEY (state_id) REFERENCES ref_state(state_id);
 
-ALTER TABLE ONLY participation_rates_temp
-ADD CONSTRAINT participation_rates_county_fk FOREIGN KEY (county_id) REFERENCES ref_county(county_id);
 
 INSERT INTO participation_rates_temp(year, state_id, state_name, total_agencies, participating_agencies, participation_rate, nibrs_participating_agencies, nibrs_participation_rate, covered_agencies, covered_rate, participating_population, nibrs_participating_population)
 SELECT
@@ -139,39 +186,24 @@ JOIN ref_state rs ON a.state_id = rs.state_id
 LEFT OUTER JOIN ref_agency_covered_by racb ON racb.agency_id=c.agency_id AND racb.data_year=c.year
 GROUP BY c.year, a.state_id, rs.state_name;
 
+ALTER TABLE ONLY participation_rates_temp
+ADD CONSTRAINT participation_rates_state_fk FOREIGN KEY (state_id) REFERENCES ref_state(state_id);
+
+ALTER TABLE ONLY participation_rates_temp
+ADD CONSTRAINT participation_rates_county_fk FOREIGN KEY (county_id) REFERENCES ref_county(county_id);
+
 -- If an agency spans multiple counties, it will be counted once in
 -- the total/reporting agencies counts for each county. Its population
 -- is apportioned individually though, so its full population won't be
 -- duplicated for each county
-INSERT INTO participation_rates_temp(year, county_id, county_name, total_agencies, participating_agencies, participation_rate, nibrs_participating_agencies, nibrs_participation_rate, total_population, participating_population, nibrs_participating_population, covered_agencies, covered_rate)
-SELECT
-c.year,
-rc.county_id,
-rc.county_name,
-COUNT(a.ori) AS total_agencies,
-SUM(c.participated) AS participating_agencies,
-CAST(SUM(c.participated) AS float)/COUNT(a.ori) AS participation_rate,
-SUM(c.nibrs_participated) AS nibrs_participating_agencies,
-CAST(SUM(c.nibrs_participated) AS float)/COUNT(a.ori) AS nibrs_participation_rate,
-SUM(rac.population) AS total_population,
-SUM(CASE WHEN c.participated = 1 THEN rac.population ELSE 0 END) AS participating_population,
-SUM(CASE WHEN c.nibrs_participated = 1 THEN rac.population ELSE 0 END) AS nibrs_participating_population,
-COUNT(racb.agency_id) AS covered_agencies,
-CAST(COUNT(racb.agency_id) AS float)/COUNT(a.ori) AS covered_rate
-FROM agency_participation c
-JOIN ref_agency a ON a.agency_id = c.agency_id
-JOIN ref_agency_county rac ON rac.agency_id = a.agency_id AND rac.data_year = c.year
-JOIN ref_county rc ON rc.county_id = rac.county_id
-LEFT OUTER JOIN ref_agency_covered_by racb ON racb.agency_id=c.agency_id AND racb.data_year=c.year
-GROUP BY c.year, rc.county_id, rc.county_name;
+INSERT INTO participation_rates_temp(year, county_id, county_name, total_agencies, participating_agencies, participation_rate, nibrs_participating_agencies, nibrs_participation_rate, total_population, participating_population, nibrs_participating_population, covered_agencies, covered_rate) SELECT  c.year,  rc.county_id,  rc.county_name,  COUNT(a.ori) AS total_agencies,  SUM(c.participated) AS participating_agencies,  CAST(SUM(c.participated) AS float)/COUNT(a.ori) AS participation_rate,  SUM(c.nibrs_participated) AS nibrs_participating_agencies,  CAST(SUM(c.nibrs_participated) AS float)/COUNT(a.ori) AS nibrs_participation_rate,  SUM(rac.population) AS total_population,  SUM(CASE WHEN c.participated = 1 THEN rac.population ELSE 0 END) AS participating_population,  SUM(CASE WHEN c.nibrs_participated = 1 THEN rac.population ELSE 0 END) AS nibrs_participating_population,  COUNT(racb.agency_id) AS covered_agencies,  CAST(COUNT(racb.agency_id) AS float)/COUNT(a.ori) AS covered_rate  FROM agency_participation c  JOIN ref_agency a ON a.agency_id = c.agency_id  JOIN ref_agency_county rac ON rac.agency_id = a.agency_id AND rac.data_year = c.year  JOIN ref_county rc ON rc.county_id = rac.county_id  LEFT OUTER JOIN ref_agency_covered_by racb ON racb.agency_id=c.agency_id AND racb.data_year=c.year  GROUP BY c.year, rc.county_id, rc.county_name; 
 
 UPDATE participation_rates_temp
 SET total_population=(SELECT COALESCE(SUM(rac.population), 0)
                       FROM ref_agency_county rac
                       JOIN ref_agency ra ON ra.agency_id=rac.agency_id
                       WHERE ra.state_id=participation_rates_temp.state_id
-                      AND rac.data_year=participation_rates_temp.year)
-WHERE state_id IS NOT NULL;
+                      AND rac.data_year=participation_rates_temp.year) WHERE state_id IS NOT NULL;
 
 UPDATE participation_rates_temp
 SET participating_population=(SELECT COALESCE(SUM(rac.population), 0)
@@ -180,8 +212,7 @@ SET participating_population=(SELECT COALESCE(SUM(rac.population), 0)
                               JOIN agency_participation c ON c.agency_id=ra.agency_id AND c.year=rac.data_year
                               WHERE ra.state_id=participation_rates_temp.state_id
                               AND rac.data_year=participation_rates_temp.year
-                              AND c.participated = 1)
-WHERE state_id IS NOT NULL;
+                              AND c.participated = 1) WHERE state_id IS NOT NULL;
 
 UPDATE participation_rates_temp
 SET nibrs_participating_population=(SELECT COALESCE(SUM(rac.population), 0)
@@ -260,7 +291,7 @@ CREATE TABLE cde_counties_temp (
 INSERT INTO cde_counties_temp
 SELECT
 rc.county_id,
-CASE WHEN rc.county_fips_code::int > 0 THEN LPAD(rs.state_fips_code, 2, '0') || LPAD(rc.county_fips_code, 3, '0') ELSE NULL END AS fips,
+CASE WHEN convert_to_integer(rc.county_fips_code) > 0 THEN LPAD(rs.state_fips_code, 2, '0') || LPAD(rc.county_fips_code, 3, '0') ELSE NULL END AS fips,
 INITCAP(rc.county_name) AS county_name,
 rs.state_id,
 rs.state_name,
@@ -312,33 +343,32 @@ CREATE TABLE cde_states_temp (
 );
 
 
-WITH pe_staffing AS (SELECT state_id, COALESCE(SUM(ped.male_officer)+SUM(ped.female_officer)) AS total_officers, COALESCE(SUM(ped.male_civilian)+SUM(ped.female_civilian)) AS total_civilians
-                     FROM pe_employee_data ped
-                     JOIN ref_agency ra ON ra.agency_id = ped.agency_id
-                     WHERE ped.reported_flag='Y' AND ped.data_year=(SELECT MAX(current_year) from cde_agencies) GROUP BY ra.state_id)
-INSERT INTO cde_states_temp
-SELECT
-rs.state_id,
-rs.state_name,
-rs.state_postal_abbr AS state_abbr,
-ps.year AS current_year,
-ps.total_population,
-ps.total_agencies,
-ps.participating_agencies,
-CASE WHEN ps.total_agencies > 0 THEN CAST(100*ps.participating_agencies AS numeric)/ps.total_agencies ELSE 0 END AS participation_pct,
-ps.nibrs_participating_agencies,
-CASE WHEN ps.total_agencies > 0 THEN CAST(100*ps.nibrs_participating_agencies AS numeric)/ps.total_agencies ELSE 0 END AS nibrs_participation_pct,
-ps.covered_agencies,
-CASE WHEN ps.total_agencies > 0 THEN CAST(100*ps.covered_agencies AS numeric)/ps.total_agencies ELSE 0 END AS covered_pct,
-ps.participating_population,
-CASE WHEN ps.total_population > 0 THEN CAST(100*ps.participating_population AS numeric)/ps.total_population ELSE 0 END as participating_population_pct,
-ps.nibrs_participating_population,
-CASE WHEN ps.total_population > 0 THEN CAST(100*ps.nibrs_participating_population AS numeric)/ps.total_population ELSE 0 END as nibrs_participating_population_pct,
-pe.total_officers,
-pe.total_civilians
-FROM ref_state rs
-LEFT OUTER JOIN (SELECT DISTINCT ON (state_id) state_id, year, total_population, total_agencies, participating_agencies, nibrs_participating_agencies, covered_agencies, participating_population, nibrs_participating_population FROM participation_rates pr WHERE state_id IS NOT NULL AND county_id IS NULL ORDER by state_id, year DESC) ps ON ps.state_id = rs.state_id
-LEFT OUTER JOIN pe_staffing pe ON pe.state_id = rs.state_id;
+WITH pe_staffing AS (SELECT state_id, COALESCE(SUM(ped.male_officer)+SUM(ped.female_officer)) AS total_officers, COALESCE(SUM(ped.male_civilian)+SUM(ped.female_civilian)) AS total_civilians 
+                     FROM pe_employee_data ped 
+                     JOIN ref_agency ra ON ra.agency_id = ped.agency_id 
+                     WHERE ped.reported_flag='Y' AND ped.data_year=(SELECT MAX(current_year) from cde_agencies) GROUP BY ra.state_id) 
+INSERT INTO cde_states_temp 
+SELECT 
+rs.state_id, 
+rs.state_name, 
+rs.state_postal_abbr AS state_abbr, 
+ps.year AS current_year, 
+ps.total_population, 
+ps.total_agencies, 
+ps.participating_agencies, 
+CASE WHEN ps.total_agencies > 0 THEN CAST(100*ps.participating_agencies AS numeric)/ps.total_agencies ELSE 0 END AS participation_pct, 
+ps.nibrs_participating_agencies, 
+CASE WHEN ps.total_agencies > 0 THEN CAST(100*ps.nibrs_participating_agencies AS numeric)/ps.total_agencies ELSE 0 END AS nibrs_participation_pct, 
+ps.covered_agencies, 
+CASE WHEN ps.total_agencies > 0 THEN CAST(100*ps.covered_agencies AS numeric)/ps.total_agencies ELSE 0 END AS covered_pct, 
+ps.participating_population, 
+CASE WHEN ps.total_population > 0 THEN CAST(100*ps.participating_population AS numeric)/ps.total_population ELSE 0 END as participating_population_pct, 
+ps.nibrs_participating_population, 
+CASE WHEN ps.total_population > 0 THEN CAST(100*ps.nibrs_participating_population AS numeric)/ps.total_population ELSE 0 END as nibrs_participating_population_pct, 
+pe.total_officers, 
+pe.total_civilians 
+FROM ref_state rs LEFT OUTER JOIN (SELECT DISTINCT ON (state_id) state_id, year, total_population, total_agencies, participating_agencies, nibrs_participating_agencies, covered_agencies, participating_population, nibrs_participating_population FROM participation_rates pr WHERE state_id IS NOT NULL AND county_id IS NULL ORDER by state_id, year DESC) ps ON ps.state_id = rs.state_id LEFT OUTER JOIN pe_staffing pe ON pe.state_id = rs.state_id; 
+
 DROP TABLE IF EXISTS cde_states;
 ALTER TABLE cde_states_temp RENAME TO cde_states;
 
@@ -360,11 +390,16 @@ SELECT data_year, covered_by_agency_id, COUNT(agency_id) AS count
 FROM ref_agency_covered_by_flat
 GROUP BY covered_by_agency_id, data_year;
 
+
+-- TODO!
+-----------------------------------------------------------------------------------------
+SET synchronous_commit TO OFF;
+
 DO
 $do$
 DECLARE
    -- ARRAY of Subcat Offense ID's - This could be replaced with a select statement in the future.
-   arr integer[] := array[0, 11, 12, 20, 21, 22, 23, 24, 25, 30, 31, 32, 33, 34, 40, 41, 42, 43, 44, 45, 50, 51, 52, 53, 60, 70, 71, 72, 73, 80, 81, 82];
+   arr integer[] := array[0, 24, 11, 12, 20, 21, 22, 23, 25, 30, 31, 32, 33, 34, 40, 41, 42, 43, 44, 45, 50, 51, 52, 53, 60, 70, 71, 72, 73, 80, 81, 82];
    i integer;
 BEGIN
    FOREACH i IN ARRAY arr
@@ -380,9 +415,9 @@ BEGIN
     SUM(rmos.actual_count) AS actual,
     SUM(rmos.cleared_count) AS cleared,
     SUM(rmos.juvenile_cleared_count) AS juvenile_cleared 
-    FROM (SELECT * from reta_month_offense_subcat where offense_subcat_id=i AND reta_month_offense_subcat.actual_status NOT IN (2, 3, 4)) rmos
+    FROM (SELECT * from reta_month_offense_subcat_new where offense_subcat_id=i AND reta_month_offense_subcat.actual_status NOT IN (2, 3, 4)) rmos
     JOIN reta_offense_subcat ros ON (rmos.offense_subcat_id = ros.offense_subcat_id)
-    JOIN reta_month rm ON (rmos.reta_month_id = rm.reta_month_id)
+    JOIN reta_month_new rm ON (rmos.reta_month_id = rm.reta_month_id)
     JOIN agency_reporting ar ON ar.agency_id=rm.agency_id AND ar.data_year=rm.data_year
     WHERE ar.reported IS TRUE and rm.data_year = 2015 
     GROUP BY rm.data_year, rm.agency_id, ros.offense_subcat_id;
@@ -586,6 +621,11 @@ WHERE a.data_year = 2015;
 
 DROP TABLE agency_sums_by_classification;
 
+
+-- Refresh year count view.
+REFRESH MATERIALIZED VIEW nibrs_years;
+-------------------------------------------------------------------------------------------
+
 ----- Add arson to agency sums
 DROP TABLE IF EXISTS arson_agency_reporting;
 CREATE TABLE arson_agency_reporting AS
@@ -625,24 +665,6 @@ JOIN arson_agency_reporting rep ON rep.agency_id=am.agency_id AND rep.data_year=
 WHERE rep.months_reported = 12 AND am.data_year = 2015 
 AND ambs.actual_status = 0
 GROUP BY am.data_year, am.agency_id;
-
-DROP TABLE IF EXISTS agency_arson_view CASCADE;
-
-create TABLE agency_arson_view (
-id SERIAL PRIMARY KEY,
-year smallint NOT NULL,
-agency_id bigint NOT NULL, 
-reported integer, 
-unfounded integer,
-actual integer,
-cleared integer,
-juvenile_cleared integer,
-uninhabited integer,
-est_damage_value bigint,
-ori text,
-pub_agency_name text,
-state_postal_abbr text
-);
 
 INSERT INTO agency_arson_view(year, agency_id, reported, unfounded, actual, cleared, juvenile_cleared, uninhabited, est_damage_value, ori, pub_agency_name, state_postal_abbr)
 SELECT

@@ -1211,10 +1211,56 @@ INSERT INTO nibrs_weapon (SELECT convert_to_integer(weapon_id), convert_to_integ
 --
 -- Not ready (drop FK's)
 
-INSERT INTO reta_month (SELECT convert_to_integer(reta_month_id), convert_to_integer(agency_id), convert_to_integer(data_year), convert_to_integer(month_num), data_home, source_flag, reported_flag, ddocname, convert_to_integer(month_included_in), to_timestamp_ucr(report_date), to_timestamp_ucr(prepared_date), prepared_by_user, prepared_by_email, orig_format, convert_to_integer(leoka_felony), convert_to_integer(leoka_accident), convert_to_integer(leoka_assault), convert_to_integer(leoka_status), update_flag, convert_to_integer(did), convert_to_integer(ff_line_number) FROM reta_month_temp);
-INSERT INTO reta_month_offense_subcat (SELECT convert_to_integer(reta_month_id), convert_to_integer(offense_subcat_id), convert_to_integer(reported_count), convert_to_integer(reported_status), convert_to_integer(unfounded_count), convert_to_integer(unfounded_status), convert_to_integer(actual_count), convert_to_integer(actual_status), convert_to_integer(cleared_count), convert_to_integer(cleared_status), convert_to_integer(juvenile_cleared_count), convert_to_integer(juvenile_cleared_status) FROM reta_month_offense_subcat_temp);
+CREATE TABLE reta_month_offense_subcat_new (
+    reta_month_id bigint NOT NULL,
+    offense_subcat_id bigint NOT NULL,
+    reported_count integer,
+    reported_status smallint,
+    unfounded_count integer,
+    unfounded_status smallint,
+    actual_count integer,
+    actual_status smallint,
+    cleared_count integer,
+    cleared_status smallint,
+    juvenile_cleared_count integer,
+    juvenile_cleared_status smallint
+);
+
+CREATE TABLE reta_month_new (
+    reta_month_id bigint NOT NULL,
+    agency_id bigint NOT NULL,
+    data_year smallint NOT NULL,
+    month_num smallint NOT NULL,
+    data_home character(1) NOT NULL,
+    source_flag character(1) NOT NULL,
+    reported_flag character(1) NOT NULL,
+    ddocname character varying(100),
+    month_included_in smallint,
+    report_date timestamp without time zone,
+    prepared_date timestamp without time zone,
+    prepared_by_user character varying(100),
+    prepared_by_email character varying(200),
+    orig_format character(1) NOT NULL,
+    total_reported_count integer,
+    total_unfounded_count integer,
+    total_actual_count integer,
+    total_cleared_count integer,
+    total_juvenile_cleared_count integer,
+    leoka_felony smallint,
+    leoka_accident smallint,
+    leoka_assault integer,
+    leoka_status smallint,
+    update_flag character(1),
+    did bigint,
+    ff_line_number bigint
+);
+
+-- Insert into copy tables (for way faster selects.)
+INSERT INTO reta_month_new (reta_month_id, agency_id, data_year, month_num, data_home, source_flag, reported_flag, ddocname, month_included_in,report_date,prepared_date,prepared_by_user,prepared_by_email,orig_format, leoka_felony, leoka_accident, leoka_assault, leoka_status, update_flag, did,ff_line_number) (SELECT convert_to_integer(reta_month_id), convert_to_integer(agency_id), convert_to_integer(data_year), convert_to_integer(month_num), data_home, source_flag, reported_flag, ddocname, convert_to_integer(month_included_in), to_timestamp_ucr(report_date), to_timestamp_ucr(prepared_date), prepared_by_user, prepared_by_email, orig_format, convert_to_integer(leoka_felony), convert_to_integer(leoka_accident), convert_to_integer(leoka_assault), convert_to_integer(leoka_status), update_flag::text, convert_to_integer(did), convert_to_integer(ff_line_number) FROM reta_month_temp);
+INSERT INTO reta_month_offense_subcat_new (SELECT convert_to_integer(reta_month_id), convert_to_integer(offense_subcat_id), convert_to_integer(reported_count), convert_to_integer(reported_status), convert_to_integer(unfounded_count), convert_to_integer(unfounded_status), convert_to_integer(actual_count), convert_to_integer(actual_status), convert_to_integer(cleared_count), convert_to_integer(cleared_status), convert_to_integer(juvenile_cleared_count), convert_to_integer(juvenile_cleared_status) FROM reta_month_offense_subcat_temp);
+
 INSERT INTO asr_month (SELECT convert_to_integer(asr_month_id), convert_to_integer(agency_id), convert_to_integer(data_year), convert_to_integer(month_num), source_flag, reported_flag, orig_format, update_flag, convert_to_integer(ff_line_number), ddocname, convert_to_integer(did), data_home FROM asr_month_temp);
-INSERT INTO asr_offense_subcat (SELECT convert_to_integer(asr_month_id) ,    convert_to_integer(offense_subcat_id) ,    convert_to_integer(race_id) ,    juvenile_flag ,    convert_to_integer(arrest_count) ,    convert_to_integer(arrest_status) ,    active_flag ,    to_timestamp_ucr(prepared_date) ,    to_timestamp_ucr(report_date) ,   convert_to_integer(ff_line_number) FROM asr_offense_subcat_temp);
+INSERT INTO asr_offense_subcat (SELECT convert_to_integer(offense_subcat_id) ,    convert_to_integer(offense_id) ,    offense_subcat_name ,    offense_subcat_code ,    srs_offense_code ,    convert_to_integer(master_offense_code) ,    total_flag ,    adult_juv_flag  FROM asr_offense_subcat_temp);
 INSERT INTO asr_age_sex_subcat (SELECT convert_to_integer(asr_month_id), convert_to_integer(offense_subcat_id), convert_to_integer(age_range_id),  convert_to_integer(arrest_count) ,    convert_to_integer(arrest_status) , active_flag ,    to_timestamp_ucr(prepared_date) ,    to_timestamp_ucr(report_date) ,   convert_to_integer(ff_line_number)   FROM asr_age_sex_subcat_temp);
 
 
