@@ -8,82 +8,6 @@ echo "-- Process.
 -- (2) Merge or replace tables.
 -- (3) Re-add all indexes (for replaced tables only).
 
------------------------
--- Helper functions
------------------------
-
-CREATE OR REPLACE FUNCTION convert_to_integer(v_input text)
-RETURNS INTEGER AS $$
-DECLARE v_int_value INTEGER DEFAULT NULL;
-BEGIN
-    BEGIN
-        IF (v_input = '') IS NOT FALSE THEN
-            v_int_value := NULL;
-        ELSE
-            v_int_value := v_input::BIGINT;
-        END IF;
-    EXCEPTION WHEN OTHERS THEN
-        RAISE NOTICE 'Invalid integer value: %.  Returning NULL.', v_input;
-        RETURN NULL;
-    END;
-RETURN v_int_value;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE OR REPLACE FUNCTION to_timestamp_ucr1(v_input text)
-RETURNS timestamp without time zone AS $$
-DECLARE v_int_value timestamp without time zone DEFAULT NULL;
-BEGIN
-    BEGIN
-        IF (v_input = '') IS NOT FALSE THEN
-            v_int_value := NULL;
-        ELSE
-            v_int_value := to_timestamp(v_input,'DD-Mon-YYHH24:MI:SS');
-        END IF;
-    EXCEPTION WHEN OTHERS THEN
-        RAISE NOTICE 'Invalid integer value: %.  Returning NULL.', v_input;
-        RETURN NULL;
-    END;
-RETURN v_int_value;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE OR REPLACE FUNCTION to_timestamp_ucr(v_input text)
-RETURNS timestamp without time zone AS $$
-DECLARE v_int_value timestamp without time zone DEFAULT NULL;
-BEGIN
-    BEGIN
-        IF (v_input = '') IS NOT FALSE THEN
-            v_int_value := NULL;
-        ELSE
-            v_int_value := v_input::timestamp without time zone;
-        END IF;
-    EXCEPTION WHEN OTHERS THEN
-        RAISE NOTICE 'Invalid integer value: %.  Returning NULL.', v_input;
-        RETURN NULL;
-    END;
-RETURN v_int_value;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE OR REPLACE FUNCTION convert_to_double(v_input text)
-RETURNS double precision AS $$
-DECLARE v_d_value double precision DEFAULT NULL;
-BEGIN
-    BEGIN
-        IF (v_input = '') IS NOT FALSE THEN
-            v_d_value := 0.0;
-        ELSE
-            v_d_value := v_input::double precision;
-        END IF;
-    EXCEPTION WHEN OTHERS THEN
-        RAISE NOTICE 'Invalid double value: %.  Returning NULL.', v_input;
-        RETURN NULL;
-    END;
-RETURN v_d_value;
-END;
-$$ LANGUAGE plpgsql;
-
 
 --------------------------
 -- Start data upload
@@ -1207,6 +1131,15 @@ INSERT INTO nibrs_weapon (SELECT convert_to_integer(weapon_id), convert_to_integ
 -------
 
 
+-- ALTER TABLE nibrs_incident SET (autovacuum_enabled = false, toast.autovacuum_enabled = false);
+-- ALTER TABLE nibrs_victim SET (autovacuum_enabled = false, toast.autovacuum_enabled = false);
+-- ALTER TABLE nibrs_offender SET (autovacuum_enabled = false, toast.autovacuum_enabled = false);
+-- ALTER TABLE nibrs_offense SET (autovacuum_enabled = false, toast.autovacuum_enabled = false);
+-- ALTER TABLE nibrs_victim_offense SET (autovacuum_enabled = false, toast.autovacuum_enabled = false);
+
+--
+-- Not ready (drop FK's)
+
 CREATE TABLE reta_month_offense_subcat_new (
     reta_month_id bigint NOT NULL,
     offense_subcat_id bigint NOT NULL,
@@ -1266,7 +1199,6 @@ CREATE INDEX reta_month_data_year_new_idx ON reta_month_new USING btree (data_ye
 INSERT INTO asr_month (SELECT convert_to_integer(asr_month_id), convert_to_integer(agency_id), convert_to_integer(data_year), convert_to_integer(month_num), source_flag, reported_flag, orig_format, update_flag, convert_to_integer(ff_line_number), ddocname, convert_to_integer(did), data_home FROM asr_month_temp);
 INSERT INTO asr_offense_subcat (SELECT convert_to_integer(offense_subcat_id) ,    convert_to_integer(offense_id) ,    offense_subcat_name ,    offense_subcat_code ,    srs_offense_code ,    convert_to_integer(master_offense_code) ,    total_flag ,    adult_juv_flag  FROM asr_offense_subcat_temp);
 INSERT INTO asr_age_sex_subcat (SELECT convert_to_integer(asr_month_id), convert_to_integer(offense_subcat_id), convert_to_integer(age_range_id),  convert_to_integer(arrest_count) ,    convert_to_integer(arrest_status) , active_flag ,    to_timestamp_ucr(prepared_date) ,    to_timestamp_ucr(report_date) ,   convert_to_integer(ff_line_number)   FROM asr_age_sex_subcat_temp);
-
 
 
 -- hc_*  - DONE!
@@ -2358,7 +2290,6 @@ CREATE INDEX CONCURRENTLY offense_offense_counts_ori_idx ON offense_counts_ori (
 echo "
 -- These:
 
--- echo -n "Create flat ref_agency_covered_by table..."
 SET work_mem='3GB'; -- Go Super Saiyan.
 
 
@@ -2445,7 +2376,6 @@ ALTER TABLE ONLY ref_agency_covered_by_flat
 ADD CONSTRAINT flat_covered_by_agency_id_covering_fk FOREIGN KEY (covered_by_agency_id) REFERENCES cde_agencies(agency_id);
 
 
--- echo -n "Create participation views..."
 SET work_mem='4096MB'; -- Go Super Saiyan.
 
 -- first create reporting code
@@ -2627,7 +2557,6 @@ WHERE state_id IS NULL AND county_id IS NULL;
 DROP TABLE IF EXISTS participation_rates CASCADE;
 ALTER TABLE participation_rates_temp RENAME TO participation_rates;
 
--- echo -n "Create cde_counties table..."
 DROP TABLE IF EXISTS cde_counties_temp;
 CREATE TABLE cde_counties_temp (
   county_id bigint PRIMARY KEY,
@@ -2677,7 +2606,6 @@ WHERE fips='12027';
 DROP TABLE IF EXISTS cde_counties;
 ALTER TABLE cde_counties_temp RENAME TO cde_counties;
 
--- echo -n "Create cde_states table..."
 DROP TABLE IF EXISTS cde_states_temp;
 CREATE TABLE cde_states_temp (
   state_id int PRIMARY KEY,
@@ -2730,7 +2658,6 @@ FROM ref_state rs LEFT OUTER JOIN (SELECT DISTINCT ON (state_id) state_id, year,
 DROP TABLE IF EXISTS cde_states;
 ALTER TABLE cde_states_temp RENAME TO cde_states;
 
--- echo -n "Create reta_agency_summary table..."
 SET work_mem='2GB';
 SET synchronous_commit TO OFF;
 
@@ -3011,7 +2938,6 @@ WHERE a.data_year = $YEAR;
 DROP TABLE arson_agency_sums;
 DROP TABLE arson_agency_reporting;
 
---- Add arsons to the offense table
 INSERT INTO agency_offenses_view(year, agency_id, offense_id, offense_code, offense_name, reported, unfounded, actual, cleared, juvenile_cleared, ori, pub_agency_name, state_postal_abbr)
 SELECT
   a.year,
@@ -3030,7 +2956,6 @@ SELECT
 FROM agency_arson_view a 
 WHERE a.year = $YEAR;
 
--- echo -n "Arson tables..."
 DROP TABLE IF EXISTS arson_agency_reporting;
 CREATE TABLE arson_agency_reporting AS
 SELECT rm.data_year,

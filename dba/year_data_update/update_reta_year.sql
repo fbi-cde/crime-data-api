@@ -1,6 +1,5 @@
 -- These:
 
--- echo -n "Create flat ref_agency_covered_by table..."
 SET work_mem='3GB'; -- Go Super Saiyan.
 
 
@@ -87,7 +86,6 @@ ALTER TABLE ONLY ref_agency_covered_by_flat
 ADD CONSTRAINT flat_covered_by_agency_id_covering_fk FOREIGN KEY (covered_by_agency_id) REFERENCES cde_agencies(agency_id);
 
 
--- echo -n "Create participation views..."
 SET work_mem='4096MB'; -- Go Super Saiyan.
 
 -- first create reporting code
@@ -269,7 +267,6 @@ WHERE state_id IS NULL AND county_id IS NULL;
 DROP TABLE IF EXISTS participation_rates CASCADE;
 ALTER TABLE participation_rates_temp RENAME TO participation_rates;
 
--- echo -n "Create cde_counties table..."
 DROP TABLE IF EXISTS cde_counties_temp;
 CREATE TABLE cde_counties_temp (
   county_id bigint PRIMARY KEY,
@@ -319,7 +316,6 @@ WHERE fips='12027';
 DROP TABLE IF EXISTS cde_counties;
 ALTER TABLE cde_counties_temp RENAME TO cde_counties;
 
--- echo -n "Create cde_states table..."
 DROP TABLE IF EXISTS cde_states_temp;
 CREATE TABLE cde_states_temp (
   state_id int PRIMARY KEY,
@@ -372,7 +368,6 @@ FROM ref_state rs LEFT OUTER JOIN (SELECT DISTINCT ON (state_id) state_id, year,
 DROP TABLE IF EXISTS cde_states;
 ALTER TABLE cde_states_temp RENAME TO cde_states;
 
--- echo -n "Create reta_agency_summary table..."
 SET work_mem='2GB';
 SET synchronous_commit TO OFF;
 
@@ -415,7 +410,7 @@ BEGIN
     SUM(rmos.actual_count) AS actual,
     SUM(rmos.cleared_count) AS cleared,
     SUM(rmos.juvenile_cleared_count) AS juvenile_cleared 
-    FROM (SELECT * from reta_month_offense_subcat_new where offense_subcat_id=i AND reta_month_offense_subcat.actual_status NOT IN (2, 3, 4)) rmos
+    FROM (SELECT * from reta_month_offense_subcat_new where offense_subcat_id=i AND reta_month_offense_subcat_new.actual_status NOT IN (2, 3, 4)) rmos
     JOIN reta_offense_subcat ros ON (rmos.offense_subcat_id = ros.offense_subcat_id)
     JOIN reta_month_new rm ON (rmos.reta_month_id = rm.reta_month_id)
     JOIN agency_reporting ar ON ar.agency_id=rm.agency_id AND ar.data_year=rm.data_year
@@ -450,19 +445,6 @@ INSERT INTO agency_sums_view(id, year, agency_id, offense_subcat_id, offense_id,
   JOIN reta_offense ro ON ros.offense_id=ro.offense_id
   JOIN ref_state rs ON (rs.state_id  = ag.state_id)
   WHERE asums.data_year = 2015;
-
-DROP TABLE IF EXISTS agency_sums_by_offense;
-CREATE table agency_sums_by_offense (
-id SERIAL PRIMARY KEY,
-data_year smallint NOT NULL,
-agency_id bigint NOT NULL,
-offense_id bigint NOT NULL,
-reported integer,
-unfounded integer,
-actual integer,
-cleared integer,
-juvenile_cleared integer
-);
 
 INSERT INTO agency_sums_by_offense(data_year, agency_id, offense_id, reported, unfounded, actual, cleared, juvenile_cleared)
 SELECT
@@ -581,27 +563,6 @@ JOIN offense_classification oc ON oc.classification_id = ro.classification_id
 WHERE a.offense_subcat_id <> 45 AND a.data_year = 2015 
 GROUP by a.data_year, a.agency_id, oc.classification_name;
 
-DROP TABLE IF EXISTS agency_classification_view CASCADE;
-create TABLE agency_classification_view (
- id SERIAL,
- year smallint NOT NULL,
- agency_id bigint NOT NULL,
- classification text,
- reported integer,
- unfounded integer,
- actual integer,
- cleared integer,
- juvenile_cleared integer,
- ori text,
- pub_agency_name text,
- state_postal_abbr varchar(2)
-);
-
-DROP TRIGGER IF EXISTS agency_classification_view_insert_state_partition ON agency_classification_view;
-CREATE TRIGGER agency_classification_view_insert_state_partition
-BEFORE INSERT ON agency_classification_view
-FOR EACH ROW EXECUTE PROCEDURE create_state_partition_and_insert();
-
 INSERT INTO agency_classification_view(year, agency_id, classification, reported, unfounded, actual, cleared, juvenile_cleared, ori, pub_agency_name, state_postal_abbr)
   SELECT
     a.data_year,
@@ -623,7 +584,7 @@ DROP TABLE agency_sums_by_classification;
 
 
 -- Refresh year count view.
-REFRESH MATERIALIZED VIEW nibrs_years;
+INSERT INTO nibrs_years (year) VALUES (2015);
 -------------------------------------------------------------------------------------------
 
 ----- Add arson to agency sums
@@ -687,7 +648,6 @@ WHERE a.data_year = 2015;
 DROP TABLE arson_agency_sums;
 DROP TABLE arson_agency_reporting;
 
---- Add arsons to the offense table
 INSERT INTO agency_offenses_view(year, agency_id, offense_id, offense_code, offense_name, reported, unfounded, actual, cleared, juvenile_cleared, ori, pub_agency_name, state_postal_abbr)
 SELECT
   a.year,
@@ -706,7 +666,6 @@ SELECT
 FROM agency_arson_view a 
 WHERE a.year = 2015;
 
--- echo -n "Arson tables..."
 DROP TABLE IF EXISTS arson_agency_reporting;
 CREATE TABLE arson_agency_reporting AS
 SELECT rm.data_year,

@@ -1,13 +1,14 @@
-MYPWD=$(pwd)
+MYPWD="$(pwd)/crime-data-api/dba/update/data"
 YEAR=$1
 
 if [ -n "$1" ]; then
-    echo "Building update scripts for year $1"
+    echo echo "Building update scripts for year $1 from data in $2"
 else
-    echo "Usage: build_update_files.sh YYYY"
+    echo "Usage: build_update_files.sh YYYY <>"
     exit
 fi
 
-./build_update_files.sh $YEAR >update_$YEAR.sql
 
-echo "update_$YEAR.sql successfully built"
+./build_update_files.sh $YEAR $MYPWD>update.sql
+
+echo "update.sql successfully built"

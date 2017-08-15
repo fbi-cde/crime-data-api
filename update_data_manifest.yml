@@ -1,0 +1,12 @@
+applications:
+- name: task-runner-nibrs-part
+  memory: 512M
+  buildpack: python_buildpack
+env:
+  FLASK_APP: autoapp.py
+  NEW_RELIC_CONFIG_FILE: newrelic.ini
+  NEW_RELIC_LOG: stdout
+command: bash update.sh && sleep infinity
+services:
+- crime-data-upload-db
+- crime-data-api-creds
