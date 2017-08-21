@@ -38,6 +38,9 @@ EOF
 done
 
 #\copy (select data_year,state_postal_abbr, sum(leoka_assault) as assault, sum(leoka_felony) as felony, sum(leoka_accident) as accident from reta_month JOIN ref_agency on (reta_month.agency_id = ref_agency.agency_id) JOIN ref_state ON (ref_agency.state_id = ref_state.state_id) group by data_year, state_postal_abbr) To 'leoka_assaults_full.csv' With CSV DELIMITER ',' HEADER;
+
+    cf connect-to-service crime-data-api crime-data-upload-db <<EOF
+SET work_mem='3GB';
 \copy (select ref_state.state_postal_abbr, LM.DATA_YEAR, sum(LM.LEOKA_FELONY) as felony, sum(LM.LEOKA_ACCIDENT) as accident from LKASUM_MONTH LM JOIN ref_agency RA ON RA.agency_id = LM.agency_id join ref_state on (RA.state_id = ref_state.state_id) GROUP BY data_year, ref_state.state_postal_abbr ) To 'lka_sum_full.csv' with CSV DELIMITER ',' HEADER;
 
 \copy (SELECT q.state_postal_abbr as state_postal_abbr, q.data_year as data_year,q.officer_count as officer_count, round( ( (q.officer_count / population) * 1000)::numeric, 2) as officer_rate_per_1000,q.civilian_count as civilian_count, round( ( (q.civilian_count / population) * 1000)::numeric, 2) as civilian_rate_per_1000, population from (SELECT * from (SELECT state_postal_abbr from ref_state where ref_agency.state_id = ref_state.state_id limit 1) as state_postal_abbr,
@@ -60,6 +63,12 @@ done
        JOIN ref_state ON ref_state.state_postal_abbr=ht_summary.state_abbr
        WHERE year IS NOT NULL AND ori IS NULL ORDER by year, state_name) To 'human_trafficking.csv' with CSV DELIMITER ',' HEADER;
 
+\copy (select * from asr_juvenile_crosstab where state_abbr IS NULL and year >= 1994 order by year DESC, offense_code) TO 'asr_national_juvenile.csv' with CSV DELIMITER ',' HEADER;
+\copy (select * from asr_adult_crosstab where state_abbr IS NULL and year >= 1994 order by year DESC, offense_code) TO 'asr_national_adults.csv' with CSV DELIMITER ',' HEADER;
+\copy (select * from asr_drug_crosstab where state_abbr IS NULL and year >= 1994 ORDER by year DESC) TO 'asr_national_drug.csv' with CSV DELIMITER ',' HEADER;
+
+EOF
+
 export S3_CREDENTIALS="`cf service-key fbi-cde-s3  colin-key | tail -n +2`"
 export AWS_ACCESS_KEY_ID=`echo "${S3_CREDENTIALS}" | jq -r .access_key_id`
 export AWS_SECRET_ACCESS_KEY=`echo "${S3_CREDENTIALS}" | jq -r .secret_access_key`
@@ -72,17 +81,14 @@ aws s3 cp ucr_participation.csv s3://${BUCKET_NAME}/ucr_participation.csv
 aws s3 cp agencies.csv s3://${BUCKET_NAME}/agencies.csv
 aws s3 cp territories.csv s3://${BUCKET_NAME}/territories.csv
 aws s3 cp human_trafficking.csv s3://${BUCKET_NAME}/human_trafficking.csv
+aws s3 cp arrests_national_juvenile.csv s3://${BUCKET_NAME}/arrests_national_juvenile.csv
+aws s3 cp arrests_national_adults.csv s3://${BUCKET_NAME}/arrests_national_adults.csv
+aws s3 cp arrests_national_drug.csv s3://${BUCKET_NAME}/arrests_national_drug.csv
+aws s3 cp arrests_national.csv s3://${BUCKET_NAME}/arrests_national.csv
 
 for i in "${arr_years[@]}"
     aws s3 cp --recursive nibrs-$i/ s3://${BUCKET_NAME}/$i
 done
 
 
-\copy (select * from asr_juvenile_crosstab where state_abbr IS NULL and year >= 1994 order by year DESC, offense_code) TO 'asr_national_juvenile.csv' with CSV DELIMITER ',' HEADER;
-\copy (select * from asr_adult_crosstab where state_abbr IS NULL and year >= 1994 order by year DESC, offense_code) TO 'asr_national_adults.csv' with CSV DELIMITER ',' HEADER;
-\copy (select * from asr_drug_crosstab where state_abbr IS NULL and year >= 1994 ORDER by year DESC) TO 'asr_national_drug.csv' with CSV DELIMITER ',' HEADER;
-aws s3 cp arrests_national_juvenile.csv s3://${BUCKET_NAME}/arrests_national_juvenile.csv
-aws s3 cp arrests_national_adults.csv s3://${BUCKET_NAME}/arrests_national_adults.csv
-aws s3 cp arrests_national_drug.csv s3://${BUCKET_NAME}/arrests_national_drug.csv
-aws s3 cp arrests_national.csv s3://${BUCKET_NAME}/arrests_national.csv
 
