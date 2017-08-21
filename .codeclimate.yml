@@ -1,6 +1,6 @@
 engines:
   duplication:
-    enabled: true
+    enabled: false
     exclude_paths:
       - crime_data/common/models.py
       - crime_data/common/cdemodels.py

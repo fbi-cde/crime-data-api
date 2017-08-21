@@ -20,6 +20,7 @@ import crime_data.resources.hate_crime
 import crime_data.resources.geo
 import crime_data.resources.participation
 import crime_data.resources.estimates
+import crime_data.resources.arrests
 
 import crime_data.resources.human_traffic
 from werkzeug.contrib.fixers import ProxyFix
@@ -135,6 +136,8 @@ def add_resources(app):
 
     api.add_resource(crime_data.resources.incidents.AgenciesOffensesCountyCount,
                      '/agencies/count/states/offenses/<string:state_abbr>/counties/<string:county_fips_code>' )
+
+    api.add_resource(crime_data.resources.arrests.ArrestsNational, '/arrests/national')
 
     api.add_resource(crime_data.resources.offenses.OffensesList, '/offenses/')
     api.add_resource(crime_data.resources.codes.CodeReferenceIndex,

@@ -1,6 +1,6 @@
 {
   "info": {
-    "description": "The Crime Data API enables you to explore data from the FBI Uniform Crime Reporting (UCR) program. This is data the FBI collects from law state and local law enforcement agencies and is used to compile the Crime in the US annual reports since 1960. The program is voluntary and not all agencies participate. In addition, data is often published publicly about 18 months after it is submitted to the FBI. This means that the most recent year for data in the API is 2015.\n\nThis site and API are in beta, which means we're actively working on both and adding new features. While we plan to version big changes that are not backwards compatible, expect things to change as the API develops. This might mean that the structure of endpoints could shift around or that the accepted parameters are changed. All noteable changes to the API are recorded in the [CHANGELOG](https://github.com/18F/crime-data-api/blob/master/CHANGELOG.md).\n\nThe API is a read-only web service that returns JSON or CSV data. It is broadly organized around the data reporting systems the FBI UCR program uses and their related entities. Agencies submit data using one of two reporting formats -- the Summary Reporting System (SRS), or the National Incident Based Reporting System (NIBRS). SRS data is the legacy format that provides aggregated counts of the reported crime offenses known to law enforcement by location.\n\nNIBRS is a newer format that provides an incident-based view of crime. It includes information about each offense, such as the time of day an incident occurred, the demographics of the offenders/victims, the known relationships between the offenders and victims, and many other details around how and where crime occurs. Neither format includes personally identifiable information (PII) about the offenders or victims. While many agencies submit SRS data, the FBI plans to transition all crime reporting to the NIBRS format by 2021.\n\nOther UCR data collection systems made available by this API include:\n\n* Supplemental homicide report (SHR)\n* Cargo theft\n* Hate crimes\n* Human trafficking\n* Law enforcement officers assaulted and killed (LEOKA)\n* Law enforcement agency personnel demographic data\nThere is a lot of data, but a good place to start is by looking at the rate of a particular crime over the last 10 years in a state or Washington, DC.\nLet's try it with homicide in Washington, DC for from 2004 through 2014.  find crime rates, we will use the /counts endpoint passing in parameters to represent the crime type (homicide) and the years in question. Here's the API request the Crime Data Explorer makes to display this data:\n\n`/counts?explorer_offense=homicide&per_page=11&year>=2004&year<=2014&state=dc`\n\nWe can use the `explorer_offense` parameter to just get data related to homicide crimes. If you do not supply an offense, you'll get data that represents all the crime types in that location. Next we set our `per_page` parameter to be 11, since we'll be requesting 11 years at once. We do this to ensure that we only need to make one request to get all of the data. We craft a date range query by supply two `year` parameters using greater than and less than operators in the URL. Finally, we supply the location that we want data for. If `state` is omitted, the data will represent the national perspective.\n\nGet an API key here. That will enable you to place up to XX requests per minute. Each call is limited to YY results per page. You can email questions or comments to EE. You can ask questions or give us feedback using Github issues.\n\nThe model definitions and schema are available at [/swagger.json](/swagger.json). This is useful for making wrappers and exploring the data.\n\nThe API was designed to provide as much information as possible in a usable format. However, the FBI still has some recommendations about how to interpret and display the data provided. The FBI strongly advises against using this data to do any sort of ranking or comparison among states or other entities. The exception being that it is appropriate to compare a city to its respective state, and that state to a national perspective.\n\nView our [source code](https://github.com/18F/crime-data-api). We welcome issues and pull requests!",
+    "description": "The Crime Data API enables you to explore data from the FBI Uniform Crime Reporting (UCR) program. This is data the FBI collects from law state and local law enforcement agencies and is used to compile the Crime in the US annual reports since 1960. The program is voluntary and not all agencies participate. In addition, data is often published publicly about 18 months after it is submitted to the FBI. This means that the most recent year for data in the API is 2015.\n\nThis site and API are in beta, which means we're actively working on both and adding new features. While we plan to version big changes that are not backwards compatible, expect things to change as the API develops. This might mean that the structure of endpoints could shift around or that the accepted parameters are changed. All noteable changes to the API are recorded in the [CHANGELOG](https://github.com/18F/crime-data-api/blob/master/CHANGELOG.md).\n\nThe API is a read-only web service that returns JSON or CSV data. It is broadly organized around the data reporting systems the FBI UCR program uses and their related entities. Agencies submit data using one of two reporting formats -- the Summary Reporting System (SRS), or the National Incident Based Reporting System (NIBRS). SRS data is the legacy format that provides aggregated counts of the reported crime offenses known to law enforcement by location.\n\nNIBRS is a newer format that provides an incident-based view of crime. It includes information about each offense, such as the time of day an incident occurred, the demographics of the offenders/victims, the known relationships between the offenders and victims, and many other details around how and where crime occurs. Neither format includes personally identifiable information (PII) about the offenders or victims. While many agencies submit SRS data, the FBI plans to transition all crime reporting to the NIBRS format by 2021.\n\nOther UCR data collection systems made available by this API include:\n\n* Supplemental homicide report (SHR)\n* Cargo theft\n* Hate crimes\n* Human trafficking\n* Assaults on law enforcement officers\n* Law enforcement agency personnel demographic data\nThere is a lot of data, but a good place to start is by looking at the rate of a particular crime over the last 10 years in a state or Washington, DC.\nLet's try it with homicide in Washington, DC for from 2004 through 2014.  find crime rates, we will use the /counts endpoint passing in parameters to represent the crime type (homicide) and the years in question. Here's the API request the Crime Data Explorer makes to display this data:\n\n`/counts?explorer_offense=homicide&per_page=11&year>=2004&year<=2014&state=dc`\n\nWe can use the `explorer_offense` parameter to just get data related to homicide crimes. If you do not supply an offense, you'll get data that represents all the crime types in that location. Next we set our `per_page` parameter to be 11, since we'll be requesting 11 years at once. We do this to ensure that we only need to make one request to get all of the data. We craft a date range query by supply two `year` parameters using greater than and less than operators in the URL. Finally, we supply the location that we want data for. If `state` is omitted, the data will represent the national perspective.\n\nGet an API key here. That will enable you to place up to XX requests per minute. Each call is limited to YY results per page. You can email questions or comments to EE. You can ask questions or give us feedback using Github issues.\n\nThe model definitions and schema are available at [/swagger.json](/swagger.json). This is useful for making wrappers and exploring the data.\n\nThe API was designed to provide as much information as possible in a usable format. However, the FBI still has some recommendations about how to interpret and display the data provided. The FBI strongly advises against using this data to do any sort of ranking or comparison among states or other entities. The exception being that it is appropriate to compare a city to its respective state, and that state to a national perspective.\n\nView our [source code](https://github.com/18F/crime-data-api). We welcome issues and pull requests!",
     "title": "FBI Crime Data API",
     "version": "v1"
   },
@@ -355,7 +355,8 @@
         "weapon_name",
         "method_entry_code",
         "num_premises_entered",
-        "location_name"
+        "location_name",
+        "offense_name"
       ]
     },
     "cargoTheftsCountVariableParam": {
@@ -608,6 +609,13 @@
           ],
           "minimum": 2013
         },
+        "current_nibrs_start_year": {
+          "description": "If the agency is currently reporting 12 months of NIBRS data to the FBI, this is the first year that current run of reporting NIBRS data started. Because there are many agencies that reported NIBRS data in 1991 then stopped for many years before resuming in the 2000s, this is a better measure than the first year of NIBRS reporting.",
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
         "current_year": {
           "type": [
             "integer",
@@ -749,6 +757,211 @@
             "number",
             "null"
           ]
+        }
+      }
+    },
+    "NationalArrestCounts": {
+      "description": "Estimated arrest statistics for the United States",
+      "type": "object",
+      "required": [
+        "year",
+        "population",
+        "total_arrests",
+        "homicide",
+        "rape",
+        "robbery",
+        "aggravated_assault",
+        "burglary",
+        "larceny",
+        "motor_vehicle_theft",
+        "arson",
+        "violent_crime",
+        "property_crime",
+        "other_assault",
+        "forgery",
+        "fraud",
+        "embezzlement",
+        "stolen_property",
+        "vandalism",
+        "weapons",
+        "prostitution",
+        "other_sex_offenses",
+        "drug_abuse",
+        "gambling",
+        "against_family",
+        "dui",
+        "liquor_laws",
+        "drunkenness",
+        "disorderly_conduct",
+        "vagrancy",
+        "other",
+        "suspicion",
+        "curfew_loitering"
+      ],
+      "properties": {
+        "year": {
+          "description": "The year the counts are for",
+          "type": "integer"
+        },
+        "population": {
+          "description": "The total population for the United States in that year",
+          "type": "integer",
+          "minimum": 0
+        },
+        "total_arrests": {
+          "description": "Total arrests. Does not include suspicion.",
+          "type": "integer",
+          "minimum": 0
+        },
+        "homicide": {
+          "description": "Murder and nonnegligent manslaughter",
+          "type": "integer",
+          "minimum": 0
+        },
+        "rape": {
+          "description": "The rape figure in this table is an aggregate total of the data submitted based on both the legacy and revised Uniform Crime Reporting definitions.",
+          "type": "integer",
+          "minimum": 0
+        },
+        "robbery": {
+          "description": "Robbery",
+          "type": "integer",
+          "minimum": 0
+        },
+        "aggravated_assault": {
+          "description": "Aggravated assault",
+          "type": "integer",
+          "minimum": 0
+        },
+        "burglary": {
+          "description": "Burglary",
+          "type": "integer",
+          "minimum": 0
+        },
+        "larceny": {
+          "description": "Larceny",
+          "type": "integer",
+          "minimum": 0
+        },
+        "motor_vehicle_theft": {
+          "description": "Motor vehicle theft",
+          "type": "integer",
+          "minimum": 0
+        },
+        "arson": {
+          "description": "Arson",
+          "type": "integer",
+          "minimum": 0
+        },
+        "violent_crime": {
+          "description": "Violent crimes are offenses of murder and nonnegligent manslaughter, rape, robbery, and aggravated assault.",
+          "type": "integer",
+          "minimum": 0
+        },
+        "property_crime": {
+          "description": "Property crimes are offenses of burglary, larceny-theft, motor vehicle theft, and arson.",
+          "type": "integer",
+          "minimum": 0
+        },
+        "other_assault": {
+          "description": "Other assault",
+          "type": "integer",
+          "minimum": 0
+        },
+        "forgery": {
+          "description": "Forgery and counterfeiting",
+          "type": "integer",
+          "minimum": 0
+        },
+        "fraud": {
+          "description": "Fraud",
+          "type": "integer",
+          "minimum": 0
+        },
+        "embezzlement": {
+          "description": "Embezzlement",
+          "type": "integer",
+          "minimum": 0
+        },
+        "stolen_property": {
+          "description": "Stolen property; buying, receiving, possessing",
+          "type": "integer",
+          "minimum": 0
+        },
+        "vandalism": {
+          "description": "Vandalism",
+          "type": "integer",
+          "minimum": 0
+        },
+        "weapons": {
+          "description": "Weapons; carrying, possessing, etc.",
+          "type": "integer",
+          "minimum": 0
+        },
+        "prostitution": {
+          "description": "Prostitution and commercialized vice",
+          "type": "integer",
+          "minimum": 0
+        },
+        "other_sex_offenses": {
+          "description": "Sex offenses (except rape and prostitution)",
+          "type": "integer",
+          "minimum": 0
+        },
+        "drug_abuse": {
+          "description": "Drug abuse violations",
+          "type": "integer",
+          "minimum": 0
+        },
+        "gambling": {
+          "description": "Gambling",
+          "type": "integer",
+          "minimum": 0
+        },
+        "against_family": {
+          "description": "Offenses against the family and children",
+          "type": "integer",
+          "minimum": 0
+        },
+        "dui": {
+          "description": "Driving under the influence",
+          "type": "integer",
+          "minimum": 0
+        },
+        "liquor_laws": {
+          "description": "Liquor laws",
+          "type": "integer",
+          "minimum": 0
+        },
+        "drunkenness": {
+          "description": "Drunkenness",
+          "type": "integer",
+          "minimum": 0
+        },
+        "disorderly_conduct": {
+          "description": "Disorderly conduct",
+          "type": "integer",
+          "minimum": 0
+        },
+        "vagrancy": {
+          "description": "Vagrancy",
+          "type": "integer",
+          "minimum": 0
+        },
+        "other": {
+          "description": "All other offenses",
+          "type": "integer",
+          "minimum": 0
+        },
+        "suspicion": {
+          "description": "Suspicion",
+          "type": "integer",
+          "minimum": 0
+        },
+        "curfew_loitering": {
+          "description": "Curfew and loitering law violations",
+          "type": "integer",
+          "minimum": 0
         }
       }
     },
@@ -1623,6 +1836,43 @@
             "description": "For success, returns a single agency.",
             "schema": {
               "$ref": "#/definitions/Agency"
+            }
+          },
+          "500": {
+            "description": "The standard error response",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/arrests/national": {
+      "get": {
+        "tags": [
+          "arrests"
+        ],
+        "description": "Returns annual counts of estimated arrests nationwide per each year.",
+        "responses": {
+          "200": {
+            "description": "Returns a paginated list of national arrest counts",
+            "schema": {
+              "type": "object",
+              "required": [
+                "pagination",
+                "results"
+              ],
+              "properties": {
+                "pagination": {
+                  "$ref": "#/definitions/Pagination"
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/NationalArrestCounts"
+                  }
+                }
+              }
             }
           },
           "500": {

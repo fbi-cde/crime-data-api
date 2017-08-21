@@ -2,9 +2,22 @@ from webargs.flaskparser import use_args
 from crime_data.extensions import DEFAULT_MAX_AGE
 from flask.ext.cachecontrol import cache
 
-from crime_data.common import cdemodels, marshmallow_schemas
+from crime_data.common import newmodels, marshmallow_schemas
 from crime_data.common.base import CdeResource, tuning_page
 
+
+class ArrestsNational(CdeResource):
+    """Return national arrests counts"""
+    schema = marshmallow_schemas.ArrestsNationalSchema(many=True)
+    fast_count = False
+
+    @use_args(marshmallow_schemas.ArgumentsSchema)
+    @cache(max_age=DEFAULT_MAX_AGE, public=True)
+    @tuning_page
+    def get(self, args):
+        self.verify_api_key(args)
+        counts = newmodels.ArrestsNational.query.order_by(newmodels.ArrestsNational.year)
+        return self.with_metadata(counts, args)
 
 
 """

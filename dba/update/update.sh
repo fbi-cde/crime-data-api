@@ -1,0 +1,1 @@
+curl https://s3.amazonaws.com/18f-cf-cli/psql-9.4.4-ubuntu-14.04.tar.gz | tar xvz && ./psql/bin/psql $DATABASE_URL -f update.sql &&  ./psql/bin/psql $DATABASE_URL -f update_asr.sql && echo SUCCESS || echo FAIL
