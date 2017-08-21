@@ -14,5 +14,6 @@ This is the process to update the yearly UCR data for the FBI Crime Data Explore
   
 (5) Run: cd /crime-data-api/dba/update/ && ./update_files_s3.sh  
     # update_files_s3.sh updates the NIBRS Incident archives, and other additional data downloads.  
-  
+    # Note: This will require cf connect-to-service, access to s3, and the aws s3 CLI utility installed locally. 
+    # See: http://docs.aws.amazon.com/cli/latest/reference/s3/
 (6) Verify the data + Enable the new year in the front end application: See https://github.com/18F/crime-data-explorer/  
