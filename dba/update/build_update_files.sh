@@ -13,6 +13,7 @@ echo "-- Process.
 -- Start data upload
 --------------------------
 
+\set ON_ERROR_STOP on;
 
 ----------------------
 ---
@@ -1199,7 +1200,7 @@ CREATE INDEX reta_month_data_year_new_idx ON reta_month_new USING btree (data_ye
 INSERT INTO asr_month (SELECT convert_to_integer(asr_month_id), convert_to_integer(agency_id), convert_to_integer(data_year), convert_to_integer(month_num), source_flag, reported_flag, orig_format, update_flag, convert_to_integer(ff_line_number), ddocname, convert_to_integer(did), data_home FROM asr_month_temp);
 INSERT INTO asr_offense_subcat (SELECT convert_to_integer(offense_subcat_id) ,    convert_to_integer(offense_id) ,    offense_subcat_name ,    offense_subcat_code ,    srs_offense_code ,    convert_to_integer(master_offense_code) ,    total_flag ,    adult_juv_flag  FROM asr_offense_subcat_temp);
 INSERT INTO asr_age_sex_subcat (SELECT convert_to_integer(asr_month_id), convert_to_integer(offense_subcat_id), convert_to_integer(age_range_id),  convert_to_integer(arrest_count) ,    convert_to_integer(arrest_status) , active_flag ,    to_timestamp_ucr(prepared_date) ,    to_timestamp_ucr(report_date) ,   convert_to_integer(ff_line_number)   FROM asr_age_sex_subcat_temp);
-
+INSERT INTO asr_race_offense_subcat (SELECT convert_to_integer(asr_month_id), convert_to_integer(offense_subcat_id), convert_to_integer(race_id),  juvenile_flag, convert_to_integer(arrest_count), convert_to_integer(arrest_status), active_flag, to_timestamp_ucr(prepared_date), to_timestamp_ucr(report_date), convert_to_integer(ff_line_number) FROM asr_race_offense_subcat_temp);
 
 -- hc_*  - DONE!
 INSERT INTO hc_quarter (SELECT convert_to_integer(agency_id), convert_to_integer(quarter_num), convert_to_integer(data_year), reported_status, convert_to_integer(reported_count), convert_to_integer(hc_quarter_id), update_flag, orig_format, convert_to_integer(ff_line_number), ddocname, convert_to_integer(did), data_home from hc_quarter_temp);
@@ -1225,6 +1226,8 @@ INSERT INTO arson_month_by_subcat (SELECT convert_to_integer(arson_month_id), co
 "
 
 echo "
+
+\set ON_ERROR_STOP on;
 
 -- This script should load + merge one year of UCR NIBRS data in the 
 -- form of multiple CSV|TSV files. 

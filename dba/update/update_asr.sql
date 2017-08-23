@@ -2,9 +2,26 @@
 
 set work_mem = '2GB';
 
+-- Only include agencies that have reported ASR for 12 months in the ASR crosstabs
+DROP TABLE IF EXISTS asr_reporting;
+CREATE TABLE asr_reporting (
+   data_year smallint NOT NULL,
+   agency_id int NOT NULL,
+   months_reported smallint
+);
+
 INSERT INTO asr_reporting
 SELECT data_year, agency_id, SUM(CASE WHEN reported_flag = 'Y' THEN 1 ELSE 0 END) AS reported_months
-FROM asr_month WHERE data_year = 2015 GROUP by data_year, agency_id;
+FROM asr_month GROUP by data_year, agency_id;
+
+-- You can't submit arrest data without providing age/sex/race so
+-- these are just checking the agencies reported for 12 months
+DROP TABLE IF EXISTS asr_aas_populations;
+CREATE TABLE asr_aas_populations(
+data_year smallint NOT NULL,
+state_abbr character(2),
+agencies integer,
+population bigint);
 
 INSERT INTO asr_aas_populations
 SELECT
@@ -16,7 +33,34 @@ FROM asr_reporting asr
 JOIN ref_agency ra ON ra.agency_id = asr.agency_id
 JOIN ref_state rs ON rs.state_id = ra.state_id
 LEFT OUTER JOIN ref_agency_population rap ON rap.agency_id = ra.agency_id AND rap.data_year = asr.data_year
-WHERE asr.months_reported = 12 and asr.data_year = 2015 
+WHERE asr.months_reported = 12
+GROUP BY GROUPING SETS(
+(asr.data_year),
+(asr.data_year, rs.state_postal_abbr)
+);
+
+-- Race reporting is a bit more complicated. You need to look at what
+-- was filed to get a count of the agencies that provided racial data
+DROP TABLE IF EXISTS asr_race_populations;
+CREATE TABLE asr_race_populations(
+data_year smallint NOT NULL,
+state_abbr character(2),
+agencies integer,
+population bigint);
+
+WITH race_agencies AS (select DISTINCT am.data_year, am.agency_id FROM asr_month am JOIN asr_race_offense_subcat ros ON ros.asr_month_id = am.asr_month_id)
+INSERT INTO asr_race_populations
+SELECT
+asr.data_year,
+rs.state_postal_abbr,
+COUNT(ra.agency_id),
+SUM(rap.population)
+FROM asr_reporting asr
+JOIN ref_agency ra ON ra.agency_id = asr.agency_id
+JOIN ref_state rs ON rs.state_id = ra.state_id
+JOIN race_agencies a ON a.agency_id = asr.agency_id AND a.data_year = asr.data_year
+LEFT OUTER JOIN ref_agency_population rap ON rap.agency_id = ra.agency_id AND rap.data_year = asr.data_year
+WHERE asr.months_reported = 12
 GROUP BY GROUPING SETS(
 (asr.data_year),
 (asr.data_year, rs.state_postal_abbr)
@@ -31,31 +75,13 @@ GROUP BY GROUPING SETS(
 -- agencies integer,
 -- population bigint);
 
-WITH race_agencies AS (select DISTINCT am.data_year, am.agency_id FROM asr_month am JOIN asr_race_offense_subcat ros ON ros.asr_month_id = am.asr_month_id)
-INSERT INTO asr_race_populations
-SELECT
-asr.data_year,
-rs.state_postal_abbr,
-COUNT(ra.agency_id),
-SUM(rap.population)
-FROM asr_reporting asr
-JOIN ref_agency ra ON ra.agency_id = asr.agency_id
-JOIN ref_state rs ON rs.state_id = ra.state_id
-JOIN race_agencies a ON a.agency_id = asr.agency_id AND a.data_year = asr.data_year
-LEFT OUTER JOIN ref_agency_population rap ON rap.agency_id = ra.agency_id AND rap.data_year = asr.data_year
-WHERE asr.months_reported = 12 and asr.data_year = 2015 
-GROUP BY GROUPING SETS(
-(asr.data_year),
-(asr.data_year, rs.state_postal_abbr)
-);
-
 -- Build a rollup at the suboffense level. These queries take the longest to run (about 3-4 hours)
 
 
 DO
 $do$
 DECLARE
-   years int[] := array[2015];
+   years int[] := array[2016];
    y int;
 BEGIN
   SET work_mem = '3GB';
@@ -75,7 +101,7 @@ $do$;
 DO
 $do$
 DECLARE
-  years int[] := array[2015];
+  years int[] := array[2016];
   y int;
 BEGIN
   SET work_mem = '3GB';
@@ -149,7 +175,7 @@ JOIN asr_offense_subcat aos ON aos.offense_subcat_id = aass.offense_subcat_id
 JOIN asr_offense ao ON ao.offense_id = aos.offense_id
 JOIN ref_race rr ON rr.race_id = aass.race_id
 WHERE aos.offense_subcat_id IN (11, 12, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 18, 190, 200, 210, 220, 230, 240, 250, 260, 270, 280, 290, 301, 302)
-AND aass.data_year = 2015 
+AND aass.data_year = 2016 
 GROUP BY GROUPING SETS(
 (aass.data_year, race_code, race_desc),
 (aass.data_year, juvenile_flag, race_code, race_desc),
@@ -203,7 +229,7 @@ JOIN asr_offense ao ON ao.offense_id = aos.offense_id
 JOIN asr_age_range aar ON aar.age_range_id = aass.age_range_id 
 JOIN ref_state rs ON rs.state_id = aass.state_id 
 WHERE aos.offense_subcat_id IN (11, 12, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 18, 190, 200, 210, 220, 230, 240, 250, 260, 270, 280, 290, 301, 302) 
-AND aass.data_year = 2015  
+AND aass.data_year = 2016  
 GROUP BY GROUPING SETS( 
 (aass.data_year, rs.state_postal_abbr), 
 (aass.data_year, rs.state_postal_abbr, aar.juvenile_flag), 
@@ -625,91 +651,91 @@ AND a.year = 2015;
 ------------- DRUG CROSSTAB
 
 
-DROP TABLE IF EXISTS asr_drug_rollup;
-CREATE TEMPORARY TABLE asr_drug_rollup AS
-SELECT s.data_year AS year, s.state_id, d.label, SUM(arrest_count) AS arrest_count
-FROM asr_age_suboffense_summary s
-JOIN asr_offense_subcat aos ON aos.offense_subcat_id = s.offense_subcat_id
-JOIN asr_drug_labels d ON d.code = aos.offense_subcat_code
-WHERE s.data_year = 2015 
-GROUP BY GROUPING SETS(
-(s.data_year, s.state_id, d.label),
-(s.data_year, d.label));
+-- DROP TABLE IF EXISTS asr_drug_rollup;
+-- CREATE TEMPORARY TABLE asr_drug_rollup AS
+-- SELECT s.data_year AS year, s.state_id, d.label, SUM(arrest_count) AS arrest_count
+-- FROM asr_age_suboffense_summary s
+-- JOIN asr_offense_subcat aos ON aos.offense_subcat_id = s.offense_subcat_id
+-- JOIN asr_drug_labels d ON d.code = aos.offense_subcat_code
+-- WHERE s.data_year = 2015 
+-- GROUP BY GROUPING SETS(
+-- (s.data_year, s.state_id, d.label),
+-- (s.data_year, d.label));
 
-INSERT INTO asr_drug_crosstab(year, total_arrests, total_manufacture, opioid_manufacture, marijuana_manufacture, synthetic_manufacture, other_manufacture, total_possess, opioid_possess, marijuana_possess, synthetic_possess, other_possess)
-SELECT year, total_arrests, total_manufacture, opioid_manufacture, marijuana_manufacture, synthetic_manufacture, other_manufacture, total_possess, opioid_possess, marijuana_possess, synthetic_possess, other_possess
-FROM CROSSTAB(
-$$ SELECT year,
-label,
-arrest_count
-FROM asr_drug_rollup
-WHERE state_id IS NULL 
-AND year = 2015 
-ORDER BY 1,2$$,
-$$ SELECT label from asr_drug_labels order by label $$
-) AS ct (
-"year" smallint,
-"marijuana_manufacture" bigint,
-"marijuana_possess" bigint,
-"opioid_manufacture" bigint,
-"opioid_possess" bigint,
-"other_manufacture" bigint,
-"other_possess" bigint,
-"synthetic_manufacture" bigint,
-"synthetic_possess" bigint,
-"total_arrests" bigint,
-"total_manufacture" bigint,
-"total_possess" bigint
-);
+-- INSERT INTO asr_drug_crosstab(year, total_arrests, total_manufacture, opioid_manufacture, marijuana_manufacture, synthetic_manufacture, other_manufacture, total_possess, opioid_possess, marijuana_possess, synthetic_possess, other_possess)
+-- SELECT year, total_arrests, total_manufacture, opioid_manufacture, marijuana_manufacture, synthetic_manufacture, other_manufacture, total_possess, opioid_possess, marijuana_possess, synthetic_possess, other_possess
+-- FROM CROSSTAB(
+-- $$ SELECT year,
+-- label,
+-- arrest_count
+-- FROM asr_drug_rollup
+-- WHERE state_id IS NULL 
+-- AND year = 2015 
+-- ORDER BY 1,2$$,
+-- $$ SELECT label from asr_drug_labels order by label $$
+-- ) AS ct (
+-- "year" smallint,
+-- "marijuana_manufacture" bigint,
+-- "marijuana_possess" bigint,
+-- "opioid_manufacture" bigint,
+-- "opioid_possess" bigint,
+-- "other_manufacture" bigint,
+-- "other_possess" bigint,
+-- "synthetic_manufacture" bigint,
+-- "synthetic_possess" bigint,
+-- "total_arrests" bigint,
+-- "total_manufacture" bigint,
+-- "total_possess" bigint
+-- );
 
-DO
-$do$
-DECLARE
-states text[] := array['AK', 'AL', 'AR', 'AZ', 'CA', 'CO', 'CT', 'DC', 'DE', 'FL', 'GA', 'HI', 'IA', 'ID', 'IL', 'IN', 'KS', 'KY', 'LA', 'MA', 'MD', 'ME', 'MI', 'MN', 'MO', 'MS',
-'MT', 'NE', 'NC', 'ND', 'NH', 'NJ', 'NM', 'NV',  'NY', 'OH', 'OK', 'OR', 'PA', 'PR', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VA', 'VT', 'WA', 'WI', 'WV', 'WY'];
-st text;
-BEGIN
-FOREACH st IN ARRAY states
-LOOP
-INSERT INTO asr_drug_crosstab(state_abbr, year, total_arrests, total_manufacture, opioid_manufacture, marijuana_manufacture, synthetic_manufacture, other_manufacture, total_possess, opioid_possess, marijuana_possess, synthetic_possess, other_possess)
-SELECT st AS state_abbr, ct.year, total_arrests, total_manufacture, opioid_manufacture, marijuana_manufacture, synthetic_manufacture, other_manufacture, total_possess, opioid_possess, marijuana_possess, synthetic_possess, other_possess FROM CROSSTAB(
-$$ SELECT year,
-label,
-arrest_count
-FROM asr_drug_rollup a
-JOIN ref_state rs ON rs.state_id = a.state_id
-WHERE rs.state_postal_abbr = '$$ || st || $$' 
-AND year = 2015
-ORDER BY 1,2$$,
-$$ SELECT label from asr_drug_labels order by label $$
-) AS ct (
-"year" smallint,
-"marijuana_manufacture" bigint,
-"marijuana_possess" bigint,
-"opioid_manufacture" bigint,
-"opioid_possess" bigint,
-"other_manufacture" bigint,
-"other_possess" bigint,
-"synthetic_manufacture" bigint,
-"synthetic_possess" bigint,
-"total_arrests" bigint,
-"total_manufacture" bigint,
-"total_possess" bigint
-);
+-- DO
+-- $do$
+-- DECLARE
+-- states text[] := array['AK', 'AL', 'AR', 'AZ', 'CA', 'CO', 'CT', 'DC', 'DE', 'FL', 'GA', 'HI', 'IA', 'ID', 'IL', 'IN', 'KS', 'KY', 'LA', 'MA', 'MD', 'ME', 'MI', 'MN', 'MO', 'MS',
+-- 'MT', 'NE', 'NC', 'ND', 'NH', 'NJ', 'NM', 'NV',  'NY', 'OH', 'OK', 'OR', 'PA', 'PR', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VA', 'VT', 'WA', 'WI', 'WV', 'WY'];
+-- st text;
+-- BEGIN
+-- FOREACH st IN ARRAY states
+-- LOOP
+-- INSERT INTO asr_drug_crosstab(state_abbr, year, total_arrests, total_manufacture, opioid_manufacture, marijuana_manufacture, synthetic_manufacture, other_manufacture, total_possess, opioid_possess, marijuana_possess, synthetic_possess, other_possess)
+-- SELECT st AS state_abbr, ct.year, total_arrests, total_manufacture, opioid_manufacture, marijuana_manufacture, synthetic_manufacture, other_manufacture, total_possess, opioid_possess, marijuana_possess, synthetic_possess, other_possess FROM CROSSTAB(
+-- $$ SELECT year,
+-- label,
+-- arrest_count
+-- FROM asr_drug_rollup a
+-- JOIN ref_state rs ON rs.state_id = a.state_id
+-- WHERE rs.state_postal_abbr = '$$ || st || $$' 
+-- AND year = 2015
+-- ORDER BY 1,2$$,
+-- $$ SELECT label from asr_drug_labels order by label $$
+-- ) AS ct (
+-- "year" smallint,
+-- "marijuana_manufacture" bigint,
+-- "marijuana_possess" bigint,
+-- "opioid_manufacture" bigint,
+-- "opioid_possess" bigint,
+-- "other_manufacture" bigint,
+-- "other_possess" bigint,
+-- "synthetic_manufacture" bigint,
+-- "synthetic_possess" bigint,
+-- "total_arrests" bigint,
+-- "total_manufacture" bigint,
+-- "total_possess" bigint
+-- );
 
-END LOOP;
-END
-$do$;
+-- END LOOP;
+-- END
+-- $do$;
 
-UPDATE asr_drug_crosstab
-SET agencies=p.agencies, population=p.population
-FROM asr_aas_populations p
-WHERE asr_drug_crosstab.year=p.data_year
-AND asr_drug_crosstab.state_abbr=p.state_abbr;
+-- UPDATE asr_drug_crosstab
+-- SET agencies=p.agencies, population=p.population
+-- FROM asr_aas_populations p
+-- WHERE asr_drug_crosstab.year=p.data_year
+-- AND asr_drug_crosstab.state_abbr=p.state_abbr;
 
-UPDATE asr_drug_crosstab
-SET agencies=p.agencies, population=p.population
-FROM asr_aas_populations p
-WHERE asr_drug_crosstab.year=p.data_year
-AND asr_drug_crosstab.state_abbr IS NULL
-AND p.state_abbr IS NULL;
+-- UPDATE asr_drug_crosstab
+-- SET agencies=p.agencies, population=p.population
+-- FROM asr_aas_populations p
+-- WHERE asr_drug_crosstab.year=p.data_year
+-- AND asr_drug_crosstab.state_abbr IS NULL
+-- AND p.state_abbr IS NULL;

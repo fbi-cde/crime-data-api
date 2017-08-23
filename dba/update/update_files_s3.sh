@@ -66,7 +66,7 @@ SET work_mem='3GB';
 \copy (select * from asr_juvenile_crosstab where state_abbr IS NULL and year >= 1994 order by year DESC, offense_code) TO 'asr_national_juvenile.csv' with CSV DELIMITER ',' HEADER;
 \copy (select * from asr_adult_crosstab where state_abbr IS NULL and year >= 1994 order by year DESC, offense_code) TO 'asr_national_adults.csv' with CSV DELIMITER ',' HEADER;
 \copy (select * from asr_drug_crosstab where state_abbr IS NULL and year >= 1994 ORDER by year DESC) TO 'asr_national_drug.csv' with CSV DELIMITER ',' HEADER;
-
+\copy (SELECT * from asr_national ORDER by year DESC) TO 'arrests_national.csv' with CSV DELIMITER ',' HEADER;
 EOF
 
 export S3_CREDENTIALS="`cf service-key fbi-cde-s3  colin-key | tail -n +2`"
@@ -81,9 +81,9 @@ aws s3 cp ucr_participation.csv s3://${BUCKET_NAME}/ucr_participation.csv
 aws s3 cp agencies.csv s3://${BUCKET_NAME}/agencies.csv
 aws s3 cp territories.csv s3://${BUCKET_NAME}/territories.csv
 aws s3 cp human_trafficking.csv s3://${BUCKET_NAME}/human_trafficking.csv
-aws s3 cp arrests_national_juvenile.csv s3://${BUCKET_NAME}/arrests_national_juvenile.csv
-aws s3 cp arrests_national_adults.csv s3://${BUCKET_NAME}/arrests_national_adults.csv
-aws s3 cp arrests_national_drug.csv s3://${BUCKET_NAME}/arrests_national_drug.csv
+aws s3 cp asr_national_juvenile.csv s3://${BUCKET_NAME}/arrests_national_juvenile.csv
+aws s3 cp asr_national_adults.csv s3://${BUCKET_NAME}/arrests_national_adults.csv
+aws s3 cp asr_national_drug.csv s3://${BUCKET_NAME}/arrests_national_drug.csv
 aws s3 cp arrests_national.csv s3://${BUCKET_NAME}/arrests_national.csv
 
 for i in "${arr_years[@]}"
