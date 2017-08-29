@@ -1,5 +1,3 @@
-
-MYPWD=$2
 YEAR=$1
 
 
@@ -13,6 +11,7 @@ echo "-- Process.
 -- Start data upload
 --------------------------
 
+\set ON_ERROR_STOP on;
 
 ----------------------
 ---
@@ -54,7 +53,7 @@ CREATE TABLE ref_agency_temp (
 );
 
 -- Load CSV data into shell.
-\COPY ref_agency_temp (agency_id, ori, legacy_ori, ucr_agency_name, ncic_agency_name, pub_agency_name, agency_type_id, special_mailing_group, special_mailing_address, tribe_id, city_id, state_id, campus_id, agency_status, judicial_dist_code, submitting_agency_id, fid_code, department_id, added_date, change_timestamp, change_user, legacy_notify_agency, dormant_year, population_family_id, field_office_id, extra) FROM '$MYPWD/REF_A.csv' WITH DELIMITER '|';
+\COPY ref_agency_temp (agency_id, ori, legacy_ori, ucr_agency_name, ncic_agency_name, pub_agency_name, agency_type_id, special_mailing_group, special_mailing_address, tribe_id, city_id, state_id, campus_id, agency_status, judicial_dist_code, submitting_agency_id, fid_code, department_id, added_date, change_timestamp, change_user, legacy_notify_agency, dormant_year, population_family_id, field_office_id, extra) FROM 'dba/update/data/REF_A.csv' WITH DELIMITER '|';
 
 -- Load/convert data from shell into 
 DROP TABLE IF EXISTS ref_agency_replace;
@@ -108,7 +107,7 @@ CREATE TABLE ref_agency_county_temp (
 );
 
 -- insert into shell from csv.
-\COPY ref_agency_county_temp (agency_id,county_id, metro_div_id, core_city_flag, data_year, population, census, legacy_county_code, legacy_msa_code, source_flag, change_timestamp, change_user) FROM '$MYPWD/REF_AC.csv' WITH DELIMITER '|';
+\COPY ref_agency_county_temp (agency_id,county_id, metro_div_id, core_city_flag, data_year, population, census, legacy_county_code, legacy_msa_code, source_flag, change_timestamp, change_user) FROM 'dba/update/data/REF_AC.csv' WITH DELIMITER '|';
 
 -- replacement table.
 DROP TABLE IF EXISTS ref_agency_county_replace;
@@ -141,7 +140,7 @@ CREATE TABLE ref_agency_covered_by_temp (
 );
 
 -- insert into shell from csv.
-\COPY ref_agency_covered_by_temp (agency_id,data_year, covered_by_agency_id) FROM '$MYPWD/REF_ACB.csv' WITH DELIMITER '|';
+\COPY ref_agency_covered_by_temp (agency_id,data_year, covered_by_agency_id) FROM 'dba/update/data/REF_ACB.csv' WITH DELIMITER '|';
 
 DROP TABLE IF EXISTS ref_agency_covered_by_replace;
 CREATE TABLE ref_agency_covered_by_replace (
@@ -165,7 +164,7 @@ CREATE TABLE ref_county_temp (
     comments text
 );
 
-\COPY ref_county_temp (county_id, state_id, county_name, county_ansi_code, county_fips_code, legacy_county_code, comments) FROM '$MYPWD/REF_C.csv' WITH DELIMITER '|';
+\COPY ref_county_temp (county_id, state_id, county_name, county_ansi_code, county_fips_code, legacy_county_code, comments) FROM 'dba/update/data/REF_C.csv' WITH DELIMITER '|';
 
 DROP TABLE IF EXISTS ref_county_replace;
 CREATE TABLE ref_county_replace (
@@ -189,7 +188,7 @@ CREATE TABLE ref_country_temp (
     country_desc text
 );
 
-\COPY ref_country_temp (country_id, continent_id, country_desc) FROM '$MYPWD/REF_CY.csv' WITH DELIMITER '|';
+\COPY ref_country_temp (country_id, continent_id, country_desc) FROM 'dba/update/data/REF_CY.csv' WITH DELIMITER '|';
 
 DROP TABLE IF EXISTS ref_country_replace;
 CREATE TABLE ref_country_replace (
@@ -215,7 +214,7 @@ CREATE TABLE ref_county_population_temp (
     reporting_population text
 );
 
-\COPY ref_county_population_temp (county_id, data_year, population, source_flag, extra, change_timestamp, change_user, reporting_population) FROM '$MYPWD/REF_CP.csv' WITH DELIMITER '|';
+\COPY ref_county_population_temp (county_id, data_year, population, source_flag, extra, change_timestamp, change_user, reporting_population) FROM 'dba/update/data/REF_CP.csv' WITH DELIMITER '|';
 
 DROP TABLE IF EXISTS ref_county_population_replace;
 CREATE TABLE ref_county_population_replace (
@@ -247,7 +246,7 @@ CREATE TABLE ref_agency_population_temp (
     suburban_area_flag text
 );
 
-\COPY ref_agency_population_temp (agency_id, data_year, population_group_id, population, source_flag, change_timestamp, change_user, city_sequence, suburban_area_flag) FROM '$MYPWD/REF_AP.csv' WITH DELIMITER '|';
+\COPY ref_agency_population_temp (agency_id, data_year, population_group_id, population, source_flag, change_timestamp, change_user, city_sequence, suburban_area_flag) FROM 'dba/update/data/REF_AP.csv' WITH DELIMITER '|';
 
 
 DROP TABLE IF EXISTS ref_agency_population_replace;
@@ -279,7 +278,7 @@ CREATE TABLE ref_tribe_population_temp (
     reporting_population text
 );
 
-\COPY ref_tribe_population_temp (tribe_id, data_year, population, source_flag, census, change_timestamp, change_user, reporting_population) FROM '$MYPWD/REF_TP.csv' WITH DELIMITER '|';
+\COPY ref_tribe_population_temp (tribe_id, data_year, population, source_flag, census, change_timestamp, change_user, reporting_population) FROM 'dba/update/data/REF_TP.csv' WITH DELIMITER '|';
 
 DROP TABLE IF EXISTS ref_tribe_population_replace;
 CREATE TABLE ref_tribe_population_replace (
@@ -328,7 +327,7 @@ CREATE TABLE nibrs_incident_temp (
     did text
 );
 
-\COPY nibrs_incident_temp (agency_id, incident_id, nibrs_month_id, incident_number, cargo_theft_flag, submission_date, incident_date, report_date_flag, incident_hour, cleared_except_id, cleared_except_date, incident_status, data_home, ddocname, orig_format, ff_line_number, did) FROM '$MYPWD/NIBRS_I.csv' WITH DELIMITER ',';
+\COPY nibrs_incident_temp (agency_id, incident_id, nibrs_month_id, incident_number, cargo_theft_flag, submission_date, incident_date, report_date_flag, incident_hour, cleared_except_id, cleared_except_date, incident_status, data_home, ddocname, orig_format, ff_line_number, did) FROM 'dba/update/data/NIBRS_I.csv' WITH DELIMITER ',';
 
 
 CREATE TABLE nibrs_incident_new (
@@ -372,7 +371,7 @@ CREATE TABLE nibrs_month_temp (
     did text
 );
 
-\COPY nibrs_month_temp (nibrs_month_id, agency_id, month_num, data_year, reported_status, report_date, prepared_date, update_flag, orig_format, ff_line_number, data_home, ddocname, did) FROM '$MYPWD/NIBRS_M.csv' WITH DELIMITER ',';
+\COPY nibrs_month_temp (nibrs_month_id, agency_id, month_num, data_year, reported_status, report_date, prepared_date, update_flag, orig_format, ff_line_number, data_home, ddocname, did) FROM 'dba/update/data/NIBRS_M.csv' WITH DELIMITER ',';
 
 
 -- nibrs_arrestee
@@ -399,7 +398,7 @@ CREATE TABLE nibrs_arrestee_temp (
     age_range_high_num text
 );
 
-\COPY nibrs_arrestee_temp (arrestee_id, incident_id, arrestee_seq_num, arrest_num, arrest_date, arrest_type_id, multiple_indicator, offense_type_id, age_id, age_num, sex_code, race_id, ethnicity_id, resident_code, under_18_disposition_code, clearance_ind, ff_line_number, age_range_low_num, age_range_high_num) FROM '$MYPWD/NIBRS_A.csv' WITH DELIMITER ',';
+\COPY nibrs_arrestee_temp (arrestee_id, incident_id, arrestee_seq_num, arrest_num, arrest_date, arrest_type_id, multiple_indicator, offense_type_id, age_id, age_num, sex_code, race_id, ethnicity_id, resident_code, under_18_disposition_code, clearance_ind, ff_line_number, age_range_low_num, age_range_high_num) FROM 'dba/update/data/NIBRS_A.csv' WITH DELIMITER ',';
 
 CREATE TABLE nibrs_arrestee_new (
     arrestee_id bigint NOT NULL,
@@ -432,7 +431,7 @@ CREATE TABLE nibrs_arrestee_weapon_temp (
     nibrs_arrestee_weapon_id text
 );
 
-\COPY nibrs_arrestee_weapon_temp (arrestee_id, weapon_id, nibrs_arrestee_weapon_id) FROM '$MYPWD/NIBRS_AW.csv' WITH DELIMITER ',';
+\COPY nibrs_arrestee_weapon_temp (arrestee_id, weapon_id, nibrs_arrestee_weapon_id) FROM 'dba/update/data/NIBRS_AW.csv' WITH DELIMITER ',';
 
 -- nibrs_bias_motivation
 DROP TABLE IF EXISTS nibrs_bias_motivation_temp;
@@ -441,7 +440,7 @@ CREATE TABLE nibrs_bias_motivation_temp (
     offense_id text
 );
 
-\COPY nibrs_bias_motivation_temp (bias_id, offense_id) FROM '$MYPWD/NIBRS_BM.csv' WITH DELIMITER ',';
+\COPY nibrs_bias_motivation_temp (bias_id, offense_id) FROM 'dba/update/data/NIBRS_BM.csv' WITH DELIMITER ',';
 
 
 -- nibrs_criminal_act
@@ -451,7 +450,7 @@ CREATE TABLE nibrs_criminal_act_temp (
     offense_id text
 );
 
-\COPY nibrs_criminal_act_temp (criminal_act_id, offense_id) FROM '$MYPWD/NIBRS_CA.csv' WITH DELIMITER ',';
+\COPY nibrs_criminal_act_temp (criminal_act_id, offense_id) FROM 'dba/update/data/NIBRS_CA.csv' WITH DELIMITER ',';
 
 -- nibrs_offense
 DROP TABLE IF EXISTS nibrs_offense_temp;
@@ -466,7 +465,7 @@ CREATE TABLE nibrs_offense_temp (
     ff_line_number text
 );
 
-\COPY nibrs_offense_temp (offense_id, incident_id, offense_type_id, attempt_complete_flag, location_id, num_premises_entered, method_entry_code, ff_line_number) FROM '$MYPWD/NIBRS_OFF.csv' WITH DELIMITER ',';
+\COPY nibrs_offense_temp (offense_id, incident_id, offense_type_id, attempt_complete_flag, location_id, num_premises_entered, method_entry_code, ff_line_number) FROM 'dba/update/data/NIBRS_OFF.csv' WITH DELIMITER ',';
 
 CREATE TABLE nibrs_offense_new (
     offense_id bigint NOT NULL,
@@ -494,7 +493,7 @@ CREATE TABLE nibrs_offender_temp (
     age_range_high_num text
 );
 
-\COPY nibrs_offender_temp (offender_id, incident_id, offender_seq_num, age_id, age_num, sex_code, race_id, ethnicity_id, ff_line_number, age_range_low_num, age_range_high_num) FROM '$MYPWD/NIBRS_OF.csv' WITH DELIMITER ',';
+\COPY nibrs_offender_temp (offender_id, incident_id, offender_seq_num, age_id, age_num, sex_code, race_id, ethnicity_id, ff_line_number, age_range_low_num, age_range_high_num) FROM 'dba/update/data/NIBRS_OF.csv' WITH DELIMITER ',';
 
 
 CREATE TABLE nibrs_offender_new (
@@ -523,7 +522,7 @@ CREATE TABLE nibrs_property_temp (
     ff_line_number text
 );
 
-\COPY nibrs_property_temp (property_id, incident_id, prop_loss_id, stolen_count, recovered_count, ff_line_number) FROM '$MYPWD/NIBRS_P.csv' WITH DELIMITER ',';
+\COPY nibrs_property_temp (property_id, incident_id, prop_loss_id, stolen_count, recovered_count, ff_line_number) FROM 'dba/update/data/NIBRS_P.csv' WITH DELIMITER ',';
 
 
 CREATE TABLE nibrs_property_new (
@@ -545,7 +544,7 @@ CREATE TABLE nibrs_property_desc_temp (
     nibrs_prop_desc_id text
 );
 
-\COPY nibrs_property_desc_temp (property_id, prop_desc_id, property_value, date_recovered, nibrs_prop_desc_id) FROM '$MYPWD/NIBRS_PD.csv' WITH DELIMITER ',';
+\COPY nibrs_property_desc_temp (property_id, prop_desc_id, property_value, date_recovered, nibrs_prop_desc_id) FROM 'dba/update/data/NIBRS_PD.csv' WITH DELIMITER ',';
 
 DROP TABLE IF EXISTS nibrs_property_desc_new;
 CREATE TABLE nibrs_property_desc_new (
@@ -567,7 +566,7 @@ CREATE TABLE nibrs_suspected_drug_temp (
     nibrs_suspected_drug_id text
 );
 
-\COPY nibrs_suspected_drug_temp (suspected_drug_type_id, property_id, est_drug_qty, drug_measure_type_id, nibrs_suspected_drug_id) FROM '$MYPWD/NIBRS_SD.csv' WITH DELIMITER ',';
+\COPY nibrs_suspected_drug_temp (suspected_drug_type_id, property_id, est_drug_qty, drug_measure_type_id, nibrs_suspected_drug_id) FROM 'dba/update/data/NIBRS_SD.csv' WITH DELIMITER ',';
 
 
 -- nibrs_suspect_using
@@ -577,7 +576,7 @@ CREATE TABLE nibrs_suspect_using_temp (
     offense_id text
 );
 
-\COPY nibrs_suspect_using_temp (suspect_using_id, offense_id) FROM '$MYPWD/NIBRS_SU.csv' WITH DELIMITER ',';
+\COPY nibrs_suspect_using_temp (suspect_using_id, offense_id) FROM 'dba/update/data/NIBRS_SU.csv' WITH DELIMITER ',';
 
 -- nibrs_victim
 DROP TABLE IF EXISTS nibrs_victim_temp;
@@ -601,7 +600,7 @@ CREATE TABLE nibrs_victim_temp (
     age_range_high_num text
 );
 
-\COPY nibrs_victim_temp (victim_id, incident_id, victim_seq_num, victim_type_id, assignment_type_id, activity_type_id, outside_agency_id, age_id, age_num, sex_code, race_id, ethnicity_id, resident_status_code, agency_data_year, ff_line_number, age_range_low_num, age_range_high_num) FROM '$MYPWD/NIBRS_V.csv' WITH DELIMITER ',';
+\COPY nibrs_victim_temp (victim_id, incident_id, victim_seq_num, victim_type_id, assignment_type_id, activity_type_id, outside_agency_id, age_id, age_num, sex_code, race_id, ethnicity_id, resident_status_code, agency_data_year, ff_line_number, age_range_low_num, age_range_high_num) FROM 'dba/update/data/NIBRS_V.csv' WITH DELIMITER ',';
 
 CREATE TABLE nibrs_victim_new (
     victim_id bigint NOT NULL,
@@ -631,7 +630,7 @@ CREATE TABLE nibrs_victim_circumstances_temp (
     justifiable_force_id text
 );
 
-\COPY nibrs_victim_circumstances_temp (victim_id, circumstances_id, justifiable_force_id) FROM '$MYPWD/NIBRS_VC.csv' WITH DELIMITER ',';
+\COPY nibrs_victim_circumstances_temp (victim_id, circumstances_id, justifiable_force_id) FROM 'dba/update/data/NIBRS_VC.csv' WITH DELIMITER ',';
 
 
 -- nibrs_victim_injury
@@ -641,7 +640,7 @@ CREATE TABLE nibrs_victim_injury_temp (
     injury_id text
 );
 
-\COPY nibrs_victim_injury_temp (victim_id, injury_id) FROM '$MYPWD/NIBRS_VI.csv' WITH DELIMITER ',';
+\COPY nibrs_victim_injury_temp (victim_id, injury_id) FROM 'dba/update/data/NIBRS_VI.csv' WITH DELIMITER ',';
 
 
 -- nibrs_victim_offense
@@ -651,7 +650,7 @@ CREATE TABLE nibrs_victim_offense_temp (
     offense_id text
 );
 
-\COPY nibrs_victim_offense_temp (victim_id, offense_id) FROM '$MYPWD/NIBRS_VO.csv' WITH DELIMITER ',';
+\COPY nibrs_victim_offense_temp (victim_id, offense_id) FROM 'dba/update/data/NIBRS_VO.csv' WITH DELIMITER ',';
 
 -- nibrs_victim_offender_rel
 DROP TABLE IF EXISTS nibrs_victim_offender_rel_temp;
@@ -662,7 +661,7 @@ CREATE TABLE nibrs_victim_offender_rel_temp (
     nibrs_victim_offender_id text
 );
 
-\COPY nibrs_victim_offender_rel_temp (victim_id, offender_id, relationship_id, nibrs_victim_offender_id) FROM '$MYPWD/NIBRS_VOR.csv' WITH DELIMITER ',';
+\COPY nibrs_victim_offender_rel_temp (victim_id, offender_id, relationship_id, nibrs_victim_offender_id) FROM 'dba/update/data/NIBRS_VOR.csv' WITH DELIMITER ',';
 
 -- nibrs_weapon
 DROP TABLE IF EXISTS nibrs_weapon_temp;
@@ -672,7 +671,7 @@ CREATE TABLE nibrs_weapon_temp (
     nibrs_weapon_id text
 );
 
-\COPY nibrs_weapon_temp (weapon_id, offense_id, nibrs_weapon_id) FROM '$MYPWD/NIBRS_W.csv' WITH DELIMITER ',';
+\COPY nibrs_weapon_temp (weapon_id, offense_id, nibrs_weapon_id) FROM 'dba/update/data/NIBRS_W.csv' WITH DELIMITER ',';
 
 
 -----------------------------
@@ -711,7 +710,7 @@ CREATE TABLE reta_month_temp (
 );
 
 --RETA_MONTH_ID   AGENCY_ID   DATA_YEAR   MONTH_NUM   DATA_HOME   SOURCE_FLAG REPORTED_FLAG   DDOCNAME    MONTH_INCLUDED_IN   REPORT_DATE PREPARED_DATE   PREPARED_BY_USER    PREPARED_BY_EMAIL   ORIG_FORMAT LEOKA_FELONY    LEOKA_ACCIDENT  LEOKA_ASSAULT   LEOKA_STATUS    UPDATE_FLAG DID FF_LINE_NUMBER  MONTH_PUB_STATUS
-\COPY reta_month_temp (reta_month_id, agency_id, data_year, month_num, data_home, source_flag, reported_flag, ddocname, month_included_in, report_date, prepared_date, prepared_by_user, prepared_by_email, orig_format, leoka_felony, leoka_accident, leoka_assault, leoka_status, update_flag, did, ff_line_number, extra) FROM '$MYPWD/RetAM.csv' WITH DELIMITER ',';
+\COPY reta_month_temp (reta_month_id, agency_id, data_year, month_num, data_home, source_flag, reported_flag, ddocname, month_included_in, report_date, prepared_date, prepared_by_user, prepared_by_email, orig_format, leoka_felony, leoka_accident, leoka_assault, leoka_status, update_flag, did, ff_line_number, extra) FROM 'dba/update/data/RetAM.csv' WITH DELIMITER ',';
 
 -- reta_month_offense_subcat
 DROP TABLE IF EXISTS reta_month_offense_subcat_temp;
@@ -731,7 +730,7 @@ CREATE TABLE reta_month_offense_subcat_temp (
 );
 
 -- RETA_MONTH_ID   OFFENSE_SUBCAT_ID   REPORTED_COUNT  REPORTED_STATUS UNFOUNDED_COUNT UNFOUNDED_STATUS    ACTUAL_COUNT    ACTUAL_STATUS   CLEARED_COUNT   CLEARED_STATUS  JUVENILE_CLEARED_COUNT  JUVENILE_CLEARED_STATUS
-\COPY reta_month_offense_subcat_temp (reta_month_id, offense_subcat_id, reported_count, reported_status, unfounded_count, unfounded_status, actual_count, actual_status, cleared_count, cleared_status, juvenile_cleared_count, juvenile_cleared_status) FROM '$MYPWD/RetAMOS.csv' WITH DELIMITER ',';
+\COPY reta_month_offense_subcat_temp (reta_month_id, offense_subcat_id, reported_count, reported_status, unfounded_count, unfounded_status, actual_count, actual_status, cleared_count, cleared_status, juvenile_cleared_count, juvenile_cleared_status) FROM 'dba/update/data/RetAMOS.csv' WITH DELIMITER ',';
 
 -----------------------------
 -- 
@@ -759,7 +758,7 @@ CREATE TABLE asr_month_temp (
     extra text
 );
 
-\COPY asr_month_temp (asr_month_id, agency_id, data_year, month_num, source_flag, reported_flag, orig_format, update_flag, ff_line_number, ddocname, did, data_home, extra) FROM '$MYPWD/ASRM.csv' WITH DELIMITER ',';
+\COPY asr_month_temp (asr_month_id, agency_id, data_year, month_num, source_flag, reported_flag, orig_format, update_flag, ff_line_number, ddocname, did, data_home, extra) FROM 'dba/update/data/ASRM.csv' WITH DELIMITER ',';
 
 
 
@@ -792,7 +791,7 @@ CREATE TABLE asr_race_offense_subcat_temp (
 );
 
 
-\COPY asr_race_offense_subcat_temp (asr_month_id , offense_subcat_id ,    race_id ,    juvenile_flag ,    arrest_count ,    arrest_status ,    active_flag ,    prepared_date ,    report_date ,    ff_line_number ,    asr_month_id_1,    agency_id,    data_year,    month_num,    source_flag,    reported_flag,    orig_format,    update_flag,    ff_line_number_1,    ddocname,    did,    data_home,    month_pub_status) FROM '$MYPWD/ASROS.csv' WITH DELIMITER ',';
+\COPY asr_race_offense_subcat_temp (asr_month_id , offense_subcat_id ,    race_id ,    juvenile_flag ,    arrest_count ,    arrest_status ,    active_flag ,    prepared_date ,    report_date ,    ff_line_number ,    asr_month_id_1,    agency_id,    data_year,    month_num,    source_flag,    reported_flag,    orig_format,    update_flag,    ff_line_number_1,    ddocname,    did,    data_home,    month_pub_status) FROM 'dba/update/data/ASROS.csv' WITH DELIMITER ',';
 
 
 -- ASRS.csv?????
@@ -824,7 +823,7 @@ CREATE TABLE asr_age_sex_subcat_temp (
 );
 
 
-\COPY asr_age_sex_subcat_temp (asr_month_id ,    offense_subcat_id ,    age_range_id ,    arrest_count ,    arrest_status ,    active_flag ,    prepared_date ,    report_date ,    ff_line_number ,    asr_month_id_1,    agency_id,    data_year,    month_num,    source_flag,    reported_flag,    orig_format,    update_flag,    ff_line_number_1,    ddocname,    did,    data_home,    month_pub_status) FROM '$MYPWD/ASRS.csv' WITH DELIMITER ',';
+\COPY asr_age_sex_subcat_temp (asr_month_id ,    offense_subcat_id ,    age_range_id ,    arrest_count ,    arrest_status ,    active_flag ,    prepared_date ,    report_date ,    ff_line_number ,    asr_month_id_1,    agency_id,    data_year,    month_num,    source_flag,    reported_flag,    orig_format,    update_flag,    ff_line_number_1,    ddocname,    did,    data_home,    month_pub_status) FROM 'dba/update/data/ASRS.csv' WITH DELIMITER ',';
 
 
 
@@ -866,7 +865,7 @@ CREATE TABLE hc_incident_temp (
     nibrs_incident_id text
 );
 
-\COPY hc_incident_temp (incident_id, agency_id, incident_no, incident_date, data_home, source_flag, ddocname, report_date, prepared_date, victim_count, adult_victim_count, incident_status, juvenile_victim_count, offender_count, adult_offender_count, juvenile_offender_count, offender_race_id, offender_ethnicity_id, update_flag, hc_quarter_id, ff_line_number, orig_format, did, nibrs_incident_id) FROM '$MYPWD/Hate_I.csv' WITH DELIMITER ',';
+\COPY hc_incident_temp (incident_id, agency_id, incident_no, incident_date, data_home, source_flag, ddocname, report_date, prepared_date, victim_count, adult_victim_count, incident_status, juvenile_victim_count, offender_count, adult_offender_count, juvenile_offender_count, offender_race_id, offender_ethnicity_id, update_flag, hc_quarter_id, ff_line_number, orig_format, did, nibrs_incident_id) FROM 'dba/update/data/Hate_I.csv' WITH DELIMITER ',';
 
 -- hc_quarter
 DROP TABLE IF EXISTS hc_quarter_temp;
@@ -887,7 +886,7 @@ CREATE TABLE hc_quarter_temp (
 );
 
 
-\COPY hc_quarter_temp (agency_id, quarter_num, data_year, reported_status, reported_count, hc_quarter_id, update_flag, orig_format, ff_line_number, ddocname, did, data_home, quarter_pub_status) FROM '$MYPWD/Hate_Q.csv' WITH DELIMITER ',';
+\COPY hc_quarter_temp (agency_id, quarter_num, data_year, reported_status, reported_count, hc_quarter_id, update_flag, orig_format, ff_line_number, ddocname, did, data_home, quarter_pub_status) FROM 'dba/update/data/Hate_Q.csv' WITH DELIMITER ',';
 
 
 -- hc_bias_motivation
@@ -897,7 +896,7 @@ CREATE TABLE hc_bias_motivation_temp (
     bias_id text
 );
 
-\COPY hc_bias_motivation_temp (offense_id, bias_id) FROM '$MYPWD/Hate_BM.csv' WITH DELIMITER ',';
+\COPY hc_bias_motivation_temp (offense_id, bias_id) FROM 'dba/update/data/Hate_BM.csv' WITH DELIMITER ',';
 
 -- hc_offense
 DROP TABLE IF EXISTS hc_offense_temp;
@@ -910,7 +909,7 @@ CREATE TABLE hc_offense_temp (
     nibrs_offense_id text
 );
 
-\COPY hc_offense_temp (offense_id, incident_id, offense_type_id, victim_count, location_id, nibrs_offense_id) FROM '$MYPWD/Hate_O.csv' WITH DELIMITER ',';
+\COPY hc_offense_temp (offense_id, incident_id, offense_type_id, victim_count, location_id, nibrs_offense_id) FROM 'dba/update/data/Hate_O.csv' WITH DELIMITER ',';
 
 -- hc_victim
 DROP TABLE IF EXISTS hc_victim_temp;
@@ -919,7 +918,7 @@ CREATE TABLE hc_victim_temp (
     victim_type_id text
 );
 
-\COPY hc_victim_temp (offense_id, victim_type_id) FROM '$MYPWD/Hate_V.csv' WITH DELIMITER ',';
+\COPY hc_victim_temp (offense_id, victim_type_id) FROM 'dba/update/data/Hate_V.csv' WITH DELIMITER ',';
 
 
 -----------------------------
@@ -955,7 +954,7 @@ CREATE TABLE ct_incident_temp (
     nibrs_incident_id text
 );
 
-\COPY ct_incident_temp (incident_id, agency_id, data_year, incident_number, incident_date, source_flag, ddocname, report_date, prepared_date, report_date_flag, incident_hour, cleared_except_flag, update_flag, ct_month_id, ff_line_number, data_home, orig_format, unknown_offender, did, nibrs_incident_id) FROM '$MYPWD/Cargo_I.csv' WITH DELIMITER ',';
+\COPY ct_incident_temp (incident_id, agency_id, data_year, incident_number, incident_date, source_flag, ddocname, report_date, prepared_date, report_date_flag, incident_hour, cleared_except_flag, update_flag, ct_month_id, ff_line_number, data_home, orig_format, unknown_offender, did, nibrs_incident_id) FROM 'dba/update/data/Cargo_I.csv' WITH DELIMITER ',';
 
 -- ct_victim
 DROP TABLE IF EXISTS ct_victim_temp;
@@ -964,7 +963,7 @@ CREATE TABLE ct_victim_temp (
     victim_type_id text
 );
 
-\COPY ct_victim_temp (incident_id, victim_type_id) FROM '$MYPWD/Cargo_V.csv' WITH DELIMITER ',';
+\COPY ct_victim_temp (incident_id, victim_type_id) FROM 'dba/update/data/Cargo_V.csv' WITH DELIMITER ',';
 
 
 -- ct_offense
@@ -977,7 +976,7 @@ CREATE TABLE ct_offense_temp (
     ct_offense_flag text
 );
 
-\COPY ct_offense_temp (offense_id, incident_id, offense_type_id, location_id, ct_offense_flag) FROM '$MYPWD/Cargo_OO.csv' WITH DELIMITER ',';
+\COPY ct_offense_temp (offense_id, incident_id, offense_type_id, location_id, ct_offense_flag) FROM 'dba/update/data/Cargo_OO.csv' WITH DELIMITER ',';
 
 
 -- ct_offender
@@ -991,7 +990,7 @@ CREATE TABLE ct_offender_temp (
     race_id text
 );
 
-\COPY ct_offender_temp (offender_id, incident_id, age, sex_code, ethnicity_id, race_id) FROM '$MYPWD/Cargo_O.csv' WITH DELIMITER ',';
+\COPY ct_offender_temp (offender_id, incident_id, age, sex_code, ethnicity_id, race_id) FROM 'dba/update/data/Cargo_O.csv' WITH DELIMITER ',';
 
 -- ct_arrestee_temp
 DROP TABLE IF EXISTS ct_arrestee_temp;
@@ -1004,7 +1003,7 @@ CREATE TABLE ct_arrestee_temp (
     race_id text
 );
 
-\COPY ct_arrestee_temp (arrestee_id, incident_id, age, sex_code, ethnicity_id, race_id) FROM '$MYPWD/Cargo_A.csv' WITH DELIMITER ',';
+\COPY ct_arrestee_temp (arrestee_id, incident_id, age, sex_code, ethnicity_id, race_id) FROM 'dba/update/data/Cargo_A.csv' WITH DELIMITER ',';
 
 -- ct_weapon
 DROP TABLE IF EXISTS ct_weapon_temp;
@@ -1014,7 +1013,7 @@ CREATE TABLE ct_weapon_temp (
     ct_weapon_id text
 );
 
-\COPY ct_weapon_temp (incident_id, weapon_id, ct_weapon_id) FROM '$MYPWD/Cargo_W.csv' WITH DELIMITER ',';
+\COPY ct_weapon_temp (incident_id, weapon_id, ct_weapon_id) FROM 'dba/update/data/Cargo_W.csv' WITH DELIMITER ',';
 
 -- ct_property
 DROP TABLE IF EXISTS ct_property_temp;
@@ -1028,7 +1027,7 @@ CREATE TABLE ct_property_temp (
     recovered_value text
 );
 
-\COPY ct_property_temp (property_id, prop_desc_id, incident_id, stolen_value, recovered_flag, date_recovered, recovered_value) FROM '$MYPWD/Cargo_P.csv' WITH DELIMITER ',';
+\COPY ct_property_temp (property_id, prop_desc_id, incident_id, stolen_value, recovered_flag, date_recovered, recovered_value) FROM 'dba/update/data/Cargo_P.csv' WITH DELIMITER ',';
 
 
 
@@ -1062,7 +1061,7 @@ CREATE TABLE arson_month_temp (
     extra text
 );
 
-\COPY arson_month_temp (arson_month_id, agency_id, data_year, month_num, data_home, source_flag, reported_flag, ddocname, month_included_in, report_date, prepared_date, orig_format, update_flag, did, ff_line_number, extra) FROM '$MYPWD/ArsonM.csv' WITH DELIMITER ',';
+\COPY arson_month_temp (arson_month_id, agency_id, data_year, month_num, data_home, source_flag, reported_flag, ddocname, month_included_in, report_date, prepared_date, orig_format, update_flag, did, ff_line_number, extra) FROM 'dba/update/data/ArsonM.csv' WITH DELIMITER ',';
 
 
 -- arson_month_by_subcat
@@ -1086,7 +1085,49 @@ CREATE TABLE arson_month_by_subcat_temp (
     est_damage_value_status text
 );
 
-\COPY arson_month_by_subcat_temp (arson_month_id, subcategory_id, reported_count, reported_status, unfounded_count, unfounded_status, actual_count, actual_status, cleared_count, cleared_status, juvenile_cleared_count, juvenile_cleared_status, uninhabited_count, uninhabited_status, est_damage_value, est_damage_value_status) FROM '$MYPWD/ArsonMOS.csv' WITH DELIMITER ',';
+\COPY arson_month_by_subcat_temp (arson_month_id, subcategory_id, reported_count, reported_status, unfounded_count, unfounded_status, actual_count, actual_status, cleared_count, cleared_status, juvenile_cleared_count, juvenile_cleared_status, uninhabited_count, uninhabited_status, est_damage_value, est_damage_value_status) FROM 'dba/update/data/ArsonMOS.csv' WITH DELIMITER ',';
+
+
+
+------------------------------
+--
+-- Additional datasets (leoka, pe)
+--
+------------------------------
+
+-- leoka data
+DROP TABLE IF EXISTS lkasum_month_temp;
+CREATE TABLE lkasum_month_temp (
+    lkasum_month_id text,
+    agency_id text,
+    data_year text,
+    month_num text,
+    data_home text,
+    source_flag text,
+    report_date text, 
+    prepared_date text,
+    reported_flag text,
+    ddocname text,
+    leoka_felony text,
+    leoka_accident text,
+    orig_format text,
+    update_flag text,
+    did text,
+    ff_line_number text,
+    extra1 text,
+    extra2 text
+);
+
+\COPY lkasum_month_temp (lkasum_month_id, agency_id, data_year, month_num, data_home, source_flag, report_date, prepared_date, reported_flag, ddocname, leoka_felony, leoka_accident, orig_format, update_flag, did, ff_line_number, extra1, extra2) FROM 'dba/update/data/LK_M.csv' WITH DELIMITER ',';
+
+INSERT INTO lkasum_month (SELECT 
+    convert_to_integer(lkasum_month_id), 
+    convert_to_integer(agency_id), 
+    convert_to_integer(data_year), 
+    convert_to_integer(month_num), 
+    data_home, 
+    source_flag, 
+    to_timestamp_ucr(report_date), to_timestamp_ucr(prepared_date), reported_flag, ddocname, convert_to_integer(leoka_felony), convert_to_integer(leoka_accident), orig_format, update_flag, convert_to_integer(did), convert_to_integer(ff_line_number) FROM lkasum_month_temp);
 
 
 -----------------------------
@@ -1199,7 +1240,7 @@ CREATE INDEX reta_month_data_year_new_idx ON reta_month_new USING btree (data_ye
 INSERT INTO asr_month (SELECT convert_to_integer(asr_month_id), convert_to_integer(agency_id), convert_to_integer(data_year), convert_to_integer(month_num), source_flag, reported_flag, orig_format, update_flag, convert_to_integer(ff_line_number), ddocname, convert_to_integer(did), data_home FROM asr_month_temp);
 INSERT INTO asr_offense_subcat (SELECT convert_to_integer(offense_subcat_id) ,    convert_to_integer(offense_id) ,    offense_subcat_name ,    offense_subcat_code ,    srs_offense_code ,    convert_to_integer(master_offense_code) ,    total_flag ,    adult_juv_flag  FROM asr_offense_subcat_temp);
 INSERT INTO asr_age_sex_subcat (SELECT convert_to_integer(asr_month_id), convert_to_integer(offense_subcat_id), convert_to_integer(age_range_id),  convert_to_integer(arrest_count) ,    convert_to_integer(arrest_status) , active_flag ,    to_timestamp_ucr(prepared_date) ,    to_timestamp_ucr(report_date) ,   convert_to_integer(ff_line_number)   FROM asr_age_sex_subcat_temp);
-
+INSERT INTO asr_race_offense_subcat (SELECT convert_to_integer(asr_month_id), convert_to_integer(offense_subcat_id), convert_to_integer(race_id),  juvenile_flag, convert_to_integer(arrest_count), convert_to_integer(arrest_status), active_flag, to_timestamp_ucr(prepared_date), to_timestamp_ucr(report_date), convert_to_integer(ff_line_number) FROM asr_race_offense_subcat_temp);
 
 -- hc_*  - DONE!
 INSERT INTO hc_quarter (SELECT convert_to_integer(agency_id), convert_to_integer(quarter_num), convert_to_integer(data_year), reported_status, convert_to_integer(reported_count), convert_to_integer(hc_quarter_id), update_flag, orig_format, convert_to_integer(ff_line_number), ddocname, convert_to_integer(did), data_home from hc_quarter_temp);
@@ -1225,6 +1266,8 @@ INSERT INTO arson_month_by_subcat (SELECT convert_to_integer(arson_month_id), co
 "
 
 echo "
+
+\set ON_ERROR_STOP on;
 
 -- This script should load + merge one year of UCR NIBRS data in the 
 -- form of multiple CSV|TSV files. 
@@ -1303,12 +1346,12 @@ SET work_mem='2GB';
 --
 
 INSERT INTO nibrs_incident_denorm_$YEAR (incident_id, agency_id, state_id, ori, year, incident_date) SELECT nibrs_incident_new.incident_id, nibrs_incident_new.agency_id, ref_agency.state_id, ref_agency.ori, EXTRACT(YEAR FROM nibrs_incident_new.incident_date) as year, nibrs_incident_new.incident_date from nibrs_incident_new JOIN ref_agency ON (ref_agency.agency_id = nibrs_incident_new.agency_id) where nibrs_incident_new.incident_date >= to_timestamp('01-01-$YEAR', 'MM-DD-YYYY');
--- UPDATE nibrs_incident_denorm_$YEAR SET state_abbr = ref_state.state_postal_abbr from ref_state where nibrs_incident_denorm_$YEAR.state_id = ref_state.state_id and nibrs_incident_denorm_$YEAR.year = '$YEAR';
-
+UPDATE nibrs_incident_denorm_$YEAR SET state_code = ref_state.state_code from ref_state where nibrs_incident_denorm_$YEAR.state_id = ref_state.state_id;
 
 -- Insert directly into a single partition to bypass the partition trigger (faster).
 -- DONE (~5 min per update)
 INSERT INTO nibrs_victim_denorm_$YEAR (incident_id, agency_id, year, incident_date, victim_id, age_id, age_num, sex_code, race_id, victim_type_id,resident_status_code) SELECT nibrs_victim_new.incident_id, nibrs_incident_new.agency_id, EXTRACT(YEAR FROM nibrs_incident_new.incident_date) as year, nibrs_incident_new.incident_date, nibrs_victim_new.victim_id, nibrs_victim_new.age_id, nibrs_victim_new.age_num::numeric, nibrs_victim_new.sex_code,nibrs_victim_new.race_id, nibrs_victim_new.victim_type_id, nibrs_victim_new.resident_status_code from nibrs_victim_new LEFT JOIN nibrs_incident_new on nibrs_incident_new.incident_id = nibrs_victim_new.incident_id where nibrs_incident_new.incident_date >= to_timestamp('01-01-$YEAR', 'MM-DD-YYYY');
+UPDATE nibrs_victim_denorm_$YEAR SET ori = ref_agency.ori from ref_agency where nibrs_victim_denorm_$YEAR.agency_id = ref_agency.agency_id and nibrs_victim_denorm_$YEAR.year = '$YEAR';
 UPDATE nibrs_victim_denorm_$YEAR SET state_id = ref_agency.state_id, county_id = ref_agency_county.county_id from ref_agency JOIN ref_agency_county ON ref_agency.agency_id = ref_agency_county.agency_id where nibrs_victim_denorm_$YEAR.agency_id = ref_agency.agency_id and nibrs_victim_denorm_$YEAR.year = '$YEAR';
 UPDATE nibrs_victim_denorm_$YEAR SET state_code = ref_state.state_code from ref_state where nibrs_victim_denorm_$YEAR.state_id = ref_state.state_id and nibrs_victim_denorm_$YEAR.year = '$YEAR';
 UPDATE nibrs_victim_denorm_$YEAR SET race_code = ref_race.race_code from ref_race where nibrs_victim_denorm_$YEAR.race_id = ref_race.race_id and nibrs_victim_denorm_$YEAR.year = '$YEAR'; 
@@ -1322,10 +1365,11 @@ UPDATE nibrs_victim_denorm_$YEAR SET prop_desc_name = nibrs_prop_desc_type.prop_
 UPDATE nibrs_victim_denorm_$YEAR SET bias_id = nibrs_bias_motivation.bias_id from nibrs_bias_motivation where nibrs_bias_motivation.offense_id = nibrs_victim_denorm_$YEAR.offense_id and nibrs_victim_denorm_$YEAR.year = '$YEAR';
 UPDATE nibrs_victim_denorm_$YEAR SET bias_name = nibrs_bias_list.bias_name from nibrs_bias_list where nibrs_victim_denorm_$YEAR.bias_id = nibrs_bias_list.bias_id and nibrs_victim_denorm_$YEAR.year = '$YEAR';
 UPDATE nibrs_victim_denorm_$YEAR SET offender_relationship = nibrs_relationship.relationship_name from nibrs_victim_offender_rel JOIN nibrs_relationship ON nibrs_relationship.relationship_id = nibrs_victim_offender_rel.relationship_id where nibrs_victim_denorm_$YEAR.victim_id = nibrs_victim_offender_rel.victim_id and nibrs_victim_denorm_$YEAR.year = '$YEAR';
-
+UPDATE nibrs_victim_denorm_$YEAR SET ethnicity = nibrs_ethnicity.ethnicity_name from nibrs_victim_new JOIN nibrs_ethnicity ON (nibrs_victim_new.ethnicity_id = nibrs_ethnicity.ethnicity_id) WHERE nibrs_victim_new.victim_id = nibrs_victim_denorm_$YEAR.victim_id and nibrs_victim_denorm_$YEAR.year = '$YEAR';
 
 -- denorm offender
 INSERT INTO nibrs_offender_denorm_$YEAR (incident_id, agency_id, year, incident_date, offender_id, age_id, age_num, sex_code, race_id, ethnicity) SELECT nibrs_offender_new.incident_id, nibrs_incident_new.agency_id, EXTRACT(YEAR FROM nibrs_incident_new.incident_date) as year, nibrs_incident_new.incident_date, nibrs_offender_new.offender_id, nibrs_offender_new.age_id, nibrs_offender_new.age_num::numeric, nibrs_offender_new.sex_code,nibrs_offender_new.race_id, nibrs_ethnicity.ethnicity_name from nibrs_offender_new  LEFT JOIN nibrs_incident_new on nibrs_incident_new.incident_id = nibrs_offender_new.incident_id  LEFT JOIN nibrs_ethnicity ON nibrs_ethnicity.ethnicity_id = nibrs_offender_new.ethnicity_id where nibrs_incident_new.incident_date >= to_timestamp('01-01-$YEAR', 'MM-DD-YYYY');
+UPDATE nibrs_offender_denorm_$YEAR SET ori = ref_agency.ori from ref_agency where nibrs_offender_denorm_$YEAR.agency_id = ref_agency.agency_id and nibrs_offender_denorm_$YEAR.year = '$YEAR';
 UPDATE nibrs_offender_denorm_$YEAR SET state_id = ref_agency.state_id, county_id = ref_agency_county.county_id from ref_agency JOIN ref_agency_county ON ref_agency.agency_id = ref_agency_county.agency_id where nibrs_offender_denorm_$YEAR.agency_id = ref_agency.agency_id and nibrs_offender_denorm_$YEAR.year = '$YEAR';
 UPDATE nibrs_offender_denorm_$YEAR SET state_code = ref_state.state_code from ref_state where nibrs_offender_denorm_$YEAR.state_id = ref_state.state_id and nibrs_offender_denorm_$YEAR.year = '$YEAR';
 UPDATE nibrs_offender_denorm_$YEAR SET race_code = ref_race.race_code from ref_race where nibrs_offender_denorm_$YEAR.race_id = ref_race.race_id and nibrs_offender_denorm_$YEAR.year = '$YEAR'; 
@@ -1347,14 +1391,18 @@ UPDATE nibrs_offense_denorm_$YEAR SET offense_name = nibrs_offense_type.offense_
 UPDATE nibrs_offense_denorm_$YEAR SET weapon_id = nibrs_weapon.weapon_id from nibrs_weapon where nibrs_weapon.offense_id = nibrs_offense_denorm_$YEAR.offense_id and nibrs_offense_denorm_$YEAR.year = '$YEAR';
 UPDATE nibrs_offense_denorm_$YEAR SET weapon_name = nibrs_weapon_type.weapon_name from nibrs_weapon_type where nibrs_weapon_type.weapon_id = nibrs_offense_denorm_$YEAR.weapon_id and nibrs_offense_denorm_$YEAR.year = '$YEAR';
 UPDATE nibrs_offense_denorm_$YEAR SET bias_name = nibrs_bias_list.bias_name, suspected_using = nibrs_using_list.suspect_using_name from nibrs_bias_motivation JOIN nibrs_bias_list ON (nibrs_bias_motivation.bias_id = nibrs_bias_list.bias_id) JOIN nibrs_suspect_using ON (nibrs_suspect_using.offense_id =  nibrs_bias_motivation.offense_id) JOIN nibrs_using_list ON (nibrs_using_list.suspect_using_id = nibrs_suspect_using.suspect_using_id) where nibrs_offense_denorm_$YEAR.offense_id = nibrs_bias_motivation.offense_id  and nibrs_offense_denorm_$YEAR.year = '$YEAR';
+UPDATE nibrs_offense_denorm_$YEAR SET ori = ref_agency.ori from ref_agency where nibrs_offense_denorm_$YEAR.agency_id = ref_agency.agency_id and nibrs_offense_denorm_$YEAR.year = '$YEAR';
 
 
 -- denorm arrestees 
 INSERT INTO nibrs_arrestee_denorm_$YEAR (incident_id,arrest_type_id, agency_id, year, incident_date, arrestee_id, age_id, age_num, sex_code, race_id, arrest_date, resident_status, under_18_disposition_code, clearance_ind) SELECT nibrs_arrestee_new.incident_id, nibrs_arrestee_new.arrest_type_id, nibrs_incident_new.agency_id, EXTRACT(YEAR FROM nibrs_incident_new.incident_date) as year, nibrs_incident_new.incident_date, nibrs_arrestee_new.arrestee_id, nibrs_arrestee_new.age_id, nibrs_arrestee_new.age_num::numeric, nibrs_arrestee_new.sex_code,nibrs_arrestee_new.race_id, nibrs_arrestee_new.arrest_date, nibrs_arrestee_new.resident_code, nibrs_arrestee_new.under_18_disposition_code, nibrs_arrestee_new.clearance_ind from nibrs_arrestee_new JOIN nibrs_incident_new on nibrs_incident_new.incident_id = nibrs_arrestee_new.incident_id where nibrs_incident_new.incident_date >= to_timestamp('01-01-$YEAR', 'MM-DD-YYYY');
+UPDATE nibrs_arrestee_denorm_$YEAR SET state_id = nibrs_incident_denorm_$YEAR.state_id, state_code=nibrs_incident_denorm_$YEAR.state_code from nibrs_incident_denorm_$YEAR where nibrs_arrestee_denorm_$YEAR.incident_id =  nibrs_incident_denorm_$YEAR.incident_id; 
 UPDATE nibrs_arrestee_denorm_$YEAR SET race_code = ref_race.race_code from ref_race where nibrs_arrestee_denorm_$YEAR.race_id = ref_race.race_id and nibrs_arrestee_denorm_$YEAR.year = '$YEAR'; 
 UPDATE nibrs_arrestee_denorm_$YEAR SET arrest_type_name = nibrs_arrest_type.arrest_type_name from nibrs_arrest_type where nibrs_arrestee_denorm_$YEAR.arrest_type_id = nibrs_arrest_type.arrest_type_id and nibrs_arrestee_denorm_$YEAR.year = '$YEAR';
 UPDATE nibrs_arrestee_denorm_$YEAR SET arrest_type_code = nibrs_arrest_type.arrest_type_code, ethnicity = nibrs_ethnicity.ethnicity_name from nibrs_arrestee_new JOIN nibrs_arrest_type ON (nibrs_arrestee_new.arrest_type_id = nibrs_arrest_type.arrest_type_id) JOIN nibrs_ethnicity ON nibrs_ethnicity.ethnicity_id = nibrs_arrestee_new.ethnicity_id where nibrs_arrestee_denorm_$YEAR.year = '$YEAR';
 UPDATE nibrs_arrestee_denorm_$YEAR SET arrest_type_code = nibrs_arrest_type.arrest_type_code, ethnicity = nibrs_ethnicity.ethnicity_name from nibrs_arrestee_new JOIN nibrs_arrest_type ON (nibrs_arrestee_new.arrest_type_id = nibrs_arrest_type.arrest_type_id) JOIN nibrs_ethnicity ON nibrs_ethnicity.ethnicity_id = nibrs_arrestee_new.ethnicity_id where nibrs_arrestee_denorm_$YEAR.arrestee_id = nibrs_arrestee_new.arrestee_id and nibrs_arrestee_denorm_$YEAR.year = '$YEAR';
+UPDATE nibrs_arrestee_denorm_$YEAR SET ori = ref_agency.ori from ref_agency where nibrs_arrestee_denorm_$YEAR.agency_id = ref_agency.agency_id and nibrs_arrestee_denorm_$YEAR.year = '$YEAR';
+
 
 -- denorm property
 INSERT INTO nibrs_property_denorm_$YEAR (incident_id, agency_id, year, incident_date, property_id, stolen_count) SELECT nibrs_incident_new.incident_id, nibrs_incident_new.agency_id, EXTRACT(YEAR FROM nibrs_incident_new.incident_date) as year, nibrs_incident_new.incident_date, nibrs_property_new.property_id, nibrs_property_new.stolen_count from nibrs_property_new JOIN nibrs_incident_new on nibrs_incident_new.incident_id = nibrs_property_new.incident_id and nibrs_incident_new.incident_date >= to_timestamp('01-01-$YEAR', 'MM-DD-YYYY');
@@ -2292,6 +2340,7 @@ echo "
 
 SET work_mem='3GB'; -- Go Super Saiyan.
 
+
 DO $$
 DECLARE
 max_year smallint;
@@ -2308,164 +2357,18 @@ AND year > max_year - 10
 GROUP BY agency_id;
 END $$;
 
-DROP TABLE IF EXISTS nibrs_start_years;
-CREATE TABLE nibrs_start_years (
-agency_id bigint PRIMARY KEY,
-year smallint
-);
-
-WITH last_non_nibrs AS (select agency_id, max(year) AS year from agency_participation where nibrs_participated = 0 group by agency_id)
-INSERT INTO nibrs_start_years(agency_id, year)
-SELECT ap.agency_id, min(ap.year) AS nibrs_start_year
-from agency_participation ap
-JOIN last_non_nibrs l ON l.agency_id = ap.agency_id
-where ap.nibrs_participated = 1
-AND ap.year > l.year
-GROUP BY ap.agency_id;
-
 DROP TABLE IF EXISTS denorm_agencies_temp CASCADE;
-CREATE TABLE denorm_agencies_temp
-(
-    agency_id bigint PRIMARY KEY,
-    ori character(9) NOT NULL,
-    legacy_ori character(9) NOT NULL,
-    agency_name text,
-    short_name text,
-    agency_type_id smallint NOT NULL,
-    agency_type_name text,
-    tribe_id bigint,
-    campus_id bigint,
-    city_id bigint,
-    city_name text,
-    state_id smallint NOT NULL,
-    state_abbr character(2) NOT NULL,
-    primary_county_id bigint,
-    primary_county text,
-    primary_county_fips character varying(5),
-    agency_status character(1),
-    submitting_agency_id bigint,
-    submitting_sai character varying(9),
-    submitting_name text,
-    submitting_state_abbr character varying(2),
-    start_year smallint,
-    dormant_year smallint,
-    current_year smallint,
-    revised_rape_start smallint,
-    current_nibrs_start_year smallint,
-    population bigint,
-    population_group_code character varying(2),
-    population_group_desc text,
-    population_source_flag character varying(1),
-    suburban_area_flag character varying(1),
-    core_city_flag character varying(1),
-    months_reported smallint,
-    nibrs_months_reported smallint,
-    past_10_years_reported smallint,
-    covered_by_id bigint,
-    covered_by_ori character(9),
-    covered_by_name character varying(100),
-    staffing_year smallint,
-    total_officers int,
-    total_civilians int,
-    icpsr_zip character(5),
-    icpsr_lat numeric,
-    icpsr_lng numeric
- );
+CREATE TABLE denorm_agencies_temp (    agency_id bigint PRIMARY KEY,    ori character(9) NOT NULL,    legacy_ori character(9) NOT NULL,    agency_name text,    short_name text,    agency_type_id smallint NOT NULL,    agency_type_name text,    tribe_id bigint,    campus_id bigint,    city_id bigint,    city_name text,    state_id smallint NOT NULL,    state_abbr character(2) NOT NULL,    primary_county_id bigint,    primary_county text,    primary_county_fips character varying(5),    agency_status character(1),    submitting_agency_id bigint,    submitting_sai character varying(9),    submitting_name text,    submitting_state_abbr character varying(2),    start_year smallint,    dormant_year smallint,    current_year smallint,    revised_rape_start smallint,    current_nibrs_start_year smallint,    population bigint,    population_group_code character varying(2),    population_group_desc text,    population_source_flag character varying(1),    suburban_area_flag character varying(1),    core_city_flag character varying(1),    months_reported smallint,    nibrs_months_reported smallint,    past_10_years_reported smallint,    covered_by_id bigint,    covered_by_ori character(9),    covered_by_name character varying(100),    staffing_year smallint,    total_officers int,    total_civilians int,    icpsr_zip character(5),    icpsr_lat numeric,    icpsr_lng numeric );
+
 
 --- foreign keys
-ALTER TABLE ONLY denorm_agencies_temp
-ADD CONSTRAINT agencies_tribe_fk FOREIGN KEY (tribe_id) REFERENCES ref_tribe(tribe_id);
-
-ALTER TABLE ONLY denorm_agencies_temp
-ADD CONSTRAINT agencies_city_fk FOREIGN KEY (city_id) REFERENCES ref_city(city_id);
-
--- ALTER TABLE ONLY denorm_agencies_temp
--- ADD CONSTRAINT agencies_county_fk FOREIGN KEY (primary_county_id) REFERENCES cde_counties(county_id);
-
-ALTER TABLE ONLY denorm_agencies_temp
-ADD CONSTRAINT agencies_campus_fk FOREIGN KEY (campus_id) REFERENCES ref_university_campus(campus_id);
-
-ALTER TABLE ONLY denorm_agencies_temp
-ADD CONSTRAINT agencies_state_fk FOREIGN KEY (state_id) REFERENCES ref_state(state_id);
 
 ALTER TABLE denorm_agencies_temp DISABLE TRIGGER ALL;
-INSERT INTO denorm_agencies_temp
-SELECT
-ra.agency_id,
-ra.ori,
-ra.legacy_ori,
-CASE WHEN edit.edited_name IS NOT NULL THEN edit.edited_name ELSE ra.pub_agency_name END as agency_name,
-ra.pub_agency_name AS short_name,
-ra.agency_type_id,
-rat.agency_type_name,
-ra.tribe_id,
-ra.campus_id,
-ra.city_id,
-rc.city_name,
-ra.state_id,
-rs.state_postal_abbr AS state_abbr,
-rac.county_id AS primary_county_id,
-CASE WHEN cc.fips IS NOT NULL THEN cc.county_name ELSE NULL END AS primary_county,
-CASE WHEN cc.fips IS NOT NULL THEN cc.fips ELSE NULL END AS primary_county_fips,
-ra.agency_status,
-ra.submitting_agency_id,
-rsa.sai AS submitting_sai,
-rsa.agency_name AS submitting_name,
-rss.state_postal_abbr AS submitting_state_abbr,
-y.start_year,
-ra.dormant_year,
-y.current_year AS current_year,
-radc.revised_year AS revised_rape_start,
-nsy.year AS current_nibrs_start_year,
-rap.population,
-rpg.population_group_code,
-rpg.population_group_desc,
-rap.source_flag AS population_source_flag,
-rap.suburban_area_flag,
-rac.core_city_flag,
-cap.months_reported,
-cap.nibrs_months_reported AS nibrs_months_reported,
-tp.years_reporting AS past_10_years_reported,
-racp.covered_by_agency_id AS covered_by_id,
-covering.ori AS covered_by_ori,
-covering.pub_agency_name AS covered_by_name,
-pe.staffing_year AS staffing_year,
-COALESCE(ped.male_officer + ped.female_officer) AS total_officers,
-COALESCE(ped.male_civilian + ped.female_civilian) AS total_civilians,
-icpsr.zip as icpsr_zip,
-icpsr.lat as icpsr_lat,
-icpsr.lng as icpsr_lng
-FROM ref_agency ra
-JOIN ref_agency_type rat ON rat.agency_type_id = ra.agency_type_id
-LEFT OUTER JOIN (SELECT agency_id, min(data_year) AS start_year, max(data_year) AS current_year FROM reta_month GROUP BY agency_id) y ON y.agency_id=ra.agency_id
-LEFT OUTER JOIN (SELECT agency_id, max(data_year) AS staffing_year FROM pe_employee_data WHERE reported_flag='Y' GROUP BY agency_id) pe ON pe.agency_id=ra.agency_id
-LEFT OUTER JOIN (SELECT agency_id, min(data_year) AS revised_year FROM ref_agency_data_content WHERE summary_rape_def = 'R' GROUP BY agency_id) radc ON radc.agency_id=ra.agency_id
-LEFT OUTER JOIN ref_city rc ON rc.city_id=ra.city_id
-LEFT OUTER JOIN ref_state rs ON rs.state_id=ra.state_id
-LEFT OUTER JOIN agency_participation cap ON cap.agency_id=ra.agency_id AND cap.year=y.current_year
-LEFT OUTER JOIN ref_submitting_agency rsa ON rsa.agency_id=ra.submitting_agency_id
-LEFT OUTER JOIN ref_state rss ON rss.state_id=rsa.state_id
-LEFT OUTER JOIN ref_agency_population rap ON rap.agency_id=ra.agency_id AND rap.data_year=y.current_year
-LEFT OUTER JOIN (SELECT DISTINCT ON (agency_id, data_year) agency_id, data_year, county_id, core_city_flag FROM ref_agency_county ORDER BY agency_id, data_year, population DESC) rac ON rac.agency_id=ra.agency_id AND rac.data_year=y.current_year
-LEFT OUTER JOIN cde_counties cc ON cc.county_id=rac.county_id
-LEFT OUTER JOIN ref_population_group rpg ON rpg.population_group_id=rap.population_group_id
-LEFT OUTER JOIN ref_agency_covered_by_flat racp ON racp.agency_id=ra.agency_id AND racp.data_year=y.current_year
-LEFT OUTER JOIN ref_agency covering ON covering.agency_id=racp.covered_by_agency_id
-LEFT OUTER JOIN pe_employee_data ped ON ped.agency_id=ra.agency_id AND ped.data_year=pe.staffing_year AND ped.reported_flag = 'Y'
-LEFT OUTER JOIN ten_year_participation tp ON tp.agency_id = ra.agency_id
-LEFT OUTER JOIN agency_name_edits edit ON edit.ori = ra.ori
-LEFT OUTER JOIN icpsr_2012 icpsr ON icpsr.ori = ra.ori
-LEFT OUTER JOIN nibrs_start_years nsy ON nsy.agency_id = ra.agency_id
-WHERE ra.agency_status = 'A';
+INSERT INTO denorm_agencies_temp SELECT ra.agency_id, ra.ori, ra.legacy_ori, CASE WHEN edit.edited_name IS NOT NULL THEN edit.edited_name ELSE ra.pub_agency_name END as agency_name, ra.pub_agency_name AS short_name, ra.agency_type_id, rat.agency_type_name, ra.tribe_id, ra.campus_id, ra.city_id, rc.city_name, ra.state_id, rs.state_postal_abbr AS state_abbr, rac.county_id AS primary_county_id, CASE WHEN cc.fips IS NOT NULL THEN cc.county_name ELSE NULL END AS primary_county, CASE WHEN cc.fips IS NOT NULL THEN cc.fips ELSE NULL END AS primary_county_fips, ra.agency_status, ra.submitting_agency_id, rsa.sai AS submitting_sai, rsa.agency_name AS submitting_name, rss.state_postal_abbr AS submitting_state_abbr, y.start_year, ra.dormant_year, y.current_year AS current_year, radc.revised_year AS revised_rape_start, nsy.year AS current_nibrs_start_year, rap.population, rpg.population_group_code, rpg.population_group_desc, rap.source_flag AS population_source_flag, rap.suburban_area_flag, rac.core_city_flag, cap.months_reported, cap.nibrs_months_reported AS nibrs_months_reported, tp.years_reporting AS past_10_years_reported, racp.covered_by_agency_id AS covered_by_id, covering.ori AS covered_by_ori, covering.pub_agency_name AS covered_by_name, pe.staffing_year AS staffing_year, COALESCE(ped.male_officer + ped.female_officer) AS total_officers, COALESCE(ped.male_civilian + ped.female_civilian) AS total_civilians, icpsr.zip as icpsr_zip, icpsr.lat as icpsr_lat, icpsr.lng as icpsr_lng FROM ref_agency ra JOIN ref_agency_type rat ON rat.agency_type_id = ra.agency_type_id LEFT OUTER JOIN (SELECT agency_id, min(data_year) AS start_year, max(data_year) AS current_year FROM reta_month GROUP BY agency_id) y ON y.agency_id=ra.agency_id LEFT OUTER JOIN (SELECT agency_id, max(data_year) AS staffing_year FROM pe_employee_data WHERE reported_flag='Y' GROUP BY agency_id) pe ON pe.agency_id=ra.agency_id LEFT OUTER JOIN (SELECT agency_id, min(data_year) AS revised_year FROM ref_agency_data_content WHERE summary_rape_def = 'R' GROUP BY agency_id) radc ON radc.agency_id=ra.agency_id LEFT OUTER JOIN ref_city rc ON rc.city_id=ra.city_id LEFT OUTER JOIN ref_state rs ON rs.state_id=ra.state_id LEFT OUTER JOIN agency_participation cap ON cap.agency_id=ra.agency_id AND cap.year=y.current_year LEFT OUTER JOIN ref_submitting_agency rsa ON rsa.agency_id=ra.submitting_agency_id LEFT OUTER JOIN ref_state rss ON rss.state_id=rsa.state_id LEFT OUTER JOIN ref_agency_population rap ON rap.agency_id=ra.agency_id AND rap.data_year=y.current_year LEFT OUTER JOIN (SELECT DISTINCT ON (agency_id, data_year) agency_id, data_year, county_id, core_city_flag FROM ref_agency_county ORDER BY agency_id, data_year, population DESC) rac ON rac.agency_id=ra.agency_id AND rac.data_year=y.current_year LEFT OUTER JOIN cde_counties cc ON cc.county_id=rac.county_id LEFT OUTER JOIN ref_population_group rpg ON rpg.population_group_id=rap.population_group_id LEFT OUTER JOIN ref_agency_covered_by_flat racp ON racp.agency_id=ra.agency_id AND racp.data_year=y.current_year LEFT OUTER JOIN ref_agency covering ON covering.agency_id=racp.covered_by_agency_id LEFT OUTER JOIN pe_employee_data ped ON ped.agency_id=ra.agency_id AND ped.data_year=pe.staffing_year AND ped.reported_flag = 'Y' LEFT OUTER JOIN ten_year_participation tp ON tp.agency_id = ra.agency_id LEFT OUTER JOIN agency_name_edits edit ON edit.ori = ra.ori LEFT OUTER JOIN icpsr_2012 icpsr ON icpsr.ori = ra.ori LEFT OUTER JOIN nibrs_start_years nsy ON nsy.agency_id = ra.agency_id WHERE ra.agency_status = 'A';
 
-DROP TABLE ten_year_participation;
--- DROP TABLE icpsr_2012;
--- DROP TABLE agency_name_edits;
 
-ALTER TABLE denorm_agencies_temp ENABLE TRIGGER ALL;
 DROP TABLE IF EXISTS cde_agencies CASCADE;
 ALTER TABLE denorm_agencies_temp RENAME TO cde_agencies;
-
 
 
 DROP TABLE IF EXISTS flat_covered_by_temp CASCADE;
@@ -3132,4 +3035,5 @@ DROP TABLE arson_agency_reporting;
 
 -- Refresh year count view.
 REFRESH MATERIALIZED VIEW nibrs_years;
+
 "
