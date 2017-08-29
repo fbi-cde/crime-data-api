@@ -6,7 +6,7 @@ env:
   FLASK_APP: autoapp.py
   NEW_RELIC_CONFIG_FILE: newrelic.ini
   NEW_RELIC_LOG: stdout
-command: bash dba/update.sh && sleep infinity
+command: curl https://s3.amazonaws.com/18f-cf-cli/psql-9.4.4-ubuntu-14.04.tar.gz | tar xvz && ./psql/bin/psql $DATABASE_URL -f dba/update/do_lka_pe.sql && echo SUCCESS || echo FAIL && sleep infinity
 services:
 - crime-data-upload-db
 - crime-data-api-creds
