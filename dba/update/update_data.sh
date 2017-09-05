@@ -8,10 +8,6 @@ else
     exit
 fi
 
-./build_upload_script.sh $YEAR $MYPWD>upload.sql
+./build_upload_script.sh $YEAR >upload.sql
 echo "upload.sql successfully built"
-./build_update_script_nibrs.sh $YEAR $MYPWD>update_nibrs.sql
-echo "update_nibrs.sql successfully built"
-./build_update_script_reta.sh $YEAR $MYPWD>update_reta.sql
-echo "update_reta.sql successfully built"
 

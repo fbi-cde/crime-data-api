@@ -696,6 +696,5 @@ GROUP BY GROUPING SETS(
 DROP TABLE arson_agency_reporting;
 
 
--- Refresh year count view.
-REFRESH MATERIALIZED VIEW nibrs_years;
+
 "

@@ -71,20 +71,6 @@ GROUP BY GROUPING SETS (
 );
 
 
-drop materialized view IF EXISTS hc_counts_states;
-ALTER MATERIALIZED VIEW hc_counts_states_new RENAME TO hc_counts_states;
-drop materialized view IF EXISTS offense_hc_counts_ori;
-ALTER MATERIALIZED VIEW offense_hc_counts_ori_new RENAME TO offense_hc_counts_ori;
-drop materialized view IF EXISTS offense_hc_counts_states;
-ALTER MATERIALIZED VIEW offense_hc_counts_states_new RENAME TO offense_hc_counts_states;
-drop materialized view IF EXISTS hc_counts_ori;
-ALTER MATERIALIZED VIEW hc_counts_ori_new RENAME TO hc_counts_ori;
-
-
-CREATE INDEX hc_counts_state_id_year_idx ON hc_counts_states (state_id, year);
-CREATE INDEX offense_hc_counts_state_id_year_idx ON offense_hc_counts_states (state_id, year);
-CREATE INDEX hc_counts_ori_year_idx ON hc_counts_ori (ori, year);
-CREATE INDEX offense_hc_counts_ori_year_idx ON offense_hc_counts_ori (ori, year);
 
 
 ---------
@@ -222,23 +208,6 @@ GROUP BY GROUPING SETS (
     (year, ori, offense_name, victim_type_name)
 );
 
-
-drop materialized view  IF EXISTS ct_counts_ori;
-ALTER materialized view ct_counts_ori_new RENAME TO ct_counts_ori; 
-drop materialized view  IF EXISTS ct_counts_states;
-ALTER materialized view ct_counts_states_new RENAME TO ct_counts_states; 
-drop materialized view  IF EXISTS offense_ct_counts_states;
-ALTER materialized view offense_ct_counts_states_new RENAME TO offense_ct_counts_states; 
-drop materialized view  IF EXISTS offense_ct_counts_ori;
-ALTER materialized view offense_ct_counts_ori_new RENAME TO offense_ct_counts_ori; 
-
-CREATE INDEX ct_counts_state_id_idx ON ct_counts_states (state_id, year);
-CREATE INDEX offense_ct_counts_state_id_idx ON offense_ct_counts_states (state_id, year);
-CREATE INDEX ct_counts_ori_idx ON ct_counts_ori (ori, year);
-CREATE INDEX offense_ct_counts_ori_idx ON offense_ct_counts_ori (ori, year);
-
-
-
 --------------
 -- OFFENDERS
 --------------
@@ -289,8 +258,8 @@ BEGIN
 END
 $do$;
 
-drop materialized view  IF EXISTS offender_counts_states;
-create materialized view offender_counts_states as 
+drop materialized view  IF EXISTS offender_counts_states_temp;
+create materialized view offender_counts_states_temp as 
     SELECT *, $YEAR as year FROM offender_counts_$YEAR WHERE ori IS NULL UNION 
     SELECT *, 2015 as year FROM offender_counts_2015 WHERE ori IS NULL UNION 
     SELECT *, 2014 as year FROM offender_counts_2014 WHERE ori IS NULL UNION 
@@ -318,8 +287,8 @@ create materialized view offender_counts_states as
     SELECT *, 1992 as year FROM offender_counts_1992 WHERE ori IS NULL  UNION
     SELECT *, 1991 as year FROM offender_counts_1991 WHERE ori IS NULL ;
 
-drop materialized view  IF EXISTS offender_counts_ori;
-create materialized view offender_counts_ori as 
+drop materialized view  IF EXISTS offender_counts_ori_temp;
+create materialized view offender_counts_ori_temp as 
     SELECT *, $YEAR as year FROM offender_counts_$YEAR WHERE ori IS NOT NULL UNION 
     SELECT *, 2015 as year FROM offender_counts_2015 WHERE ori IS NOT NULL UNION 
     SELECT *, 2014 as year FROM offender_counts_2014 WHERE ori IS NOT NULL UNION 
@@ -389,8 +358,8 @@ BEGIN
 END
 $do$;
 
-drop materialized view IF EXISTS  offense_offender_counts_states;
-create materialized view offense_offender_counts_states as 
+drop materialized view IF EXISTS  offense_offender_counts_states_temp;
+create materialized view offense_offender_counts_states_temp as 
     SELECT *,$YEAR as year FROM offense_offender_counts_$YEAR WHERE ori IS NULL  UNION 
     SELECT *,2015 as year FROM offense_offender_counts_2015 WHERE ori IS NULL  UNION 
     SELECT *,2014 as year FROM offense_offender_counts_2014 WHERE ori IS NULL  UNION 
@@ -419,8 +388,8 @@ create materialized view offense_offender_counts_states as
     SELECT *,1991 as year FROM offense_offender_counts_1991 WHERE ori IS NULL ;
 
 
-drop materialized view IF EXISTS  offense_offender_counts_ori;
-create materialized view offense_offender_counts_ori as 
+drop materialized view IF EXISTS  offense_offender_counts_ori_temp;
+create materialized view offense_offender_counts_ori_temp as 
     SELECT *,$YEAR as year FROM offense_offender_counts_$YEAR WHERE ori IS NOT NULL  UNION 
     SELECT *,2015 as year FROM offense_offender_counts_2015 WHERE ori IS NOT NULL  UNION 
     SELECT *,2014 as year FROM offense_offender_counts_2014 WHERE ori IS NOT NULL  UNION 
@@ -447,9 +416,6 @@ create materialized view offense_offender_counts_ori as
     SELECT *,1993 as year FROM offense_offender_counts_1993 WHERE ori IS NOT NULL  UNION 
     SELECT *,1992 as year FROM offense_offender_counts_1992 WHERE ori IS NOT NULL  UNION
     SELECT *,1991 as year FROM offense_offender_counts_1991 WHERE ori IS NOT NULL ;
-
-CREATE INDEX CONCURRENTLY offense_offender_counts_state_id_idx ON offense_offender_counts_states (state_id, year, offense_name);
-CREATE INDEX CONCURRENTLY offense_offender_counts_ori_idx ON offense_offender_counts_ori (ori, year, offense_name);
 
 --------------
 -- VICTIMS
@@ -870,58 +836,5 @@ create materialized view offense_offense_counts_ori_temp as
     SELECT *,1993 as year  FROM offense_offense_counts_1993 WHERE ori IS NOT NULL UNION 
     SELECT *,1992 as year  FROM offense_offense_counts_1992 WHERE ori IS NOT NULL UNION 
     SELECT *,1991 as year  FROM offense_offense_counts_1991 WHERE ori IS NOT NULL;
-
--- Rename/replace views.
-
-drop materialized view IF EXISTS offender_counts_states CASCADE;
-ALTER MATERIALIZED VIEW offender_counts_states_temp RENAME TO offender_counts_states;
-CREATE INDEX CONCURRENTLY offender_counts_state_year_id_idx ON offender_counts_states (state_id, year);
-
-drop materialized view IF EXISTS offender_counts_ori CASCADE;
-ALTER MATERIALIZED VIEW offender_counts_ori_temp RENAME TO offender_counts_ori;
-CREATE INDEX CONCURRENTLY offender_counts_ori_year_idx ON offender_counts_ori (ori, year);
-
-
-drop materialized view  IF EXISTS offense_offender_counts_states;
-ALTER MATERIALIZED VIEW offense_offender_counts_states_temp RENAME TO offense_offender_counts_states;
-CREATE INDEX CONCURRENTLY offense_offender_counts_state_id_idx ON offense_offender_counts_states (state_id, year, offense_name);
-
-drop materialized view  IF EXISTS offense_offender_counts_ori;
-ALTER MATERIALIZED VIEW offense_offender_counts_ori_temp RENAME TO offense_offender_counts_ori;
-CREATE INDEX CONCURRENTLY offense_offender_counts_ori_idx ON offense_offender_counts_ori (ori, year, offense_name);
-
-drop materialized view IF EXISTS victim_counts_states CASCADE;
-ALTER MATERIALIZED VIEW victim_counts_states_temp RENAME TO victim_counts_states;
-CREATE INDEX CONCURRENTLY victim_counts_state_year_id_idx ON victim_counts_states (state_id, year);
-
-drop materialized view IF EXISTS victim_counts_ori CASCADE;
-ALTER MATERIALIZED VIEW victim_counts_ori_temp RENAME TO victim_counts_ori;
-CREATE INDEX CONCURRENTLY victim_counts_ori_year_idx ON victim_counts_ori (ori, year);
-
-drop materialized view  IF EXISTS offense_victim_counts_states;
-ALTER MATERIALIZED VIEW offense_victim_counts_states_temp RENAME TO offense_victim_counts_states;
-CREATE INDEX CONCURRENTLY offense_victim_counts_state_id_idx ON offense_victim_counts_states (state_id, year, offense_name);
-
-drop materialized view  IF EXISTS offense_victim_counts_ori;
-ALTER MATERIALIZED VIEW offense_victim_counts_ori_temp RENAME TO offense_victim_counts_ori;
-CREATE INDEX CONCURRENTLY offense_victim_counts_ori_idx ON offense_victim_counts_ori (ori, year, offense_name);
-
-drop materialized view  IF EXISTS offense_counts_states CASCADE;
-ALTER MATERIALIZED VIEW offense_counts_states_temp RENAME TO offense_counts_states;
-CREATE INDEX CONCURRENTLY offense_counts_state_year_id_idx ON offense_counts_states (state_id, year);
-
-drop materialized view  IF EXISTS offense_counts_ori CASCADE;
-ALTER MATERIALIZED VIEW offense_counts_ori_temp RENAME TO offense_counts_ori;
-CREATE INDEX CONCURRENTLY offense_counts_ori_year_idx ON offense_counts_ori (ori, year);
-
-drop materialized view IF EXISTS  offense_offense_counts_states;
-ALTER MATERIALIZED VIEW offense_offense_counts_states_temp RENAME TO offense_offense_counts_states;
-CREATE INDEX CONCURRENTLY offense_offense_counts_state_id_idx ON offense_counts_states (state_id, year, offense_name);
-
-drop materialized view IF EXISTS  offense_offense_counts_ori;
-ALTER MATERIALIZED VIEW offense_offense_counts_ori_temp RENAME TO offense_offense_counts_ori;
-CREATE INDEX CONCURRENTLY offense_offense_counts_ori_idx ON offense_counts_ori (ori, year, offense_name);
-
--- DONE.
 
 "
