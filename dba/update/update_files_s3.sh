@@ -43,13 +43,18 @@ done
 SET work_mem='3GB';
 \copy (select ref_state.state_postal_abbr, LM.DATA_YEAR, sum(LM.LEOKA_FELONY) as felony, sum(LM.LEOKA_ACCIDENT) as accident from LKASUM_MONTH LM JOIN ref_agency RA ON RA.agency_id = LM.agency_id join ref_state on (RA.state_id = ref_state.state_id) GROUP BY data_year, ref_state.state_postal_abbr ) To 'lka_sum_full.csv' with CSV DELIMITER ',' HEADER;
 
-\copy (SELECT q.state_postal_abbr as state_postal_abbr, q.data_year as data_year,q.officer_count as officer_count, round( ( (q.officer_count / population) * 1000)::numeric, 2) as officer_rate_per_1000,q.civilian_count as civilian_count, round( ( (q.civilian_count / population) * 1000)::numeric, 2) as civilian_rate_per_1000, population from (SELECT * from (SELECT state_postal_abbr from ref_state where ref_agency.state_id = ref_state.state_id limit 1) as state_postal_abbr,
+CREATE TEMP TABLE pe_temp AS SELECT qe.state_postal_abbr as state_postal_abbr, qe.data_year as data_year, qe.officer_count as officer_count, round( ( (qe.officer_count / population) * 1000)::numeric, 2) as officer_rate_per_1000,
+     qe.civilian_count as civilian_count, round( ( (qe.civilian_count / population) * 1000)::numeric, 2) as civilian_rate_per_1000,
+     population from (SELECT
+        (SELECT state_postal_abbr from ref_state where ref_agency.state_id = ref_state.state_id limit 1) as state_postal_abbr,
         (SELECT population from ref_state_population where ref_agency.state_id = ref_state_population.state_id and pe_employee_data.data_year = ref_state_population.data_year limit 1) as population,
         pe_employee_data.data_year,
         SUM(COALESCE(male_officer) + COALESCE(female_officer)) as officer_count,
         SUM( COALESCE(female_civilian) + COALESCE(male_civilian) ) as civilian_count
         from pe_employee_data JOIN ref_agency ON (pe_employee_data.agency_id = ref_agency.agency_id
-    ) GROUP BY ref_agency.state_id, pe_employee_data.data_year) q where q.population > 0 and q.data_year > 1970 order by q.data_year, q.state_postal_abbr desc) To 'pe_employee_data.csv' With CSV DELIMITER ',' HEADER;
+    ) GROUP BY ref_agency.state_id, pe_employee_data.data_year) qe where qe.population > 0 and qe.data_year > 1970 order by qe.data_year, qe.state_postal_abbr desc;
+
+\copy ( SELECT * from pe_temp ) To 'pe_employee_data.csv' With CSV DELIMITER ',' HEADER;
 
 \copy (SELECT ref_state.state_postal_abbr, year, prop_desc_name as property_type, stolen_value, recovered_value from ct_counts JOIN ref_state ON (ref_state.state_id = ct_counts.state_id) WHERE ct_counts.state_id IS NOT NULL and ori IS NULL) To 'cargo_theft.csv' with CSV DELIMITER ',' HEADER;
 
@@ -57,7 +62,7 @@ SET work_mem='3GB';
 
 \copy (SELECT year, rs.state_name, t.state_abbr, locality, population, violent_crime, homicide, rape_legacy, rape_revised, robbery, aggravated_assault, property_crime, burglary, larceny, motor_vehicle_theft, arson, caveats from reta_territories t JOIN ref_state rs ON rs.state_postal_abbr=t.state_abbr order by state_name, locality, year) To 'territories.csv' with CSV DELIMITER ',' HEADER;
 
-\copy (SELECT ori, legacy_ori, agency_name, agency_type_id, agency_type_name, city_name, state_abbr, primary_county, primary_county_fips, submitting_sai, submitting_name, submitting_state_abbr, start_year, dormant_year, current_year, revised_rape_state, population, population_group_code, population_group_desc, suburban_area_flag, core_city_flag, months_reported, nibrs_months_reported, reported_past_10_years, covered_by_ori, covered_by_name, staffing_year, total_officers, total_civilians from cde_agencies order by state_abbr, agency_name) To 'agencies.csv' with CSV DELIMITER ',' HEADER;
+\copy (SELECT ori, legacy_ori, agency_name, agency_type_id, agency_type_name, city_name, state_abbr, primary_county, primary_county_fips, submitting_sai, submitting_name, submitting_state_abbr, start_year, dormant_year, current_year, revised_rape_start, population, population_group_code, population_group_desc, suburban_area_flag, core_city_flag, months_reported, nibrs_months_reported, past_10_years_reported, covered_by_ori, covered_by_name, staffing_year, total_officers, total_civilians from cde_agencies order by state_abbr, agency_name) To 'agencies.csv' with CSV DELIMITER ',' HEADER;
 
 \copy (SELECT year, state_name, state_postal_abbr, population, agencies, round((CAST(months_reported AS numeric)/agencies), 2) avg_months_reported, sex_acts, sex_acts_cleared, sex_acts_juvenile_cleared, servitude, servitude_cleared, servitude_juvenile_cleared from ht_summary
        JOIN ref_state ON ref_state.state_postal_abbr=ht_summary.state_abbr
@@ -85,6 +90,7 @@ aws s3 cp asr_national_juvenile.csv s3://${BUCKET_NAME}/arrests_national_juvenil
 aws s3 cp asr_national_adults.csv s3://${BUCKET_NAME}/arrests_national_adults.csv
 aws s3 cp asr_national_drug.csv s3://${BUCKET_NAME}/arrests_national_drug.csv
 aws s3 cp arrests_national.csv s3://${BUCKET_NAME}/arrests_national.csv
+
 
 for i in "${arr_years[@]}"
     aws s3 cp --recursive nibrs-$i/ s3://${BUCKET_NAME}/$i
