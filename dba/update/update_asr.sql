@@ -1,5 +1,4 @@
 
-
 -- Only include agencies that have reported ASR for 12 months in the ASR crosstabs
 DROP TABLE IF EXISTS asr_reporting;
 CREATE TABLE asr_reporting (
