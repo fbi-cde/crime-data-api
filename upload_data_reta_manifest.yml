@@ -1,0 +1,12 @@
+applications:
+- name: task-runner-update
+  memory: 1G
+  buildpack: python_buildpack
+env:
+  FLASK_APP: autoapp.py
+  NEW_RELIC_CONFIG_FILE: newrelic.ini
+  NEW_RELIC_LOG: stdout
+command: cd dba/update/data && tar xvf reta_dump.tar.gz && cd .. && chmod u+x update_data.sh && bash ./update_data.sh 2016 $PWD && curl https://s3.amazonaws.com/18f-cf-cli/psql-9.4.4-ubuntu-14.04.tar.gz | tar xvz && ./psql/bin/psql $DATABASE_URL -f upload_reta.sql && echo SUCCESS || echo FAIL && sleep infinity
+services:
+- crime-data-upload-db
+- crime-data-api-creds
