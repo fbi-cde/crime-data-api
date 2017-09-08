@@ -1,9 +1,8 @@
-
 MYPWD="$(pwd)/data"
 YEAR=$1
 
-echo 
-"--------------------------
+echo """
+--------------------------
 -- 
 -- 
 --  UPLOAD NIBRS TABLES.
@@ -18,7 +17,7 @@ CREATE TABLE nibrs_incident_temp (
     agency_id text,
     incident_id text,
     nibrs_month_id text,
-    incident_numb` text,
+    incident_numb text,
     cargo_theft_flag text,
     submission_date text,
     incident_date text,
@@ -216,4 +215,4 @@ CREATE TABLE nibrs_offender_new (
     age_range_low_num smallint,
     age_range_high_num smallint
 );
-"
+"""
