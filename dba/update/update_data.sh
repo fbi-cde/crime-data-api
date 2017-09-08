@@ -8,10 +8,10 @@ else
     exit
 fi
 
-./build_upload_script_nibrs_1.sh $YEAR 1 >upload_nibrs_1.sql
+./build_upload_script_nibrs_1.sh $YEAR >upload_nibrs_1.sql
 echo "upload_nibrs_1.sql successfully built"
 
-./build_upload_script_nibrs_2.sh $YEAR 2 >upload_nibrs_2.sql
+./build_upload_script_nibrs_2.sh $YEAR >upload_nibrs_2.sql
 echo "upload_nibrs_2.sql successfully built"
 
 ./build_upload_script_reta.sh $YEAR >upload_reta.sql
