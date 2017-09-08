@@ -4,6 +4,8 @@ This is the process to update the yearly UCR data for the FBI Crime Data Explore
     # See crime-data-api/dba/update/data/samples for example template files.  
     # Each one MUST be present inside of dump.tar.gz
     # + The number of columns, and column order should match.  
+
+(*) cd ~/crime-data-api  # Must be in root - application directory when running cf push.
    
 (2) Modify upload_data_manifest.yml, update_nibrs_manifest.yml, update_reta_manifest.yml  -> replace year with current update year. Ie. 2016  
 (3) Run: cf push -f ~/crime-data-api/upload_data_manifest.yml --health-check-type none --no-route   
