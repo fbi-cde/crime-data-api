@@ -8,35 +8,38 @@ This is the process to update the yearly UCR data for the FBI Crime Data Explore
 (*) cd ~/crime-data-api  # Must be in root - application directory when running cf push.
    
 (2) Modify upload_data_nibrs_manifest.yml, upload_data_reta_manifest.yml, upload_data_other_manifest.yml, update_nibrs_manifest.yml, update_reta_manifest.yml  -> replace year with current update year. Ie. 2016  
-(3) Run: cf push -f ~/crime-data-api/upload_data_nibrs_manifest.yml -k 2G --health-check-type none --no-route   
+(3) Run: cf push -f ~/crime-data-api/upload_data_nibrs_manifest_2.yml -k 2G --health-check-type none --no-route   
     # Monitor the logs with cf logs task-runner-update --recent  
   
-(4) Run: cf push -f ~/crime-data-api/upload_data_reta_manifest.yml -k 2G --health-check-type none --no-route   
+(4) Run: cf push -f ~/crime-data-api/upload_data_nibrs_manifest_1.yml -k 2G --health-check-type none --no-route   
     # Monitor the logs with cf logs task-runner-update --recent  
 
-(5) Run: cf push -f ~/crime-data-api/upload_data_other_manifest.yml -k 2G --health-check-type none --no-route   
+(5) Run: cf push -f ~/crime-data-api/upload_data_reta_manifest.yml -k 2G --health-check-type none --no-route   
+    # Monitor the logs with cf logs task-runner-update --recent  
+
+(6) Run: cf push -f ~/crime-data-api/upload_data_other_manifest.yml -k 2G --health-check-type none --no-route   
     # Monitor the logs with cf logs task-runner-update --recent  
 
 
-(6) After job is finished - Run: cf delete task-runner-update  
-(7) Run: cf push -f ~/crime-data-api/update_nibrs_manifest.yml --health-check-type none --no-route  
+(7) After job is finished - Run: cf delete task-runner-update  
+(8) Run: cf push -f ~/crime-data-api/update_nibrs_manifest.yml --health-check-type none --no-route  
     # Monitor the logs with cf logs task-runner-update --recent  
     # Wait for script to finish. Monitor output. Verify results in the database.   
   
-(8) After job is finished - Run: cf delete task-runner-update  
-(9) Run: cf push -f ~/crime-data-api/update_reta_manifest.yml --health-check-type none --no-route    
+(9) After job is finished - Run: cf delete task-runner-update  
+(10) Run: cf push -f ~/crime-data-api/update_reta_manifest.yml --health-check-type none --no-route    
     # Monitor the logs with cf logs task-runner-update --recent   
     # Wait for script to finish. Monitor output. Verify results in the database.   
   
-(10) After job is finished - Run: cf delete task-runner-update  
-(11) Run: cf push -f ~/crime-data-api/finalize_update.yml --health-check-type none --no-route    
+(11) After job is finished - Run: cf delete task-runner-update  
+(12) Run: cf push -f ~/crime-data-api/finalize_update.yml --health-check-type none --no-route    
     # Monitor the logs with cf logs task-runner-update --recent   
     # Wait for script to finish. Monitor output. Verify results in the database.   
 
 -- (After successful update) --   
   
-(12) Run: cd /crime-data-api/dba/update/ && ./update_files_s3.sh  
+(13) Run: cd /crime-data-api/dba/update/ && ./update_files_s3.sh  
     # update_files_s3.sh updates the NIBRS Incident archives, and other additional data downloads.  
     # Note: This will require cf connect-to-service, access to s3, and the aws s3 CLI utility installed locally. 
     # See: http://docs.aws.amazon.com/cli/latest/reference/s3/
-(13) Verify the data + Enable the new year in the front end application: See https://github.com/18F/crime-data-explorer/  
+(14) Verify the data + Enable the new year in the front end application: See https://github.com/18F/crime-data-explorer/  
