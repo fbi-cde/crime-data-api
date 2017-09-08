@@ -1,8 +1,8 @@
 This is the process to update the yearly UCR data for the FBI Crime Data Explorer.  
   
-(1) Place all new files into crime-data-api/dba/update/data/   
+(1) Put data dump.tar.gz into crime-data-api/dba/update/data/ 
     # See crime-data-api/dba/update/data/samples for example template files.  
-    # Each one MUST be present.
+    # Each one MUST be present inside of dump.tar.gz
     # + The number of columns, and column order should match.  
    
 (2) Modify upload_data_manifest.yml, update_nibrs_manifest.yml, update_reta_manifest.yml  -> replace year with current update year. Ie. 2016  

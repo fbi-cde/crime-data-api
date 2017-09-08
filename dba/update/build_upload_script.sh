@@ -53,17 +53,11 @@ CREATE TABLE ref_agency_temp (
     dormant_year text,
     population_family_id text,
     field_office_id text,
-    extra1 text,
-    extra2 text,
-    extra3 text,
-    extra4 text,
-    extra5 text,
-    extra6 text,
-    extra7 text
+    extra1 text
 );
 
 -- Load CSV data into shell.
-\COPY ref_agency_temp (agency_id, ori, legacy_ori, ucr_agency_name, ncic_agency_name, pub_agency_name, agency_type_id, special_mailing_group, special_mailing_address, tribe_id, city_id, state_id, campus_id, agency_status, judicial_dist_code, submitting_agency_id, fid_code, department_id, added_date, change_timestamp, change_user, legacy_notify_agency, dormant_year, population_family_id, field_office_id, extra1, extra2, extra3, extra4, extra5, extra6, extra7) FROM '$MYPWD/REF_A.csv' WITH DELIMITER '|';
+\COPY ref_agency_temp (agency_id, ori, legacy_ori, ucr_agency_name, ncic_agency_name, pub_agency_name, agency_type_id, special_mailing_group, special_mailing_address, tribe_id, city_id, state_id, campus_id, agency_status, judicial_dist_code, submitting_agency_id, fid_code, department_id, added_date, change_timestamp, change_user, legacy_notify_agency, dormant_year, population_family_id, field_office_id, extra1) FROM '$MYPWD/REF_A.csv' WITH DELIMITER '|';
 
 -- Load/convert data from shell into 
 DROP TABLE IF EXISTS ref_agency_replace;
