@@ -17,7 +17,7 @@ CREATE TABLE nibrs_incident_temp (
     agency_id text,
     incident_id text,
     nibrs_month_id text,
-    incident_numb text,
+    incident_number text,
     cargo_theft_flag text,
     submission_date text,
     incident_date text,
