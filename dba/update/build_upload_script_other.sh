@@ -654,4 +654,72 @@ CREATE TABLE arson_month_by_subcat_temp (
 
 \COPY arson_month_by_subcat_temp (arson_month_id, subcategory_id, reported_count, reported_status, unfounded_count, unfounded_status, actual_count, actual_status, cleared_count, cleared_status, juvenile_cleared_count, juvenile_cleared_status, uninhabited_count, uninhabited_status, est_damage_value, est_damage_value_status) FROM '$MYPWD/ArsonMOS.csv' WITH DELIMITER ',';
 
+------------------------------
+--
+-- Additional datasets (leoka, pe)
+--
+------------------------------
+
+-- leoka data
+DROP TABLE IF EXISTS lkasum_month_temp;
+CREATE TABLE lkasum_month_temp (
+    lkasum_month_id text,
+    agency_id text,
+    data_year text,
+    month_num text,
+    data_home text,
+    source_flag text,
+    report_date text, 
+    prepared_date text,
+    reported_flag text,
+    ddocname text,
+    leoka_felony text,
+    leoka_accident text,
+    orig_format text,
+    update_flag text,
+    did text,
+    ff_line_number text,
+    extra1 text,
+    extra2 text
+);
+
+\COPY lkasum_month_temp (lkasum_month_id, agency_id, data_year, month_num, data_home, source_flag, report_date, prepared_date, reported_flag, ddocname, leoka_felony, leoka_accident, orig_format, update_flag, did, ff_line_number, extra1, extra2) FROM 'dba/update/data/LKAM.csv' WITH DELIMITER ',';
+
+INSERT INTO lkasum_month (SELECT 
+    convert_to_integer(lkasum_month_id), 
+    convert_to_integer(agency_id), 
+    convert_to_integer(data_year), 
+    convert_to_integer(month_num), 
+    data_home, 
+    source_flag, 
+    to_timestamp_ucr(report_date), to_timestamp_ucr(prepared_date), reported_flag, ddocname, convert_to_integer(leoka_felony), convert_to_integer(leoka_accident), orig_format, update_flag, convert_to_integer(did), convert_to_integer(ff_line_number) FROM lkasum_month_temp);
+
+-- PE data
+DROP TABLE IF EXISTS pe_employee_data_temp;
+CREATE TABLE pe_employee_data_temp (
+    agency_id text,--bigint NOT NULL,
+    data_year text,--smallint NOT NULL,
+    reported_flag text,
+    male_officer text,--bigint,
+    male_civilian text,--bigint,
+    male_total text,--bigint,
+    female_officer text,--bigint,
+    female_civilian text,--bigint,
+    female_total text, --bigint,
+    officer_rate text, --bigint,
+    employee_rate text, --bigint,
+    data_home character(1),
+    ddocname character varying(100),
+    did text, --bigint,
+    ff_line_number text, --bigint,
+    orig_format character(1),
+    pe_employee_id text, --bigint NOT NULL
+    extra text
+);
+
+\COPY pe_employee_data_temp (agency_id,  data_year, reported_flag, male_officer, male_civilian, male_total, female_officer, female_civilian, female_total, officer_rate, employee_rate, data_home, ddocname, did, ff_line_number, orig_format, pe_employee_id, extra) FROM 'dba/update/data/PE.csv' WITH DELIMITER ',';
+
+INSERT INTO pe_employee_data (SELECT convert_to_integer(agency_id),  convert_to_integer(data_year), reported_flag, convert_to_integer(male_officer), convert_to_integer(male_civilian), convert_to_integer(male_total), convert_to_integer(female_officer), convert_to_integer(female_civilian), convert_to_integer(female_total), convert_to_integer(officer_rate), convert_to_integer(employee_rate), data_home, ddocname, convert_to_integer(did), convert_to_integer(ff_line_number), orig_format, convert_to_integer(pe_employee_id) FROM pe_employee_data_temp);
+
+
 "
