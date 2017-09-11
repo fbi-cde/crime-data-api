@@ -13,8 +13,6 @@ echo "-- Process.
 -- Start data upload
 --------------------------
 
-\set ON_ERROR_STOP on;
-
 ----------------------
 ---
 ---
