@@ -59,7 +59,7 @@ CREATE TABLE reta_month_offense_subcat_temp (
 );
 
 -- RETA_MONTH_ID   OFFENSE_SUBCAT_ID   REPORTED_COUNT  REPORTED_STATUS UNFOUNDED_COUNT UNFOUNDED_STATUS    ACTUAL_COUNT    ACTUAL_STATUS   CLEARED_COUNT   CLEARED_STATUS  JUVENILE_CLEARED_COUNT  JUVENILE_CLEARED_STATUS
-\COPY reta_month_offense_subcat_temp (reta_month_id, offense_subcat_id, reported_count, reported_status, unfounded_count, unfounded_status, actual_count, actual_status, cleared_count, cleared_status, juvenile_cleared_count, juvenile_cleared_status) FROM '$MYPWD/RetAMOS.csv' WITH DELIMITER ',';
+\COPY reta_month_offense_subcat_temp (reta_month_id, offense_subcat_id, reported_count, reported_status, unfounded_count, unfounded_status, actual_count, actual_status, cleared_count, cleared_status, juvenile_cleared_count, juvenile_cleared_status) FROM '$MYPWD/RETAMOS.csv' WITH DELIMITER ',';
 
 -----------------------------
 -- 
@@ -90,8 +90,6 @@ CREATE TABLE asr_month_temp (
 \COPY asr_month_temp (asr_month_id, agency_id, data_year, month_num, source_flag, reported_flag, orig_format, update_flag, ff_line_number, ddocname, did, data_home, extra) FROM '$MYPWD/ASRM.csv' WITH DELIMITER ',';
 
 
-
--- asr_offense_subcat
 DROP TABLE IF EXISTS asr_race_offense_subcat_temp;
 CREATE TABLE asr_race_offense_subcat_temp (
     asr_month_id text,
@@ -103,27 +101,13 @@ CREATE TABLE asr_race_offense_subcat_temp (
     active_flag text,
     prepared_date text,
     report_date text,
-    ff_line_number text,
-    asr_month_id_1 text,
-    agency_id text,
-    data_year text,
-    month_num text,
-    source_flag text,
-    reported_flag text,
-    orig_format text,
-    update_flag text,
-    ff_line_number_1 text,
-    ddocname text,
-    did text,
-    data_home text,
-    month_pub_status text
+    ff_line_number text
 );
 
 
-\COPY asr_race_offense_subcat_temp (asr_month_id , offense_subcat_id ,    race_id ,    juvenile_flag ,    arrest_count ,    arrest_status ,    active_flag ,    prepared_date ,    report_date ,    ff_line_number ,    asr_month_id_1,    agency_id,    data_year,    month_num,    source_flag,    reported_flag,    orig_format,    update_flag,    ff_line_number_1,    ddocname,    did,    data_home,    month_pub_status) FROM '$MYPWD/ASROS.csv' WITH DELIMITER ',';
+\COPY asr_race_offense_subcat_temp (asr_month_id , offense_subcat_id ,    race_id ,    juvenile_flag ,    arrest_count ,    arrest_status ,    active_flag ,    prepared_date ,    report_date ,    ff_line_number ) FROM '$MYPWD/ASROS.csv' WITH DELIMITER ',';
 
 
--- ASRS.csv?????
 -- ASR_AGE_SEX_SUBCAT
 DROP TABLE IF EXISTS asr_age_sex_subcat_temp;
 CREATE TABLE asr_age_sex_subcat_temp (
@@ -135,23 +119,10 @@ CREATE TABLE asr_age_sex_subcat_temp (
     active_flag text,
     prepared_date text,
     report_date text,
-    ff_line_number text,
-    asr_month_id_1 text,
-    agency_id text,
-    data_year text,
-    month_num text,
-    source_flag text,
-    reported_flag text,
-    orig_format text,
-    update_flag text,
-    ff_line_number_1 text,
-    ddocname text,
-    did text,
-    data_home text,
-    month_pub_status text
+    ff_line_number text
 );
 
 
-\COPY asr_age_sex_subcat_temp (asr_month_id ,    offense_subcat_id ,    age_range_id ,    arrest_count ,    arrest_status ,    active_flag ,    prepared_date ,    report_date ,    ff_line_number ,    asr_month_id_1,    agency_id,    data_year,    month_num,    source_flag,    reported_flag,    orig_format,    update_flag,    ff_line_number_1,    ddocname,    did,    data_home,    month_pub_status) FROM '$MYPWD/ASRS.csv' WITH DELIMITER ',';
+\COPY asr_age_sex_subcat_temp (asr_month_id ,    offense_subcat_id ,    age_range_id ,    arrest_count ,    arrest_status ,    active_flag ,    prepared_date ,    report_date ,    ff_line_number ) FROM '$MYPWD/ASRASS.csv' WITH DELIMITER ',';
 
 "
