@@ -300,6 +300,101 @@ INSERT INTO ref_tribe_population_replace (SELECT convert_to_integer(tribe_id), c
 INSERT INTO ref_tribe_population SELECT * from ref_tribe_population_replace where not exists (select * from ref_tribe_population where ref_tribe_population_replace.tribe_id = ref_tribe_population.tribe_id and ref_tribe_population_replace.data_year = ref_tribe_population.data_year);
 
 
+
+-----------------------------
+-- 
+-- 
+-- ASR tables upload.
+-- 
+-- 
+-----------------------------
+
+-- asr_month
+DROP TABLE IF EXISTS asr_month_temp;
+CREATE TABLE asr_month_temp (
+    asr_month_id text,
+    agency_id text,
+    data_year text,
+    month_num text,
+    source_flag text,
+    reported_flag text,
+    orig_format text,
+    update_flag text,
+    ff_line_number text,
+    ddocname text,
+    did text,
+    data_home text,
+    extra text
+);
+
+\COPY asr_month_temp (asr_month_id, agency_id, data_year, month_num, source_flag, reported_flag, orig_format, update_flag, ff_line_number, ddocname, did, data_home, extra) FROM '/Users/colincraig/crime-data-api-2/dba/update/data/ASRM.csv' WITH DELIMITER ',';
+
+
+
+-- asr_offense_subcat
+DROP TABLE IF EXISTS asr_race_offense_subcat_temp;
+CREATE TABLE asr_race_offense_subcat_temp (
+    asr_month_id text,
+    offense_subcat_id text,
+    race_id text,
+    juvenile_flag text,
+    arrest_count text,
+    arrest_status text,
+    active_flag text,
+    prepared_date text,
+    report_date text,
+    ff_line_number text,
+    asr_month_id_1 text,
+    agency_id text,
+    data_year text,
+    month_num text,
+    source_flag text,
+    reported_flag text,
+    orig_format text,
+    update_flag text,
+    ff_line_number_1 text,
+    ddocname text,
+    did text,
+    data_home text,
+    month_pub_status text
+);
+
+
+\COPY asr_race_offense_subcat_temp (asr_month_id , offense_subcat_id ,    race_id ,    juvenile_flag ,    arrest_count ,    arrest_status ,    active_flag ,    prepared_date ,    report_date ,    ff_line_number ,    asr_month_id_1,    agency_id,    data_year,    month_num,    source_flag,    reported_flag,    orig_format,    update_flag,    ff_line_number_1,    ddocname,    did,    data_home,    month_pub_status) FROM '/Users/colincraig/crime-data-api-2/dba/update/data/ASROS.csv' WITH DELIMITER ',';
+
+
+-- ASRS.csv?????
+-- ASR_AGE_SEX_SUBCAT
+DROP TABLE IF EXISTS asr_age_sex_subcat_temp;
+CREATE TABLE asr_age_sex_subcat_temp (
+    asr_month_id text,
+    offense_subcat_id text,
+    age_range_id text,
+    arrest_count text,
+    arrest_status text,
+    active_flag text,
+    prepared_date text,
+    report_date text,
+    ff_line_number text,
+    asr_month_id_1 text,
+    agency_id text,
+    data_year text,
+    month_num text,
+    source_flag text,
+    reported_flag text,
+    orig_format text,
+    update_flag text,
+    ff_line_number_1 text,
+    ddocname text,
+    did text,
+    data_home text,
+    month_pub_status text
+);
+
+
+\COPY asr_age_sex_subcat_temp (asr_month_id ,    offense_subcat_id ,    age_range_id ,    arrest_count ,    arrest_status ,    active_flag ,    prepared_date ,    report_date ,    ff_line_number ,    asr_month_id_1,    agency_id,    data_year,    month_num,    source_flag,    reported_flag,    orig_format,    update_flag,    ff_line_number_1,    ddocname,    did,    data_home,    month_pub_status) FROM '/Users/colincraig/crime-data-api-2/dba/update/data/ASRS.csv' WITH DELIMITER ',';
+
+
 -----------------------------
 -- 
 -- 
