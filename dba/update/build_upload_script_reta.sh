@@ -34,11 +34,10 @@ CREATE TABLE reta_month_temp (
     leoka_status text,
     update_flag text,
     did text,
-    ff_line_number text,
-    extra text
+    ff_line_number text
 );
 
-\COPY reta_month_temp (reta_month_id, agency_id, data_year, month_num, data_home, source_flag, reported_flag, ddocname, month_included_in, report_date, prepared_date, prepared_by_user, prepared_by_email, orig_format, leoka_felony, leoka_accident, leoka_assault, leoka_status, update_flag, did, ff_line_number, extra) FROM '$MYPWD/RETAM.csv' WITH DELIMITER ',';
+\COPY reta_month_temp (reta_month_id, agency_id, data_year, month_num, data_home, source_flag, reported_flag, ddocname, month_included_in, report_date, prepared_date, prepared_by_user, prepared_by_email, orig_format, leoka_felony, leoka_accident, leoka_assault, leoka_status, update_flag, did, ff_line_number) FROM '$MYPWD/RETAM.csv' WITH DELIMITER ',';
 
 -- reta_month_offense_subcat
 DROP TABLE IF EXISTS reta_month_offense_subcat_temp;
