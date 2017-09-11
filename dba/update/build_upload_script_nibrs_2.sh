@@ -2,13 +2,13 @@ MYPWD="$(pwd)/data"
 YEAR=$1
 
 echo "
-
 -- nibrs_property
 DROP TABLE IF EXISTS nibrs_property_temp;
 CREATE TABLE nibrs_property_temp (
     property_id text,
     incident_id text,
     prop_loss_id text,
+
     stolen_count text,
     recovered_count text,
     ff_line_number text
