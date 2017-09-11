@@ -57,7 +57,7 @@ CREATE TABLE ref_agency_temp (
 );
 
 -- Load CSV data into shell.
-\COPY ref_agency_temp (agency_id, ori, legacy_ori, ucr_agency_name, ncic_agency_name, pub_agency_name, agency_type_id, special_mailing_group, special_mailing_address, tribe_id, city_id, state_id, campus_id, agency_status, judicial_dist_code, submitting_agency_id, fid_code, department_id, added_date, change_timestamp, change_user, legacy_notify_agency, dormant_year, population_family_id, field_office_id, extra1) FROM '$MYPWD/REF_A.csv' WITH DELIMITER '|';
+\COPY ref_agency_temp (agency_id, ori, legacy_ori, ucr_agency_name, ncic_agency_name, pub_agency_name, agency_type_id, special_mailing_group, special_mailing_address, tribe_id, city_id, state_id, campus_id, agency_status, judicial_dist_code, submitting_agency_id, fid_code, department_id, added_date, change_timestamp, change_user, legacy_notify_agency, dormant_year, population_family_id, field_office_id, extra1) FROM '$MYPWD/REFA.csv' WITH DELIMITER '|';
 
 -- Load/convert data from shell into 
 DROP TABLE IF EXISTS ref_agency_replace;
@@ -111,7 +111,7 @@ CREATE TABLE ref_agency_county_temp (
 );
 
 -- insert into shell from csv.
-\COPY ref_agency_county_temp (agency_id,county_id, metro_div_id, core_city_flag, data_year, population, census, legacy_county_code, legacy_msa_code, source_flag, change_timestamp, change_user) FROM '$MYPWD/REF_AC.csv' WITH DELIMITER '|';
+\COPY ref_agency_county_temp (agency_id,county_id, metro_div_id, core_city_flag, data_year, population, census, legacy_county_code, legacy_msa_code, source_flag, change_timestamp, change_user) FROM '$MYPWD/REFAC.csv' WITH DELIMITER '|';
 
 -- replacement table.
 DROP TABLE IF EXISTS ref_agency_county_replace;
@@ -144,7 +144,7 @@ CREATE TABLE ref_agency_covered_by_temp (
 );
 
 -- insert into shell from csv.
-\COPY ref_agency_covered_by_temp (agency_id,data_year, covered_by_agency_id) FROM '$MYPWD/REF_ACB.csv' WITH DELIMITER '|';
+\COPY ref_agency_covered_by_temp (agency_id,data_year, covered_by_agency_id) FROM '$MYPWD/REFACB.csv' WITH DELIMITER '|';
 
 DROP TABLE IF EXISTS ref_agency_covered_by_replace;
 CREATE TABLE ref_agency_covered_by_replace (
@@ -168,7 +168,7 @@ CREATE TABLE ref_county_temp (
     comments text
 );
 
-\COPY ref_county_temp (county_id, state_id, county_name, county_ansi_code, county_fips_code, legacy_county_code, comments) FROM '$MYPWD/REF_C.csv' WITH DELIMITER '|';
+\COPY ref_county_temp (county_id, state_id, county_name, county_ansi_code, county_fips_code, legacy_county_code, comments) FROM '$MYPWD/REFC.csv' WITH DELIMITER '|';
 
 DROP TABLE IF EXISTS ref_county_replace;
 CREATE TABLE ref_county_replace (
@@ -192,7 +192,7 @@ CREATE TABLE ref_country_temp (
     country_desc text
 );
 
-\COPY ref_country_temp (country_id, continent_id, country_desc) FROM '$MYPWD/REF_CY.csv' WITH DELIMITER '|';
+\COPY ref_country_temp (country_id, continent_id, country_desc) FROM '$MYPWD/REFCY.csv' WITH DELIMITER '|';
 
 DROP TABLE IF EXISTS ref_country_replace;
 CREATE TABLE ref_country_replace (
@@ -218,7 +218,7 @@ CREATE TABLE ref_county_population_temp (
     reporting_population text
 );
 
-\COPY ref_county_population_temp (county_id, data_year, population, source_flag, extra, change_timestamp, change_user, reporting_population) FROM '$MYPWD/REF_CP.csv' WITH DELIMITER '|';
+\COPY ref_county_population_temp (county_id, data_year, population, source_flag, extra, change_timestamp, change_user, reporting_population) FROM '$MYPWD/REFCP.csv' WITH DELIMITER '|';
 
 DROP TABLE IF EXISTS ref_county_population_replace;
 CREATE TABLE ref_county_population_replace (
@@ -250,7 +250,7 @@ CREATE TABLE ref_agency_population_temp (
     suburban_area_flag text
 );
 
-\COPY ref_agency_population_temp (agency_id, data_year, population_group_id, population, source_flag, change_timestamp, change_user, city_sequence, suburban_area_flag) FROM '$MYPWD/REF_AP.csv' WITH DELIMITER '|';
+\COPY ref_agency_population_temp (agency_id, data_year, population_group_id, population, source_flag, change_timestamp, change_user, city_sequence, suburban_area_flag) FROM '$MYPWD/REFAP.csv' WITH DELIMITER '|';
 
 
 DROP TABLE IF EXISTS ref_agency_population_replace;
@@ -282,7 +282,7 @@ CREATE TABLE ref_tribe_population_temp (
     reporting_population text
 );
 
-\COPY ref_tribe_population_temp (tribe_id, data_year, population, source_flag, census, change_timestamp, change_user, reporting_population) FROM '$MYPWD/REF_TP.csv' WITH DELIMITER '|';
+\COPY ref_tribe_population_temp (tribe_id, data_year, population, source_flag, census, change_timestamp, change_user, reporting_population) FROM '$MYPWD/REFTP.csv' WITH DELIMITER '|';
 
 DROP TABLE IF EXISTS ref_tribe_population_replace;
 CREATE TABLE ref_tribe_population_replace (
@@ -652,7 +652,7 @@ CREATE TABLE arson_month_by_subcat_temp (
     est_damage_value_status text
 );
 
-\COPY arson_month_by_subcat_temp (arson_month_id, subcategory_id, reported_count, reported_status, unfounded_count, unfounded_status, actual_count, actual_status, cleared_count, cleared_status, juvenile_cleared_count, juvenile_cleared_status, uninhabited_count, uninhabited_status, est_damage_value, est_damage_value_status) FROM '$MYPWD/ArsonMOS.csv' WITH DELIMITER ',';
+\COPY arson_month_by_subcat_temp (arson_month_id, subcategory_id, reported_count, reported_status, unfounded_count, unfounded_status, actual_count, actual_status, cleared_count, cleared_status, juvenile_cleared_count, juvenile_cleared_status, uninhabited_count, uninhabited_status, est_damage_value, est_damage_value_status) FROM '$MYPWD/ArsonMBS.csv' WITH DELIMITER ',';
 
 ------------------------------
 --
