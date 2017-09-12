@@ -45,14 +45,16 @@ DROP TABLE IF EXISTS nibrs_suspect_using_new;
 CREATE TABLE nibrs_suspect_using_new AS (SELECT convert_to_integer(suspect_using_id) as suspect_using_id, convert_to_integer(offense_id) as offense_id FROM nibrs_suspect_using_temp);
 DROP TABLE IF EXISTS nibrs_arrestee_weapon_new;
 CREATE TABLE nibrs_arrestee_weapon_new AS (SELECT convert_to_integer(arrestee_id) as arrestee_id, convert_to_integer(weapon_id) as weapon_id, convert_to_integer(nibrs_arrestee_weapon_id) as nibrs_arrestee_weapon_id FROM nibrs_arrestee_weapon_temp);
-DROP TABLE IF EXISTS nibrs_victim_circumstances_new
+DROP TABLE IF EXISTS nibrs_victim_circumstances_new;
+
+
 CREATE TABLE nibrs_victim_circumstances_new AS (SELECT convert_to_integer(victim_id) as victim_id, convert_to_integer(circumstances_id) as circumstances_id, convert_to_integer(justifiable_force_id) as justifiable_force_id FROM nibrs_victim_circumstances_temp);
 DROP TABLE IF EXISTS nibrs_victim_injury_new;
 CREATE TABLE nibrs_victim_injury_new AS (SELECT convert_to_integer(victim_id) as victim_id, convert_to_integer(injury_id) as injury_id FROM nibrs_victim_injury_temp);
 DROP TABLE IF EXISTS nibrs_victim_offender_rel_new;
 CREATE TABLE nibrs_victim_offender_rel_new AS (SELECT convert_to_integer(victim_id) as victim_id, convert_to_integer(offender_id) as offender_id, convert_to_integer(relationship_id) as relationship_id, convert_to_integer(nibrs_victim_offender_id) as nibrs_victim_offender_id FROM nibrs_victim_offender_rel_temp);
 DROP TABLE IF EXISTS nibrs_weapon_new;
-CREATE TABLE nibrs_weapon_new AS (SELECT convert_to_integer(weapon_id), convert_to_integer(offense_id), convert_to_integer(nibrs_weapon_id) FROM nibrs_weapon_temp);
+CREATE TABLE nibrs_weapon_new AS (SELECT convert_to_integer(weapon_id) as weapon_id, convert_to_integer(offense_id) as offense_id, convert_to_integer(nibrs_weapon_id) as nibrs_weapon_id FROM nibrs_weapon_temp);
 
 DROP TABLE IF EXISTS reta_month_offense_subcat_new;
 CREATE TABLE reta_month_offense_subcat_new (
@@ -86,11 +88,6 @@ CREATE TABLE reta_month_new (
     prepared_by_user character varying(100),
     prepared_by_email character varying(200),
     orig_format character(1) NOT NULL,
-    total_reported_count integer,
-    total_unfounded_count integer,
-    total_actual_count integer,
-    total_cleared_count integer,
-    total_juvenile_cleared_count integer,
     leoka_felony smallint,
     leoka_accident smallint,
     leoka_assault integer,
