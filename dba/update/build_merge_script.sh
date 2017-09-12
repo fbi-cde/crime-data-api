@@ -114,6 +114,17 @@ INSERT INTO asr_offense_subcat (SELECT convert_to_integer(offense_subcat_id) ,  
 INSERT INTO asr_age_sex_subcat (SELECT convert_to_integer(asr_month_id), convert_to_integer(offense_subcat_id), convert_to_integer(age_range_id),  convert_to_integer(arrest_count) ,    convert_to_integer(arrest_status) , active_flag ,    to_timestamp_ucr(prepared_date) ,    to_timestamp_ucr(report_date) ,   convert_to_integer(ff_line_number)   FROM asr_age_sex_subcat_temp);
 INSERT INTO asr_race_offense_subcat (SELECT convert_to_integer(asr_month_id), convert_to_integer(offense_subcat_id), convert_to_integer(race_id),  juvenile_flag, convert_to_integer(arrest_count), convert_to_integer(arrest_status), active_flag, to_timestamp_ucr(prepared_date), to_timestamp_ucr(report_date), convert_to_integer(ff_line_number) FROM asr_race_offense_subcat_temp);
 
+INSERT INTO lkasum_month (SELECT 
+    convert_to_integer(lkasum_month_id), 
+    convert_to_integer(agency_id), 
+    convert_to_integer(data_year), 
+    convert_to_integer(month_num), 
+    data_home, 
+    source_flag, 
+    to_timestamp_ucr(report_date), to_timestamp_ucr(prepared_date), reported_flag, ddocname, convert_to_integer(leoka_felony), convert_to_integer(leoka_accident), orig_format, update_flag, convert_to_integer(did), convert_to_integer(ff_line_number) FROM lkasum_month_temp);
+
+INSERT INTO pe_employee_data (SELECT convert_to_integer(agency_id),  convert_to_integer(data_year), reported_flag, convert_to_integer(male_officer), convert_to_integer(male_civilian), convert_to_integer(male_total), convert_to_integer(female_officer), convert_to_integer(female_civilian), convert_to_integer(female_total), convert_to_integer(officer_rate), convert_to_integer(employee_rate), data_home, ddocname, convert_to_integer(did), convert_to_integer(ff_line_number), orig_format, convert_to_integer(pe_employee_id) FROM pe_employee_data_temp);
+
 -- arson_*
 INSERT INTO arson_month (SELECT convert_to_integer(arson_month_id), convert_to_integer(agency_id), convert_to_integer(data_year), convert_to_integer(month_num), data_home, source_flag, reported_flag, ddocname, convert_to_integer(month_included_in), to_timestamp_ucr(report_date), to_timestamp_ucr(prepared_date), orig_format, update_flag, convert_to_integer(did), convert_to_integer(ff_line_number) from arson_month_temp);
 INSERT INTO arson_month_by_subcat (SELECT convert_to_integer(arson_month_id), convert_to_integer(subcategory_id), convert_to_integer(reported_count), convert_to_integer(reported_status), convert_to_integer(unfounded_count), convert_to_integer(unfounded_status), convert_to_integer(actual_count), convert_to_integer(actual_status), convert_to_integer(cleared_count), convert_to_integer(cleared_status), convert_to_integer(juvenile_cleared_count), convert_to_integer(juvenile_cleared_status), convert_to_integer(uninhabited_count), convert_to_integer(uninhabited_status), convert_to_integer(est_damage_value), convert_to_integer(est_damage_value_status) from arson_month_by_subcat_temp);
