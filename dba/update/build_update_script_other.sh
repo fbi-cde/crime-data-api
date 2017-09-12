@@ -2,8 +2,6 @@ echo "
 
 \set ON_ERROR_STOP on;
 
-
-
 -----------------------------
 -- 
 -- 
@@ -358,3 +356,5 @@ GROUP BY GROUPING SETS (
     (year, ori, offense_name, location_name),
     (year, ori, offense_name, victim_type_name)
 );
+
+"
