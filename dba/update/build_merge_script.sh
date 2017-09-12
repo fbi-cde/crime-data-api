@@ -14,6 +14,7 @@ echo "
 
 -- DONE!
 UPDATE nibrs_incident_new SET incident_number = '';
+DROP TABLE IF EXISTS  nibrs_month_new;
 CREATE TABLE nibrs_month_new AS (SELECT convert_to_integer(nibrs_month_id) as nibrs_month_id, convert_to_integer(agency_id) as agency_id, convert_to_integer(month_num) as month_num, convert_to_integer(data_year) as data_year, reported_status as reported_status, to_timestamp_ucr(report_date) as report_date, to_timestamp_ucr(prepared_date) as prepared_date, update_flag as update_flag, orig_format as orig_format, convert_to_integer(ff_line_number) as ff_line_number, data_home as data_home, ddocname as ddocname, convert_to_integer(did) as did FROM nibrs_month_temp);
 
 -- For some really messy relationships - we add data to mirrored tables, rather than the master data.
