@@ -341,24 +341,11 @@ CREATE TABLE asr_race_offense_subcat_temp (
     active_flag text,
     prepared_date text,
     report_date text,
-    ff_line_number text,
-    asr_month_id_1 text,
-    agency_id text,
-    data_year text,
-    month_num text,
-    source_flag text,
-    reported_flag text,
-    orig_format text,
-    update_flag text,
-    ff_line_number_1 text,
-    ddocname text,
-    did text,
-    data_home text,
-    month_pub_status text
+    ff_line_number text
 );
 
 
-\COPY asr_race_offense_subcat_temp (asr_month_id , offense_subcat_id ,    race_id ,    juvenile_flag ,    arrest_count ,    arrest_status ,    active_flag ,    prepared_date ,    report_date ,    ff_line_number ,    asr_month_id_1,    agency_id,    data_year,    month_num,    source_flag,    reported_flag,    orig_format,    update_flag,    ff_line_number_1,    ddocname,    did,    data_home,    month_pub_status) FROM '$MYPWD/ASROS.csv' WITH DELIMITER ',';
+\COPY asr_race_offense_subcat_temp (asr_month_id , offense_subcat_id ,    race_id ,    juvenile_flag ,    arrest_count ,    arrest_status ,    active_flag ,    prepared_date ,    report_date ,    ff_line_number) FROM '$MYPWD/ASROS.csv' WITH DELIMITER ',';
 
 
 -- ASRS.csv?????
@@ -373,24 +360,11 @@ CREATE TABLE asr_age_sex_subcat_temp (
     active_flag text,
     prepared_date text,
     report_date text,
-    ff_line_number text,
-    asr_month_id_1 text,
-    agency_id text,
-    data_year text,
-    month_num text,
-    source_flag text,
-    reported_flag text,
-    orig_format text,
-    update_flag text,
-    ff_line_number_1 text,
-    ddocname text,
-    did text,
-    data_home text,
-    month_pub_status text
+    ff_line_number text
 );
 
 
-\COPY asr_age_sex_subcat_temp (asr_month_id ,    offense_subcat_id ,    age_range_id ,    arrest_count ,    arrest_status ,    active_flag ,    prepared_date ,    report_date ,    ff_line_number ,    asr_month_id_1,    agency_id,    data_year,    month_num,    source_flag,    reported_flag,    orig_format,    update_flag,    ff_line_number_1,    ddocname,    did,    data_home,    month_pub_status) FROM '$MYPWD/ASRS.csv' WITH DELIMITER ',';
+\COPY asr_age_sex_subcat_temp (asr_month_id ,    offense_subcat_id ,    age_range_id ,    arrest_count ,    arrest_status ,    active_flag ,    prepared_date ,    report_date ,    ff_line_number ) FROM '$MYPWD/ASRS.csv' WITH DELIMITER ',';
 
 
 -----------------------------
