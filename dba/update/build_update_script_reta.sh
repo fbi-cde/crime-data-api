@@ -1,3 +1,6 @@
+MYPWD="$(pwd)/data"
+YEAR=$1
+
 echo "
 -- Build RETA views, and other misc datasets:
 

@@ -80,6 +80,6 @@ ALTER MATERIALIZED VIEW offense_offense_counts_ori_temp RENAME TO offense_offens
 CREATE INDEX CONCURRENTLY offense_offense_counts_ori_idx ON offense_counts_ori (ori, year, offense_name);
 
 -- Refresh year count view.
-REFRESH MATERIALIZED VIEW nibrs_years;
+--INSERT INTO nibrs_years (year) VALUES ($YEAR);
 
 -- DONE.

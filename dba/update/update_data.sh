@@ -25,3 +25,9 @@ echo "update_reta.sql successfully built"
 
 ./build_update_script_nibrs.sh $YEAR >update_nibrs.sql
 echo "update_nibrs.sql successfully built"
+
+./build_merge_script.sh >merge_data.sql
+echo "merge_data.sql successfully built"
+
+./build_update_script_other.sh $YEAR >update_other.sql
+echo "update_other.sql successfully built"
