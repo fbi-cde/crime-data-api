@@ -14,7 +14,7 @@ echo "
 
 -- DONE!
 UPDATE nibrs_incident_new SET incident_number = '';
-INSERT INTO nibrs_month (SELECT convert_to_integer(nibrs_month_id), convert_to_integer(agency_id), convert_to_integer(month_num), convert_to_integer(data_year), reported_status, to_timestamp_ucr(report_date), to_timestamp_ucr(prepared_date), update_flag, orig_format, convert_to_integer(ff_line_number), data_home, ddocname, convert_to_integer(did) FROM nibrs_month_temp);
+CREATE TABLE nibrs_month_new AS (SELECT convert_to_integer(nibrs_month_id) as nibrs_month_id, convert_to_integer(agency_id) as agency_id, convert_to_integer(month_num) as month_num, convert_to_integer(data_year) as data_year, reported_status as reported_status, to_timestamp_ucr(report_date) as report_date, to_timestamp_ucr(prepared_date) as prepared_date, update_flag as update_flag, orig_format as orig_format, convert_to_integer(ff_line_number) as ff_line_number, data_home as data_home, ddocname as ddocname, convert_to_integer(did) as did FROM nibrs_month_temp);
 
 -- For some really messy relationships - we add data to mirrored tables, rather than the master data.
 INSERT INTO nibrs_arrestee_new (SELECT convert_to_integer(arrestee_id), convert_to_integer(incident_id), convert_to_integer(arrestee_seq_num), arrest_num, to_timestamp_ucr(arrest_date), convert_to_integer(arrest_type_id), multiple_indicator, convert_to_integer(offense_type_id), convert_to_integer(age_id), convert_to_integer(age_num), sex_code, convert_to_integer(race_id), convert_to_integer(ethnicity_id), resident_code, under_18_disposition_code, clearance_ind, convert_to_integer(ff_line_number), convert_to_integer(age_range_low_num), convert_to_integer(age_range_high_num) FROM nibrs_arrestee_temp);
@@ -23,27 +23,18 @@ INSERT INTO nibrs_offense_new (SELECT convert_to_integer(offense_id), convert_to
 INSERT INTO nibrs_offender_new (SELECT convert_to_integer(offender_id), convert_to_integer(incident_id), convert_to_integer(offender_seq_num), convert_to_integer(age_id), convert_to_integer(age_num), sex_code, convert_to_integer(race_id), convert_to_integer(ethnicity_id), convert_to_integer(ff_line_number), convert_to_integer(age_range_low_num), convert_to_integer(age_range_high_num) FROM nibrs_offender_temp);
 INSERT INTO nibrs_property_new (SELECT convert_to_integer(property_id), convert_to_integer(incident_id), convert_to_integer(prop_loss_id), convert_to_integer(stolen_count), convert_to_integer(recovered_count), convert_to_integer(ff_line_number) FROM nibrs_property_temp);
 INSERT INTO nibrs_victim_new (SELECT convert_to_integer(victim_id), convert_to_integer(incident_id), convert_to_integer(victim_seq_num), convert_to_integer(victim_type_id), convert_to_integer(assignment_type_id), convert_to_integer(activity_type_id), convert_to_integer(outside_agency_id), convert_to_integer(age_id), convert_to_integer(age_num), sex_code, convert_to_integer(race_id), convert_to_integer(ethnicity_id), resident_status_code, convert_to_integer(agency_data_year), convert_to_integer(ff_line_number), convert_to_integer(age_range_low_num), convert_to_integer(age_range_high_num) FROM nibrs_victim_temp);
-INSERT INTO nibrs_arrestee_weapon (SELECT convert_to_integer(arrestee_id), convert_to_integer(weapon_id), convert_to_integer(nibrs_arrestee_weapon_id) FROM nibrs_arrestee_weapon_temp);
 INSERT INTO nibrs_property_desc_new (SELECT convert_to_integer(property_id), convert_to_integer(prop_desc_id), convert_to_integer(property_value), to_timestamp_ucr(date_recovered), convert_to_integer(nibrs_prop_desc_id) FROM nibrs_property_desc_temp);
 
-INSERT INTO nibrs_victim_offense (SELECT convert_to_integer(victim_id), convert_to_integer(offense_id) FROM nibrs_victim_offense_temp);
-INSERT INTO nibrs_bias_motivation (SELECT convert_to_integer(bias_id), convert_to_integer(offense_id) FROM nibrs_bias_motivation_temp);
-INSERT INTO nibrs_criminal_act (SELECT convert_to_integer(criminal_act_id), convert_to_integer(offense_id) FROM nibrs_criminal_act_temp);
-INSERT INTO nibrs_suspected_drug (SELECT convert_to_integer(suspected_drug_type_id), convert_to_integer(property_id), convert_to_double(est_drug_qty), convert_to_integer(drug_measure_type_id), convert_to_integer(nibrs_suspected_drug_id) FROM nibrs_suspected_drug_temp);
-INSERT INTO nibrs_suspect_using (SELECT convert_to_integer(suspect_using_id), convert_to_integer(offense_id) FROM nibrs_suspect_using_temp);
-INSERT INTO nibrs_victim_circumstances (SELECT convert_to_integer(victim_id), convert_to_integer(circumstances_id), convert_to_integer(justifiable_force_id) FROM nibrs_victim_circumstances_temp);
-INSERT INTO nibrs_victim_injury (SELECT convert_to_integer(victim_id), convert_to_integer(injury_id) FROM nibrs_victim_injury_temp);
-INSERT INTO nibrs_victim_offender_rel (SELECT convert_to_integer(victim_id), convert_to_integer(offender_id), convert_to_integer(relationship_id), convert_to_integer(nibrs_victim_offender_id) FROM nibrs_victim_offender_rel_temp);
-INSERT INTO nibrs_weapon (SELECT convert_to_integer(weapon_id), convert_to_integer(offense_id), convert_to_integer(nibrs_weapon_id) FROM nibrs_weapon_temp);
-
--------
-
-
--- ALTER TABLE nibrs_incident SET (autovacuum_enabled = false, toast.autovacuum_enabled = false);
--- ALTER TABLE nibrs_victim SET (autovacuum_enabled = false, toast.autovacuum_enabled = false);
--- ALTER TABLE nibrs_offender SET (autovacuum_enabled = false, toast.autovacuum_enabled = false);
--- ALTER TABLE nibrs_offense SET (autovacuum_enabled = false, toast.autovacuum_enabled = false);
--- ALTER TABLE nibrs_victim_offense SET (autovacuum_enabled = false, toast.autovacuum_enabled = false);
+CREATE TABLE nibrs_victim_offense_new AS (SELECT convert_to_integer(victim_id) as victim_id, convert_to_integer(offense_id) as offense_id FROM nibrs_victim_offense_temp);
+CREATE TABLE nibrs_bias_motivation_new AS (SELECT convert_to_integer(bias_id) as bias_id, convert_to_integer(offense_id) as offense_id FROM nibrs_bias_motivation_temp);
+CREATE TABLE nibrs_criminal_act_new AS (SELECT convert_to_integer(criminal_act_id) as criminal_act_id, convert_to_integer(offense_id) as offense_id FROM nibrs_criminal_act_temp);
+CREATE TABLE nibrs_suspected_drug_new AS (SELECT convert_to_integer(suspected_drug_type_id) as suspected_drug_type_id, convert_to_integer(property_id) as property_id, convert_to_double(est_drug_qty) as est_drug_qty, convert_to_integer(drug_measure_type_id) as drug_measure_type_id, convert_to_integer(nibrs_suspected_drug_id) as nibrs_suspected_drug_id FROM nibrs_suspected_drug_temp);
+CREATE TABLE nibrs_suspect_using_new AS (SELECT convert_to_integer(suspect_using_id) as suspect_using_id, convert_to_integer(offense_id) as offense_id FROM nibrs_suspect_using_temp);
+CREATE TABLE nibrs_arrestee_weapon_new AS (SELECT convert_to_integer(arrestee_id) as arrestee_id, convert_to_integer(weapon_id) as weapon_id, convert_to_integer(nibrs_arrestee_weapon_id) as nibrs_arrestee_weapon_id FROM nibrs_arrestee_weapon_temp);
+CREATE TABLE nibrs_victim_circumstances_new AS (SELECT convert_to_integer(victim_id) as victim_id, convert_to_integer(circumstances_id) as circumstances_id, convert_to_integer(justifiable_force_id) as justifiable_force_id FROM nibrs_victim_circumstances_temp);
+CREATE TABLE nibrs_victim_injury_new AS (SELECT convert_to_integer(victim_id) as victim_id, convert_to_integer(injury_id) as injury_id FROM nibrs_victim_injury_temp);
+CREATE TABLE nibrs_victim_offender_rel_new AS (SELECT convert_to_integer(victim_id) as victim_id, convert_to_integer(offender_id) as offender_id, convert_to_integer(relationship_id) as relationship_id, convert_to_integer(nibrs_victim_offender_id) as nibrs_victim_offender_id FROM nibrs_victim_offender_rel_temp);
+CREATE TABLE nibrs_weapon_new AS (SELECT convert_to_integer(weapon_id), convert_to_integer(offense_id), convert_to_integer(nibrs_weapon_id) FROM nibrs_weapon_temp);
 
 
 CREATE TABLE reta_month_offense_subcat_new (
