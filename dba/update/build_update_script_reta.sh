@@ -564,9 +564,6 @@ WHERE a.data_year = $YEAR;
 
 DROP TABLE agency_sums_by_classification;
 
-
--- Refresh year count view.
-INSERT INTO nibrs_years (year) VALUES ($YEAR);
 -------------------------------------------------------------------------------------------
 
 ----- Add arson to agency sums
