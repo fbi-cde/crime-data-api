@@ -54,7 +54,7 @@ CREATE TABLE nibrs_victim_offender_rel_new AS (SELECT convert_to_integer(victim_
 DROP TABLE IF EXISTS nibrs_weapon_new;
 CREATE TABLE nibrs_weapon_new AS (SELECT convert_to_integer(weapon_id), convert_to_integer(offense_id), convert_to_integer(nibrs_weapon_id) FROM nibrs_weapon_temp);
 
-
+DROP TABLE IF EXISTS reta_month_offense_subcat_new;
 CREATE TABLE reta_month_offense_subcat_new (
     reta_month_id bigint NOT NULL,
     offense_subcat_id bigint NOT NULL,
@@ -70,6 +70,7 @@ CREATE TABLE reta_month_offense_subcat_new (
     juvenile_cleared_status smallint
 );
 
+DROP TABLE IF EXISTS reta_month_new;
 CREATE TABLE reta_month_new (
     reta_month_id bigint NOT NULL,
     agency_id bigint NOT NULL,
