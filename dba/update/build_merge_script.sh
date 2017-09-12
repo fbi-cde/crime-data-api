@@ -32,15 +32,25 @@ INSERT INTO nibrs_victim_new (SELECT convert_to_integer(victim_id), convert_to_i
 DELETE from nibrs_property_desc_new;
 INSERT INTO nibrs_property_desc_new (SELECT convert_to_integer(property_id), convert_to_integer(prop_desc_id), convert_to_integer(property_value), to_timestamp_ucr(date_recovered), convert_to_integer(nibrs_prop_desc_id) FROM nibrs_property_desc_temp);
 
+DROP TABLE IF EXISTS  nibrs_victim_offense_new;
 CREATE TABLE nibrs_victim_offense_new AS (SELECT convert_to_integer(victim_id) as victim_id, convert_to_integer(offense_id) as offense_id FROM nibrs_victim_offense_temp);
+DROP TABLE IF EXISTS  nibrs_bias_motivation_new;
 CREATE TABLE nibrs_bias_motivation_new AS (SELECT convert_to_integer(bias_id) as bias_id, convert_to_integer(offense_id) as offense_id FROM nibrs_bias_motivation_temp);
+DROP TABLE IF EXISTS  nibrs_criminal_act_new;
 CREATE TABLE nibrs_criminal_act_new AS (SELECT convert_to_integer(criminal_act_id) as criminal_act_id, convert_to_integer(offense_id) as offense_id FROM nibrs_criminal_act_temp);
+DROP TABLE IF EXISTS nibrs_suspected_drug_new;
 CREATE TABLE nibrs_suspected_drug_new AS (SELECT convert_to_integer(suspected_drug_type_id) as suspected_drug_type_id, convert_to_integer(property_id) as property_id, convert_to_double(est_drug_qty) as est_drug_qty, convert_to_integer(drug_measure_type_id) as drug_measure_type_id, convert_to_integer(nibrs_suspected_drug_id) as nibrs_suspected_drug_id FROM nibrs_suspected_drug_temp);
+DROP TABLE IF EXISTS nibrs_suspect_using_new;
 CREATE TABLE nibrs_suspect_using_new AS (SELECT convert_to_integer(suspect_using_id) as suspect_using_id, convert_to_integer(offense_id) as offense_id FROM nibrs_suspect_using_temp);
+DROP TABLE IF EXISTS nibrs_arrestee_weapon_new;
 CREATE TABLE nibrs_arrestee_weapon_new AS (SELECT convert_to_integer(arrestee_id) as arrestee_id, convert_to_integer(weapon_id) as weapon_id, convert_to_integer(nibrs_arrestee_weapon_id) as nibrs_arrestee_weapon_id FROM nibrs_arrestee_weapon_temp);
+DROP TABLE IF EXISTS nibrs_victim_circumstances_new
 CREATE TABLE nibrs_victim_circumstances_new AS (SELECT convert_to_integer(victim_id) as victim_id, convert_to_integer(circumstances_id) as circumstances_id, convert_to_integer(justifiable_force_id) as justifiable_force_id FROM nibrs_victim_circumstances_temp);
+DROP TABLE IF EXISTS nibrs_victim_injury_new;
 CREATE TABLE nibrs_victim_injury_new AS (SELECT convert_to_integer(victim_id) as victim_id, convert_to_integer(injury_id) as injury_id FROM nibrs_victim_injury_temp);
+DROP TABLE IF EXISTS nibrs_victim_offender_rel_new;
 CREATE TABLE nibrs_victim_offender_rel_new AS (SELECT convert_to_integer(victim_id) as victim_id, convert_to_integer(offender_id) as offender_id, convert_to_integer(relationship_id) as relationship_id, convert_to_integer(nibrs_victim_offender_id) as nibrs_victim_offender_id FROM nibrs_victim_offender_rel_temp);
+DROP TABLE IF EXISTS nibrs_weapon_new;
 CREATE TABLE nibrs_weapon_new AS (SELECT convert_to_integer(weapon_id), convert_to_integer(offense_id), convert_to_integer(nibrs_weapon_id) FROM nibrs_weapon_temp);
 
 
