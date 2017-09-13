@@ -7,7 +7,7 @@ echo "
 SET work_mem='3GB'; -- Go Super Saiyan.
 \set ON_ERROR_STOP on;
 
-DO $$
+DO \$$
 DECLARE
 max_year smallint;
 BEGIN
@@ -21,7 +21,7 @@ FROM agency_participation
 WHERE year <= max_year
 AND year > max_year - 10
 GROUP BY agency_id;
-END $$;
+END \$$;
 
 DROP TABLE IF EXISTS denorm_agencies_temp CASCADE;
 CREATE TABLE denorm_agencies_temp (    agency_id bigint PRIMARY KEY,    ori character(9) NOT NULL,    legacy_ori character(9) NOT NULL,    agency_name text,    short_name text,    agency_type_id smallint NOT NULL,    agency_type_name text,    tribe_id bigint,    campus_id bigint,    city_id bigint,    city_name text,    state_id smallint NOT NULL,    state_abbr character(2) NOT NULL,    primary_county_id bigint,    primary_county text,    primary_county_fips character varying(5),    agency_status character(1),    submitting_agency_id bigint,    submitting_sai character varying(9),    submitting_name text,    submitting_state_abbr character varying(2),    start_year smallint,    dormant_year smallint,    current_year smallint,    revised_rape_start smallint,    current_nibrs_start_year smallint,    population bigint,    population_group_code character varying(2),    population_group_desc text,    population_source_flag character varying(1),    suburban_area_flag character varying(1),    core_city_flag character varying(1),    months_reported smallint,    nibrs_months_reported smallint,    past_10_years_reported smallint,    covered_by_id bigint,    covered_by_ori character(9),    covered_by_name character varying(100),    staffing_year smallint,    total_officers int,    total_civilians int,    icpsr_zip character(5),    icpsr_lat numeric,    icpsr_lng numeric );
