@@ -1,5 +1,5 @@
 applications:
-- name: task-runner-update-colin
+- name: task-runner-update
   memory: 512M
   buildpack: python_buildpack
 env:

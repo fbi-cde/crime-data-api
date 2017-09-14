@@ -110,6 +110,8 @@ CREATE INDEX reta_month_agency_id_new_idx ON reta_month_new USING btree (agency_
 CREATE INDEX reta_month_data_year_new_idx ON reta_month_new USING btree (data_year);
 
 INSERT INTO reta_month (SELECT reta_month_id, agency_id, data_year, month_num, data_home, source_flag, reported_flag, ddocname, month_included_in,report_date,prepared_date,prepared_by_user,prepared_by_email,orig_format, 0 as total_reported_count, 0 as total_unfounded_count, 0 as total_actual_count,0 as total_cleared_count, 0 as total_juvenile_cleared_count, leoka_felony, leoka_accident, leoka_assault, leoka_status, update_flag, did,ff_line_number from reta_month_new); 
+INSERT INTO nibrs_month (SELECT * from nibrs_month_new);
+
 
 INSERT INTO asr_month (SELECT convert_to_integer(asr_month_id), convert_to_integer(agency_id), convert_to_integer(data_year), convert_to_integer(month_num), source_flag, reported_flag, orig_format, update_flag, convert_to_integer(ff_line_number), ddocname, convert_to_integer(did), data_home FROM asr_month_temp);
 INSERT INTO asr_offense_subcat (SELECT convert_to_integer(offense_subcat_id) ,    convert_to_integer(offense_id) ,    offense_subcat_name ,    offense_subcat_code ,    srs_offense_code ,    convert_to_integer(master_offense_code) ,    total_flag ,    adult_juv_flag  FROM asr_offense_subcat_temp);

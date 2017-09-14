@@ -64,15 +64,6 @@ GROUP BY GROUPING SETS(
 );
 
 -- Build a rollup at the suboffense level. These queries take the longest to run (about 3-4 hours)
-DROP TABLE IF EXISTS asr_age_suboffense_summary;
-CREATE TABLE asr_age_suboffense_summary (
-   id serial PRIMARY KEY,
-   data_year smallint NOT NULL,
-   state_id INTEGER NOT NULL,
-   age_range_id integer,
-   offense_subcat_id int,
-   arrest_count bigint
-);
 
 DO
 $do$
@@ -92,17 +83,6 @@ GROUP BY am.data_year, ra.state_id, aas.age_range_id, aas.offense_subcat_id;';
   END LOOP;
 END;
 $do$;
-
-DROP TABLE IF EXISTS asr_race_suboffense_summary;
-CREATE TABLE asr_race_suboffense_summary (
-   id serial PRIMARY KEY,
-   data_year smallint NOT NULL,
-   state_id INTEGER NOT NULL,
-   race_id integer,
-   juvenile_flag char(1),
-   offense_subcat_id int,
-   arrest_count bigint
-);
 
 DO
 $do$
