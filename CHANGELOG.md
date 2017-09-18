@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [2017-09-??]
+## [2017-09-18]
 ### Added
 - Include 2015 data ([#624](https://github.com/18F/crime-data-api/pull/624))
 
