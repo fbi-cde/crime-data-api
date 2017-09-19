@@ -28,7 +28,7 @@ EOF
     mv property.csv ${arr_state_map_full[$k]}-$i
     mv incident.csv ${arr_state_map_full[$k]}-$i
     mv arrestee.csv ${arr_state_map_full[$k]}-$i
-    ditto  -c -k --sequesterRsrc --keepParent ${arr_state_map_full[$k]}-$i ${arr_state_map_full[$k]}-$i.zip
+    zip ${arr_state_map_full[$k]}-$i ${arr_state_map_full[$k]}-$i.zip
     rm -rf ${arr_state_map_full[$k]}-$i
 
     done
