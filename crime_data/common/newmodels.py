@@ -308,8 +308,8 @@ class AgencySums(db.Model):
             offense = ExplorerOffenseMapping(explorer_offense).reta_offense_code
             query = query.filter(AgencySums.offense_code == offense)
 
-        query = query.filter(AgencySums.year<2016)
-       query = query.filter( AgencyParticipation.year<2016)
+       query = query.filter(AgencySums.year<2016)
+       query = query.filter(AgencyParticipation.year<2016)
 
         query = query.join(AgencyParticipation, and_(AgencyParticipation.agency_id == AgencySums.agency_id, AgencyParticipation.year == AgencySums.year)).filter(AgencyParticipation.months_reported == 12)
 

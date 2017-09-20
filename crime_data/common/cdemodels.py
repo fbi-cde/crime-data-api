@@ -45,7 +45,7 @@ class CdeParticipationRate(newmodels.ParticipationRate):
 
     @property
     def query(self):
-        
+
         qry = super().query
         qry = qry.filter(newmodels.ParticipationRate.year<2016)
 
