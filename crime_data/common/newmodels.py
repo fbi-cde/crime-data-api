@@ -309,8 +309,10 @@ class AgencySums(db.Model):
             query = query.filter(AgencySums.offense_code == offense)
 
         query = query.filter(AgencySums.year<2016)
+       query = query.filter( AgencyParticipation.year<2016)
 
         query = query.join(AgencyParticipation, and_(AgencyParticipation.agency_id == AgencySums.agency_id, AgencyParticipation.year == AgencySums.year)).filter(AgencyParticipation.months_reported == 12)
+
         query = query.order_by(AgencySums.year.desc()) # Agency reported 12 Months.
 
         #print(query) # Dubug
