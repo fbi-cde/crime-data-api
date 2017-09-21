@@ -47,7 +47,6 @@ class CdeParticipationRate(newmodels.ParticipationRate):
     def query(self):
 
         qry = super().query
-        qry = qry.filter(newmodels.ParticipationRate.year<2016)
 
         if self.state_id:
             qry = qry.filter(newmodels.ParticipationRate.state_id == self.state_id)
