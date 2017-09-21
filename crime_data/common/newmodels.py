@@ -366,7 +366,6 @@ class AgencyOffenseCounts(db.Model):
         query = query.order_by(AgencyOffenseCounts.year.desc()) # Agency reported 12 Months.
 
         query = query.filter(AgencyOffenseCounts.year<2016)
-        query = query.filter(AgencyParticipation.year<2016)
 
         #print(query) # Dubug
         return query
@@ -415,7 +414,6 @@ class AgencyClassificationCounts(db.Model):
                                 AgencyParticipation.year == AgencyClassificationCounts.year)).filter(AgencyParticipation.months_reported == 12)
         query = query.order_by(AgencyClassificationCounts.year.desc()) # Agency reported 12 Months.
 
-        query = query.filter(AgencyOffenseCounts.year<2016)
         query = query.filter(AgencyClassificationCounts.year<2016)
 
 
