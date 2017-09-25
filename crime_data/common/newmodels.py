@@ -313,7 +313,6 @@ class AgencySums(db.Model):
         query = query.join(AgencyParticipation, and_(AgencyParticipation.agency_id == AgencySums.agency_id, AgencyParticipation.year == AgencySums.year)).filter(AgencyParticipation.months_reported == 12)
         query = query.order_by(AgencySums.year.desc()) # Agency reported 12 Months.
 
-        #print(query) # Dubug
         return query
 
 
@@ -366,7 +365,6 @@ class AgencyOffenseCounts(db.Model):
         query = query.filter(AgencyOffenseCounts.year<2016)
         query = query.filter(AgencyParticipation.year<2016)
 
-        #print(query) # Dubug
         return query
 
 
@@ -415,14 +413,9 @@ class AgencyClassificationCounts(db.Model):
 
         query = query.filter(AgencyClassificationCounts.year<2016)
 
-
-        print(query) # Dubug
         return query
 
 
-SELECT agency_classification_view.id AS agency_classification_view_id, agency_classification_view.year AS agency_classification_view_year, agency_classification_view.agency_id AS agency_classification_view_agency_id, agency_classification_view.state_postal_abbr AS agency_classification_view_state_postal_abbr, agency_classification_view.ori AS agency_classification_view_ori, agency_classification_view.pub_agency_name AS agency_classification_view_pub_agency_name, agency_classification_view.classification AS agency_classification_view_classification, agency_classification_view.reported AS agency_classification_view_reported, agency_classification_view.unfounded AS agency_classification_view_unfounded, agency_classification_view.actual AS agency_classification_view_actual, agency_classification_view.cleared AS agency_classification_view_cleared, agency_classification_view.juvenile_cleared AS agency_classification_view_juvenile_cleared
-FROM agency_offenses_view, agency_classification_view JOIN agency_participation ON agency_participation.agency_id = agency_classification_view.agency_id AND agency_participation.year = agency_classification_view.year
-WHERE agency_classification_view.ori = 'WV0170400' AND lower(agency_classification_view.classification) = 'violent' AND agency_participation.months_reported = 12 AND agency_offenses_view.year < 2016 AND agency_classification_view.year < 2016 ORDER BY agency_classification_view.year DESC;
 
 class CdeAgency(db.Model, FilterableModel):
     """A class for the denormalized cde_agencies table"""

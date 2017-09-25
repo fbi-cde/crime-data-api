@@ -376,7 +376,7 @@ class CdeResource(Resource):
             paginated = results
             count = len(paginated)
             pass
-        print(paginated.all())
+            
         if schema:
             paginated = schema.dump(paginated).data
             serialized = self._serialize(paginated)
