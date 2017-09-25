@@ -313,7 +313,6 @@ class AgencySums(db.Model):
         query = query.join(AgencyParticipation, and_(AgencyParticipation.agency_id == AgencySums.agency_id, AgencyParticipation.year == AgencySums.year)).filter(AgencyParticipation.months_reported == 12)
         query = query.order_by(AgencySums.year.desc()) # Agency reported 12 Months.
 
-        #print(query) # Dubug
         return query
 
 
@@ -366,7 +365,6 @@ class AgencyOffenseCounts(db.Model):
         query = query.filter(AgencyOffenseCounts.year<2016)
         query = query.filter(AgencyParticipation.year<2016)
 
-        #print(query) # Dubug
         return query
 
 
@@ -415,8 +413,6 @@ class AgencyClassificationCounts(db.Model):
 
         query = query.filter(AgencyClassificationCounts.year<2016)
 
-
-        # print(query) # Dubug
         return query
 
 
