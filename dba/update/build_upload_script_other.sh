@@ -673,5 +673,4 @@ JOIN ref_state rs ON rs.state_postal_abbr = ret.state_abbr;
 
 DROP TABLE reta_territories_csv;
 
-
 "
