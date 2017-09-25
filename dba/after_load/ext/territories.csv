@@ -1,4 +1,4 @@
-year,name,state_abbr,locality,population,violent_crime,homicde,rape_legacy,rape_revised,robbery,aggravated_assault,property_crime,burglary,larceny,motor_vehicle_theft,arson,caveats
+year,name,state_abbr,locality,population,violent_crime,homicide,rape_legacy,rape_revised,robbery,aggravated_assault,property_crime,burglary,larceny,motor_vehicle_theft,arson,caveats
 1995,Puerto Rico,PR,,,22450,864,324,,15753,5509,83638,27689,39960,15989,,
 1996,Puerto Rico,PR,,,20147,868,316,,13900,5063,79641,27866,35652,16123,,
 1997,Puerto Rico,PR,,,19595,723,278,,13642,4952,75280,26942,32715,15623,,
