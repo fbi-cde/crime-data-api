@@ -90,6 +90,7 @@ aws s3 cp asr_national_juvenile.csv s3://${BUCKET_NAME}/arrests_national_juvenil
 aws s3 cp asr_national_adults.csv s3://${BUCKET_NAME}/arrests_national_adults.csv
 aws s3 cp asr_national_drug.csv s3://${BUCKET_NAME}/arrests_national_drug.csv
 aws s3 cp arrests_national.csv s3://${BUCKET_NAME}/arrests_national.csv
+aws s3 cp estimated_1995_2016.csv s3://${BUCKET_NAME}/estimated_crimes.csv
 
 
 for i in "${arr_years[@]}"
