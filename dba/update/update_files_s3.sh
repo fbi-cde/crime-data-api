@@ -1,4 +1,4 @@
-declare -a arr_years=("2020" "2019" "2018" "2017" "2016")
+declare -a arr_years=("2017")
 declare -a arr_states=("10" "48" "25" "7" "38" "34" "43" "47" "21" "15" "18" "2" "35" "41" "37" "6" "11" "36" "14" "3" "5" "28" "20" "16" "40" "8" "1" "13" "42" "46" "17" "12" "23" "26" "33" "24" "45" "44" "39")
 
 declare -a arr_state_map_full=(["10"]="GA" ["41"]="TN" ["16"]="KY" ["33"]="ND" ["6"]="CT" ["42"]="TX" ["43"]="UT" ["34"]="OH" ["21"]="MI" ["1"]="AL" ["23"]="MS" ["3"]="AR" ["37"]="PA" ["2"]="AZ" ["14"]="IA" ["5"]="CO" ["12"]="IL" ["39"]="SC" ["48"]="WI" ["11"]="ID" ["24"]="MO" ["36"]="OR" ["18"]="ME" ["20"]="MA" ["45"]="VA" ["47"]="WV" ["7"]="DE" ["28"]="NH" ["25"]="MT" ["17"]="LA" ["35"]="OK" ["8"]="DC" ["13"]="IN" ["46"]="WA" ["15"]="KS" ["44"]="VT" ["26"]="NE" ["38"]="RI" ["40"]="SD")
@@ -47,7 +47,7 @@ CREATE TEMP TABLE pe_temp AS SELECT qe.state_postal_abbr as state_postal_abbr, q
      qe.civilian_count as civilian_count, round( ( (qe.civilian_count / population) * 1000)::numeric, 2) as civilian_rate_per_1000,
      population from (SELECT
         (SELECT state_postal_abbr from ref_state where ref_agency.state_id = ref_state.state_id limit 1) as state_postal_abbr,
-        (SELECT population from ref_state_population where ref_agency.state_id = ref_state_population.state_id and pe_employee_data.data_year = ref_state_population.data_year limit 1) as population,
+        (SELECT participation_rates.total_population as population from participation_rates where ref_agency.state_id = participation_rates.state_id and pe_employee_data.data_year = participation_rates.year limit 1) as population,
         pe_employee_data.data_year,
         SUM(COALESCE(male_officer) + COALESCE(female_officer)) as officer_count,
         SUM( COALESCE(female_civilian) + COALESCE(male_civilian) ) as civilian_count
