@@ -308,7 +308,11 @@ class AgencySums(db.Model):
             offense = ExplorerOffenseMapping(explorer_offense).reta_offense_code
             query = query.filter(AgencySums.offense_code == offense)
 
+        query = query.filter(AgencySums.year<2016)
+        query = query.filter(AgencyParticipation.year<2016)
+
         query = query.join(AgencyParticipation, and_(AgencyParticipation.agency_id == AgencySums.agency_id, AgencyParticipation.year == AgencySums.year)).filter(AgencyParticipation.months_reported == 12)
+
         query = query.order_by(AgencySums.year.desc()) # Agency reported 12 Months.
 
         #print(query) # Dubug
@@ -361,6 +365,8 @@ class AgencyOffenseCounts(db.Model):
                                 AgencyParticipation.year == AgencyOffenseCounts.year)).filter(AgencyParticipation.months_reported == 12)
         query = query.order_by(AgencyOffenseCounts.year.desc()) # Agency reported 12 Months.
 
+        query = query.filter(AgencyOffenseCounts.year<2016)
+
         #print(query) # Dubug
         return query
 
@@ -407,6 +413,9 @@ class AgencyClassificationCounts(db.Model):
                            and_(AgencyParticipation.agency_id == AgencyClassificationCounts.agency_id,
                                 AgencyParticipation.year == AgencyClassificationCounts.year)).filter(AgencyParticipation.months_reported == 12)
         query = query.order_by(AgencyClassificationCounts.year.desc()) # Agency reported 12 Months.
+
+        query = query.filter(AgencyClassificationCounts.year<2016)
+
 
         #print(query) # Dubug
         return query
@@ -527,4 +536,7 @@ class HtSummary(db.Model):
             query = query.filter(HtSummary.state_abbr == state_abbr)
 
         query = query.order_by(HtSummary.year, HtSummary.state_abbr)
+
+        query = query.filter(HtSummary.year<2016)
+
         return query

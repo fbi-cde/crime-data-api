@@ -45,6 +45,7 @@ class CdeParticipationRate(newmodels.ParticipationRate):
 
     @property
     def query(self):
+
         qry = super().query
 
         if self.state_id:
@@ -181,7 +182,7 @@ class MultiYearCountView(object):
         if state_abbr and state_id is None:
             # Select State ID for State Abbreviation.
             self.state_id = CdeRefState.get(abbr=state_abbr).one().state_id
-            
+
         self.ori = ori
         self.field = field
         self.national = False
@@ -263,7 +264,7 @@ class MultiYearCountView(object):
                 param_dict['view_name'] = AsIs(self.view_name_ori)
             if self.year:
                 param_dict['year'] = self.year
-            
+
             qry = session.execute(base_query, param_dict)
         except Exception as e:
             session.rollback()
@@ -561,7 +562,7 @@ class OffenseSubCountView(object):
             where_query += ' AND year = :year'
 
         query = query + where_query + ') a '
-        
+
         join_table,join_field = self.get_field_table(field)
         if join_field:
             if self.year:
@@ -735,4 +736,3 @@ class OffenseHateCrimeCountView(OffenseSubCountView):
     @property
     def view_name_ori(self):
         return 'offense_hc_counts_ori'
-

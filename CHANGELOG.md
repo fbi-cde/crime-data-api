@@ -1,6 +1,14 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2017-09-18]
+### Added
+- Include 2015 data ([#624](https://github.com/18F/crime-data-api/pull/624))
+
+### Changed
+- Do not include 2016 data in returned results ([#628](https://github.com/18F/crime-data-api/pull/628))
+
+
 ## [2017-07-20]
 ### Added
 - UCR participation to S3 reports file ([#577](https://github.com/18F/crime-data-api/pull/577))
