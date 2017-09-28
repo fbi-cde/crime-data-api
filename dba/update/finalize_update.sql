@@ -1,34 +1,6 @@
 -- Rename/replace views.
 
 
-drop materialized view IF EXISTS hc_counts_states;
-ALTER MATERIALIZED VIEW hc_counts_states_new RENAME TO hc_counts_states;
-drop materialized view IF EXISTS offense_hc_counts_ori;
-ALTER MATERIALIZED VIEW offense_hc_counts_ori_new RENAME TO offense_hc_counts_ori;
-drop materialized view IF EXISTS offense_hc_counts_states;
-ALTER MATERIALIZED VIEW offense_hc_counts_states_new RENAME TO offense_hc_counts_states;
-drop materialized view IF EXISTS hc_counts_ori;
-ALTER MATERIALIZED VIEW hc_counts_ori_new RENAME TO hc_counts_ori;
-
-
-CREATE INDEX hc_counts_state_id_year_idx ON hc_counts_states (state_id, year);
-CREATE INDEX offense_hc_counts_state_id_year_idx ON offense_hc_counts_states (state_id, year);
-CREATE INDEX hc_counts_ori_year_idx ON hc_counts_ori (ori, year);
-CREATE INDEX offense_hc_counts_ori_year_idx ON offense_hc_counts_ori (ori, year);
-
-drop materialized view  IF EXISTS ct_counts_ori;
-ALTER materialized view ct_counts_ori_new RENAME TO ct_counts_ori; 
-drop materialized view  IF EXISTS ct_counts_states;
-ALTER materialized view ct_counts_states_new RENAME TO ct_counts_states; 
-drop materialized view  IF EXISTS offense_ct_counts_states;
-ALTER materialized view offense_ct_counts_states_new RENAME TO offense_ct_counts_states; 
-drop materialized view  IF EXISTS offense_ct_counts_ori;
-ALTER materialized view offense_ct_counts_ori_new RENAME TO offense_ct_counts_ori; 
-
-CREATE INDEX ct_counts_state_id_idx ON ct_counts_states (state_id, year);
-CREATE INDEX offense_ct_counts_state_id_idx ON offense_ct_counts_states (state_id, year);
-CREATE INDEX ct_counts_ori_idx ON ct_counts_ori (ori, year);
-CREATE INDEX offense_ct_counts_ori_idx ON offense_ct_counts_ori (ori, year);
 
 drop materialized view IF EXISTS offender_counts_states CASCADE;
 ALTER MATERIALIZED VIEW offender_counts_states_temp RENAME TO offender_counts_states;
