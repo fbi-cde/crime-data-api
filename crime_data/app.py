@@ -21,6 +21,7 @@ import crime_data.resources.geo
 import crime_data.resources.participation
 import crime_data.resources.estimates
 import crime_data.resources.arrests
+import crime_data.resources.meta
 
 import crime_data.resources.human_traffic
 from werkzeug.contrib.fixers import ProxyFix
@@ -212,7 +213,6 @@ def add_resources(app):
                      '/ht/agencies')
     api.add_resource(crime_data.resources.human_traffic.HtStatesList,
                      '/ht/states')
-
     api.add_resource(crime_data.resources.victims.VictimOffenseSubcounts,
                      '/victims/count/states/<int:state_id>/<string:variable>/offenses',
                      '/victims/count/states/<string:state_abbr>/<string:variable>/offenses',
@@ -238,6 +238,7 @@ def add_resources(app):
                      '/ct/count/states/<string:state_abbr>/<string:variable>/offenses',
                      '/ct/count/national/<string:variable>/offenses',
                      '/ct/count/agencies/<string:ori>/<string:variable>/offenses')
+    api.add_resource(crime_data.resources.meta.Region,'/region')
 
 
 def newrelic_status_endpoint():
