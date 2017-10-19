@@ -5,7 +5,7 @@ import os
 from flask_marshmallow import Marshmallow
 from marshmallow import fields as marsh_fields
 from marshmallow import Schema, post_dump
-from . import cdemodels, models, newmodels
+from . import cdemodels, models, newmodels, lookupmodels
 from crime_data.common.base import ExplorerOffenseMapping
 
 ma = Marshmallow()
@@ -101,7 +101,7 @@ class ViewCountYearRequiredArgs(ArgumentsSchema):
 
 
 class GroupableArgsSchema(ArgumentsSchema):
-    
+
     """
     Groupable queries can be grouped by one or more fields found in the
     tables separated by commas
@@ -216,7 +216,7 @@ class AgencyOffensesSchema(Schema):
     ucr_agency_name = marsh_fields.String()
     ncic_agency_name = marsh_fields.String()
     pub_agency_name = marsh_fields.String()
-    
+
 
 class NibrsRelationshipSchema(ma.ModelSchema):
     class Meta:
@@ -286,7 +286,7 @@ class SummarySchema(ma.ModelSchema):
 
 class RefRegionSchema(ma.ModelSchema):
     class Meta:
-        model = models.RefRegion
+        model = lookupmodels.RefRegion
         exclude = ('region_id', )
 
 
@@ -1067,3 +1067,19 @@ class ArrestsNationalSchema(ma.ModelSchema):
         model = newmodels.ArrestsNational
         ordered = True
         exclude = ('id', )
+
+
+class RegionLKSchema(ma.ModelSchema):
+    class Meta:
+        model = lookupmodels.RegionLK
+        ordered = True
+
+class StateLKSchema(ma.ModelSchema):
+    class Meta:
+        model = lookupmodels.StateLK
+        ordered = True
+
+class RegionStateLKSchema(ma.ModelSchema):
+    class Meta:
+        model = lookupmodels.RegionStateLK
+        ordered = True

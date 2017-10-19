@@ -2320,15 +2320,6 @@ class RefPopulationGroup(db.Model):
     parent_pop_group = db.relationship('RefParentPopulationGroup')
 
 
-class RefRegion(db.Model):
-    __tablename__ = 'ref_region'
-
-    region_id = db.Column(db.SmallInteger, primary_key=True)
-    region_code = db.Column(db.String(2))
-    region_name = db.Column(db.String(100))
-    region_desc = db.Column(db.String(100))
-
-
 class RefState(db.Model):
     __tablename__ = 'ref_state'
 
