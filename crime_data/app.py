@@ -239,6 +239,9 @@ def add_resources(app):
                      '/ct/count/national/<string:variable>/offenses',
                      '/ct/count/agencies/<string:ori>/<string:variable>/offenses')
     api.add_resource(crime_data.resources.meta.Region,'/region')
+    api.add_resource(crime_data.resources.meta.RegionLK,'/lookup/region')
+    api.add_resource(crime_data.resources.meta.StateLK,'/lookup/state')
+    api.add_resource(crime_data.resources.meta.RegionStateLK,'/lookup/regionstate')
 
 
 def newrelic_status_endpoint():
