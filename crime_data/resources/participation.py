@@ -5,13 +5,12 @@ from webargs.flaskparser import use_args
 from crime_data.extensions import DEFAULT_MAX_AGE
 from flask.ext.cachecontrol import cache
 
-from crime_data.common import cdemodels, models, newmodels
+from crime_data.common import cdemodels, models, newmodels, lookupmodels
 from crime_data.common import marshmallow_schemas
 from crime_data.common.base import CdeResource, tuning_page
 from crime_data.common.marshmallow_schemas import(
     ArgumentsSchema, ApiKeySchema, StateParticipationRateSchema
 )
-
 
 class StateParticipation(CdeResource):
     schema = marshmallow_schemas.StateParticipationRateSchema(many=True)
@@ -27,6 +26,22 @@ class StateParticipation(CdeResource):
         filename = '{}_state_participation'.format(state.state_abbr)
         return self.render_response(rates, args, csv_filename=filename)
 
+class RegionParticipation(CdeResource):
+    schema = marshmallow_schemas.StateParticipationRateSchema(many=True)
+
+    @use_args(marshmallow_schemas.ArgumentsSchema)
+    @cache(max_age=DEFAULT_MAX_AGE, public=True)
+    @tuning_page
+    def get(self, args, region_code=None):
+        self.verify_api_key(args)
+        states = lookupmodels.StateLK.get(region_code=region_code).all()
+        id_arr= []
+        [id_arr.append(state.state_id) for state in states]
+        rates = cdemodels.CdeRefState.get(states=id_arr).all()
+        [print(rate) for rate in rates]
+
+        filename = '{}_state_participation'.format(region_code)
+        return self.render_response(rates, args, csv_filename=filename)
 
 class NationalParticipation(CdeResource):
     """Returns a collection of all state participation rates for each year"""

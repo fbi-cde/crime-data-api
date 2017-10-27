@@ -155,6 +155,9 @@ def add_resources(app):
     api.add_resource(crime_data.resources.participation.StateParticipation,
                      '/participation/states/<string:state_abbr>')
 
+    api.add_resource(crime_data.resources.participation.RegionParticipation,
+                     '/participation/regions/<int:region_code>')
+
     api.add_resource(crime_data.resources.geo.CountyDetail,
                      '/geo/counties/<string:fips>')
 
@@ -166,7 +169,8 @@ def add_resources(app):
                      '/estimates/national')
     api.add_resource(crime_data.resources.estimates.EstimatesState,
                      '/estimates/states/<string:state_id>')
-
+    api.add_resource(crime_data.resources.estimates.EstimatesRegion,
+                     '/estimates/regions/<int:region_code>')
 
     api.add_resource(crime_data.resources.offenses.OffensesCountNational,
                      '/offenses/count/national/<string:variable>')
@@ -241,7 +245,6 @@ def add_resources(app):
     api.add_resource(crime_data.resources.meta.Region,'/region')
     api.add_resource(crime_data.resources.meta.RegionLK,'/lookup/region')
     api.add_resource(crime_data.resources.meta.StateLK,'/lookup/state')
-    api.add_resource(crime_data.resources.meta.RegionStateLK,'/lookup/regionstate')
 
 
 def newrelic_status_endpoint():
