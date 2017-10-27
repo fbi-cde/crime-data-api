@@ -33,12 +33,3 @@ class StateLK(CdeResource):
         self.verify_api_key(args)
         result = lookupmodels.StateLK.query
         return self.with_metadata(result, args)
-
-class RegionStateLK(CdeResource):
-    schema = marshmallow_schemas.RegionStateLKSchema(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args):
-        self.verify_api_key(args)
-        result = lookupmodels.RegionStateLK.query
-        return self.with_metadata(result, args)

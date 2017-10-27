@@ -1078,8 +1078,3 @@ class StateLKSchema(ma.ModelSchema):
     class Meta:
         model = lookupmodels.StateLK
         ordered = True
-
-class RegionStateLKSchema(ma.ModelSchema):
-    class Meta:
-        model = lookupmodels.RegionStateLK
-        ordered = True
