@@ -21,6 +21,7 @@ import crime_data.resources.geo
 import crime_data.resources.participation
 import crime_data.resources.estimates
 import crime_data.resources.arrests
+import crime_data.resources.meta
 
 import crime_data.resources.human_traffic
 from werkzeug.contrib.fixers import ProxyFix
@@ -154,6 +155,9 @@ def add_resources(app):
     api.add_resource(crime_data.resources.participation.StateParticipation,
                      '/participation/states/<string:state_abbr>')
 
+    api.add_resource(crime_data.resources.participation.RegionParticipation,
+                     '/participation/regions/<int:region_code>')
+
     api.add_resource(crime_data.resources.geo.CountyDetail,
                      '/geo/counties/<string:fips>')
 
@@ -165,7 +169,8 @@ def add_resources(app):
                      '/estimates/national')
     api.add_resource(crime_data.resources.estimates.EstimatesState,
                      '/estimates/states/<string:state_id>')
-
+    api.add_resource(crime_data.resources.estimates.EstimatesRegion,
+                     '/estimates/regions/<int:region_code>')
 
     api.add_resource(crime_data.resources.offenses.OffensesCountNational,
                      '/offenses/count/national/<string:variable>')
@@ -212,7 +217,6 @@ def add_resources(app):
                      '/ht/agencies')
     api.add_resource(crime_data.resources.human_traffic.HtStatesList,
                      '/ht/states')
-
     api.add_resource(crime_data.resources.victims.VictimOffenseSubcounts,
                      '/victims/count/states/<int:state_id>/<string:variable>/offenses',
                      '/victims/count/states/<string:state_abbr>/<string:variable>/offenses',
@@ -238,6 +242,9 @@ def add_resources(app):
                      '/ct/count/states/<string:state_abbr>/<string:variable>/offenses',
                      '/ct/count/national/<string:variable>/offenses',
                      '/ct/count/agencies/<string:ori>/<string:variable>/offenses')
+    api.add_resource(crime_data.resources.meta.Region,'/region')
+    api.add_resource(crime_data.resources.meta.RegionLK,'/lookup/region')
+    api.add_resource(crime_data.resources.meta.StateLK,'/lookup/state')
 
 
 def newrelic_status_endpoint():
