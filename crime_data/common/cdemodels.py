@@ -38,10 +38,11 @@ class CdeRefAgencyCounty(models.RefAgencyCounty):
 class CdeParticipationRate(newmodels.ParticipationRate):
     """Class for querying the cde_participation_rate"""
 
-    def __init__(self, year=None, state_id=None, county_id=None):
+    def __init__(self, year=None, state_id=None, county_id=None, states=None):
         self.year = year
         self.state_id = state_id
         self.county_id = county_id
+        self.states = states
 
     @property
     def query(self):
@@ -75,6 +76,7 @@ class CdeRefCounty(db.Model):
         elif name:
             query = query.filter(func.lower(CdeRefCounty.county_name) ==
                                  func.lower(name))
+
         return query
 
     county_id = db.Column(db.BigInteger, primary_key=True)
@@ -96,7 +98,7 @@ class CdeRefState(db.Model):
     """A wrapper around the RefState model with extra finder methods"""
     __tablename__ = 'cde_states'
 
-    def get(state_id=None, abbr=None, fips=None):
+    def get(state_id=None, abbr=None, fips=None, states=None):
         """
         A method to find a state by its database ID, postal abbr or FIPS code
         """
@@ -106,6 +108,8 @@ class CdeRefState(db.Model):
             query = query.filter(CdeRefState.state_id == state_id)
         elif abbr:
             query = query.filter(func.lower(CdeRefState.state_abbr) == func.lower(abbr))
+        elif states:
+            query = query.filter(CdeRefState.state_id.in_(states))
 
         return query
 

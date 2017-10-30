@@ -5,6 +5,7 @@ engines:
       - crime_data/common/models.py
       - crime_data/common/cdemodels.py
       - crime_data/common/newmodels.py
+      - crime_data/common/lookupmodels.py
       - crime_data/common/marshmallow_schemas.py
     config:
       languages:
