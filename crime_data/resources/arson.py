@@ -25,7 +25,6 @@ class ArsonStateCounts(CdeResource):
             states = lookupmodels.StateLK.get(region_code=region_code).all()
             id_arr= []
             [id_arr.append(state.state_abbr) for state in states]
-            print(id_arr)
             query = query.filter(ArsonSummary.state_abbr.in_(id_arr))
         else:
             query = query.filter(ArsonSummary.state_abbr == None)
