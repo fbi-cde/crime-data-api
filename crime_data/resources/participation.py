@@ -38,8 +38,6 @@ class RegionParticipation(CdeResource):
         id_arr= []
         [id_arr.append(state.state_id) for state in states]
         rates = cdemodels.CdeRefState.get(states=id_arr).all()
-        [print(rate) for rate in rates]
-
         filename = '{}_state_participation'.format(region_code)
         return self.render_response(rates, args, csv_filename=filename)
 
