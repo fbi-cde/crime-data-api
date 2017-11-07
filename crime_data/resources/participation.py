@@ -37,7 +37,7 @@ class RegionParticipation(CdeResource):
         states = lookupmodels.StateLK.get(region_code=region_code).all()
         id_arr= []
         [id_arr.append(state.state_id) for state in states]
-        rates = cdemodels.CdeRefState.get(states=id_arr).all()
+        rates = cdemodels.CdeParticipationRate(states=id_arr).query.order_by('year DESC').all()
         filename = '{}_state_participation'.format(region_code)
         return self.render_response(rates, args, csv_filename=filename)
 
