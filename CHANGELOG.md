@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
-## [2017-09-18]
+## [2017-11-07]
+### Added
+- Adds new Endpoints for Region Participation Data ([#636](https://github.com/18F/crime-data-api/pull/636))
+
+## [2017-10-31]
 ### Added
 - Adds new Endpoints for Region Data ([#636](https://github.com/18F/crime-data-api/pull/636))
 
