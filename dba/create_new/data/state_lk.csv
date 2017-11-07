@@ -13,12 +13,12 @@
 13,GA,Georgia,13,3
 14,GM,Guam,66,0
 15,HI,Hawaii,15,4
-16,IA,Iowa,19,4
-17,ID,Idaho,16,2
+16,IA,Iowa,19,2
+17,ID,Idaho,16,4
 18,IL,Illinois,17,2
 19,IN,Indiana,18,2
 20,KS,Kansas,20,2
-21,KY,Kentucky,21,1
+21,KY,Kentucky,21,3
 22,LA,Louisiana,22,3
 23,MA,Massachusetts,25,1
 24,MD,Maryland,24,3
@@ -28,7 +28,7 @@
 28,MO,Missouri,29,2
 29,MS,Mississippi,28,3
 30,MT,Montana,30,4
-31,NB,Nebraska,31,2
+31,NE,Nebraska,31,2
 32,NC,North Carolina,37,3
 33,ND,North Dakota,38,2
 34,NH,New Hampshire,33,1
@@ -41,11 +41,11 @@
 41,OR,Oregon,41,4
 42,PA,Pennsylvania,42,1
 43,PR,Puerto Rico,72,1
-44,RI,Rhode Island,44,3
-45,SC,South Carolina,45,2
-46,SD,South Dakota,46,3
+44,RI,Rhode Island,44,1
+45,SC,South Carolina,45,3
+46,SD,South Dakota,46,2
 47,TN,Tennessee,47,3
-48,TX,Texas,48,4
+48,TX,Texas,48,3
 49,UT,Utah,49,4
 50,VI,U.S. Virgin Islands,78,0
 51,VA,Virginia,51,3
