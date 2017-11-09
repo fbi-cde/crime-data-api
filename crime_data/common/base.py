@@ -333,7 +333,6 @@ class CdeResource(Resource):
         dialect = query.session.bind.dialect
         statement = query.statement
         comp = compiler.SQLCompiler(dialect, statement)
-        comp.compile()
         enc = dialect.encoding
         params = {}
         for k, v in comp.params.items():
@@ -376,7 +375,7 @@ class CdeResource(Resource):
             paginated = results
             count = len(paginated)
             pass
-            
+
         if schema:
             paginated = schema.dump(paginated).data
             serialized = self._serialize(paginated)
