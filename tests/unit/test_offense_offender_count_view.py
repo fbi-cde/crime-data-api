@@ -6,11 +6,22 @@ from crime_data.common.cdemodels import OffenseOffenderCountView
 class TestOffenseOffenderCountView:
     """Test the OffenseOffenderCountView"""
 
+    # select race_code, count(race_code) from nibrs_offender o JOIN
+    # ref_race rr ON rr.race_id = o.race_id JOIN nibrs_offense o2 ON
+    # o2.incident_id = o.incident_id JOIN nibrs_incident ni ON
+    # ni.incident_id = o2.incident_id JOIN ref_agency ra ON
+    # ra.agency_id = ni.agency_id JOIN nibrs_month nm ON
+    # nm.nibrs_month_id = ni.nibrs_month_id WHERE nm.data_year = 2014
+    # AND ra.state_id = 44 AND o2.offense_type_id = 40 GROUP by
+    # race_code;
     def test_count_for_a_state(self, app):
-        v = OffenseOffenderCountView('race_code', year=2014, state_id=44, offense_name='Impersonation', as_json=False)
+        v = OffenseOffenderCountView('race_code', year=2014, state_id=44, offense_name='Robbery', as_json=False)
         results = v.query({}).fetchall()
         expected = {
-            'U': 1
+            'A': 2,
+            'B': 148,
+            'U': 8,
+            'W': 183
         }
         assert len(results) == 10 # all the race code options
         for row in results:
@@ -19,8 +30,8 @@ class TestOffenseOffenderCountView:
                 assert row['count'] == expected[row['race_code']]
 
     @pytest.mark.parametrize('year', [2014, None])
-    @pytest.mark.parametrize('state_id', [41, None])
-    @pytest.mark.parametrize('offense_name', ['Shoplifting', None])
+    @pytest.mark.parametrize('state_id', [44, None])
+    @pytest.mark.parametrize('offense_name', ['Shoplifting'])
     @pytest.mark.parametrize('variable', OffenseOffenderCountView.VARIABLES)
     def test_endpoint(self, app, year, state_id, offense_name, variable):
         v = OffenseOffenderCountView(variable, year=year, state_id=state_id, offense_name=offense_name, as_json=False)
