@@ -1,7 +1,7 @@
 import abc
 from collections import namedtuple
 from flask_restful import abort
-from sqlalchemy import and_, func, or_
+from sqlalchemy import and_, func, or_, UniqueConstraint
 from sqlalchemy.exc import ArgumentError
 from sqlalchemy.orm import aliased
 from sqlalchemy.orm.exc import NoResultFound
@@ -41,7 +41,7 @@ class CdeParticipationRate(newmodels.ParticipationRate):
     def __init__(self, year=None, state_id=None, county_id=None, states=None):
         self.year = year
         self.state_id = state_id
-        self.county_id = county_id
+        self.county_id = county_idexisting
         self.states = states
 
     @property
@@ -61,6 +61,75 @@ class CdeParticipationRate(newmodels.ParticipationRate):
             qry = qry.filter(newmodels.ParticipationRate.state_id.in_(self.states))
 
         return qry
+
+
+
+class SummarizedData(db.Model):
+    __tablename__ = 'summarized_data'
+    __table_args__ = (UniqueConstraint('data_year', 'ori','month_num'), )
+
+    data_year = db.Column(db.SmallInteger, primary_key=True)
+    ori = db.Column(db.String(25), primary_key=True)
+    agency_id = db.Column(db.Integer)
+    month_num = db.Column(db.SmallInteger, primary_key=True)
+    agency_type_name = db.Column(db.String(100))
+    pub_agency_name_population  = db.Column(db.String(100))
+    population = db.Column(db.Integer)
+    population_group_id	= db.Column(db.SmallInteger)
+    population_group_code = db.Column(db.String(3))
+    population_group_desc = db.Column(db.String(100))
+    parent_pop_group_code  	= db.Column(db.SmallInteger)
+    parent_pop_group_desc  = db.Column(db.String(100))
+    pop_sort_order  = db.Column(db.Integer)
+    mip_flag = db.Column(db.Integer)
+    summary_rape_def = db.Column(db.String(1))
+    pe_reported_flag = db.Column(db.String(1))
+    pe_officer_count = db.Column(db.Integer)
+    pe_civilian_count = db.Column(db.Integer)
+    state_name = db.Column(db.String(100))
+    state_id = db.Column(db.SmallInteger)
+    state_abbr  = db.Column(db.String(1))
+    county_name =  db.Column(db.String(100))
+    msa_name  = db.Column(db.String(100))
+    division_code = db.Column(db.SmallInteger)
+    division_name = db.Column(db.String(100))
+    region_code	= db.Column(db.SmallInteger)
+    region_name	 = db.Column(db.String(100))
+    judicial_dist_code  = db.Column(db.String(25))
+    field_office_id = db.Column(db.Integer)
+    sum_unknown	= db.Column(db.Integer)
+    sum_hom	= db.Column(db.Integer)
+    sum_man	= db.Column(db.Integer)
+    sum_rpe_ns_leg	= db.Column(db.Integer)
+    sum_rpe_frc_leg	= db.Column(db.Integer)
+    sum_rpe_att_leg	= db.Column(db.Integer)
+    sum_rpe_ns	= db.Column(db.Integer)
+    sum_rpe_frc	= db.Column(db.Integer)
+    sum_rpe_att	= db.Column(db.Integer)
+    sum_rob_ns	= db.Column(db.Integer)
+    sum_rob_gun	= db.Column(db.Integer)
+    sum_rob_cut	= db.Column(db.Integer)
+    sum_rob_oth	= db.Column(db.Integer)
+    sum_rob_hff	= db.Column(db.Integer)
+    sum_ass_ns	= db.Column(db.Integer)
+    sum_ass_gun	= db.Column(db.Integer)
+    sum_ass_cut	= db.Column(db.Integer)
+    sum_ass_oth	= db.Column(db.Integer)
+    sum_ass_hff	= db.Column(db.Integer)
+    sum_ass_sm	= db.Column(db.Integer)
+    sum_brg_ns	= db.Column(db.Integer)
+    sum_brg_feo	= db.Column(db.Integer)
+    sum_brg_ueo	= db.Column(db.Integer)
+    sum_brg_afe	= db.Column(db.Integer)
+    sum_lar_tft	= db.Column(db.Integer)
+    sum_mtr_ns	= db.Column(db.Integer)
+    sum_mtr_ato	= db.Column(db.Integer)
+    sum_mtr_trk	= db.Column(db.Integer)
+    sum_mtr_oth	= db.Column(db.Integer)
+    sum_ht_ns = db.Column(db.Integer)
+    sum_ht_sex = db.Column(db.Integer)
+    sum_ht_srv = db.Column(db.Integer)
+    sum_ars	= db.Column(db.Integer)
 
 
 class CdeRefCounty(db.Model):

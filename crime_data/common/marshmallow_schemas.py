@@ -1078,3 +1078,7 @@ class StateLKSchema(ma.ModelSchema):
     class Meta:
         model = lookupmodels.StateLK
         ordered = True
+
+class SummarizedDataSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.SummarizedData
