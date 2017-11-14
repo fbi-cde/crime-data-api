@@ -23,6 +23,17 @@ class RefRegion(db.Model):
 
 class RegionLK(db.Model):
     __tablename__ = 'region_lk'
+
+    def getByName(region_name=None):
+        """
+        A method to find a region by its region_name
+        """
+        query = RegionLK.query
+
+        if region_name:
+            query = query.filter(func.lower(RegionLK.region_name) == func.lower(region_name))
+        return query
+
     region_code = db.Column(db.SmallInteger, primary_key=True)
     region_name = db.Column(db.String(50))
     region_desc = db.Column(db.String(100))
