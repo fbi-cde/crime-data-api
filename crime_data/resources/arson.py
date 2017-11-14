@@ -15,20 +15,20 @@ class ArsonStateCounts(CdeResource):
     @use_args(marshmallow_schemas.ArgumentsSchema)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page
-    def get(self, args, state_abbr=None, region_code=None):
+    def get(self, args, state_abbr=None, region_name=None):
         self.verify_api_key(args)
         query = ArsonSummary.query
 
         if state_abbr is not None:
             query = query.filter(func.lower(ArsonSummary.state_abbr) == func.lower(state_abbr))
-        elif region_code is not None:
-            states = lookupmodels.StateLK.get(region_code=region_code).all()
+        elif region_name is not None:
+            region = lookupmodels.RegionLK.getByName(region_name=region_name).first()
+            states = lookupmodels.StateLK.get(region_code=region.region_code).all()
             id_arr= []
             [id_arr.append(state.state_abbr) for state in states]
             query = query.filter(ArsonSummary.state_abbr.in_(id_arr))
         else:
             query = query.filter(ArsonSummary.state_abbr == None)
-
 
         query = query.filter(ArsonSummary.ori == None)
         query = query.filter(ArsonSummary.year != None)
