@@ -32,13 +32,14 @@ class RegionParticipation(CdeResource):
     @use_args(marshmallow_schemas.ArgumentsSchema)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page
-    def get(self, args, region_code=None):
+    def get(self, args, region_name=None):
         self.verify_api_key(args)
-        states = lookupmodels.StateLK.get(region_code=region_code).all()
+        region = lookupmodels.RegionLK.getByName(region_name=region_name).first()
+        states = lookupmodels.StateLK.get(region_code=region.region_code).all()
         id_arr= []
         [id_arr.append(state.state_id) for state in states]
         rates = cdemodels.CdeParticipationRate(states=id_arr).query.order_by('year DESC').all()
-        filename = '{}_state_participation'.format(region_code)
+        filename = '{}_state_participation'.format(region.region_code)
         return self.render_response(rates, args, csv_filename=filename)
 
 class NationalParticipation(CdeResource):
