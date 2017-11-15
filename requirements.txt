@@ -1,3 +1,13 @@
-# Included because many Paas's require a requirements.txt file in the project root
-# Just installs the production requirements.
--r requirements/prod.txt
+applications:
+- name: crime-data-api
+  memory: 512M
+  buildpack: python_buildpack
+  host: crime-data-api
+  domain: fr.cloud.gov
+env:
+  FLASK_APP: autoapp.py
+  NEW_RELIC_CONFIG_FILE: newrelic.ini
+  NEW_RELIC_LOG: stdout
+services:
+- crime-data-upload-db
+- crime-data-api-creds
