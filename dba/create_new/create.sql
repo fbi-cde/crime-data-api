@@ -13,7 +13,7 @@ STATE_FIPS_CODE int,
 region_code smallint REFERENCES region_lk(region_code)
 );
 
-
+-- With a PE Admin Import Exclude the agency_name_edit column when loading the csv
 CREATE TABLE public.summarized_data
 (
 	DATA_YEAR	smallint,
@@ -86,8 +86,19 @@ CREATE TABLE public.summarized_data
 	SUM_HT_NS	int,
 	SUM_HT_SEX	int,
 	SUM_HT_SRV	int,
-	SUM_ARS		int
+	SUM_ARS		int,
+  agency_name_edit varchar(100)
 );
+
+
+UPDATE public.summarized_data sd
+   SET agency_name_edit= edited_name
+ FROM public.agency_name_edits ane
+ WHERE ane.ori = sd.ori
+
+CREATE MATERIALIZED VIEW agencies_summarized AS
+select agency_id , ori as ori, agency_type_name as agency_type_name, state_id as state_id, state_abbr as state_abbr, agency_name_edit as agency_name_edit
+    from public.summarized_data  where state_id = 13 GROUP BY agency_id, ori, agency_type_name, state_id, state_abbr, agency_name_edit
 
 CREATE MATERIALIZED VIEW summarized_data_region AS
 select region_code, data_year as data_year,
