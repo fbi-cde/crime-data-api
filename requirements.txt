@@ -1,13 +1,34 @@
-applications:
-- name: crime-data-api
-  memory: 512M
-  buildpack: python_buildpack
-  host: crime-data-api
-  domain: fr.cloud.gov
-env:
-  FLASK_APP: autoapp.py
-  NEW_RELIC_CONFIG_FILE: newrelic.ini
-  NEW_RELIC_LOG: stdout
-services:
-- crime-data-upload-db
-- crime-data-api-creds
+# Everything needed in production
+wheel==0.29.0
+
+# Flask
+Flask==0.12
+Werkzeug==0.12.2
+click>=5.0
+Flask-Script>=0.6
+Flask-CacheControl==0.1.2
+Flask-cors==3.0.2
+
+# Database
+Flask-SQLAlchemy==2.1
+psycopg2==2.7.3.2
+SQLAlchemy==1.1.5
+
+# Deployment
+gunicorn>=19.1.1
+gevent==1.2.1
+
+# Caching
+Flask-Caching>=1.0.0
+
+# RESTful
+Flask-RESTful==0.3.5
+
+# Performance tuning
+sqltap==0.3.10
+newrelic
+
+marshmallow==2.10.5
+flask-marshmallow==0.7.0
+marshmallow-sqlalchemy==0.12.1
+webargs==1.4.0
