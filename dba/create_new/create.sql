@@ -98,7 +98,7 @@ UPDATE public.summarized_data sd
 
 CREATE MATERIALIZED VIEW agencies_mv AS
 select agency_id , ori as ori, agency_type_name as agency_type_name, state_id as state_id, state_abbr as state_abbr, agency_name_edit as agency_name_edit
-    from public.summarized_data  where state_id = 13 GROUP BY agency_id, ori, agency_type_name, state_id, state_abbr, agency_name_edit
+    from public.summarized_data  GROUP BY agency_id, ori, agency_type_name, state_id, state_abbr, agency_name_edit
 
 CREATE MATERIALIZED VIEW summarized_data_region AS
 select region_code, data_year as data_year,

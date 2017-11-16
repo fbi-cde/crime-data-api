@@ -251,7 +251,7 @@ def add_resources(app):
                     '/summarized/region/<string:region_name>',
                     '/summarized/state/<string:state_abbr>')
 
-    api.add_resource(crime_data.resources.agencies.Agencies,'/new/agencies', '/new/agencies/<string:state_abbr>','/new/agencies/<string:ori>')
+    api.add_resource(crime_data.resources.agencies.Agencies,'/new/agencies', '/new/agencies/state/<string:state_abbr>','/new/agencies/ori/<string:ori>')
 
 
 def newrelic_status_endpoint():
