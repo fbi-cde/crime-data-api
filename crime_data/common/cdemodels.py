@@ -41,7 +41,7 @@ class CdeParticipationRate(newmodels.ParticipationRate):
     def __init__(self, year=None, state_id=None, county_id=None, states=None):
         self.year = year
         self.state_id = state_id
-        self.county_id = county_idexisting
+        self.county_id = county_id
         self.states = states
 
     @property
