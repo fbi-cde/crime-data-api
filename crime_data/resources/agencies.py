@@ -4,6 +4,7 @@ from flask import jsonify
 from webargs.flaskparser import use_args
 from crime_data.extensions import DEFAULT_MAX_AGE
 from flask.ext.cachecontrol import cache
+from sqlalchemy import func
 
 from crime_data.common import cdemodels, models, newmodels
 from crime_data.common.newmodels import CdeAgency
