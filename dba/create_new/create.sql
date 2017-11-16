@@ -96,7 +96,7 @@ UPDATE public.summarized_data sd
  FROM public.agency_name_edits ane
  WHERE ane.ori = sd.ori
 
-CREATE MATERIALIZED VIEW agencies_summarized AS
+CREATE MATERIALIZED VIEW agencies_mv AS
 select agency_id , ori as ori, agency_type_name as agency_type_name, state_id as state_id, state_abbr as state_abbr, agency_name_edit as agency_name_edit
     from public.summarized_data  where state_id = 13 GROUP BY agency_id, ori, agency_type_name, state_id, state_abbr, agency_name_edit
 
