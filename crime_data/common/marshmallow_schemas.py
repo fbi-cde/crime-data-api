@@ -1082,3 +1082,7 @@ class StateLKSchema(ma.ModelSchema):
 class SummarizedDataSchema(ma.ModelSchema):
     class Meta:
         model = cdemodels.SummarizedData
+
+class AgenciesSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.Agencies

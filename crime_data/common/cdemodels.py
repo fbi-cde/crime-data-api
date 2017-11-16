@@ -63,6 +63,15 @@ class CdeParticipationRate(newmodels.ParticipationRate):
         return qry
 
 
+class Agencies (db.Model):
+    __tablename__ = 'agencies_mv'
+    __table_args__ = (UniqueConstraint('ori'), )
+    ori = db.Column(db.String(25), primary_key=True)
+    agency_type_name = db.Column(db.String(100))
+    state_id = db.Column(db.SmallInteger)
+    state_abbr  = db.Column(db.String(1))
+    agency_name_edit  = db.Column(db.String(100))
+
 
 class SummarizedData(db.Model):
     __tablename__ = 'summarized_data'
@@ -77,6 +86,7 @@ class SummarizedData(db.Model):
     pub_agency_unit  = db.Column(db.String(100))
     ucr_agency_name  = db.Column(db.String(100))
     ncic_agency_name  = db.Column(db.String(100))
+    agency_name_edit  = db.Column(db.String(100))
     population = db.Column(db.Integer)
     population_group_id	= db.Column(db.SmallInteger)
     population_group_code = db.Column(db.String(3))

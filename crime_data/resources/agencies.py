@@ -31,3 +31,18 @@ class AgenciesDetail(CdeResource):
         self.verify_api_key(args)
         agency = CdeAgency.query.filter(CdeAgency.ori == ori).one()
         return jsonify(self.schema.dump(agency).data)
+
+
+class Agencies(CdeResource):
+    schema = marshmallow_schemas.AgenciesSchema(many=True)
+    @use_args(ArgumentsSchema)
+    @cache(max_age=DEFAULT_MAX_AGE, public=True)
+    def get(self, args, ori=None, state_abbr=None):
+        self.verify_api_key(args)
+        query = cdemodels.Agencies(state_abbr=state_abbr,ori=ori).query
+        if state_abbr is not None:
+            query = query.filter(func.lower(cdemodels.Agencies.state_abbr) == func.lower(state_abbr))
+        elif ori is not None:
+            query = query.filter(func.lower(cdemodels.Agencies.ori) == func.lower(ori))
+
+        return self._serialize(query)
