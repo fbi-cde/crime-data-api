@@ -28,9 +28,10 @@ class EstimatesRegion(CdeResource):
     @use_args(marshmallow_schemas.ArgumentsSchema)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page
-    def get(self, args, region_code):
+    def get(self, args, region_name):
         self.verify_api_key(args)
-        states = lookupmodels.StateLK.get(region_code=region_code).all()
+        region = lookupmodels.RegionLK.getByName(region_name=region_name).first()
+        states = lookupmodels.StateLK.get(region_code=region.region_code).all()
         id_arr= []
         [id_arr.append(state.state_id) for state in states]
         estimates = RetaEstimated.query.filter(RetaEstimated.state_id.in_(id_arr)).order_by(RetaEstimated.year)

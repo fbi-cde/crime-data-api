@@ -149,7 +149,7 @@ def add_resources(app):
                      '/codes/<string:code_table>')
 
     api.add_resource(crime_data.resources.arson.ArsonStateCounts,
-                     '/arson/national', '/arson/states/<string:state_abbr>', '/arson/regions/<string:region_code>')
+                     '/arson/national', '/arson/states/<string:state_abbr>', '/arson/regions/<string:region_name>')
 
     api.add_resource(crime_data.resources.geo.StateDetail,
                      '/geo/states/<string:id>')
@@ -157,7 +157,7 @@ def add_resources(app):
                      '/participation/states/<string:state_abbr>')
 
     api.add_resource(crime_data.resources.participation.RegionParticipation,
-                     '/participation/regions/<int:region_code>')
+                     '/participation/regions/<string:region_name>')
 
     api.add_resource(crime_data.resources.geo.CountyDetail,
                      '/geo/counties/<string:fips>')
@@ -171,7 +171,7 @@ def add_resources(app):
     api.add_resource(crime_data.resources.estimates.EstimatesState,
                      '/estimates/states/<string:state_id>')
     api.add_resource(crime_data.resources.estimates.EstimatesRegion,
-                     '/estimates/regions/<int:region_code>')
+                     '/estimates/regions/<string:region_name>')
 
     api.add_resource(crime_data.resources.offenses.OffensesCountNational,
                      '/offenses/count/national/<string:variable>')
