@@ -1,5 +1,9 @@
 # Change Log
 All notable changes to this project will be documented in this file.
+## [2017-11-14]
+### Changed
+- Changes Region Code Lookup to use Region Name (https://github.com/18F/crime-data-api/tree/CDE-191))
+
 ## [2017-11-07]
 ### Added
 - Adds new Endpoints for Region Participation Data ([#636](https://github.com/18F/crime-data-api/pull/636))
