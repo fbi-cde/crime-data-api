@@ -71,6 +71,7 @@ class Agencies (db.Model):
     state_id = db.Column(db.SmallInteger)
     state_abbr  = db.Column(db.String(1))
     agency_name_edit  = db.Column(db.String(100))
+    county_name = db.Column(db.String(100))
 
 
 class SummarizedData(db.Model):

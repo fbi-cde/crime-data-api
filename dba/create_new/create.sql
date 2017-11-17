@@ -7,7 +7,7 @@ CREATE TABLE public.region_lk
 
 CREATE TABLE state_lk (
 state_id int PRIMARY KEY,
-STATE_ABBR character(4),
+STATE_ABBR character(2),
 STATE_NAME varchar(50),
 STATE_FIPS_CODE int,
 region_code smallint REFERENCES region_lk(region_code)
@@ -96,9 +96,9 @@ UPDATE public.summarized_data sd
  FROM public.agency_name_edits ane
  WHERE ane.ori = sd.ori
 
-CREATE MATERIALIZED VIEW agencies_mv AS
-select agency_id , ori as ori, agency_type_name as agency_type_name, state_id as state_id, state_abbr as state_abbr, agency_name_edit as agency_name_edit
-    from public.summarized_data  GROUP BY agency_id, ori, agency_type_name, state_id, state_abbr, agency_name_edit
+ CREATE MATERIALIZED VIEW agencies_mv AS
+ select agency_id , ori as ori, agency_type_name as agency_type_name, state_id as state_id, state_abbr as state_abbr, agency_name_edit as agency_name_edit, county_name as county_name
+     from public.summarized_data  GROUP BY agency_id, ori, agency_type_name, state_id, state_abbr, agency_name_edit, county_name
 
 CREATE MATERIALIZED VIEW summarized_data_region AS
 select region_code, data_year as data_year,
