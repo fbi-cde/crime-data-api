@@ -20,6 +20,10 @@ from crime_data.common.models import RefAgency, RefState, RefCounty
 from crime_data.extensions import db
 from sqlalchemy import or_,and_
 
+# fixme. ugh!
+MAX_AGENCY_YEAR = 2016
+
+
 class FilterableModel:
     @classmethod
     def column_is_string(cls, col_name):
@@ -308,8 +312,8 @@ class AgencySums(db.Model):
             offense = ExplorerOffenseMapping(explorer_offense).reta_offense_code
             query = query.filter(AgencySums.offense_code == offense)
 
-        query = query.filter(AgencySums.year<2016)
-        query = query.filter(AgencyParticipation.year<2016)
+        query = query.filter(AgencySums.year <= MAX_AGENCY_YEAR)
+        query = query.filter(AgencyParticipation.year <= MAX_AGENCY_YEAR)
 
         query = query.join(AgencyParticipation, and_(AgencyParticipation.agency_id == AgencySums.agency_id, AgencyParticipation.year == AgencySums.year)).filter(AgencyParticipation.months_reported == 12)
 
@@ -364,7 +368,7 @@ class AgencyOffenseCounts(db.Model):
                                 AgencyParticipation.year == AgencyOffenseCounts.year)).filter(AgencyParticipation.months_reported == 12)
         query = query.order_by(AgencyOffenseCounts.year.desc()) # Agency reported 12 Months.
 
-        query = query.filter(AgencyOffenseCounts.year<2016)
+        query = query.filter(AgencyOffenseCounts.year <= MAX_AGENCY_YEAR)
 
         return query
 
@@ -412,7 +416,7 @@ class AgencyClassificationCounts(db.Model):
                                 AgencyParticipation.year == AgencyClassificationCounts.year)).filter(AgencyParticipation.months_reported == 12)
         query = query.order_by(AgencyClassificationCounts.year.desc()) # Agency reported 12 Months.
 
-        query = query.filter(AgencyClassificationCounts.year<2016)
+        query = query.filter(AgencyClassificationCounts.year <= MAX_AGENCY_YEAR)
 
         return query
 
@@ -534,6 +538,6 @@ class HtSummary(db.Model):
 
         query = query.order_by(HtSummary.year, HtSummary.state_abbr)
 
-        query = query.filter(HtSummary.year<2016)
+        query = query.filter(HtSummary.year <= MAX_AGENCY_YEAR)
 
         return query
