@@ -1,5 +1,9 @@
 # Change Log
 All notable changes to this project will be documented in this file.
+## [2017-11-27]
+### Fixed
+- Fixed issue with CDE not showing 2016 Agency Data (https://github.com/18F/crime-data-api/pull/653))
+
 ## [2017-11-14]
 ### Changed
 - Changes Region Code Lookup to use Region Name (https://github.com/18F/crime-data-api/tree/CDE-191))
