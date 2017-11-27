@@ -28,7 +28,7 @@ class SummarizedDataState(CdeResource):
     def get(self, args,state_abbr=None):
         self.verify_api_key(args)
         query = cdemodels.SummarizedDataState(state_abbr=state_abbr).query
-        if state_abbr is not None and ori is None:
+        if state_abbr is not None:
             query = query.filter(func.lower(cdemodels.SummarizedData.state_abbr) == func.lower(state_abbr))
 
         return self._serialize(query)
