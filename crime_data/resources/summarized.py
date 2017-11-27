@@ -14,11 +14,42 @@ class SummarizedData(CdeResource):
     def get(self, args, ori=None, state_abbr=None,region_name=None):
         self.verify_api_key(args)
         query = cdemodels.SummarizedData(state_abbr=state_abbr,ori=ori,region_name=region_name).query
-        if state_abbr is not None:
-            query = query.filter(func.lower(cdemodels.SummarizedData.state_abbr) == func.lower(state_abbr))
-        elif region_name is not None:
-            query = query.filter(func.lower(cdemodels.SummarizedData.region_name) == func.lower(region_name))
-        elif ori is not None:
+        if ori is not None and state_abbr is not None:
             query = query.filter(func.lower(cdemodels.SummarizedData.ori) == func.lower(ori))
+            query = query.filter(func.lower(cdemodels.SummarizedData.state_abbr) == func.lower(state_abbr))
 
+
+        return self._serialize(query)
+
+class SummarizedDataState(CdeResource):
+    schema = marshmallow_schemas.SummarizedDataStateSchema(many=True)
+    @use_args(ArgumentsSchema)
+    @cache(max_age=DEFAULT_MAX_AGE, public=True)
+    def get(self, args,state_abbr=None):
+        self.verify_api_key(args)
+        query = cdemodels.SummarizedDataState(state_abbr=state_abbr).query
+        if state_abbr is not None and ori is None:
+            query = query.filter(func.lower(cdemodels.SummarizedData.state_abbr) == func.lower(state_abbr))
+
+        return self._serialize(query)
+
+class SummarizedDataRegion(CdeResource):
+    schema = marshmallow_schemas.SummarizedDataRegionSchema(many=True)
+    @use_args(ArgumentsSchema)
+    @cache(max_age=DEFAULT_MAX_AGE, public=True)
+    def get(self, args,region_name=None):
+        self.verify_api_key(args)
+        query = cdemodels.SummarizedDataRegion(region_name=region_name).query
+        if region_name is not None:
+            query = query.filter(func.lower(cdemodels.SummarizedData.region_name) == func.lower(region_name))
+
+        return self._serialize(query)
+
+class SummarizedDataNational(CdeResource):
+    schema = marshmallow_schemas.SummarizedDataNationalSchema(many=True)
+    @use_args(ArgumentsSchema)
+    @cache(max_age=DEFAULT_MAX_AGE, public=True)
+    def get(self, args,):
+        self.verify_api_key(args)
+        query = cdemodels.SummarizedDataNational(region_name=region_name).query
         return self._serialize(query)

@@ -1083,6 +1083,18 @@ class SummarizedDataSchema(ma.ModelSchema):
     class Meta:
         model = cdemodels.SummarizedData
 
+class SummarizedDataRegionSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.SummarizedDataRegion
+
+class SummarizedDataStateSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.SummarizedDataState
+
+class SummarizedDataNationalSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.SummarizedDataNational
+
 class AgenciesSchema(ma.ModelSchema):
     class Meta:
         model = cdemodels.Agencies
