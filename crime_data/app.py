@@ -246,10 +246,16 @@ def add_resources(app):
     api.add_resource(crime_data.resources.meta.RegionLK,'/lookup/region')
     api.add_resource(crime_data.resources.meta.StateLK,'/lookup/state')
 
-    api.add_resource(crime_data.resources.summarized.SummarizedData,'/summarized',
-                    '/summarized/agency/<string:ori>',
-                    '/summarized/region/<string:region_name>',
+    api.add_resource(crime_data.resources.summarized.SummarizedData,
+                    '/summarized/agency/<string:state_abbr>/<string:ori>')
+
+    api.add_resource(crime_data.resources.summarized.SummarizedDataState,
                     '/summarized/state/<string:state_abbr>')
+
+    api.add_resource(crime_data.resources.summarized.SummarizedDataRegion,
+                    '/summarized/region/<string:region_name>')
+
+    api.add_resource(crime_data.resources.summarized.SummarizedDataNational,'/summarized')
 
     api.add_resource(crime_data.resources.agencies.Agencies,'/new/agencies', '/new/agencies/state/<string:state_abbr>','/new/agencies/ori/<string:ori>')
 

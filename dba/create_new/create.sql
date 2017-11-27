@@ -96,12 +96,51 @@ UPDATE public.summarized_data sd
  FROM public.agency_name_edits ane
  WHERE ane.ori = sd.ori
 
- CREATE MATERIALIZED VIEW agencies_mv AS
+ CREATE MATERIALIZED VIEW agencies AS
  select agency_id , ori as ori, agency_type_name as agency_type_name, state_id as state_id, state_abbr as state_abbr, agency_name_edit as agency_name_edit, county_name as county_name
      from public.summarized_data  GROUP BY agency_id, ori, agency_type_name, state_id, state_abbr, agency_name_edit, county_name
 
+    CREATE MATERIALIZED VIEW summarized_data_national AS
+     select data_year as data_year,
+     SUM(CASE WHEN month_num = 12 THEN population ELSE 0 END) as population,
+      SUM(sum_unknown) as sum_unknown,
+       SUM(sum_hom) as sum_hom,
+       SUM(sum_man) as sum_man,
+       SUM(sum_rpe_ns_leg) as sum_rpe_ns_leg,
+       SUM(sum_rpe_frc_leg) as sum_rpe_frc_leg,
+       SUM(sum_rpe_att_leg) as sum_rpe_att_leg,
+       SUM(sum_rpe_ns) as sum_rpe_ns,
+       SUM(sum_rpe_frc) as sum_rpe_frc,
+       SUM(sum_rpe_att) as sum_rpe_att,
+       SUM(sum_rob_ns) as sum_rob_ns,
+       SUM(sum_rob_gun) as sum_rob_gun,
+       SUM(sum_rob_cut) as sum_rob_cut,
+       SUM(sum_rob_oth) as sum_rob_oth,
+       SUM(sum_rob_hff) as sum_rob_hff,
+       SUM(sum_ass_ns) as sum_ass_ns,
+       SUM(sum_ass_gun) as  sum_ass_gun,
+       SUM(sum_ass_cut) as sum_ass_cut ,
+       SUM(sum_ass_oth) as sum_ass_oth ,
+       SUM(sum_ass_hff) as sum_ass_hff ,
+       SUM(sum_ass_sm) as sum_ass_sm ,
+       SUM(sum_brg_ns) as sum_brg_ns,
+       SUM(sum_brg_feo) as sum_brg_feo ,
+       SUM(sum_brg_ueo) as sum_brg_ueo,
+       SUM(sum_brg_afe) as sum_brg_afe,
+       SUM(sum_lar_tft) as sum_lar_tft,
+       SUM(sum_mtr_ns) as sum_mtr_ns,
+       SUM(sum_mtr_ato) as sum_mtr_ato,
+       SUM(sum_mtr_trk) as sum_mtr_trk,
+       SUM(sum_mtr_oth) as sum_mtr_oth,
+       SUM(sum_ht_ns) as sum_ht_ns,
+       SUM(sum_ht_sex) as sum_ht_sex ,
+       SUM(sum_ht_srv) as sum_ht_srv,
+       SUM(sum_ars) as sum_ars
+         from public.summarized_data GROUP BY data_year;
+
+
 CREATE MATERIALIZED VIEW summarized_data_region AS
-select region_code, data_year as data_year,
+select region_code, region_name, data_year as data_year,
 SUM(CASE WHEN month_num = 12 THEN population ELSE 0 END) as population,
  SUM(sum_unknown) as sum_unknown,
   SUM(sum_hom) as sum_hom,
@@ -136,4 +175,43 @@ SUM(CASE WHEN month_num = 12 THEN population ELSE 0 END) as population,
   SUM(sum_ht_sex) as sum_ht_sex ,
   SUM(sum_ht_srv) as sum_ht_srv,
   SUM(sum_ars) as sum_ars
-    from public.summarized_data GROUP BY region_code, data_year;
+    from public.summarized_data GROUP BY region_code,region_name, data_year;
+
+
+  CREATE MATERIALIZED VIEW summarized_data_state AS
+  select state_id, state_name as state_name, state_abbr as state_abbr, data_year as data_year,
+  SUM(CASE WHEN month_num = 12 THEN population ELSE 0 END) as population,
+   SUM(sum_unknown) as sum_unknown,
+    SUM(sum_hom) as sum_hom,
+    SUM(sum_man) as sum_man,
+    SUM(sum_rpe_ns_leg) as sum_rpe_ns_leg,
+    SUM(sum_rpe_frc_leg) as sum_rpe_frc_leg,
+    SUM(sum_rpe_att_leg) as sum_rpe_att_leg,
+    SUM(sum_rpe_ns) as sum_rpe_ns,
+    SUM(sum_rpe_frc) as sum_rpe_frc,
+    SUM(sum_rpe_att) as sum_rpe_att,
+    SUM(sum_rob_ns) as sum_rob_ns,
+    SUM(sum_rob_gun) as sum_rob_gun,
+    SUM(sum_rob_cut) as sum_rob_cut,
+    SUM(sum_rob_oth) as sum_rob_oth,
+    SUM(sum_rob_hff) as sum_rob_hff,
+    SUM(sum_ass_ns) as sum_ass_ns,
+    SUM(sum_ass_gun) as  sum_ass_gun,
+    SUM(sum_ass_cut) as sum_ass_cut ,
+    SUM(sum_ass_oth) as sum_ass_oth ,
+    SUM(sum_ass_hff) as sum_ass_hff ,
+    SUM(sum_ass_sm) as sum_ass_sm ,
+    SUM(sum_brg_ns) as sum_brg_ns,
+    SUM(sum_brg_feo) as sum_brg_feo ,
+    SUM(sum_brg_ueo) as sum_brg_ueo,
+    SUM(sum_brg_afe) as sum_brg_afe,
+    SUM(sum_lar_tft) as sum_lar_tft,
+    SUM(sum_mtr_ns) as sum_mtr_ns,
+    SUM(sum_mtr_ato) as sum_mtr_ato,
+    SUM(sum_mtr_trk) as sum_mtr_trk,
+    SUM(sum_mtr_oth) as sum_mtr_oth,
+    SUM(sum_ht_ns) as sum_ht_ns,
+    SUM(sum_ht_sex) as sum_ht_sex ,
+    SUM(sum_ht_srv) as sum_ht_srv,
+    SUM(sum_ars) as sum_ars
+      from public.summarized_data GROUP BY state_id,state_name,state_abbr, data_year;
