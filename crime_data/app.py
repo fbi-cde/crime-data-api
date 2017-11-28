@@ -246,7 +246,7 @@ def add_resources(app):
     api.add_resource(crime_data.resources.meta.RegionLK,'/lookup/region')
     api.add_resource(crime_data.resources.meta.StateLK,'/lookup/state')
 
-    api.add_resource(crime_data.resources.summarized.SummarizedData,
+    api.add_resource(crime_data.resources.summarized.SummarizedDataAgency,
                     '/summarized/agency/<string:state_abbr>/<string:ori>')
 
     api.add_resource(crime_data.resources.summarized.SummarizedDataState,
