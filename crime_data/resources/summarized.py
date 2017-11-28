@@ -11,9 +11,18 @@ class SummarizedData(CdeResource):
     schema = marshmallow_schemas.SummarizedDataSchema(many=True)
     @use_args(ArgumentsSchema)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, ori=None, state_abbr=None):
+    def get(self, args):
         self.verify_api_key(args)
         query = cdemodels.SummarizedData.get(state_abbr=state_abbr,ori=ori)
+        return self.with_metadata(query,args)
+
+class SummarizedDataAgency(CdeResource):
+    schema = marshmallow_schemas.SummarizedDataAgencySchema(many=True)
+    @use_args(ArgumentsSchema)
+    @cache(max_age=DEFAULT_MAX_AGE, public=True)
+    def get(self, args, ori=None, state_abbr=None):
+        self.verify_api_key(args)
+        query = cdemodels.SummarizedDataAgency.get(state_abbr=state_abbr,ori=ori)
         return self.with_metadata(query,args)
 
 class SummarizedDataState(CdeResource):

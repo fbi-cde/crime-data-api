@@ -140,7 +140,8 @@ UPDATE public.summarized_data sd
    SUM(sum_brg_afe) as sum_brg_afe,
    (SUM(sum_brg_ns)+SUM(sum_brg_feo)+SUM(sum_brg_ueo)+SUM(sum_brg_afe)) as burglary,
    (((((SUM(sum_brg_ns)+SUM(sum_brg_feo)+SUM(sum_brg_ueo)+SUM(sum_brg_afe))) *1.0)/ (SUM(CASE WHEN month_num = 12 THEN population ELSE null END) )*1.0) * 100000.0) as burglary_rate,
-   SUM(sum_lar_tft) as larceny_count,
+   SUM(sum_lar_tft) as larceny,
+  (((((SUM(sum_lar_tft))) *1.0)/ (SUM(CASE WHEN month_num = 12 THEN population ELSE null END) )*1.0) * 100000.0) as larceny_rate,
    SUM(sum_mtr_ns) as sum_mtr_ns,
    SUM(sum_mtr_ato) as sum_mtr_ato,
    SUM(sum_mtr_trk) as sum_mtr_trk,
@@ -199,7 +200,8 @@ SUM(sum_unknown) as sum_unknown,
   SUM(sum_brg_afe) as sum_brg_afe,
   (SUM(sum_brg_ns)+SUM(sum_brg_feo)+SUM(sum_brg_ueo)+SUM(sum_brg_afe)) as burglary,
   (((((SUM(sum_brg_ns)+SUM(sum_brg_feo)+SUM(sum_brg_ueo)+SUM(sum_brg_afe))) *1.0)/ (SUM(CASE WHEN month_num = 12 THEN population ELSE null END) )*1.0) * 100000.0) as burglary_rate,
-  SUM(sum_lar_tft) as larceny_count,
+  SUM(sum_lar_tft) as larceny,
+  (((((SUM(sum_lar_tft))) *1.0)/ (SUM(CASE WHEN month_num = 12 THEN population ELSE null END) )*1.0) * 100000.0) as larceny_rate,
   SUM(sum_mtr_ns) as sum_mtr_ns,
   SUM(sum_mtr_ato) as sum_mtr_ato,
   SUM(sum_mtr_trk) as sum_mtr_trk,
@@ -258,7 +260,8 @@ SUM(sum_unknown) as sum_unknown,
     SUM(sum_brg_afe) as sum_brg_afe,
     (SUM(sum_brg_ns)+SUM(sum_brg_feo)+SUM(sum_brg_ueo)+SUM(sum_brg_afe)) as burglary,
     (((((SUM(sum_brg_ns)+SUM(sum_brg_feo)+SUM(sum_brg_ueo)+SUM(sum_brg_afe))) *1.0)/ (SUM(CASE WHEN month_num = 12 THEN population ELSE null END) )*1.0) * 100000.0) as burglary_rate,
-    SUM(sum_lar_tft) as larceny_count,
+    SUM(sum_lar_tft) as larceny,
+    (((((SUM(sum_lar_tft))) *1.0)/ (SUM(CASE WHEN month_num = 12 THEN population ELSE null END) )*1.0) * 100000.0) as larceny_rate,
     SUM(sum_mtr_ns) as sum_mtr_ns,
     SUM(sum_mtr_ato) as sum_mtr_ato,
     SUM(sum_mtr_trk) as sum_mtr_trk,
@@ -278,7 +281,7 @@ SUM(sum_unknown) as sum_unknown,
 
 
       CREATE MATERIALIZED VIEW summarized_data_agency AS
-            select ori, ncic_agency_name as ncic_agency_name, agency_name_edit as agency_name_edit,agency_type_name as agency_type_name, data_year as data_year,
+            select ori, ncic_agency_name as ncic_agency_name, agency_name_edit as agency_name_edit,agency_type_name as agency_type_name,state_abbr as state_abbr , data_year as data_year,
             SUM(CASE WHEN month_num = 12 THEN population ELSE 0 END) as population,
             SUM(sum_unknown) as sum_unknown,
   SUM(sum_hom) as homicide,
@@ -310,7 +313,7 @@ SUM(sum_unknown) as sum_unknown,
   SUM(sum_brg_ueo) as sum_brg_ueo,
   SUM(sum_brg_afe) as sum_brg_afe,
   (SUM(sum_brg_ns)+SUM(sum_brg_feo)+SUM(sum_brg_ueo)+SUM(sum_brg_afe)) as burglary,
-  SUM(sum_lar_tft) as larceny_count,
+  SUM(sum_lar_tft) as larceny,
   SUM(sum_mtr_ns) as sum_mtr_ns,
   SUM(sum_mtr_ato) as sum_mtr_ato,
   SUM(sum_mtr_trk) as sum_mtr_trk,
@@ -322,7 +325,7 @@ SUM(sum_unknown) as sum_unknown,
   SUM(sum_ht_srv) as sum_ht_srv,
   (SUM(sum_ht_ns)+SUM(sum_ht_sex)+SUM(sum_ht_srv)) as human_trafficing,
   SUM(sum_ars) as arson
-                from public.summarized_data GROUP BY ori,ncic_agency_name,agency_name_edit, agency_type_name, data_year;
+                from public.summarized_data GROUP BY ori,ncic_agency_name,agency_name_edit, agency_type_name, state_abbr,data_year;
 
 
 
@@ -331,3 +334,4 @@ drop MATERIALIZED VIEW summarized_data_state;
 drop MATERIALIZED VIEW  summarized_data_region;
 drop MATERIALIZED VIEW  summarized_data_national;
 drop MATERIALIZED VIEW summarized_data_agency;
+drop MATERIALIZED VIEW agencies_mv;
