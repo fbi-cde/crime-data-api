@@ -77,6 +77,18 @@ class Agencies (db.Model):
 class SummarizedDataRegion(db.Model):
     __tablename__ = 'summarized_data_region'
     __table_args__ = (UniqueConstraint('data_year'), )
+
+    def get(region_name=None):
+        """
+        A method to find a Summarized Data by Region
+        """
+        query = SummarizedDataRegion.query
+
+        if region_name:
+            query = query.filter(func.lower(SummarizedDataRegion.region_name) == func.lower(region_name))
+
+        return query
+
     data_year = db.Column(db.SmallInteger, primary_key=True)
     population = db.Column(db.Integer)
     region_code	= db.Column(db.SmallInteger)
@@ -118,6 +130,9 @@ class SummarizedDataRegion(db.Model):
 class SummarizedDataNational(db.Model):
     __tablename__ = 'summarized_data_national'
     __table_args__ = (UniqueConstraint('data_year'), )
+
+
+
     data_year = db.Column(db.SmallInteger, primary_key=True)
     population = db.Column(db.Integer)
     sum_unknown	= db.Column(db.Integer)
@@ -157,6 +172,18 @@ class SummarizedDataNational(db.Model):
 class SummarizedDataState(db.Model):
     __tablename__ = 'summarized_data_state'
     __table_args__ = (UniqueConstraint('data_year'), )
+
+    def get(state_abbr=None):
+        """
+        A method to find a Summarized Data by State
+        """
+        query = SummarizedDataState.query
+
+        if state_abbr:
+            query = query.filter(func.lower(SummarizedDataState.state_abbr) == func.lower(state_abbr))
+
+        return query
+
     data_year = db.Column(db.SmallInteger, primary_key=True)
     state_name = db.Column(db.String(100))
     state_id = db.Column(db.SmallInteger)
@@ -199,6 +226,18 @@ class SummarizedDataState(db.Model):
 class SummarizedData(db.Model):
     __tablename__ = 'summarized_data'
     __table_args__ = (UniqueConstraint('data_year', 'ori','month_num'), )
+
+    def get(state_abbr=None, ori=None):
+        """
+        A method to find a Summarized Data by Agency
+        """
+        query = SummarizedData.query
+
+        if state_abbr and ori:
+            query = query.filter(func.lower(SummarizedData.state_abbr) == func.lower(state_abbr))
+            query = query.filter(func.lower(SummarizedData.ori) == func.lower(ori))
+
+        return query
 
     data_year = db.Column(db.SmallInteger, primary_key=True)
     ori = db.Column(db.String(25), primary_key=True)
