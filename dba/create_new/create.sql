@@ -97,8 +97,8 @@ UPDATE public.summarized_data sd
  WHERE ane.ori = sd.ori
 
  CREATE MATERIALIZED VIEW agencies AS
- select agency_id , ori as ori, agency_type_name as agency_type_name, state_id as state_id, state_abbr as state_abbr, agency_name_edit as agency_name_edit, county_name as county_name
-     from public.summarized_data  GROUP BY agency_id, ori, agency_type_name, state_id, state_abbr, agency_name_edit, county_name
+ select distinct on(agency_id) agency_id, ori as ori, agency_type_name as agency_type_name, state_id as state_id, state_abbr as state_abbr, agency_name_edit as agency_name_edit, county_name as county_name
+     from public.summarized_data
 
     CREATE MATERIALIZED VIEW summarized_data_national AS
      select data_year as data_year,
@@ -334,4 +334,4 @@ drop MATERIALIZED VIEW summarized_data_state;
 drop MATERIALIZED VIEW  summarized_data_region;
 drop MATERIALIZED VIEW  summarized_data_national;
 drop MATERIALIZED VIEW summarized_data_agency;
-drop MATERIALIZED VIEW agencies_mv;
+drop MATERIALIZED VIEW agencies;
