@@ -333,3 +333,11 @@ drop MATERIALIZED VIEW  summarized_data_region;
 drop MATERIALIZED VIEW  summarized_data_national;
 drop MATERIALIZED VIEW summarized_data_agency;
 drop MATERIALIZED VIEW agencies;
+
+--Refreshes
+-- Drops
+refresh MATERIALIZED VIEW summarized_data_state;
+refresh MATERIALIZED VIEW  summarized_data_region;
+refresh MATERIALIZED VIEW  summarized_data_national;
+refresh MATERIALIZED VIEW summarized_data_agency;
+refresh MATERIALIZED VIEW agencies;
