@@ -23,6 +23,7 @@ import crime_data.resources.estimates
 import crime_data.resources.arrests
 import crime_data.resources.meta
 import crime_data.resources.summarized
+import crime_data.resources.police_employment
 
 import crime_data.resources.human_traffic
 from werkzeug.contrib.fixers import ProxyFix
@@ -259,6 +260,10 @@ def add_resources(app):
 
     api.add_resource(crime_data.resources.agencies.Agencies,'/new/agencies', '/new/agencies/state/<string:state_abbr>','/new/agencies/ori/<string:ori>')
 
+    api.add_resource(crime_data.resources.police_employment.PoliceEmploymentDataNation,'/police-employment')
+    api.add_resource(crime_data.resources.police_employment.PoliceEmploymentDataRegion,'/police-employment/region/<string:region_name>')
+    api.add_resource(crime_data.resources.police_employment.PoliceEmploymentDataState,'/police-employment/state/<string:state_abbr>')
+    api.add_resource(crime_data.resources.police_employment.PoliceEmploymentDataAgency,'/police-employment/agency/<string:state_abbr>/<string:ori>')
 
 def newrelic_status_endpoint():
     return 'OK'

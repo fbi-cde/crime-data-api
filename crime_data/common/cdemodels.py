@@ -73,6 +73,118 @@ class Agencies (db.Model):
     agency_name_edit  = db.Column(db.String(100))
     county_name = db.Column(db.String(100))
 
+class PoliceEmploymentDataNation(db.Model):
+    __tablename__ = 'police_employment_nation'
+    __table_args__ = (UniqueConstraint('data_year'), )
+
+    data_year = db.Column(db.SmallInteger, primary_key=True)
+    population = db.Column(db.Integer)
+    male_officer_ct = db.Column(db.Integer)
+    male_civilian_ct = db.Column(db.Integer)
+    male_total_ct = db.Column(db.Integer)
+    female_officer_ct = db.Column(db.Integer)
+    female_civilian_ct = db.Column(db.Integer)
+    female_total_ct = db.Column(db.Integer)
+    officer_ct = db.Column(db.Integer)
+    civilian_ct = db.Column(db.Integer)
+    total_pe_ct = db.Column(db.Integer)
+    pe_ct_per_1000 = db.Column(db.Float)
+
+class PoliceEmploymentDataRegion(db.Model):
+    __tablename__ = 'police_employment_region'
+    __table_args__ = (UniqueConstraint('data_year'), )
+
+    def get(region_name=None):
+        """
+        A method to find police employment data by region
+        """
+        query = PoliceEmploymentDataRegion.query
+
+        if region_name:
+            query = query.filter(func.lower(PoliceEmploymentDataRegion.region_name) == func.lower(region_name))
+
+        return query
+
+    data_year = db.Column(db.SmallInteger, primary_key=True)
+    region_code	= db.Column(db.SmallInteger)
+    region_name	= db.Column(db.String(100))
+    population = db.Column(db.Integer)
+    male_officer_ct = db.Column(db.Integer)
+    male_civilian_ct = db.Column(db.Integer)
+    male_total_ct = db.Column(db.Integer)
+    female_officer_ct = db.Column(db.Integer)
+    female_civilian_ct = db.Column(db.Integer)
+    female_total_ct = db.Column(db.Integer)
+    officer_ct = db.Column(db.Integer)
+    civilian_ct = db.Column(db.Integer)
+    total_pe_ct = db.Column(db.Integer)
+    pe_ct_per_1000 = db.Column(db.Float)
+
+class PoliceEmploymentDataState(db.Model):
+    __tablename__ = 'police_employment_state'
+    __table_args__ = (UniqueConstraint('data_year'), )
+
+    def get(state_abbr=None):
+        """
+        A method to find police employment data by state
+        """
+        query = PoliceEmploymentDataState.query
+
+        if state_abbr:
+            query = query.filter(func.lower(PoliceEmploymentDataState.state_abbr) == func.lower(state_abbr))
+
+        return query
+
+    data_year = db.Column(db.SmallInteger, primary_key=True)
+    state_id = db.Column(db.SmallInteger)
+    state_name = db.Column(db.String(100))
+    state_abbr = db.Column(db.String(2))
+    population = db.Column(db.Integer)
+    male_officer_ct = db.Column(db.Integer)
+    male_civilian_ct = db.Column(db.Integer)
+    male_total_ct = db.Column(db.Integer)
+    female_officer_ct = db.Column(db.Integer)
+    female_civilian_ct = db.Column(db.Integer)
+    female_total_ct = db.Column(db.Integer)
+    officer_ct = db.Column(db.Integer)
+    civilian_ct = db.Column(db.Integer)
+    total_pe_ct = db.Column(db.Integer)
+    pe_ct_per_1000 = db.Column(db.Float)
+
+class PoliceEmploymentDataAgency(db.Model):
+    __tablename__ = 'police_employment_agency'
+    __table_args__ = (UniqueConstraint('data_year','ori'), )
+
+    def get(state_abbr=None, ori=None):
+        """
+        A method to find a police employment data by agency
+        """
+        query = PoliceEmploymentDataAgency.query
+
+        if state_abbr and ori:
+            query = query.filter(func.lower(PoliceEmploymentDataAgency.state_abbr) == func.lower(state_abbr))
+            query = query.filter(func.lower(PoliceEmploymentDataAgency.ori) == func.lower(ori))
+
+        return query
+
+    ori = db.Column(db.String(25), primary_key=True)
+    agency_type_name = db.Column(db.String(100))
+    agency_name_edit  = db.Column(db.String(100))
+    ncic_agency_name  = db.Column(db.String(100))
+    data_year = db.Column(db.SmallInteger, primary_key=True)
+    state_abbr  = db.Column(db.String(2))
+    population = db.Column(db.Integer)
+    male_officer_ct = db.Column(db.Integer)
+    male_civilian_ct = db.Column(db.Integer)
+    male_total_ct = db.Column(db.Integer)
+    female_officer_ct = db.Column(db.Integer)
+    female_civilian_ct = db.Column(db.Integer)
+    female_total_ct = db.Column(db.Integer)
+    officer_ct = db.Column(db.Integer)
+    civilian_ct = db.Column(db.Integer)
+    total_pe_ct = db.Column(db.Integer)
+    pe_ct_per_1000 = db.Column(db.Float)
+
 class SummarizedDataRegion(db.Model):
     __tablename__ = 'summarized_data_region'
     __table_args__ = (UniqueConstraint('data_year'), )
