@@ -9,5 +9,4 @@ env:
   NEW_RELIC_CONFIG_FILE: newrelic.ini
   NEW_RELIC_LOG: stdout
 services:
-- crime-data-upload-db
-- crime-data-api-creds
+- crime-data-staging-db
