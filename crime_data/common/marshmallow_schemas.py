@@ -1078,3 +1078,169 @@ class StateLKSchema(ma.ModelSchema):
     class Meta:
         model = lookupmodels.StateLK
         ordered = True
+
+class NIBRSAgencyVictimDenormCountSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSAgencyVictimDenormCount
+        ordered = True
+
+class NIBRSAgencyVictimDenormSexSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSAgencyVictimDenormSex
+        ordered = True
+
+class NIBRSAgencyVictimDenormRaceSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSAgencyVictimDenormRace
+        ordered = True
+
+class NIBRSAgencyVictimDenormEthnicitySchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSAgencyVictimDenormEthnicity
+        ordered = True
+
+class NIBRSAgencyVictimDenormAgeSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSAgencyVictimDenormAge
+        ordered = True
+
+class NIBRSAgencyVictimDenormLocationSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSAgencyVictimDenormLocation
+        ordered = True
+
+class NIBRSAgencyOffenderDenormCountSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSAgencyOffenderDenormCount
+        ordered = True
+
+class NIBRSAgencyOffenderDenormSexSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSAgencyOffenderDenormSex
+        ordered = True
+
+class NIBRSAgencyOffenderDenormRaceSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSAgencyOffenderDenormRace
+        ordered = True
+
+class NIBRSAgencyOffenderDenormEthnicitySchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSAgencyOffenderDenormEthnicity
+        ordered = True
+
+class NIBRSAgencyOffenderDenormAgeSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSAgencyOffenderDenormAge
+        ordered = True
+
+class NIBRSStateVictimDenormCountSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSStateVictimDenormCount
+        ordered = True
+
+class NIBRSStateVictimDenormSexSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSStateVictimDenormSex
+        ordered = True
+
+class NIBRSStateVictimDenormRaceSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSStateVictimDenormRace
+        ordered = True
+
+class NIBRSStateVictimDenormEthnicitySchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSStateVictimDenormEthnicity
+        ordered = True
+
+class NIBRSStateVictimDenormAgeSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSStateVictimDenormAge
+        ordered = True
+
+class NIBRSStateVictimDenormLocationSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSStateVictimDenormLocation
+        ordered = True
+
+class NIBRSStateOffenderDenormCountSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSStateOffenderDenormCount
+        ordered = True
+
+class NIBRSStateOffenderDenormSexSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSStateOffenderDenormSex
+        ordered = True
+
+class NIBRSStateOffenderDenormRaceSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSStateOffenderDenormRace
+        ordered = True
+
+class NIBRSStateOffenderDenormEthnicitySchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSStateOffenderDenormEthnicity
+        ordered = True
+
+class NIBRSStateOffenderDenormAgeSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSStateOffenderDenormAge
+        ordered = True
+
+
+class NIBRSNationalVictimDenormCountSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSNationalVictimDenormCount
+        ordered = True
+
+class NIBRSNationalVictimDenormSexSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSNationalVictimDenormSex
+        ordered = True
+
+class NIBRSNationalVictimDenormRaceSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSNationalVictimDenormRace
+        ordered = True
+
+class NIBRSNationalVictimDenormEthnicitySchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSNationalVictimDenormEthnicity
+        ordered = True
+
+class NIBRSNationalVictimDenormAgeSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSNationalVictimDenormAge
+        ordered = True
+
+class NIBRSNationalVictimDenormLocationSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSNationalVictimDenormLocation
+        ordered = True
+
+class NIBRSNationalOffenderDenormCountSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSNationalOffenderDenormCount
+        ordered = True
+
+class NIBRSNationalOffenderDenormSexSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSNationalOffenderDenormSex
+        ordered = True
+
+class NIBRSNationalOffenderDenormRaceSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSNationalOffenderDenormRace
+        ordered = True
+
+class NIBRSNationalOffenderDenormEthnicitySchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSNationalOffenderDenormEthnicity
+        ordered = True
+
+class NIBRSNationalOffenderDenormAgeSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSNationalOffenderDenormAge
+        ordered = True
