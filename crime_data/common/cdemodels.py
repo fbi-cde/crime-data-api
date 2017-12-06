@@ -1,7 +1,7 @@
 import abc
 from collections import namedtuple
 from flask_restful import abort
-from sqlalchemy import and_, func, or_
+from sqlalchemy import and_, func, or_, UniqueConstraint
 from sqlalchemy.exc import ArgumentError
 from sqlalchemy.orm import aliased
 from sqlalchemy.orm.exc import NoResultFound
@@ -742,3 +742,912 @@ class OffenseHateCrimeCountView(OffenseSubCountView):
     @property
     def view_name_ori(self):
         return 'offense_hc_counts_ori'
+
+class NIBRSVictimCount(db.Model):
+    """Represents Agency Level NIBRS Victim Data"""
+    __tablename__ = 'nibrs_victim_count'
+    __table_args__ = (UniqueConstraint('offense_name'), )
+
+    def get(ori=None):
+        query = NIBRSVictimCount.query
+
+        if ori:
+            query = query.filter(func.lower(NIBRSVictimCount.ori) == func.lower(ori))
+
+        return query
+
+    agency_id = db.Column(db.Integer)
+    ori = db.Column(db.String)
+    data_year = db.Column(db.Integer)
+    offense_name = db.Column(db.String, primary_key=True)
+    type_name = db.Column(db.String)
+    sex_code = db.Column(db.String(1))
+    age_range = db.Column(db.String)
+    race_description = db.Column(db.String)
+    ethnicity_name = db.Column(db.String)
+    location_name = db.Column(db.String)
+    count = db.Column(db.Integer)
+
+class NIBRSAgencyVictimDenormCount(db.Model):
+    """Represents Agency Level NIBRS Victim Count Data"""
+    __tablename__ = 'nibrs_denorm_agency_victim_count'
+    __table_args__ = (UniqueConstraint('offense_name'), )
+    def get(ori=None):
+        print('Here')
+
+        query = NIBRSAgencyVictimDenormCount.query
+
+        if ori:
+            query = query.filter(func.lower(NIBRSAgencyVictimDenormCount.ori) == func.lower(ori))
+
+        return query
+
+    agency_id = db.Column(db.Integer)
+    ori = db.Column(db.String)
+    offense_name = db.Column(db.String, primary_key=True)
+    count = db.Column(db.Integer)
+    data_year = db.Column(db.Integer)
+
+class NIBRSAgencyVictimDenormSex(db.Model):
+    """Represents Agency Level NIBRS Victim Data"""
+    __tablename__ = 'nibrs_denorm_agency_victim_sex'
+    __table_args__ = (UniqueConstraint('offense_name'), )
+    def get(ori=None):
+        query = NIBRSAgencyVictimDenormSex.query
+
+        if ori:
+            query = query.filter(func.lower(NIBRSAgencyVictimDenormSex.ori) == func.lower(ori))
+
+        return query
+
+    agency_id = db.Column(db.Integer)
+    ori = db.Column(db.String)
+    offense_name = db.Column(db.String, primary_key=True)
+    male_count = db.Column(db.Integer)
+    female_count = db.Column(db.Integer)
+    unknown_count = db.Column(db.Integer)
+    data_year = db.Column(db.Integer)
+
+class NIBRSAgencyVictimDenormRace(db.Model):
+    """Represents Agency Level NIBRS Victim Race Data"""
+    __tablename__ = 'nibrs_denorm_agency_victim_race'
+    __table_args__ = (UniqueConstraint('offense_name'), )
+    def get(ori=None):
+        query = NIBRSAgencyVictimDenormRace.query
+
+        if ori:
+            query = query.filter(func.lower(NIBRSAgencyVictimDenormRace.ori) == func.lower(ori))
+
+        return query
+
+    agency_id = db.Column(db.Integer)
+    ori = db.Column(db.String)
+    offense_name = db.Column(db.String, primary_key=True)
+    asian = db.Column(db.Integer)
+    native_hawaiian = db.Column(db.Integer)
+    black = db.Column(db.Integer)
+    american_indian = db.Column(db.Integer)
+    unknown = db.Column(db.Integer)
+    white = db.Column(db.Integer)
+    data_year = db.Column(db.Integer)
+
+class NIBRSAgencyVictimDenormEthnicity(db.Model):
+    """Represents Agency Level NIBRS Victim Ethnicity Data"""
+    __tablename__ = 'nibrs_denorm_agency_victim_ethnicity'
+    __table_args__ = (UniqueConstraint('offense_name'), )
+    def get(ori=None):
+        query = NIBRSAgencyVictimDenormEthnicity.query
+
+        if ori:
+            query = query.filter(func.lower(NIBRSAgencyVictimDenormEthnicity.ori) == func.lower(ori))
+
+        return query
+
+    agency_id = db.Column(db.Integer)
+    ori = db.Column(db.String)
+    offense_name = db.Column(db.String, primary_key=True)
+    hispanic = db.Column(db.Integer)
+    multiple = db.Column(db.Integer)
+    not_hispanic = db.Column(db.Integer)
+    unknown = db.Column(db.Integer)
+    data_year = db.Column(db.Integer)
+
+
+class NIBRSAgencyVictimDenormAge(db.Model):
+    """Represents Agency Level NIBRS Victim Age Data"""
+    __tablename__ = 'nibrs_denorm_agency_victim_age'
+    __table_args__ = (UniqueConstraint('offense_name'), )
+    def get(ori=None):
+        query = NIBRSAgencyVictimDenormAge.query
+
+        if ori:
+            query = query.filter(func.lower(NIBRSAgencyVictimDenormAge.ori) == func.lower(ori))
+
+        return query
+
+    agency_id = db.Column(db.Integer)
+    ori = db.Column(db.String)
+    offense_name = db.Column(db.String, primary_key=True)
+    range_0_9 = db.Column(db.Integer)
+    range_10_11 = db.Column(db.Integer)
+    range_20_29 = db.Column(db.Integer)
+    range_30_39 = db.Column(db.Integer)
+    range_40_49 = db.Column(db.Integer)
+    range_50_59 = db.Column(db.Integer)
+    range_60_69 = db.Column(db.Integer)
+    range_70_79 = db.Column(db.Integer)
+    range_80_89 = db.Column(db.Integer)
+    range_90_99 = db.Column(db.Integer)
+    unknown = db.Column(db.Integer)
+    data_year = db.Column(db.Integer)
+
+class NIBRSAgencyVictimDenormLocation(db.Model):
+    """Represents Agency Level NIBRS Victim Location Data"""
+    __tablename__ = 'nibrs_denorm_agency_victim_location'
+    __table_args__ = (UniqueConstraint('offense_name'), )
+    def get(ori=None):
+        query = NIBRSAgencyVictimDenormLocation.query
+
+        if ori:
+            query = query.filter(func.lower(NIBRSAgencyVictimDenormLocation.ori) == func.lower(ori))
+
+        return query
+
+    agency_id = db.Column(db.Integer)
+    ori = db.Column(db.String)
+    offense_name = db.Column(db.String, primary_key=True)
+    Residence_Home = db.Column(db.Integer)
+    Parking_Garage__Lot = db.Column(db.Integer)
+    Abandoned_Condemned__Structure = db.Column(db.Integer)
+    Air__BusTrain_Terminal = db.Column(db.Integer)
+    Amusement_Park = db.Column(db.Integer)
+    Arena__Stadium__Fairgrounds = db.Column(db.Integer)
+    ATM_Separate_from_Bank = db.Column(db.Integer)
+    Auto_Dealership = db.Column(db.Integer)
+    Bank = db.Column(db.Integer)
+    Bar_Nightclub = db.Column(db.Integer)
+    Campground = db.Column(db.Integer)
+    Church__Synagogue__Temple__Mosque = db.Column(db.Integer)
+    Commercial__Office_Building = db.Column(db.Integer)
+    Community_Center = db.Column(db.Integer)
+    Construction_Site = db.Column(db.Integer)
+    Cyberspace = db.Column(db.Integer)
+    Daycare_Facility = db.Column(db.Integer)
+    Department__Discount_Store = db.Column(db.Integer)
+    Dock__Wharf__Shipping_Terminal = db.Column(db.Integer)
+    Drug_Store__Doctors_Office__Hospital = db.Column(db.Integer)
+    Farm_Facility = db.Column(db.Integer)
+    Field__Woods = db.Column(db.Integer)
+    Gambling_Facility__Casino__Race_Track = db.Column(db.Integer)
+    Government__Public_Building = db.Column(db.Integer)
+    Grocery_Store = db.Column(db.Integer)
+    Highway__Alley__Street__Sidewalk = db.Column(db.Integer)
+    Hotel__Motel = db.Column(db.Integer)
+    Industrial_Site = db.Column(db.Integer)
+    Jail__Prison__Corrections_Facility = db.Column(db.Integer)
+    Lake__Waterway__Beach = db.Column(db.Integer)
+    Liquor_Store = db.Column(db.Integer)
+    Military_Base = db.Column(db.Integer)
+    Unknown = db.Column(db.Integer)
+    Park__Playground = db.Column(db.Integer)
+    Rental_Storage_Facility = db.Column(db.Integer)
+    Rest_Area = db.Column(db.Integer)
+    Restaurant = db.Column(db.Integer)
+    School__College = db.Column(db.Integer)
+    School_College__University = db.Column(db.Integer)
+    School_Elementary__Secondary = db.Column(db.Integer)
+    Gas_Station = db.Column(db.Integer)
+    Mission__Homeless_Shelter = db.Column(db.Integer)
+    Shopping_Mall = db.Column(db.Integer)
+    Specialty_Store = db.Column(db.Integer)
+    Tribal_Lands = db.Column(db.Integer)
+    data_year = db.Column(db.Integer)
+
+class NIBRSStateVictimDenormCount(db.Model):
+    """Represents Agency Level NIBRS Victim Count Data"""
+    __tablename__ = 'nibrs_denorm_state_victim_count'
+    __table_args__ = (UniqueConstraint('offense_name'), )
+    def get(ori=None):
+        print('Here')
+
+        query = NIBRSStateVictimDenormCount.query
+
+        if ori:
+            query = query.filter(func.lower(NIBRSStateVictimDenormCount.ori) == func.lower(ori))
+
+        return query
+
+    agency_id = db.Column(db.Integer)
+    ori = db.Column(db.String)
+    offense_name = db.Column(db.String, primary_key=True)
+    count = db.Column(db.Integer)
+    data_year = db.Column(db.Integer)
+
+class NIBRSStateVictimDenormSex(db.Model):
+    """Represents Agency Level NIBRS Victim Data"""
+    __tablename__ = 'nibrs_denorm_state_victim_sex'
+    __table_args__ = (UniqueConstraint('offense_name'), )
+    def get(ori=None):
+        query = NIBRSStateVictimDenormSex.query
+
+        if ori:
+            query = query.filter(func.lower(NIBRSStateVictimDenormSex.ori) == func.lower(ori))
+
+        return query
+
+    agency_id = db.Column(db.Integer)
+    ori = db.Column(db.String)
+    offense_name = db.Column(db.String, primary_key=True)
+    male_count = db.Column(db.Integer)
+    female_count = db.Column(db.Integer)
+    unknown_count = db.Column(db.Integer)
+    data_year = db.Column(db.Integer)
+
+class NIBRSStateVictimDenormRace(db.Model):
+    """Represents Agency Level NIBRS Victim Race Data"""
+    __tablename__ = 'nibrs_denorm_state_victim_race'
+    __table_args__ = (UniqueConstraint('offense_name'), )
+    def get(ori=None):
+        query = NIBRSStateVictimDenormRace.query
+
+        if ori:
+            query = query.filter(func.lower(NIBRSStateVictimDenormRace.ori) == func.lower(ori))
+
+        return query
+
+    agency_id = db.Column(db.Integer)
+    ori = db.Column(db.String)
+    offense_name = db.Column(db.String, primary_key=True)
+    asian = db.Column(db.Integer)
+    native_hawaiian = db.Column(db.Integer)
+    black = db.Column(db.Integer)
+    american_indian = db.Column(db.Integer)
+    unknown = db.Column(db.Integer)
+    white = db.Column(db.Integer)
+    data_year = db.Column(db.Integer)
+
+class NIBRSStateVictimDenormEthnicity(db.Model):
+    """Represents Agency Level NIBRS Victim Ethnicity Data"""
+    __tablename__ = 'nibrs_denorm_state_victim_ethnicity'
+    __table_args__ = (UniqueConstraint('offense_name'), )
+    def get(ori=None):
+        query = NIBRSStateVictimDenormEthnicity.query
+
+        if ori:
+            query = query.filter(func.lower(NIBRSStateVictimDenormEthnicity.ori) == func.lower(ori))
+
+        return query
+
+    agency_id = db.Column(db.Integer)
+    ori = db.Column(db.String)
+    offense_name = db.Column(db.String, primary_key=True)
+    hispanic = db.Column(db.Integer)
+    multiple = db.Column(db.Integer)
+    not_hispanic = db.Column(db.Integer)
+    unknown = db.Column(db.Integer)
+    data_year = db.Column(db.Integer)
+
+
+class NIBRSStateVictimDenormAge(db.Model):
+    """Represents Agency Level NIBRS Victim Age Data"""
+    __tablename__ = 'nibrs_denorm_state_victim_age'
+    __table_args__ = (UniqueConstraint('offense_name'), )
+    def get(ori=None):
+        query = NIBRSStateVictimDenormAge.query
+
+        if ori:
+            query = query.filter(func.lower(NIBRSStateVictimDenormAge.ori) == func.lower(ori))
+
+        return query
+
+    agency_id = db.Column(db.Integer)
+    ori = db.Column(db.String)
+    offense_name = db.Column(db.String, primary_key=True)
+    range_0_9 = db.Column(db.Integer)
+    range_10_11 = db.Column(db.Integer)
+    range_20_29 = db.Column(db.Integer)
+    range_30_39 = db.Column(db.Integer)
+    range_40_49 = db.Column(db.Integer)
+    range_50_59 = db.Column(db.Integer)
+    range_60_69 = db.Column(db.Integer)
+    range_70_79 = db.Column(db.Integer)
+    range_80_89 = db.Column(db.Integer)
+    range_90_99 = db.Column(db.Integer)
+    unknown = db.Column(db.Integer)
+    data_year = db.Column(db.Integer)
+
+class NIBRSStateVictimDenormLocation(db.Model):
+    """Represents Agency Level NIBRS Victim Location Data"""
+    __tablename__ = 'nibrs_denorm_state_victim_location'
+    __table_args__ = (UniqueConstraint('offense_name'), )
+    def get(ori=None):
+        query = NIBRSStateVictimDenormLocation.query
+
+        if ori:
+            query = query.filter(func.lower(NIBRSStateVictimDenormLocation.ori) == func.lower(ori))
+
+        return query
+
+    agency_id = db.Column(db.Integer)
+    ori = db.Column(db.String)
+    offense_name = db.Column(db.String, primary_key=True)
+    Residence_Home = db.Column(db.Integer)
+    Parking_Garage__Lot = db.Column(db.Integer)
+    Abandoned_Condemned__Structure = db.Column(db.Integer)
+    Air__BusTrain_Terminal = db.Column(db.Integer)
+    Amusement_Park = db.Column(db.Integer)
+    Arena__Stadium__Fairgrounds = db.Column(db.Integer)
+    ATM_Separate_from_Bank = db.Column(db.Integer)
+    Auto_Dealership = db.Column(db.Integer)
+    Bank = db.Column(db.Integer)
+    Bar_Nightclub = db.Column(db.Integer)
+    Campground = db.Column(db.Integer)
+    Church__Synagogue__Temple__Mosque = db.Column(db.Integer)
+    Commercial__Office_Building = db.Column(db.Integer)
+    Community_Center = db.Column(db.Integer)
+    Construction_Site = db.Column(db.Integer)
+    Cyberspace = db.Column(db.Integer)
+    Daycare_Facility = db.Column(db.Integer)
+    Department__Discount_Store = db.Column(db.Integer)
+    Dock__Wharf__Shipping_Terminal = db.Column(db.Integer)
+    Drug_Store__Doctors_Office__Hospital = db.Column(db.Integer)
+    Farm_Facility = db.Column(db.Integer)
+    Field__Woods = db.Column(db.Integer)
+    Gambling_Facility__Casino__Race_Track = db.Column(db.Integer)
+    Government__Public_Building = db.Column(db.Integer)
+    Grocery_Store = db.Column(db.Integer)
+    Highway__Alley__Street__Sidewalk = db.Column(db.Integer)
+    Hotel__Motel = db.Column(db.Integer)
+    Industrial_Site = db.Column(db.Integer)
+    Jail__Prison__Corrections_Facility = db.Column(db.Integer)
+    Lake__Waterway__Beach = db.Column(db.Integer)
+    Liquor_Store = db.Column(db.Integer)
+    Military_Base = db.Column(db.Integer)
+    Unknown = db.Column(db.Integer)
+    Park__Playground = db.Column(db.Integer)
+    Rental_Storage_Facility = db.Column(db.Integer)
+    Rest_Area = db.Column(db.Integer)
+    Restaurant = db.Column(db.Integer)
+    School__College = db.Column(db.Integer)
+    School_College__University = db.Column(db.Integer)
+    School_Elementary__Secondary = db.Column(db.Integer)
+    Gas_Station = db.Column(db.Integer)
+    Mission__Homeless_Shelter = db.Column(db.Integer)
+    Shopping_Mall = db.Column(db.Integer)
+    Specialty_Store = db.Column(db.Integer)
+    Tribal_Lands = db.Column(db.Integer)
+    data_year = db.Column(db.Integer)
+
+class NIBRSNationalVictimDenormCount(db.Model):
+    """Represents Agency Level NIBRS Victim Count Data"""
+    __tablename__ = 'nibrs_denorm_national_victim_count'
+    __table_args__ = (UniqueConstraint('offense_name'), )
+    def get(ori=None):
+        print('Here')
+
+        query = NIBRSNationalVictimDenormCount.query
+
+        if ori:
+            query = query.filter(func.lower(NIBRSNationalVictimDenormCount.ori) == func.lower(ori))
+
+        return query
+
+    agency_id = db.Column(db.Integer)
+    ori = db.Column(db.String)
+    offense_name = db.Column(db.String, primary_key=True)
+    count = db.Column(db.Integer)
+    data_year = db.Column(db.Integer)
+
+class NIBRSNationalVictimDenormSex(db.Model):
+    """Represents Agency Level NIBRS Victim Data"""
+    __tablename__ = 'nibrs_denorm_national_victim_sex'
+    __table_args__ = (UniqueConstraint('offense_name'), )
+    def get(ori=None):
+        query = NIBRSNationalVictimDenormSex.query
+
+        if ori:
+            query = query.filter(func.lower(NIBRSNationalVictimDenormSex.ori) == func.lower(ori))
+
+        return query
+
+    agency_id = db.Column(db.Integer)
+    ori = db.Column(db.String)
+    offense_name = db.Column(db.String, primary_key=True)
+    male_count = db.Column(db.Integer)
+    female_count = db.Column(db.Integer)
+    unknown_count = db.Column(db.Integer)
+    data_year = db.Column(db.Integer)
+
+class NIBRSNationalVictimDenormRace(db.Model):
+    """Represents Agency Level NIBRS Victim Race Data"""
+    __tablename__ = 'nibrs_denorm_national_victim_race'
+    __table_args__ = (UniqueConstraint('offense_name'), )
+    def get(ori=None):
+        query = NIBRSNationalVictimDenormRace.query
+
+        if ori:
+            query = query.filter(func.lower(NIBRSNationalVictimDenormRace.ori) == func.lower(ori))
+
+        return query
+
+    agency_id = db.Column(db.Integer)
+    ori = db.Column(db.String)
+    offense_name = db.Column(db.String, primary_key=True)
+    asian = db.Column(db.Integer)
+    native_hawaiian = db.Column(db.Integer)
+    black = db.Column(db.Integer)
+    american_indian = db.Column(db.Integer)
+    unknown = db.Column(db.Integer)
+    white = db.Column(db.Integer)
+    data_year = db.Column(db.Integer)
+
+class NIBRSNationalVictimDenormEthnicity(db.Model):
+    """Represents Agency Level NIBRS Victim Ethnicity Data"""
+    __tablename__ = 'nibrs_denorm_national_victim_ethnicity'
+    __table_args__ = (UniqueConstraint('offense_name'), )
+    def get(ori=None):
+        query = NIBRSNationalVictimDenormEthnicity.query
+
+        if ori:
+            query = query.filter(func.lower(NIBRSNationalVictimDenormEthnicity.ori) == func.lower(ori))
+
+        return query
+
+    agency_id = db.Column(db.Integer)
+    ori = db.Column(db.String)
+    offense_name = db.Column(db.String, primary_key=True)
+    hispanic = db.Column(db.Integer)
+    multiple = db.Column(db.Integer)
+    not_hispanic = db.Column(db.Integer)
+    unknown = db.Column(db.Integer)
+    data_year = db.Column(db.Integer)
+
+
+class NIBRSNationalVictimDenormAge(db.Model):
+    """Represents Agency Level NIBRS Victim Age Data"""
+    __tablename__ = 'nibrs_denorm_national_victim_age'
+    __table_args__ = (UniqueConstraint('offense_name'), )
+    def get(ori=None):
+        query = NIBRSNationalVictimDenormAge.query
+
+        if ori:
+            query = query.filter(func.lower(NIBRSNationalVictimDenormAge.ori) == func.lower(ori))
+
+        return query
+
+    agency_id = db.Column(db.Integer)
+    ori = db.Column(db.String)
+    offense_name = db.Column(db.String, primary_key=True)
+    range_0_9 = db.Column(db.Integer)
+    range_10_11 = db.Column(db.Integer)
+    range_20_29 = db.Column(db.Integer)
+    range_30_39 = db.Column(db.Integer)
+    range_40_49 = db.Column(db.Integer)
+    range_50_59 = db.Column(db.Integer)
+    range_60_69 = db.Column(db.Integer)
+    range_70_79 = db.Column(db.Integer)
+    range_80_89 = db.Column(db.Integer)
+    range_90_99 = db.Column(db.Integer)
+    unknown = db.Column(db.Integer)
+    data_year = db.Column(db.Integer)
+
+class NIBRSNationalVictimDenormLocation(db.Model):
+    """Represents Agency Level NIBRS Victim Location Data"""
+    __tablename__ = 'nibrs_denorm_national_victim_location'
+    __table_args__ = (UniqueConstraint('offense_name'), )
+    def get(ori=None):
+        query = NIBRSNationalVictimDenormLocation.query
+
+        if ori:
+            query = query.filter(func.lower(NIBRSNationalVictimDenormLocation.ori) == func.lower(ori))
+
+        return query
+
+    agency_id = db.Column(db.Integer)
+    ori = db.Column(db.String)
+    offense_name = db.Column(db.String, primary_key=True)
+    Residence_Home = db.Column(db.Integer)
+    Parking_Garage__Lot = db.Column(db.Integer)
+    Abandoned_Condemned__Structure = db.Column(db.Integer)
+    Air__BusTrain_Terminal = db.Column(db.Integer)
+    Amusement_Park = db.Column(db.Integer)
+    Arena__Stadium__Fairgrounds = db.Column(db.Integer)
+    ATM_Separate_from_Bank = db.Column(db.Integer)
+    Auto_Dealership = db.Column(db.Integer)
+    Bank = db.Column(db.Integer)
+    Bar_Nightclub = db.Column(db.Integer)
+    Campground = db.Column(db.Integer)
+    Church__Synagogue__Temple__Mosque = db.Column(db.Integer)
+    Commercial__Office_Building = db.Column(db.Integer)
+    Community_Center = db.Column(db.Integer)
+    Construction_Site = db.Column(db.Integer)
+    Cyberspace = db.Column(db.Integer)
+    Daycare_Facility = db.Column(db.Integer)
+    Department__Discount_Store = db.Column(db.Integer)
+    Dock__Wharf__Shipping_Terminal = db.Column(db.Integer)
+    Drug_Store__Doctors_Office__Hospital = db.Column(db.Integer)
+    Farm_Facility = db.Column(db.Integer)
+    Field__Woods = db.Column(db.Integer)
+    Gambling_Facility__Casino__Race_Track = db.Column(db.Integer)
+    Government__Public_Building = db.Column(db.Integer)
+    Grocery_Store = db.Column(db.Integer)
+    Highway__Alley__Street__Sidewalk = db.Column(db.Integer)
+    Hotel__Motel = db.Column(db.Integer)
+    Industrial_Site = db.Column(db.Integer)
+    Jail__Prison__Corrections_Facility = db.Column(db.Integer)
+    Lake__Waterway__Beach = db.Column(db.Integer)
+    Liquor_Store = db.Column(db.Integer)
+    Military_Base = db.Column(db.Integer)
+    Unknown = db.Column(db.Integer)
+    Park__Playground = db.Column(db.Integer)
+    Rental_Storage_Facility = db.Column(db.Integer)
+    Rest_Area = db.Column(db.Integer)
+    Restaurant = db.Column(db.Integer)
+    School__College = db.Column(db.Integer)
+    School_College__University = db.Column(db.Integer)
+    School_Elementary__Secondary = db.Column(db.Integer)
+    Gas_Station = db.Column(db.Integer)
+    Mission__Homeless_Shelter = db.Column(db.Integer)
+    Shopping_Mall = db.Column(db.Integer)
+    Specialty_Store = db.Column(db.Integer)
+    Tribal_Lands = db.Column(db.Integer)
+    data_year = db.Column(db.Integer)
+
+
+class NIBRSOffenderCount(db.Model):
+    """Represents Agency Level NIBRS Offender Data"""
+    __tablename__ = 'nibrs_Offender_count'
+    __table_args__ = (UniqueConstraint('offense_name'), )
+
+    def get(ori=None):
+        query = NIBRSOffenderCount.query
+
+        if ori:
+            query = query.filter(func.lower(NIBRSOffenderCount.ori) == func.lower(ori))
+
+        return query
+
+    agency_id = db.Column(db.Integer)
+    ori = db.Column(db.String)
+    data_year = db.Column(db.Integer)
+    offense_name = db.Column(db.String, primary_key=True)
+    type_name = db.Column(db.String)
+    sex_code = db.Column(db.String(1))
+    age_range = db.Column(db.String)
+    race_description = db.Column(db.String)
+    ethnicity_name = db.Column(db.String)
+    location_name = db.Column(db.String)
+    count = db.Column(db.Integer)
+
+class NIBRSAgencyOffenderDenormCount(db.Model):
+    """Represents Agency Level NIBRS Offender Count Data"""
+    __tablename__ = 'nibrs_denorm_agency_Offender_count'
+    __table_args__ = (UniqueConstraint('offense_name'), )
+    def get(ori=None):
+        query = NIBRSAgencyOffenderDenormCount.query
+
+        if ori:
+            query = query.filter(func.lower(NIBRSAgencyOffenderDenormCount.ori) == func.lower(ori))
+
+        return query
+
+    agency_id = db.Column(db.Integer)
+    ori = db.Column(db.String)
+    offense_name = db.Column(db.String, primary_key=True)
+    count = db.Column(db.Integer)
+    data_year = db.Column(db.Integer)
+
+class NIBRSAgencyOffenderDenormSex(db.Model):
+    """Represents Agency Level NIBRS Offender Data"""
+    __tablename__ = 'nibrs_denorm_agency_Offender_sex'
+    __table_args__ = (UniqueConstraint('offense_name'), )
+    def get(ori=None):
+        query = NIBRSAgencyOffenderDenormSex.query
+
+        if ori:
+            query = query.filter(func.lower(NIBRSAgencyOffenderDenormSex.ori) == func.lower(ori))
+
+        return query
+
+    agency_id = db.Column(db.Integer)
+    ori = db.Column(db.String)
+    offense_name = db.Column(db.String, primary_key=True)
+    male_count = db.Column(db.Integer)
+    female_count = db.Column(db.Integer)
+    unknown_count = db.Column(db.Integer)
+    data_year = db.Column(db.Integer)
+
+class NIBRSAgencyOffenderDenormRace(db.Model):
+    """Represents Agency Level NIBRS Offender Race Data"""
+    __tablename__ = 'nibrs_denorm_agency_Offender_race'
+    __table_args__ = (UniqueConstraint('offense_name'), )
+    def get(ori=None):
+        query = NIBRSAgencyOffenderDenormRace.query
+
+        if ori:
+            query = query.filter(func.lower(NIBRSAgencyOffenderDenormRace.ori) == func.lower(ori))
+
+        return query
+
+    agency_id = db.Column(db.Integer)
+    ori = db.Column(db.String)
+    offense_name = db.Column(db.String, primary_key=True)
+    asian = db.Column(db.Integer)
+    native_hawaiian = db.Column(db.Integer)
+    black = db.Column(db.Integer)
+    american_indian = db.Column(db.Integer)
+    unknown = db.Column(db.Integer)
+    white = db.Column(db.Integer)
+    data_year = db.Column(db.Integer)
+
+class NIBRSAgencyOffenderDenormEthnicity(db.Model):
+    """Represents Agency Level NIBRS Offender Ethnicity Data"""
+    __tablename__ = 'nibrs_denorm_agency_Offender_ethnicity'
+    __table_args__ = (UniqueConstraint('offense_name'), )
+    def get(ori=None):
+        query = NIBRSAgencyOffenderDenormEthnicity.query
+
+        if ori:
+            query = query.filter(func.lower(NIBRSAgencyOffenderDenormEthnicity.ori) == func.lower(ori))
+
+        return query
+
+    agency_id = db.Column(db.Integer)
+    ori = db.Column(db.String)
+    offense_name = db.Column(db.String, primary_key=True)
+    hispanic = db.Column(db.Integer)
+    multiple = db.Column(db.Integer)
+    not_hispanic = db.Column(db.Integer)
+    unknown = db.Column(db.Integer)
+    data_year = db.Column(db.Integer)
+
+
+class NIBRSAgencyOffenderDenormAge(db.Model):
+    """Represents Agency Level NIBRS Offender Age Data"""
+    __tablename__ = 'nibrs_denorm_agency_Offender_age'
+    __table_args__ = (UniqueConstraint('offense_name'), )
+    def get(ori=None):
+        query = NIBRSAgencyOffenderDenormAge.query
+
+        if ori:
+            query = query.filter(func.lower(NIBRSAgencyOffenderDenormAge.ori) == func.lower(ori))
+
+        return query
+
+    agency_id = db.Column(db.Integer)
+    ori = db.Column(db.String)
+    offense_name = db.Column(db.String, primary_key=True)
+    range_0_9 = db.Column(db.Integer)
+    range_10_11 = db.Column(db.Integer)
+    range_20_29 = db.Column(db.Integer)
+    range_30_39 = db.Column(db.Integer)
+    range_40_49 = db.Column(db.Integer)
+    range_50_59 = db.Column(db.Integer)
+    range_60_69 = db.Column(db.Integer)
+    range_70_79 = db.Column(db.Integer)
+    range_80_89 = db.Column(db.Integer)
+    range_90_99 = db.Column(db.Integer)
+    unknown = db.Column(db.Integer)
+    data_year = db.Column(db.Integer)
+
+class NIBRSStateOffenderDenormCount(db.Model):
+    """Represents Agency Level NIBRS Offender Count Data"""
+    __tablename__ = 'nibrs_denorm_state_Offender_count'
+    __table_args__ = (UniqueConstraint('offense_name'), )
+    def get(ori=None):
+        query = NIBRSStateOffenderDenormCount.query
+
+        if ori:
+            query = query.filter(func.lower(NIBRSStateOffenderDenormCount.ori) == func.lower(ori))
+
+        return query
+
+    agency_id = db.Column(db.Integer)
+    ori = db.Column(db.String)
+    offense_name = db.Column(db.String, primary_key=True)
+    count = db.Column(db.Integer)
+    data_year = db.Column(db.Integer)
+
+class NIBRSStateOffenderDenormSex(db.Model):
+    """Represents Agency Level NIBRS Offender Data"""
+    __tablename__ = 'nibrs_denorm_state_Offender_sex'
+    __table_args__ = (UniqueConstraint('offense_name'), )
+    def get(ori=None):
+        query = NIBRSStateOffenderDenormSex.query
+
+        if ori:
+            query = query.filter(func.lower(NIBRSStateOffenderDenormSex.ori) == func.lower(ori))
+
+        return query
+
+    agency_id = db.Column(db.Integer)
+    ori = db.Column(db.String)
+    offense_name = db.Column(db.String, primary_key=True)
+    male_count = db.Column(db.Integer)
+    female_count = db.Column(db.Integer)
+    unknown_count = db.Column(db.Integer)
+    data_year = db.Column(db.Integer)
+
+class NIBRSStateOffenderDenormRace(db.Model):
+    """Represents Agency Level NIBRS Offender Race Data"""
+    __tablename__ = 'nibrs_denorm_state_Offender_race'
+    __table_args__ = (UniqueConstraint('offense_name'), )
+    def get(ori=None):
+        query = NIBRSStateOffenderDenormRace.query
+
+        if ori:
+            query = query.filter(func.lower(NIBRSStateOffenderDenormRace.ori) == func.lower(ori))
+
+        return query
+
+    agency_id = db.Column(db.Integer)
+    ori = db.Column(db.String)
+    offense_name = db.Column(db.String, primary_key=True)
+    asian = db.Column(db.Integer)
+    native_hawaiian = db.Column(db.Integer)
+    black = db.Column(db.Integer)
+    american_indian = db.Column(db.Integer)
+    unknown = db.Column(db.Integer)
+    white = db.Column(db.Integer)
+    data_year = db.Column(db.Integer)
+
+class NIBRSStateOffenderDenormEthnicity(db.Model):
+    """Represents Agency Level NIBRS Offender Ethnicity Data"""
+    __tablename__ = 'nibrs_denorm_state_Offender_ethnicity'
+    __table_args__ = (UniqueConstraint('offense_name'), )
+    def get(ori=None):
+        query = NIBRSStateOffenderDenormEthnicity.query
+
+        if ori:
+            query = query.filter(func.lower(NIBRSStateOffenderDenormEthnicity.ori) == func.lower(ori))
+
+        return query
+
+    agency_id = db.Column(db.Integer)
+    ori = db.Column(db.String)
+    offense_name = db.Column(db.String, primary_key=True)
+    hispanic = db.Column(db.Integer)
+    multiple = db.Column(db.Integer)
+    not_hispanic = db.Column(db.Integer)
+    unknown = db.Column(db.Integer)
+    data_year = db.Column(db.Integer)
+
+
+class NIBRSStateOffenderDenormAge(db.Model):
+    """Represents Agency Level NIBRS Offender Age Data"""
+    __tablename__ = 'nibrs_denorm_state_Offender_age'
+    __table_args__ = (UniqueConstraint('offense_name'), )
+    def get(ori=None):
+        query = NIBRSStateOffenderDenormAge.query
+
+        if ori:
+            query = query.filter(func.lower(NIBRSStateOffenderDenormAge.ori) == func.lower(ori))
+
+        return query
+
+    agency_id = db.Column(db.Integer)
+    ori = db.Column(db.String)
+    offense_name = db.Column(db.String, primary_key=True)
+    range_0_9 = db.Column(db.Integer)
+    range_10_11 = db.Column(db.Integer)
+    range_20_29 = db.Column(db.Integer)
+    range_30_39 = db.Column(db.Integer)
+    range_40_49 = db.Column(db.Integer)
+    range_50_59 = db.Column(db.Integer)
+    range_60_69 = db.Column(db.Integer)
+    range_70_79 = db.Column(db.Integer)
+    range_80_89 = db.Column(db.Integer)
+    range_90_99 = db.Column(db.Integer)
+    unknown = db.Column(db.Integer)
+    data_year = db.Column(db.Integer)
+
+class NIBRSNationalOffenderDenormCount(db.Model):
+    """Represents Agency Level NIBRS Offender Count Data"""
+    __tablename__ = 'nibrs_denorm_national_Offender_count'
+    __table_args__ = (UniqueConstraint('offense_name'), )
+    def get(ori=None):
+        query = NIBRSNationalOffenderDenormCount.query
+
+        if ori:
+            query = query.filter(func.lower(NIBRSNationalOffenderDenormCount.ori) == func.lower(ori))
+
+        return query
+
+    agency_id = db.Column(db.Integer)
+    ori = db.Column(db.String)
+    offense_name = db.Column(db.String, primary_key=True)
+    count = db.Column(db.Integer)
+    data_year = db.Column(db.Integer)
+
+class NIBRSNationalOffenderDenormSex(db.Model):
+    """Represents Agency Level NIBRS Offender Data"""
+    __tablename__ = 'nibrs_denorm_national_Offender_sex'
+    __table_args__ = (UniqueConstraint('offense_name'), )
+    def get(ori=None):
+        query = NIBRSNationalOffenderDenormSex.query
+
+        if ori:
+            query = query.filter(func.lower(NIBRSNationalOffenderDenormSex.ori) == func.lower(ori))
+
+        return query
+
+    agency_id = db.Column(db.Integer)
+    ori = db.Column(db.String)
+    offense_name = db.Column(db.String, primary_key=True)
+    male_count = db.Column(db.Integer)
+    female_count = db.Column(db.Integer)
+    unknown_count = db.Column(db.Integer)
+    data_year = db.Column(db.Integer)
+
+class NIBRSNationalOffenderDenormRace(db.Model):
+    """Represents Agency Level NIBRS Offender Race Data"""
+    __tablename__ = 'nibrs_denorm_national_Offender_race'
+    __table_args__ = (UniqueConstraint('offense_name'), )
+    def get(ori=None):
+        query = NIBRSNationalOffenderDenormRace.query
+
+        if ori:
+            query = query.filter(func.lower(NIBRSNationalOffenderDenormRace.ori) == func.lower(ori))
+
+        return query
+
+    agency_id = db.Column(db.Integer)
+    ori = db.Column(db.String)
+    offense_name = db.Column(db.String, primary_key=True)
+    asian = db.Column(db.Integer)
+    native_hawaiian = db.Column(db.Integer)
+    black = db.Column(db.Integer)
+    american_indian = db.Column(db.Integer)
+    unknown = db.Column(db.Integer)
+    white = db.Column(db.Integer)
+    data_year = db.Column(db.Integer)
+
+class NIBRSNationalOffenderDenormEthnicity(db.Model):
+    """Represents Agency Level NIBRS Offender Ethnicity Data"""
+    __tablename__ = 'nibrs_denorm_national_Offender_ethnicity'
+    __table_args__ = (UniqueConstraint('offense_name'), )
+    def get(ori=None):
+        query = NIBRSNationalOffenderDenormEthnicity.query
+
+        if ori:
+            query = query.filter(func.lower(NIBRSNationalOffenderDenormEthnicity.ori) == func.lower(ori))
+
+        return query
+
+    agency_id = db.Column(db.Integer)
+    ori = db.Column(db.String)
+    offense_name = db.Column(db.String, primary_key=True)
+    hispanic = db.Column(db.Integer)
+    multiple = db.Column(db.Integer)
+    not_hispanic = db.Column(db.Integer)
+    unknown = db.Column(db.Integer)
+    data_year = db.Column(db.Integer)
+
+
+class NIBRSNationalOffenderDenormAge(db.Model):
+    """Represents Agency Level NIBRS Offender Age Data"""
+    __tablename__ = 'nibrs_denorm_national_Offender_age'
+    __table_args__ = (UniqueConstraint('offense_name'), )
+    def get(ori=None):
+        query = NIBRSNationalOffenderDenormAge.query
+
+        if ori:
+            query = query.filter(func.lower(NIBRSNationalOffenderDenormAge.ori) == func.lower(ori))
+
+        return query
+
+    agency_id = db.Column(db.Integer)
+    ori = db.Column(db.String)
+    offense_name = db.Column(db.String, primary_key=True)
+    range_0_9 = db.Column(db.Integer)
+    range_10_11 = db.Column(db.Integer)
+    range_20_29 = db.Column(db.Integer)
+    range_30_39 = db.Column(db.Integer)
+    range_40_49 = db.Column(db.Integer)
+    range_50_59 = db.Column(db.Integer)
+    range_60_69 = db.Column(db.Integer)
+    range_70_79 = db.Column(db.Integer)
+    range_80_89 = db.Column(db.Integer)
+    range_90_99 = db.Column(db.Integer)
+    unknown = db.Column(db.Integer)
+    data_year = db.Column(db.Integer)
