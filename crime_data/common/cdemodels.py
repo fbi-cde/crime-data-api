@@ -896,63 +896,63 @@ class NIBRSAgencyVictimDenormLocation(db.Model):
     agency_id = db.Column(db.Integer)
     ori = db.Column(db.String)
     offense_name = db.Column(db.String, primary_key=True)
-    Residence_Home = db.Column(db.Integer)
-    Parking_Garage__Lot = db.Column(db.Integer)
-    Abandoned_Condemned__Structure = db.Column(db.Integer)
-    Air__BusTrain_Terminal = db.Column(db.Integer)
-    Amusement_Park = db.Column(db.Integer)
-    Arena__Stadium__Fairgrounds = db.Column(db.Integer)
-    ATM_Separate_from_Bank = db.Column(db.Integer)
-    Auto_Dealership = db.Column(db.Integer)
-    Bank = db.Column(db.Integer)
-    Bar_Nightclub = db.Column(db.Integer)
-    Campground = db.Column(db.Integer)
-    Church__Synagogue__Temple__Mosque = db.Column(db.Integer)
-    Commercial__Office_Building = db.Column(db.Integer)
-    Community_Center = db.Column(db.Integer)
-    Construction_Site = db.Column(db.Integer)
-    Cyberspace = db.Column(db.Integer)
-    Daycare_Facility = db.Column(db.Integer)
-    Department__Discount_Store = db.Column(db.Integer)
-    Dock__Wharf__Shipping_Terminal = db.Column(db.Integer)
-    Drug_Store__Doctors_Office__Hospital = db.Column(db.Integer)
-    Farm_Facility = db.Column(db.Integer)
-    Field__Woods = db.Column(db.Integer)
-    Gambling_Facility__Casino__Race_Track = db.Column(db.Integer)
-    Government__Public_Building = db.Column(db.Integer)
-    Grocery_Store = db.Column(db.Integer)
-    Highway__Alley__Street__Sidewalk = db.Column(db.Integer)
-    Hotel__Motel = db.Column(db.Integer)
-    Industrial_Site = db.Column(db.Integer)
-    Jail__Prison__Corrections_Facility = db.Column(db.Integer)
-    Lake__Waterway__Beach = db.Column(db.Integer)
-    Liquor_Store = db.Column(db.Integer)
-    Military_Base = db.Column(db.Integer)
-    Unknown = db.Column(db.Integer)
-    Park__Playground = db.Column(db.Integer)
-    Rental_Storage_Facility = db.Column(db.Integer)
-    Rest_Area = db.Column(db.Integer)
-    Restaurant = db.Column(db.Integer)
-    School__College = db.Column(db.Integer)
-    School_College__University = db.Column(db.Integer)
-    School_Elementary__Secondary = db.Column(db.Integer)
-    Gas_Station = db.Column(db.Integer)
-    Mission__Homeless_Shelter = db.Column(db.Integer)
-    Shopping_Mall = db.Column(db.Integer)
-    Specialty_Store = db.Column(db.Integer)
-    Tribal_Lands = db.Column(db.Integer)
+    residence_home = db.Column(db.Integer)
+    parking_garage__lot = db.Column(db.Integer)
+    abandoned_condemned__structure = db.Column(db.Integer)
+    air__bus__train_terminal = db.Column(db.Integer)
+    amusement_park = db.Column(db.Integer)
+    arena__stadium__fairgrounds = db.Column(db.Integer)
+    atm_separate_from_bank = db.Column(db.Integer)
+    auto_dealership = db.Column(db.Integer)
+    bank = db.Column(db.Integer)
+    bar_nightclub = db.Column(db.Integer)
+    campground = db.Column(db.Integer)
+    church__synagogue__temple__mosque = db.Column(db.Integer)
+    commercial__office_building = db.Column(db.Integer)
+    community_center = db.Column(db.Integer)
+    construction_site = db.Column(db.Integer)
+    cyberspace = db.Column(db.Integer)
+    daycare_facility = db.Column(db.Integer)
+    department__discount_store = db.Column(db.Integer)
+    dock__wharf__shipping_terminal = db.Column(db.Integer)
+    drug_store__doctors_office__hospital = db.Column(db.Integer)
+    farm_facility = db.Column(db.Integer)
+    field__woods = db.Column(db.Integer)
+    gambling_facility__casino__race_track = db.Column(db.Integer)
+    government__public_building = db.Column(db.Integer)
+    grocery_store = db.Column(db.Integer)
+    highway__alley__street__sidewalk = db.Column(db.Integer)
+    hotel__motel = db.Column(db.Integer)
+    industrial_site = db.Column(db.Integer)
+    jail__prison__corrections_facility = db.Column(db.Integer)
+    lake__waterway__beach = db.Column(db.Integer)
+    liquor_store = db.Column(db.Integer)
+    military_base = db.Column(db.Integer)
+    unknown = db.Column(db.Integer)
+    park__playground = db.Column(db.Integer)
+    rental_storage_facility = db.Column(db.Integer)
+    rest_area = db.Column(db.Integer)
+    restaurant = db.Column(db.Integer)
+    school__college = db.Column(db.Integer)
+    school_college__university = db.Column(db.Integer)
+    school_elementary__secondary = db.Column(db.Integer)
+    gas_station = db.Column(db.Integer)
+    mission__homeless_shelter = db.Column(db.Integer)
+    shopping_mall = db.Column(db.Integer)
+    specialty_store = db.Column(db.Integer)
+    tribal_lands = db.Column(db.Integer)
     data_year = db.Column(db.Integer)
 
 class NIBRSStateVictimDenormCount(db.Model):
     """Represents Agency Level NIBRS Victim Count Data"""
-    __tablename__ = 'nibrs_denorm_state_victim_count'
+    __tablename__ = 'nibrs_state_denorm_victim_count'
     __table_args__ = (UniqueConstraint('offense_name'), )
     def get(state_abbr=None):
         print('Here')
 
         query = NIBRSStateVictimDenormCount.query
 
-        if ori:
+        if state_abbr:
             query = query.filter(func.lower(NIBRSStateVictimDenormCount.state_abbr) == func.lower(state_abbr))
 
         return query
@@ -965,12 +965,12 @@ class NIBRSStateVictimDenormCount(db.Model):
 
 class NIBRSStateVictimDenormSex(db.Model):
     """Represents Agency Level NIBRS Victim Data"""
-    __tablename__ = 'nibrs_denorm_state_victim_sex'
+    __tablename__ = 'nibrs_state_denorm_victim_sex'
     __table_args__ = (UniqueConstraint('offense_name'), )
     def get(state_abbr=None):
         query = NIBRSStateVictimDenormSex.query
 
-        if ori:
+        if state_abbr:
             query = query.filter(func.lower(NIBRSStateVictimDenormSex.state_abbr) == func.lower(state_abbr))
 
         return query
@@ -985,12 +985,12 @@ class NIBRSStateVictimDenormSex(db.Model):
 
 class NIBRSStateVictimDenormRace(db.Model):
     """Represents Agency Level NIBRS Victim Race Data"""
-    __tablename__ = 'nibrs_denorm_state_victim_race'
+    __tablename__ = 'nibrs_state_denorm_victim_race'
     __table_args__ = (UniqueConstraint('offense_name'), )
     def get(state_abbr=None):
         query = NIBRSStateVictimDenormRace.query
 
-        if ori:
+        if state_abbr:
             query = query.filter(func.lower(NIBRSStateVictimDenormRace.state_abbr) == func.lower(state_abbr))
 
         return query
@@ -1008,12 +1008,12 @@ class NIBRSStateVictimDenormRace(db.Model):
 
 class NIBRSStateVictimDenormEthnicity(db.Model):
     """Represents Agency Level NIBRS Victim Ethnicity Data"""
-    __tablename__ = 'nibrs_denorm_state_victim_ethnicity'
+    __tablename__ = 'nibrs_state_denorm_victim_ethnicity'
     __table_args__ = (UniqueConstraint('offense_name'), )
     def get(state_abbr=None):
         query = NIBRSStateVictimDenormEthnicity.query
 
-        if ori:
+        if state_abbr:
             query = query.filter(func.lower(NIBRSStateVictimDenormEthnicity.state_abbr) == func.lower(state_abbr))
 
         return query
@@ -1030,12 +1030,12 @@ class NIBRSStateVictimDenormEthnicity(db.Model):
 
 class NIBRSStateVictimDenormAge(db.Model):
     """Represents Agency Level NIBRS Victim Age Data"""
-    __tablename__ = 'nibrs_denorm_state_victim_age'
+    __tablename__ = 'nibrs_state_denorm_victim_age'
     __table_args__ = (UniqueConstraint('offense_name'), )
     def get(state_abbr=None):
         query = NIBRSStateVictimDenormAge.query
 
-        if ori:
+        if state_abbr:
             query = query.filter(func.lower(NIBRSStateVictimDenormAge.state_abbr) == func.lower(state_abbr))
 
         return query
@@ -1058,12 +1058,12 @@ class NIBRSStateVictimDenormAge(db.Model):
 
 class NIBRSStateVictimDenormLocation(db.Model):
     """Represents Agency Level NIBRS Victim Location Data"""
-    __tablename__ = 'nibrs_denorm_state_victim_location'
+    __tablename__ = 'nibrs_state_denorm_victim_location'
     __table_args__ = (UniqueConstraint('offense_name'), )
     def get(state_abbr=None):
         query = NIBRSStateVictimDenormLocation.query
 
-        if ori:
+        if state_abbr:
             query = query.filter(func.lower(NIBRSStateVictimDenormLocation.state_abbr) == func.lower(state_abbr))
 
         return query
@@ -1071,51 +1071,51 @@ class NIBRSStateVictimDenormLocation(db.Model):
     state_id = db.Column(db.Integer)
     state_abbr = db.Column(db.String)
     offense_name = db.Column(db.String, primary_key=True)
-    Residence_Home = db.Column(db.Integer)
-    Parking_Garage__Lot = db.Column(db.Integer)
-    Abandoned_Condemned__Structure = db.Column(db.Integer)
-    Air__BusTrain_Terminal = db.Column(db.Integer)
-    Amusement_Park = db.Column(db.Integer)
-    Arena__Stadium__Fairgrounds = db.Column(db.Integer)
-    ATM_Separate_from_Bank = db.Column(db.Integer)
-    Auto_Dealership = db.Column(db.Integer)
-    Bank = db.Column(db.Integer)
-    Bar_Nightclub = db.Column(db.Integer)
-    Campground = db.Column(db.Integer)
-    Church__Synagogue__Temple__Mosque = db.Column(db.Integer)
-    Commercial__Office_Building = db.Column(db.Integer)
-    Community_Center = db.Column(db.Integer)
-    Construction_Site = db.Column(db.Integer)
-    Cyberspace = db.Column(db.Integer)
-    Daycare_Facility = db.Column(db.Integer)
-    Department__Discount_Store = db.Column(db.Integer)
-    Dock__Wharf__Shipping_Terminal = db.Column(db.Integer)
-    Drug_Store__Doctors_Office__Hospital = db.Column(db.Integer)
-    Farm_Facility = db.Column(db.Integer)
-    Field__Woods = db.Column(db.Integer)
-    Gambling_Facility__Casino__Race_Track = db.Column(db.Integer)
-    Government__Public_Building = db.Column(db.Integer)
-    Grocery_Store = db.Column(db.Integer)
-    Highway__Alley__Street__Sidewalk = db.Column(db.Integer)
-    Hotel__Motel = db.Column(db.Integer)
-    Industrial_Site = db.Column(db.Integer)
-    Jail__Prison__Corrections_Facility = db.Column(db.Integer)
-    Lake__Waterway__Beach = db.Column(db.Integer)
-    Liquor_Store = db.Column(db.Integer)
-    Military_Base = db.Column(db.Integer)
-    Unknown = db.Column(db.Integer)
-    Park__Playground = db.Column(db.Integer)
-    Rental_Storage_Facility = db.Column(db.Integer)
-    Rest_Area = db.Column(db.Integer)
-    Restaurant = db.Column(db.Integer)
-    School__College = db.Column(db.Integer)
-    School_College__University = db.Column(db.Integer)
-    School_Elementary__Secondary = db.Column(db.Integer)
-    Gas_Station = db.Column(db.Integer)
-    Mission__Homeless_Shelter = db.Column(db.Integer)
-    Shopping_Mall = db.Column(db.Integer)
-    Specialty_Store = db.Column(db.Integer)
-    Tribal_Lands = db.Column(db.Integer)
+    residence_home = db.Column(db.Integer)
+    parking_garage__lot = db.Column(db.Integer)
+    abandoned_condemned__structure = db.Column(db.Integer)
+    air__bus__train_terminal = db.Column(db.Integer)
+    amusement_park = db.Column(db.Integer)
+    arena__stadium__fairgrounds = db.Column(db.Integer)
+    atm_separate_from_bank = db.Column(db.Integer)
+    auto_dealership = db.Column(db.Integer)
+    bank = db.Column(db.Integer)
+    bar_nightclub = db.Column(db.Integer)
+    campground = db.Column(db.Integer)
+    church__synagogue__temple__mosque = db.Column(db.Integer)
+    commercial__office_building = db.Column(db.Integer)
+    community_center = db.Column(db.Integer)
+    construction_site = db.Column(db.Integer)
+    cyberspace = db.Column(db.Integer)
+    daycare_facility = db.Column(db.Integer)
+    department__discount_store = db.Column(db.Integer)
+    dock__wharf__shipping_terminal = db.Column(db.Integer)
+    drug_store__doctors_office__hospital = db.Column(db.Integer)
+    farm_facility = db.Column(db.Integer)
+    field__woods = db.Column(db.Integer)
+    gambling_facility__casino__race_track = db.Column(db.Integer)
+    government__public_building = db.Column(db.Integer)
+    grocery_store = db.Column(db.Integer)
+    highway__alley__street__sidewalk = db.Column(db.Integer)
+    hotel__motel = db.Column(db.Integer)
+    industrial_site = db.Column(db.Integer)
+    jail__prison__corrections_facility = db.Column(db.Integer)
+    lake__waterway__beach = db.Column(db.Integer)
+    liquor_store = db.Column(db.Integer)
+    military_base = db.Column(db.Integer)
+    unknown = db.Column(db.Integer)
+    park__playground = db.Column(db.Integer)
+    rental_storage_facility = db.Column(db.Integer)
+    rest_area = db.Column(db.Integer)
+    restaurant = db.Column(db.Integer)
+    school__college = db.Column(db.Integer)
+    school_college__university = db.Column(db.Integer)
+    school_elementary__secondary = db.Column(db.Integer)
+    gas_station = db.Column(db.Integer)
+    mission__homeless_shelter = db.Column(db.Integer)
+    shopping_mall = db.Column(db.Integer)
+    specialty_store = db.Column(db.Integer)
+    tribal_lands = db.Column(db.Integer)
     data_year = db.Column(db.Integer)
 
 class NIBRSNationalVictimDenormCount(db.Model):
@@ -1195,51 +1195,51 @@ class NIBRSNationalVictimDenormLocation(db.Model):
     __table_args__ = (UniqueConstraint('offense_name'), )
 
     offense_name = db.Column(db.String, primary_key=True)
-    Residence_Home = db.Column(db.Integer)
-    Parking_Garage__Lot = db.Column(db.Integer)
-    Abandoned_Condemned__Structure = db.Column(db.Integer)
-    Air__BusTrain_Terminal = db.Column(db.Integer)
-    Amusement_Park = db.Column(db.Integer)
-    Arena__Stadium__Fairgrounds = db.Column(db.Integer)
-    ATM_Separate_from_Bank = db.Column(db.Integer)
-    Auto_Dealership = db.Column(db.Integer)
-    Bank = db.Column(db.Integer)
-    Bar_Nightclub = db.Column(db.Integer)
-    Campground = db.Column(db.Integer)
-    Church__Synagogue__Temple__Mosque = db.Column(db.Integer)
-    Commercial__Office_Building = db.Column(db.Integer)
-    Community_Center = db.Column(db.Integer)
-    Construction_Site = db.Column(db.Integer)
-    Cyberspace = db.Column(db.Integer)
-    Daycare_Facility = db.Column(db.Integer)
-    Department__Discount_Store = db.Column(db.Integer)
-    Dock__Wharf__Shipping_Terminal = db.Column(db.Integer)
-    Drug_Store__Doctors_Office__Hospital = db.Column(db.Integer)
-    Farm_Facility = db.Column(db.Integer)
-    Field__Woods = db.Column(db.Integer)
-    Gambling_Facility__Casino__Race_Track = db.Column(db.Integer)
-    Government__Public_Building = db.Column(db.Integer)
-    Grocery_Store = db.Column(db.Integer)
-    Highway__Alley__Street__Sidewalk = db.Column(db.Integer)
-    Hotel__Motel = db.Column(db.Integer)
-    Industrial_Site = db.Column(db.Integer)
-    Jail__Prison__Corrections_Facility = db.Column(db.Integer)
-    Lake__Waterway__Beach = db.Column(db.Integer)
-    Liquor_Store = db.Column(db.Integer)
-    Military_Base = db.Column(db.Integer)
-    Unknown = db.Column(db.Integer)
-    Park__Playground = db.Column(db.Integer)
-    Rental_Storage_Facility = db.Column(db.Integer)
-    Rest_Area = db.Column(db.Integer)
-    Restaurant = db.Column(db.Integer)
-    School__College = db.Column(db.Integer)
-    School_College__University = db.Column(db.Integer)
-    School_Elementary__Secondary = db.Column(db.Integer)
-    Gas_Station = db.Column(db.Integer)
-    Mission__Homeless_Shelter = db.Column(db.Integer)
-    Shopping_Mall = db.Column(db.Integer)
-    Specialty_Store = db.Column(db.Integer)
-    Tribal_Lands = db.Column(db.Integer)
+    residence_home = db.Column(db.Integer)
+    parking_garage__lot = db.Column(db.Integer)
+    abandoned_condemned__structure = db.Column(db.Integer)
+    air__bus__train_terminal = db.Column(db.Integer)
+    amusement_park = db.Column(db.Integer)
+    arena__stadium__fairgrounds = db.Column(db.Integer)
+    atm_separate_from_bank = db.Column(db.Integer)
+    auto_dealership = db.Column(db.Integer)
+    bank = db.Column(db.Integer)
+    bar_nightclub = db.Column(db.Integer)
+    campground = db.Column(db.Integer)
+    church__synagogue__temple__mosque = db.Column(db.Integer)
+    commercial__office_building = db.Column(db.Integer)
+    community_center = db.Column(db.Integer)
+    construction_site = db.Column(db.Integer)
+    cyberspace = db.Column(db.Integer)
+    daycare_facility = db.Column(db.Integer)
+    department__discount_store = db.Column(db.Integer)
+    dock__wharf__shipping_terminal = db.Column(db.Integer)
+    drug_store__doctors_office__hospital = db.Column(db.Integer)
+    farm_facility = db.Column(db.Integer)
+    field__woods = db.Column(db.Integer)
+    gambling_facility__casino__race_track = db.Column(db.Integer)
+    government__public_building = db.Column(db.Integer)
+    grocery_store = db.Column(db.Integer)
+    highway__alley__street__sidewalk = db.Column(db.Integer)
+    hotel__motel = db.Column(db.Integer)
+    industrial_site = db.Column(db.Integer)
+    jail__prison__corrections_facility = db.Column(db.Integer)
+    lake__waterway__beach = db.Column(db.Integer)
+    liquor_store = db.Column(db.Integer)
+    military_base = db.Column(db.Integer)
+    unknown = db.Column(db.Integer)
+    park__playground = db.Column(db.Integer)
+    rental_storage_facility = db.Column(db.Integer)
+    rest_area = db.Column(db.Integer)
+    restaurant = db.Column(db.Integer)
+    school__college = db.Column(db.Integer)
+    school_college__university = db.Column(db.Integer)
+    school_elementary__secondary = db.Column(db.Integer)
+    gas_station = db.Column(db.Integer)
+    mission__homeless_shelter = db.Column(db.Integer)
+    shopping_mall = db.Column(db.Integer)
+    specialty_store = db.Column(db.Integer)
+    tribal_lands = db.Column(db.Integer)
     data_year = db.Column(db.Integer)
 
 
@@ -1381,7 +1381,7 @@ class NIBRSAgencyOffenderDenormAge(db.Model):
 
 class NIBRSStateOffenderDenormCount(db.Model):
     """Represents Agency Level NIBRS Offender Count Data"""
-    __tablename__ = 'nibrs_denorm_state_offender_count'
+    __tablename__ = 'nibrs_state_denorm_offender_count'
     __table_args__ = (UniqueConstraint('offense_name'), )
     def get(state_abbr=None):
         query = NIBRSStateOffenderDenormCount.query
@@ -1399,7 +1399,7 @@ class NIBRSStateOffenderDenormCount(db.Model):
 
 class NIBRSStateOffenderDenormSex(db.Model):
     """Represents Agency Level NIBRS Offender Data"""
-    __tablename__ = 'nibrs_denorm_state_Offender_sex'
+    __tablename__ = 'nibrs_state_denorm_offender_sex'
     __table_args__ = (UniqueConstraint('offense_name'), )
     def get(state_abbr=None):
         query = NIBRSStateOffenderDenormSex.query
@@ -1409,8 +1409,8 @@ class NIBRSStateOffenderDenormSex(db.Model):
 
         return query
 
-    agency_id = db.Column(db.Integer)
-    ori = db.Column(db.String)
+    state_id = db.Column(db.Integer)
+    state_abbr = db.Column(db.String)
     offense_name = db.Column(db.String, primary_key=True)
     male_count = db.Column(db.Integer)
     female_count = db.Column(db.Integer)
@@ -1419,7 +1419,7 @@ class NIBRSStateOffenderDenormSex(db.Model):
 
 class NIBRSStateOffenderDenormRace(db.Model):
     """Represents Agency Level NIBRS Offender Race Data"""
-    __tablename__ = 'nibrs_denorm_state_Offender_race'
+    __tablename__ = 'nibrs_state_denorm_offender_race'
     __table_args__ = (UniqueConstraint('offense_name'), )
     def get(state_abbr=None):
         query = NIBRSStateOffenderDenormRace.query
@@ -1442,7 +1442,7 @@ class NIBRSStateOffenderDenormRace(db.Model):
 
 class NIBRSStateOffenderDenormEthnicity(db.Model):
     """Represents Agency Level NIBRS Offender Ethnicity Data"""
-    __tablename__ = 'nibrs_denorm_state_Offender_ethnicity'
+    __tablename__ = 'nibrs_state_denorm_offender_ethnicity'
     __table_args__ = (UniqueConstraint('offense_name'), )
     def get(state_abbr=None):
         query = NIBRSStateOffenderDenormEthnicity.query
@@ -1464,7 +1464,7 @@ class NIBRSStateOffenderDenormEthnicity(db.Model):
 
 class NIBRSStateOffenderDenormAge(db.Model):
     """Represents Agency Level NIBRS Offender Age Data"""
-    __tablename__ = 'nibrs_denorm_state_Offender_age'
+    __tablename__ = 'nibrs_state_denorm_offender_age'
     __table_args__ = (UniqueConstraint('offense_name'), )
     def get(state_abbr=None):
         query = NIBRSStateOffenderDenormAge.query
