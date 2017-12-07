@@ -1,9 +1,6 @@
---
--- PostgreSQL database dump
---
-
--- Dumped from database version 10.1
--- Dumped by pg_dump version 10.1
+-- This file is used to setup the database tables and load the NIBRS
+-- code lookup tables. It only needs to be run once before you load
+-- any data tables using postgres_load.sql
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -15,14 +12,14 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner:
 --
 
 CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner:
 --
 
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
@@ -471,8 +468,6 @@ CREATE TABLE nibrs_weapon (
 -- Table loading
 --
 
-\COPY agency_participation FROM 'agency_participation.csv' DELIMITER ',' HEADER CSV;
-\COPY cde_agencies FROM 'cde_agencies.csv' DELIMITER ',' HEADER CSV;
 \COPY nibrs_activity_type FROM 'nibrs_activity_type.csv' DELIMITER ',' HEADER CSV;
 \COPY nibrs_age FROM 'nibrs_age.csv' DELIMITER ',' HEADER CSV;
 \COPY nibrs_arrest_type FROM 'nibrs_arrest_type.csv' DELIMITER ',' HEADER CSV;
@@ -496,27 +491,13 @@ CREATE TABLE nibrs_weapon (
 \COPY nibrs_weapon_type FROM 'nibrs_weapon_type.csv' DELIMITER ',' HEADER CSV;
 \COPY ref_race FROM 'ref_race.csv' DELIMITER ',' HEADER CSV;
 \COPY ref_state FROM 'ref_state.csv' DELIMITER ',' HEADER CSV;
-\COPY nibrs_arrestee FROM 'nibrs_arrestee.csv' DELIMITER ',' HEADER CSV;
-\COPY nibrs_arrestee_weapon FROM 'nibrs_arrestee_weapon.csv' DELIMITER ',' HEADER CSV;
-\COPY nibrs_bias_motivation FROM 'nibrs_bias_motivation.csv' DELIMITER ',' HEADER CSV;
-\COPY nibrs_month FROM 'nibrs_month.csv' DELIMITER ',' HEADER CSV;
-\COPY nibrs_incident FROM 'nibrs_incident.csv' DELIMITER ',' HEADER CSV;
-\COPY nibrs_offender FROM 'nibrs_offender.csv' DELIMITER ',' HEADER CSV;
-\COPY nibrs_offense FROM 'nibrs_offense.csv' DELIMITER ',' HEADER CSV;
-\COPY nibrs_property FROM 'nibrs_property.csv' DELIMITER ',' HEADER CSV;
-\COPY nibrs_property_desc FROM 'nibrs_property_desc.csv' DELIMITER ',' HEADER CSV;
-\COPY nibrs_suspect_using FROM 'nibrs_suspect_using.csv' DELIMITER ',' HEADER CSV;
-\COPY nibrs_suspected_drug FROM 'nibrs_suspected_drug.csv' DELIMITER ',' HEADER CSV;
-\COPY nibrs_victim FROM 'nibrs_victim.csv' DELIMITER ',' HEADER CSV;
-\COPY nibrs_victim_circumstances FROM 'nibrs_victim_circumstances.csv' DELIMITER ',' HEADER CSV;
-\COPY nibrs_victim_injury FROM 'nibrs_victim_injury.csv' DELIMITER ',' HEADER CSV;
-\COPY nibrs_victim_offender_rel FROM 'nibrs_victim_offender_rel.csv' DELIMITER ',' HEADER CSV;
-\COPY nibrs_victim_offense FROM 'nibrs_victim_offense.csv' DELIMITER ',' HEADER CSV;
-\COPY nibrs_weapon FROM 'nibrs_weapon.csv' DELIMITER ',' HEADER CSV;
 
 --
 -- Indexes
 --
+
+ALTER TABLE ONLY cde_agencies
+      ADD CONSTRAINT cde_agencies_pkey PRIMARY KEY (agency_id);
 
 ALTER TABLE ONLY nibrs_activity_type
     ADD CONSTRAINT nibrs_activity_type_pkey PRIMARY KEY (activity_type_id);
@@ -905,4 +886,3 @@ ALTER TABLE ONLY nibrs_weapon
 --
 -- PostgreSQL database dump complete
 --
-
