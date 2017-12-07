@@ -76,7 +76,7 @@ CREATE TABLE asr_age_suboffense_summary (
 DO
 $do$
 DECLARE
-   years int[] := array[2014, 2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006, 2005, 2004, 2003, 2002, 2001, 2000, 1999, 1998, 1997, 1996, 1995, 1994, 1993, 1992, 1991, 1990, 1989, 1988, 1987, 1986, 1985, 1984, 1983, 1982, 1981, 1980];
+   years int[] := array[2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006, 2005, 2004, 2003, 2002, 2001, 2000, 1999, 1998, 1997, 1996, 1995, 1994, 1993, 1992, 1991, 1990, 1989, 1988, 1987, 1986, 1985, 1984, 1983, 1982, 1981, 1980];
    y int;
 BEGIN
   SET work_mem = '3GB';
@@ -106,7 +106,7 @@ CREATE TABLE asr_race_suboffense_summary (
 DO
 $do$
 DECLARE
-  years int[] := array[2014, 2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006, 2005, 2004, 2003, 2002, 2001, 2000, 1999, 1998, 1997, 1996, 1995, 1994, 1993, 1992, 1991, 1990, 1989, 1988, 1987, 1986, 1985, 1984, 1983, 1982, 1981, 1980];
+  years int[] := array[2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006, 2005, 2004, 2003, 2002, 2001, 2000, 1999, 1998, 1997, 1996, 1995, 1994, 1993, 1992, 1991, 1990, 1989, 1988, 1987, 1986, 1985, 1984, 1983, 1982, 1981, 1980];
   y int;
 BEGIN
   SET work_mem = '3GB';
@@ -421,7 +421,7 @@ label text
 INSERT INTO asr_race_labels VALUES
 ('W', 'white'),
 ('B', 'black'),
-('A', 'asian_pacific_islander'),  -- CJIS informed me that this field has pacific islander counts in it still
+('A', 'asian_pacific_islander'),
 ('AP', 'asian_pacific_islander'),
 ('I', 'american_indian');
 
@@ -483,7 +483,7 @@ BEGIN
   "m_17" bigint
   );
 
-  INSERT INTO asr_juvenile_race_crosstab(offense_code, year, white, black, asian_pacific_islander, american_indian)
+  INSERT INTO asr_juvenile_race_crosstab(offense_code, year, american_indian, asian_pacific_islander, black, white)
   SELECT oc AS offense_code, ct.*
   FROM CROSSTAB(
   $$
@@ -544,7 +544,7 @@ BEGIN
       "m_17" bigint
     );
 
-    INSERT INTO asr_juvenile_race_crosstab(offense_code, state_abbr, year, white, black, asian_pacific_islander, american_indian)
+    INSERT INTO asr_juvenile_race_crosstab(offense_code, state_abbr, year, american_indian, asian_pacific_islander, black, white)
     SELECT oc AS offense_code, st AS state_abbr, ct.*
     FROM CROSSTAB(
     $$
@@ -763,7 +763,7 @@ BEGIN
       "m_65p"   bigint
     );
 
-    INSERT INTO asr_adult_race_crosstab(offense_code, year, white, black, asian_pacific_islander, american_indian)
+    INSERT INTO asr_adult_race_crosstab(offense_code, year, american_indian, asian_pacific_islander, black, white)
     SELECT oc AS offense_code, ct.*
     FROM CROSSTAB(
       $$
@@ -843,7 +843,7 @@ BEGIN
         "m_65p"   bigint
       );
 
-      INSERT INTO asr_adult_race_crosstab(offense_code, state_abbr, year, white, black, asian_pacific_islander, american_indian)
+      INSERT INTO asr_adult_race_crosstab(offense_code, state_abbr, year, american_indian, asian_pacific_islander, black, white)
       SELECT oc AS offense_code, st AS state_abbr, ct.*
       FROM CROSSTAB(
         $$
