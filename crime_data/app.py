@@ -273,18 +273,18 @@ def add_resources(app):
     api.add_resource(crime_data.resources.nibrs_counts.NIBRSStateOffenderDenormRace,'/nibrs/offender/count/states/<string:state_abbr>/race')
     api.add_resource(crime_data.resources.nibrs_counts.NIBRSStateOffenderDenormEthnicity,'/nibrs/offender/count/states/<string:state_abbr>/ethnicity')
 
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSNationalVictimDenormCount,'/nibrs/victim/count')
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSNationalVictimDenormSex,'/nibrs/victim/count/sex')
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSNationalVictimDenormAge,'/nibrs/victim/count/age')
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSNationalVictimDenormRace,'/nibrs/victim/count/race')
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSNationalVictimDenormEthnicity,'/nibrs/victim/count/ethnicity')
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSNationalVictimDenormLocation,'/nibrs/victim/count/location')
+    api.add_resource(crime_data.resources.nibrs_counts.NIBRSNationalVictimDenormCount,'/nibrs/victim/count/national')
+    api.add_resource(crime_data.resources.nibrs_counts.NIBRSNationalVictimDenormSex,'/nibrs/victim/count/national/sex')
+    api.add_resource(crime_data.resources.nibrs_counts.NIBRSNationalVictimDenormAge,'/nibrs/victim/count/national/age')
+    api.add_resource(crime_data.resources.nibrs_counts.NIBRSNationalVictimDenormRace,'/nibrs/victim/count/national/race')
+    api.add_resource(crime_data.resources.nibrs_counts.NIBRSNationalVictimDenormEthnicity,'/nibrs/victim/count/national/ethnicity')
+    api.add_resource(crime_data.resources.nibrs_counts.NIBRSNationalVictimDenormLocation,'/nibrs/victim/count/national/location')
 
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSNationalOffenderDenormCount,'/nibrs/offender/count')
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSNationalOffenderDenormSex,'/nibrs/offender/count/sex')
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSNationalOffenderDenormAge,'/nibrs/offender/count/age')
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSNationalOffenderDenormRace,'/nibrs/offender/count/race')
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSNationalOffenderDenormEthnicity,'/nibrs/offender/count/ethnicity')
+    api.add_resource(crime_data.resources.nibrs_counts.NIBRSNationalOffenderDenormCount,'/nibrs/offender/count/national')
+    api.add_resource(crime_data.resources.nibrs_counts.NIBRSNationalOffenderDenormSex,'/nibrs/offender/count/national/sex')
+    api.add_resource(crime_data.resources.nibrs_counts.NIBRSNationalOffenderDenormAge,'/nibrs/offender/count/national/age')
+    api.add_resource(crime_data.resources.nibrs_counts.NIBRSNationalOffenderDenormRace,'/nibrs/offender/count/national/race')
+    api.add_resource(crime_data.resources.nibrs_counts.NIBRSNationalOffenderDenormEthnicity,'/nibrs/offender/count/national/ethnicity')
 
 def newrelic_status_endpoint():
     return 'OK'

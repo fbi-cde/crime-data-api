@@ -104,203 +104,203 @@ class NIBRSAgencyOffenderDenormAge(CdeResource):
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
     def get(self, args, ori=None):
         self.verify_api_key(args)
-        query = cdemodels.NIBRSOffenderDenormAge.get(ori=ori)
+        query = cdemodels.NIBRSAgencyOffenderDenormAge.get(ori=ori)
         return self.with_metadata(query,args)
 
 class NIBRSNationalVictimDenormCount(CdeResource):
     schema = marshmallow_schemas.NIBRSNationalVictimDenormCountSchema(many=True)
     @use_args(ArgumentsSchema)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, ori=None):
+    def get(self, args):
         self.verify_api_key(args)
-        query = cdemodels.NIBRSNationalVictimDenormCount.get(ori=ori)
+        query = cdemodels.NIBRSNationalVictimDenormCount.query
         return self.with_metadata(query,args)
 
 class NIBRSNationalVictimDenormSex(CdeResource):
     schema = marshmallow_schemas.NIBRSNationalVictimDenormSexSchema(many=True)
     @use_args(ArgumentsSchema)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, ori=None):
+    def get(self, args):
         self.verify_api_key(args)
-        query = cdemodels.NIBRSNationalVictimDenormSex.get(ori=ori)
+        query = cdemodels.NIBRSNationalVictimDenormSex.query
         return self.with_metadata(query,args)
 
 class NIBRSNationalVictimDenormRace(CdeResource):
     schema = marshmallow_schemas.NIBRSNationalVictimDenormRaceSchema(many=True)
     @use_args(ArgumentsSchema)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, ori=None):
+    def get(self, args):
         self.verify_api_key(args)
-        query = cdemodels.NIBRSNationalVictimDenormRace.get(ori=ori)
+        query = cdemodels.NIBRSNationalVictimDenormRace.query
         return self.with_metadata(query,args)
 
 class NIBRSNationalVictimDenormEthnicity(CdeResource):
     schema = marshmallow_schemas.NIBRSNationalVictimDenormEthnicitySchema(many=True)
     @use_args(ArgumentsSchema)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, ori=None):
+    def get(self, args):
         self.verify_api_key(args)
-        query = cdemodels.NIBRSNationalVictimDenormEthnicity.get(ori=ori)
+        query = cdemodels.NIBRSNationalVictimDenormEthnicity.query
         return self.with_metadata(query,args)
 
 class NIBRSNationalVictimDenormAge(CdeResource):
     schema = marshmallow_schemas.NIBRSNationalVictimDenormAgeSchema(many=True)
     @use_args(ArgumentsSchema)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, ori=None):
+    def get(self, args):
         self.verify_api_key(args)
-        query = cdemodels.NIBRSNationalVictimDenormAge.get(ori=ori)
+        query = cdemodels.NIBRSNationalVictimDenormAge.query
         return self.with_metadata(query,args)
 
 class NIBRSNationalVictimDenormLocation(CdeResource):
     schema = marshmallow_schemas.NIBRSNationalVictimDenormLocationSchema(many=True)
     @use_args(ArgumentsSchema)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, ori=None):
+    def get(self, args):
         self.verify_api_key(args)
-        query = cdemodels.NIBRSNationalVictimDenormLocation.get(ori=ori)
+        query = cdemodels.NIBRSNationalVictimDenormLocation.query
         return self.with_metadata(query,args)
 
 class NIBRSNationalOffenderDenormCount(CdeResource):
     schema = marshmallow_schemas.NIBRSNationalOffenderDenormCountSchema(many=True)
     @use_args(ArgumentsSchema)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, ori=None):
+    def get(self, args):
         self.verify_api_key(args)
-        query = cdemodels.NIBRSNationalOffenderDenormCount.get(ori=ori)
+        query = cdemodels.NIBRSNationalOffenderDenormCount.query
         return self.with_metadata(query,args)
 
 class NIBRSNationalOffenderDenormSex(CdeResource):
     schema = marshmallow_schemas.NIBRSNationalOffenderDenormSexSchema(many=True)
     @use_args(ArgumentsSchema)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, ori=None):
+    def get(self, args):
         self.verify_api_key(args)
-        query = cdemodels.NIBRSNationalOffenderDenormSex.get(ori=ori)
+        query = cdemodels.NIBRSNationalOffenderDenormSex.query
         return self.with_metadata(query,args)
 
 class NIBRSNationalOffenderDenormRace(CdeResource):
     schema = marshmallow_schemas.NIBRSNationalOffenderDenormRaceSchema(many=True)
     @use_args(ArgumentsSchema)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, ori=None):
+    def get(self, args):
         self.verify_api_key(args)
-        query = cdemodels.NIBRSNationalOffenderDenormRace.get(ori=ori)
+        query = cdemodels.NIBRSNationalOffenderDenormRace.query
         return self.with_metadata(query,args)
 
 class NIBRSNationalOffenderDenormEthnicity(CdeResource):
     schema = marshmallow_schemas.NIBRSNationalOffenderDenormEthnicitySchema(many=True)
     @use_args(ArgumentsSchema)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, ori=None):
+    def get(self, args):
         self.verify_api_key(args)
-        query = cdemodels.NIBRSNationalOffenderDenormEthnicity.get(ori=ori)
+        query = cdemodels.NIBRSNationalOffenderDenormEthnicity.query
         return self.with_metadata(query,args)
 
 class NIBRSNationalOffenderDenormAge(CdeResource):
     schema = marshmallow_schemas.NIBRSNationalOffenderDenormAgeSchema(many=True)
     @use_args(ArgumentsSchema)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, ori=None):
+    def get(self, args):
         self.verify_api_key(args)
-        query = cdemodels.NIBRSOffenderDenormAge.get(ori=ori)
+        query = cdemodels.NIBRSNationalOffenderDenormAge.query
         return self.with_metadata(query,args)
 
 class NIBRSStateVictimDenormCount(CdeResource):
     schema = marshmallow_schemas.NIBRSStateVictimDenormCountSchema(many=True)
     @use_args(ArgumentsSchema)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, ori=None):
+    def get(self, args, state_abbr=None):
         self.verify_api_key(args)
-        query = cdemodels.NIBRSStateVictimDenormCount.get(ori=ori)
+        query = cdemodels.NIBRSStateVictimDenormCount.get(state_abbr=state_abbr)
         return self.with_metadata(query,args)
 
 class NIBRSStateVictimDenormSex(CdeResource):
     schema = marshmallow_schemas.NIBRSStateVictimDenormSexSchema(many=True)
     @use_args(ArgumentsSchema)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, ori=None):
+    def get(self, args, state_abbr=None):
         self.verify_api_key(args)
-        query = cdemodels.NIBRSStateVictimDenormSex.get(ori=ori)
+        query = cdemodels.NIBRSStateVictimDenormSex.get(state_abbr=state_abbr)
         return self.with_metadata(query,args)
 
 class NIBRSStateVictimDenormRace(CdeResource):
     schema = marshmallow_schemas.NIBRSStateVictimDenormRaceSchema(many=True)
     @use_args(ArgumentsSchema)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, ori=None):
+    def get(self, args, state_abbr=None):
         self.verify_api_key(args)
-        query = cdemodels.NIBRSStateVictimDenormRace.get(ori=ori)
+        query = cdemodels.NIBRSStateVictimDenormRace.get(state_abbr=state_abbr)
         return self.with_metadata(query,args)
 
 class NIBRSStateVictimDenormEthnicity(CdeResource):
     schema = marshmallow_schemas.NIBRSStateVictimDenormEthnicitySchema(many=True)
     @use_args(ArgumentsSchema)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, ori=None):
+    def get(self, args, state_abbr=None):
         self.verify_api_key(args)
-        query = cdemodels.NIBRSStateVictimDenormEthnicity.get(ori=ori)
+        query = cdemodels.NIBRSStateVictimDenormEthnicity.get(state_abbr=state_abbr)
         return self.with_metadata(query,args)
 
 class NIBRSStateVictimDenormAge(CdeResource):
     schema = marshmallow_schemas.NIBRSStateVictimDenormAgeSchema(many=True)
     @use_args(ArgumentsSchema)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, ori=None):
+    def get(self, args, state_abbr=None):
         self.verify_api_key(args)
-        query = cdemodels.NIBRSStateVictimDenormAge.get(ori=ori)
+        query = cdemodels.NIBRSStateVictimDenormAge.get(state_abbr=state_abbr)
         return self.with_metadata(query,args)
 
 class NIBRSStateVictimDenormLocation(CdeResource):
     schema = marshmallow_schemas.NIBRSStateVictimDenormLocationSchema(many=True)
     @use_args(ArgumentsSchema)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, ori=None):
+    def get(self, args, state_abbr=None):
         self.verify_api_key(args)
-        query = cdemodels.NIBRSStateVictimDenormLocation.get(ori=ori)
+        query = cdemodels.NIBRSStateVictimDenormLocation.get(state_abbr=state_abbr)
         return self.with_metadata(query,args)
 
 class NIBRSStateOffenderDenormCount(CdeResource):
     schema = marshmallow_schemas.NIBRSStateOffenderDenormCountSchema(many=True)
     @use_args(ArgumentsSchema)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, ori=None):
+    def get(self, args, state_abbr=None):
         self.verify_api_key(args)
-        query = cdemodels.NIBRSStateOffenderDenormCount.get(ori=ori)
+        query = cdemodels.NIBRSStateOffenderDenormCount.get(state_abbr=state_abbr)
         return self.with_metadata(query,args)
 
 class NIBRSStateOffenderDenormSex(CdeResource):
     schema = marshmallow_schemas.NIBRSStateOffenderDenormSexSchema(many=True)
     @use_args(ArgumentsSchema)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, ori=None):
+    def get(self, args, state_abbr=None):
         self.verify_api_key(args)
-        query = cdemodels.NIBRSStateOffenderDenormSex.get(ori=ori)
+        query = cdemodels.NIBRSStateOffenderDenormSex.get(state_abbr=state_abbr)
         return self.with_metadata(query,args)
 
 class NIBRSStateOffenderDenormRace(CdeResource):
     schema = marshmallow_schemas.NIBRSStateOffenderDenormRaceSchema(many=True)
     @use_args(ArgumentsSchema)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, ori=None):
+    def get(self, args, state_abbr=None):
         self.verify_api_key(args)
-        query = cdemodels.NIBRSStateOffenderDenormRace.get(ori=ori)
+        query = cdemodels.NIBRSStateOffenderDenormRace.get(state_abbr=state_abbr)
         return self.with_metadata(query,args)
 
 class NIBRSStateOffenderDenormEthnicity(CdeResource):
     schema = marshmallow_schemas.NIBRSStateOffenderDenormEthnicitySchema(many=True)
     @use_args(ArgumentsSchema)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, ori=None):
+    def get(self, args, state_abbr=None):
         self.verify_api_key(args)
-        query = cdemodels.NIBRSStateOffenderDenormEthnicity.get(ori=ori)
+        query = cdemodels.NIBRSStateOffenderDenormEthnicity.get(state_abbr=state_abbr)
         return self.with_metadata(query,args)
 
 class NIBRSStateOffenderDenormAge(CdeResource):
     schema = marshmallow_schemas.NIBRSStateOffenderDenormAgeSchema(many=True)
     @use_args(ArgumentsSchema)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, ori=None):
+    def get(self, args, state_abbr=None):
         self.verify_api_key(args)
-        query = cdemodels.NIBRSOffenderDenormAge.get(ori=ori)
+        query = cdemodels.NIBRSStateOffenderDenormAge.get(state_abbr=state_abbr)
         return self.with_metadata(query,args)
