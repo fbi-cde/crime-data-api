@@ -31,7 +31,6 @@ CREATE TABLE nibrs_victim_count (
 );
 
 
-
 CREATE TABLE nibrs_offender_count (
     data_year int,
     state_id int,
@@ -42,6 +41,18 @@ CREATE TABLE nibrs_offender_count (
     sex_code character(1),
     race_desc varchar(50),
     ethnicity_name varchar(50),
-      age_range varchar(50),
+    age_range varchar(50),
+    count int
+);
+
+
+CREATE TABLE nibrs_victim_to_offender_relationship_count (
+    data_year int,
+    state_id int,
+    state_abbr character(2),
+    agency_id int,
+    ori varchar(50),
+    offense_name varchar(50),
+    relationship varchar(50),
     count int
 );

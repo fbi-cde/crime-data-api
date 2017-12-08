@@ -1556,3 +1556,125 @@ class NIBRSNationalOffenderDenormAge(db.Model):
     range_90_99 = db.Column(db.Integer)
     unknown = db.Column(db.Integer)
     data_year = db.Column(db.Integer)
+
+class NIBRSNationalDenormVictimOffenderRelationship(db.Model):
+    """Represents Agency Level NIBRS Offender Data"""
+    __tablename__ = 'nibrs_national_denorm_victim_offender_relationship'
+    __table_args__ = (UniqueConstraint('offense_name'), )
+
+    offense_name = db.Column(db.String, primary_key=True)
+    acquaintance = db.Column(db.String)
+    babysittee = db.Column(db.String)
+    boyfriend_girlfriend = db.Column(db.String)
+    child_boyfriend_girlfriend = db.Column(db.String)
+    child = db.Column(db.String)
+    common_law_spouse = db.Column(db.String)
+    employee = db.Column(db.String)
+    employer = db.Column(db.String)
+    friend = db.Column(db.String)
+    grandchild = db.Column(db.String)
+    grandparent = db.Column(db.String)
+    homosexual_relationship = db.Column(db.String)
+    in_law = db.Column(db.String)
+    neighbor = db.Column(db.String)
+    other_family_member = db.Column(db.String)
+    otherwise_known = db.Column(db.String)
+    parent = db.Column(db.String)
+    relationship_unknown = db.Column(db.String)
+    sibling = db.Column(db.String)
+    stepchild = db.Column(db.String)
+    spouse = db.Column(db.String)
+    stepparent = db.Column(db.String)
+    stepsibling = db.Column(db.String)
+    stranger = db.Column(db.String)
+    offender = db.Column(db.String)
+    ex_spouse = db.Column(db.String)
+    data_year = db.Column(db.Integer)
+
+
+class NIBRSAgencyDenormVictimOffenderRelationship(db.Model):
+    """Represents Agency Level NIBRS Victim Data"""
+    __tablename__ = 'nibrs_agency_denorm_victim_offender_relationship'
+    __table_args__ = (UniqueConstraint('offense_name'), )
+    def get(ori=None):
+        query = NIBRSAgencyDenormVictimOffenderRelationship.query
+
+        if ori:
+            query = query.filter(func.lower(NIBRSAgencyDenormVictimOffenderRelationship.ori) == func.lower(ori))
+
+        return query
+
+    agency_id = db.Column(db.Integer)
+    ori = db.Column(db.String)
+    offense_name = db.Column(db.String, primary_key=True)
+    acquaintance = db.Column(db.String)
+    babysittee = db.Column(db.String)
+    boyfriend_girlfriend = db.Column(db.String)
+    child_boyfriend_girlfriend = db.Column(db.String)
+    child = db.Column(db.String)
+    common_law_spouse = db.Column(db.String)
+    employee = db.Column(db.String)
+    employer = db.Column(db.String)
+    friend = db.Column(db.String)
+    grandchild = db.Column(db.String)
+    grandparent = db.Column(db.String)
+    homosexual_relationship = db.Column(db.String)
+    in_law = db.Column(db.String)
+    neighbor = db.Column(db.String)
+    other_family_member = db.Column(db.String)
+    otherwise_known = db.Column(db.String)
+    parent = db.Column(db.String)
+    relationship_unknown = db.Column(db.String)
+    sibling = db.Column(db.String)
+    stepchild = db.Column(db.String)
+    spouse = db.Column(db.String)
+    stepparent = db.Column(db.String)
+    stepsibling = db.Column(db.String)
+    stranger = db.Column(db.String)
+    offender = db.Column(db.String)
+    ex_spouse = db.Column(db.String)
+    data_year = db.Column(db.Integer)
+
+
+class NIBRSStateDenormVictimOffenderRelationship(db.Model):
+    """Represents Agency Level NIBRS Victim Data"""
+    __tablename__ = 'nibrs_state_denorm_victim_offender_relationship'
+    __table_args__ = (UniqueConstraint('offense_name'), )
+    def get(state_abbr=None):
+        query = NIBRSStateDenormVictimOffenderRelationship.query
+
+        if state_abbr:
+            query = query.filter(func.lower(NIBRSStateDenormVictimOffenderRelationship.state_abbr) == func.lower(state_abbr))
+
+        return query
+
+    state_id = db.Column(db.Integer)
+    state_abbr = db.Column(db.String)
+    offense_name = db.Column(db.String, primary_key=True)
+    acquaintance = db.Column(db.String)
+    babysittee = db.Column(db.String)
+    boyfriend_girlfriend = db.Column(db.String)
+    child_boyfriend_girlfriend = db.Column(db.String)
+    child = db.Column(db.String)
+    common_law_spouse = db.Column(db.String)
+    employee = db.Column(db.String)
+    employer = db.Column(db.String)
+    friend = db.Column(db.String)
+    grandchild = db.Column(db.String)
+    grandparent = db.Column(db.String)
+    homosexual_relationship = db.Column(db.String)
+    in_law = db.Column(db.String)
+    neighbor = db.Column(db.String)
+    other_family_member = db.Column(db.String)
+    otherwise_known = db.Column(db.String)
+    parent = db.Column(db.String)
+    relationship_unknown = db.Column(db.String)
+    sibling = db.Column(db.String)
+    stepchild = db.Column(db.String)
+    spouse = db.Column(db.String)
+    stepparent = db.Column(db.String)
+    stepsibling = db.Column(db.String)
+    stranger = db.Column(db.String)
+    offender = db.Column(db.String)
+    ex_spouse = db.Column(db.String)
+    data_year = db.Column(db.Integer)
