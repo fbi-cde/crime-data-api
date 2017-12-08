@@ -46,7 +46,7 @@ state_abbr as state_abbr,
 offense_name as offense_name,
 data_year as data_year,
 coalesce(sum(case when age_range = '0-9' then count end), 0) as range_0_9,
-coalesce(sum(case when age_range = '10-19' then count end), 0) as range_10_11,
+coalesce(sum(case when age_range = '10-19' then count end), 0) as range_10_19,
 coalesce(sum(case when age_range = '20-29' then count end), 0) as range_20_29,
 coalesce(sum(case when age_range = '30-39' then count end), 0) as range_30_39,
 coalesce(sum(case when age_range = '40-49' then count end), 0) as range_40_49,
@@ -66,7 +66,7 @@ data_year as data_year,
 coalesce(sum(case when sex_code = 'M' then count end), 0) as male_count,
 coalesce(sum(case when sex_code = 'F' then count end), 0) as female_count,
 coalesce(sum(case when sex_code = 'U' then count end), 0) as unknown_count
-from public.nibrs_offender_count group by ffense_name, data_year;
+from public.nibrs_offender_count group by offense_name, data_year;
 
 CREATE MATERIALIZED VIEW nibrs_national_denorm_offender_count AS
 select
@@ -102,7 +102,7 @@ select
 offense_name as offense_name,
 data_year as data_year,
 coalesce(sum(case when age_range = '0-9' then count end), 0) as range_0_9,
-coalesce(sum(case when age_range = '10-19' then count end), 0) as range_10_11,
+coalesce(sum(case when age_range = '10-19' then count end), 0) as range_10_19,
 coalesce(sum(case when age_range = '20-29' then count end), 0) as range_20_29,
 coalesce(sum(case when age_range = '30-39' then count end), 0) as range_30_39,
 coalesce(sum(case when age_range = '40-49' then count end), 0) as range_40_49,
@@ -162,7 +162,7 @@ ori as ori,
 offense_name as offense_name,
 data_year as data_year,
 coalesce(sum(case when age_range = '0-9' then count end), 0) as range_0_9,
-coalesce(sum(case when age_range = '10-19' then count end), 0) as range_10_11,
+coalesce(sum(case when age_range = '10-19' then count end), 0) as range_10_19,
 coalesce(sum(case when age_range = '20-29' then count end), 0) as range_20_29,
 coalesce(sum(case when age_range = '30-39' then count end), 0) as range_30_39,
 coalesce(sum(case when age_range = '40-49' then count end), 0) as range_40_49,
@@ -174,11 +174,10 @@ coalesce(sum(case when age_range = '90-99' then count end), 0) as range_90_99,
 coalesce(sum(case when age_range = 'Unknown' then count end), 0) as unknown
 from public.nibrs_offender_count group by agency_id, ori, offense_name, data_year;
 
-
 REFRESH MATERIALIZED VIEW public.nibrs_agency_denorm_offender_age;
 REFRESH MATERIALIZED VIEW public.nibrs_agency_denorm_offender_ethnicity;
 REFRESH MATERIALIZED VIEW public.nibrs_agency_denorm_offender_race;
-REFRESH MATERIALIZED VIEW public.nibrs_agency_denorm_offender_count;
+REFRESH MATERIALIZED VIEW public.nibrs_agency_denorm_cccccccccccccccccccoffender_count;
 REFRESH MATERIALIZED VIEW public.nibrs_agency_denorm_offender_sex;
 REFRESH MATERIALIZED VIEW public.nibrs_state_denorm_offender_age;
 REFRESH MATERIALIZED VIEW public.nibrs_state_denorm_offender_ethnicity;
@@ -190,3 +189,8 @@ REFRESH MATERIALIZED VIEW public.nibrs_national_denorm_offender_ethnicity;
 REFRESH MATERIALIZED VIEW public.nibrs_national_denorm_offender_race;
 REFRESH MATERIALIZED VIEW public.nibrs_national_denorm_offender_count;
 REFRESH MATERIALIZED VIEW public.nibrs_national_denorm_offender_sex;
+
+UPDATE nibrs_offender_count
+SET  state_abbr = TRIM(state_abbr),ori = TRIM(ori),
+offense_name = TRIM(offense_name),sex_code = TRIM(sex_code),
+age_range = TRIM(age_range),race_desc = TRIM(race_desc),ethnicity_name = TRIM(ethnicity_name)

@@ -41,7 +41,7 @@ select
 offense_name as offense_name,
 data_year as data_year,
 coalesce(sum(case when age_range = '0-9' then count end), 0) as range_0_9,
-coalesce(sum(case when age_range = '10-19' then count end), 0) as range_10_11,
+coalesce(sum(case when age_range = '10-19' then count end), 0) as range_10_19,
 coalesce(sum(case when age_range = '20-29' then count end), 0) as range_20_29,
 coalesce(sum(case when age_range = '30-39' then count end), 0) as range_30_39,
 coalesce(sum(case when age_range = '40-49' then count end), 0) as range_40_49,
@@ -152,7 +152,7 @@ state_abbr as state_abbr,
 offense_name as offense_name,
 data_year as data_year,
 coalesce(sum(case when age_range = '0-9' then count end), 0) as range_0_9,
-coalesce(sum(case when age_range = '10-19' then count end), 0) as range_10_11,
+coalesce(sum(case when age_range = '10-19' then count end), 0) as range_10_19,
 coalesce(sum(case when age_range = '20-29' then count end), 0) as range_20_29,
 coalesce(sum(case when age_range = '30-39' then count end), 0) as range_30_39,
 coalesce(sum(case when age_range = '40-49' then count end), 0) as range_40_49,
@@ -264,7 +264,7 @@ ori as ori,
 offense_name as offense_name,
 data_year as data_year,
 coalesce(sum(case when age_range = '0-9' then count end), 0) as range_0_9,
-coalesce(sum(case when age_range = '10-19' then count end), 0) as range_10_11,
+coalesce(sum(case when age_range = '10-19' then count end), 0) as range_10_19,
 coalesce(sum(case when age_range = '20-29' then count end), 0) as range_20_29,
 coalesce(sum(case when age_range = '30-39' then count end), 0) as range_30_39,
 coalesce(sum(case when age_range = '40-49' then count end), 0) as range_40_49,
@@ -349,8 +349,7 @@ REFRESH MATERIALIZED VIEW public.nibrs_national_denorm_victim_race;
 REFRESH MATERIALIZED VIEW public.nibrs_national_denorm_victim_count;
 REFRESH MATERIALIZED VIEW public.nibrs_national_denorm_victim_sex;
 
-
 UPDATE nibrs_victim_count
-SET location = TRIM(location), state_abbr = TRIM(state_abbr),ori = TRIM(ori),
-offense_name = TRIM(offense_name),victim_type_name = TRIM(victim_type_name),sex_code = TRIM(sex_code),
+SET  location = TRIM(location), victim_type_name= TRIM(victim_type_name), state_abbr = TRIM(state_abbr),ori = TRIM(ori),
+offense_name = TRIM(offense_name),sex_code = TRIM(sex_code),
 age_range = TRIM(age_range),race_desc = TRIM(race_desc),ethnicity_name = TRIM(ethnicity_name)
