@@ -1244,3 +1244,18 @@ class NIBRSNationalOffenderDenormAgeSchema(ma.ModelSchema):
     class Meta:
         model = cdemodels.NIBRSNationalOffenderDenormAge
         ordered = True
+
+class NIBRSNationalDenormVictimOffenderRelationshipSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSNationalDenormVictimOffenderRelationship
+        ordered = True
+
+class NIBRSAgencyDenormVictimOffenderRelationshipSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSAgencyDenormVictimOffenderRelationship
+        ordered = True
+
+class NIBRSStateDenormVictimOffenderRelationshipSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSStateDenormVictimOffenderRelationship
+        ordered = True
