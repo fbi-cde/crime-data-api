@@ -11,7 +11,8 @@ ZIPS_DIR = 'zips'
 
 def run_select(sql, path):
     """ Run SQL against the database """
-    query = "SET work_mem='3GB'; \copy ({}) TO '{}' WITH CSV DELIMITER ',' HEADER;".format(sql, path)
+    temp_file = path + '.tmp'
+    query = "SET work_mem='1GB'; \copy ({}) TO '{}' WITH CSV DELIMITER ',' HEADER;".format(sql, temp_file)
     print(query)
 
     p = None
@@ -21,7 +22,10 @@ def run_select(sql, path):
     p = sp.run(['cf', 'connect-to-service', 'crime-data-api', 'crime-data-upload-db'], stdout=sp.PIPE,
                input=query, encoding='ascii')
 
-    if p.returncode != 0:
+    if p.returncode == 0:
+        # if everything worked, we can move to final path
+        os.rename(temp_file, path)
+    else:
         os.unlink(path)
         raise "Error exporting " + path
 
@@ -138,7 +142,9 @@ class DataTableTask(luigi.Task):
 
 class CdeAgencies(DataTableTask):
     table_name = 'cde_agencies'
-    query = "select * from cde_agencies where state_abbr = '{state}'"
+    query = "select c.* from cde_agencies c \
+             JOIN nibrs_month nm ON nm.agency_id = c.agency_id \
+             WHERE nm.data_year = {year} AND c.state_abbr = '{state}'"
 
 
 class AgencyParticipation(DataTableTask):
@@ -380,11 +386,18 @@ class ZipFile(luigi.Task):
         p = sp.run(['zip', '-9rj', self.local_path(), CODE_TABLES_DIR])
         p = sp.run(['zip', '-9rj', self.local_path(), self.data_dir()])
         
-            
-class AllTables(luigi.WrapperTask):
+
+class AllState(luigi.WrapperTask):
+    state = luigi.Parameter()
+
+    def requires(self):
+        for year in [2016, 2015, 2014, 2013, 2012, 2009, 2008, 2007, 2006, 2005, 2004]:
+            yield ZipFile(year=year, state=self.state)
+        
+        
+class AllStates(luigi.WrapperTask):
     def requires(self):
         yield CodeTables()
 
-        for year in [2014]:
-            for state in ['TN']:
-                yield ZipFile(year=year, state=state)
+        for state in ['AR', 'CO', 'DE', 'KY', 'ID', 'IA', 'MI', 'MT', 'NH', 'ND', 'SC', 'SD', 'TN', 'VT', 'VA', 'WV', 'AZ', 'CT', 'IN', 'KS', 'LA', 'ME', 'MA', 'MN', 'MO', 'NE', 'OH', 'OK', 'OR', 'PA', 'RI', 'TX', 'UT', 'WA', 'WI']:
+            yield AllState(state=state)
