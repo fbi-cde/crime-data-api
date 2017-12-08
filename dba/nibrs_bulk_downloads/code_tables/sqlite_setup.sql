@@ -1,3 +1,32 @@
+--
+-- Table loading
+--
+
+.mode csv
+.import 'nibrs_age.csv' nibrs_age
+.import 'nibrs_arrest_type.csv' nibrs_arrest_type
+.import 'nibrs_assignment_type.csv' nibrs_assignment_type
+.import 'nibrs_bias_list.csv' nibrs_bias_list
+.import 'nibrs_circumstances.csv' nibrs_circumstances
+.import 'nibrs_cleared_except.csv' nibrs_cleared_except
+.import 'nibrs_criminal_act_type.csv' nibrs_criminal_act_type
+.import 'nibrs_drug_measure_type.csv' nibrs_drug_measure_type
+.import 'nibrs_ethnicity.csv' nibrs_ethnicity
+.import 'nibrs_injury.csv' nibrs_injury
+.import 'nibrs_justifiable_force.csv' nibrs_justifiable_force
+.import 'nibrs_location_type.csv' nibrs_location_type
+.import 'nibrs_offense_type.csv' nibrs_offense_type
+.import 'nibrs_prop_desc_type.csv' nibrs_prop_desc_type
+.import 'nibrs_prop_loss_type.csv' nibrs_prop_loss_type
+.import 'nibrs_relationship.csv' nibrs_relationship
+.import 'nibrs_suspected_drug_type.csv' nibrs_suspected_drug_type
+.import 'nibrs_using_list.csv' nibrs_using_list
+.import 'nibrs_victim_type.csv' nibrs_victim_type
+.import 'nibrs_weapon_type.csv' nibrs_weapon_type
+.import 'ref_race.csv' ref_race
+.import 'ref_state.csv' ref_state
+
+
 -- This is not a standard UCR table but one derived from the reta_month/nibrs_month
 CREATE TABLE agency_participation (
     year smallint NOT NULL,
@@ -64,170 +93,6 @@ CREATE TABLE cde_agencies (
     icpsr_lat numeric,
     icpsr_lng numeric
 );
-
-CREATE TABLE nibrs_activity_type (
-activity_type_id smallint NOT NULL PRIMARY KEY,
-activity_type_code character(2),
-activity_type_name character varying(100)
-);
-
-CREATE TABLE nibrs_age (
-age_id smallint NOT NULL PRIMARY KEY,
-age_code character(2),
-age_name character varying(100)
-);
-
-CREATE TABLE nibrs_arrest_type (
-arrest_type_id smallint NOT NULL PRIMARY KEY,
-arrest_type_code character(1),
-arrest_type_name character varying(100)
-);
-
-CREATE TABLE nibrs_assignment_type (
-assignment_type_id smallint NOT NULL PRIMARY KEY,
-assignment_type_code character(1),
-assignment_type_name character varying(100)
-);
-
-CREATE TABLE nibrs_bias_list (
-bias_id smallint NOT NULL PRIMARY KEY,
-bias_code character(2),
-bias_name character varying(100)
-);
-
-CREATE TABLE nibrs_location_type (
-    location_id bigint NOT NULL PRIMARY KEY,
-    location_code character(2),
-    location_name character varying(100)
-);
-
-CREATE TABLE nibrs_offense_type (
-    offense_type_id bigint NOT NULL PRIMARY KEY,
-    offense_code character varying(5),
-    offense_name character varying(100),
-    crime_against character varying(100),
-    ct_flag character(1),
-    hc_flag character(1),
-    hc_code character varying(5),
-    offense_category_name character varying(100)
-);
-
-CREATE TABLE nibrs_prop_desc_type (
-    prop_desc_id smallint NOT NULL PRIMARY KEY,
-    prop_desc_code character(2),
-    prop_desc_name character varying(100)
-);
-
-CREATE TABLE nibrs_victim_type (
-    victim_type_id smallint NOT NULL PRIMARY KEY,
-    victim_type_code character(1),
-    victim_type_name character varying(100)
-);
-
-CREATE TABLE nibrs_circumstances (
-    circumstances_id smallint NOT NULL PRIMARY KEY,
-    circumstances_type character(1),
-    circumstances_code smallint,
-    circumstances_name character varying(100)
-);
-
-CREATE TABLE nibrs_cleared_except (
-    cleared_except_id smallint NOT NULL PRIMARY KEY,
-    cleared_except_code character(1),
-    cleared_except_name character varying(100)
-);
-
-CREATE TABLE nibrs_criminal_act (
-    criminal_act_id smallint NOT NULL PRIMARY KEY,
-    offense_id bigint NOT NULL
-);
-
-CREATE TABLE nibrs_criminal_act_type (
-    criminal_act_id smallint NOT NULL PRIMARY KEY,
-    criminal_act_code character(1),
-    criminal_act_name character varying(100)
-);
-
-CREATE TABLE nibrs_drug_measure_type (
-    drug_measure_type_id smallint NOT NULL PRIMARY KEY,
-    drug_measure_code character(2),
-    drug_measure_name character varying(100)
-);
-
-CREATE TABLE nibrs_ethnicity (
-    ethnicity_id smallint NOT NULL PRIMARY KEY,
-    ethnicity_code character(1),
-    ethnicity_name character varying(100),
-    hc_flag character varying(1)
-);
-
-CREATE TABLE nibrs_injury (
-injury_id smallint NOT NULL PRIMARY KEY,
-injury_code character(1),
-injury_name character varying(100)
-);
-
-CREATE TABLE nibrs_justifiable_force (
-justifiable_force_id smallint NOT NULL PRIMARY KEY,
-justifiable_force_code character(1),
-justifiable_force_name character varying(100)
-);
-
-CREATE TABLE nibrs_prop_loss_type (
-prop_loss_id smallint NOT NULL PRIMARY KEY,
-prop_loss_name character varying(100)
-);
-
-CREATE TABLE nibrs_relationship (
-relationship_id smallint NOT NULL PRIMARY KEY,
-relationship_code character(2),
-relationship_name character varying(100)
-);
-
-CREATE TABLE nibrs_suspected_drug_type (
-suspected_drug_type_id smallint NOT NULL PRIMARY KEY,
-suspected_drug_code character(1),
-suspected_drug_name character varying(100)
-);
-
-CREATE TABLE nibrs_using_list (
-suspect_using_id smallint NOT NULL PRIMARY KEY,
-suspect_using_code character(1),
-suspect_using_name character varying(100)
-);
-
-
-CREATE TABLE nibrs_weapon_type (
-weapon_id smallint NOT NULL PRIMARY KEY,
-weapon_code character varying(3),
-weapon_name character varying(100),
-shr_flag character(1)
-);
-
-CREATE TABLE ref_race (
-race_id smallint NOT NULL PRIMARY KEY,
-race_code character varying(2) NOT NULL,
-race_desc character varying(100) NOT NULL,
-sort_order smallint,
-start_year smallint,
-end_year smallint,
-notes character varying(1000)
-);
-
-CREATE TABLE ref_state (
-state_id smallint NOT NULL PRIMARY KEY,
-division_id smallint NOT NULL,
-state_name character varying(100),
-state_code character varying(2),
-state_abbr character varying(2),
-state_postal_abbr character varying(2),
-state_fips_code character varying(2),
-state_pub_freq_months smallint
-);
-
---
--- Main NIBRS tables
---
 
 CREATE TABLE nibrs_arrestee (
 arrestee_id bigint NOT NULL PRIMARY KEY,
@@ -396,41 +261,16 @@ CREATE TABLE nibrs_victim_offense (
     offense_id bigint NOT NULL REFERENCES nibrs_offense(offense_id)
 );
 
+CREATE TABLE nibrs_criminal_act (
+criminal_act_id smallint NOT NULL,
+offense_id bigint NOT NULL
+);
+
 CREATE TABLE nibrs_weapon (
     weapon_id smallint NOT NULL REFERENCES nibrs_weapon_type(weapon_id),
     offense_id bigint NOT NULL REFERENCES nibrs_offense(offense_id),
     nibrs_weapon_id bigint NOT NULL PRIMARY KEY
 );
-
---
--- Table loading
---
-
-.mode csv
-.import 'agency_participation.csv' agency_participation
-.import 'cde_agencies.csv' cde_agencies
-.import 'nibrs_age.csv' nibrs_age
-.import 'nibrs_arrest_type.csv' nibrs_arrest_type
-.import 'nibrs_assignment_type.csv' nibrs_assignment_type
-.import 'nibrs_bias_list.csv' nibrs_bias_list
-.import 'nibrs_circumstances.csv' nibrs_circumstances
-.import 'nibrs_cleared_except.csv' nibrs_cleared_except
-.import 'nibrs_criminal_act_type.csv' nibrs_criminal_act_type
-.import 'nibrs_drug_measure_type.csv' nibrs_drug_measure_type
-.import 'nibrs_ethnicity.csv' nibrs_ethnicity
-.import 'nibrs_injury.csv' nibrs_injury
-.import 'nibrs_justifiable_force.csv' nibrs_justifiable_force
-.import 'nibrs_location_type.csv' nibrs_location_type
-.import 'nibrs_offense_type.csv' nibrs_offense_type
-.import 'nibrs_prop_desc_type.csv' nibrs_prop_desc_type
-.import 'nibrs_prop_loss_type.csv' nibrs_prop_loss_type
-.import 'nibrs_relationship.csv' nibrs_relationship
-.import 'nibrs_suspected_drug_type.csv' nibrs_suspected_drug_type
-.import 'nibrs_using_list.csv' nibrs_using_list
-.import 'nibrs_victim_type.csv' nibrs_victim_type
-.import 'nibrs_weapon_type.csv' nibrs_weapon_type
-.import 'ref_race.csv' ref_race
-.import 'ref_state.csv' ref_state
 
 --
 -- Other indices
