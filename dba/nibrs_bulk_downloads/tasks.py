@@ -142,7 +142,7 @@ class DataTableTask(luigi.Task):
 
 class CdeAgencies(DataTableTask):
     table_name = 'cde_agencies'
-    query = "select c.* from cde_agencies c \
+    query = "select DISTINCT c.* from cde_agencies c \
              JOIN nibrs_month nm ON nm.agency_id = c.agency_id \
              WHERE nm.data_year = {year} AND c.state_abbr = '{state}'"
 
