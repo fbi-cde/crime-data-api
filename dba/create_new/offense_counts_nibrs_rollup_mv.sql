@@ -24,3 +24,7 @@ data_year as data_year,
 sum(incident_count) as incident_count,
 sum(offense_count) as offense_count
 from public.nibrs_offense_count group by agency_id, ori, offense_name, data_year;
+
+REFRESH MATERIALIZED VIEW nibrs_agency_denorm_offense_count;
+REFRESH MATERIALIZED VIEW nibrs_state_denorm_offense_count;
+REFRESH MATERIALIZED VIEW nibrs_national_denorm_offense_count;
