@@ -30,7 +30,7 @@ CREATE MATERIALIZED VIEW nibrs_national_denorm_victim_ethnicity AS
 select
 offense_name as offense_name,
 data_year as data_year,
-coalesce(sum(case when ethnicity_name = 'Hispanic or Latino' then count end), 0) as hispanic,
+coalesce(sum(case when ethnicity_name = 'Hispanic or Latino' then count end), 0) as hispanic,a
 coalesce(sum(case when ethnicity_name = 'Multiple' then count end), 0) as multiple,
 coalesce(sum(case when ethnicity_name = 'Not Hispanic or Latino' then count end), 0) as not_Hispanic,
 coalesce(sum(case when ethnicity_name = 'Unknown' then count end), 0) as unknown
