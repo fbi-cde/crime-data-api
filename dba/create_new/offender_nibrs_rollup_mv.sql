@@ -177,7 +177,7 @@ from public.nibrs_offender_count group by agency_id, ori, offense_name, data_yea
 REFRESH MATERIALIZED VIEW public.nibrs_agency_denorm_offender_age;
 REFRESH MATERIALIZED VIEW public.nibrs_agency_denorm_offender_ethnicity;
 REFRESH MATERIALIZED VIEW public.nibrs_agency_denorm_offender_race;
-REFRESH MATERIALIZED VIEW public.nibrs_agency_denorm_cccccccccccccccccccoffender_count;
+REFRESH MATERIALIZED VIEW public.nibrs_agency_denorm_offender_count;
 REFRESH MATERIALIZED VIEW public.nibrs_agency_denorm_offender_sex;
 REFRESH MATERIALIZED VIEW public.nibrs_state_denorm_offender_age;
 REFRESH MATERIALIZED VIEW public.nibrs_state_denorm_offender_ethnicity;

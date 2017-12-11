@@ -305,6 +305,33 @@ class NIBRSStateOffenderDenormAge(CdeResource):
         query = cdemodels.NIBRSStateOffenderDenormAge.get(state_abbr=state_abbr)
         return self.with_metadata(query,args)
 
+class NIBRSNationalOffenseCount(CdeResource):
+    schema = marshmallow_schemas.NIBRSNationalOffenseCountSchema(many=True)
+    @use_args(ArgumentsSchema)
+    @cache(max_age=DEFAULT_MAX_AGE, public=True)
+    def get(self, args):
+        self.verify_api_key(args)
+        query = cdemodels.NIBRSNationalOffenseCount.query
+        return self.with_metadata(query,args)
+
+class NIBRSAgencyOffenseCount(CdeResource):
+    schema = marshmallow_schemas.NIBRSAgencyOffenseCountSchema(many=True)
+    @use_args(ArgumentsSchema)
+    @cache(max_age=DEFAULT_MAX_AGE, public=True)
+    def get(self, args, ori=None):
+        self.verify_api_key(args)
+        query = cdemodels.NIBRSAgencyOffenseCount.get(ori=ori)
+        return self.with_metadata(query,args)
+
+class NIBRSStateOffenseCount(CdeResource):
+    schema = marshmallow_schemas.NIBRSStateOffenseCountSchema(many=True)
+    @use_args(ArgumentsSchema)
+    @cache(max_age=DEFAULT_MAX_AGE, public=True)
+    def get(self, args, state_abbr=None):
+        self.verify_api_key(args)
+        query = cdemodels.NIBRSStateOffenseCount.get(state_abbr=state_abbr)
+        return self.with_metadata(query,args)
+
 class NIBRSStateDenormVictimOffenderRelationship(CdeResource):
     schema = marshmallow_schemas.NIBRSStateDenormVictimOffenderRelationshipSchema(many=True)
     @use_args(ArgumentsSchema)

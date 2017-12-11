@@ -56,3 +56,14 @@ CREATE TABLE nibrs_victim_to_offender_relationship_count (
     relationship varchar(50),
     count int
 );
+
+CREATE TABLE nibrs_offense_count (
+    data_year int,
+    state_id int,
+    state_abbr character(2),
+    agency_id int,
+    ori varchar(50),
+    offense_name varchar(50),
+    incident_count int,
+    offense_count int
+);
