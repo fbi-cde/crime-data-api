@@ -746,7 +746,6 @@ class OffenseHateCrimeCountView(OffenseSubCountView):
 class NIBRSVictimCount(db.Model):
     """Represents Agency Level NIBRS Victim Data"""
     __tablename__ = 'nibrs_victim_count'
-    __table_args__ = (UniqueConstraint('offense_name'), )
 
     def get(ori=None):
         query = NIBRSVictimCount.query
@@ -771,7 +770,7 @@ class NIBRSVictimCount(db.Model):
 class NIBRSAgencyVictimDenormCount(db.Model):
     """Represents Agency Level NIBRS Victim Count Data"""
     __tablename__ = 'nibrs_agency_denorm_victim_count'
-    __table_args__ = (UniqueConstraint('offense_name'), )
+
     def get(ori=None):
         print('Here')
 
@@ -791,7 +790,7 @@ class NIBRSAgencyVictimDenormCount(db.Model):
 class NIBRSAgencyVictimDenormSex(db.Model):
     """Represents Agency Level NIBRS Victim Data"""
     __tablename__ = 'nibrs_agency_denorm_victim_sex'
-    __table_args__ = (UniqueConstraint('offense_name'), )
+
     def get(ori=None):
         query = NIBRSAgencyVictimDenormSex.query
 
@@ -811,7 +810,7 @@ class NIBRSAgencyVictimDenormSex(db.Model):
 class NIBRSAgencyVictimDenormRace(db.Model):
     """Represents Agency Level NIBRS Victim Race Data"""
     __tablename__ = 'nibrs_agency_denorm_victim_race'
-    __table_args__ = (UniqueConstraint('offense_name'), )
+
     def get(ori=None):
         query = NIBRSAgencyVictimDenormRace.query
 
@@ -834,7 +833,7 @@ class NIBRSAgencyVictimDenormRace(db.Model):
 class NIBRSAgencyVictimDenormEthnicity(db.Model):
     """Represents Agency Level NIBRS Victim Ethnicity Data"""
     __tablename__ = 'nibrs_agency_denorm_victim_ethnicity'
-    __table_args__ = (UniqueConstraint('offense_name'), )
+
     def get(ori=None):
         query = NIBRSAgencyVictimDenormEthnicity.query
 
@@ -856,7 +855,7 @@ class NIBRSAgencyVictimDenormEthnicity(db.Model):
 class NIBRSAgencyVictimDenormAge(db.Model):
     """Represents Agency Level NIBRS Victim Age Data"""
     __tablename__ = 'nibrs_agency_denorm_victim_age'
-    __table_args__ = (UniqueConstraint('offense_name'), )
+
     def get(ori=None):
         query = NIBRSAgencyVictimDenormAge.query
 
@@ -884,7 +883,7 @@ class NIBRSAgencyVictimDenormAge(db.Model):
 class NIBRSAgencyVictimDenormLocation(db.Model):
     """Represents Agency Level NIBRS Victim Location Data"""
     __tablename__ = 'nibrs_agency_denorm_victim_location'
-    __table_args__ = (UniqueConstraint('offense_name'), )
+
     def get(ori=None):
         query = NIBRSAgencyVictimDenormLocation.query
 
@@ -946,7 +945,7 @@ class NIBRSAgencyVictimDenormLocation(db.Model):
 class NIBRSStateVictimDenormCount(db.Model):
     """Represents Agency Level NIBRS Victim Count Data"""
     __tablename__ = 'nibrs_state_denorm_victim_count'
-    __table_args__ = (UniqueConstraint('offense_name'), )
+
     def get(state_abbr=None):
         print('Here')
 
@@ -966,7 +965,7 @@ class NIBRSStateVictimDenormCount(db.Model):
 class NIBRSStateVictimDenormSex(db.Model):
     """Represents Agency Level NIBRS Victim Data"""
     __tablename__ = 'nibrs_state_denorm_victim_sex'
-    __table_args__ = (UniqueConstraint('offense_name'), )
+
     def get(state_abbr=None):
         query = NIBRSStateVictimDenormSex.query
 
@@ -986,7 +985,7 @@ class NIBRSStateVictimDenormSex(db.Model):
 class NIBRSStateVictimDenormRace(db.Model):
     """Represents Agency Level NIBRS Victim Race Data"""
     __tablename__ = 'nibrs_state_denorm_victim_race'
-    __table_args__ = (UniqueConstraint('offense_name'), )
+
     def get(state_abbr=None):
         query = NIBRSStateVictimDenormRace.query
 
@@ -1009,7 +1008,7 @@ class NIBRSStateVictimDenormRace(db.Model):
 class NIBRSStateVictimDenormEthnicity(db.Model):
     """Represents Agency Level NIBRS Victim Ethnicity Data"""
     __tablename__ = 'nibrs_state_denorm_victim_ethnicity'
-    __table_args__ = (UniqueConstraint('offense_name'), )
+
     def get(state_abbr=None):
         query = NIBRSStateVictimDenormEthnicity.query
 
@@ -1031,7 +1030,7 @@ class NIBRSStateVictimDenormEthnicity(db.Model):
 class NIBRSStateVictimDenormAge(db.Model):
     """Represents Agency Level NIBRS Victim Age Data"""
     __tablename__ = 'nibrs_state_denorm_victim_age'
-    __table_args__ = (UniqueConstraint('offense_name'), )
+
     def get(state_abbr=None):
         query = NIBRSStateVictimDenormAge.query
 
@@ -1059,7 +1058,7 @@ class NIBRSStateVictimDenormAge(db.Model):
 class NIBRSStateVictimDenormLocation(db.Model):
     """Represents Agency Level NIBRS Victim Location Data"""
     __tablename__ = 'nibrs_state_denorm_victim_location'
-    __table_args__ = (UniqueConstraint('offense_name'), )
+
     def get(state_abbr=None):
         query = NIBRSStateVictimDenormLocation.query
 
@@ -1121,8 +1120,6 @@ class NIBRSStateVictimDenormLocation(db.Model):
 class NIBRSNationalVictimDenormCount(db.Model):
     """Represents Agency Level NIBRS Victim Count Data"""
     __tablename__ = 'nibrs_denorm_national_victim_count'
-    __table_args__ = (UniqueConstraint('offense_name'), )
-
 
     offense_name = db.Column(db.String, primary_key=True)
     count = db.Column(db.Integer)
@@ -1131,8 +1128,6 @@ class NIBRSNationalVictimDenormCount(db.Model):
 class NIBRSNationalVictimDenormSex(db.Model):
     """Represents Agency Level NIBRS Victim Data"""
     __tablename__ = 'nibrs_denorm_national_victim_sex'
-    __table_args__ = (UniqueConstraint('offense_name'), )
-
 
     offense_name = db.Column(db.String, primary_key=True)
     male_count = db.Column(db.Integer)
@@ -1143,8 +1138,6 @@ class NIBRSNationalVictimDenormSex(db.Model):
 class NIBRSNationalVictimDenormRace(db.Model):
     """Represents Agency Level NIBRS Victim Race Data"""
     __tablename__ = 'nibrs_denorm_national_victim_race'
-    __table_args__ = (UniqueConstraint('offense_name'), )
-
 
     offense_name = db.Column(db.String, primary_key=True)
     asian = db.Column(db.Integer)
@@ -1158,8 +1151,6 @@ class NIBRSNationalVictimDenormRace(db.Model):
 class NIBRSNationalVictimDenormEthnicity(db.Model):
     """Represents Agency Level NIBRS Victim Ethnicity Data"""
     __tablename__ = 'nibrs_denorm_national_victim_ethnicity'
-    __table_args__ = (UniqueConstraint('offense_name'), )
-
 
     offense_name = db.Column(db.String, primary_key=True)
     hispanic = db.Column(db.Integer)
@@ -1172,8 +1163,6 @@ class NIBRSNationalVictimDenormEthnicity(db.Model):
 class NIBRSNationalVictimDenormAge(db.Model):
     """Represents Agency Level NIBRS Victim Age Data"""
     __tablename__ = 'nibrs_denorm_national_victim_age'
-    __table_args__ = (UniqueConstraint('offense_name'), )
-
 
     offense_name = db.Column(db.String, primary_key=True)
     range_0_9 = db.Column(db.Integer)
@@ -1192,7 +1181,6 @@ class NIBRSNationalVictimDenormAge(db.Model):
 class NIBRSNationalVictimDenormLocation(db.Model):
     """Represents Agency Level NIBRS Victim Location Data"""
     __tablename__ = 'nibrs_denorm_national_victim_location'
-    __table_args__ = (UniqueConstraint('offense_name'), )
 
     offense_name = db.Column(db.String, primary_key=True)
     residence_home = db.Column(db.Integer)
@@ -1246,7 +1234,6 @@ class NIBRSNationalVictimDenormLocation(db.Model):
 class NIBRSOffenderCount(db.Model):
     """Represents Agency Level NIBRS Offender Data"""
     __tablename__ = 'nibrs_offender_count'
-    __table_args__ = (UniqueConstraint('offense_name'), )
 
     def get(ori=None):
         query = NIBRSOffenderCount.query
@@ -1271,7 +1258,7 @@ class NIBRSOffenderCount(db.Model):
 class NIBRSAgencyOffenderDenormCount(db.Model):
     """Represents Agency Level NIBRS Offender Count Data"""
     __tablename__ = 'nibrs_agency_denorm_offender_count'
-    __table_args__ = (UniqueConstraint('offense_name'), )
+
     def get(ori=None):
         query = NIBRSAgencyOffenderDenormCount.query
 
@@ -1289,7 +1276,7 @@ class NIBRSAgencyOffenderDenormCount(db.Model):
 class NIBRSAgencyOffenderDenormSex(db.Model):
     """Represents Agency Level NIBRS Offender Data"""
     __tablename__ = 'nibrs_agency_denorm_offender_sex'
-    __table_args__ = (UniqueConstraint('offense_name'), )
+
     def get(ori=None):
         query = NIBRSAgencyOffenderDenormSex.query
 
@@ -1309,7 +1296,7 @@ class NIBRSAgencyOffenderDenormSex(db.Model):
 class NIBRSAgencyOffenderDenormRace(db.Model):
     """Represents Agency Level NIBRS Offender Race Data"""
     __tablename__ = 'nibrs_agency_denorm_offender_race'
-    __table_args__ = (UniqueConstraint('offense_name'), )
+
     def get(ori=None):
         query = NIBRSAgencyOffenderDenormRace.query
 
@@ -1332,7 +1319,7 @@ class NIBRSAgencyOffenderDenormRace(db.Model):
 class NIBRSAgencyOffenderDenormEthnicity(db.Model):
     """Represents Agency Level NIBRS Offender Ethnicity Data"""
     __tablename__ = 'nibrs_agency_denorm_offender_ethnicity'
-    __table_args__ = (UniqueConstraint('offense_name'), )
+
     def get(ori=None):
         query = NIBRSAgencyOffenderDenormEthnicity.query
 
@@ -1354,7 +1341,7 @@ class NIBRSAgencyOffenderDenormEthnicity(db.Model):
 class NIBRSAgencyOffenderDenormAge(db.Model):
     """Represents Agency Level NIBRS Offender Age Data"""
     __tablename__ = 'nibrs_agency_denorm_offender_age'
-    __table_args__ = (UniqueConstraint('offense_name'), )
+
     def get(ori=None):
         query = NIBRSAgencyOffenderDenormAge.query
 
@@ -1382,7 +1369,7 @@ class NIBRSAgencyOffenderDenormAge(db.Model):
 class NIBRSStateOffenderDenormCount(db.Model):
     """Represents Agency Level NIBRS Offender Count Data"""
     __tablename__ = 'nibrs_state_denorm_offender_count'
-    __table_args__ = (UniqueConstraint('offense_name'), )
+
     def get(state_abbr=None):
         query = NIBRSStateOffenderDenormCount.query
 
@@ -1400,7 +1387,7 @@ class NIBRSStateOffenderDenormCount(db.Model):
 class NIBRSStateOffenderDenormSex(db.Model):
     """Represents Agency Level NIBRS Offender Data"""
     __tablename__ = 'nibrs_state_denorm_offender_sex'
-    __table_args__ = (UniqueConstraint('offense_name'), )
+
     def get(state_abbr=None):
         query = NIBRSStateOffenderDenormSex.query
 
@@ -1420,7 +1407,7 @@ class NIBRSStateOffenderDenormSex(db.Model):
 class NIBRSStateOffenderDenormRace(db.Model):
     """Represents Agency Level NIBRS Offender Race Data"""
     __tablename__ = 'nibrs_state_denorm_offender_race'
-    __table_args__ = (UniqueConstraint('offense_name'), )
+
     def get(state_abbr=None):
         query = NIBRSStateOffenderDenormRace.query
 
@@ -1443,7 +1430,7 @@ class NIBRSStateOffenderDenormRace(db.Model):
 class NIBRSStateOffenderDenormEthnicity(db.Model):
     """Represents Agency Level NIBRS Offender Ethnicity Data"""
     __tablename__ = 'nibrs_state_denorm_offender_ethnicity'
-    __table_args__ = (UniqueConstraint('offense_name'), )
+
     def get(state_abbr=None):
         query = NIBRSStateOffenderDenormEthnicity.query
 
@@ -1465,7 +1452,7 @@ class NIBRSStateOffenderDenormEthnicity(db.Model):
 class NIBRSStateOffenderDenormAge(db.Model):
     """Represents Agency Level NIBRS Offender Age Data"""
     __tablename__ = 'nibrs_state_denorm_offender_age'
-    __table_args__ = (UniqueConstraint('offense_name'), )
+
     def get(state_abbr=None):
         query = NIBRSStateOffenderDenormAge.query
 
@@ -1493,7 +1480,6 @@ class NIBRSStateOffenderDenormAge(db.Model):
 class NIBRSNationalOffenderDenormCount(db.Model):
     """Represents Agency Level NIBRS Offender Count Data"""
     __tablename__ = 'nibrs_denorm_national_offender_count'
-    __table_args__ = (UniqueConstraint('offense_name'), )
 
     offense_name = db.Column(db.String, primary_key=True)
     count = db.Column(db.Integer)
@@ -1502,7 +1488,6 @@ class NIBRSNationalOffenderDenormCount(db.Model):
 class NIBRSNationalOffenderDenormSex(db.Model):
     """Represents Agency Level NIBRS Offender Data"""
     __tablename__ = 'nibrs_denorm_national_offender_sex'
-    __table_args__ = (UniqueConstraint('offense_name'), )
 
     offense_name = db.Column(db.String, primary_key=True)
     male_count = db.Column(db.Integer)
@@ -1513,7 +1498,6 @@ class NIBRSNationalOffenderDenormSex(db.Model):
 class NIBRSNationalOffenderDenormRace(db.Model):
     """Represents Agency Level NIBRS Offender Race Data"""
     __tablename__ = 'nibrs_denorm_national_offender_race'
-    __table_args__ = (UniqueConstraint('offense_name'), )
 
     offense_name = db.Column(db.String, primary_key=True)
     asian = db.Column(db.Integer)
@@ -1527,7 +1511,6 @@ class NIBRSNationalOffenderDenormRace(db.Model):
 class NIBRSNationalOffenderDenormEthnicity(db.Model):
     """Represents Agency Level NIBRS Offender Ethnicity Data"""
     __tablename__ = 'nibrs_denorm_national_offender_ethnicity'
-    __table_args__ = (UniqueConstraint('offense_name'), )
 
     offense_name = db.Column(db.String, primary_key=True)
     hispanic = db.Column(db.Integer)
@@ -1540,7 +1523,6 @@ class NIBRSNationalOffenderDenormEthnicity(db.Model):
 class NIBRSNationalOffenderDenormAge(db.Model):
     """Represents Agency Level NIBRS Offender Age Data"""
     __tablename__ = 'nibrs_denorm_national_offender_age'
-    __table_args__ = (UniqueConstraint('offense_name'), )
 
     offense_name = db.Column(db.String, primary_key=True)
     range_0_9 = db.Column(db.Integer)
@@ -1559,7 +1541,6 @@ class NIBRSNationalOffenderDenormAge(db.Model):
 class NIBRSNationalDenormVictimOffenderRelationship(db.Model):
     """Represents Agency Level NIBRS Offender Data"""
     __tablename__ = 'nibrs_national_denorm_victim_offender_relationship'
-    __table_args__ = (UniqueConstraint('offense_name'), )
 
     offense_name = db.Column(db.String, primary_key=True)
     acquaintance = db.Column(db.Integer)
@@ -1594,7 +1575,7 @@ class NIBRSNationalDenormVictimOffenderRelationship(db.Model):
 class NIBRSAgencyDenormVictimOffenderRelationship(db.Model):
     """Represents Agency Level NIBRS Victim Data"""
     __tablename__ = 'nibrs_agency_denorm_victim_offender_relationship'
-    __table_args__ = (UniqueConstraint('offense_name'), )
+
     def get(ori=None):
         query = NIBRSAgencyDenormVictimOffenderRelationship.query
 
@@ -1638,7 +1619,7 @@ class NIBRSAgencyDenormVictimOffenderRelationship(db.Model):
 class NIBRSStateDenormVictimOffenderRelationship(db.Model):
     """Represents Agency Level NIBRS Victim Data"""
     __tablename__ = 'nibrs_state_denorm_victim_offender_relationship'
-    __table_args__ = (UniqueConstraint('offense_name'), )
+
     def get(state_abbr=None):
         query = NIBRSStateDenormVictimOffenderRelationship.query
 
@@ -1682,7 +1663,6 @@ class NIBRSStateDenormVictimOffenderRelationship(db.Model):
 class NIBRSNationalOffenseCount(db.Model):
     """Represents Agency Level NIBRS Offender Ethnicity Data"""
     __tablename__ = 'nibrs_national_denorm_offense_count'
-    __table_args__ = (UniqueConstraint('offense_name'), )
 
     offense_name = db.Column(db.String, primary_key=True)
     data_year = db.Column(db.Integer)
@@ -1692,7 +1672,6 @@ class NIBRSNationalOffenseCount(db.Model):
 class NIBRSAgencyOffenseCount(db.Model):
     """Represents Agency Level NIBRS Offender Ethnicity Data"""
     __tablename__ = 'nibrs_agency_denorm_offense_count'
-    __table_args__ = (UniqueConstraint('offense_name'), )
     def get(ori=None):
         query = NIBRSAgencyOffenseCount.query
 
@@ -1711,7 +1690,6 @@ class NIBRSAgencyOffenseCount(db.Model):
 class NIBRSStateOffenseCount(db.Model):
     """Represents Agency Level NIBRS Offender Ethnicity Data"""
     __tablename__ = 'nibrs_state_denorm_offense_count'
-    __table_args__ = (UniqueConstraint('offense_name'), )
     def get(state_abbr=None):
         query = NIBRSStateOffenseCount.query
 
