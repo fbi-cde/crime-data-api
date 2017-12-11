@@ -290,6 +290,10 @@ def add_resources(app):
     api.add_resource(crime_data.resources.nibrs_counts.NIBRSAgencyDenormVictimOffenderRelationship,'/nibrs/victim/count/agencies/<string:ori>/relationships')
     api.add_resource(crime_data.resources.nibrs_counts.NIBRSNationalDenormVictimOffenderRelationship,'/nibrs/victim/count/national/relationships')
 
+    api.add_resource(crime_data.resources.nibrs_counts.NIBRSStateOffenseCount,'/nibrs/offense/count/states/<string:state_abbr>')
+    api.add_resource(crime_data.resources.nibrs_counts.NIBRSAgencyOffenseCount,'/nibrs/offense/count/agencies/<string:ori>')
+    api.add_resource(crime_data.resources.nibrs_counts.NIBRSNationalOffenseCount,'/nibrs/offense/count/national')
+
 def newrelic_status_endpoint():
     return 'OK'
 

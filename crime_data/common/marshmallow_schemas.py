@@ -1259,3 +1259,18 @@ class NIBRSStateDenormVictimOffenderRelationshipSchema(ma.ModelSchema):
     class Meta:
         model = cdemodels.NIBRSStateDenormVictimOffenderRelationship
         ordered = True
+
+class NIBRSNationalOffenseCountSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSNationalOffenseCount
+        ordered = True
+
+class NIBRSAgencyOffenseCountSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSAgencyOffenseCount
+        ordered = True
+
+class NIBRSStateOffenseCountSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSStateOffenseCount
+        ordered = True
