@@ -1,7 +1,7 @@
 import abc
 from collections import namedtuple
 from flask_restful import abort
-from sqlalchemy import and_, func, or_, UniqueConstraint, PrimaryKeyConstraint
+from sqlalchemy import and_, func, or_, UniqueConstraint, PrimaryKeyConstraint, Index
 from sqlalchemy.exc import ArgumentError
 from sqlalchemy.orm import aliased
 from sqlalchemy.orm.exc import NoResultFound
@@ -791,6 +791,8 @@ class NIBRSAgencyVictimDenormCount(db.Model):
     count = db.Column(db.Integer)
     data_year = db.Column(db.Integer)
 
+NIBRSAgencyVictimDenormCount_index = Index('ori_index_nibrs_agency_denorm_victim_count', NIBRSAgencyVictimDenormCount.ori)
+
 class NIBRSAgencyVictimDenormSex(db.Model):
     """Represents Agency Level NIBRS Victim Data"""
     __tablename__ = 'nibrs_agency_denorm_victim_sex'
@@ -812,6 +814,8 @@ class NIBRSAgencyVictimDenormSex(db.Model):
     female_count = db.Column(db.Integer)
     unknown_count = db.Column(db.Integer)
     data_year = db.Column(db.Integer)
+
+NIBRSAgencyVictimDenormSex_index = Index('ori_index_nibrs_agency_denorm_victim_sex', NIBRSAgencyVictimDenormSex.ori)
 
 class NIBRSAgencyVictimDenormRace(db.Model):
     """Represents Agency Level NIBRS Victim Race Data"""
@@ -838,6 +842,9 @@ class NIBRSAgencyVictimDenormRace(db.Model):
     white = db.Column(db.Integer)
     data_year = db.Column(db.Integer)
 
+NIBRSAgencyVictimDenormRace_index = Index('ori_index_nibrs_agency_denorm_victim_race', NIBRSAgencyVictimDenormRace.ori)
+
+
 class NIBRSAgencyVictimDenormEthnicity(db.Model):
     """Represents Agency Level NIBRS Victim Ethnicity Data"""
     __tablename__ = 'nibrs_agency_denorm_victim_ethnicity'
@@ -860,6 +867,8 @@ class NIBRSAgencyVictimDenormEthnicity(db.Model):
     not_hispanic = db.Column(db.Integer)
     unknown = db.Column(db.Integer)
     data_year = db.Column(db.Integer)
+
+NIBRSAgencyVictimDenormEthnicity_index = Index('ori_index_nibrs_agency_denorm_victim_ethnicity', NIBRSAgencyVictimDenormEthnicity.ori)
 
 
 class NIBRSAgencyVictimDenormAge(db.Model):
@@ -891,6 +900,9 @@ class NIBRSAgencyVictimDenormAge(db.Model):
     range_90_99 = db.Column(db.Integer)
     unknown = db.Column(db.Integer)
     data_year = db.Column(db.Integer)
+
+NIBRSAgencyVictimDenormAge_index = Index('ori_index_nibrs_agency_denorm_victim_age', NIBRSAgencyVictimDenormAge.ori)
+
 
 class NIBRSAgencyVictimDenormLocation(db.Model):
     """Represents Agency Level NIBRS Victim Location Data"""
@@ -956,6 +968,9 @@ class NIBRSAgencyVictimDenormLocation(db.Model):
     specialty_store = db.Column(db.Integer)
     tribal_lands = db.Column(db.Integer)
     data_year = db.Column(db.Integer)
+
+NIBRSAgencyVictimDenormLocation_index = Index('ori_index_nibrs_agency_denorm_victim_location', NIBRSAgencyVictimDenormLocation.ori)
+
 
 class NIBRSStateVictimDenormCount(db.Model):
     """Represents Agency Level NIBRS Victim Count Data"""
@@ -1314,6 +1329,9 @@ class NIBRSAgencyOffenderDenormCount(db.Model):
     count = db.Column(db.Integer)
     data_year = db.Column(db.Integer)
 
+NIBRSAgencyOffenderDenormCount_index = Index('ori_index_nibrs_agency_denorm_offender_count', NIBRSAgencyOffenderDenormCount.ori)
+
+
 class NIBRSAgencyOffenderDenormSex(db.Model):
     """Represents Agency Level NIBRS Offender Data"""
     __tablename__ = 'nibrs_agency_denorm_offender_sex'
@@ -1335,6 +1353,9 @@ class NIBRSAgencyOffenderDenormSex(db.Model):
     female_count = db.Column(db.Integer)
     unknown_count = db.Column(db.Integer)
     data_year = db.Column(db.Integer)
+
+NIBRSAgencyOffenderDenormSex_index = Index('ori_index_nibrs_agency_denorm_offender_sex', NIBRSAgencyOffenderDenormSex.ori)
+
 
 class NIBRSAgencyOffenderDenormRace(db.Model):
     """Represents Agency Level NIBRS Offender Race Data"""
@@ -1361,6 +1382,10 @@ class NIBRSAgencyOffenderDenormRace(db.Model):
     white = db.Column(db.Integer)
     data_year = db.Column(db.Integer)
 
+NIBRSAgencyOffenderDenormRace_index = Index('ori_index_nibrs_agency_denorm_offender_race', NIBRSAgencyOffenderDenormRace.ori)
+
+
+
 class NIBRSAgencyOffenderDenormEthnicity(db.Model):
     """Represents Agency Level NIBRS Offender Ethnicity Data"""
     __tablename__ = 'nibrs_agency_denorm_offender_ethnicity'
@@ -1383,6 +1408,9 @@ class NIBRSAgencyOffenderDenormEthnicity(db.Model):
     not_hispanic = db.Column(db.Integer)
     unknown = db.Column(db.Integer)
     data_year = db.Column(db.Integer)
+
+NIBRSAgencyOffenderDenormEthnicity_index = Index('ori_index_nibrs_agency_denorm_offender_ethnicity', NIBRSAgencyOffenderDenormEthnicity.ori)
+
 
 
 class NIBRSAgencyOffenderDenormAge(db.Model):
@@ -1414,6 +1442,9 @@ class NIBRSAgencyOffenderDenormAge(db.Model):
     range_90_99 = db.Column(db.Integer)
     unknown = db.Column(db.Integer)
     data_year = db.Column(db.Integer)
+
+NIBRSAgencyOffenderDenormAge_index = Index('ori_index_nibrs_agency_denorm_offender_age', NIBRSAgencyOffenderDenormAge.ori)
+
 
 class NIBRSStateOffenderDenormCount(db.Model):
     """Represents Agency Level NIBRS Offender Count Data"""
@@ -1688,6 +1719,8 @@ class NIBRSAgencyDenormVictimOffenderRelationship(db.Model):
     ex_spouse = db.Column(db.Integer)
     data_year = db.Column(db.Integer)
 
+NIBRSAgencyDenormVictimOffenderRelationship_index = Index('ori_index_nibrs_agency_denorm_victim_offender_relationship', NIBRSAgencyDenormVictimOffenderRelationship.ori)
+
 
 class NIBRSStateDenormVictimOffenderRelationship(db.Model):
     """Represents Agency Level NIBRS Victim Data"""
@@ -1767,6 +1800,9 @@ class NIBRSAgencyOffenseCount(db.Model):
     data_year = db.Column(db.Integer)
     incident_count = db.Column(db.Integer)
     offense_count = db.Column(db.Integer)
+
+NIBRSAgencyOffenseCount_index = Index('ori_index_nibrs_agency_denorm_offense_count', NIBRSAgencyOffenseCount.ori)
+
 
 class NIBRSStateOffenseCount(db.Model):
     """Represents Agency Level NIBRS Offender Ethnicity Data"""
