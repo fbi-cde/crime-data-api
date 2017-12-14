@@ -939,7 +939,7 @@ class NIBRSAgencyVictimDenormLocation(db.Model):
     construction_site = db.Column(db.Integer)
     cyberspace = db.Column(db.Integer)
     daycare_facility = db.Column(db.Integer)
-    department__discount_store = db.Column(db.Integer)
+    department__discout_store = db.Column(db.Integer)
     dock__wharf__shipping_terminal = db.Column(db.Integer)
     drug_store__doctors_office__hospital = db.Column(db.Integer)
     farm_facility = db.Column(db.Integer)
@@ -967,6 +967,7 @@ class NIBRSAgencyVictimDenormLocation(db.Model):
     shopping_mall = db.Column(db.Integer)
     specialty_store = db.Column(db.Integer)
     tribal_lands = db.Column(db.Integer)
+    convenience_store = db.Column(db.Integer)
     data_year = db.Column(db.Integer)
 
 NIBRSAgencyVictimDenormLocation_index = Index('ori_index_nibrs_agency_denorm_victim_location', NIBRSAgencyVictimDenormLocation.ori)
@@ -1127,7 +1128,7 @@ class NIBRSStateVictimDenormLocation(db.Model):
     construction_site = db.Column(db.Integer)
     cyberspace = db.Column(db.Integer)
     daycare_facility = db.Column(db.Integer)
-    department__discount_store = db.Column(db.Integer)
+    department__discout_store = db.Column(db.Integer)
     dock__wharf__shipping_terminal = db.Column(db.Integer)
     drug_store__doctors_office__hospital = db.Column(db.Integer)
     farm_facility = db.Column(db.Integer)
@@ -1155,6 +1156,7 @@ class NIBRSStateVictimDenormLocation(db.Model):
     shopping_mall = db.Column(db.Integer)
     specialty_store = db.Column(db.Integer)
     tribal_lands = db.Column(db.Integer)
+    convenience_store = db.Column(db.Integer)
     data_year = db.Column(db.Integer)
 
 class NIBRSNationalVictimDenormCount(db.Model):
@@ -1252,7 +1254,7 @@ class NIBRSNationalVictimDenormLocation(db.Model):
     construction_site = db.Column(db.Integer)
     cyberspace = db.Column(db.Integer)
     daycare_facility = db.Column(db.Integer)
-    department__discount_store = db.Column(db.Integer)
+    department__discout_store = db.Column(db.Integer)
     dock__wharf__shipping_terminal = db.Column(db.Integer)
     drug_store__doctors_office__hospital = db.Column(db.Integer)
     farm_facility = db.Column(db.Integer)
@@ -1280,6 +1282,7 @@ class NIBRSNationalVictimDenormLocation(db.Model):
     shopping_mall = db.Column(db.Integer)
     specialty_store = db.Column(db.Integer)
     tribal_lands = db.Column(db.Integer)
+    convenience_store = db.Column(db.Integer)
     data_year = db.Column(db.Integer)
 
 
