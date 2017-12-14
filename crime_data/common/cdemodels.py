@@ -939,7 +939,7 @@ class NIBRSAgencyVictimDenormLocation(db.Model):
     construction_site = db.Column(db.Integer)
     cyberspace = db.Column(db.Integer)
     daycare_facility = db.Column(db.Integer)
-    department__discout_store = db.Column(db.Integer)
+    department__discount_store = db.Column(db.Integer)
     dock__wharf__shipping_terminal = db.Column(db.Integer)
     drug_store__doctors_office__hospital = db.Column(db.Integer)
     farm_facility = db.Column(db.Integer)
