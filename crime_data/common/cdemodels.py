@@ -967,6 +967,7 @@ class NIBRSAgencyVictimDenormLocation(db.Model):
     shopping_mall = db.Column(db.Integer)
     specialty_store = db.Column(db.Integer)
     tribal_lands = db.Column(db.Integer)
+    convenience_store = db.Column(db.Integer)
     data_year = db.Column(db.Integer)
 
 NIBRSAgencyVictimDenormLocation_index = Index('ori_index_nibrs_agency_denorm_victim_location', NIBRSAgencyVictimDenormLocation.ori)
@@ -1155,6 +1156,7 @@ class NIBRSStateVictimDenormLocation(db.Model):
     shopping_mall = db.Column(db.Integer)
     specialty_store = db.Column(db.Integer)
     tribal_lands = db.Column(db.Integer)
+    convenience_store = db.Column(db.Integer)
     data_year = db.Column(db.Integer)
 
 class NIBRSNationalVictimDenormCount(db.Model):
@@ -1280,6 +1282,7 @@ class NIBRSNationalVictimDenormLocation(db.Model):
     shopping_mall = db.Column(db.Integer)
     specialty_store = db.Column(db.Integer)
     tribal_lands = db.Column(db.Integer)
+    convenience_store = db.Column(db.Integer)
     data_year = db.Column(db.Integer)
 
 

@@ -55,7 +55,7 @@ coalesce(sum(case when age_range = '60-69' then count end), 0) as range_60_69,
 coalesce(sum(case when age_range = '70-79' then count end), 0) as range_70_79,
 coalesce(sum(case when age_range = '80-89' then count end), 0) as range_80_89,
 coalesce(sum(case when age_range = '90-99' then count end), 0) as range_90_99,
-coalesce(sum(case when age_range = 'Unknown' then count end), 0) as unknown
+coalesce(sum(case when age_range = 'UNKNOWN' then count end), 0) as unknown
 from public.nibrs_offender_count group by state_id, state_abbr, offense_name, data_year;
 
 
@@ -111,7 +111,7 @@ coalesce(sum(case when age_range = '60-69' then count end), 0) as range_60_69,
 coalesce(sum(case when age_range = '70-79' then count end), 0) as range_70_79,
 coalesce(sum(case when age_range = '80-89' then count end), 0) as range_80_89,
 coalesce(sum(case when age_range = '90-99' then count end), 0) as range_90_99,
-coalesce(sum(case when age_range = 'Unknown' then count end), 0) as unknown
+coalesce(sum(case when age_range = 'UNKNOWN' then count end), 0) as unknown
 from public.nibrs_offender_count group by offense_name, data_year;
 
 CREATE MATERIALIZED VIEW nibrs_agency_denorm_offender_sex AS
@@ -171,7 +171,7 @@ coalesce(sum(case when age_range = '60-69' then count end), 0) as range_60_69,
 coalesce(sum(case when age_range = '70-79' then count end), 0) as range_70_79,
 coalesce(sum(case when age_range = '80-89' then count end), 0) as range_80_89,
 coalesce(sum(case when age_range = '90-99' then count end), 0) as range_90_99,
-coalesce(sum(case when age_range = 'Unknown' then count end), 0) as unknown
+coalesce(sum(case when age_range = 'UNKNOWN' then count end), 0) as unknown
 from public.nibrs_offender_count group by agency_id, ori, offense_name, data_year;
 
 REFRESH MATERIALIZED VIEW public.nibrs_agency_denorm_offender_age;
