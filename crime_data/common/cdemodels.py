@@ -749,7 +749,7 @@ class NIBRSVictimCount(db.Model):
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year'),
     )
-    def get(ori=None):
+    def get(ori=None, crime=None):
         query = NIBRSVictimCount.query
 
         if ori:
@@ -775,9 +775,7 @@ class NIBRSAgencyVictimDenormCount(db.Model):
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year','ori'),
     )
-    def get(ori=None):
-        print('Here')
-
+    def get(ori=None, crime=None):
         query = NIBRSAgencyVictimDenormCount.query
 
         if ori:
@@ -799,7 +797,7 @@ class NIBRSAgencyVictimDenormSex(db.Model):
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year','ori'),
     )
-    def get(ori=None):
+    def get(ori=None, crime=None):
         query = NIBRSAgencyVictimDenormSex.query
 
         if ori:
@@ -823,7 +821,7 @@ class NIBRSAgencyVictimDenormRace(db.Model):
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year','ori'),
     )
-    def get(ori=None):
+    def get(ori=None, crime=None):
         query = NIBRSAgencyVictimDenormRace.query
 
         if ori:
@@ -851,7 +849,7 @@ class NIBRSAgencyVictimDenormEthnicity(db.Model):
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year','ori'),
     )
-    def get(ori=None):
+    def get(ori=None, crime=None):
         query = NIBRSAgencyVictimDenormEthnicity.query
 
         if ori:
@@ -877,7 +875,7 @@ class NIBRSAgencyVictimDenormAge(db.Model):
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year','ori'),
     )
-    def get(ori=None):
+    def get(ori=None, crime=None):
         query = NIBRSAgencyVictimDenormAge.query
 
         if ori:
@@ -911,7 +909,7 @@ class NIBRSAgencyVictimDenormLocation(db.Model):
         PrimaryKeyConstraint('offense_name', 'data_year','ori'),
     )
 
-    def get(ori=None):
+    def get(ori=None, crime=None):
         query = NIBRSAgencyVictimDenormLocation.query
 
         if ori:
@@ -979,7 +977,7 @@ class NIBRSStateVictimDenormCount(db.Model):
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year','state_id'),
     )
-    def get(state_abbr=None):
+    def get(state_abbr=None, crime=None):
         query = NIBRSStateVictimDenormCount.query
 
         if state_abbr:
@@ -999,12 +997,13 @@ class NIBRSStateVictimDenormSex(db.Model):
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year','state_id'),
     )
-    def get(state_abbr=None):
+    def get(state_abbr=None, crime=None):
         query = NIBRSStateVictimDenormSex.query
 
         if state_abbr:
             query = query.filter(func.lower(NIBRSStateVictimDenormSex.state_abbr) == func.lower(state_abbr))
-
+        if crime:
+            query = query.filter(NIBRSStateVictimDenormSex.offense_name.in_(crime))
         return query
 
     state_id = db.Column(db.Integer)
@@ -1021,12 +1020,13 @@ class NIBRSStateVictimDenormRace(db.Model):
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year','state_id'),
     )
-    def get(state_abbr=None):
+    def get(state_abbr=None, crime=None):
         query = NIBRSStateVictimDenormRace.query
 
         if state_abbr:
             query = query.filter(func.lower(NIBRSStateVictimDenormRace.state_abbr) == func.lower(state_abbr))
-
+        if crime:
+            query = query.filter(NIBRSStateVictimDenormRace.offense_name.in_(crime))
         return query
 
     state_id = db.Column(db.Integer)
@@ -1046,12 +1046,13 @@ class NIBRSStateVictimDenormEthnicity(db.Model):
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year','state_id'),
     )
-    def get(state_abbr=None):
+    def get(state_abbr=None, crime=None):
         query = NIBRSStateVictimDenormEthnicity.query
 
         if state_abbr:
             query = query.filter(func.lower(NIBRSStateVictimDenormEthnicity.state_abbr) == func.lower(state_abbr))
-
+        if crime:
+            query = query.filter(NIBRSStateVictimDenormEthnicity.offense_name.in_(crime))
         return query
 
     state_id = db.Column(db.Integer)
@@ -1070,12 +1071,13 @@ class NIBRSStateVictimDenormAge(db.Model):
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year','state_id'),
     )
-    def get(state_abbr=None):
+    def get(state_abbr=None, crime=None):
         query = NIBRSStateVictimDenormAge.query
 
         if state_abbr:
             query = query.filter(func.lower(NIBRSStateVictimDenormAge.state_abbr) == func.lower(state_abbr))
-
+        if crime:
+            query = query.filter(NIBRSStateVictimDenormAge.offense_name.in_(crime))
         return query
 
     state_id = db.Column(db.Integer)
@@ -1100,12 +1102,13 @@ class NIBRSStateVictimDenormLocation(db.Model):
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year','state_id'),
     )
-    def get(state_abbr=None):
+    def get(state_abbr=None, crime=None):
         query = NIBRSStateVictimDenormLocation.query
 
         if state_abbr:
             query = query.filter(func.lower(NIBRSStateVictimDenormLocation.state_abbr) == func.lower(state_abbr))
-
+        if crime:
+            query = query.filter(NIBRSStateVictimDenormLocation.offense_name.in_(crime))
         return query
 
     state_id = db.Column(db.Integer)
@@ -1165,6 +1168,12 @@ class NIBRSNationalVictimDenormCount(db.Model):
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year'),
     )
+    def get(crime=None):
+        query = NIBRSNationalVictimDenormCount.query
+        if crime:
+            query = query.filter(NIBRSNationalVictimDenormCount.offense_name.in_(crime))
+        return query
+
     offense_name = db.Column(db.String)
     count = db.Column(db.Integer)
     data_year = db.Column(db.Integer)
@@ -1175,6 +1184,12 @@ class NIBRSNationalVictimDenormSex(db.Model):
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year'),
     )
+    def get(crime=None):
+        query = NIBRSNationalVictimDenormSex.query
+        if crime:
+            query = query.filter(NIBRSNationalVictimDenormSex.offense_name.in_(crime))
+        return query
+
     offense_name = db.Column(db.String)
     male_count = db.Column(db.Integer)
     female_count = db.Column(db.Integer)
@@ -1187,6 +1202,11 @@ class NIBRSNationalVictimDenormRace(db.Model):
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year'),
     )
+    def get(crime=None):
+        query = NIBRSNationalVictimDenormRace.query
+        if crime:
+            query = query.filter(NIBRSNationalVictimDenormRace.offense_name.in_(crime))
+        return query
     offense_name = db.Column(db.String)
     asian = db.Column(db.Integer)
     native_hawaiian = db.Column(db.Integer)
@@ -1202,6 +1222,11 @@ class NIBRSNationalVictimDenormEthnicity(db.Model):
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year'),
     )
+    def get(crime=None):
+        query = NIBRSNationalVictimDenormEthnicity.query
+        if crime:
+            query = query.filter(NIBRSNationalVictimDenormEthnicity.offense_name.in_(crime))
+        return query
     offense_name = db.Column(db.String)
     hispanic = db.Column(db.Integer)
     multiple = db.Column(db.Integer)
@@ -1216,6 +1241,11 @@ class NIBRSNationalVictimDenormAge(db.Model):
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year'),
     )
+    def get(crime=None):
+        query = NIBRSNationalVictimDenormAge.query
+        if crime:
+            query = query.filter(NIBRSNationalVictimDenormAge.offense_name.in_(crime))
+        return query
     offense_name = db.Column(db.String)
     range_0_9 = db.Column(db.Integer)
     range_10_19 = db.Column(db.Integer)
@@ -1236,6 +1266,11 @@ class NIBRSNationalVictimDenormLocation(db.Model):
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year'),
     )
+    def get(crime=None):
+        query = NIBRSNationalVictimDenormLocation.query
+        if crime:
+            query = query.filter(NIBRSNationalVictimDenormLocation.offense_name.in_(crime))
+        return query
     offense_name = db.Column(db.String)
     residence_home = db.Column(db.Integer)
     parking_garage__lot = db.Column(db.Integer)
@@ -1292,11 +1327,13 @@ class NIBRSOffenderCount(db.Model):
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year'),
     )
-    def get(ori=None):
+    def get(ori=None, crime=None):
         query = NIBRSOffenderCount.query
 
         if ori:
             query = query.filter(func.lower(NIBRSOffenderCount.ori) == func.lower(ori))
+        if crime:
+            query = query.filter(NIBRSOffenderCount.offense_name.in_(crime))
 
         return query
 
@@ -1318,11 +1355,13 @@ class NIBRSAgencyOffenderDenormCount(db.Model):
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year','ori'),
     )
-    def get(ori=None):
+    def get(ori=None, crime=None):
         query = NIBRSAgencyOffenderDenormCount.query
 
         if ori:
             query = query.filter(func.lower(NIBRSAgencyOffenderDenormCount.ori) == func.lower(ori))
+        if crime:
+            query = query.filter(NIBRSAgencyOffenderDenormCount.offense_name.in_(crime))
 
         return query
 
@@ -1341,11 +1380,13 @@ class NIBRSAgencyOffenderDenormSex(db.Model):
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year','ori'),
     )
-    def get(ori=None):
+    def get(ori=None, crime=None):
         query = NIBRSAgencyOffenderDenormSex.query
 
         if ori:
             query = query.filter(func.lower(NIBRSAgencyOffenderDenormSex.ori) == func.lower(ori))
+        if crime:
+            query = query.filter(NIBRSAgencyOffenderDenormSex.offense_name.in_(crime))
 
         return query
 
@@ -1366,11 +1407,13 @@ class NIBRSAgencyOffenderDenormRace(db.Model):
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year','ori'),
     )
-    def get(ori=None):
+    def get(ori=None, crime=None):
         query = NIBRSAgencyOffenderDenormRace.query
 
         if ori:
             query = query.filter(func.lower(NIBRSAgencyOffenderDenormRace.ori) == func.lower(ori))
+        if crime:
+            query = query.filter(NIBRSAgencyOffenderDenormRace.offense_name.in_(crime))
 
         return query
 
@@ -1395,11 +1438,13 @@ class NIBRSAgencyOffenderDenormEthnicity(db.Model):
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year','ori'),
     )
-    def get(ori=None):
+    def get(ori=None, crime=None):
         query = NIBRSAgencyOffenderDenormEthnicity.query
 
         if ori:
             query = query.filter(func.lower(NIBRSAgencyOffenderDenormEthnicity.ori) == func.lower(ori))
+        if crime:
+            query = query.filter(NIBRSAgencyOffenderDenormEthnicity.offense_name.in_(crime))
 
         return query
 
@@ -1422,11 +1467,13 @@ class NIBRSAgencyOffenderDenormAge(db.Model):
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year','ori'),
     )
-    def get(ori=None):
+    def get(ori=None, crime=None):
         query = NIBRSAgencyOffenderDenormAge.query
 
         if ori:
             query = query.filter(func.lower(NIBRSAgencyOffenderDenormAge.ori) == func.lower(ori))
+        if crime:
+            query = query.filter(NIBRSAgencyOffenderDenormAge.offense_name.in_(crime))
 
         return query
 
@@ -1455,11 +1502,13 @@ class NIBRSStateOffenderDenormCount(db.Model):
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year','state_id'),
     )
-    def get(state_abbr=None):
+    def get(state_abbr=None, crime=None):
         query = NIBRSStateOffenderDenormCount.query
 
         if state_abbr:
             query = query.filter(func.lower(NIBRSStateOffenderDenormCount.state_abbr) == func.lower(state_abbr))
+        if crime:
+            query = query.filter(NIBRSStateOffenderDenormCount.offense_name.in_(crime))
 
         return query
 
@@ -1475,11 +1524,13 @@ class NIBRSStateOffenderDenormSex(db.Model):
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year','state_id'),
     )
-    def get(state_abbr=None):
+    def get(state_abbr=None, crime=None):
         query = NIBRSStateOffenderDenormSex.query
 
         if state_abbr:
             query = query.filter(func.lower(NIBRSStateOffenderDenormSex.state_abbr) == func.lower(state_abbr))
+        if crime:
+            query = query.filter(NIBRSStateOffenderDenormSex.offense_name.in_(crime))
 
         return query
 
@@ -1497,11 +1548,13 @@ class NIBRSStateOffenderDenormRace(db.Model):
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year','state_id'),
     )
-    def get(state_abbr=None):
+    def get(state_abbr=None, crime=None):
         query = NIBRSStateOffenderDenormRace.query
 
         if state_abbr:
             query = query.filter(func.lower(NIBRSStateOffenderDenormRace.state_abbr) == func.lower(state_abbr))
+        if crime:
+            query = query.filter(NIBRSStateOffenderDenormRace.offense_name.in_(crime))
 
         return query
 
@@ -1522,11 +1575,13 @@ class NIBRSStateOffenderDenormEthnicity(db.Model):
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year','state_id'),
     )
-    def get(state_abbr=None):
+    def get(state_abbr=None, crime=None):
         query = NIBRSStateOffenderDenormEthnicity.query
 
         if state_abbr:
             query = query.filter(func.lower(NIBRSStateOffenderDenormEthnicity.state_abbr) == func.lower(state_abbr))
+        if crime:
+            query = query.filter(NIBRSStateOffenderDenormEthnicity.offense_name.in_(crime))
 
         return query
 
@@ -1546,11 +1601,13 @@ class NIBRSStateOffenderDenormAge(db.Model):
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year','state_id'),
     )
-    def get(state_abbr=None):
+    def get(state_abbr=None, crime=None):
         query = NIBRSStateOffenderDenormAge.query
 
         if state_abbr:
             query = query.filter(func.lower(NIBRSStateOffenderDenormAge.state_abbr) == func.lower(state_abbr))
+        if crime:
+            query = query.filter(NIBRSStateOffenderDenormAge.offense_name.in_(crime))
 
         return query
 
@@ -1576,6 +1633,12 @@ class NIBRSNationalOffenderDenormCount(db.Model):
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year'),
     )
+    def get(state_abbr=None, crime=None):
+        query = NIBRSNationalOffenderDenormCount.query
+        if crime:
+            query = query.filter(NIBRSNationalOffenderDenormCount.offense_name.in_(crime))
+        return query
+
     offense_name = db.Column(db.String)
     count = db.Column(db.Integer)
     data_year = db.Column(db.Integer)
@@ -1586,6 +1649,11 @@ class NIBRSNationalOffenderDenormSex(db.Model):
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year'),
     )
+    def get(state_abbr=None, crime=None):
+        query = NIBRSNationalOffenderDenormSex.query
+        if crime:
+            query = query.filter(NIBRSNationalOffenderDenormSex.offense_name.in_(crime))
+        return query
     offense_name = db.Column(db.String)
     male_count = db.Column(db.Integer)
     female_count = db.Column(db.Integer)
@@ -1598,6 +1666,11 @@ class NIBRSNationalOffenderDenormRace(db.Model):
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year'),
     )
+    def get(state_abbr=None, crime=None):
+        query = NIBRSNationalOffenderDenormRace.query
+        if crime:
+            query = query.filter(NIBRSNationalOffenderDenormRace.offense_name.in_(crime))
+        return query
     offense_name = db.Column(db.String)
     asian = db.Column(db.Integer)
     native_hawaiian = db.Column(db.Integer)
@@ -1613,6 +1686,11 @@ class NIBRSNationalOffenderDenormEthnicity(db.Model):
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year'),
     )
+    def get(state_abbr=None, crime=None):
+        query = NIBRSNationalOffenderDenormEthnicity.query
+        if crime:
+            query = query.filter(NIBRSNationalOffenderDenormEthnicity.offense_name.in_(crime))
+        return query
     offense_name = db.Column(db.String)
     hispanic = db.Column(db.Integer)
     multiple = db.Column(db.Integer)
@@ -1627,6 +1705,11 @@ class NIBRSNationalOffenderDenormAge(db.Model):
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year'),
     )
+    def get(state_abbr=None, crime=None):
+        query = NIBRSNationalOffenderDenormAge.query
+        if crime:
+            query = query.filter(NIBRSNationalOffenderDenormAge.offense_name.in_(crime))
+        return query
     offense_name = db.Column(db.String)
     range_0_9 = db.Column(db.Integer)
     range_10_19 = db.Column(db.Integer)
@@ -1647,6 +1730,11 @@ class NIBRSNationalDenormVictimOffenderRelationship(db.Model):
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year'),
     )
+    def get(state_abbr=None, crime=None):
+        query = NIBRSNationalDenormVictimOffenderRelationship.query
+        if crime:
+            query = query.filter(NIBRSNationalDenormVictimOffenderRelationship.offense_name.in_(crime))
+        return query
     offense_name = db.Column(db.String)
     acquaintance = db.Column(db.Integer)
     babysittee = db.Column(db.Integer)
@@ -1683,11 +1771,13 @@ class NIBRSAgencyDenormVictimOffenderRelationship(db.Model):
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year','ori'),
     )
-    def get(ori=None):
+    def get(ori=None, crime=None):
         query = NIBRSAgencyDenormVictimOffenderRelationship.query
 
         if ori:
             query = query.filter(func.lower(NIBRSAgencyDenormVictimOffenderRelationship.ori) == func.lower(ori))
+        if crime:
+            query = query.filter(NIBRSAgencyDenormVictimOffenderRelationship.offense_name.in_(crime))
 
         return query
 
@@ -1732,11 +1822,13 @@ class NIBRSStateDenormVictimOffenderRelationship(db.Model):
         PrimaryKeyConstraint('offense_name', 'data_year','state_id'),
     )
 
-    def get(state_abbr=None):
+    def get(state_abbr=None, crime=None):
         query = NIBRSStateDenormVictimOffenderRelationship.query
 
         if state_abbr:
             query = query.filter(func.lower(NIBRSStateDenormVictimOffenderRelationship.state_abbr) == func.lower(state_abbr))
+        if crime:
+            query = query.filter(NIBRSStateDenormVictimOffenderRelationship.offense_name.in_(crime))
 
         return query
 
@@ -1789,11 +1881,13 @@ class NIBRSAgencyOffenseCount(db.Model):
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year','ori'),
     )
-    def get(ori=None):
+    def get(ori=None, crime=None):
         query = NIBRSAgencyOffenseCount.query
 
         if ori:
             query = query.filter(func.lower(NIBRSAgencyOffenseCount.ori) == func.lower(ori))
+        if crime:
+            query = query.filter(NIBRSAgencyOffenseCount.offense_name.in_(crime))
 
         return query
 
@@ -1813,11 +1907,13 @@ class NIBRSStateOffenseCount(db.Model):
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year','state_id'),
     )
-    def get(state_abbr=None):
+    def get(state_abbr=None, crime=None):
         query = NIBRSStateOffenseCount.query
 
         if state_abbr:
             query = query.filter(func.lower(NIBRSStateOffenseCount.state_abbr) == func.lower(state_abbr))
+        if crime:
+            query = query.filter(NIBRSStateOffenseCount.offense_name.in_(crime))
 
         return query
     offense_name = db.Column(db.String)
