@@ -464,7 +464,18 @@ class AllState(luigi.WrapperTask):
         for year in STATE_YEARS[self.state]:
             yield StateFiles(year=year, state=self.state)
         
-        
+
+class AllYear(luigi.WrapperTask):
+    year = luigi.IntParameter()
+    
+    def requires(self):
+        yield CodeTables()
+
+        for state in STATE_YEARS.keys():
+            if self.year in STATE_YEARS[state]:
+                yield StateFiles(state=state, year=self.year)
+
+            
 class AllStates(luigi.WrapperTask):
     def requires(self):
         yield CodeTables()
@@ -472,7 +483,7 @@ class AllStates(luigi.WrapperTask):
         for state in STATE_YEARS.keys():
             yield AllState(state=state)
 
-
+            
 class AllZips(luigi.WrapperTask):
     def requires(self):
         yield CodeTables()
