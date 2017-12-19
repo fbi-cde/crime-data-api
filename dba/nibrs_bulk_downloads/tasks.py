@@ -8,7 +8,7 @@ import shutil
 CODE_TABLES_DIR = 'code_tables'
 DATA_DIR = 'data'
 ZIPS_DIR = 'zips'
-MAX_YEAR = 2014
+MAX_YEAR = 2016
 
 STATE_YEARS = {
     'AR': range(1999, MAX_YEAR+1),
