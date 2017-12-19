@@ -52,3 +52,5 @@ venv/
 .cache/
 prospector.log
 *.swp
+
+dba/nibrs_bulk_downloads
