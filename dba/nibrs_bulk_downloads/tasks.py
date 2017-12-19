@@ -8,6 +8,46 @@ import shutil
 CODE_TABLES_DIR = 'code_tables'
 DATA_DIR = 'data'
 ZIPS_DIR = 'zips'
+MAX_YEAR = 2014
+
+STATE_YEARS = {
+    'AR': range(1999, MAX_YEAR+1),
+    'CO': [1992, 1993, 1994] + list(range(1997, MAX_YEAR+1)),
+    'DE': range(2001, MAX_YEAR+1),
+    'KY': range(1998, MAX_YEAR+1),
+    'ID': range(1992, MAX_YEAR+1),
+    'IA': range(1992, MAX_YEAR+1),
+    'MI': range(1995, MAX_YEAR+1),
+    'MT': range(2005, MAX_YEAR+1),
+    'NH': range(2002, MAX_YEAR+1),
+    'ND': range(1991, MAX_YEAR+1),
+    'SC': range(1991, MAX_YEAR+1),
+    'SD': range(2000, MAX_YEAR+1),
+    'TN': range(1997, MAX_YEAR+1),
+    'VT': range(1993, MAX_YEAR+1),
+    'VA': range(1994, MAX_YEAR+1),
+    'WV': range(1998, MAX_YEAR+1),
+    'AZ': range(2004, MAX_YEAR+1),
+    'CT': range(1998, MAX_YEAR+1),
+    'IN': range(2013, MAX_YEAR+1),
+    'KS': range(2000, MAX_YEAR+1),
+    'LA': range(2003, MAX_YEAR+1),
+    'ME': range(2004, MAX_YEAR+1),
+    'MA': range(1994, MAX_YEAR+1),
+#    'MN': range(, MAX_YEAR+1),
+    'MO': range(2006, MAX_YEAR+1),
+    'NE': range(1998, MAX_YEAR+1),
+    'OH': range(1998, MAX_YEAR+1),
+    'OK': range(2008, MAX_YEAR+1),
+    'OR': range(2003, MAX_YEAR+1),
+    'PA': range(2012, MAX_YEAR+1),
+    'RI': range(2004, MAX_YEAR+1),
+    'TX': range(1997, MAX_YEAR+1),
+    'UT': range(1993, MAX_YEAR+1),
+    'WA': range(2005, MAX_YEAR+1),
+    'WI': range(2004, MAX_YEAR+1)
+}
+
 
 def run_select(sql, path):
     """ Run SQL against the database """
@@ -16,10 +56,10 @@ def run_select(sql, path):
     print(query)
 
     p = None
-    #if False: # os.getenv('DB_URI'):
-    #    p = sp.run(['psql', os.getenv('DB_URI')], stdout=sp.PIPE, input=query, encoding='ascii')
-    #else:
-    p = sp.run(['cf', 'connect-to-service', 'crime-data-api', 'crime-data-upload-db'], stdout=sp.PIPE,
+    if os.getenv('DB_URI'):
+        p = sp.run(['psql', os.getenv('DB_URI')], stdout=sp.PIPE, input=query, encoding='ascii')
+    else:
+        p = sp.run(['cf', 'connect-to-service', 'crime-data-api', 'crime-data-upload-db'], stdout=sp.PIPE,
                input=query, encoding='ascii')
 
     if p.returncode == 0:
@@ -41,6 +81,28 @@ class CodeTableTask(luigi.Task):
         run_select('select * from {}'.format(self.table_name), self.local_path())
 
 
+class ZipReadme(luigi.Task):
+    def local_path(self):
+        return os.path.join(CODE_TABLES_DIR, 'README.html')
+
+    def markdown_path(self):
+        return os.path.join(CODE_TABLES_DIR, 'README.md')
+
+    def output(self):
+        if os.path.exists(self.local_path()):
+            md_time = os.path.getmtime(self.markdown_path())
+            ht_time = os.path.getmtime(self.local_path())
+
+            # hack to delete the HTML file if older than the markdown one
+            if md_time > ht_time:
+                os.unlink(self.local_path())
+
+        return luigi.LocalTarget(self.local_path())
+
+    def run(self):
+        sp.run(['grip', '--wide', '--export', self.markdown_path(), self.local_path()])
+        
+        
 # Code tables
 class NibrsActivityType(CodeTableTask):
     table_name = 'nibrs_activity_type'
@@ -365,18 +427,26 @@ class DataTables(luigi.WrapperTask):
         yield NibrsWeapon(year=self.year, state=self.state)
 
 
-class ZipFile(luigi.Task):
+class StateFiles(luigi.WrapperTask):
     year = luigi.IntParameter()
     state = luigi.Parameter()
 
     def requires(self):
         return CodeTables(), DataTables(year=self.year, state=self.state)
+    
+        
+class ZipFile(luigi.Task):
+    year = luigi.IntParameter()
+    state = luigi.Parameter()
+
+    def requires(self):
+        return ZipReadme(), CodeTables(), DataTables(year=self.year, state=self.state)
 
     def data_dir(self):
         return os.path.join(DATA_DIR, self.state, str(self.year))
     
     def local_path(self):
-        return os.path.join(ZIPS_DIR, 'NIBRS-{state}-{year}.zip'.format(state=self.state, year=self.year))
+        return os.path.join(ZIPS_DIR, '{state}-{year}.zip'.format(state=self.state, year=self.year))
 
     def output(self):
         return luigi.LocalTarget(self.local_path())
@@ -385,19 +455,29 @@ class ZipFile(luigi.Task):
         self.output().makedirs()
         p = sp.run(['zip', '-9rj', self.local_path(), CODE_TABLES_DIR])
         p = sp.run(['zip', '-9rj', self.local_path(), self.data_dir()])
-        
+
 
 class AllState(luigi.WrapperTask):
     state = luigi.Parameter()
 
     def requires(self):
-        for year in [2016, 2015, 2014, 2013, 2012, 2009, 2008, 2007, 2006, 2005, 2004]:
-            yield ZipFile(year=year, state=self.state)
+        for year in STATE_YEARS[self.state]:
+            yield StateFiles(year=year, state=self.state)
         
         
 class AllStates(luigi.WrapperTask):
     def requires(self):
         yield CodeTables()
 
-        for state in ['AR', 'CO', 'DE', 'KY', 'ID', 'IA', 'MI', 'MT', 'NH', 'ND', 'SC', 'SD', 'TN', 'VT', 'VA', 'WV', 'AZ', 'CT', 'IN', 'KS', 'LA', 'ME', 'MA', 'MN', 'MO', 'NE', 'OH', 'OK', 'OR', 'PA', 'RI', 'TX', 'UT', 'WA', 'WI']:
+        for state in STATE_YEARS.keys():
             yield AllState(state=state)
+
+
+class AllZips(luigi.WrapperTask):
+    def requires(self):
+        yield CodeTables()
+
+        for state in STATE_YEARS.keys():
+            for year in STATE_YEARS[state]:
+                yield ZipFile(state=state, year=year)
+    
