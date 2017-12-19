@@ -281,10 +281,6 @@ app = create_app(CONFIG)
 app.wsgi_app = ProxyFix(app.wsgi_app)
 
 # Add some static routing
-@app.route('/x')
-def swagger_ui():
-    return app.send_static_file('swagger-ui.html')
-
 @app.route('/swagger.json')
 def swagger_json():
     return app.send_static_file('swagger.json')
