@@ -10,6 +10,10 @@ and victims, and offenses affecting victims. It also removes the the
 "hierarchy rule" that meant only a single offense was counted as part
 of SRS summary reports.
 
+For detailed information about all the fields provided in NIBRS and
+how they are collected and presented, please refer to the [official
+NIBRS documentation](https://ucr.fbi.gov/nibrs/nibrs-user-manual).
+
 ## The Main Data Tables
 
 The NIBRS data is divided among 43 distinct tables. Of these, 20 are
@@ -68,6 +72,10 @@ Notes:
 An incident can have up to 99 offender records associated with it.
 
 Notes:
+* `offender_seq_num` provides an ordering to list offenders. In cases
+  where there is one or more unknown offenders for an incident, there
+  will be a record with a offender_seq_num of 0 and NULL for all
+  demographic associations.
 * `incident_id` references the NIBRS incident this offender is associated with.
 * `age_id` refers to the `nibrs_age` table
 * `sex_code` values: 'M' - male; 'F' - female; 'U' - unknown
@@ -233,9 +241,17 @@ Notes:
 
 ### agency_participation
 
+Provides some precalculated information about agency participation in
+the year based on counts from the nibrs_month database. An agency is
+considered to be participating if it either reported 12 months of data
+or "zero reports" or if it was covered in the year by another agency
+that did so.
 
 ### cde_agencies
 
+The cde_agencies table gathers information about agencies from several
+tables and is provided as a convenience to help simplify some types of
+queries.
 
 ## Loading into a local database
 
@@ -289,7 +305,7 @@ FROM nibrs_incident ni
 JOIN nibrs_month nm ON nm.nibrs_month_id = ni.nibrs_month_id
 JOIN cde_agencies c ON c.agency_id = nm.agency_id
 WHERE c.state_abbr = 'WV'
-AND nm.data_year = 2015
+AND nm.data_year = 2014;
 ```
 
 To get all homicide offenses in West Virginia in 2015
@@ -302,6 +318,67 @@ JOIN nibrs_month nm ON nm.nibrs_month_id = ni.nibrs_month_id
 JOIN cde_agencies c ON c.agency_id = nm.agency_id
 JOIN nibrs_offense_type ot ON ot.offense_type_id = o.offense_type_id
 WHERE c.state_abbr = 'WV'
-AND nm.data_year = 2015
-AND ot.offense_code = '09A'
+AND nm.data_year = 2014
+AND ot.offense_code = '09A';
 ```
+
+To get information about homicide victims in West Virginia in 2015 you
+will need to use the victim_offense table and also join in some of the
+lookup tables.
+
+``` sql
+SELECT r.race_code, a.age_code, v.age_num, e.ethnicity_code
+FROM nibrs_victim v
+JOIN nibrs_victim_offense vo ON vo.victim_id = v.victim_id
+JOIN nibrs_offense o ON o.offense_id = vo.offense_id
+JOIN nibrs_incident ni ON ni.incident_id = v.incident_id
+JOIN nibrs_month nm ON nm.nibrs_month_id = ni.nibrs_month_id
+JOIN ref_race r ON r.race_id = v.race_id
+JOIN nibrs_age a ON a.age_id = v.age_id
+JOIN nibrs_ethnicity e ON e.ethnicity_id = v.ethnicity_id
+JOIN cde_agencies c ON c.agency_id = nm.agency_id
+JOIN nibrs_offense_type ot ON ot.offense_type_id = o.offense_type_id
+WHERE c.state_abbr = 'WV'
+AND nm.data_year = 2014
+AND ot.offense_code = '09A';
+```
+
+To get a count of all victims of robbery in WV you could do the same
+thing, but make sure to exclude victim types that aren't people.
+
+``` sql
+SELECT COUNT(*)
+FROM nibrs_victim v
+JOIN nibrs_victim_offense vo ON vo.victim_id = v.victim_id
+JOIN nibrs_victim_type vt ON vt.victim_type_id = v.victim_type_id
+JOIN nibrs_offense o ON o.offense_id = vo.offense_id
+JOIN nibrs_incident ni ON ni.incident_id = v.incident_id
+JOIN nibrs_month nm ON nm.nibrs_month_id = ni.nibrs_month_id
+JOIN cde_agencies c ON c.agency_id = nm.agency_id
+JOIN nibrs_offense_type ot ON ot.offense_type_id = o.offense_type_id
+WHERE c.state_abbr = 'WV'
+AND nm.data_year = 2014
+AND ot.offense_code = '120'
+AND vt.victim_type_code='I';
+```
+
+To see a breakdown of where robberies happened in West Virginia in 2014
+
+``` sql
+SELECT location_code, location_name, count(*)
+FROM nibrs_offense o
+JOIN nibrs_incident ni ON ni.incident_id = o.incident_id
+JOIN nibrs_month nm ON nm.nibrs_month_id = ni.nibrs_month_id
+JOIN nibrs_offense_type ot ON ot.offense_type_id = o.offense_type_id
+JOIN nibrs_location_type l ON l.location_id = o.location_id
+JOIN cde_agencies c ON c.agency_id = nm.agency_id
+WHERE c.state_abbr = 'WV'
+AND nm.data_year = 2014
+AND ot.offense_code = '120'
+GROUP by location_code, location_name
+ORDER by location_code;
+```
+
+And so on. There are many ways you can approach NIBRS data, but be
+sure to understand how some of the tables relate to each other and the
+meanings of certain fields.
