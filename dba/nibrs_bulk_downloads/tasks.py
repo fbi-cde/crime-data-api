@@ -8,44 +8,46 @@ import shutil
 CODE_TABLES_DIR = 'code_tables'
 DATA_DIR = 'data'
 ZIPS_DIR = 'zips'
-MAX_YEAR = 2016
+MAX_YEAR = 2014
 
 STATE_YEARS = {
+    'AL': range(1991, MAX_YEAR+1),
     'AR': range(1999, MAX_YEAR+1),
-    'CO': [1992, 1993, 1994] + list(range(1997, MAX_YEAR+1)),
-    'DE': range(2001, MAX_YEAR+1),
-    'KY': range(1998, MAX_YEAR+1),
-    'ID': range(1992, MAX_YEAR+1),
-    'IA': range(1992, MAX_YEAR+1),
-    'MI': range(1995, MAX_YEAR+1),
-    'MT': range(2005, MAX_YEAR+1),
-    'NH': range(2002, MAX_YEAR+1),
-    'ND': range(1991, MAX_YEAR+1),
-    'SC': range(1991, MAX_YEAR+1),
-    'SD': range(2000, MAX_YEAR+1),
-    'TN': range(1997, MAX_YEAR+1),
-    'VT': range(1993, MAX_YEAR+1),
-    'VA': range(1994, MAX_YEAR+1),
-    'WV': range(1998, MAX_YEAR+1),
     'AZ': range(2004, MAX_YEAR+1),
+    'CO': [1992, 1993, 1994] + list(range(1997, MAX_YEAR+1)),
     'CT': range(1998, MAX_YEAR+1),
+    'DC': range(2000, MAX_YEAR+1),
+    'DE': range(2001, MAX_YEAR+1),
+    'IA': range(1992, MAX_YEAR+1),
+    'ID': range(1992, MAX_YEAR+1),
+    'IL': range(1993, MAX_YEAR+1),
     'IN': range(2013, MAX_YEAR+1),
     'KS': range(2000, MAX_YEAR+1),
+    'KY': range(1998, MAX_YEAR+1),
     'LA': range(2003, MAX_YEAR+1),
-    'ME': range(2004, MAX_YEAR+1),
     'MA': range(1994, MAX_YEAR+1),
-#    'MN': range(, MAX_YEAR+1),
+    'ME': range(2004, MAX_YEAR+1),
+    'MI': range(1995, MAX_YEAR+1),
     'MO': range(2006, MAX_YEAR+1),
+    'MT': range(2005, MAX_YEAR+1),
+    'ND': range(1991, MAX_YEAR+1),
     'NE': range(1998, MAX_YEAR+1),
+    'NH': range(2002, MAX_YEAR+1),
     'OH': range(1998, MAX_YEAR+1),
     'OK': range(2008, MAX_YEAR+1),
     'OR': range(2003, MAX_YEAR+1),
     'PA': range(2012, MAX_YEAR+1),
     'RI': range(2004, MAX_YEAR+1),
+    'SC': range(1991, MAX_YEAR+1),
+    'SD': range(2000, MAX_YEAR+1),
+    'TN': range(1997, MAX_YEAR+1),
     'TX': range(1997, MAX_YEAR+1),
     'UT': range(1993, MAX_YEAR+1),
+    'VA': range(1994, MAX_YEAR+1),
+    'VT': range(1993, MAX_YEAR+1),
     'WA': range(2005, MAX_YEAR+1),
-    'WI': range(2004, MAX_YEAR+1)
+    'WI': range(2004, MAX_YEAR+1),
+    'WV': range(1998, MAX_YEAR+1)
 }
 
 
@@ -446,7 +448,7 @@ class ZipFile(luigi.Task):
         return os.path.join(DATA_DIR, self.state, str(self.year))
     
     def local_path(self):
-        return os.path.join(ZIPS_DIR, '{state}-{year}.zip'.format(state=self.state, year=self.year))
+        return os.path.join(ZIPS_DIR, str(self.year), '{state}-{year}.zip'.format(state=self.state, year=self.year))
 
     def output(self):
         return luigi.LocalTarget(self.local_path())
