@@ -343,25 +343,6 @@ AND nm.data_year = 2014
 AND ot.offense_code = '09A';
 ```
 
-To get a count of all victims of robbery in WV you could do the same
-thing, but make sure to exclude victim types that aren't people.
-
-``` sql
-SELECT COUNT(*)
-FROM nibrs_victim v
-JOIN nibrs_victim_offense vo ON vo.victim_id = v.victim_id
-JOIN nibrs_victim_type vt ON vt.victim_type_id = v.victim_type_id
-JOIN nibrs_offense o ON o.offense_id = vo.offense_id
-JOIN nibrs_incident ni ON ni.incident_id = v.incident_id
-JOIN nibrs_month nm ON nm.nibrs_month_id = ni.nibrs_month_id
-JOIN cde_agencies c ON c.agency_id = nm.agency_id
-JOIN nibrs_offense_type ot ON ot.offense_type_id = o.offense_type_id
-WHERE c.state_abbr = 'WV'
-AND nm.data_year = 2014
-AND ot.offense_code = '120'
-AND vt.victim_type_code='I';
-```
-
 To see a breakdown of where robberies happened in West Virginia in 2014
 
 ``` sql
