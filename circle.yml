@@ -12,7 +12,7 @@ dependencies:
     - pip install -r requirements/dev.txt
 database:
   override:
-    - psql --username=ubuntu circle_test < dba/crime_data_api_test.sql
+    - gunzip --stdout dba/crime_data_api_test.sql.gz | psql --username=ubuntu circle_test
 test:
   override:
     - py.test --cov=crime_data tests/

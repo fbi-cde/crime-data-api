@@ -1,5 +1,6 @@
 import pytest
-from crime_data.common.cdemodels import OffenseByOffenseCountView
+from crime_data.common.base import ExplorerOffenseMapping
+from crime_data.common.cdemodels import OffenseByOffenseTypeCountView
 
 
 class TestOffenseByOffenseTypeCountView:
@@ -50,14 +51,10 @@ class TestOffenseByOffenseTypeCountView:
             #     seen_values.add(row_key)
             for row in results:
                 assert 'count' in row
+
     def test_explorer_offense_does_aggregation(self, app):
-        v = OffenseVictimCountView('sex_code', year=2014, state_id=26, explorer_offense='larceny', as_json=False)
+        v = OffenseByOffenseTypeCountView('location_name', year=2014, state_id=26, explorer_offense='larceny', as_json=False)
         results = v.query({}).fetchall()
-        expected = [
-            ('2014', 'larceny', 'F', 3),
-            ('2014', 'larceny', 'M', 3)]
-        # assert len(results) == len(expected)
-        # for row, expect in zip(results, expected):
-        #     assert row == expect
+        assert len(results) > 0
         for row in results:
             assert 'count' in row
