@@ -1280,9 +1280,9 @@ class SHRStateHomicideVictimSexSchema(ma.ModelSchema):
         model = cdemodels.SHRStateHomicideVictimSex
         ordered = True
 
-class SHRSNationalHomicideVictimSexSchema(ma.ModelSchema):
+class SHRNationalHomicideVictimSexSchema(ma.ModelSchema):
     class Meta:
-        model = cdemodels.SHRSNationalHomicideVictimSex
+        model = cdemodels.SHRNationalHomicideVictimSex
         ordered = True
 
 class SHRStateHomicideVictimRaceSchema(ma.ModelSchema):
@@ -1320,9 +1320,9 @@ class SHRStateHomicideOffenderSexSchema(ma.ModelSchema):
         model = cdemodels.SHRStateHomicideOffenderSex
         ordered = True
 
-class SHRSNationalHomicideOffenderSexSchema(ma.ModelSchema):
+class SHRNationalHomicideOffenderSexSchema(ma.ModelSchema):
     class Meta:
-        model = cdemodels.SHRSNationalHomicideOffenderSex
+        model = cdemodels.SHRNationalHomicideOffenderSex
         ordered = True
 
 class SHRStateHomicideOffenderRaceSchema(ma.ModelSchema):

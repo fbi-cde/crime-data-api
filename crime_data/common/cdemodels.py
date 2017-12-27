@@ -1847,7 +1847,7 @@ class SHRStateHomicideVictimSex(db.Model):
     female_count = db.Column(db.Integer)
     unknown_count = db.Column(db.Integer)
 
-class SHRSNationalHomicideVictimSex(db.Model):
+class SHRNationalHomicideVictimSex(db.Model):
     """Represents Agency Level SHR Victim Sex Data"""
     __tablename__ = 'shr_national_homicide_victim_sex'
     __table_args__ = (
@@ -2000,7 +2000,7 @@ class SHRStateHomicideOffenderSex(db.Model):
     female_count = db.Column(db.Integer)
     unknown_count = db.Column(db.Integer)
 
-class SHRSNationalHomicideOffenderSex(db.Model):
+class SHRNationalHomicideOffenderSex(db.Model):
     """Represents Agency Level SHR Offender Sex Data"""
     __tablename__ = 'shr_national_homicide_offender_sex'
     __table_args__ = (

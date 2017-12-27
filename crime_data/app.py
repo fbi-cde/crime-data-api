@@ -306,7 +306,7 @@ def add_resources(app):
     api.add_resource(crime_data.resources.shr_counts.SHRStateHomicideVictimRace,'/shr/victim/count/states/<string:state_abbr>/race')
     api.add_resource(crime_data.resources.shr_counts.SHRStateHomicideVictimEthnicity,'/shr/victim/count/states/<string:state_abbr>/ethnicity')
 
-    api.add_resource(crime_data.resources.shr_counts.SHRSNationalHomicideVictimSex,'/shr/victim/count/national/sex')
+    api.add_resource(crime_data.resources.shr_counts.SHRNationalHomicideVictimSex,'/shr/victim/count/national/sex')
     api.add_resource(crime_data.resources.shr_counts.SHRNationalHomicideVictimAge,'/shr/victim/count/national/age')
     api.add_resource(crime_data.resources.shr_counts.SHRNationalHomicideVictimRace,'/shr/victim/count/national/race')
     api.add_resource(crime_data.resources.shr_counts.SHRNationalHomicideVictimEthnicity,'/shr/victim/count/national/ethnicity')
@@ -316,11 +316,10 @@ def add_resources(app):
     api.add_resource(crime_data.resources.shr_counts.SHRStateHomicideOffenderRace,'/shr/offender/count/states/<string:state_abbr>/race')
     api.add_resource(crime_data.resources.shr_counts.SHRStateHomicideOffenderEthnicity,'/shr/offender/count/states/<string:state_abbr>/ethnicity')
 
-    api.add_resource(crime_data.resources.shr_counts.SHRSNationalHomicideOffenderSex,'/shr/offender/count/national/sex')
+    api.add_resource(crime_data.resources.shr_counts.SHRNationalHomicideOffenderSex,'/shr/offender/count/national/sex')
     api.add_resource(crime_data.resources.shr_counts.SHRNationalHomicideOffenderAge,'/shr/offender/count/national/age')
     api.add_resource(crime_data.resources.shr_counts.SHRNationalHomicideOffenderRace,'/shr/offender/count/national/race')
     api.add_resource(crime_data.resources.shr_counts.SHRNationalHomicideOffenderEthnicity,'/shr/offender/count/national/ethnicity')
-
 
 def newrelic_status_endpoint():
     return 'OK'
