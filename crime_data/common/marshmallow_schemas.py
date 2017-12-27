@@ -1102,3 +1102,19 @@ class SummarizedDataNationalSchema(ma.ModelSchema):
 class AgenciesSchema(ma.ModelSchema):
     class Meta:
         model = cdemodels.Agencies
+
+class PoliceEmploymentDataNationSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.PoliceEmploymentDataNation
+
+class PoliceEmploymentDataRegionSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.PoliceEmploymentDataRegion
+
+class PoliceEmploymentDataStateSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.PoliceEmploymentDataState
+
+class PoliceEmploymentDataAgencySchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.PoliceEmploymentDataAgency
