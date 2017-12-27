@@ -67,3 +67,28 @@ CREATE TABLE nibrs_offense_count (
     incident_count int,
     offense_count int
 );
+
+
+CREATE TABLE shr_expanded_homicide_victim_count (
+    data_year int,
+    state_id int,
+    state_abbr character(2),
+    race_desc varchar(50),
+    ethnicity_name varchar(50),
+    sex_code character(1),
+    age_range varchar(50),
+    data_home varchar(50),
+    count int
+);
+
+CREATE TABLE shr_expanded_homicide_offender_count (
+    data_year int,
+    state_id int,
+    state_abbr character(2),
+    race_desc varchar(50),
+    ethnicity_name varchar(50),
+    sex_code character(1),
+    age_range varchar(50),
+    data_home varchar(50),
+    count int
+);

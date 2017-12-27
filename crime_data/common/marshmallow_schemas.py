@@ -1274,3 +1274,83 @@ class NIBRSStateOffenseCountSchema(ma.ModelSchema):
     class Meta:
         model = cdemodels.NIBRSStateOffenseCount
         ordered = True
+
+class SHRStateHomicideVictimSexSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.SHRStateHomicideVictimSex
+        ordered = True
+
+class SHRSNationalHomicideVictimSexSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.SHRSNationalHomicideVictimSex
+        ordered = True
+
+class SHRStateHomicideVictimRaceSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.SHRStateHomicideVictimRace
+        ordered = True
+
+class SHRNationalHomicideVictimRaceSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.SHRNationalHomicideVictimRace
+        ordered = True
+
+class SHRStateHomicideVictimAgeSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.SHRStateHomicideVictimAge
+        ordered = True
+
+class SHRNationalHomicideVictimAgeSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.SHRNationalHomicideVictimAge
+        ordered = True
+
+class SHRStateHomicideVictimEthnicitySchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.SHRStateHomicideVictimEthnicity
+        ordered = True
+
+class SHRNationalHomicideVictimEthnicitySchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.SHRNationalHomicideVictimEthnicity
+        ordered = True
+
+class SHRStateHomicideOffenderSexSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.SHRStateHomicideOffenderSex
+        ordered = True
+
+class SHRSNationalHomicideOffenderSexSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.SHRSNationalHomicideOffenderSex
+        ordered = True
+
+class SHRStateHomicideOffenderRaceSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.SHRStateHomicideOffenderRace
+        ordered = True
+
+class SHRNationalHomicideOffenderRaceSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.SHRNationalHomicideOffenderRace
+        ordered = True
+
+class SHRStateHomicideOffenderAgeSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.SHRStateHomicideOffenderAge
+        ordered = True
+
+class SHRNationalHomicideOffenderAgeSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.SHRNationalHomicideOffenderAge
+        ordered = True
+
+class SHRStateHomicideOffenderEthnicitySchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.SHRStateHomicideOffenderEthnicity
+        ordered = True
+
+class SHRNationalHomicideOffenderEthnicitySchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.SHRNationalHomicideOffenderEthnicity
+        ordered = True

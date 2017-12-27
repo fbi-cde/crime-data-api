@@ -23,6 +23,7 @@ import crime_data.resources.estimates
 import crime_data.resources.arrests
 import crime_data.resources.meta
 import crime_data.resources.nibrs_counts
+import crime_data.resources.shr_counts
 
 
 import crime_data.resources.human_traffic
@@ -299,6 +300,27 @@ def add_resources(app):
     api.add_resource(crime_data.resources.nibrs_counts.NIBRSStateOffenseCount,'/nibrs/offense/count/states/<string:state_abbr>')
     api.add_resource(crime_data.resources.nibrs_counts.NIBRSAgencyOffenseCount,'/nibrs/offense/count/agencies/<string:ori>')
     api.add_resource(crime_data.resources.nibrs_counts.NIBRSNationalOffenseCount,'/nibrs/offense/count/national')
+
+    api.add_resource(crime_data.resources.shr_counts.SHRStateHomicideVictimSex,'/shr/victim/count/states/<string:state_abbr>/sex')
+    api.add_resource(crime_data.resources.shr_counts.SHRStateHomicideVictimAge,'/shr/victim/count/states/<string:state_abbr>/age')
+    api.add_resource(crime_data.resources.shr_counts.SHRStateHomicideVictimRace,'/shr/victim/count/states/<string:state_abbr>/race')
+    api.add_resource(crime_data.resources.shr_counts.SHRStateHomicideVictimEthnicity,'/shr/victim/count/states/<string:state_abbr>/ethnicity')
+
+    api.add_resource(crime_data.resources.shr_counts.SHRSNationalHomicideVictimSex,'/shr/victim/count/national/sex')
+    api.add_resource(crime_data.resources.shr_counts.SHRNationalHomicideVictimAge,'/shr/victim/count/national/age')
+    api.add_resource(crime_data.resources.shr_counts.SHRNationalHomicideVictimRace,'/shr/victim/count/national/race')
+    api.add_resource(crime_data.resources.shr_counts.SHRNationalHomicideVictimEthnicity,'/shr/victim/count/national/ethnicity')
+
+    api.add_resource(crime_data.resources.shr_counts.SHRStateHomicideOffenderSex,'/shr/offender/count/states/<string:state_abbr>/sex')
+    api.add_resource(crime_data.resources.shr_counts.SHRStateHomicideOffenderAge,'/shr/offender/count/states/<string:state_abbr>/age')
+    api.add_resource(crime_data.resources.shr_counts.SHRStateHomicideOffenderRace,'/shr/offender/count/states/<string:state_abbr>/race')
+    api.add_resource(crime_data.resources.shr_counts.SHRStateHomicideOffenderEthnicity,'/shr/offender/count/states/<string:state_abbr>/ethnicity')
+
+    api.add_resource(crime_data.resources.shr_counts.SHRSNationalHomicideOffenderSex,'/shr/offender/count/national/sex')
+    api.add_resource(crime_data.resources.shr_counts.SHRNationalHomicideOffenderAge,'/shr/offender/count/national/age')
+    api.add_resource(crime_data.resources.shr_counts.SHRNationalHomicideOffenderRace,'/shr/offender/count/national/race')
+    api.add_resource(crime_data.resources.shr_counts.SHRNationalHomicideOffenderEthnicity,'/shr/offender/count/national/ethnicity')
+
 
 def newrelic_status_endpoint():
     return 'OK'
