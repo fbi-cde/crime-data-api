@@ -8,7 +8,7 @@ import shutil
 CODE_TABLES_DIR = 'code_tables'
 DATA_DIR = 'data'
 ZIPS_DIR = 'zips'
-MAX_YEAR = 2014
+MAX_YEAR = 2016
 
 STATE_YEARS = {
     'AL': range(1991, MAX_YEAR+1),
@@ -64,7 +64,7 @@ def run_select(sql, path):
         p = sp.run(['cf', 'connect-to-service', 'crime-data-api', 'crime-data-upload-db'], stdout=sp.PIPE,
                input=query, encoding='ascii')
 
-    if p.returncode == 0:
+    if p.returncode == 0 and os.stat(temp_file).st_size > 0:
         # if everything worked, we can move to final path
         os.rename(temp_file, path)
     else:
