@@ -1846,6 +1846,7 @@ class SHRStateHomicideVictimSex(db.Model):
     male_count = db.Column(db.Integer)
     female_count = db.Column(db.Integer)
     unknown_count = db.Column(db.Integer)
+    not_reported = db.Column(db.Integer)
 
 class SHRNationalHomicideVictimSex(db.Model):
     """Represents Agency Level SHR Victim Sex Data"""
@@ -1857,6 +1858,7 @@ class SHRNationalHomicideVictimSex(db.Model):
     male_count = db.Column(db.Integer)
     female_count = db.Column(db.Integer)
     unknown_count = db.Column(db.Integer)
+    not_reported = db.Column(db.Integer)
 
 
 class SHRStateHomicideVictimRace(db.Model):
@@ -1881,6 +1883,7 @@ class SHRStateHomicideVictimRace(db.Model):
     american_indian = db.Column(db.Integer)
     unknown = db.Column(db.Integer)
     white = db.Column(db.Integer)
+    not_reported = db.Column(db.Integer)
 
 class SHRNationalHomicideVictimRace(db.Model):
     """Represents Agency Level SHR Victim race Data"""
@@ -1895,6 +1898,7 @@ class SHRNationalHomicideVictimRace(db.Model):
     american_indian = db.Column(db.Integer)
     unknown = db.Column(db.Integer)
     white = db.Column(db.Integer)
+    not_reported = db.Column(db.Integer)
 
 class SHRStateHomicideVictimAge(db.Model):
     """Represents Agency Level SHR Victim age Data"""
@@ -1925,6 +1929,7 @@ class SHRStateHomicideVictimAge(db.Model):
     range_90_99 = db.Column(db.Integer)
     range_90_99 = db.Column(db.Integer)
     unknown = db.Column(db.Integer)
+    not_reported = db.Column(db.Integer)
 
 class SHRNationalHomicideVictimAge(db.Model):
     """Represents Agency Level SHR Victim age Data"""
@@ -1946,6 +1951,7 @@ class SHRNationalHomicideVictimAge(db.Model):
     range_90_99 = db.Column(db.Integer)
     range_90_99 = db.Column(db.Integer)
     unknown = db.Column(db.Integer)
+    not_reported = db.Column(db.Integer)
 
 class SHRStateHomicideVictimEthnicity(db.Model):
     """Represents Agency Level SHR Victim Ethnicity Data"""
@@ -1954,10 +1960,10 @@ class SHRStateHomicideVictimEthnicity(db.Model):
         PrimaryKeyConstraint('data_year','state_id'),
     )
     def get(state_abbr=None):
-        query = SHRStateHomicideVictimRace.query
+        query = SHRStateHomicideVictimEthnicity.query
 
         if state_abbr:
-            query = query.filter(func.lower(SHRStateHomicideVictimRace.state_abbr) == func.lower(state_abbr))
+            query = query.filter(func.lower(SHRStateHomicideVictimEthnicity.state_abbr) == func.lower(state_abbr))
 
         return query
     state_abbr = db.Column(db.String)
@@ -1967,6 +1973,8 @@ class SHRStateHomicideVictimEthnicity(db.Model):
     multiple = db.Column(db.Integer)
     not_hispanic = db.Column(db.Integer)
     unknown = db.Column(db.Integer)
+    not_reported = db.Column(db.Integer)
+
 
 class SHRNationalHomicideVictimEthnicity(db.Model):
     """Represents Agency Level SHR Victim Ethnicity Data"""
@@ -1979,6 +1987,7 @@ class SHRNationalHomicideVictimEthnicity(db.Model):
     multiple = db.Column(db.Integer)
     not_hispanic = db.Column(db.Integer)
     unknown = db.Column(db.Integer)
+    not_reported = db.Column(db.Integer)
 
 class SHRStateHomicideOffenderSex(db.Model):
     """Represents Agency Level SHR Offender Sex Data"""
@@ -1999,6 +2008,7 @@ class SHRStateHomicideOffenderSex(db.Model):
     male_count = db.Column(db.Integer)
     female_count = db.Column(db.Integer)
     unknown_count = db.Column(db.Integer)
+    not_reported = db.Column(db.Integer)
 
 class SHRNationalHomicideOffenderSex(db.Model):
     """Represents Agency Level SHR Offender Sex Data"""
@@ -2010,6 +2020,7 @@ class SHRNationalHomicideOffenderSex(db.Model):
     male_count = db.Column(db.Integer)
     female_count = db.Column(db.Integer)
     unknown_count = db.Column(db.Integer)
+    not_reported = db.Column(db.Integer)
 
 
 class SHRStateHomicideOffenderRace(db.Model):
@@ -2034,6 +2045,7 @@ class SHRStateHomicideOffenderRace(db.Model):
     american_indian = db.Column(db.Integer)
     unknown = db.Column(db.Integer)
     white = db.Column(db.Integer)
+    not_reported = db.Column(db.Integer)
 
 class SHRNationalHomicideOffenderRace(db.Model):
     """Represents Agency Level SHR Offender race Data"""
@@ -2048,6 +2060,7 @@ class SHRNationalHomicideOffenderRace(db.Model):
     american_indian = db.Column(db.Integer)
     unknown = db.Column(db.Integer)
     white = db.Column(db.Integer)
+    not_reported = db.Column(db.Integer)
 
 class SHRStateHomicideOffenderAge(db.Model):
     """Represents Agency Level SHR Offender age Data"""
@@ -2078,6 +2091,7 @@ class SHRStateHomicideOffenderAge(db.Model):
     range_90_99 = db.Column(db.Integer)
     range_90_99 = db.Column(db.Integer)
     unknown = db.Column(db.Integer)
+    not_reported = db.Column(db.Integer)
 
 class SHRNationalHomicideOffenderAge(db.Model):
     """Represents Agency Level SHR Offender age Data"""
@@ -2099,6 +2113,7 @@ class SHRNationalHomicideOffenderAge(db.Model):
     range_90_99 = db.Column(db.Integer)
     range_90_99 = db.Column(db.Integer)
     unknown = db.Column(db.Integer)
+    not_reported = db.Column(db.Integer)
 
 class SHRStateHomicideOffenderEthnicity(db.Model):
     """Represents Agency Level SHR Offender Ethnicity Data"""
@@ -2107,10 +2122,10 @@ class SHRStateHomicideOffenderEthnicity(db.Model):
         PrimaryKeyConstraint('data_year','state_id'),
     )
     def get(state_abbr=None):
-        query = SHRStateHomicideOffenderRace.query
+        query = SHRStateHomicideOffenderEthnicity.query
 
         if state_abbr:
-            query = query.filter(func.lower(SHRStateHomicideOffenderRace.state_abbr) == func.lower(state_abbr))
+            query = query.filter(func.lower(SHRStateHomicideOffenderEthnicity.state_abbr) == func.lower(state_abbr))
 
         return query
     state_abbr = db.Column(db.String)
@@ -2119,6 +2134,7 @@ class SHRStateHomicideOffenderEthnicity(db.Model):
     hispanic = db.Column(db.Integer)
     multiple = db.Column(db.Integer)
     not_hispanic = db.Column(db.Integer)
+    not_reported = db.Column(db.Integer)
     unknown = db.Column(db.Integer)
 
 class SHRNationalHomicideOffenderEthnicity(db.Model):
@@ -2131,4 +2147,60 @@ class SHRNationalHomicideOffenderEthnicity(db.Model):
     hispanic = db.Column(db.Integer)
     multiple = db.Column(db.Integer)
     not_hispanic = db.Column(db.Integer)
+    not_reported = db.Column(db.Integer)
     unknown = db.Column(db.Integer)
+
+
+class SHRNationalHomicideOffenderCount(db.Model):
+    """Represents Agency Level SHR Offender Sex Data"""
+    __tablename__ = 'shr_national_homicide_offender_count'
+    __table_args__ = (
+        PrimaryKeyConstraint('data_year'),
+    )
+    data_year = db.Column(db.Integer)
+    count = db.Column(db.Integer)
+
+class SHRStateHomicideOffenderCount(db.Model):
+    """Represents Agency Level SHR Offender Sex Data"""
+    __tablename__ = 'shr_state_homicide_offender_count'
+    __table_args__ = (
+        PrimaryKeyConstraint('data_year','state_id'),
+    )
+    def get(state_abbr=None):
+        query = SHRStateHomicideOffenderCount.query
+
+        if state_abbr:
+            query = query.filter(func.lower(SHRStateHomicideOffenderCount.state_abbr) == func.lower(state_abbr))
+
+        return query
+    state_abbr = db.Column(db.String)
+    state_id = db.Column(db.Integer)
+    data_year = db.Column(db.Integer)
+    count = db.Column(db.Integer)
+
+class SHRNationalHomicideVictimCount(db.Model):
+    """Represents Agency Level SHR Offender Sex Data"""
+    __tablename__ = 'shr_national_homicide_victim_count'
+    __table_args__ = (
+        PrimaryKeyConstraint('data_year'),
+    )
+    data_year = db.Column(db.Integer)
+    count = db.Column(db.Integer)
+
+class SHRStateHomicideVictimCount(db.Model):
+    """Represents Agency Level SHR Offender Sex Data"""
+    __tablename__ = 'shr_state_homicide_victim_count'
+    __table_args__ = (
+        PrimaryKeyConstraint('data_year','state_id'),
+    )
+    def get(state_abbr=None):
+        query = SHRStateHomicideVictimCount.query
+
+        if state_abbr:
+            query = query.filter(func.lower(SHRStateHomicideVictimCount.state_abbr) == func.lower(state_abbr))
+
+        return query
+    state_abbr = db.Column(db.String)
+    state_id = db.Column(db.Integer)
+    data_year = db.Column(db.Integer)
+    count = db.Column(db.Integer)

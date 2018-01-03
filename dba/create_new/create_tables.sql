@@ -75,7 +75,7 @@ CREATE TABLE shr_expanded_homicide_victim_count (
     state_abbr character(2),
     race_desc varchar(50),
     ethnicity_name varchar(50),
-    sex_code character(1),
+    sex_code character(2),
     age_range varchar(50),
     data_home varchar(50),
     count int
@@ -87,7 +87,7 @@ CREATE TABLE shr_expanded_homicide_offender_count (
     state_abbr character(2),
     race_desc varchar(50),
     ethnicity_name varchar(50),
-    sex_code character(1),
+    sex_code character(2),
     age_range varchar(50),
     data_home varchar(50),
     count int

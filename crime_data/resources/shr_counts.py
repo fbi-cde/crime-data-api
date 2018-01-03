@@ -151,3 +151,39 @@ class SHRStateHomicideOffenderAge(CdeResource):
         self.verify_api_key(args)
         query = cdemodels.SHRStateHomicideOffenderAge.get(state_abbr=state_abbr)
         return self.with_metadata(query,args)
+
+class SHRStateHomicideOffenderCount(CdeResource):
+    schema = marshmallow_schemas.SHRStateHomicideOffenderCountSchema(many=True)
+    @use_args(ArgumentsSchema)
+    @cache(max_age=DEFAULT_MAX_AGE, public=True)
+    def get(self, args, state_abbr=None):
+        self.verify_api_key(args)
+        query = cdemodels.SHRStateHomicideOffenderCount.get(state_abbr=state_abbr)
+        return self.with_metadata(query,args)
+
+class SHRStateHomicideVictimCount(CdeResource):
+    schema = marshmallow_schemas.SHRStateHomicideVictimCountSchema(many=True)
+    @use_args(ArgumentsSchema)
+    @cache(max_age=DEFAULT_MAX_AGE, public=True)
+    def get(self, args, state_abbr=None):
+        self.verify_api_key(args)
+        query = cdemodels.SHRStateHomicideVictimCount.get(state_abbr=state_abbr)
+        return self.with_metadata(query,args)
+
+class SHRNationalHomicideOffenderCount(CdeResource):
+    schema = marshmallow_schemas.SHRNationalHomicideOffenderCountSchema(many=True)
+    @use_args(ArgumentsSchema)
+    @cache(max_age=DEFAULT_MAX_AGE, public=True)
+    def get(self, args, state_abbr=None):
+        self.verify_api_key(args)
+        query = cdemodels.SHRNationalHomicideOffenderCount.query
+        return self.with_metadata(query,args)
+
+class SHRNationalHomicideVictimCount(CdeResource):
+    schema = marshmallow_schemas.SHRNationalHomicideVictimCountSchema(many=True)
+    @use_args(ArgumentsSchema)
+    @cache(max_age=DEFAULT_MAX_AGE, public=True)
+    def get(self, args, state_abbr=None):
+        self.verify_api_key(args)
+        query = cdemodels.SHRNationalHomicideVictimCount.query
+        return self.with_metadata(query,args)

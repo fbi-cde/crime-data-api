@@ -1354,3 +1354,22 @@ class SHRNationalHomicideOffenderEthnicitySchema(ma.ModelSchema):
     class Meta:
         model = cdemodels.SHRNationalHomicideOffenderEthnicity
         ordered = True
+class SHRStateHomicideOffenderCountSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.SHRStateHomicideOffenderCount
+        ordered = True
+
+class SHRNationalHomicideOffenderCountSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.SHRNationalHomicideOffenderCount
+        ordered = True
+
+class SHRStateHomicideVictimCountSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.SHRStateHomicideVictimCount
+        ordered = True
+
+class SHRNationalHomicideVictimCountSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.SHRNationalHomicideVictimCount
+        ordered = True
