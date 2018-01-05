@@ -94,7 +94,7 @@ class AgenciesOffensesCountyCount(CdeResource):
         Year is a required field atm.
         '''''
         self.verify_api_key(args)
-        model = newmodels.AgencyOffenses()
+        model = newmodels.AgencyOffenseCounts()
         year = args.get('year', None)
         explorer_offense = args.get('explorer_offense', None)
         agency_sums = model.get(agency = agency_ori, year =  year, county = county_fips_code, state=state_abbr, explorer_offense=explorer_offense)
