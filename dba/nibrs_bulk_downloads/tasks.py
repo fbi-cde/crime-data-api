@@ -1,6 +1,6 @@
 import luigi
 import os
-import subprocess as sp
+import subprocess as sp #nosec
 import glob
 import shutil
 
@@ -11,7 +11,7 @@ ZIPS_DIR = 'zips'
 MAX_YEAR = 2016
 
 STATE_YEARS = {
-    'AL': range(1991, MAX_YEAR+1),
+    'AL': [1991, 1992] + list(range(2006, MAX_YEAR+1)),
     'AR': range(1999, MAX_YEAR+1),
     'AZ': range(2004, MAX_YEAR+1),
     'CO': [1992, 1993, 1994] + list(range(1997, MAX_YEAR+1)),
@@ -20,7 +20,7 @@ STATE_YEARS = {
     'DE': range(2001, MAX_YEAR+1),
     'IA': range(1992, MAX_YEAR+1),
     'ID': range(1992, MAX_YEAR+1),
-    'IL': range(1993, MAX_YEAR+1),
+    'IL': [1993, 1994] + list(range(2006, MAX_YEAR+1)),
     'IN': range(2013, MAX_YEAR+1),
     'KS': range(2000, MAX_YEAR+1),
     'KY': range(1998, MAX_YEAR+1),
