@@ -90,15 +90,71 @@ CREATE TABLE public.summarized_data
   agency_name_edit varchar(100)
 );
 
+CREATE TABLE public.agency_data
+(
+  YEARLY_AGENCY_ID int,
+  AGENCY_ID int,
+  DATA_YEAR int,
+  ORI varchar(25),
+  LEGACY_ORI varchar(25),
+  COVERED_BY_LEGACY_ORI varchar(25),
+  DIRECT_CONTRIBUTOR_FLAG varchar(1),
+  DORMANT_FLAG varchar(1),
+  DORMANT_YEAR int,
+  REPORTING_TYPE varchar(1),
+  UCR_AGENCY_NAME varchar(100),
+  NCIC_AGENCY_NAME varchar(100),
+  PUB_AGENCY_NAME varchar(100),
+  PUB_AGENCY_UNIT varchar(100),
+  AGENCY_STATUS varchar(1),
+  STATE_ID int,
+  STATE_NAME varchar(100),
+  STATE_ABBR varchar(2),
+  STATE_POSTAL_ABBR varchar(2),
+  DIVISION_CODE int,
+  DIVISION_NAME varchar(100),
+  REGION_CODE int,
+  REGION_NAME varchar(100),
+  REGION_DESC varchar(100),
+  AGENCY_TYPE_NAME varchar(100),
+  POPULATION int,
+  SUBMITTING_AGENCY_ID int,
+  SAI varchar(25),
+  SUBMITTING_AGENCY_NAME varchar(200),
+  SUBURBAN_AREA_FLAG varchar(1),
+  POPULATION_GROUP_ID int,
+  POPULATION_GROUP_CODE varchar(2),
+  POPULATION_GROUP_DESC varchar(100),
+  PARENT_POP_GROUP_CODE int,
+  PARENT_POP_GROUP_DESC varchar(100),
+  MIP_FLAG varchar(1),
+  POP_SORT_ORDER int,
+  SUMMARY_RAPE_DEF varchar(1),
+  PE_REPORTED_FLAG varchar(1),
+  PE_OFFICER_COUNT int,
+  PE_CIVILIAN_COUNT int,
+  NIBRS_CERT_DATE date,
+  NIBRS_START_DATE date,
+  NIBRS_LEOKA_START_DATE date,
+  NIBRS_CT_START_DATE date,
+  NIBRS_MULTI_BIAS_START_DATE date,
+  NIBRS_OFF_ETH_START_DATE date,
+  COVERED_FLAG varchar(1),
+  COUNTY_NAME varchar(100),
+  MSA_NAME varchar(100)
+);
 
-UPDATE public.summarized_data sd
-   SET agency_name_edit= edited_name
- FROM public.agency_name_edits ane
- WHERE ane.ori = sd.ori
-
- CREATE MATERIALIZED VIEW agencies AS
- select distinct on(agency_id) agency_id, ori as ori, agency_type_name as agency_type_name, state_id as state_id, state_abbr as state_abbr, agency_name_edit as agency_name_edit, county_name as county_name
-     from public.summarized_data
+CREATE MATERIALIZED VIEW public.agencies AS
+ SELECT DISTINCT ON (ad.agency_id) ad.agency_id,
+    ad.ori,
+    ad.agency_type_name,
+    ad.state_id,
+    ad.state_abbr,
+    ad.county_name,
+    ( SELECT DISTINCT agency_name_edits.edited_name
+           FROM agency_name_edits
+          WHERE agency_name_edits.ori = ad.ori) AS agency_name_edit
+   FROM agency_data ad
 
     CREATE MATERIALIZED VIEW summarized_data_national AS
      select data_year as data_year,
