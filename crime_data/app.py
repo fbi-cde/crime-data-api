@@ -22,6 +22,8 @@ import crime_data.resources.participation
 import crime_data.resources.estimates
 import crime_data.resources.arrests
 import crime_data.resources.meta
+import crime_data.resources.summarized
+import crime_data.resources.police_employment
 
 import crime_data.resources.summarized
 import crime_data.resources.police_employment
@@ -320,6 +322,7 @@ def add_resources(app):
     api.add_resource(crime_data.resources.nibrs_counts.NIBRSStateOffenseCount,'/nibrs/offense/count/states/<string:state_abbr>')
     api.add_resource(crime_data.resources.nibrs_counts.NIBRSAgencyOffenseCount,'/nibrs/offense/count/agencies/<string:ori>')
     api.add_resource(crime_data.resources.nibrs_counts.NIBRSNationalOffenseCount,'/nibrs/offense/count/national')
+
 
 def newrelic_status_endpoint():
     return 'OK'

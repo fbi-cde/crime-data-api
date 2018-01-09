@@ -1,7 +1,11 @@
 import abc
 from collections import namedtuple
 from flask_restful import abort
+<<<<<<< HEAD
 from sqlalchemy import and_, func, or_, UniqueConstraint, PrimaryKeyConstraint, Index
+=======
+from sqlalchemy import and_, func, or_, UniqueConstraint
+>>>>>>> a0ed8eeeaff5bb8648d6a0c8a02cbab4af651041
 from sqlalchemy.exc import ArgumentError
 from sqlalchemy.orm import aliased
 from sqlalchemy.orm.exc import NoResultFound

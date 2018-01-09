@@ -1118,7 +1118,6 @@ class PoliceEmploymentDataStateSchema(ma.ModelSchema):
 class PoliceEmploymentDataAgencySchema(ma.ModelSchema):
     class Meta:
         model = cdemodels.PoliceEmploymentDataAgency
-
 class NIBRSAgencyVictimDenormCountSchema(ma.ModelSchema):
     class Meta:
         model = cdemodels.NIBRSAgencyVictimDenormCount
