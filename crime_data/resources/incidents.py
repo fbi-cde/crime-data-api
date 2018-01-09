@@ -19,6 +19,7 @@ class AgenciesSumsState(CdeResource):
     fast_count = True
 
     @use_args(marshmallow_schemas.OffenseCountViewArgs)
+    @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page
     def get(self, args, state_abbr = None, agency_ori = None):
         self.verify_api_key(args)
@@ -38,6 +39,7 @@ class AgenciesSumsCounty(CdeResource):
     fast_count = True
 
     @use_args(marshmallow_schemas.OffenseCountViewArgsYear)
+    @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page
     def get(self, args, state_abbr = None, county_fips_code = None, agency_ori = None):
         '''''
@@ -60,6 +62,7 @@ class AgenciesOffensesCount(CdeResource):
     fast_count = True
 
     @use_args(marshmallow_schemas.OffenseCountViewArgs)
+    @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page
     def get(self, args, state_abbr = None, agency_ori = None):
         self.verify_api_key(args)
@@ -84,13 +87,14 @@ class AgenciesOffensesCountyCount(CdeResource):
     fast_count = True
 
     @use_args(marshmallow_schemas.OffenseCountViewArgsYear)
+    @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page
     def get(self, args, state_abbr = None, county_fips_code = None, agency_ori = None):
         '''''
         Year is a required field atm.
         '''''
         self.verify_api_key(args)
-        model = newmodels.AgencyOffenses()
+        model = newmodels.AgencyOffenseCounts()
         year = args.get('year', None)
         explorer_offense = args.get('explorer_offense', None)
         agency_sums = model.get(agency = agency_ori, year =  year, county = county_fips_code, state=state_abbr, explorer_offense=explorer_offense)

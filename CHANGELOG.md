@@ -1,5 +1,13 @@
 # Change Log
 All notable changes to this project will be documented in this file.
+## [2017-12-11]
+### Added
+- Adds new NIBRS Endpoints that accurately return NIBRS offense,victim,offender, and relationship counts  (https://github.com/18F/crime-data-api/pull/672))
+
+## [2017-11-27]
+### Fixed
+- Fixed issue with CDE not showing 2016 Agency Data (https://github.com/18F/crime-data-api/pull/653))
+
 ## [2017-11-14]
 ### Changed
 - Changes Region Code Lookup to use Region Name (https://github.com/18F/crime-data-api/tree/CDE-191))
