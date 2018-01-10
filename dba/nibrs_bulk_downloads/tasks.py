@@ -1,8 +1,45 @@
 import luigi
+import luigi.tools.deps as luigi_deps
 import os
 import subprocess as sp #nosec
 import glob
 import shutil
+
+
+class RebuildIfOldTask(luigi.Task):
+    def is_outdated(self):
+        deps = luigi_deps.find_deps(self, luigi_deps.upstream().family)
+        deps.discard(self)
+        dep_paths = [o.path for o in luigi.task.flatten([dep.output() for dep in deps])]
+        max_dep_mtime = 0
+
+        for path in dep_paths:
+            if os.path.exists(path):
+                if os.path.getmtime(path) > max_dep_mtime:
+                    max_dep_mtime = os.path.getmtime(path)
+            else:
+                # missing an upstream dep, so must rebuild too
+                return True
+
+        # now check if any of our own outputs are missing or < max_dep_mtime
+        local_paths = [o.path for o in luigi.task.flatten(self.output())]
+        for path in local_paths:
+            if os.path.exists(path):
+                if os.path.getmtime(path) < max_dep_mtime:
+                    return True
+            else:
+                return True
+
+        return False
+
+    def complete(self):
+        if self.is_outdated():
+            for out in luigi.task.flatten(self.output()):
+                if out.exists():
+                    os.remove(self.output().path)
+            return False
+        else:
+            return True
 
 
 CODE_TABLES_DIR = 'code_tables'
@@ -437,7 +474,7 @@ class StateFiles(luigi.WrapperTask):
         return CodeTables(), DataTables(year=self.year, state=self.state)
     
         
-class ZipFile(luigi.Task):
+class ZipFile(RebuildIfOldTask):
     year = luigi.IntParameter()
     state = luigi.Parameter()
 
