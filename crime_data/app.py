@@ -28,6 +28,7 @@ import crime_data.resources.summarized
 import crime_data.resources.police_employment
 import crime_data.resources.nibrs_counts
 import crime_data.resources.human_traffic
+import crime_data.resources.leoka
 from werkzeug.contrib.fixers import ProxyFix
 
 from crime_data import commands

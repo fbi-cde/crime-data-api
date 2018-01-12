@@ -2293,3 +2293,456 @@ class NIBRSStateOffenseCount(db.Model):
     data_year = db.Column(db.Integer)
     incident_count = db.Column(db.Integer)
     offense_count = db.Column(db.Integer)
+
+
+class LeokaAssaultByGroupNational
+    """Represents National Level Leoka Assault Group Data"""
+    __tablename__ = 'leoka_assault_by_group_national'
+    __table_args__ = (
+        PrimaryKeyConstraint('activity_name', 'data_year'),
+    )
+    data_year  = db.Column(db.Integer)
+    activity_name = db.Column(db.String)
+    activity_id  = db.Column(db.Integer)
+    group_1_actual_ct = db.Column(db.Integer)
+    group_2_actual_ct = db.Column(db.Integer)
+    group_3_actual_ct = db.Column(db.Integer)
+    group_4_actual_ct = db.Column(db.Integer)
+    group_5_actual_ct = db.Column(db.Integer)
+    group_6_actual_ct = db.Column(db.Integer)
+    group_7_actual_ct = db.Column(db.Integer)
+    group_8_actual_ct = db.Column(db.Integer)
+    group_9_actual_ct = db.Column(db.Integer)
+    group_1_cleared_ct = db.Column(db.Integer)
+    group_2_cleared_ct = db.Column(db.Integer)
+    group_3_cleared_ct = db.Column(db.Integer)
+    group_4_cleared_ct = db.Column(db.Integer)
+    group_5_cleared_ct = db.Column(db.Integer)
+    group_6_cleared_ct = db.Column(db.Integer)
+    group_7_cleared_ct = db.Column(db.Integer)
+    group_8_cleared_ct = db.Column(db.Integer)
+    group_9_cleared_ct = db.Column(db.Integer)
+
+
+class LeokaAssaultByGroupRegional
+    """Represents Regional Level Leoka Assault Group Data"""
+    __tablename__ = 'leoka_assault_by_group_regional'
+    __table_args__ = (
+        PrimaryKeyConstraint('activity_name', 'data_year', 'region_name'),
+    )
+    def get(region_name=None):
+        query = LeokaAssaultByGroupRegional.query
+
+        if region_name:
+            query = query.filter(func.lower(LeokaAssaultByGroupRegional.region_name) == func.lower(region_name))
+
+        return query
+
+    data_year  = db.Column(db.Integer)
+    activity_name = db.Column(db.String)
+    activity_id  = db.Column(db.Integer)
+    region_name = db.Column(db.String)
+    region_code  = db.Column(db.Integer)
+    group_1_actual_ct = db.Column(db.Integer)
+    group_2_actual_ct = db.Column(db.Integer)
+    group_3_actual_ct = db.Column(db.Integer)
+    group_4_actual_ct = db.Column(db.Integer)
+    group_5_actual_ct = db.Column(db.Integer)
+    group_6_actual_ct = db.Column(db.Integer)
+    group_7_actual_ct = db.Column(db.Integer)
+    group_8_actual_ct = db.Column(db.Integer)
+    group_9_actual_ct = db.Column(db.Integer)
+    group_1_cleared_ct = db.Column(db.Integer)
+    group_2_cleared_ct = db.Column(db.Integer)
+    group_3_cleared_ct = db.Column(db.Integer)
+    group_4_cleared_ct = db.Column(db.Integer)
+    group_5_cleared_ct = db.Column(db.Integer)
+    group_6_cleared_ct = db.Column(db.Integer)
+    group_7_cleared_ct = db.Column(db.Integer)
+    group_8_cleared_ct = db.Column(db.Integer)
+    group_9_cleared_ct = db.Column(db.Integer)
+
+class LeokaAssaultByGroupState
+    """Represents Regional Level Leoka Assault Group Data"""
+    __tablename__ = 'leoka_assault_by_group_state'
+    __table_args__ = (
+        PrimaryKeyConstraint('activity_name', 'data_year', 'state_abbr'),
+    )
+    def get(state_abbr=None):
+        query = LeokaAssaultByGroupState.query
+
+        if state_abbr:
+            query = query.filter(func.lower(leoka_assault_by_group_state.state_abbr) == func.lower(state_abbr))
+
+        return query
+
+    data_year  = db.Column(db.Integer)
+    activity_name = db.Column(db.String)
+    activity_id  = db.Column(db.Integer)
+    state_abbr = db.Column(db.String)
+    state_id  = db.Column(db.Integer)
+    group_1_actual_ct = db.Column(db.Integer)
+    group_2_actual_ct = db.Column(db.Integer)
+    group_3_actual_ct = db.Column(db.Integer)
+    group_4_actual_ct = db.Column(db.Integer)
+    group_5_actual_ct = db.Column(db.Integer)
+    group_6_actual_ct = db.Column(db.Integer)
+    group_7_actual_ct = db.Column(db.Integer)
+    group_8_actual_ct = db.Column(db.Integer)
+    group_9_actual_ct = db.Column(db.Integer)
+    group_1_cleared_ct = db.Column(db.Integer)
+    group_2_cleared_ct = db.Column(db.Integer)
+    group_3_cleared_ct = db.Column(db.Integer)
+    group_4_cleared_ct = db.Column(db.Integer)
+    group_5_cleared_ct = db.Column(db.Integer)
+    group_6_cleared_ct = db.Column(db.Integer)
+    group_7_cleared_ct = db.Column(db.Integer)
+    group_8_cleared_ct = db.Column(db.Integer)
+    group_9_cleared_ct = db.Column(db.Integer)
+
+class LeokaAssaultAssignDistNational
+    """
+    A method to find Leoka Assault Assignment Distrubution
+    """
+    __tablename__ = 'leoka_assault_by_assign_dist_national'
+    __table_args__ = (
+        PrimaryKeyConstraint('activity_name', 'data_year'),
+    )
+    data_year  = db.Column(db.Integer)
+    activity_name = db.Column(db.String)
+    activity_id  = db.Column(db.Integer)
+    two_officers_vehicle_actual = db.Column(db.Integer)
+    one_officer_vehicle_actual = db.Column(db.Integer)
+    one_officer_assisted_actual = db.Column(db.Integer)
+    det_spe_ass_alone_actual = db.Column(db.Integer)
+    det_spe_ass_assisted_actual = db.Column(db.Integer)
+    other_alone_actual = db.Column(db.Integer)
+    other_assisted_actual = db.Column(db.Integer)
+
+
+class LeokaAssaultAssignDistRegional
+    """
+    Represents Regional Level Leoka Assault Assignment Distrubution
+    """
+    __tablename__ = 'leoka_assault_by_assign_dist_regional'
+    __table_args__ = (
+        PrimaryKeyConstraint('activity_name', 'data_year', 'region_name'),
+    )
+    def get(region_name=None):
+        query = LeokaAssaultAssignDistRegional.query
+
+        if region_name:
+            query = query.filter(func.lower(LeokaAssaultAssignDistRegional.region_name) == func.lower(region_name))
+
+        return query
+
+    data_year  = db.Column(db.Integer)
+    activity_name = db.Column(db.String)
+    activity_id  = db.Column(db.Integer)
+    region_name = db.Column(db.String)
+    region_code  = db.Column(db.Integer)
+    two_officers_vehicle_actual = db.Column(db.Integer)
+    one_officer_vehicle_actual = db.Column(db.Integer)
+    one_officer_assisted_actual = db.Column(db.Integer)
+    det_spe_ass_alone_actual = db.Column(db.Integer)
+    det_spe_ass_assisted_actual = db.Column(db.Integer)
+    other_alone_actual = db.Column(db.Integer)
+    other_assisted_actual = db.Column(db.Integer)
+
+
+class LeokaAssaultAssignDistState
+    """Represents State Level LLeoka Assault Assignment Distrubution"""
+    __tablename__ = 'leoka_assault_by_assign_dist_state'
+    __table_args__ = (
+        PrimaryKeyConstraint('activity_name', 'data_year', 'state_abbr'),
+    )
+    def get(state_abbr=None):
+        query = LeokaAssaultAssignDistState.query
+
+        if state_abbr:
+            query = query.filter(func.lower(LeokaAssaultAssignDistState.state_abbr) == func.lower(state_abbr))
+
+        return query
+
+    data_year  = db.Column(db.Integer)
+    activity_name = db.Column(db.String)
+    activity_id  = db.Column(db.Integer)
+    state_abbr = db.Column(db.String)
+    state_id  = db.Column(db.Integer)
+    two_officers_vehicle_actual = db.Column(db.Integer)
+    one_officer_vehicle_actual = db.Column(db.Integer)
+    one_officer_assisted_actual = db.Column(db.Integer)
+    det_spe_ass_alone_actual = db.Column(db.Integer)
+    det_spe_ass_assisted_actual = db.Column(db.Integer)
+    other_alone_actual = db.Column(db.Integer)
+    other_assisted_actual = db.Column(db.Integer)
+
+class LeokaAssaultAssignDistAgency
+    """Represents Agency Level Leoka Assault Assignment Distrubution"""
+    __tablename__ = 'leoka_assault_by_assign_dist_agency'
+    __table_args__ = (
+        PrimaryKeyConstraint('activity_name', 'data_year', 'ori'),
+    )
+    def get(ori=None):
+        query = LeokaAssaultAssignDistAgency.query
+
+        if ori:
+            query = query.filter(func.lower(LeokaAssaultAssignDistAgency.ori) == func.lower(ori))
+
+        return query
+
+    data_year  = db.Column(db.Integer)
+    activity_name = db.Column(db.String)
+    activity_id  = db.Column(db.Integer)
+    ori = db.Column(db.String)
+    state_abbr  = db.Column(db.String)
+    two_officers_vehicle_actual = db.Column(db.Integer)
+    one_officer_vehicle_actual = db.Column(db.Integer)
+    one_officer_assisted_actual = db.Column(db.Integer)
+    det_spe_ass_alone_actual = db.Column(db.Integer)
+    det_spe_ass_assisted_actual = db.Column(db.Integer)
+    other_alone_actual = db.Column(db.Integer)
+    other_assisted_actual = db.Column(db.Integer)
+
+class LeokaAssaultWeaponNational
+    """
+    Repreents National level find Leoka Assault Weapon Totals
+    """
+    __tablename__ = 'leoka_assault_by_weapon_national'
+    __table_args__ = (
+        PrimaryKeyConstraint('activity_name', 'data_year'),
+    )
+    data_year  = db.Column(db.Integer)
+    firearm_actual = db.Column(db.Integer)
+    knife_actual = db.Column(db.Integer)
+    hands_fists_feet_actual = db.Column(db.Integer)
+    other_actual = db.Column(db.Integer)
+
+class LeokaAssaultWeaponRegional
+    """
+    Represents Regional Level Leoka Weapon Totals
+    """
+    __tablename__ = 'leoka_assault_by_weapon_regional'
+    __table_args__ = (
+        PrimaryKeyConstraint('data_year', 'region_name'),
+    )
+    def get(region_name=None):
+        query = LeokaAssaultByGroupRegional.query
+
+        if region_name:
+            query = query.filter(func.lower(LeokaAssaultByGroupRegional.region_name) == func.lower(region_name))
+
+        return query
+
+    data_year  = db.Column(db.Integer)
+    region_name = db.Column(db.String)
+    region_code  = db.Column(db.Integer)
+    firearm_actual = db.Column(db.Integer)
+    knife_actual = db.Column(db.Integer)
+    hands_fists_feet_actual = db.Column(db.Integer)
+    other_actual = db.Column(db.Integer)
+
+class LeokaAssaultWeaponState
+    """Represents State Level LLeoka Assault Assignment Distrubution"""
+    __tablename__ = 'leoka_assault_by_weapon_state'
+    __table_args__ = (
+        PrimaryKeyConstraint('data_year', 'state_abbr'),
+    )
+    def get(state_abbr=None):
+        query = LeokaAssaultWeaponState.query
+
+        if state_abbr:
+            query = query.filter(func.lower(LeokaAssaultWeaponState.state_abbr) == func.lower(state_abbr))
+
+        return query
+
+    data_year  = db.Column(db.Integer)
+    state_abbr = db.Column(db.String)
+    state_id  = db.Column(db.Integer)
+    firearm_actual = db.Column(db.Integer)
+    knife_actual = db.Column(db.Integer)
+    hands_fists_feet_actual = db.Column(db.Integer)
+    other_actual = db.Column(db.Integer)
+
+class LeokaAssaultWeaponAgency
+    """Represents Agency Level Leoka Assault Assignment Distrubution"""
+    __tablename__ = 'leoka_assault_by_weapon_agency'
+    __table_args__ = (
+        PrimaryKeyConstraint('data_year', 'ori'),
+    )
+    def get(ori=None):
+        query = LeokaAssaultWeaponAgency.query
+
+        if ori:
+            query = query.filter(func.lower(LeokaAssaultWeaponAgency.ori) == func.lower(ori))
+
+        return query
+
+    data_year  = db.Column(db.Integer)
+    activity_name = db.Column(db.String)
+    activity_id  = db.Column(db.Integer)
+    ori = db.Column(db.String)
+    firearm_actual = db.Column(db.Integer)
+    knife_actual = db.Column(db.Integer)
+    hands_fists_feet_actual = db.Column(db.Integer)
+    other_actual = db.Column(db.Integer)
+
+class LeokaAssaultWeaponByGroupNational
+    """
+    Repreents National level find Leoka Assault Weapon Totals by Group
+    """
+    __tablename__ = 'leoka_assault_by_weapon_per_group_national'
+    __table_args__ = (
+        PrimaryKeyConstraint('population_group_desc', 'data_year'),
+    )
+    data_year  = db.Column(db.Integer)
+    population_group_desc = db.Column(db.String)
+    firearm_actual = db.Column(db.Integer)
+    knife_actual = db.Column(db.Integer)
+    hands_fists_feet_actual = db.Column(db.Integer)
+    other_actual = db.Column(db.Integer)
+
+class LeokaAssaultWeaponByGroupRegional
+    """
+    Represents Regional Level Leoka Weapon Totals  By Group
+    """
+    __tablename__ = 'leoka_assault_by_weapon_per_group_regional'
+    __table_args__ = (
+        PrimaryKeyConstraint('data_year', 'region_name','population_group_desc'),
+    )
+    def get(region_name=None):
+        query = LeokaAssaultWeaponByGroupRegional.query
+
+        if region_name:
+            query = query.filter(func.lower(LeokaAssaultWeaponByGroupRegional.region_name) == func.lower(region_name))
+
+        return query
+
+    data_year  = db.Column(db.Integer)
+    region_name = db.Column(db.String)
+    region_code  = db.Column(db.Integer)
+    population_group_desc = db.Column(db.String)
+    firearm_actual = db.Column(db.Integer)
+    knife_actual = db.Column(db.Integer)
+    hands_fists_feet_actual = db.Column(db.Integer)
+    other_actual = db.Column(db.Integer)
+
+class LeokaAssaultWeaponByGroupState
+    """
+    Represents State Level Leoka Weapon Totals By Group
+    """
+    __tablename__ = 'leoka_assault_by_weapon_per_group_state'
+    __table_args__ = (
+        PrimaryKeyConstraint('data_year', 'region_name','population_group_desc'),
+    )
+    def get(state_abbr=None):
+        query = LeokaAssaultWeaponByGroupState.query
+
+        if state_abbr:
+            query = query.filter(func.lower(LeokaAssaultWeaponByGroupState.state_abbr) == func.lower(state_abbr))
+
+        return query
+
+    data_year  = db.Column(db.Integer)
+    state_abbr = db.Column(db.String)
+    state_id  = db.Column(db.Integer)
+    population_group_desc = db.Column(db.String)
+    firearm_actual = db.Column(db.Integer)
+    knife_actual = db.Column(db.Integer)
+    hands_fists_feet_actual = db.Column(db.Integer)
+    other_actual = db.Column(db.Integer)
+
+
+class LeokaAssaultWeaponByActivityNational
+    """
+    Repreents National level find Leoka Assault Weapon Totals by Activity
+    """
+    __tablename__ = 'leoka_assault_by_weapon_per_group_national'
+    __table_args__ = (
+        PrimaryKeyConstraint('population_group_desc', 'data_year'),
+    )
+    data_year  = db.Column(db.Integer)
+    activity_name = db.Column(db.String)
+    activity_id = db.Column(db.Integer)
+    firearm_actual = db.Column(db.Integer)
+    knife_actual = db.Column(db.Integer)
+    hands_fists_feet_actual = db.Column(db.Integer)
+    other_actual = db.Column(db.Integer)
+
+class LeokaAssaultWeaponByActivityRegional
+    """
+    Represents Regional Level Leoka Weapon Totals  By Activity
+    """
+    __tablename__ = 'leoka_assault_by_weapon_per_activity_regional'
+    __table_args__ = (
+        PrimaryKeyConstraint('data_year', 'region_name','population_group_desc'),
+    )
+    def get(region_name=None):
+        query = LeokaAssaultWeaponByActivityRegional.query
+
+        if region_name:
+            query = query.filter(func.lower(LeokaAssaultWeaponByActivityRegional.region_name) == func.lower(region_name))
+
+        return query
+
+    data_year  = db.Column(db.Integer)
+    region_name = db.Column(db.String)
+    region_code  = db.Column(db.Integer)
+    activity_name = db.Column(db.String)
+    activity_id = db.Column(db.Integer)
+    firearm_actual = db.Column(db.Integer)
+    knife_actual = db.Column(db.Integer)
+    hands_fists_feet_actual = db.Column(db.Integer)
+    other_actual = db.Column(db.Integer)
+
+class LeokaAssaultWeaponByActivityState
+    """
+    Represents Regional Level Leoka Weapon Totals  By Activity
+    """
+    __tablename__ = 'leoka_assault_by_weapon_per_activity_state'
+    __table_args__ = (
+        PrimaryKeyConstraint('data_year', 'state_abbr','population_group_desc'),
+    )
+    def get(state_abbr=None):
+        query = LeokaAssaultWeaponByActivityState.query
+
+        if state_abbr:
+            query = query.filter(func.lower(LeokaAssaultWeaponByActivityState.state_abbr) == func.lower(state_abbr))
+
+        return query
+
+    data_year  = db.Column(db.Integer)
+    state_abbr = db.Column(db.String)
+    state_id  = db.Column(db.Integer)
+    activity_name = db.Column(db.String)
+    activity_id = db.Column(db.Integer)
+    firearm_actual = db.Column(db.Integer)
+    knife_actual = db.Column(db.Integer)
+    hands_fists_feet_actual = db.Column(db.Integer)
+    other_actual = db.Column(db.Integer)
+
+class LeokaAssaultWeaponByActivityAgency
+    """
+    Represents Regional Level Leoka Weapon Totals By Activity
+    """
+    __tablename__ = 'leoka_assault_by_weapon_per_activity_state'
+    __table_args__ = (
+        PrimaryKeyConstraint('data_year', 'region_name','population_group_desc'),
+    )
+    def get(state_abbr=None):
+        query = LeokaAssaultWeaponByActivityAgency.query
+
+        if ori:
+            query = query.filter(func.lower(LeokaAssaultWeaponByActivityAgency.ori) == func.lower(ori))
+
+        return query
+
+    data_year  = db.Column(db.Integer)
+    ori = db.Column(db.String)
+    state_abbr  = db.Column(db.String)
+    activity_name = db.Column(db.String)
+    activity_id = db.Column(db.Integer)
+    firearm_actual = db.Column(db.Integer)
+    knife_actual = db.Column(db.Integer)
+    hands_fists_feet_actual = db.Column(db.Integer)
+    other_actual = db.Column(db.Integer)
