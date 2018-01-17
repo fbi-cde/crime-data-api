@@ -1,5 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
+## [2018-1-17]
+### Fizxed
+- NIBRS National Endpoints now return values properly  (https://github.com/18F/crime-data-api/pull/672))
+
+
 ## [2017-12-11]
 ### Added
 - Adds new NIBRS Endpoints that accurately return NIBRS offense,victim,offender, and relationship counts  (https://github.com/18F/crime-data-api/pull/672))

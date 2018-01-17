@@ -1161,7 +1161,7 @@ class NIBRSStateVictimDenormLocation(db.Model):
 
 class NIBRSNationalVictimDenormCount(db.Model):
     """Represents Agency Level NIBRS Victim Count Data"""
-    __tablename__ = 'nibrs_denorm_national_victim_count'
+    __tablename__ = 'nibrs_national_denorm_victim_count'
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year'),
     )
@@ -1171,7 +1171,7 @@ class NIBRSNationalVictimDenormCount(db.Model):
 
 class NIBRSNationalVictimDenormSex(db.Model):
     """Represents Agency Level NIBRS Victim Data"""
-    __tablename__ = 'nibrs_denorm_national_victim_sex'
+    __tablename__ = 'nibrs_national_denorm_victim_sex'
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year'),
     )
@@ -1183,7 +1183,7 @@ class NIBRSNationalVictimDenormSex(db.Model):
 
 class NIBRSNationalVictimDenormRace(db.Model):
     """Represents Agency Level NIBRS Victim Race Data"""
-    __tablename__ = 'nibrs_denorm_national_victim_race'
+    __tablename__ = 'nibrs_national_denorm_victim_race'
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year'),
     )
@@ -1198,7 +1198,7 @@ class NIBRSNationalVictimDenormRace(db.Model):
 
 class NIBRSNationalVictimDenormEthnicity(db.Model):
     """Represents Agency Level NIBRS Victim Ethnicity Data"""
-    __tablename__ = 'nibrs_denorm_national_victim_ethnicity'
+    __tablename__ = 'nibrs_national_denorm_victim_ethnicity'
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year'),
     )
@@ -1212,7 +1212,7 @@ class NIBRSNationalVictimDenormEthnicity(db.Model):
 
 class NIBRSNationalVictimDenormAge(db.Model):
     """Represents Agency Level NIBRS Victim Age Data"""
-    __tablename__ = 'nibrs_denorm_national_victim_age'
+    __tablename__ = 'nibrs_national_denorm_victim_age'
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year'),
     )
@@ -1232,7 +1232,7 @@ class NIBRSNationalVictimDenormAge(db.Model):
 
 class NIBRSNationalVictimDenormLocation(db.Model):
     """Represents Agency Level NIBRS Victim Location Data"""
-    __tablename__ = 'nibrs_denorm_national_victim_location'
+    __tablename__ = 'nibrs_national_denorm_victim_location'
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year'),
     )
@@ -1572,7 +1572,7 @@ class NIBRSStateOffenderDenormAge(db.Model):
 
 class NIBRSNationalOffenderDenormCount(db.Model):
     """Represents Agency Level NIBRS Offender Count Data"""
-    __tablename__ = 'nibrs_denorm_national_offender_count'
+    __tablename__ = 'nibrs_national_denorm_offender_count'
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year'),
     )
@@ -1582,7 +1582,7 @@ class NIBRSNationalOffenderDenormCount(db.Model):
 
 class NIBRSNationalOffenderDenormSex(db.Model):
     """Represents Agency Level NIBRS Offender Data"""
-    __tablename__ = 'nibrs_denorm_national_offender_sex'
+    __tablename__ = 'nibrs_national_denorm_offender_sex'
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year'),
     )
@@ -1594,7 +1594,7 @@ class NIBRSNationalOffenderDenormSex(db.Model):
 
 class NIBRSNationalOffenderDenormRace(db.Model):
     """Represents Agency Level NIBRS Offender Race Data"""
-    __tablename__ = 'nibrs_denorm_national_offender_race'
+    __tablename__ = 'nibrs_national_denorm_offender_race'
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year'),
     )
@@ -1609,7 +1609,7 @@ class NIBRSNationalOffenderDenormRace(db.Model):
 
 class NIBRSNationalOffenderDenormEthnicity(db.Model):
     """Represents Agency Level NIBRS Offender Ethnicity Data"""
-    __tablename__ = 'nibrs_denorm_national_offender_ethnicity'
+    __tablename__ = 'nibrs_national_denorm_offender_ethnicity'
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year'),
     )
@@ -1623,7 +1623,7 @@ class NIBRSNationalOffenderDenormEthnicity(db.Model):
 
 class NIBRSNationalOffenderDenormAge(db.Model):
     """Represents Agency Level NIBRS Offender Age Data"""
-    __tablename__ = 'nibrs_denorm_national_offender_age'
+    __tablename__ = 'nibrs_national_denorm_offender_age'
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year'),
     )
