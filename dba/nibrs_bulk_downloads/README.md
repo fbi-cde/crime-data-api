@@ -12,7 +12,7 @@ it looks to see if files already exist and if not, it builds them.
 To build files locally, you must do the following:
 
 1. `pip install luigi`
-2. Install the [cf service-connect](https://github.com/18F/cf-service-connect) plugin
+2. Install the [cf service-connect](https://github.com/fbi-cde/cf-service-connect) plugin
 3. Log in to cloud foundry
 
 Then, you can run it to generate a zip file for a single year
