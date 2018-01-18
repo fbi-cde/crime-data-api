@@ -3,7 +3,6 @@
 
 See: http://webtest.readthedocs.org/
 """
-import dateutil
 import pytest
 from flex.core import validate_api_call
 
