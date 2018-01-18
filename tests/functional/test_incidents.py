@@ -3,7 +3,6 @@
 
 See: http://webtest.readthedocs.org/
 """
-import dateutil
 import pytest
 from crime_data.common.newmodels import NibrsIncidentRepresentation
 from crime_data.common.models import db
