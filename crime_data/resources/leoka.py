@@ -16,3 +16,12 @@ class PoliceEmploymentDataAgency(CdeResource):
         self.verify_api_key(args)
         query = cdemodels.PoliceEmploymentDataAgency.get(state_abbr=state_abbr,ori=ori)
         return self.with_metadata(query,args)
+
+class LeokaAssaultByGroupNational(CdeResource):
+    schema = marshmallow_schemas.LeokaAssaultByGroupNational(many=True)
+    @use_args(ArgumentsSchema)
+    @cache(max_age=DEFAULT_MAX_AGE, public=True)
+    def get(self, args,):
+        self.verify_api_key(args)
+        query = cdemodels.LeokaAssaultByGroupNational.query
+        return self.with_metadata(query,args)

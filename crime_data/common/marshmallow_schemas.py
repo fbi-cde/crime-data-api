@@ -1397,10 +1397,10 @@ class LeokaAssaultWeaponByGroupState(ma.ModelSchema):
 
 class LeokaAssaultWeaponByGroupRegional(ma.ModelSchema):
     class Meta:
-        model = cdemodels.LeokaAssaultWeaponByRegional
+        model = cdemodels.LeokaAssaultWeaponRegional
         ordered = True
 
 class LeokaAssaultWeaponByGroupNational(ma.ModelSchema):
     class Meta:
         model = cdemodels.LeokaAssaultWeaponByGroupNational
-        ordered = Trueccc
+        ordered = True

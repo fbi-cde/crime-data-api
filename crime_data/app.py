@@ -320,6 +320,28 @@ def add_resources(app):
     api.add_resource(crime_data.resources.nibrs_counts.NIBRSAgencyOffenseCount,'/nibrs/offense/count/agencies/<string:ori>')
     api.add_resource(crime_data.resources.nibrs_counts.NIBRSNationalOffenseCount,'/nibrs/offense/count/national')
 
+    api.add_resource(crime_data.resources.leoka.LeokaAssaultByGroupNational,'/leoka/assault/group/count')
+    #api.add_resource(crime_data.resources.leoka.LeokaAssaultByGroupRegional,'/leoka/assault/group/count/region/<string:region_name>')
+    #api.add_resource(crime_data.resources.leoka.LeokaAssaultByGroupState,'/leoka/assault/group/count/state/<string:state_abbr>')
+
+    #api.add_resource(crime_data.resources.leoka.LeokaAssaultAssignDistNational,'/leoka/assault/assign-dist/count')
+    #api.add_resource(crime_data.resources.leoka.LeokaAssaultAssignDistRegional,'/leoka/assault/assign-dist/count/region/<string:region_name>')
+    #api.add_resource(crime_data.resources.leoka.LeokaAssaultAssignDistState,'/leoka/assault/assign-dist/count/state/<string:state_abbr>')
+    #api.add_resource(crime_data.resources.leoka.LeokaAssaultAssignDistAgency,'/leoka/assault/assign-dist/count/agency/<string:state_abbr>/<string:ori>')
+
+    #api.add_resource(crime_data.resources.leoka.LeokaAssaultWeaponNational,'/leoka/assault/weapon/count')
+    #api.add_resource(crime_data.resources.leoka.LeokaAssaultWeaponRegional,'/leoka/assault/weapon/count/region/<string:region_name>')
+    #api.add_resource(crime_data.resources.leoka.LeokaAssaultWeaponState,'/leoka/assault/weapon/count/state/<string:state_abbr>')
+    #api.add_resource(crime_data.resources.leoka.LeokaAssaultWeaponAgency,'/leoka/assault/weapon/count/agency/<string:state_abbr>/<string:ori>')
+
+    #api.add_resource(crime_data.resources.leoka.LeokaAssaultWeaponByGroupNational,'/leoka/assault/weapon-group/count')
+    #api.add_resource(crime_data.resources.leoka.LeokaAssaultWeaponByGroupRegional,'/leoka/assault/weapon-group/count/region/<string:region_name>')
+    #api.add_resource(crime_data.resources.leoka.LeokaAssaultWeaponByGroupState,'/leoka/assault/weapon-group/count/state/<string:state_abbr>')
+
+    #api.add_resource(crime_data.resources.leoka.LeokaAssaultWeaponByActivityNational,'/leoka/assault/weapon-activity/count')
+    #api.add_resource(crime_data.resources.leoka.LeokaAssaultWeaponByActivityRegional,'/leoka/assault/weapon-activity/count/region/<string:region_name>')
+    #api.add_resource(crime_data.resources.leoka.LeokaAssaultWeaponByActivityState,'/leoka/assault/weapon-activity/count/state/<string:state_abbr>')
+    #api.add_resource(crime_data.resources.leoka.LeokaAssaultWeaponByActivityAgency,'/leoka/assault/weapon-activity/count/agency/<string:state_abbr>/<string:ori>')
 
 def newrelic_status_endpoint():
     return 'OK'
