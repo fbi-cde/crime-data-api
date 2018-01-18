@@ -16,6 +16,8 @@ publishes it in the form of annual reports. This API allows users to
 look at multiple years of data as well as other information only
 provided as a master file from the FBI.
 
+Source code is maintained by the FBI
+
 This project is a Python flask app that uses SqlAlchemy to wrap a
 Postgres database.
 
