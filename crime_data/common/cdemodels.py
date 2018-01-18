@@ -2328,7 +2328,7 @@ class LeokaAssaultByGroupRegional(db.Model):
     """Represents Regional Level Leoka Assault Group Data"""
     __tablename__ = 'leoka_assault_by_group_regional'
     __table_args__ = (
-        PrimaryKeyConstraint('activity_name', 'data_year', 'region_name'),
+        PrimaryKeyConstraint('activity_name', 'data_year', 'region_code'),
     )
     def get(region_name=None):
         query = LeokaAssaultByGroupRegional.query

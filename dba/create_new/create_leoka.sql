@@ -116,7 +116,7 @@ JOIN (SELECT a.data_year,
  ORDER BY activity_id;
 
 CREATE MATERIALIZED VIEW public.leoka_assault_by_group_regional AS
-select table1.data_year, table1.region_code, table1.activity_name, table1.activity_id,
+select table1.data_year, table1.region_code, table1.region_name, table1.activity_name, table1.activity_id,
 table1.group_1_actual_ct, table1.group_1_cleared_ct,
 table2.group_2_actual_ct, table2.group_2_cleared_ct,
 table3.group_3_actual_ct, table3.group_3_cleared_ct,
@@ -129,20 +129,21 @@ table9.group_9_actual_ct, table9.group_9_cleared_ct
 FROM
 (SELECT a.data_year,
    a.region_code,
+   a.region_name,
    a.activity_name,
    a.activity_id,
    sum(a.firearm_actual)+sum(a.knife_actual)+sum(hands_fists_feet_actual)+sum(other_actual) as group_1_actual_ct,
    sum(a.cleared_count) as group_1_cleared_ct
  FROM public.leoka_assault_data a JOIN public.agency_data b on b.ori=a.ori
  WHERE b.population_group_code like '1%'
- GROUP BY a.data_year, a.region_code, a.activity_name, a.activity_id) table1
+ GROUP BY a.data_year, a.region_code, a.region_name, a.activity_name, a.activity_id) table1
 JOIN (SELECT a.data_year,
    a.activity_id,
    sum(a.firearm_actual)+sum(a.knife_actual)+sum(hands_fists_feet_actual)+sum(other_actual) as group_2_actual_ct,
    sum(a.cleared_count) as group_2_cleared_ct
  FROM public.leoka_assault_data a JOIN public.agency_data b on b.ori=a.ori
  WHERE b.population_group_code = '2'
- GROUP BY a.data_year, a.region_code, a.activity_name, a.activity_id
+ GROUP BY a.data_year, a.region_code, a.region_name, a.activity_name, a.activity_id
  ) table2 ON table1.activity_id=table2.activity_id
  JOIN (SELECT a.data_year,
    a.activity_name,
@@ -151,7 +152,7 @@ JOIN (SELECT a.data_year,
    sum(a.cleared_count) as group_3_cleared_ct
  FROM public.leoka_assault_data a JOIN public.agency_data b on b.ori=a.ori
  WHERE b.population_group_code = '3'
- GROUP BY a.data_year, a.region_code, a.activity_name, a.activity_id
+ GROUP BY a.data_year, a.region_code, a.region_name, a.activity_name, a.activity_id
  ) table3 ON table1.activity_id=table3.activity_id
  JOIN (SELECT a.data_year,
    a.activity_id,
@@ -159,7 +160,7 @@ JOIN (SELECT a.data_year,
    sum(a.cleared_count) as group_4_cleared_ct
  FROM public.leoka_assault_data a JOIN public.agency_data b on b.ori=a.ori
  WHERE b.population_group_code = '4'
- GROUP BY a.data_year, a.region_code, a.activity_name, a.activity_id
+ GROUP BY a.data_year, a.region_code, a.region_name, a.activity_name, a.activity_id
  ) table4 ON table1.activity_id=table4.activity_id
  JOIN (SELECT a.data_year,
    a.activity_id,
@@ -167,7 +168,7 @@ JOIN (SELECT a.data_year,
    sum(a.cleared_count) as group_5_cleared_ct
  FROM public.leoka_assault_data a JOIN public.agency_data b on b.ori=a.ori
  WHERE b.population_group_code = '4'
- GROUP BY a.data_year, a.region_code, a.activity_name, a.activity_id
+ GROUP BY a.data_year, a.region_code, a.region_name, a.activity_name, a.activity_id
  ) table5 ON table1.activity_id=table5.activity_id
  JOIN (SELECT a.data_year,
    a.activity_id,
@@ -175,7 +176,7 @@ JOIN (SELECT a.data_year,
    sum(a.cleared_count) as group_6_cleared_ct
  FROM public.leoka_assault_data a JOIN public.agency_data b on b.ori=a.ori
  WHERE b.population_group_code = '6'
- GROUP BY a.data_year, a.region_code, a.activity_name, a.activity_id
+ GROUP BY a.data_year, a.region_code, a.region_name, a.activity_name, a.activity_id
  ) table6 ON table1.activity_id=table6.activity_id
  JOIN (SELECT a.data_year,
    a.activity_id,
@@ -183,7 +184,7 @@ JOIN (SELECT a.data_year,
    sum(a.cleared_count) as group_7_cleared_ct
  FROM public.leoka_assault_data a JOIN public.agency_data b on b.ori=a.ori
  WHERE b.population_group_code = '7'
- GROUP BY a.data_year, a.region_code, a.activity_name, a.activity_id
+ GROUP BY a.data_year, a.region_code, a.region_name, a.activity_name, a.activity_id
  ) table7 ON table1.activity_id=table7.activity_id
  JOIN (SELECT a.data_year,
    a.activity_id,
@@ -191,7 +192,7 @@ JOIN (SELECT a.data_year,
    sum(a.cleared_count) as group_8_cleared_ct
  FROM public.leoka_assault_data a JOIN public.agency_data b on b.ori=a.ori
  WHERE b.population_group_code like '8%'
- GROUP BY a.data_year, a.region_code, a.activity_name, a.activity_id
+ GROUP BY a.data_year, a.region_code, a.region_name, a.activity_name, a.activity_id
  ) table8 ON table1.activity_id=table8.activity_id
  JOIN (SELECT a.data_year,
    a.activity_id,
@@ -199,7 +200,7 @@ JOIN (SELECT a.data_year,
    sum(a.cleared_count) as group_9_cleared_ct
  FROM public.leoka_assault_data a JOIN public.agency_data b on b.ori=a.ori
  WHERE b.population_group_code like '9%'
- GROUP BY a.data_year, a.region_code, a.activity_name, a.activity_id
+ GROUP BY a.data_year, a.region_code, a.region_name, a.activity_name, a.activity_id
  ) table9 ON table1.activity_id=table9.activity_id
  ORDER BY activity_id;
 

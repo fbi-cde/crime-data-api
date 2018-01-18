@@ -25,3 +25,12 @@ class LeokaAssaultByGroupNational(CdeResource):
         self.verify_api_key(args)
         query = cdemodels.LeokaAssaultByGroupNational.query
         return self.with_metadata(query,args)
+
+class LeokaAssaultByGroupRegional(CdeResource):
+    schema = marshmallow_schemas.LeokaAssaultByGroupRegional(many=True)
+    @use_args(ArgumentsSchema)
+    @cache(max_age=DEFAULT_MAX_AGE, public=True)
+    def get(self, args, region_name=None):
+        self.verify_api_key(args)
+        query = cdemodels.LeokaAssaultByGroupRegional.get(region_name=region_name)
+        return self.with_metadata(query,args)
