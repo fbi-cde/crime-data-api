@@ -310,6 +310,7 @@ ORDER BY data_year, activity_id;
 CREATE MATERIALIZED VIEW public.leoka_assault_by_assign_dist_regional AS
 SELECT data_year,
   region_code,
+  region_name,
   activity_name,
   activity_id,
   sum(TWO_OFFICER_VEHICLE_ACTUAL) as TWO_OFFICER_VEHICLE_ACTUAL,
@@ -320,7 +321,7 @@ SELECT data_year,
   sum(OTHER_ALONE_ACTUAL) as OTHER_ALONE_ACTUAL,
   sum(OTHER_ASSISTED_ACTUAL) as OTHER_ASSISTED_ACTUAL
 FROM public.leoka_assault_data
-GROUP BY data_year, region_code, activity_name, activity_id
+GROUP BY data_year, region_code, region_name, activity_name, activity_id
 ORDER BY data_year, region_code, activity_id;
 
 CREATE MATERIALIZED VIEW public.leoka_assault_by_assign_dist_state AS
@@ -369,12 +370,13 @@ ORDER BY data_year;
 CREATE MATERIALIZED VIEW public.leoka_assault_by_weapon_regional AS
 SELECT data_year,
   region_code,
+  region_name,
   sum(FIREARM_ACTUAL) as FIREARM_ACTUAL,
   sum(KNIFE_ACTUAL) as KNIFE_ACTUAL,
   sum(HANDS_FISTS_FEET_ACTUAL) as HANDS_FISTS_FEET_ACTUAL,
   sum(OTHER_ACTUAL) as OTHER_ACTUAL
 FROM public.leoka_assault_data
-GROUP BY data_year, region_code
+GROUP BY data_year, region_code, region_name
 ORDER BY data_year, region_code;
 
 CREATE MATERIALIZED VIEW public.leoka_assault_by_weapon_state AS
@@ -418,13 +420,14 @@ SELECT distinct a.population_group_code,
   a.population_group_desc,
   b.data_year,
   a.region_code,
+  a.region_name,
   sum(b.FIREARM_ACTUAL) as FIREARM_ACTUAL,
   sum(b.KNIFE_ACTUAL) as KNIFE_ACTUAL,
   sum(b.HANDS_FISTS_FEET_ACTUAL) as HANDS_FISTS_FEET_ACTUAL,
   sum(b.OTHER_ACTUAL) as OTHER_ACTUAL
 FROM public.agency_data a
 JOIN public.leoka_assault_data b on a.ori=b.ori
-GROUP BY b.data_year, a.region_code, a.population_group_code, a.population_group_desc
+GROUP BY b.data_year, a.region_code, a.region_name, a.population_group_code, a.population_group_desc
 ORDER BY b.data_year, a.region_code, a.population_group_code
 
 CREATE MATERIALIZED VIEW public.leoka_assault_by_weapon_per_group_state AS
@@ -456,6 +459,7 @@ ORDER BY data_year, activity_id;
 CREATE MATERIALIZED VIEW public.leoka_assault_by_weapon_per_activity_regional AS
 SELECT data_year,
   region_code,
+  region_name,
   activity_name,
   activity_id,
   sum(FIREARM_ACTUAL) as FIREARM_ACTUAL,
@@ -463,7 +467,7 @@ SELECT data_year,
   sum(HANDS_FISTS_FEET_ACTUAL) as HANDS_FISTS_FEET_ACTUAL,
   sum(OTHER_ACTUAL) as OTHER_ACTUAL
 FROM public.leoka_assault_data
-GROUP BY data_year, region_code, activity_name, activity_id
+GROUP BY data_year, region_code, region_name, activity_name, activity_id
 ORDER BY data_year, region_code, activity_id;
 
 CREATE MATERIALIZED VIEW public.leoka_assault_by_weapon_per_activity_state AS
