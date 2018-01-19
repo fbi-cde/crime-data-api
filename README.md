@@ -1,20 +1,22 @@
 crime_data_api
 ================
 
-[![Build status](https://circleci.com/gh/18F/crime-data-api.svg?style=svg)](https://circleci.com/gh/18F/crime-data-api)
-[![Code Climate status](https://codeclimate.com/github/18F/crime-data-api.svg)](https://codeclimate.com/github/18F/crime-data-api)
-[![Test Coverage](https://codeclimate.com/github/18F/crime-data-api/badges/coverage.svg)](https://codeclimate.com/github/18F/crime-data-api/coverage)
-[![Dependency Status](https://gemnasium.com/18F/crime-data-api.svg)](https://gemnasium.com/18F/crime-data-api)
+[![Build status](https://circleci.com/gh/fbi-cde/crime-data-api.svg?style=svg)](https://circleci.com/gh/fbi-cde/crime-data-api)
+[![Code Climate status](https://codeclimate.com/github/fbi-cde/crime-data-api.svg)](https://codeclimate.com/github/fbi-cde/crime-data-api)
+[![Test Coverage](https://codeclimate.com/github/fbi-cde/crime-data-api/badges/coverage.svg)](https://codeclimate.com/github/fbi-cde/crime-data-api/coverage)
+[![Dependency Status](https://gemnasium.com/fbi-cde/crime-data-api.svg)](https://gemnasium.com/fbi-cde/crime-data-api)
 
 This project is the back end for the Crime Data
 Explorer
-[18f/crime-data-explorer](https://github.com/18f/crime-data-explorer). The
+[fbi-cde/crime-data-explorer](https://github.com/fbi-cde/crime-data-explorer). The
 Crime Data Explorer is a website that allows law enforcement and the
 general public to more easily access uniform crime data. The FBI
 collects this data from state and local law enforcement agencies and
 publishes it in the form of annual reports. This API allows users to
 look at multiple years of data as well as other information only
 provided as a master file from the FBI.
+
+Source code is maintained by the FBI
 
 This project is a Python flask app that uses SqlAlchemy to wrap a
 Postgres database.
@@ -57,7 +59,7 @@ You can run the following commands to bootstrap your environment and
 load the testing database into Postgres:
 
 ``` sh
-git clone https://github.com/18F/crime-data-api
+git clone https://github.com/fbi-cde/crime-data-api
 cd crime-data-api
 pip install -r requirements/dev.txt
 createdb crime_data_api_dev
@@ -74,7 +76,7 @@ Deployment
 ----------
 
 The app is continuously deployed to [cloud.gov](https://www.cloud.gov)
-with [CircleCI](https://circleci.com/gh/18F/crime-data-api) with every
+with [CircleCI](https://circleci.com/gh/fbi-cde/crime-data-api) with every
 commit to `master`.
 
 Tagged releases must be deployed manually using the
@@ -192,7 +194,7 @@ of debugging text under normal operation.
 To run the after_load tasks, first you need to set an environment
 variable with a database URL with the location of the production
 database. I find the easiest way to do this is to setup a tunnel using
-the [cf-service-connect](https://github.com/18F/cf-service-connect)
+the [cf-service-connect](https://github.com/fbi-cde/cf-service-connect)
 plugin, which you must install to do this. You can then run it with
 the name of an running app service and the name of its database to get
 a list of connection values.
