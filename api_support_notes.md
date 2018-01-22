@@ -3,7 +3,7 @@ Available fields for API
 
 The Crime Data API is what powers the CDE website (whose code is
 at
-[crime-data-explorer](https://github.com/18f/crime-data-explorer). All
+[crime-data-explorer](https://github.com/fbi-cde/crime-data-explorer). All
 API requests require an API key which can be provided to you securely
 by a FBI CDE team member.
 

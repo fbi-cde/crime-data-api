@@ -55,6 +55,12 @@ def create_app(config_object=ProdConfig):
     add_resources(app)
     register_commands(app)
     db.init_app(app)
+
+    @app.after_request
+    def after_request(response):
+        response.headers['Content-Security-Policy'] = "default-src 'self'"
+        return response
+
     return app
 
 
@@ -323,10 +329,6 @@ app = create_app(CONFIG)
 app.wsgi_app = ProxyFix(app.wsgi_app)
 
 # Add some static routing
-@app.route('/')
-def swagger_ui():
-    return app.send_static_file('swagger-ui.html')
-
 @app.route('/swagger.json')
 def swagger_json():
     return app.send_static_file('swagger.json')
