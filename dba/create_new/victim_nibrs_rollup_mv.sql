@@ -247,9 +247,9 @@ c.location as location,
 sum(c.count)
 from public.nibrs_victim_count c group by state_id,state_abbr,offense_name, data_year,location;
 
-CREATE MATERIALIZED VIEW nibrs_agency_denorm_victim_location AS
+CREATE MATERIALIZED VIEW nibrs_state_denorm_victim_location AS
 select state_id as state_id,
-state_abbr as state_abbr,
+agency_id as state_abbr,
 offense_name as offense_name,
 data_year as data_year,
 coalesce(sum(case when location = 'Residence/Home' then sum end), 0) as Residence_Home,
