@@ -1274,3 +1274,110 @@ class NIBRSStateOffenseCountSchema(ma.ModelSchema):
     class Meta:
         model = cdemodels.NIBRSStateOffenseCount
         ordered = True
+
+class PoliceEmploymentDataNationSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.PoliceEmploymentDataNation
+
+class PoliceEmploymentDataRegionSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.PoliceEmploymentDataRegion
+
+class PoliceEmploymentDataStateSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.PoliceEmploymentDataState
+
+class PoliceEmploymentDataAgencySchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.PoliceEmploymentDataAgency
+
+class LeokaAssaultByGroupState(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.LeokaAssaultByGroupState
+        ordered = True
+
+class LeokaAssaultByGroupRegional(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.LeokaAssaultByGroupRegional
+        ordered = True
+
+class LeokaAssaultByGroupNational(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.LeokaAssaultByGroupNational
+        ordered = True
+
+class LeokaAssaultAssignDistRegional(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.LeokaAssaultAssignDistState
+        ordered = True
+
+class LeokaAssaultAssignDistState(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.LeokaAssaultAssignDistState
+        ordered = True
+
+class LeokaAssaultAssignDistAgency(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.LeokaAssaultAssignDistAgency
+        ordered = True
+
+class LeokaAssaultAssignDistNational(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.LeokaAssaultAssignDistNational
+        ordered = True
+
+
+class LeokaAssaultWeaponNational(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.LeokaAssaultWeaponNational
+        ordered = True
+
+class LeokaAssaultWeaponRegional(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.LeokaAssaultWeaponRegional
+        ordered = True
+
+class LeokaAssaultWeaponStatecccc(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.LeokaAssaultWeaponState
+        ordered = True
+
+class LeokaAssaultWeaponAgency(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.LeokaAssaultWeaponAgency
+        ordered = True
+
+class LeokaAssaultWeaponByActivityAgency(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.LeokaAssaultWeaponByActivityAgency
+        ordered = True
+
+class LeokaAssaultWeaponByActivityState(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.LeokaAssaultWeaponRegional
+        ordered = True
+
+class LeokaAssaultWeaponByActivityRegional(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.LeokaAssaultWeaponByActivityRegional
+        ordered = True
+
+class LeokaAssaultWeaponByActivityNational(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.LeokaAssaultWeaponByActivityNational
+        ordered = True
+
+class LeokaAssaultWeaponByGroupState(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.LeokaAssaultWeaponByGroupState
+        ordered = True
+
+class LeokaAssaultWeaponByGroupRegional(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.LeokaAssaultWeaponRegional
+        ordered = True
+
+class LeokaAssaultWeaponByGroupNational(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.LeokaAssaultWeaponByGroupNational
+        ordered = True
