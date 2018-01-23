@@ -24,7 +24,7 @@ import crime_data.resources.arrests
 import crime_data.resources.meta
 import crime_data.resources.nibrs_counts
 import crime_data.resources.leoka
-
+import crime_data.resources.police_employment
 
 import crime_data.resources.human_traffic
 from werkzeug.contrib.fixers import ProxyFix
