@@ -478,10 +478,10 @@ ORDER BY data_year, ori, state_abbr, activity_id;
  drop MATERIALIZED VIEW leoka_assault_by_weapon_per_group_national;
  drop MATERIALIZED VIEW leoka_assault_by_weapon_per_group_regional;
  drop MATERIALIZED VIEW leoka_assault_by_weapon_per_group_state;
- drop MATERIALIZED VIEW leoka_assault_by_weapon_per_activity_national
- drop MATERIALIZED VIEW leoka_assault_by_weapon_per_activity_regional
- drop MATERIALIZED VIEW leoka_assault_by_weapon_per_activity_state
- drop MATERIALIZED VIEW leoka_assault_by_weapon_per_activity_agency
+ drop MATERIALIZED VIEW leoka_assault_by_weapon_per_activity_national;
+ drop MATERIALIZED VIEW leoka_assault_by_weapon_per_activity_regional;
+ drop MATERIALIZED VIEW leoka_assault_by_weapon_per_activity_state;
+ drop MATERIALIZED VIEW leoka_assault_by_weapon_per_activity_agency;
 
  --Refreshes
  refresh MATERIALIZED VIEW leoka_assault_by_group_national;

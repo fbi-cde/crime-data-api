@@ -98,27 +98,6 @@ CREATE TABLE public.leoka_assault_data
   CLEARED_COUNT INT
 );
 
-CREATE TABLE public.police_empoloyement_data
-(
-  DATA_YEAR	smallint,
-  AGENCY_ID int,
-  ORI varchar(25),
-  STATE_ID	smallint,
-  STATE_ABBR character(2),
-  REGION_CODE	smallint,
-  REGION_NAME varchar(100),
-	POPULATION int,
-  pe_reported_flag	character(1),
-  male_officer int,c
-  male_civilian int,
-  male_total int,
-  female_officer int,
-  female_civilian int,
-  female_total int,
-  officer_rate int,
-  employee_rate int,
-)
-
 CREATE TABLE public.agency_data
 (
   YEARLY_AGENCY_ID int,
