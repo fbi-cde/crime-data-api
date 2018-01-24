@@ -7,7 +7,7 @@ CREATE TABLE public.region_lk
 
 CREATE TABLE state_lk (
 state_id int PRIMARY KEY,
-STATE_ABBR character(4),
+STATE_ABBR character(2),
 STATE_NAME varchar(50),
 STATE_FIPS_CODE int,
 region_code smallint REFERENCES region_lk(region_code)
