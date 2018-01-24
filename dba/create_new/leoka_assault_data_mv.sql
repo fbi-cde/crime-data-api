@@ -381,7 +381,7 @@ SELECT distinct a.population_group_code,
 FROM public.agency_data a
 JOIN public.leoka_assault_data b on a.ori=b.ori
 GROUP BY b.data_year, a.population_group_code, a.population_group_desc
-ORDER BY b.data_year, a.population_group_code
+ORDER BY b.data_year, a.population_group_code;
 
 CREATE MATERIALIZED VIEW public.leoka_assault_by_weapon_per_group_regional AS
 SELECT distinct a.population_group_code,
@@ -395,7 +395,7 @@ SELECT distinct a.population_group_code,
 FROM public.agency_data a
 JOIN public.leoka_assault_data b on a.ori=b.ori
 GROUP BY b.data_year, a.region_code, a.population_group_code, a.population_group_desc
-ORDER BY b.data_year, a.region_code, a.population_group_code
+ORDER BY b.data_year, a.region_code, a.population_group_code;
 
 CREATE MATERIALIZED VIEW public.leoka_assault_by_weapon_per_group_state AS
 SELECT distinct a.population_group_code,
@@ -409,7 +409,7 @@ SELECT distinct a.population_group_code,
 FROM public.agency_data a
 JOIN public.leoka_assault_data b on a.ori=b.ori
 GROUP BY b.data_year, a.state_abbr, a.population_group_code, a.population_group_desc
-ORDER BY b.data_year, a.state_abbr, a.population_group_code
+ORDER BY b.data_year, a.state_abbr, a.population_group_code;
 
 CREATE MATERIALIZED VIEW public.leoka_assault_by_weapon_per_activity_national AS
 SELECT data_year,
@@ -462,6 +462,8 @@ SELECT data_year,
 FROM public.leoka_assault_data
 GROUP BY data_year, ori, state_abbr, activity_name, activity_id
 ORDER BY data_year, ori, state_abbr, activity_id;
+
+
 
  -- Drops
  drop MATERIALIZED VIEW leoka_assault_by_group_national;

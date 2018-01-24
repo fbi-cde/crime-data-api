@@ -1308,7 +1308,7 @@ class LeokaAssaultByGroupNational(ma.ModelSchema):
 
 class LeokaAssaultAssignDistRegional(ma.ModelSchema):
     class Meta:
-        model = cdemodels.LeokaAssaultAssignDistState
+        model = cdemodels.LeokaAssaultAssignDistRegional
         ordered = True
 
 class LeokaAssaultAssignDistState(ma.ModelSchema):
@@ -1337,7 +1337,7 @@ class LeokaAssaultWeaponRegional(ma.ModelSchema):
         model = cdemodels.LeokaAssaultWeaponRegional
         ordered = True
 
-class LeokaAssaultWeaponStatecccc(ma.ModelSchema):
+class LeokaAssaultWeaponState(ma.ModelSchema):
     class Meta:
         model = cdemodels.LeokaAssaultWeaponState
         ordered = True
@@ -1354,7 +1354,7 @@ class LeokaAssaultWeaponByActivityAgency(ma.ModelSchema):
 
 class LeokaAssaultWeaponByActivityState(ma.ModelSchema):
     class Meta:
-        model = cdemodels.LeokaAssaultWeaponRegional
+        model = cdemodels.LeokaAssaultWeaponByActivityState
         ordered = True
 
 class LeokaAssaultWeaponByActivityRegional(ma.ModelSchema):
@@ -1374,7 +1374,7 @@ class LeokaAssaultWeaponByGroupState(ma.ModelSchema):
 
 class LeokaAssaultWeaponByGroupRegional(ma.ModelSchema):
     class Meta:
-        model = cdemodels.LeokaAssaultWeaponRegional
+        model = cdemodels.LeokaAssaultWeaponByGroupRegional
         ordered = True
 
 class LeokaAssaultWeaponByGroupNational(ma.ModelSchema):
