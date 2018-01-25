@@ -101,6 +101,7 @@ JOIN (SELECT a.data_year,
     region_code,
     region_name,
     activity_id,
+    activity_name,
     sum(CASE WHEN population_group_code like '1%' then group_count else 0 end) as group_1_actual_ct,
     sum(CASE WHEN population_group_code like '1%' then cleared_count else 0 end) as group_1_cleared_ct,
     sum(CASE WHEN population_group_code like '2%' then group_count else 0 end) as group_2_actual_ct,
@@ -120,7 +121,7 @@ JOIN (SELECT a.data_year,
     sum(CASE WHEN population_group_code like '9%' then group_count else 0 end) as group_9_actual_ct,
     sum(CASE WHEN population_group_code like '9%' then cleared_count else 0 end) as group_9_cleared_ct
  from public.leoka_assault_by_group_regional_totals
- group by data_year, region_code,region_name,activity_id
+ group by data_year, region_code,region_name,activity_id,activity_name
  ORDER BY data_year, activity_id,region_code;
 
 
@@ -140,6 +141,7 @@ JOIN (SELECT a.data_year,
     state_abbr,
     state_id,
     activity_id,
+    activity_name,
     sum(CASE WHEN population_group_code like '1%' then group_count else 0 end) as group_1_actual_ct,
     sum(CASE WHEN population_group_code like '1%' then cleared_count else 0 end) as group_1_cleared_ct,
     sum(CASE WHEN population_group_code like '2%' then group_count else 0 end) as group_2_actual_ct,
@@ -159,7 +161,7 @@ JOIN (SELECT a.data_year,
     sum(CASE WHEN population_group_code like '9%' then group_count else 0 end) as group_9_actual_ct,
     sum(CASE WHEN population_group_code like '9%' then cleared_count else 0 end) as group_9_cleared_ct
  from public.leoka_assault_by_group_state_totals
- group by data_year, state_abbr,state_id,activity_id
+ group by data_year, state_abbr,state_id,activity_id,activity_name
  ORDER BY data_year, activity_id;
 
  CREATE MATERIALIZED VIEW public.leoka_assault_by_assign_dist_national AS
