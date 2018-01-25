@@ -304,7 +304,7 @@ def add_resources(app):
     api.add_resource(crime_data.resources.police_employment.PoliceEmploymentDataNation,'/police-employment/national')
     api.add_resource(crime_data.resources.police_employment.PoliceEmploymentDataRegion,'/police-employment/region/<string:region_name>')
     api.add_resource(crime_data.resources.police_employment.PoliceEmploymentDataState,'/police-employment/states/<string:state_abbr>')
-    api.add_resource(crime_data.resources.police_employment.PoliceEmploymentDataAgency,'/police-employment/agency/<string:state_abbr>/<string:ori>')
+    api.add_resource(crime_data.resources.police_employment.PoliceEmploymentDataAgency,'/police-employment/agencies/<string:ori>')
 
     api.add_resource(crime_data.resources.leoka.LeokaAssaultByGroupNational,'/leoka/assault/group/count/national')
     api.add_resource(crime_data.resources.leoka.LeokaAssaultByGroupRegional,'/leoka/assault/group/count/region/<string:region_name>')

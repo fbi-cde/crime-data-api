@@ -1909,14 +1909,13 @@ class PoliceEmploymentDataAgency(db.Model):
     __tablename__ = 'police_employment_agency'
     __table_args__ = (UniqueConstraint('data_year','ori'), )
 
-    def get(state_abbr=None, ori=None):
+    def get(ori=None):
         """
         A method to find a police employment data by agency
         """
         query = PoliceEmploymentDataAgency.query
 
-        if state_abbr and ori:
-            query = query.filter(func.lower(PoliceEmploymentDataAgency.state_abbr) == func.lower(state_abbr))
+        if ori:
             query = query.filter(func.lower(PoliceEmploymentDataAgency.ori) == func.lower(ori))
 
         return query
