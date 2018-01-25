@@ -170,6 +170,9 @@ class CdeResource(Resource):
             qry = self.set_ordering(qry, args)
         return self.render_response(qry, args, csv_filename=csv_filename)
 
+    def set_schema(self, schema):
+        self.schema = schema
+
     def render_response(self, qry, args, csv_filename='incidents'):
         if args['output'] == 'csv':
             aggregate_many = False

@@ -7,24 +7,6 @@ from crime_data.common import cdemodels, marshmallow_schemas
 from crime_data.common.base import CdeResource, tuning_page
 from crime_data.common.marshmallow_schemas import ArgumentsSchema
 
-class LeokaAssaultByGroupNational(CdeResource):
-    schema = marshmallow_schemas.LeokaAssaultByGroupNational(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args,):
-        self.verify_api_key(args)
-        query = cdemodels.LeokaAssaultByGroupNational.query
-        return self.with_metadata(query,args)
-
-class LeokaAssaultByGroupRegional(CdeResource):
-    schema = marshmallow_schemas.LeokaAssaultByGroupRegional(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, region_name=None):
-        self.verify_api_key(args)
-        query = cdemodels.LeokaAssaultByGroupRegional.get(region_name=region_name)
-        return self.with_metadata(query,args)
-
 class LeokaAssaultByGroupState(CdeResource):
     schema = marshmallow_schemas.LeokaAssaultByGroupState(many=True)
     @use_args(ArgumentsSchema)
@@ -34,139 +16,94 @@ class LeokaAssaultByGroupState(CdeResource):
         query = cdemodels.LeokaAssaultByGroupState.get(state_abbr=state_abbr)
         return self.with_metadata(query,args)
 
-class LeokaAssaultAssignDistNational(CdeResource):
-    schema = marshmallow_schemas.LeokaAssaultAssignDistNational(many=True)
+class LeokaAssaultNational(CdeResource):
     @use_args(ArgumentsSchema)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args,):
+    def get(self, args, variable):
         self.verify_api_key(args)
-        query = cdemodels.LeokaAssaultAssignDistNational.query
+        if variable == 'assign-dist':
+            self.set_schema(marshmallow_schemas.LeokaAssaultAssignDistNational(many=True))
+            query = cdemodels.LeokaAssaultAssignDistNational.query
+        elif variable == 'weapon':
+            self.set_schema(marshmallow_schemas.LeokaAssaultWeaponNational(many=True))
+            query = cdemodels.LeokaAssaultWeaponNational.query
+        elif variable == 'weapon-group':
+            self.set_schema(marshmallow_schemas.LeokaAssaultWeaponByGroupNational(many=True))
+            query = cdemodels.LeokaAssaultWeaponByGroupNational.query
+        elif variable == 'weapon-activity':
+            self.set_schema(marshmallow_schemas.LeokaAssaultWeaponByActivityNational(many=True))
+            query = cdemodels.LeokaAssaultWeaponByActivityNational.query
+        elif variable == 'group':
+            self.set_schema(marshmallow_schemas.LeokaAssaultByGroupNational(many=True))
+            query = cdemodels.LeokaAssaultByGroupNational.query
+        else:
+            return self.with_metadata([], args)
+        return self.with_metadata(query, args)
+
+class LeokaAssaultRegional(CdeResource):
+    @use_args(ArgumentsSchema)
+    @cache(max_age=DEFAULT_MAX_AGE, public=True)
+    def get(self, args, variable, region_name=None):
+        self.verify_api_key(args)
+        if variable == 'assign-dist':
+            self.set_schema(marshmallow_schemas.LeokaAssaultAssignDistRegional(many=True))
+            query = cdemodels.LeokaAssaultAssignDistRegional.get(region_name=region_name)
+        elif variable == 'weapon':
+            self.set_schema(marshmallow_schemas.LeokaAssaultWeaponRegional(many=True))
+            query = cdemodels.LeokaAssaultWeaponRegional.get(region_name=region_name)
+        elif variable == 'weapon-group':
+            self.set_schema(marshmallow_schemas.LeokaAssaultWeaponByGroupRegional(many=True))
+            query = cdemodels.LeokaAssaultWeaponByGroupRegional.get(region_name=region_name)
+        elif variable == 'weapon-activity':
+            self.set_schema(marshmallow_schemas.LeokaAssaultWeaponByActivityRegional(many=True))
+            query = cdemodels.LeokaAssaultWeaponByActivityRegional.get(region_name=region_name)
+        elif variable == 'group':
+            self.set_schema(marshmallow_schemas.LeokaAssaultByGroupRegional(many=True))
+            query = cdemodels.LeokaAssaultByGroupRegional.get(region_name=region_name)
+        else:
+            return self.with_metadata([], args)
         return self.with_metadata(query,args)
 
-class LeokaAssaultAssignDistRegional(CdeResource):
-    schema = marshmallow_schemas.LeokaAssaultAssignDistRegional(many=True)
+class LeokaAssaultState(CdeResource):
     @use_args(ArgumentsSchema)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, region_name=None):
+    def get(self, args, variable, state_abbr=None):
         self.verify_api_key(args)
-        query = cdemodels.LeokaAssaultAssignDistRegional.get(region_name=region_name)
+        if variable == 'assign-dist':
+            self.set_schema(marshmallow_schemas.LeokaAssaultAssignDistState(many=True))
+            query = cdemodels.LeokaAssaultAssignDistState.get(state_abbr=state_abbr)
+        elif variable == 'weapon':
+            self.set_schema(marshmallow_schemas.LeokaAssaultWeaponState(many=True))
+            query = cdemodels.LeokaAssaultWeaponState.get(state_abbr=state_abbr)
+        elif variable == 'weapon-group':
+            self.set_schema(marshmallow_schemas.LeokaAssaultWeaponByGroupState(many=True))
+            query = cdemodels.LeokaAssaultWeaponByGroupState.get(state_abbr=state_abbr)
+        elif variable == 'weapon-activity':
+            self.set_schema(marshmallow_schemas.LeokaAssaultWeaponByActivityState(many=True))
+            query = cdemodels.LeokaAssaultWeaponByActivityState.get(state_abbr=state_abbr)
+        elif variable == 'group':
+            self.set_schema(marshmallow_schemas.LeokaAssaultByGroupState(many=True))
+            query = cdemodels.LeokaAssaultByGroupState.get(state_abbr=state_abbr)
+        else:
+            return self.with_metadata([], args)
         return self.with_metadata(query,args)
 
-class LeokaAssaultAssignDistState(CdeResource):
-    schema = marshmallow_schemas.LeokaAssaultAssignDistState(many=True)
+class LeokaAssaultAgency(CdeResource):
     @use_args(ArgumentsSchema)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, state_abbr=None):
+    def get(self, args, variable, ori=None):
         self.verify_api_key(args)
-        query = cdemodels.LeokaAssaultAssignDistState.get(state_abbr=state_abbr)
-        return self.with_metadata(query,args)
-
-class LeokaAssaultAssignDistAgency(CdeResource):
-    schema = marshmallow_schemas.LeokaAssaultAssignDistAgency(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, ori=None):
-        self.verify_api_key(args)
-        query = cdemodels.LeokaAssaultAssignDistAgency.get(ori=ori)
-        return self.with_metadata(query,args)
-
-class LeokaAssaultWeaponNational(CdeResource):
-    schema = marshmallow_schemas.LeokaAssaultWeaponNational(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args,):
-        self.verify_api_key(args)
-        query = cdemodels.LeokaAssaultWeaponNational.query
-        return self.with_metadata(query,args)
-
-class LeokaAssaultWeaponRegional(CdeResource):
-    schema = marshmallow_schemas.LeokaAssaultWeaponRegional(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, region_name=None):
-        self.verify_api_key(args)
-        query = cdemodels.LeokaAssaultWeaponRegional.get(region_name=region_name)
-        return self.with_metadata(query,args)
-
-class LeokaAssaultWeaponState(CdeResource):
-    schema = marshmallow_schemas.LeokaAssaultWeaponState(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, state_abbr=None):
-        self.verify_api_key(args)
-        query = cdemodels.LeokaAssaultWeaponState.get(state_abbr=state_abbr)
-        return self.with_metadata(query,args)
-
-class LeokaAssaultWeaponAgency(CdeResource):
-    schema = marshmallow_schemas.LeokaAssaultWeaponAgency(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, ori=None):
-        self.verify_api_key(args)
-        query = cdemodels.LeokaAssaultWeaponAgency.get(ori=ori)
-        return self.with_metadata(query,args)
-
-class LeokaAssaultWeaponByGroupNational(CdeResource):
-    schema = marshmallow_schemas.LeokaAssaultWeaponByGroupNational(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args,):
-        self.verify_api_key(args)
-        query = cdemodels.LeokaAssaultWeaponByGroupNational.query
-        return self.with_metadata(query,args)
-
-class LeokaAssaultWeaponByGroupRegional(CdeResource):
-    schema = marshmallow_schemas.LeokaAssaultWeaponByGroupRegional(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, region_name=None):
-        self.verify_api_key(args)
-        query = cdemodels.LeokaAssaultWeaponByGroupRegional.get(region_name=region_name)
-        return self.with_metadata(query,args)
-
-class LeokaAssaultWeaponByGroupState(CdeResource):
-    schema = marshmallow_schemas.LeokaAssaultWeaponByGroupState(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, state_abbr=None):
-        self.verify_api_key(args)
-        query = cdemodels.LeokaAssaultWeaponByGroupState.get(state_abbr=state_abbr)
-        return self.with_metadata(query,args)
-
-class LeokaAssaultWeaponByActivityNational(CdeResource):
-    schema = marshmallow_schemas.LeokaAssaultWeaponByActivityNational(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args,):
-        self.verify_api_key(args)
-        query = cdemodels.LeokaAssaultWeaponByActivityNational.query
-        return self.with_metadata(query,args)
-
-class LeokaAssaultWeaponByActivityRegional(CdeResource):
-    schema = marshmallow_schemas.LeokaAssaultWeaponByActivityRegional(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, region_name=None):
-        self.verify_api_key(args)
-        query = cdemodels.LeokaAssaultWeaponByActivityRegional.get(region_name=region_name)
-        return self.with_metadata(query,args)
-
-class LeokaAssaultWeaponByActivityState(CdeResource):
-    schema = marshmallow_schemas.LeokaAssaultWeaponByActivityState(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, state_abbr=None):
-        self.verify_api_key(args)
-        query = cdemodels.LeokaAssaultWeaponByActivityState.get(state_abbr=state_abbr)
-        return self.with_metadata(query,args)
-
-class LeokaAssaultWeaponByActivityAgency(CdeResource):
-    schema = marshmallow_schemas.LeokaAssaultWeaponByActivityAgency(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, ori=None):
-        self.verify_api_key(args)
-        query = cdemodels.LeokaAssaultWeaponByActivityAgency.get(ori=ori)
+        if variable == 'assign-dist':
+            self.set_schema(marshmallow_schemas.LeokaAssaultAssignDistAgency(many=True))
+            query = cdemodels.LeokaAssaultAssignDistAgency.get(ori=ori)
+        elif variable == 'weapon-activity':
+            self.set_schema(marshmallow_schemas.LeokaAssaultWeaponByActivityAgency(many=True))
+            query = cdemodels.LeokaAssaultWeaponByActivityAgency.get(ori=ori)
+        elif variable == 'weapon':
+            self.set_schema(marshmallow_schemas.LeokaAssaultWeaponAgency(many=True))
+            query = cdemodels.LeokaAssaultWeaponAgency.get(ori=ori)
+        else:
+            return self.with_metadata([], args)
         return self.with_metadata(query,args)
 
 class LeokaAssaultByTimeDistribution(CdeResource):
