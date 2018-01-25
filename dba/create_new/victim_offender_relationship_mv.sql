@@ -1,3 +1,6 @@
+UPDATE nibrs_victim_to_offender_relationship_count
+SET  state_abbr = TRIM(state_abbr), ori= TRIM(ori), offense_name = TRIM(offense_name),relationship = TRIM(relationship);
+
 CREATE MATERIALIZED VIEW nibrs_national_denorm_victim_offender_relationship AS
 select
 offense_name as offense_name,
@@ -96,11 +99,3 @@ coalesce(sum(case when relationship = 'Victim Was Stranger' then count end), 0) 
 coalesce(sum(case when relationship = 'Victim Was Offender' then count end), 0) as offender,
 coalesce(sum(case when relationship = 'Victim was Ex-Spouse' then count end), 0) as ex_spouse
 from public.nibrs_victim_to_offender_relationship_count group by agency_id, ori, offense_name, data_year;
-
-
-UPDATE nibrs_victim_to_offender_relationship_count
-SET  state_abbr = TRIM(state_abbr), ori= TRIM(ori), offense_name = TRIM(offense_name),relationship = TRIM(relationship)
-
-REFRESH MATERIALIZED VIEW nibrs_agency_denorm_victim_offender_relationship;
-REFRESH MATERIALIZED VIEW nibrs_state_denorm_victim_offender_relationship;
-REFRESH MATERIALIZED VIEW nibrs_national_denorm_victim_offender_relationship;
