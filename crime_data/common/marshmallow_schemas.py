@@ -1381,3 +1381,8 @@ class LeokaAssaultWeaponByGroupNational(ma.ModelSchema):
     class Meta:
         model = cdemodels.LeokaAssaultWeaponByGroupNational
         ordered = True
+
+class LeokaAssaultByTimeDistribution(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.LeokaAssaultByTimeDistribution
+        ordered = True

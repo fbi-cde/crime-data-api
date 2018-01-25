@@ -168,3 +168,12 @@ class LeokaAssaultWeaponByActivityAgency(CdeResource):
         self.verify_api_key(args)
         query = cdemodels.LeokaAssaultWeaponByActivityAgency.get(ori=ori)
         return self.with_metadata(query,args)
+
+class LeokaAssaultByTimeDistribution(CdeResource):
+    schema = marshmallow_schemas.LeokaAssaultByTimeDistribution(many=True)
+    @use_args(ArgumentsSchema)
+    @cache(max_age=DEFAULT_MAX_AGE, public=True)
+    def get(self, args,):
+        self.verify_api_key(args)
+        query = cdemodels.LeokaAssaultByTimeDistribution.query
+        return self.with_metadata(query,args)

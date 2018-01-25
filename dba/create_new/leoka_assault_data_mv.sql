@@ -387,3 +387,37 @@ JOIN (SELECT a.data_year,
  JOIN public.agency_data b on b.agency_id=a.agency_id
  GROUP BY a.data_year, b.ori,b.agency_id, b.state_abbr, b.state_id,a.activity_name, a.activity_id
  ORDER BY a.data_year, b.ori, b.agency_id , b.state_abbr, b.state_id,a.activity_id;
+
+ CREATE MATERIALIZED VIEW public.leoka_assault_by_time_dist AS
+ SELECT data_year,
+   sum(time_0001_0200_cnt)+sum(time_0201_0400_cnt)+sum(time_0401_0600_cnt)+sum(time_0601_0800_cnt)+sum(time_0801_1000_cnt)+sum(time_1001_1200_cnt)+sum(time_1201_1400_cnt)+sum(time_1401_1600_cnt)+sum(time_1601_1800_cnt)+sum(time_1801_2000_cnt)+sum(time_2001_2200_cnt)+sum(time_2201_0000_cnt) as total_cnt,
+   sum(time_0001_0200_cnt)+sum(time_0201_0400_cnt)+sum(time_0401_0600_cnt)+sum(time_0601_0800_cnt)+sum(time_0801_1000_cnt)+sum(time_1001_1200_cnt) as total_am_cnt,
+   (sum(time_0001_0200_cnt)+sum(time_0201_0400_cnt)+sum(time_0401_0600_cnt)+sum(time_0601_0800_cnt)+sum(time_0801_1000_cnt)+sum(time_1001_1200_cnt)*1.0)/(sum(time_0001_0200_cnt)+sum(time_0201_0400_cnt)+sum(time_0401_0600_cnt)+sum(time_0601_0800_cnt)+sum(time_0801_1000_cnt)+sum(time_1001_1200_cnt)+sum(time_1201_1400_cnt)+sum(time_1401_1600_cnt)+sum(time_1601_1800_cnt)+sum(time_1801_2000_cnt)+sum(time_2001_2200_cnt)+sum(time_2201_0000_cnt))*100 as total_am_dist,
+   sum(time_1201_1400_cnt)+sum(time_1401_1600_cnt)+sum(time_1601_1800_cnt)+sum(time_1801_2000_cnt)+sum(time_2001_2200_cnt)+sum(time_2201_0000_cnt) as total_pm_cnt,
+   (sum(time_1201_1400_cnt)+sum(time_1401_1600_cnt)+sum(time_1601_1800_cnt)+sum(time_1801_2000_cnt)+sum(time_2001_2200_cnt)+sum(time_2201_0000_cnt)*1.0)/(sum(time_0001_0200_cnt)+sum(time_0201_0400_cnt)+sum(time_0401_0600_cnt)+sum(time_0601_0800_cnt)+sum(time_0801_1000_cnt)+sum(time_1001_1200_cnt)+sum(time_1201_1400_cnt)+sum(time_1401_1600_cnt)+sum(time_1601_1800_cnt)+sum(time_1801_2000_cnt)+sum(time_2001_2200_cnt)+sum(time_2201_0000_cnt))*100 as total_pm_dist,
+   sum(time_0001_0200_cnt) as time_0001_0200_cnt,
+   sum(time_0001_0200_cnt)*1.0/(sum(time_0001_0200_cnt)+sum(time_0201_0400_cnt)+sum(time_0401_0600_cnt)+sum(time_0601_0800_cnt)+sum(time_0801_1000_cnt)+sum(time_1001_1200_cnt)+sum(time_1201_1400_cnt)+sum(time_1401_1600_cnt)+sum(time_1601_1800_cnt)+sum(time_1801_2000_cnt)+sum(time_2001_2200_cnt)+sum(time_2201_0000_cnt))*100 as time_0001_0200_dist,
+   sum(time_0201_0400_cnt) as time_0201_0400_cnt,
+   sum(time_0201_0400_cnt)*1.0/(sum(time_0001_0200_cnt)+sum(time_0201_0400_cnt)+sum(time_0401_0600_cnt)+sum(time_0601_0800_cnt)+sum(time_0801_1000_cnt)+sum(time_1001_1200_cnt)+sum(time_1201_1400_cnt)+sum(time_1401_1600_cnt)+sum(time_1601_1800_cnt)+sum(time_1801_2000_cnt)+sum(time_2001_2200_cnt)+sum(time_2201_0000_cnt))*100 as time_0201_0400_dist,
+   sum(time_0401_0600_cnt) as time_0401_0600_cnt,
+   sum(time_0401_0600_cnt)*1.0/(sum(time_0001_0200_cnt)+sum(time_0201_0400_cnt)+sum(time_0401_0600_cnt)+sum(time_0601_0800_cnt)+sum(time_0801_1000_cnt)+sum(time_1001_1200_cnt)+sum(time_1201_1400_cnt)+sum(time_1401_1600_cnt)+sum(time_1601_1800_cnt)+sum(time_1801_2000_cnt)+sum(time_2001_2200_cnt)+sum(time_2201_0000_cnt))*100 as time_0401_0600_dist,
+   sum(time_0601_0800_cnt) as time_0601_0800_cnt,
+   sum(time_0601_0800_cnt)*1.0/(sum(time_0001_0200_cnt)+sum(time_0201_0400_cnt)+sum(time_0401_0600_cnt)+sum(time_0601_0800_cnt)+sum(time_0801_1000_cnt)+sum(time_1001_1200_cnt)+sum(time_1201_1400_cnt)+sum(time_1401_1600_cnt)+sum(time_1601_1800_cnt)+sum(time_1801_2000_cnt)+sum(time_2001_2200_cnt)+sum(time_2201_0000_cnt))*100 as time_0601_0800_dist,
+   sum(time_0801_1000_cnt) as time_0801_1000_cnt,
+   sum(time_0801_1000_cnt)*1.0/(sum(time_0001_0200_cnt)+sum(time_0201_0400_cnt)+sum(time_0401_0600_cnt)+sum(time_0601_0800_cnt)+sum(time_0801_1000_cnt)+sum(time_1001_1200_cnt)+sum(time_1201_1400_cnt)+sum(time_1401_1600_cnt)+sum(time_1601_1800_cnt)+sum(time_1801_2000_cnt)+sum(time_2001_2200_cnt)+sum(time_2201_0000_cnt))*100 as time_0801_1000_dist,
+   sum(time_1001_1200_cnt) as time_1001_1200_cnt,
+   sum(time_1001_1200_cnt)*1.0/(sum(time_0001_0200_cnt)+sum(time_0201_0400_cnt)+sum(time_0401_0600_cnt)+sum(time_0601_0800_cnt)+sum(time_0801_1000_cnt)+sum(time_1001_1200_cnt)+sum(time_1201_1400_cnt)+sum(time_1401_1600_cnt)+sum(time_1601_1800_cnt)+sum(time_1801_2000_cnt)+sum(time_2001_2200_cnt)+sum(time_2201_0000_cnt))*100 as time_1001_1200_dist,
+   sum(time_1201_1400_cnt) as time_1201_1400_cnt,
+   sum(time_1201_1400_cnt)*1.0/(sum(time_0001_0200_cnt)+sum(time_0201_0400_cnt)+sum(time_0401_0600_cnt)+sum(time_0601_0800_cnt)+sum(time_0801_1000_cnt)+sum(time_1001_1200_cnt)+sum(time_1201_1400_cnt)+sum(time_1401_1600_cnt)+sum(time_1601_1800_cnt)+sum(time_1801_2000_cnt)+sum(time_2001_2200_cnt)+sum(time_2201_0000_cnt))*100 as time_1201_1400_dist,
+   sum(time_1401_1600_cnt) as time_1401_1600_cnt,
+   sum(time_1401_1600_cnt)*1.0/(sum(time_0001_0200_cnt)+sum(time_0201_0400_cnt)+sum(time_0401_0600_cnt)+sum(time_0601_0800_cnt)+sum(time_0801_1000_cnt)+sum(time_1001_1200_cnt)+sum(time_1201_1400_cnt)+sum(time_1401_1600_cnt)+sum(time_1601_1800_cnt)+sum(time_1801_2000_cnt)+sum(time_2001_2200_cnt)+sum(time_2201_0000_cnt))*100 as time_1401_1600_dist,
+   sum(time_1601_1800_cnt) as time_1601_1800_cnt,
+   sum(time_1601_1800_cnt)*1.0/(sum(time_0001_0200_cnt)+sum(time_0201_0400_cnt)+sum(time_0401_0600_cnt)+sum(time_0601_0800_cnt)+sum(time_0801_1000_cnt)+sum(time_1001_1200_cnt)+sum(time_1201_1400_cnt)+sum(time_1401_1600_cnt)+sum(time_1601_1800_cnt)+sum(time_1801_2000_cnt)+sum(time_2001_2200_cnt)+sum(time_2201_0000_cnt))*100 as time_1601_1800_dist,
+   sum(time_1801_2000_cnt) as time_1801_2000_cnt,
+   sum(time_1801_2000_cnt)*1.0/(sum(time_0001_0200_cnt)+sum(time_0201_0400_cnt)+sum(time_0401_0600_cnt)+sum(time_0601_0800_cnt)+sum(time_0801_1000_cnt)+sum(time_1001_1200_cnt)+sum(time_1201_1400_cnt)+sum(time_1401_1600_cnt)+sum(time_1601_1800_cnt)+sum(time_1801_2000_cnt)+sum(time_2001_2200_cnt)+sum(time_2201_0000_cnt))*100 as time_1801_2000_dist,
+   sum(time_2001_2200_cnt) as time_2001_2200_cnt,
+   sum(time_2001_2200_cnt)*1.0/(sum(time_0001_0200_cnt)+sum(time_0201_0400_cnt)+sum(time_0401_0600_cnt)+sum(time_0601_0800_cnt)+sum(time_0801_1000_cnt)+sum(time_1001_1200_cnt)+sum(time_1201_1400_cnt)+sum(time_1401_1600_cnt)+sum(time_1601_1800_cnt)+sum(time_1801_2000_cnt)+sum(time_2001_2200_cnt)+sum(time_2201_0000_cnt))*100 as time_2001_2200_dist,
+   sum(time_2201_0000_cnt) as time_2201_0000_cnt,
+   sum(time_2201_0000_cnt)*1.0/(sum(time_0001_0200_cnt)+sum(time_0201_0400_cnt)+sum(time_0401_0600_cnt)+sum(time_0601_0800_cnt)+sum(time_0801_1000_cnt)+sum(time_1001_1200_cnt)+sum(time_1201_1400_cnt)+sum(time_1401_1600_cnt)+sum(time_1601_1800_cnt)+sum(time_1801_2000_cnt)+sum(time_2001_2200_cnt)+sum(time_2201_0000_cnt))*100 as time_2201_0000_dist
+ FROM public.leoka_assault_time_injury_data
+ GROUP BY data_year
