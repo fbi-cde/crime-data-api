@@ -26,7 +26,6 @@ class SchemaFormater(object):
                 data['age_num'] = AGE_CODES[data['age']['age_code']]
         return data
 
-
 class ApiKeySchema(Schema):
     api_key = marsh_fields.String(
         required=False,
@@ -1301,7 +1300,7 @@ class LeokaAssaultByGroupRegional(ma.ModelSchema):
         model = cdemodels.LeokaAssaultByGroupRegional
         ordered = True
 
-class LeokaAssaultByGroupNational(ma.ModelSchema):
+class LeokaAssaultByGroupNational(ma.ModelSchema,SchemaFormater):
     class Meta:
         model = cdemodels.LeokaAssaultByGroupNational
         ordered = True
@@ -1380,4 +1379,9 @@ class LeokaAssaultWeaponByGroupRegional(ma.ModelSchema):
 class LeokaAssaultWeaponByGroupNational(ma.ModelSchema):
     class Meta:
         model = cdemodels.LeokaAssaultWeaponByGroupNational
+        ordered = True
+
+class TableKeyMapping(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.TableKeyMapping
         ordered = True

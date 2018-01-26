@@ -1946,6 +1946,7 @@ class LeokaAssaultByGroupNational(db.Model):
     __table_args__ = (
         PrimaryKeyConstraint('activity_id', 'data_year'),
     )
+
     data_year  = db.Column(db.Integer)
     activity_name = db.Column(db.String)
     activity_id  = db.Column(db.Integer)
@@ -1977,7 +1978,6 @@ class LeokaAssaultByGroupRegional(db.Model):
     )
     def get(region_name=None):
         query = LeokaAssaultByGroupRegional.query
-
         if region_name:
             query = query.filter(func.lower(LeokaAssaultByGroupRegional.region_name) == func.lower(region_name))
 
@@ -2387,3 +2387,25 @@ class LeokaAssaultWeaponByActivityAgency(db.Model):
     knife_actual = db.Column(db.Integer)
     hands_fists_feet_actual = db.Column(db.Integer)
     other_actual = db.Column(db.Integer)
+
+class TableKeyMapping(db.Model):
+    """
+    Represents Tables mapping to Keys
+    """
+    __tablename__ = 'table_key_mapping'
+    __table_args__ = (
+        PrimaryKeyConstraint('table_name', 'column'),
+    )
+    def get(table_name=None):
+        query = TableKeyMapping.query
+
+        if table_name:
+            query = query.filter(func.lower(TableKeyMapping.table_name) == func.lower(table_name))
+
+        return query
+
+    table_name = db.Column(db.String)
+    column = db.Column(db.String)
+    key = db.Column(db.String)
+    ui_component = db.Column(db.String)
+    ui_text = db.Column(db.String)

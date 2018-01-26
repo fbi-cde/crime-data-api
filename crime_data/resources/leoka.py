@@ -3,7 +3,7 @@ from crime_data.extensions import DEFAULT_MAX_AGE
 from flask.ext.cachecontrol import cache
 from sqlalchemy import func
 
-from crime_data.common import cdemodels, marshmallow_schemas
+from crime_data.common import cdemodels, marshmallow_schemas, munger
 from crime_data.common.base import CdeResource, tuning_page
 from crime_data.common.marshmallow_schemas import ArgumentsSchema
 
@@ -14,6 +14,11 @@ class LeokaAssaultByGroupNational(CdeResource):
     def get(self, args,):
         self.verify_api_key(args)
         query = cdemodels.LeokaAssaultByGroupNational.query
+        print('foobar')
+        print('results:',query.all())
+        setObjs = query.all()
+        creator = munger.UIComponentCreator(query.all(),'stacked', 'Assaults By Group')
+        creator.munge_set()
         return self.with_metadata(query,args)
 
 class LeokaAssaultByGroupRegional(CdeResource):

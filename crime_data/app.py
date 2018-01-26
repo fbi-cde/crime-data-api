@@ -308,7 +308,6 @@ def add_resources(app):
 
     api.add_resource(crime_data.resources.leoka.LeokaAssaultByGroupNational,'/leoka/assault/group/count/national')
     api.add_resource(crime_data.resources.leoka.LeokaAssaultByGroupRegional,'/leoka/assault/group/count/region/<string:region_name>')
-
     api.add_resource(crime_data.resources.leoka.LeokaAssaultByGroupState,'/leoka/assault/group/count/states/<string:state_abbr>')
 
     api.add_resource(crime_data.resources.leoka.LeokaAssaultAssignDistNational,'/leoka/assault/assign-dist/count/national')
