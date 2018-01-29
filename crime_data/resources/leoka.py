@@ -15,23 +15,23 @@ class LeokaAssaultNational(CdeResource):
         if variable == 'assign-dist':
             self.set_schema(marshmallow_schemas.LeokaAssaultAssignDistNational(many=True))
             query = cdemodels.LeokaAssaultAssignDistNational.query
-            creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_assign_dist')
+            creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_assign_dist','activity_name')
         elif variable == 'weapon':
             self.set_schema(marshmallow_schemas.LeokaAssaultWeaponNational(many=True))
             query = cdemodels.LeokaAssaultWeaponNational.query
-            creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_weapon')
+            creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_weapon','')
         elif variable == 'weapon-group':
-            self.set_schema(marshmallow_schemas.LeokaAssaultWeaponByGroupNational(many=True))
+            self.set_schema(marshmallow_schemas.LeokaAssaultWeaponByGroupNational(many=True),'population_group_desc')
             query = cdemodels.LeokaAssaultWeaponByGroupNational.query
             creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_weapon_per_group')
         elif variable == 'weapon-activity':
             self.set_schema(marshmallow_schemas.LeokaAssaultWeaponByActivityNational(many=True))
             query = cdemodels.LeokaAssaultWeaponByActivityNational.query
-            creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_weapon_per_activity')
+            creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_weapon_per_activity','activity_name')
         elif variable == 'group':
             self.set_schema(marshmallow_schemas.LeokaAssaultByGroupNational(many=True))
             query = cdemodels.LeokaAssaultByGroupNational.query
-            creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_group')
+            creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_group','activity_name')
         else:
             return self.with_metadata([], args)
         ui = creator.munge_set()
@@ -45,23 +45,23 @@ class LeokaAssaultRegional(CdeResource):
         if variable == 'assign-dist':
             self.set_schema(marshmallow_schemas.LeokaAssaultAssignDistRegional(many=True))
             query = cdemodels.LeokaAssaultAssignDistRegional.get(region_name=region_name)
-            creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_assign_dist')
+            creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_assign_dist','activity_name')
         elif variable == 'weapon':
             self.set_schema(marshmallow_schemas.LeokaAssaultWeaponRegional(many=True))
             query = cdemodels.LeokaAssaultWeaponRegional.get(region_name=region_name)
-            creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_weapon')
+            creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_weapon','')
         elif variable == 'weapon-group':
             self.set_schema(marshmallow_schemas.LeokaAssaultWeaponByGroupRegional(many=True))
             query = cdemodels.LeokaAssaultWeaponByGroupRegional.get(region_name=region_name)
-            creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_weapon_per_group')
+            creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_weapon_per_group','population_group_desc')
         elif variable == 'weapon-activity':
             self.set_schema(marshmallow_schemas.LeokaAssaultWeaponByActivityRegional(many=True))
             query = cdemodels.LeokaAssaultWeaponByActivityRegional.get(region_name=region_name)
-            creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_weapon_per_activity')
+            creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_weapon_per_activity','activity_name')
         elif variable == 'group':
             self.set_schema(marshmallow_schemas.LeokaAssaultByGroupRegional(many=True))
             query = cdemodels.LeokaAssaultByGroupRegional.get(region_name=region_name)
-            creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_group')
+            creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_group','activity_name')
         else:
             return self.with_metadata([], args)
         ui = creator.munge_set()
@@ -74,23 +74,23 @@ class LeokaAssaultState(CdeResource):
         if variable == 'assign-dist':
             self.set_schema(marshmallow_schemas.LeokaAssaultAssignDistState(many=True))
             query = cdemodels.LeokaAssaultAssignDistState.get(state_abbr=state_abbr)
-            creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_assign_dist')
+            creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_assign_dist','activity_name')
         elif variable == 'weapon':
             self.set_schema(marshmallow_schemas.LeokaAssaultWeaponState(many=True))
             query = cdemodels.LeokaAssaultWeaponState.get(state_abbr=state_abbr)
-            creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_weapon')
+            creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_weapon','')
         elif variable == 'weapon-group':
             self.set_schema(marshmallow_schemas.LeokaAssaultWeaponByGroupState(many=True))
             query = cdemodels.LeokaAssaultWeaponByGroupState.get(state_abbr=state_abbr)
-            creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_weapon_per_group')
+            creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_weapon_per_group','population_group_desc')
         elif variable == 'weapon-activity':
             self.set_schema(marshmallow_schemas.LeokaAssaultWeaponByActivityState(many=True))
             query = cdemodels.LeokaAssaultWeaponByActivityState.get(state_abbr=state_abbr)
-            creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_weapon_per_activity')
+            creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_weapon_per_activity','activity_name')
         elif variable == 'group':
             self.set_schema(marshmallow_schemas.LeokaAssaultByGroupState(many=True))
             query = cdemodels.LeokaAssaultByGroupState.get(state_abbr=state_abbr)
-            creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_group')
+            creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_group','activity_name')
         else:
             return self.with_metadata([], args)
         ui = creator.munge_set()
@@ -103,11 +103,11 @@ class LeokaAssaultAgency(CdeResource):
         if variable == 'assign-dist':
             self.set_schema(marshmallow_schemas.LeokaAssaultAssignDistAgency(many=True))
             query = cdemodels.LeokaAssaultAssignDistAgency.get(ori=ori)
-            creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_assign_dist')
+            creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_assign_dist','activity_name')
         elif variable == 'weapon-activity':
             self.set_schema(marshmallow_schemas.LeokaAssaultWeaponByActivityAgency(many=True))
             query = cdemodels.LeokaAssaultWeaponByActivityAgency.get(ori=ori)
-            creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_weapon_per_activity')
+            creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_weapon_per_activity','activity_name')
         elif variable == 'weapon':
             self.set_schema(marshmallow_schemas.LeokaAssaultWeaponAgency(many=True))
             query = cdemodels.LeokaAssaultWeaponAgency.get(ori=ori)

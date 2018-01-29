@@ -11,9 +11,10 @@ from crime_data.common import cdemodels, marshmallow_schemas
 from crime_data.common.base import CdeResource
 
 class UIComponentCreator(object):
-    def __init__(self,results,table_name):
+    def __init__(self,results,table_name,key_type):
         self.results=results
         self.table_name = table_name
+        self.key_type = key_type
 
     def munge_set(self):
         self.keys = self.fetchKeys()
@@ -22,20 +23,32 @@ class UIComponentCreator(object):
         uiObject = UIObject(self.keys[0].ui_component,self.keys[0].ui_text)
         print("results:",len(self.results))
         for j in range(len(self.keys)):
-            d = Key(self.keys[j].key);
-            k = self.keys[j].key;
-            value = 0;
-            if(len(self.results) == 1):
-                data_year = self.results[0].data_year;
-            else:
-                data_year = self.results[j].data_year;
-            d.data_year = data_year
-            for i in range(len(self.results)):
-                if data_year == self.results[i].data_year:
-                    d.value =  d.value + getattr(self.results[i], self.keys[j].column_name)
+            key = self.keys[j].key
+            value = 0
 
-            keys.append(k)
-            data.append(d)
+            if self.key_type != '':
+                for k in range(len(self.results)):
+                    d = Key(self.keys[j].key)
+                    data_year = self.results[k].data_year
+                    keytype = getattr(self.results[k], self.key_type)
+                    d.setTypeKey(keytype)
+                    d.data_year = data_year
+                    for i in range(len(self.results)):
+                        if data_year == self.results[i].data_year and keytype ==  getattr(self.results[i], self.key_type):
+                            d.value =  d.value + getattr(self.results[i], self.keys[j].column_name)
+                    data.append(d)
+                keys.append(key)
+            else:
+                for k in range(len(self.results)):
+                    d = Key(self.keys[j].key)
+                    data_year = self.results[k].data_year
+                    d.data_year = data_year
+                    for i in range(len(self.results)):
+                        if data_year == self.results[i].data_year:
+                            d.value =  d.value + getattr(self.results[i], self.keys[j].column_name)
+                    data.append(d)
+                keys.append(key)
+
         uiObject.keys = keys
         uiObject.data = data
         return uiObject
@@ -52,6 +65,12 @@ class Key(object):
             self.key = key
             self.value = 0;
             self.data_year = 0;
+            self.key_type = ''
+
+
+        def setTypeKey(self,keytype):
+            self.key_type = keytype
+
 
 class UIObject(object):
     def __init__(self,ui_type,noun):
