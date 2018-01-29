@@ -3,23 +3,19 @@ from crime_data.extensions import DEFAULT_MAX_AGE
 from flask.ext.cachecontrol import cache
 from sqlalchemy import func
 
-from crime_data.common import cdemodels, marshmallow_schemas, munger
+from crime_data.common import cdemodels, marshmallow_schemas, munger, base
 from crime_data.common.base import CdeResource, tuning_page
 from crime_data.common.marshmallow_schemas import ArgumentsSchema
 
 class LeokaAssaultByGroupNational(CdeResource):
-    schema = marshmallow_schemas.LeokaAssaultByGroupNational(many=True)
     @use_args(ArgumentsSchema)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
     def get(self, args,):
         self.verify_api_key(args)
         query = cdemodels.LeokaAssaultByGroupNational.query
-        print('foobar')
-        print('results:',query.all())
-        setObjs = query.all()
-        creator = munger.UIComponentCreator(query.all(),'stacked', 'Assaults By Group')
-        creator.munge_set()
-        return self.with_metadata(query,args)
+        creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_group')
+        ui = creator.munge_set()
+        return self.without_metadata(ui, args)
 
 class LeokaAssaultByGroupRegional(CdeResource):
     schema = marshmallow_schemas.LeokaAssaultByGroupRegional(many=True)
@@ -28,7 +24,10 @@ class LeokaAssaultByGroupRegional(CdeResource):
     def get(self, args, region_name=None):
         self.verify_api_key(args)
         query = cdemodels.LeokaAssaultByGroupRegional.get(region_name=region_name)
-        return self.with_metadata(query,args)
+        creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_group')
+        ui = creator.munge_set()
+        return self.without_metadata(ui, args)
+
 
 class LeokaAssaultByGroupState(CdeResource):
     schema = marshmallow_schemas.LeokaAssaultByGroupState(many=True)
@@ -37,7 +36,9 @@ class LeokaAssaultByGroupState(CdeResource):
     def get(self, args, state_abbr=None):
         self.verify_api_key(args)
         query = cdemodels.LeokaAssaultByGroupState.get(state_abbr=state_abbr)
-        return self.with_metadata(query,args)
+        creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_group')
+        ui = creator.munge_set()
+        return self.without_metadata(ui, args)
 
 class LeokaAssaultAssignDistNational(CdeResource):
     schema = marshmallow_schemas.LeokaAssaultAssignDistNational(many=True)
@@ -46,7 +47,9 @@ class LeokaAssaultAssignDistNational(CdeResource):
     def get(self, args,):
         self.verify_api_key(args)
         query = cdemodels.LeokaAssaultAssignDistNational.query
-        return self.with_metadata(query,args)
+        creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_assign_dist')
+        ui = creator.munge_set()
+        return self.without_metadata(ui, args)
 
 class LeokaAssaultAssignDistRegional(CdeResource):
     schema = marshmallow_schemas.LeokaAssaultAssignDistRegional(many=True)
@@ -55,7 +58,9 @@ class LeokaAssaultAssignDistRegional(CdeResource):
     def get(self, args, region_name=None):
         self.verify_api_key(args)
         query = cdemodels.LeokaAssaultAssignDistRegional.get(region_name=region_name)
-        return self.with_metadata(query,args)
+        creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_assign_dist')
+        ui = creator.munge_set()
+        return self.without_metadata(ui, args)
 
 class LeokaAssaultAssignDistState(CdeResource):
     schema = marshmallow_schemas.LeokaAssaultAssignDistState(many=True)
@@ -64,7 +69,9 @@ class LeokaAssaultAssignDistState(CdeResource):
     def get(self, args, state_abbr=None):
         self.verify_api_key(args)
         query = cdemodels.LeokaAssaultAssignDistState.get(state_abbr=state_abbr)
-        return self.with_metadata(query,args)
+        creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_assign_dist')
+        ui = creator.munge_set()
+        return self.without_metadata(ui, args)
 
 class LeokaAssaultAssignDistAgency(CdeResource):
     schema = marshmallow_schemas.LeokaAssaultAssignDistAgency(many=True)
@@ -73,7 +80,9 @@ class LeokaAssaultAssignDistAgency(CdeResource):
     def get(self, args, ori=None):
         self.verify_api_key(args)
         query = cdemodels.LeokaAssaultAssignDistAgency.get(ori=ori)
-        return self.with_metadata(query,args)
+        creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_assign_dist')
+        ui = creator.munge_set()
+        return self.without_metadata(ui, args)
 
 class LeokaAssaultWeaponNational(CdeResource):
     schema = marshmallow_schemas.LeokaAssaultWeaponNational(many=True)
@@ -82,7 +91,9 @@ class LeokaAssaultWeaponNational(CdeResource):
     def get(self, args,):
         self.verify_api_key(args)
         query = cdemodels.LeokaAssaultWeaponNational.query
-        return self.with_metadata(query,args)
+        creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_weapon')
+        ui = creator.munge_set()
+        return self.without_metadata(ui, args)
 
 class LeokaAssaultWeaponRegional(CdeResource):
     schema = marshmallow_schemas.LeokaAssaultWeaponRegional(many=True)
@@ -91,7 +102,9 @@ class LeokaAssaultWeaponRegional(CdeResource):
     def get(self, args, region_name=None):
         self.verify_api_key(args)
         query = cdemodels.LeokaAssaultWeaponRegional.get(region_name=region_name)
-        return self.with_metadata(query,args)
+        creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_weapon')
+        ui = creator.munge_set()
+        return self.without_metadata(ui, args)
 
 class LeokaAssaultWeaponState(CdeResource):
     schema = marshmallow_schemas.LeokaAssaultWeaponState(many=True)
@@ -100,7 +113,9 @@ class LeokaAssaultWeaponState(CdeResource):
     def get(self, args, state_abbr=None):
         self.verify_api_key(args)
         query = cdemodels.LeokaAssaultWeaponState.get(state_abbr=state_abbr)
-        return self.with_metadata(query,args)
+        creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_weapon')
+        ui = creator.munge_set()
+        return self.without_metadata(ui, args)
 
 class LeokaAssaultWeaponAgency(CdeResource):
     schema = marshmallow_schemas.LeokaAssaultWeaponAgency(many=True)
@@ -109,7 +124,9 @@ class LeokaAssaultWeaponAgency(CdeResource):
     def get(self, args, ori=None):
         self.verify_api_key(args)
         query = cdemodels.LeokaAssaultWeaponAgency.get(ori=ori)
-        return self.with_metadata(query,args)
+        creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_weapon')
+        ui = creator.munge_set()
+        return self.without_metadata(ui, args)
 
 class LeokaAssaultWeaponByGroupNational(CdeResource):
     schema = marshmallow_schemas.LeokaAssaultWeaponByGroupNational(many=True)
@@ -118,7 +135,9 @@ class LeokaAssaultWeaponByGroupNational(CdeResource):
     def get(self, args,):
         self.verify_api_key(args)
         query = cdemodels.LeokaAssaultWeaponByGroupNational.query
-        return self.with_metadata(query,args)
+        creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_weapon_per_group')
+        ui = creator.munge_set()
+        return self.without_metadata(ui, args)
 
 class LeokaAssaultWeaponByGroupRegional(CdeResource):
     schema = marshmallow_schemas.LeokaAssaultWeaponByGroupRegional(many=True)
@@ -127,7 +146,9 @@ class LeokaAssaultWeaponByGroupRegional(CdeResource):
     def get(self, args, region_name=None):
         self.verify_api_key(args)
         query = cdemodels.LeokaAssaultWeaponByGroupRegional.get(region_name=region_name)
-        return self.with_metadata(query,args)
+        creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_weapon_per_group')
+        ui = creator.munge_set()
+        return self.without_metadata(ui, args)
 
 class LeokaAssaultWeaponByGroupState(CdeResource):
     schema = marshmallow_schemas.LeokaAssaultWeaponByGroupState(many=True)
@@ -136,7 +157,9 @@ class LeokaAssaultWeaponByGroupState(CdeResource):
     def get(self, args, state_abbr=None):
         self.verify_api_key(args)
         query = cdemodels.LeokaAssaultWeaponByGroupState.get(state_abbr=state_abbr)
-        return self.with_metadata(query,args)
+        creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_weapon_per_group')
+        ui = creator.munge_set()
+        return self.without_metadata(ui, args)
 
 class LeokaAssaultWeaponByActivityNational(CdeResource):
     schema = marshmallow_schemas.LeokaAssaultWeaponByActivityNational(many=True)
@@ -145,7 +168,9 @@ class LeokaAssaultWeaponByActivityNational(CdeResource):
     def get(self, args,):
         self.verify_api_key(args)
         query = cdemodels.LeokaAssaultWeaponByActivityNational.query
-        return self.with_metadata(query,args)
+        creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_weapon_per_activity')
+        ui = creator.munge_set()
+        return self.without_metadata(ui, args)
 
 class LeokaAssaultWeaponByActivityRegional(CdeResource):
     schema = marshmallow_schemas.LeokaAssaultWeaponByActivityRegional(many=True)
@@ -154,7 +179,9 @@ class LeokaAssaultWeaponByActivityRegional(CdeResource):
     def get(self, args, region_name=None):
         self.verify_api_key(args)
         query = cdemodels.LeokaAssaultWeaponByActivityRegional.get(region_name=region_name)
-        return self.with_metadata(query,args)
+        creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_weapon_per_activity')
+        ui = creator.munge_set()
+        return self.without_metadata(ui, args)
 
 class LeokaAssaultWeaponByActivityState(CdeResource):
     schema = marshmallow_schemas.LeokaAssaultWeaponByActivityState(many=True)
@@ -163,7 +190,9 @@ class LeokaAssaultWeaponByActivityState(CdeResource):
     def get(self, args, state_abbr=None):
         self.verify_api_key(args)
         query = cdemodels.LeokaAssaultWeaponByActivityState.get(state_abbr=state_abbr)
-        return self.with_metadata(query,args)
+        creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_weapon_per_activity')
+        ui = creator.munge_set()
+        return self.without_metadata(ui, args)
 
 class LeokaAssaultWeaponByActivityAgency(CdeResource):
     schema = marshmallow_schemas.LeokaAssaultWeaponByActivityAgency(many=True)
@@ -172,4 +201,6 @@ class LeokaAssaultWeaponByActivityAgency(CdeResource):
     def get(self, args, ori=None):
         self.verify_api_key(args)
         query = cdemodels.LeokaAssaultWeaponByActivityAgency.get(ori=ori)
-        return self.with_metadata(query,args)
+        creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_weapon_per_activity')
+        ui = creator.munge_set()
+        return self.without_metadata(ui, args)

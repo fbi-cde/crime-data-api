@@ -2372,10 +2372,8 @@ class LeokaAssaultWeaponByActivityAgency(db.Model):
     )
     def get(ori=None):
         query = LeokaAssaultWeaponByActivityAgency.query
-
         if ori:
             query = query.filter(func.lower(LeokaAssaultWeaponByActivityAgency.ori) == func.lower(ori))
-
         return query
 
     data_year  = db.Column(db.Integer)
@@ -2394,7 +2392,7 @@ class TableKeyMapping(db.Model):
     """
     __tablename__ = 'table_key_mapping'
     __table_args__ = (
-        PrimaryKeyConstraint('table_name', 'column'),
+        PrimaryKeyConstraint('table_name','key'),
     )
     def get(table_name=None):
         query = TableKeyMapping.query
@@ -2405,7 +2403,7 @@ class TableKeyMapping(db.Model):
         return query
 
     table_name = db.Column(db.String)
-    column = db.Column(db.String)
+    column_name = db.Column(db.String)
     key = db.Column(db.String)
     ui_component = db.Column(db.String)
     ui_text = db.Column(db.String)
