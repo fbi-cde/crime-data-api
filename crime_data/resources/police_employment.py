@@ -13,7 +13,7 @@ class PoliceEmploymentDataAgency(CdeResource):
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
     def get(self, args, ori=None, state_abbr=None):
         self.verify_api_key(args)
-        query = cdemodels.PoliceEmploymentDataAgency.get(state_abbr=state_abbr,ori=ori)
+        query = cdemodels.PoliceEmploymentDataAgency.get(ori=ori)
         return self.with_metadata(query,args)
 
 class PoliceEmploymentDataState(CdeResource):

@@ -1909,14 +1909,13 @@ class PoliceEmploymentDataAgency(db.Model):
     __tablename__ = 'police_employment_agency'
     __table_args__ = (UniqueConstraint('data_year','ori'), )
 
-    def get(state_abbr=None, ori=None):
+    def get(ori=None):
         """
         A method to find a police employment data by agency
         """
         query = PoliceEmploymentDataAgency.query
 
-        if state_abbr and ori:
-            query = query.filter(func.lower(PoliceEmploymentDataAgency.state_abbr) == func.lower(state_abbr))
+        if ori:
             query = query.filter(func.lower(PoliceEmploymentDataAgency.ori) == func.lower(ori))
 
         return query
@@ -2407,3 +2406,40 @@ class TableKeyMapping(db.Model):
     key = db.Column(db.String)
     ui_component = db.Column(db.String)
     ui_text = db.Column(db.String)
+
+class LeokaAssaultByTimeDistribution(db.Model):
+    """
+    Represents Leoka Assaults by time distribution
+    """
+    __tablename__ = 'leoka_assault_by_time_dist'
+    __table_args__ = (PrimaryKeyConstraint('data_year', 'total_cnt'),)
+    data_year  = db.Column(db.Integer)
+    total_cnt  = db.Column(db.Integer)
+    total_am_cnt = db.Column(db.Integer)
+    total_am_dist = db.Column(db.Float)
+    total_pm_cnt = db.Column(db.Integer)
+    total_pm_dist = db.Column(db.Float)
+    time_0001_0200_cnt = db.Column(db.Integer)
+    time_0001_0200_dist = db.Column(db.Float)
+    time_0201_0400_cnt = db.Column(db.Integer)
+    time_0201_0400_dist = db.Column(db.Float)
+    time_0401_0600_cnt = db.Column(db.Integer)
+    time_0401_0600_dist = db.Column(db.Float)
+    time_0601_0800_cnt = db.Column(db.Integer)
+    time_0601_0800_dist = db.Column(db.Float)
+    time_0801_1000_cnt = db.Column(db.Integer)
+    time_0801_1000_dist = db.Column(db.Float)
+    time_1001_1200_cnt = db.Column(db.Integer)
+    time_1001_1200_dist = db.Column(db.Float)
+    time_1201_1400_cnt = db.Column(db.Integer)
+    time_1201_1400_dist = db.Column(db.Float)
+    time_1401_1600_cnt = db.Column(db.Integer)
+    time_1401_1600_dist = db.Column(db.Float)
+    time_1601_1800_cnt = db.Column(db.Integer)
+    time_1601_1800_dist = db.Column(db.Float)
+    time_1801_2000_cnt = db.Column(db.Integer)
+    time_1801_2000_dist = db.Column(db.Float)
+    time_2001_2200_cnt = db.Column(db.Integer)
+    time_2001_2200_dist = db.Column(db.Float)
+    time_2201_0000_cnt = db.Column(db.Integer)
+    time_2201_0000_dist = db.Column(db.Float)

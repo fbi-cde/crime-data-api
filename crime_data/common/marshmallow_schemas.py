@@ -1385,3 +1385,8 @@ class TableKeyMapping(ma.ModelSchema):
     class Meta:
         model = cdemodels.TableKeyMapping
         ordered = True
+
+class LeokaAssaultByTimeDistribution(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.LeokaAssaultByTimeDistribution
+        ordered = True

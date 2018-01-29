@@ -17,16 +17,18 @@ class UIComponentCreator(object):
 
     def munge_set(self):
         self.keys = self.fetchKeys()
-        print('Keys',self.keys)
         data =[]
         keys = []
         uiObject = UIObject(self.keys[0].ui_component,self.keys[0].ui_text)
-
+        print("results:",len(self.results))
         for j in range(len(self.keys)):
             d = Key(self.keys[j].key);
             k = self.keys[j].key;
             value = 0;
-            data_year = self.results[j].data_year;
+            if(len(self.results) == 1):
+                data_year = self.results[0].data_year;
+            else:
+                data_year = self.results[j].data_year;
             d.data_year = data_year
             for i in range(len(self.results)):
                 if data_year == self.results[i].data_year:
