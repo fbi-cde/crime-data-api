@@ -85,6 +85,16 @@ JOIN (SELECT a.data_year,
  ) table9 ON table1.activity_id=table9.activity_id
  ORDER BY activity_id;
 
+ CREATE MATERIALIZED VIEW public.leoka_assault_by_group_national_totals AS
+ select lc.data_year, lc.activity_name, lc.activity_id,a.population_group_code,
+ sum(lc.firearm_actual)+sum(lc.knife_actual)+sum(lc.hands_fists_feet_actual)+sum(lc.other_actual) as group_count,
+ sum(lc.cleared_count) as cleared_count
+ FROM public.leoka_assault_activity_assignemnt_data lc
+ JOIN public.agency_data a on a.agency_id=lc.agency_id
+ GROUP BY lc.data_year,lc.activity_name, lc.activity_id, a.population_group_code
+ ORDER BY lc.data_year, lc.activity_id;
+
+
  CREATE MATERIALIZED VIEW public.leoka_assault_by_group_regional_totals AS
  select lc.data_year, lc.activity_name, lc.activity_id, a.region_name,a.region_code,a.population_group_code,
  sum(lc.firearm_actual)+sum(lc.knife_actual)+sum(lc.hands_fists_feet_actual)+sum(lc.other_actual) as group_count,

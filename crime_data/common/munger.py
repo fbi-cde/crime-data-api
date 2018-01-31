@@ -37,7 +37,10 @@ class UIComponentCreator(object):
                         if data_year == self.results[i].data_year and keytype ==  getattr(self.results[i], self.key_type):
                             d.value =  d.value + getattr(self.results[i], self.keys[j].column_name)
                     data.append(d)
+                    print('d.value:',d.value,getattr(self.results[i], self.key_type))
                 keys.append(key)
+                print('key:',key)
+
             else:
                 for k in range(len(self.results)):
                     d = Key(self.keys[j].key)

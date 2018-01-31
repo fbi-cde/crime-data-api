@@ -23,7 +23,7 @@ class LeokaAssaultNational(CdeResource):
         elif variable == 'weapon-group':
             self.set_schema(marshmallow_schemas.LeokaAssaultWeaponByGroupNational(many=True),'population_group_desc')
             query = cdemodels.LeokaAssaultWeaponByGroupNational.query
-            creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_weapon_per_group')
+            creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_weapon_per_group','population_group_desc')
         elif variable == 'weapon-activity':
             self.set_schema(marshmallow_schemas.LeokaAssaultWeaponByActivityNational(many=True))
             query = cdemodels.LeokaAssaultWeaponByActivityNational.query
