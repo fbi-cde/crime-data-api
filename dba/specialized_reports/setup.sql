@@ -15,7 +15,7 @@ GROUP by incident_id;
 -- circumstance. Since we are going to use this kind of flat or
 -- crosstab style in our CSVs, we will do this for a few tables.
 DROP TABLE IF EXISTS flat_nibrs_victim_circumstances CASCADE;
-CREATE TABLE nibrs_victim_circumstances_flat (
+CREATE TABLE flat_nibrs_victim_circumstances (
   victim_id bigint PRIMARY KEY,
   circumstance1_code smallint,
   circumstance1_name varchar(100),
@@ -423,7 +423,7 @@ ON CONFLICT (victim_id) DO UPDATE SET homicide=flat_nibrs_victim_violent_offense
   									  aggravated_assault=flat_nibrs_victim_violent_offense.aggravated_assault,
   									  simple_assault=flat_nibrs_victim_violent_offense.simple_assault,
   									  intimidation=flat_nibrs_victim_violent_offense.intimidation;
-------
+
 INSERT INTO flat_nibrs_victim_violent_offense (victim_id, sodomy)
 SELECT v.victim_id, 1
 FROM nibrs_victim v
@@ -775,3 +775,296 @@ FROM nibrs_weapon
 JOIN nibrs_weapon_type ON nibrs_weapon_type.weapon_id = nibrs_weapon.weapon_id
 JOIN nibrs_offense ON nibrs_offense.offense_id = nibrs_weapon.offense_id
 WHERE flat_nibrs_incident_weapons.incident_id = nibrs_offense.incident_id AND nibrs_weapon_type.weapon_code = '99';
+
+--
+-- This is a mapping from the victim_id to weapons
+DROP TABLE IF EXISTS flat_nibrs_victim_weapons;
+CREATE TABLE flat_nibrs_victim_weapons (
+  victim_id bigint PRIMARY KEY,
+  unarmed smallint NOT NULL DEFAULT 0,
+  firearm smallint NOT NULL DEFAULT 0,
+  handgun smallint NOT NULL DEFAULT 0,
+  rifle smallint NOT NULL DEFAULT 0,
+  shotgun smallint NOT NULL DEFAULT 0,
+  other_firearm smallint NOT NULL DEFAULT 0,
+  automatic_firearm smallint NOT NULL DEFAULT 0,
+  automatic_handgun smallint NOT NULL DEFAULT 0,
+  automatic_rifle smallint NOT NULL DEFAULT 0,
+  automatic_shotgun smallint NOT NULL DEFAULT 0,
+  automatic_other_firearm smallint NOT NULL DEFAULT 0,
+  pushed_out_window smallint NOT NULL DEFAULT 0,
+  drowning smallint NOT NULL DEFAULT 0,
+  strangulation smallint NOT NULL DEFAULT 0,
+  lethal_cutting smallint NOT NULL DEFAULT 0,
+  club smallint NOT NULL DEFAULT 0,
+  knife smallint NOT NULL DEFAULT 0,
+  blunt_object smallint NOT NULL DEFAULT 0,
+  motor_vehicle smallint NOT NULL DEFAULT 0,
+  personal_weapons smallint NOT NULL DEFAULT 0,
+  poison smallint NOT NULL DEFAULT 0,
+  explosives smallint NOT NULL DEFAULT 0,
+  fire smallint NOT NULL DEFAULT 0,
+  drugs smallint NOT NULL DEFAULT 0,
+  asphyxiation smallint NOT NULL DEFAULT 0,
+  other_weapon smallint NOT NULL DEFAULT 0,
+  unknown_weapon smallint NOT NULL DEFAULT 0,
+  no_weapon smallint NOT NULL DEFAULT 0
+);
+
+INSERT INTO flat_nibrs_victim_weapons
+SELECT DISTINCT vo.victim_id
+FROM nibrs_weapon w
+JOIN nibrs_offense o ON w.offense_id = o.offense_id
+JOIN nibrs_victim_offense vo ON vo.offense_id = o.offense_id;
+
+UPDATE flat_nibrs_victim_weapons
+SET automatic_firearm=1
+FROM nibrs_weapon
+JOIN nibrs_weapon_type ON nibrs_weapon_type.weapon_id = nibrs_weapon.weapon_id
+JOIN nibrs_offense ON nibrs_offense.offense_id = nibrs_weapon.offense_id
+JOIN nibrs_victim_offense ON nibrs_victim_offense.offense_id = nibrs_offense.offense_id
+WHERE flat_nibrs_victim_weapons.victim_id = nibrs_victim_offense.victim_id
+AND nibrs_weapon_type.weapon_code = '11A';
+
+UPDATE flat_nibrs_victim_weapons
+SET automatic_handgun=1
+FROM nibrs_weapon
+JOIN nibrs_weapon_type ON nibrs_weapon_type.weapon_id = nibrs_weapon.weapon_id
+JOIN nibrs_offense ON nibrs_offense.offense_id = nibrs_weapon.offense_id
+JOIN nibrs_victim_offense ON nibrs_victim_offense.offense_id = nibrs_offense.offense_id
+WHERE flat_nibrs_victim_weapons.victim_id = nibrs_victim_offense.victim_id
+AND nibrs_weapon_type.weapon_code = '12A';
+
+UPDATE flat_nibrs_victim_weapons
+SET automatic_rifle=1
+FROM nibrs_weapon
+JOIN nibrs_weapon_type ON nibrs_weapon_type.weapon_id = nibrs_weapon.weapon_id
+JOIN nibrs_offense ON nibrs_offense.offense_id = nibrs_weapon.offense_id
+JOIN nibrs_victim_offense ON nibrs_victim_offense.offense_id = nibrs_offense.offense_id
+WHERE flat_nibrs_victim_weapons.victim_id = nibrs_victim_offense.victim_id
+AND nibrs_weapon_type.weapon_code = '13A';
+
+UPDATE flat_nibrs_victim_weapons
+SET automatic_shotgun=1
+FROM nibrs_weapon
+JOIN nibrs_weapon_type ON nibrs_weapon_type.weapon_id = nibrs_weapon.weapon_id
+JOIN nibrs_offense ON nibrs_offense.offense_id = nibrs_weapon.offense_id
+JOIN nibrs_victim_offense ON nibrs_victim_offense.offense_id = nibrs_offense.offense_id
+WHERE flat_nibrs_victim_weapons.victim_id = nibrs_victim_offense.victim_id
+AND nibrs_weapon_type.weapon_code = '14A';
+
+UPDATE flat_nibrs_victim_weapons
+SET automatic_other_firearm=1
+FROM nibrs_weapon
+JOIN nibrs_weapon_type ON nibrs_weapon_type.weapon_id = nibrs_weapon.weapon_id
+JOIN nibrs_offense ON nibrs_offense.offense_id = nibrs_weapon.offense_id
+JOIN nibrs_victim_offense ON nibrs_victim_offense.offense_id = nibrs_offense.offense_id
+WHERE flat_nibrs_victim_weapons.victim_id = nibrs_victim_offense.victim_id
+AND nibrs_weapon_type.weapon_code = '14A';
+
+UPDATE flat_nibrs_victim_weapons
+SET firearm=1
+FROM nibrs_weapon
+JOIN nibrs_weapon_type ON nibrs_weapon_type.weapon_id = nibrs_weapon.weapon_id
+JOIN nibrs_offense ON nibrs_offense.offense_id = nibrs_weapon.offense_id
+JOIN nibrs_victim_offense ON nibrs_victim_offense.offense_id = nibrs_offense.offense_id
+WHERE flat_nibrs_victim_weapons.victim_id = nibrs_victim_offense.victim_id
+AND nibrs_weapon_type.weapon_code = '11';
+
+UPDATE flat_nibrs_victim_weapons
+SET handgun=1
+FROM nibrs_weapon
+JOIN nibrs_weapon_type ON nibrs_weapon_type.weapon_id = nibrs_weapon.weapon_id
+JOIN nibrs_offense ON nibrs_offense.offense_id = nibrs_weapon.offense_id
+JOIN nibrs_victim_offense ON nibrs_victim_offense.offense_id = nibrs_offense.offense_id
+WHERE flat_nibrs_victim_weapons.victim_id = nibrs_victim_offense.victim_id
+AND nibrs_weapon_type.weapon_code = '12';
+
+UPDATE flat_nibrs_victim_weapons
+SET rifle=1
+FROM nibrs_weapon
+JOIN nibrs_weapon_type ON nibrs_weapon_type.weapon_id = nibrs_weapon.weapon_id
+JOIN nibrs_offense ON nibrs_offense.offense_id = nibrs_weapon.offense_id
+JOIN nibrs_victim_offense ON nibrs_victim_offense.offense_id = nibrs_offense.offense_id
+WHERE flat_nibrs_victim_weapons.victim_id = nibrs_victim_offense.victim_id
+AND nibrs_weapon_type.weapon_code = '13';
+
+UPDATE flat_nibrs_victim_weapons
+SET shotgun=1
+FROM nibrs_weapon
+JOIN nibrs_weapon_type ON nibrs_weapon_type.weapon_id = nibrs_weapon.weapon_id
+JOIN nibrs_offense ON nibrs_offense.offense_id = nibrs_weapon.offense_id
+JOIN nibrs_victim_offense ON nibrs_victim_offense.offense_id = nibrs_offense.offense_id
+WHERE flat_nibrs_victim_weapons.victim_id = nibrs_victim_offense.victim_id
+AND nibrs_weapon_type.weapon_code = '14';
+
+UPDATE flat_nibrs_victim_weapons
+SET other_firearm=1
+FROM nibrs_weapon
+JOIN nibrs_weapon_type ON nibrs_weapon_type.weapon_id = nibrs_weapon.weapon_id
+JOIN nibrs_offense ON nibrs_offense.offense_id = nibrs_weapon.offense_id
+JOIN nibrs_victim_offense ON nibrs_victim_offense.offense_id = nibrs_offense.offense_id
+WHERE flat_nibrs_victim_weapons.victim_id = nibrs_victim_offense.victim_id
+AND nibrs_weapon_type.weapon_code = '15';
+
+UPDATE flat_nibrs_victim_weapons
+SET pushed_out_window=1
+FROM nibrs_weapon
+JOIN nibrs_weapon_type ON nibrs_weapon_type.weapon_id = nibrs_weapon.weapon_id
+JOIN nibrs_offense ON nibrs_offense.offense_id = nibrs_weapon.offense_id
+JOIN nibrs_victim_offense ON nibrs_victim_offense.offense_id = nibrs_offense.offense_id
+WHERE flat_nibrs_victim_weapons.victim_id = nibrs_victim_offense.victim_id
+AND nibrs_weapon_type.weapon_code = '55';
+
+UPDATE flat_nibrs_victim_weapons
+SET drowning=1
+FROM nibrs_weapon
+JOIN nibrs_weapon_type ON nibrs_weapon_type.weapon_id = nibrs_weapon.weapon_id
+JOIN nibrs_offense ON nibrs_offense.offense_id = nibrs_weapon.offense_id
+JOIN nibrs_victim_offense ON nibrs_victim_offense.offense_id = nibrs_offense.offense_id
+WHERE flat_nibrs_victim_weapons.victim_id = nibrs_victim_offense.victim_id
+AND nibrs_weapon_type.weapon_code = '75';
+
+UPDATE flat_nibrs_victim_weapons
+SET strangulation=1
+FROM nibrs_weapon
+JOIN nibrs_weapon_type ON nibrs_weapon_type.weapon_id = nibrs_weapon.weapon_id
+JOIN nibrs_offense ON nibrs_offense.offense_id = nibrs_weapon.offense_id
+JOIN nibrs_victim_offense ON nibrs_victim_offense.offense_id = nibrs_offense.offense_id
+WHERE flat_nibrs_victim_weapons.victim_id = nibrs_victim_offense.victim_id
+AND nibrs_weapon_type.weapon_code = '80';
+
+UPDATE flat_nibrs_victim_weapons
+SET unarmed=1
+FROM nibrs_weapon
+JOIN nibrs_weapon_type ON nibrs_weapon_type.weapon_id = nibrs_weapon.weapon_id
+JOIN nibrs_offense ON nibrs_offense.offense_id = nibrs_weapon.offense_id
+JOIN nibrs_victim_offense ON nibrs_victim_offense.offense_id = nibrs_offense.offense_id
+WHERE flat_nibrs_victim_weapons.victim_id = nibrs_victim_offense.victim_id
+AND nibrs_weapon_type.weapon_code = '01';
+
+UPDATE flat_nibrs_victim_weapons
+SET lethal_cutting=1
+FROM nibrs_weapon
+JOIN nibrs_weapon_type ON nibrs_weapon_type.weapon_id = nibrs_weapon.weapon_id
+JOIN nibrs_offense ON nibrs_offense.offense_id = nibrs_weapon.offense_id
+JOIN nibrs_victim_offense ON nibrs_victim_offense.offense_id = nibrs_offense.offense_id
+WHERE flat_nibrs_victim_weapons.victim_id = nibrs_victim_offense.victim_id
+AND nibrs_weapon_type.weapon_code = '16';
+
+UPDATE flat_nibrs_victim_weapons
+SET club=1
+FROM nibrs_weapon
+JOIN nibrs_weapon_type ON nibrs_weapon_type.weapon_id = nibrs_weapon.weapon_id
+JOIN nibrs_offense ON nibrs_offense.offense_id = nibrs_weapon.offense_id
+JOIN nibrs_victim_offense ON nibrs_victim_offense.offense_id = nibrs_offense.offense_id
+WHERE flat_nibrs_victim_weapons.victim_id = nibrs_victim_offense.victim_id
+AND nibrs_weapon_type.weapon_code = '17';
+
+UPDATE flat_nibrs_victim_weapons
+SET knife=1
+FROM nibrs_weapon
+JOIN nibrs_weapon_type ON nibrs_weapon_type.weapon_id = nibrs_weapon.weapon_id
+JOIN nibrs_offense ON nibrs_offense.offense_id = nibrs_weapon.offense_id
+JOIN nibrs_victim_offense ON nibrs_victim_offense.offense_id = nibrs_offense.offense_id
+WHERE flat_nibrs_victim_weapons.victim_id = nibrs_victim_offense.victim_id
+AND nibrs_weapon_type.weapon_code = '20';
+
+UPDATE flat_nibrs_victim_weapons
+SET blunt_object=1
+FROM nibrs_weapon
+JOIN nibrs_weapon_type ON nibrs_weapon_type.weapon_id = nibrs_weapon.weapon_id
+JOIN nibrs_offense ON nibrs_offense.offense_id = nibrs_weapon.offense_id
+JOIN nibrs_victim_offense ON nibrs_victim_offense.offense_id = nibrs_offense.offense_id
+WHERE flat_nibrs_victim_weapons.victim_id = nibrs_victim_offense.victim_id
+AND nibrs_weapon_type.weapon_code = '30';
+
+UPDATE flat_nibrs_victim_weapons
+SET motor_vehicle=1
+FROM nibrs_weapon
+JOIN nibrs_weapon_type ON nibrs_weapon_type.weapon_id = nibrs_weapon.weapon_id
+JOIN nibrs_offense ON nibrs_offense.offense_id = nibrs_weapon.offense_id
+JOIN nibrs_victim_offense ON nibrs_victim_offense.offense_id = nibrs_offense.offense_id
+WHERE flat_nibrs_victim_weapons.victim_id = nibrs_victim_offense.victim_id
+AND nibrs_weapon_type.weapon_code = '35';
+
+UPDATE flat_nibrs_victim_weapons
+SET personal_weapons=1
+FROM nibrs_weapon
+JOIN nibrs_weapon_type ON nibrs_weapon_type.weapon_id = nibrs_weapon.weapon_id
+JOIN nibrs_offense ON nibrs_offense.offense_id = nibrs_weapon.offense_id
+JOIN nibrs_victim_offense ON nibrs_victim_offense.offense_id = nibrs_offense.offense_id
+WHERE flat_nibrs_victim_weapons.victim_id = nibrs_victim_offense.victim_id
+AND nibrs_weapon_type.weapon_code = '40';
+
+UPDATE flat_nibrs_victim_weapons
+SET poison=1
+FROM nibrs_weapon
+JOIN nibrs_weapon_type ON nibrs_weapon_type.weapon_id = nibrs_weapon.weapon_id
+JOIN nibrs_offense ON nibrs_offense.offense_id = nibrs_weapon.offense_id
+JOIN nibrs_victim_offense ON nibrs_victim_offense.offense_id = nibrs_offense.offense_id
+WHERE flat_nibrs_victim_weapons.victim_id = nibrs_victim_offense.victim_id
+AND nibrs_weapon_type.weapon_code = '50';
+
+UPDATE flat_nibrs_victim_weapons
+SET explosives=1
+FROM nibrs_weapon
+JOIN nibrs_weapon_type ON nibrs_weapon_type.weapon_id = nibrs_weapon.weapon_id
+JOIN nibrs_offense ON nibrs_offense.offense_id = nibrs_weapon.offense_id
+JOIN nibrs_victim_offense ON nibrs_victim_offense.offense_id = nibrs_offense.offense_id
+WHERE flat_nibrs_victim_weapons.victim_id = nibrs_victim_offense.victim_id
+AND nibrs_weapon_type.weapon_code = '60';
+
+UPDATE flat_nibrs_victim_weapons
+SET fire=1
+FROM nibrs_weapon
+JOIN nibrs_weapon_type ON nibrs_weapon_type.weapon_id = nibrs_weapon.weapon_id
+JOIN nibrs_offense ON nibrs_offense.offense_id = nibrs_weapon.offense_id
+JOIN nibrs_victim_offense ON nibrs_victim_offense.offense_id = nibrs_offense.offense_id
+WHERE flat_nibrs_victim_weapons.victim_id = nibrs_victim_offense.victim_id
+AND nibrs_weapon_type.weapon_code = '65';
+
+UPDATE flat_nibrs_victim_weapons
+SET drugs=1
+FROM nibrs_weapon
+JOIN nibrs_weapon_type ON nibrs_weapon_type.weapon_id = nibrs_weapon.weapon_id
+JOIN nibrs_offense ON nibrs_offense.offense_id = nibrs_weapon.offense_id
+JOIN nibrs_victim_offense ON nibrs_victim_offense.offense_id = nibrs_offense.offense_id
+WHERE flat_nibrs_victim_weapons.victim_id = nibrs_victim_offense.victim_id
+AND nibrs_weapon_type.weapon_code = '70';
+
+UPDATE flat_nibrs_victim_weapons
+SET asphyxiation=1
+FROM nibrs_weapon
+JOIN nibrs_weapon_type ON nibrs_weapon_type.weapon_id = nibrs_weapon.weapon_id
+JOIN nibrs_offense ON nibrs_offense.offense_id = nibrs_weapon.offense_id
+JOIN nibrs_victim_offense ON nibrs_victim_offense.offense_id = nibrs_offense.offense_id
+WHERE flat_nibrs_victim_weapons.victim_id = nibrs_victim_offense.victim_id
+AND nibrs_weapon_type.weapon_code = '80';
+
+UPDATE flat_nibrs_victim_weapons
+SET other_weapon=1
+FROM nibrs_weapon
+JOIN nibrs_weapon_type ON nibrs_weapon_type.weapon_id = nibrs_weapon.weapon_id
+JOIN nibrs_offense ON nibrs_offense.offense_id = nibrs_weapon.offense_id
+JOIN nibrs_victim_offense ON nibrs_victim_offense.offense_id = nibrs_offense.offense_id
+WHERE flat_nibrs_victim_weapons.victim_id = nibrs_victim_offense.victim_id
+AND nibrs_weapon_type.weapon_code = '90';
+
+UPDATE flat_nibrs_victim_weapons
+SET unknown_weapon=1
+FROM nibrs_weapon
+JOIN nibrs_weapon_type ON nibrs_weapon_type.weapon_id = nibrs_weapon.weapon_id
+JOIN nibrs_offense ON nibrs_offense.offense_id = nibrs_weapon.offense_id
+JOIN nibrs_victim_offense ON nibrs_victim_offense.offense_id = nibrs_offense.offense_id
+WHERE flat_nibrs_victim_weapons.victim_id = nibrs_victim_offense.victim_id
+AND nibrs_weapon_type.weapon_code = '95';
+
+UPDATE flat_nibrs_victim_weapons
+SET no_weapon=1
+FROM nibrs_weapon
+JOIN nibrs_weapon_type ON nibrs_weapon_type.weapon_id = nibrs_weapon.weapon_id
+JOIN nibrs_offense ON nibrs_offense.offense_id = nibrs_weapon.offense_id
+JOIN nibrs_victim_offense ON nibrs_victim_offense.offense_id = nibrs_offense.offense_id
+WHERE flat_nibrs_victim_weapons.victim_id = nibrs_victim_offense.victim_id
+AND nibrs_weapon_type.weapon_code = '99';
