@@ -301,7 +301,7 @@ def add_resources(app):
     api.add_resource(crime_data.resources.nibrs_counts.NIBRSAgencyOffenseCount,'/nibrs/offense/count/agencies/<string:ori>')
     api.add_resource(crime_data.resources.nibrs_counts.NIBRSNationalOffenseCount,'/nibrs/offense/count/national')
 
-    api.add_resource(crime_data.resources.asr.ASRMaleByAgeCount,'/asr/male/age')
+    api.add_resource(crime_data.resources.asr.ASRMaleByAgeCount,'/asr/male/age/<string:level>/<string:level_value>','/asr/male/age')
     api.add_resource(crime_data.resources.asr.ASRFemaleByAgeCount,'/asr/female/age')
     api.add_resource(crime_data.resources.asr.ASRRaceCount,'/asr/race')
     api.add_resource(crime_data.resources.asr.ASRRaceYouthCount,'/asr/race/youth')

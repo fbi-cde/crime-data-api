@@ -1275,9 +1275,24 @@ class NIBRSStateOffenseCountSchema(ma.ModelSchema):
         model = cdemodels.NIBRSStateOffenseCount
         ordered = True
 
-class ASRMaleByAgeCountSchema(ma.ModelSchema):
+class ASRMaleByAgeCountAgencySchema(ma.ModelSchema):
     class Meta:
-        model = cdemodels.ASRMaleByAgeCount
+        model = cdemodels.ASRMaleByAgeCountAgency
+        ordered = True
+
+class ASRMaleByAgeCountStateSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.ASRMaleByAgeCountState
+        ordered = True
+
+class ASRMaleByAgeCountRegionSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.ASRMaleByAgeCountRegion
+        ordered = True
+
+class ASRMaleByAgeCountNationalSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.ASRMaleByAgeCountNational
         ordered = True
 
 class ASRFemaleByAgeCountSchema(ma.ModelSchema):

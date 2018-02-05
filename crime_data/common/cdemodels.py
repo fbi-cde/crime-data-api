@@ -1827,15 +1827,141 @@ class NIBRSStateOffenseCount(db.Model):
     incident_count = db.Column(db.Integer)
     offense_count = db.Column(db.Integer)
 
-class ASRMaleByAgeCount(db.Model):
+class ASRMaleByAgeCountAgency(db.Model):
     """Represents Agency Level ASR data for males by age"""
     __tablename__ = 'asr_age_male_count_agency'
     __table_args__ = (
         PrimaryKeyConstraint('offense_id', 'data_year','agency_id'),
     )
 
+    def get(ori=None):
+        query = ASRMaleByAgeCountAgency.query
+
+        if ori:
+            query = query.filter(func.lower(ASRMaleByAgeCountAgency.ori) == func.lower(ori))
+
+        return query
+
     data_year = db.Column(db.Integer)
     agency_id = db.Column(db.Integer)
+    ori = db.Column(db.String)
+    offense_id = db.Column(db.Integer)
+    offense_name = db.Column(db.String)
+    age_under_10 = db.Column(db.Integer)
+    age_10_to_12 = db.Column(db.Integer)
+    age_13_to_14 = db.Column(db.Integer)
+    age_15 = db.Column(db.Integer)
+    age_16 = db.Column(db.Integer)
+    age_17 = db.Column(db.Integer)
+    age_18 = db.Column(db.Integer)
+    age_19 = db.Column(db.Integer)
+    age_20 = db.Column(db.Integer)
+    age_21 = db.Column(db.Integer)
+    age_22 = db.Column(db.Integer)
+    age_23 = db.Column(db.Integer)
+    age_24 = db.Column(db.Integer)
+    age_25_to_29 = db.Column(db.Integer)
+    age_30_to_34 = db.Column(db.Integer)
+    age_35_to_39 = db.Column(db.Integer)
+    age_40_to_44 = db.Column(db.Integer)
+    age_45_to_49 = db.Column(db.Integer)
+    age_50_to_54 = db.Column(db.Integer)
+    age_55_to_59 = db.Column(db.Integer)
+    age_60_to_64 = db.Column(db.Integer)
+    age_over_64 = db.Column(db.Integer)
+
+class ASRMaleByAgeCountState(db.Model):
+    """Represents State Level ASR data for males by age"""
+    __tablename__ = 'asr_age_male_count_state'
+    __table_args__ = (
+        PrimaryKeyConstraint('offense_id', 'data_year','state_abbr'),
+    )
+
+    def get(state_abbr=None):
+        query = ASRMaleByAgeCountState.query
+
+        if state_abbr:
+            query = query.filter(func.lower(ASRMaleByAgeCountState.state_abbr) == func.lower(state_abbr))
+
+        return query
+
+    data_year = db.Column(db.Integer)
+    state_abbr = db.Column(db.String)
+    offense_id = db.Column(db.Integer)
+    offense_name = db.Column(db.String)
+    age_under_10 = db.Column(db.Integer)
+    age_10_to_12 = db.Column(db.Integer)
+    age_13_to_14 = db.Column(db.Integer)
+    age_15 = db.Column(db.Integer)
+    age_16 = db.Column(db.Integer)
+    age_17 = db.Column(db.Integer)
+    age_18 = db.Column(db.Integer)
+    age_19 = db.Column(db.Integer)
+    age_20 = db.Column(db.Integer)
+    age_21 = db.Column(db.Integer)
+    age_22 = db.Column(db.Integer)
+    age_23 = db.Column(db.Integer)
+    age_24 = db.Column(db.Integer)
+    age_25_to_29 = db.Column(db.Integer)
+    age_30_to_34 = db.Column(db.Integer)
+    age_35_to_39 = db.Column(db.Integer)
+    age_40_to_44 = db.Column(db.Integer)
+    age_45_to_49 = db.Column(db.Integer)
+    age_50_to_54 = db.Column(db.Integer)
+    age_55_to_59 = db.Column(db.Integer)
+    age_60_to_64 = db.Column(db.Integer)
+    age_over_64 = db.Column(db.Integer)
+
+class ASRMaleByAgeCountRegion(db.Model):
+    """Represents Region Level ASR data for males by age"""
+    __tablename__ = 'asr_age_male_count_region'
+    __table_args__ = (
+        PrimaryKeyConstraint('offense_id', 'data_year','region_name'),
+    )
+
+    def get(region_name=None):
+        query = ASRMaleByAgeCountRegion.query
+
+        if region_name:
+            query = query.filter(func.lower(ASRMaleByAgeCountRegion.region_name) == func.lower(region_name))
+
+        return query
+
+    data_year = db.Column(db.Integer)
+    region_name = db.Column(db.String)
+    offense_id = db.Column(db.Integer)
+    offense_name = db.Column(db.String)
+    age_under_10 = db.Column(db.Integer)
+    age_10_to_12 = db.Column(db.Integer)
+    age_13_to_14 = db.Column(db.Integer)
+    age_15 = db.Column(db.Integer)
+    age_16 = db.Column(db.Integer)
+    age_17 = db.Column(db.Integer)
+    age_18 = db.Column(db.Integer)
+    age_19 = db.Column(db.Integer)
+    age_20 = db.Column(db.Integer)
+    age_21 = db.Column(db.Integer)
+    age_22 = db.Column(db.Integer)
+    age_23 = db.Column(db.Integer)
+    age_24 = db.Column(db.Integer)
+    age_25_to_29 = db.Column(db.Integer)
+    age_30_to_34 = db.Column(db.Integer)
+    age_35_to_39 = db.Column(db.Integer)
+    age_40_to_44 = db.Column(db.Integer)
+    age_45_to_49 = db.Column(db.Integer)
+    age_50_to_54 = db.Column(db.Integer)
+    age_55_to_59 = db.Column(db.Integer)
+    age_60_to_64 = db.Column(db.Integer)
+    age_over_64 = db.Column(db.Integer)
+
+class ASRMaleByAgeCountNational(db.Model):
+    """Represents National Level ASR data for males by age"""
+    __tablename__ = 'asr_age_male_count_national'
+    __table_args__ = (
+        PrimaryKeyConstraint('offense_id', 'data_year'),
+    )
+
+    data_year = db.Column(db.Integer)
     offense_id = db.Column(db.Integer)
     offense_name = db.Column(db.String)
     age_under_10 = db.Column(db.Integer)

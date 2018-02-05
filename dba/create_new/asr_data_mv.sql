@@ -27,6 +27,100 @@ CREATE MATERIALIZED VIEW public.asr_age_male_count_agency AS
                 coalesce(sum( M_AGE_OVER_64_ARR_CNT)) as AGE_OVER_64
 from public.asr_data group by data_year,OFFENSE_SUBCAT_ID, OFFENSE_SUBCAT_NAME,agency_id;
 
+CREATE MATERIALIZED VIEW public.asr_age_male_count_state AS
+  SELECT asr.DATA_YEAR as DATA_YEAR,
+  agy.STATE_ABBR as state_abbr,
+  OFFENSE_SUBCAT_ID as offense_id,
+  OFFENSE_SUBCAT_NAME as offense_name,
+  coalesce(sum( M_AGE_UNDER_10_ARR_CNT)) as AGE_UNDER_10,
+  coalesce(sum( M_AGE_10_TO_12_ARR_CNT)) as AGE_10_TO_12,
+  coalesce(sum( M_AGE_13_TO_14_ARR_CNT)) as AGE_13_TO_14              ,
+  coalesce(sum( M_AGE_15_ARR_CNT)) as AGE_15             ,
+  coalesce(sum( M_AGE_16_ARR_CNT)) as AGE_16             ,
+  coalesce(sum( M_AGE_17_ARR_CNT)) as AGE_17             ,
+  coalesce(sum( M_AGE_18_ARR_CNT)) as AGE_18             ,
+  coalesce(sum( M_AGE_19_ARR_CNT)) as AGE_19             ,
+  coalesce(sum( M_AGE_20_ARR_CNT)) as AGE_20             ,
+  coalesce(sum( M_AGE_21_ARR_CNT)) as AGE_21             ,
+  coalesce(sum( M_AGE_22_ARR_CNT)) as AGE_22             ,
+  coalesce(sum( M_AGE_23_ARR_CNT)) as AGE_23             ,
+  coalesce(sum( M_AGE_24_ARR_CNT)) as AGE_24             ,
+  coalesce(sum( M_AGE_25_TO_29_ARR_CNT)) as AGE_25_TO_29              ,
+  coalesce(sum( M_AGE_30_TO_34_ARR_CNT)) as AGE_30_TO_34              ,
+  coalesce(sum( M_AGE_35_TO_39_ARR_CNT)) as AGE_35_TO_39              ,
+  coalesce(sum( M_AGE_40_TO_44_ARR_CNT)) as AGE_40_TO_44              ,
+  coalesce(sum( M_AGE_45_TO_49_ARR_CNT)) as AGE_45_TO_49              ,
+  coalesce(sum( M_AGE_50_TO_54_ARR_CNT)) as AGE_50_TO_54              ,
+  coalesce(sum( M_AGE_55_TO_59_ARR_CNT)) as AGE_55_TO_59              ,
+  coalesce(sum( M_AGE_60_TO_64_ARR_CNT)) as AGE_60_TO_64              ,
+  coalesce(sum( M_AGE_OVER_64_ARR_CNT)) as AGE_OVER_64
+from public.asr_data asr
+join agency_data agy on agy.agency_id=asr.agency_id
+group by asr.data_year,OFFENSE_SUBCAT_ID, OFFENSE_SUBCAT_NAME,state_abbr
+order by asr.data_year,state_abbr,OFFENSE_SUBCAT_ID;
+
+CREATE MATERIALIZED VIEW public.asr_age_male_count_region AS
+  SELECT asr.DATA_YEAR as DATA_YEAR,
+  agy.region_name as region_name,
+  OFFENSE_SUBCAT_ID as offense_id,
+  OFFENSE_SUBCAT_NAME as offense_name,
+  coalesce(sum( M_AGE_UNDER_10_ARR_CNT)) as AGE_UNDER_10,
+  coalesce(sum( M_AGE_10_TO_12_ARR_CNT)) as AGE_10_TO_12,
+  coalesce(sum( M_AGE_13_TO_14_ARR_CNT)) as AGE_13_TO_14              ,
+  coalesce(sum( M_AGE_15_ARR_CNT)) as AGE_15             ,
+  coalesce(sum( M_AGE_16_ARR_CNT)) as AGE_16             ,
+  coalesce(sum( M_AGE_17_ARR_CNT)) as AGE_17             ,
+  coalesce(sum( M_AGE_18_ARR_CNT)) as AGE_18             ,
+  coalesce(sum( M_AGE_19_ARR_CNT)) as AGE_19             ,
+  coalesce(sum( M_AGE_20_ARR_CNT)) as AGE_20             ,
+  coalesce(sum( M_AGE_21_ARR_CNT)) as AGE_21             ,
+  coalesce(sum( M_AGE_22_ARR_CNT)) as AGE_22             ,
+  coalesce(sum( M_AGE_23_ARR_CNT)) as AGE_23             ,
+  coalesce(sum( M_AGE_24_ARR_CNT)) as AGE_24             ,
+  coalesce(sum( M_AGE_25_TO_29_ARR_CNT)) as AGE_25_TO_29              ,
+  coalesce(sum( M_AGE_30_TO_34_ARR_CNT)) as AGE_30_TO_34              ,
+  coalesce(sum( M_AGE_35_TO_39_ARR_CNT)) as AGE_35_TO_39              ,
+  coalesce(sum( M_AGE_40_TO_44_ARR_CNT)) as AGE_40_TO_44              ,
+  coalesce(sum( M_AGE_45_TO_49_ARR_CNT)) as AGE_45_TO_49              ,
+  coalesce(sum( M_AGE_50_TO_54_ARR_CNT)) as AGE_50_TO_54              ,
+  coalesce(sum( M_AGE_55_TO_59_ARR_CNT)) as AGE_55_TO_59              ,
+  coalesce(sum( M_AGE_60_TO_64_ARR_CNT)) as AGE_60_TO_64              ,
+  coalesce(sum( M_AGE_OVER_64_ARR_CNT)) as AGE_OVER_64
+from public.asr_data asr
+join agency_data agy on agy.agency_id=asr.agency_id
+group by asr.data_year,OFFENSE_SUBCAT_ID, OFFENSE_SUBCAT_NAME,region_name
+order by asr.data_year,region_name,OFFENSE_SUBCAT_ID;
+
+CREATE MATERIALIZED VIEW public.asr_age_male_count_national AS
+  SELECT asr.DATA_YEAR as DATA_YEAR,
+  OFFENSE_SUBCAT_ID as offense_id,
+  OFFENSE_SUBCAT_NAME as offense_name,
+  coalesce(sum( M_AGE_UNDER_10_ARR_CNT)) as AGE_UNDER_10,
+  coalesce(sum( M_AGE_10_TO_12_ARR_CNT)) as AGE_10_TO_12,
+  coalesce(sum( M_AGE_13_TO_14_ARR_CNT)) as AGE_13_TO_14              ,
+  coalesce(sum( M_AGE_15_ARR_CNT)) as AGE_15             ,
+  coalesce(sum( M_AGE_16_ARR_CNT)) as AGE_16             ,
+  coalesce(sum( M_AGE_17_ARR_CNT)) as AGE_17             ,
+  coalesce(sum( M_AGE_18_ARR_CNT)) as AGE_18             ,
+  coalesce(sum( M_AGE_19_ARR_CNT)) as AGE_19             ,
+  coalesce(sum( M_AGE_20_ARR_CNT)) as AGE_20             ,
+  coalesce(sum( M_AGE_21_ARR_CNT)) as AGE_21             ,
+  coalesce(sum( M_AGE_22_ARR_CNT)) as AGE_22             ,
+  coalesce(sum( M_AGE_23_ARR_CNT)) as AGE_23             ,
+  coalesce(sum( M_AGE_24_ARR_CNT)) as AGE_24             ,
+  coalesce(sum( M_AGE_25_TO_29_ARR_CNT)) as AGE_25_TO_29              ,
+  coalesce(sum( M_AGE_30_TO_34_ARR_CNT)) as AGE_30_TO_34              ,
+  coalesce(sum( M_AGE_35_TO_39_ARR_CNT)) as AGE_35_TO_39              ,
+  coalesce(sum( M_AGE_40_TO_44_ARR_CNT)) as AGE_40_TO_44              ,
+  coalesce(sum( M_AGE_45_TO_49_ARR_CNT)) as AGE_45_TO_49              ,
+  coalesce(sum( M_AGE_50_TO_54_ARR_CNT)) as AGE_50_TO_54              ,
+  coalesce(sum( M_AGE_55_TO_59_ARR_CNT)) as AGE_55_TO_59              ,
+  coalesce(sum( M_AGE_60_TO_64_ARR_CNT)) as AGE_60_TO_64              ,
+  coalesce(sum( M_AGE_OVER_64_ARR_CNT)) as AGE_OVER_64
+from public.asr_data asr
+group by asr.data_year,OFFENSE_SUBCAT_ID, OFFENSE_SUBCAT_NAME
+order by asr.data_year,OFFENSE_SUBCAT_ID;
+
 CREATE MATERIALIZED VIEW public.asr_age_female_count_agency AS
                 SELECT DATA_YEAR as DATA_YEAR,
                 AGENCY_ID as agency_id,

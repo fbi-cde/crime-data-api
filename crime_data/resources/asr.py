@@ -8,12 +8,22 @@ from flask import jsonify
 from crime_data.common.marshmallow_schemas import ArgumentsSchema
 
 class ASRMaleByAgeCount(CdeResource):
-    schema = marshmallow_schemas.ASRMaleByAgeCountSchema(many=True)
+    schema = marshmallow_schemas.ASRMaleByAgeCountAgencySchema(many=True)
     @use_args(ArgumentsSchema)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args):
+    def get(self, args, level=None, level_value=None):
         self.verify_api_key(args)
-        result = cdemodels.ASRMaleByAgeCount.query
+        if level == 'agency':
+            result = cdemodels.ASRMaleByAgeCountAgency.get(level_value)
+        elif level == 'state':
+            self.schema = marshmallow_schemas.ASRMaleByAgeCountStateSchema(many=True)
+            result = cdemodels.ASRMaleByAgeCountState.get(level_value)
+        elif level == 'region':
+            self.schema = marshmallow_schemas.ASRMaleByAgeCountRegionSchema(many=True)
+            result = cdemodels.ASRMaleByAgeCountRegion.get(level_value)
+        else:
+            self.schema = marshmallow_schemas.ASRMaleByAgeCountNationalSchema(many=True)
+            result = cdemodels.ASRMaleByAgeCountNational.query
         return self.with_metadata(result, args)
 
 class ASRFemaleByAgeCount(CdeResource):
