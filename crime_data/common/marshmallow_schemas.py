@@ -1274,3 +1274,23 @@ class NIBRSStateOffenseCountSchema(ma.ModelSchema):
     class Meta:
         model = cdemodels.NIBRSStateOffenseCount
         ordered = True
+
+class ASRMaleByAgeCountSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.ASRMaleByAgeCount
+        ordered = True
+
+class ASRFemaleByAgeCountSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.ASRFemaleByAgeCount
+        ordered = True
+
+class ASRRaceCountSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.ASRRaceCount
+        ordered = True
+
+class ASRRaceYouthCountSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.ASRRaceYouthCount
+        ordered = True

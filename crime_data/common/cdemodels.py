@@ -1826,3 +1826,119 @@ class NIBRSStateOffenseCount(db.Model):
     data_year = db.Column(db.Integer)
     incident_count = db.Column(db.Integer)
     offense_count = db.Column(db.Integer)
+
+class ASRMaleByAgeCount(db.Model):
+    """Represents Agency Level ASR data for males by age"""
+    __tablename__ = 'asr_age_male_count_agency'
+    __table_args__ = (
+        PrimaryKeyConstraint('offense_id', 'data_year','agency_id'),
+    )
+
+    data_year = db.Column(db.Integer)
+    agency_id = db.Column(db.Integer)
+    offense_id = db.Column(db.Integer)
+    offense_name = db.Column(db.String)
+    age_under_10 = db.Column(db.Integer)
+    age_10_to_12 = db.Column(db.Integer)
+    age_13_to_14 = db.Column(db.Integer)
+    age_15 = db.Column(db.Integer)
+    age_16 = db.Column(db.Integer)
+    age_17 = db.Column(db.Integer)
+    age_18 = db.Column(db.Integer)
+    age_19 = db.Column(db.Integer)
+    age_20 = db.Column(db.Integer)
+    age_21 = db.Column(db.Integer)
+    age_22 = db.Column(db.Integer)
+    age_23 = db.Column(db.Integer)
+    age_24 = db.Column(db.Integer)
+    age_25_to_29 = db.Column(db.Integer)
+    age_30_to_34 = db.Column(db.Integer)
+    age_35_to_39 = db.Column(db.Integer)
+    age_40_to_44 = db.Column(db.Integer)
+    age_45_to_49 = db.Column(db.Integer)
+    age_50_to_54 = db.Column(db.Integer)
+    age_55_to_59 = db.Column(db.Integer)
+    age_60_to_64 = db.Column(db.Integer)
+    age_over_64 = db.Column(db.Integer)
+
+class ASRFemaleByAgeCount(db.Model):
+    """Represents Agency Level ASR data for females by age"""
+    __tablename__ = 'asr_age_female_count_agency'
+    __table_args__ = (
+        PrimaryKeyConstraint('offense_id', 'data_year','agency_id'),
+    )
+
+    data_year = db.Column(db.Integer)
+    agency_id = db.Column(db.Integer)
+    offense_id = db.Column(db.Integer)
+    offense_name = db.Column(db.String)
+    age_under_10 = db.Column(db.Integer)
+    age_10_to_12 = db.Column(db.Integer)
+    age_13_to_14 = db.Column(db.Integer)
+    age_15 = db.Column(db.Integer)
+    age_16 = db.Column(db.Integer)
+    age_17 = db.Column(db.Integer)
+    age_18 = db.Column(db.Integer)
+    age_19 = db.Column(db.Integer)
+    age_20 = db.Column(db.Integer)
+    age_21 = db.Column(db.Integer)
+    age_22 = db.Column(db.Integer)
+    age_23 = db.Column(db.Integer)
+    age_24 = db.Column(db.Integer)
+    age_25_to_29 = db.Column(db.Integer)
+    age_30_to_34 = db.Column(db.Integer)
+    age_35_to_39 = db.Column(db.Integer)
+    age_40_to_44 = db.Column(db.Integer)
+    age_45_to_49 = db.Column(db.Integer)
+    age_50_to_54 = db.Column(db.Integer)
+    age_55_to_59 = db.Column(db.Integer)
+    age_60_to_64 = db.Column(db.Integer)
+    age_over_64 = db.Column(db.Integer)
+
+class ASRRaceCount(db.Model):
+    """Represents Agency Level ASR data by race"""
+    __tablename__ = 'asr_race_count_agency'
+    __table_args__ = (
+        PrimaryKeyConstraint('offense_id', 'data_year','agency_id'),
+    )
+
+    data_year = db.Column(db.Integer)
+    agency_id = db.Column(db.Integer)
+    offense_id = db.Column(db.Integer)
+    offense_name = db.Column(db.String)
+    unknown = db.Column(db.Integer)
+    white = db.Column(db.Integer)
+    black = db.Column(db.Integer)
+    amian = db.Column(db.Integer)
+    asian = db.Column(db.Integer)
+    anhopi = db.Column(db.Integer)
+    chinese = db.Column(db.Integer)
+    japanese = db.Column(db.Integer)
+    nhopi = db.Column(db.Integer)
+    other = db.Column(db.Integer)
+    multiple = db.Column(db.Integer)
+    not_specified = db.Column(db.Integer)
+
+class ASRRaceYouthCount(db.Model):
+    """Represents Agency Level ASR data by race youth"""
+    __tablename__ = 'asr_race_yth_count_agency'
+    __table_args__ = (
+        PrimaryKeyConstraint('offense_id', 'data_year','agency_id'),
+    )
+
+    data_year = db.Column(db.Integer)
+    agency_id = db.Column(db.Integer)
+    offense_id = db.Column(db.Integer)
+    offense_name = db.Column(db.String)
+    unknown = db.Column(db.Integer)
+    white = db.Column(db.Integer)
+    black = db.Column(db.Integer)
+    amian = db.Column(db.Integer)
+    asian = db.Column(db.Integer)
+    anhopi = db.Column(db.Integer)
+    chinese = db.Column(db.Integer)
+    japanese = db.Column(db.Integer)
+    nhopi = db.Column(db.Integer)
+    other = db.Column(db.Integer)
+    multiple = db.Column(db.Integer)
+    not_specified = db.Column(db.Integer)
