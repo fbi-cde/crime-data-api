@@ -77,7 +77,7 @@ CREATE TABLE nibrs_offense_count (
     offense_count int
 );
 
-CREATE TABLE public.leoka_assault_activity_assignemnt_data
+CREATE TABLE public.leoka_assault_activity_assignment_data
 (
   DATA_YEAR INT,
   AGENCY_ID INT,

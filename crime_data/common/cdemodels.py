@@ -1949,7 +1949,7 @@ class LeokaAssaultByGroupNational(db.Model):
     data_year  = db.Column(db.Integer)
     activity_name = db.Column(db.String)
     activity_id  = db.Column(db.Integer)
-    population_group_code = db.Column(db.Integer)
+    group_1_actual_ct = db.Column(db.Integer)
     group_2_actual_ct = db.Column(db.Integer)
     group_3_actual_ct = db.Column(db.Integer)
     group_4_actual_ct = db.Column(db.Integer)

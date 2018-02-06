@@ -21,11 +21,9 @@ class UIComponentCreator(object):
         data =[]
         keys = []
         uiObject = UIObject(self.keys[0].ui_component,self.keys[0].ui_text)
-        print("results:",len(self.results))
         for j in range(len(self.keys)):
             key = self.keys[j].key
             value = 0
-
             if self.key_type != '':
                 for k in range(len(self.results)):
                     d = Key(self.keys[j].key)
@@ -35,12 +33,11 @@ class UIComponentCreator(object):
                     d.data_year = data_year
                     for i in range(len(self.results)):
                         if data_year == self.results[i].data_year and keytype ==  getattr(self.results[i], self.key_type):
+                            print('keytype:',keytype,'column:',self.keys[j].column_name,' value:',getattr(self.results[i], self.keys[j].column_name))
                             d.value =  d.value + getattr(self.results[i], self.keys[j].column_name)
+                    d.value = int(d.value)
                     data.append(d)
-                    print('d.value:',d.value,getattr(self.results[i], self.key_type))
                 keys.append(key)
-                print('key:',key)
-
             else:
                 for k in range(len(self.results)):
                     d = Key(self.keys[j].key)
@@ -87,4 +84,4 @@ class UIObject(object):
 
 
     def toJSON(self):
-        return jsonpickle.encode(self, unpicklable=False).replace("u\'","\'")
+        return jsonpickle.encode(self, unpicklable=False)
