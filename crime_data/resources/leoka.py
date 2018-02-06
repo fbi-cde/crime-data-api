@@ -32,6 +32,14 @@ class LeokaAssaultNational(CdeResource):
             self.set_schema(marshmallow_schemas.LeokaAssaultByGroupNational(many=True))
             query = cdemodels.LeokaAssaultByGroupNational.query
             creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_group','activity_name')
+        elif variable == 'time':
+            self.set_schema(marshmallow_schemas.LeokaAssaultByTimeNational(many=True))
+            query = cdemodels.LeokaAssaultByTimeNational.query
+            creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_time','')
+        elif variable == 'weapon-injury':
+            self.set_schema(marshmallow_schemas.LeokaAssaultWeaponInjuryNational(many=True))
+            query = cdemodels.LeokaAssaultWeaponInjuryNational.query
+            creator = munger.UIComponentCreator(query.all(),'leoka_assault_weapon_injury','')
         else:
             return self.with_metadata([], args)
         ui = creator.munge_set()
@@ -62,10 +70,15 @@ class LeokaAssaultRegional(CdeResource):
             self.set_schema(marshmallow_schemas.LeokaAssaultByGroupRegional(many=True))
             query = cdemodels.LeokaAssaultByGroupRegional.get(region_name=region_name)
             creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_group','activity_name')
+        elif variable == 'weapon-injury':
+            self.set_schema(marshmallow_schemas.LeokaAssaultWeaponInjuryNational(many=True))
+            query = cdemodels.LeokaAssaultWeaponInjuryRegion.get(region_name=region_name)
+            creator = munger.UIComponentCreator(query.all(),'leoka_assault_weapon_injury','')
         else:
             return self.with_metadata([], args)
         ui = creator.munge_set()
         return self.without_metadata(ui, args)
+
 class LeokaAssaultState(CdeResource):
     @use_args(ArgumentsSchema)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
@@ -91,10 +104,15 @@ class LeokaAssaultState(CdeResource):
             self.set_schema(marshmallow_schemas.LeokaAssaultByGroupState(many=True))
             query = cdemodels.LeokaAssaultByGroupState.get(state_abbr=state_abbr)
             creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_group','activity_name')
+        elif variable == 'weapon-injury':
+            self.set_schema(marshmallow_schemas.LeokaAssaultWeaponInjuryNational(many=True))
+            query = cdemodels.LeokaAssaultWeaponInjuryState.get(state_abbr=state_abbr)
+            creator = munger.UIComponentCreator(query.all(),'leoka_assault_weapon_injury','')
         else:
             return self.with_metadata([], args)
         ui = creator.munge_set()
         return self.without_metadata(ui, args)
+
 class LeokaAssaultAgency(CdeResource):
     @use_args(ArgumentsSchema)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
@@ -116,11 +134,3 @@ class LeokaAssaultAgency(CdeResource):
             return self.with_metadata([], args)
         ui = creator.munge_set()
         return self.without_metadata(ui, args)
-class LeokaAssaultByTimeDistribution(CdeResource):
-    schema = marshmallow_schemas.LeokaAssaultByTimeDistribution(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args,):
-        self.verify_api_key(args)
-        query = cdemodels.LeokaAssaultByTimeDistribution.query
-        return self.with_metadata(query,args)

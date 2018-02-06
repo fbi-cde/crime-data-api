@@ -19,6 +19,10 @@ DROP MATERIALIZED VIEW public.leoka_assault_by_weapon_per_activity_national;
 DROP MATERIALIZED VIEW public.leoka_assault_by_weapon_per_activity_regional;
 DROP MATERIALIZED VIEW public.leoka_assault_by_weapon_per_activity_state;
 DROP MATERIALIZED VIEW public.leoka_assault_by_weapon_per_activity_agency;
+DROP MATERIALIZED VIEW public.leoka_assault_weapon_injury_state;
+DROP MATERIALIZED VIEW public.leoka_assault_weapon_injury_region;
+DROP MATERIALIZED VIEW public.leoka_assault_weapon_injury_national;
+DROP MATERIALIZED VIEW public.leoka_assault_by_time_dist_national;
 
 DROP MATERIALIZED VIEW public.nibrs_agency_denorm_offender_age;
 DROP MATERIALIZED VIEW public.nibrs_agency_denorm_offender_ethnicity;

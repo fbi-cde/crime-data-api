@@ -1381,12 +1381,27 @@ class LeokaAssaultWeaponByGroupNational(ma.ModelSchema):
         model = cdemodels.LeokaAssaultWeaponByGroupNational
         ordered = True
 
+class LeokaAssaultByTimeNational(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.LeokaAssaultByTimeNational
+        ordered = True
+
+class LeokaAssaultWeaponInjuryNational(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.LeokaAssaultWeaponInjuryNational
+        ordered = True
+
+class LeokaAssaultWeaponInjuryState(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.LeokaAssaultWeaponInjuryState
+        ordered = True
+
+class LeokaAssaultWeaponInjuryRegion(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.LeokaAssaultWeaponInjuryRegion
+        ordered = True
+
 class TableKeyMapping(ma.ModelSchema):
     class Meta:
         model = cdemodels.TableKeyMapping
-        ordered = True
-
-class LeokaAssaultByTimeDistribution(ma.ModelSchema):
-    class Meta:
-        model = cdemodels.LeokaAssaultByTimeDistribution
         ordered = True

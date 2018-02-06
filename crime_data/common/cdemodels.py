@@ -2354,6 +2354,7 @@ class LeokaAssaultWeaponByActivityState(db.Model):
 
     data_year  = db.Column(db.Integer)
     state_abbr = db.Column(db.String)
+    state_id = db.Column(db.Integer)
     activity_name = db.Column(db.String)
     activity_id = db.Column(db.Integer)
     firearm_actual = db.Column(db.Integer)
@@ -2385,33 +2386,11 @@ class LeokaAssaultWeaponByActivityAgency(db.Model):
     hands_fists_feet_actual = db.Column(db.Integer)
     other_actual = db.Column(db.Integer)
 
-class TableKeyMapping(db.Model):
-    """
-    Represents Tables mapping to Keys
-    """
-    __tablename__ = 'table_key_mapping'
-    __table_args__ = (
-        PrimaryKeyConstraint('table_name','key'),
-    )
-    def get(table_name=None):
-        query = TableKeyMapping.query
-
-        if table_name:
-            query = query.filter(func.lower(TableKeyMapping.table_name) == func.lower(table_name))
-
-        return query
-
-    table_name = db.Column(db.String)
-    column_name = db.Column(db.String)
-    key = db.Column(db.String)
-    ui_component = db.Column(db.String)
-    ui_text = db.Column(db.String)
-
-class LeokaAssaultByTimeDistribution(db.Model):
+class LeokaAssaultByTimeNational(db.Model):
     """
     Represents Leoka Assaults by time distribution
     """
-    __tablename__ = 'leoka_assault_by_time_dist'
+    __tablename__ = 'leoka_assault_by_time_dist_national'
     __table_args__ = (PrimaryKeyConstraint('data_year', 'total_cnt'),)
     data_year  = db.Column(db.Integer)
     total_cnt  = db.Column(db.Integer)
@@ -2443,3 +2422,119 @@ class LeokaAssaultByTimeDistribution(db.Model):
     time_2001_2200_dist = db.Column(db.Float)
     time_2201_0000_cnt = db.Column(db.Integer)
     time_2201_0000_dist = db.Column(db.Float)
+
+
+class LeokaAssaultWeaponInjuryNational(db.Model):
+    """
+    Represents Leoka Assaults by time distribution
+    """
+    __tablename__ = 'leoka_assault_weapon_injury_national'
+    __table_args__ = (PrimaryKeyConstraint('data_year'),)
+    data_year  = db.Column(db.Integer)
+    total_injury_cnt  = db.Column(db.Integer)
+    firearm_injury_cnt = db.Column(db.Integer)
+    knife_injury_cnt  = db.Column(db.Integer)
+    hands_fists_feet_injury_cnt = db.Column(db.Integer)
+    other_injury_cnt  = db.Column(db.Integer)
+    total_no_injury_cnt = db.Column(db.Integer)
+    firearm_no_injury_cnt  = db.Column(db.Integer)
+    knife_no_injury_cnt = db.Column(db.Integer)
+    hands_fists_feet_no_injury_cnt  = db.Column(db.Integer)
+    other_no_injury_cnt = db.Column(db.Integer)
+    total_cnt = db.Column(db.Integer)
+    firearm_total_cnt = db.Column(db.Integer)
+    knife_total_cnt  = db.Column(db.Integer)
+    hands_fists_feet_total_cnt = db.Column(db.Integer)
+    other_total_cnt  = db.Column(db.Integer)
+
+class LeokaAssaultWeaponInjuryRegion(db.Model):
+    """
+    Represents Leoka Assaults by time distribution
+    """
+    __tablename__ = 'leoka_assault_weapon_injury_region'
+    __table_args__ = (
+        PrimaryKeyConstraint('data_year', 'region_name'),
+    )
+    def get(region_name=None):
+        query = LeokaAssaultWeaponInjuryRegion.query
+
+        if region_name:
+            query = query.filter(func.lower(LeokaAssaultWeaponInjuryRegion.region_name) == func.lower(region_name))
+
+        return query
+
+    data_year  = db.Column(db.Integer)
+    region_name = db.Column(db.String)
+    region_code  = db.Column(db.Integer)
+    total_injury_cnt  = db.Column(db.Integer)
+    firearm_injury_cnt = db.Column(db.Integer)
+    knife_injury_cnt  = db.Column(db.Integer)
+    hands_fists_feet_injury_cnt = db.Column(db.Integer)
+    other_injury_cnt  = db.Column(db.Integer)
+    total_no_injury_cnt = db.Column(db.Integer)
+    firearm_no_injury_cnt  = db.Column(db.Integer)
+    knife_no_injury_cnt = db.Column(db.Integer)
+    hands_fists_feet_no_injury_cnt  = db.Column(db.Integer)
+    other_no_injury_cnt = db.Column(db.Integer)
+    total_cnt = db.Column(db.Integer)
+    firearm_total_cnt = db.Column(db.Integer)
+    knife_total_cnt  = db.Column(db.Integer)
+    hands_fists_feet_total_cnt = db.Column(db.Integer)
+    other_total_cnt  = db.Column(db.Integer)
+
+class LeokaAssaultWeaponInjuryState(db.Model):
+    """
+    Represents Leoka Assaults by time distribution
+    """
+    __tablename__ = 'leoka_assault_weapon_injury_state'
+    __table_args__ = (
+        PrimaryKeyConstraint('data_year', 'state_abbr'),
+    )
+    def get(state_abbr=None):
+        query = LeokaAssaultWeaponInjuryState.query
+
+        if state_abbr:
+            query = query.filter(func.lower(LeokaAssaultWeaponInjuryState.state_abbr) == func.lower(state_abbr))
+
+        return query
+
+    data_year  = db.Column(db.Integer)
+    state_abbr = db.Column(db.String)
+    state_id = db.Column(db.Integer)
+    total_injury_cnt  = db.Column(db.Integer)
+    firearm_injury_cnt = db.Column(db.Integer)
+    knife_injury_cnt  = db.Column(db.Integer)
+    hands_fists_feet_injury_cnt = db.Column(db.Integer)
+    other_injury_cnt  = db.Column(db.Integer)
+    total_no_injury_cnt = db.Column(db.Integer)
+    firearm_no_injury_cnt  = db.Column(db.Integer)
+    knife_no_injury_cnt = db.Column(db.Integer)
+    hands_fists_feet_no_injury_cnt  = db.Column(db.Integer)
+    other_no_injury_cnt = db.Column(db.Integer)
+    total_cnt = db.Column(db.Integer)
+    firearm_total_cnt = db.Column(db.Integer)
+    knife_total_cnt  = db.Column(db.Integer)
+    hands_fists_feet_total_cnt = db.Column(db.Integer)
+    other_total_cnt  = db.Column(db.Integer)
+
+class TableKeyMapping(db.Model):
+    """
+    Represents Tables mapping to Keys
+    """
+    __tablename__ = 'table_key_mapping'
+    __table_args__ = (
+        PrimaryKeyConstraint('table_name','key'),
+    )
+    def get(table_name=None):
+        query = TableKeyMapping.query
+
+        if table_name:
+            query = query.filter(func.lower(TableKeyMapping.table_name) == func.lower(table_name))
+
+        return query
+
+    table_name = db.Column(db.String)
+    column_name = db.Column(db.String)
+    key = db.Column(db.String)
+    ui_component = db.Column(db.String)
+    ui_text = db.Column(db.String)
