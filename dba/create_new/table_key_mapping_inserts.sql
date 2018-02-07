@@ -122,46 +122,46 @@ VALUES ('leoka_assault_weapon_injury', 'other_injury_cnt','Other Weapon Injury',
 
 -- LEOKA: Time Dist
 --INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
---VALUES ('leoka_assault_by_time', 'total_cnt','Total Count', 'basic_table', 'Time of Incident by Number of Assaults and Percent Distribution');
+--VALUES ('leoka_assault_by_time', 'total_cnt','Total Count', 'basic_table', 'Time of Incident by Number of Assaults');
 
 --INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
---VALUES ('leoka_assault_by_time', 'total_am_cnt','Total A.M.Count', 'basic_table', 'Time of Incident by Number of Assaults and Percent Distribution');
+--VALUES ('leoka_assault_by_time', 'total_am_cnt','Total A.M.Count', 'basic_table', 'Time of Incident by Number of Assaults');
 
 --INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
---VALUES ('leoka_assault_by_time', 'total_pm_cnt','Total P.M.Count', 'basic_table', 'Time of Incident by Number of Assaults and Percent Distribution');
+--VALUES ('leoka_assault_by_time', 'total_pm_cnt','Total P.M.Count', 'basic_table', 'Time of Incident by Number of Assaults');
 
 INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('leoka_assault_by_time', 'time_0001_0200_cnt','12:01am-2am', 'basic_table', 'Time of Incident by Number of Assaults and Percent Distribution');
+VALUES ('leoka_assault_by_time', 'time_0001_0200_cnt','12:01am-2am', 'basic_table', 'Time of Incident by Number of Assaults');
 
 INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('leoka_assault_by_time', 'time_0201_0400_cnt','2:01am-4am', 'basic_table', 'Time of Incident by Number of Assaults and Percent Distribution');
+VALUES ('leoka_assault_by_time', 'time_0201_0400_cnt','2:01am-4am', 'basic_table', 'Time of Incident by Number of Assaults');
 
 INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('leoka_assault_by_time', 'time_0401_0600_cnt','4:01am-6am', 'basic_table', 'Time of Incident by Number of Assaults and Percent Distribution');
+VALUES ('leoka_assault_by_time', 'time_0401_0600_cnt','4:01am-6am', 'basic_table', 'Time of Incident by Number of Assaults');
 
 INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('leoka_assault_by_time', 'time_0601_0800_cnt','6:01am-8am', 'basic_table', 'Time of Incident by Number of Assaults and Percent Distribution');
+VALUES ('leoka_assault_by_time', 'time_0601_0800_cnt','6:01am-8am', 'basic_table', 'Time of Incident by Number of Assaults');
 
 INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('leoka_assault_by_time', 'time_0801_1000_cnt','8:01am-10am', 'basic_table', 'Time of Incident by Number of Assaults and Percent Distribution');
+VALUES ('leoka_assault_by_time', 'time_0801_1000_cnt','8:01am-10am', 'basic_table', 'Time of Incident by Number of Assaults');
 
 INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('leoka_assault_by_time', 'time_1001_1200_cnt','10:01am-Noon', 'basic_table', 'Time of Incident by Number of Assaults and Percent Distribution');
+VALUES ('leoka_assault_by_time', 'time_1001_1200_cnt','10:01am-Noon', 'basic_table', 'Time of Incident by Number of Assaults');
 
 INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('leoka_assault_by_time', 'time_1201_1400_cnt','12:01pm-2pm', 'basic_table', 'Time of Incident by Number of Assaults and Percent Distribution');
+VALUES ('leoka_assault_by_time', 'time_1201_1400_cnt','12:01pm-2pm', 'basic_table', 'Time of Incident by Number of Assaults');
 
 INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('leoka_assault_by_time', 'time_1401_1600_cnt','2:01pm-4pm', 'basic_table', 'Time of Incident by Number of Assaults and Percent Distribution');
+VALUES ('leoka_assault_by_time', 'time_1401_1600_cnt','2:01pm-4pm', 'basic_table', 'Time of Incident by Number of Assaults');
 
 INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('leoka_assault_by_time', 'time_1601_1800_cnt','4:01pm-6pm', 'basic_table', 'Time of Incident by Number of Assaults and Percent Distribution');
+VALUES ('leoka_assault_by_time', 'time_1601_1800_cnt','4:01pm-6pm', 'basic_table', 'Time of Incident by Number of Assaults');
 
 INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('leoka_assault_by_time', 'time_1801_2000_cnt','6:01pm-8pm', 'basic_table', 'Time of Incident by Number of Assaults and Percent Distribution');
+VALUES ('leoka_assault_by_time', 'time_1801_2000_cnt','6:01pm-8pm', 'basic_table', 'Time of Incident by Number of Assaults');
 
 INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('leoka_assault_by_time', 'time_2001_2200_cnt','8:01pm-10pm', 'basic_table', 'Time of Incident by Number of Assaults and Percent Distribution');
+VALUES ('leoka_assault_by_time', 'time_2001_2200_cnt','8:01pm-10pm', 'basic_table', 'Time of Incident by Number of Assaults');
 
 INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('leoka_assault_by_time', 'time_2201_0000_cnt','10:01pm-Midnight', 'basic_table', 'Time of Incident by Number of Assaults and Percent Distribution');
+VALUES ('leoka_assault_by_time', 'time_2201_0000_cnt','10:01pm-Midnight', 'basic_table', 'Time of Incident by Number of Assaults');
