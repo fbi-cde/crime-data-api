@@ -129,7 +129,7 @@ class LeokaAssaultAgency(CdeResource):
         elif variable == 'weapon':
             self.set_schema(marshmallow_schemas.LeokaAssaultWeaponAgency(many=True))
             query = cdemodels.LeokaAssaultWeaponAgency.get(ori=ori)
-            creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_weapon')
+            creator = munger.UIComponentCreator(query.all(),'leoka_assault_by_weapon','')
         else:
             return self.with_metadata([], args)
         ui = creator.munge_set()
