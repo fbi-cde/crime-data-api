@@ -27,12 +27,22 @@ class ASRMaleByAgeCount(CdeResource):
         return self.with_metadata(result, args)
 
 class ASRFemaleByAgeCount(CdeResource):
-    schema = marshmallow_schemas.ASRFemaleByAgeCountSchema(many=True)
+    schema = marshmallow_schemas.ASRFemaleByAgeCountAgencySchema(many=True)
     @use_args(ArgumentsSchema)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args):
+    def get(self, args, level=None, level_value=None):
         self.verify_api_key(args)
-        result = cdemodels.ASRFemaleByAgeCount.query
+        if level == 'agency':
+            result = cdemodels.ASRFemaleByAgeCountAgency.get(level_value)
+        elif level == 'state':
+            self.schema = marshmallow_schemas.ASRFemaleByAgeCountStateSchema(many=True)
+            result = cdemodels.ASRFemaleByAgeCountState.get(level_value)
+        elif level == 'region':
+            self.schema = marshmallow_schemas.ASRFemaleByAgeCountRegionSchema(many=True)
+            result = cdemodels.ASRFemaleByAgeCountRegion.get(level_value)
+        else:
+            self.schema = marshmallow_schemas.ASRFemaleByAgeCountNationalSchema(many=True)
+            result = cdemodels.ASRFemaleByAgeCountNational.query
         return self.with_metadata(result, args)
 
 class ASRRaceCount(CdeResource):

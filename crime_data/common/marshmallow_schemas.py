@@ -1295,11 +1295,26 @@ class ASRMaleByAgeCountNationalSchema(ma.ModelSchema):
         model = cdemodels.ASRMaleByAgeCountNational
         ordered = True
 
-class ASRFemaleByAgeCountSchema(ma.ModelSchema):
+class ASRFemaleByAgeCountAgencySchema(ma.ModelSchema):
     class Meta:
-        model = cdemodels.ASRFemaleByAgeCount
+        model = cdemodels.ASRFemaleByAgeCountAgency
         ordered = True
 
+class ASRFemaleByAgeCountStateSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.ASRFemaleByAgeCountState
+        ordered = True
+
+class ASRFemaleByAgeCountRegionSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.ASRFemaleByAgeCountRegion
+        ordered = True
+
+class ASRFemaleByAgeCountNationalSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.ASRFemaleByAgeCountNational
+        ordered = True
+        
 class ASRRaceCountSchema(ma.ModelSchema):
     class Meta:
         model = cdemodels.ASRRaceCount
