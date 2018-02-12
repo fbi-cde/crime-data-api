@@ -1,0 +1,75 @@
+-- DROPs
+DROP MATERIALIZED VIEW public.leoka_assault_by_group_regional_totals;
+DROP MATERIALIZED VIEW public.leoka_assault_by_group_state_totals;
+DROP MATERIALIZED VIEW public.leoka_assault_by_group_national;
+DROP MATERIALIZED VIEW public.leoka_assault_by_group_regional;
+DROP MATERIALIZED VIEW public.leoka_assault_by_group_state;
+DROP MATERIALIZED VIEW public.leoka_assault_by_assign_dist_national;
+DROP MATERIALIZED VIEW public.leoka_assault_by_assign_dist_regional;
+DROP MATERIALIZED VIEW public.leoka_assault_by_assign_dist_state;
+DROP MATERIALIZED VIEW public.leoka_assault_by_assign_dist_agency;
+DROP MATERIALIZED VIEW public.leoka_assault_by_weapon_national;
+DROP MATERIALIZED VIEW public.leoka_assault_by_weapon_regional;
+DROP MATERIALIZED VIEW public.leoka_assault_by_weapon_state;
+DROP MATERIALIZED VIEW public.leoka_assault_by_weapon_agency;
+DROP MATERIALIZED VIEW public.leoka_assault_by_weapon_per_group_national;
+DROP MATERIALIZED VIEW public.leoka_assault_by_weapon_per_group_regional;
+DROP MATERIALIZED VIEW public.leoka_assault_by_weapon_per_group_state;
+DROP MATERIALIZED VIEW public.leoka_assault_by_weapon_per_activity_national;
+DROP MATERIALIZED VIEW public.leoka_assault_by_weapon_per_activity_regional;
+DROP MATERIALIZED VIEW public.leoka_assault_by_weapon_per_activity_state;
+DROP MATERIALIZED VIEW public.leoka_assault_by_weapon_per_activity_agency;
+DROP MATERIALIZED VIEW public.leoka_assault_weapon_injury_state;
+DROP MATERIALIZED VIEW public.leoka_assault_weapon_injury_region;
+DROP MATERIALIZED VIEW public.leoka_assault_weapon_injury_national;
+DROP MATERIALIZED VIEW public.leoka_assault_by_time_dist_national;
+
+DROP MATERIALIZED VIEW public.nibrs_agency_denorm_offender_age;
+DROP MATERIALIZED VIEW public.nibrs_agency_denorm_offender_ethnicity;
+DROP MATERIALIZED VIEW public.nibrs_agency_denorm_offender_race;
+DROP MATERIALIZED VIEW public.nibrs_agency_denorm_offender_count;
+DROP MATERIALIZED VIEW public.nibrs_agency_denorm_offender_sex;
+DROP MATERIALIZED VIEW public.nibrs_state_denorm_offender_age;
+DROP MATERIALIZED VIEW public.nibrs_state_denorm_offender_ethnicity;
+DROP MATERIALIZED VIEW public.nibrs_state_denorm_offender_race;
+DROP MATERIALIZED VIEW public.nibrs_state_denorm_offender_count;
+DROP MATERIALIZED VIEW public.nibrs_state_denorm_offender_sex;
+DROP MATERIALIZED VIEW public.nibrs_national_denorm_offender_age;
+DROP MATERIALIZED VIEW public.nibrs_national_denorm_offender_ethnicity;
+DROP MATERIALIZED VIEW public.nibrs_national_denorm_offender_race;
+DROP MATERIALIZED VIEW public.nibrs_national_denorm_offender_count;
+DROP MATERIALIZED VIEW public.nibrs_national_denorm_offender_sex;
+
+
+DROP MATERIALIZED VIEW public.nibrs_agency_denorm_offense_count;
+DROP MATERIALIZED VIEW public.nibrs_state_denorm_offense_count;
+DROP MATERIALIZED VIEW public.nibrs_national_denorm_offense_count;
+
+DROP MATERIALIZED VIEW public.police_employment_agency
+DROP MATERIALIZED VIEW public.police_employment_state
+DROP MATERIALIZED VIEW public.police_employment_region
+DROP MATERIALIZED VIEW public.police_employment_nation
+
+
+DROP MATERIALIZED VIEW public.nibrs_agency_denorm_victim_location;
+DROP MATERIALIZED VIEW public.nibrs_agency_denorm_victim_age;
+DROP MATERIALIZED VIEW public.nibrs_agency_denorm_victim_ethnicity;
+DROP MATERIALIZED VIEW public.nibrs_agency_denorm_victim_race;
+DROP MATERIALIZED VIEW public.nibrs_agency_denorm_victim_count;
+DROP MATERIALIZED VIEW public.nibrs_agency_denorm_victim_sex;
+DROP MATERIALIZED VIEW public.nibrs_state_denorm_victim_location;
+DROP MATERIALIZED VIEW public.nibrs_state_denorm_victim_age;
+DROP MATERIALIZED VIEW public.nibrs_state_denorm_victim_ethnicity;
+DROP MATERIALIZED VIEW public.nibrs_state_denorm_victim_race;
+DROP MATERIALIZED VIEW public.nibrs_state_denorm_victim_count;
+DROP MATERIALIZED VIEW public.nibrs_state_denorm_victim_sex;
+DROP MATERIALIZED VIEW public.nibrs_national_denorm_victim_location;
+DROP MATERIALIZED VIEW public.nibrs_national_denorm_victim_age;
+DROP MATERIALIZED VIEW public.nibrs_national_denorm_victim_ethnicity;
+DROP MATERIALIZED VIEW public.nibrs_national_denorm_victim_race;
+DROP MATERIALIZED VIEW public.nibrs_national_denorm_victim_count;
+DROP MATERIALIZED VIEW public.nibrs_national_denorm_victim_sex;
+
+DROP MATERIALIZED VIEW nibrs_agency_denorm_victim_offender_relationship;
+DROP MATERIALIZED VIEW nibrs_state_denorm_victim_offender_relationship;
+DROP MATERIALIZED VIEW nibrs_national_denorm_victim_offender_relationship;

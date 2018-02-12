@@ -3,358 +3,205 @@ from crime_data.extensions import DEFAULT_MAX_AGE
 from flask.ext.cachecontrol import cache
 from sqlalchemy import func
 
-from crime_data.common import cdemodels, marshmallow_schemas
+from crime_data.common import cdemodels, marshmallow_schemas, munger
 from crime_data.common.base import CdeResource, tuning_page
 from crime_data.common.marshmallow_schemas import ArgumentsSchema
 
-
-class NIBRSAgencyVictimDenormCount(CdeResource):
-    schema = marshmallow_schemas.NIBRSAgencyVictimDenormCountSchema(many=True)
+class NIBRSCountNational(CdeResource):
     @use_args(ArgumentsSchema)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, ori=None):
+    def get(self, args, variable,queryType, offense_name):
         self.verify_api_key(args)
-        query = cdemodels.NIBRSAgencyVictimDenormCount.get(ori=ori)
-        return self.with_metadata(query,args)
+        if queryType == 'victim' and variable == 'count':
+            self.set_schema(marshmallow_schemas.NIBRSNationalVictimDenormCountSchema(many=True))
+            query = cdemodels.NIBRSNationalVictimDenormCount.query
+            creator = munger.UIComponentCreator(query.all(),'nibrs_count','')
+        elif queryType == 'victim' and variable == 'sex':
+            self.set_schema(marshmallow_schemas.NIBRSNationalVictimDenormSexSchema(many=True))
+            query = cdemodels.NIBRSNationalVictimDenormSex.query
+            creator = munger.UIComponentCreator(query.all(),'nibrs_sex','')
+        elif queryType =='victim' and variable == 'race':
+            self.set_schema(marshmallow_schemas.NIBRSNationalVictimDenormRaceSchema(many=True))
+            query = cdemodels.NIBRSNationalVictimDenormRace.query
+            creator = munger.UIComponentCreator(query.all(),'nibrs_race','')
+        elif queryType == 'victim' and variable == 'ethnicity':
+            self.set_schema(marshmallow_schemas.NIBRSNationalVictimDenormEthnicitySchema(many=True))
+            query = cdemodels.NIBRSNationalVictimDenormEthnicity.query
+            creator = munger.UIComponentCreator(query.all(),'nibrs_ethnicity','')
+        elif queryType == 'victim' and variable == 'age':
+            self.set_schema(marshmallow_schemas.NIBRSNationalVictimDenormAgeSchema(many=True))
+            query = cdemodels.NIBRSNationalVictimDenormAge.query
+            creator = munger.UIComponentCreator(query.all(),'nibrs_age','')
+        elif queryType == 'victim' and variable == 'location':
+            self.set_schema(marshmallow_schemas.NIBRSNationalVictimDenormLocationSchema(many=True))
+            query = cdemodels.NIBRSNationalVictimDenormLocation.query
+            creator = munger.UIComponentCreator(query.all(),'nibrs_location','')
+        elif queryType == 'offender' and variable == 'count':
+            self.set_schema(marshmallow_schemas.NIBRSNationalOffenderDenormCountSchema(many=True))
+            query = cdemodels.NIBRSNationalOffenderDenormCount.query
+            creator = munger.UIComponentCreator(query.all(),'nibrs_count','')
+        elif queryType == 'offender' and variable == 'sex':
+            self.set_schema(marshmallow_schemas.NIBRSNationalOffenderenormSexSchema(many=True))
+            query = cdemodels.NIBRSNationalOffenderDenormSex.query
+            creator = munger.UIComponentCreator(query.all(),'nibrs_sex','')
+        elif queryType == 'offender' and variable == 'race':
+            self.set_schema(marshmallow_schemas.NIBRSNationalOffenderDenormRaceSchema(many=True))
+            query = cdemodels.NIBRSNationalOffenderDenormRace.query
+            creator = munger.UIComponentCreator(query.all(),'nibrs_race','')
+        elif queryType == 'offender' and variable == 'ethnicity':
+            self.set_schema(marshmallow_schemas.NIBRSNationalOffenderDenormEthnicitySchema(many=True))
+            query = cdemodels.NIBRSNationalOffenderDenormEthnicity.query
+            creator = munger.UIComponentCreator(query.all(),'nibrs_ethnicity','')
+        elif queryType == 'offender' and variable == 'age':
+            self.set_schema(marshmallow_schemas.NIBRSNationalOffenderDenormAgeSchema(many=True))
+            query = cdemodels.NIBRSNationalOffenderDenormAge.query
+            creator = munger.UIComponentCreator(query.all(),'nibrs_age','')
+        elif queryType == 'offender' and variable == 'location':
+            self.set_schema(marshmallow_schemas.NIBRSNationalVictimDenormLocationSchema(many=True))
+            query = cdemodels.NIBRSNationalVictimDenormLocation.query
+            creator = munger.UIComponentCreator(query.all(),'nibrs_location','')
+        elif queryType == 'offense' and variable == 'count':
+            self.set_schema(marshmallow_schemas.NIBRSNationalOffenseCountSchema(many=True))
+            query = cdemodels.NIBRSNationalOffenseCount.query
+            creator = munger.UIComponentCreator(query.all(),'nibrs_offense_count','')
+        elif queryType == 'victim' and variable == 'relationship':
+            self.set_schema(marshmallow_schemas.NIBRSNationalDenormVictimOffenderRelationshipSchema(many=True))
+            query = cdemodels.NIBRSNationalDenormVictimOffenderRelationship.query
+            creator = munger.UIComponentCreator(query.all(),'nibrs_relatiopnship','')
+        else:
+            return self.with_metadata([], args)
+        ui = creator.munge_set()
+        return self.without_metadata(ui, args)
 
-class NIBRSAgencyVictimDenormSex(CdeResource):
-    schema = marshmallow_schemas.NIBRSAgencyVictimDenormSexSchema(many=True)
+
+class NIBRSCountState(CdeResource):
     @use_args(ArgumentsSchema)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, ori=None):
+    def get(self, args, variable,queryType,state_abbr=None, offense_name):
         self.verify_api_key(args)
-        query = cdemodels.NIBRSAgencyVictimDenormSex.get(ori=ori)
-        return self.with_metadata(query,args)
+        if queryType == 'victim' and variable == 'count':
+            self.set_schema(marshmallow_schemas.NIBRSStateVictimDenormCountSchema(many=True))
+            query = cdemodels.NIBRSStateVictimDenormCount.get(state_abbr=state_abbr)
+            creator = munger.UIComponentCreator(query.all(),'nibrs_count','')
+        elif queryType == 'victim' and variable == 'sex':
+            self.set_schema(marshmallow_schemas.NIBRSStateVictimDenormSexSchema(many=True))
+            query = cdemodels.NIBRSStateVictimDenormSex.get(state_abbr=state_abbr)
+            creator = munger.UIComponentCreator(query.all(),'nibrs_sex','')
+        elif queryType =='victim' and variable == 'race':
+            self.set_schema(marshmallow_schemas.NIBRSStateVictimDenormRaceSchema(many=True))
+            query = cdemodels.NIBRSStateVictimDenormRace.get(state_abbr=state_abbr)
+            creator = munger.UIComponentCreator(query.all(),'nibrs_race','')
+        elif queryType == 'victim' and variable == 'ethnicity':
+            self.set_schema(marshmallow_schemas.NIBRSStateVictimDenormEthnicitySchema(many=True))
+            query = cdemodels.NIBRSStateVictimDenormEthnicity.get(state_abbr=state_abbr)
+            creator = munger.UIComponentCreator(query.all(),'nibrs_ethnicity','')
+        elif queryType == 'victim' and variable == 'age':
+            self.set_schema(marshmallow_schemas.NIBRSStateVictimDenormAgeSchema(many=True))
+            query = cdemodels.NIBRSStateVictimDenormAge.get(state_abbr=state_abbr)
+            creator = munger.UIComponentCreator(query.all(),'nibrs_age','')
+        elif queryType == 'victim' and variable == 'location':
+            self.set_schema(marshmallow_schemas.NIBRSStateVictimDenormLocationSchema(many=True))
+            query = cdemodels.NIBRSStateVictimDenormLocation.get(state_abbr=state_abbr)
+            creator = munger.UIComponentCreator(query.all(),'nibrs_location','')
+        elif queryType == 'offender' and variable == 'count':
+            self.set_schema(marshmallow_schemas.NIBRSStateOffenderDenormCountSchema(many=True))
+            query = cdemodels.NIBRSStateOffenderDenormCount.get(state_abbr=state_abbr)
+            creator = munger.UIComponentCreator(query.all(),'nibrs_count','')
+        elif queryType == 'offender' and variable == 'sex':
+            self.set_schema(marshmallow_schemas.NIBRSStateOffenderenormSexSchema(many=True))
+            query = cdemodels.NIBRSStateOffenderDenormSex.get(state_abbr=state_abbr)
+            creator = munger.UIComponentCreator(query.all(),'nibrs_sex','')
+        elif queryType == 'offender' and variable == 'race':
+            self.set_schema(marshmallow_schemas.NIBRSStateOffenderDenormRaceSchema(many=True))
+            query = cdemodels.NIBRSStateOffenderDenormRace.get(state_abbr=state_abbr)
+            creator = munger.UIComponentCreator(query.all(),'nibrs_race','')
+        elif queryType == 'offender' and variable == 'ethnicity':
+            self.set_schema(marshmallow_schemas.NIBRSStateOffenderDenormEthnicitySchema(many=True))
+            query = cdemodels.NIBRSStateOffenderDenormEthnicity.get(state_abbr=state_abbr)
+            creator = munger.UIComponentCreator(query.all(),'nibrs_ethnicity','')
+        elif queryType == 'offender' and variable == 'age':
+            self.set_schema(marshmallow_schemas.NIBRSStateOffenderDenormAgeSchema(many=True))
+            query = cdemodels.NIBRSStateOffenderDenormAge.get(state_abbr=state_abbr)
+            creator = munger.UIComponentCreator(query.all(),'nibrs_age','')
+        elif queryType == 'offender' and variable == 'location':
+            self.set_schema(marshmallow_schemas.NIBRSStateVictimDenormLocationSchema(many=True))
+            query = cdemodels.NIBRSStateVictimDenormLocation.get(state_abbr=state_abbr)
+            creator = munger.UIComponentCreator(query.all(),'nibrs_location','')
+        elif queryType == 'offense' and variable == 'count':
+            self.set_schema(marshmallow_schemas.NIBRSStateOffenseCountSchema(many=True))
+            query = cdemodels.NIBRSStateOffenseCount.get(state_abbr=state_abbr)
+            creator = munger.UIComponentCreator(query.all(),'nibrs_offense_count','')
+        elif queryType == 'victim' and variable == 'relationship':
+            self.set_schema(marshmallow_schemas.NIBRSStateDenormVictimOffenderRelationshipSchema(many=True))
+            query = cdemodels.NIBRSStateDenormVictimOffenderRelationship.get(state_abbr=state_abbr)
+            creator = munger.UIComponentCreator(query.all(),'nibrs_relatiopnship','')
+        else:
+            return self.with_metadata([], args)
+        ui = creator.munge_set()
+        return self.without_metadata(ui, args)
 
-class NIBRSAgencyVictimDenormRace(CdeResource):
-    schema = marshmallow_schemas.NIBRSAgencyVictimDenormRaceSchema(many=True)
+class NIBRSCountAgency(CdeResource):
     @use_args(ArgumentsSchema)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, ori=None):
+    def get(self, args, variable,queryType,ori=None, offense_name):
         self.verify_api_key(args)
-        query = cdemodels.NIBRSAgencyVictimDenormRace.get(ori=ori)
-        return self.with_metadata(query,args)
-
-class NIBRSAgencyVictimDenormEthnicity(CdeResource):
-    schema = marshmallow_schemas.NIBRSAgencyVictimDenormEthnicitySchema(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, ori=None):
-        self.verify_api_key(args)
-        query = cdemodels.NIBRSAgencyVictimDenormEthnicity.get(ori=ori)
-        return self.with_metadata(query,args)
-
-class NIBRSAgencyVictimDenormAge(CdeResource):
-    schema = marshmallow_schemas.NIBRSAgencyVictimDenormAgeSchema(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, ori=None):
-        self.verify_api_key(args)
-        query = cdemodels.NIBRSAgencyVictimDenormAge.get(ori=ori)
-        return self.with_metadata(query,args)
-
-class NIBRSAgencyVictimDenormLocation(CdeResource):
-    schema = marshmallow_schemas.NIBRSAgencyVictimDenormLocationSchema(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, ori=None):
-        self.verify_api_key(args)
-        query = cdemodels.NIBRSAgencyVictimDenormLocation.get(ori=ori)
-        return self.with_metadata(query,args)
-
-class NIBRSAgencyOffenderDenormCount(CdeResource):
-    schema = marshmallow_schemas.NIBRSAgencyOffenderDenormCountSchema(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, ori=None):
-        self.verify_api_key(args)
-        query = cdemodels.NIBRSAgencyOffenderDenormCount.get(ori=ori)
-        return self.with_metadata(query,args)
-
-class NIBRSAgencyOffenderDenormSex(CdeResource):
-    schema = marshmallow_schemas.NIBRSAgencyOffenderDenormSexSchema(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, ori=None):
-        self.verify_api_key(args)
-        query = cdemodels.NIBRSAgencyOffenderDenormSex.get(ori=ori)
-        return self.with_metadata(query,args)
-
-class NIBRSAgencyOffenderDenormRace(CdeResource):
-    schema = marshmallow_schemas.NIBRSAgencyOffenderDenormRaceSchema(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, ori=None):
-        self.verify_api_key(args)
-        query = cdemodels.NIBRSAgencyOffenderDenormRace.get(ori=ori)
-        return self.with_metadata(query,args)
-
-class NIBRSAgencyOffenderDenormEthnicity(CdeResource):
-    schema = marshmallow_schemas.NIBRSAgencyOffenderDenormEthnicitySchema(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, ori=None):
-        self.verify_api_key(args)
-        query = cdemodels.NIBRSAgencyOffenderDenormEthnicity.get(ori=ori)
-        return self.with_metadata(query,args)
-
-class NIBRSAgencyOffenderDenormAge(CdeResource):
-    schema = marshmallow_schemas.NIBRSAgencyOffenderDenormAgeSchema(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, ori=None):
-        self.verify_api_key(args)
-        query = cdemodels.NIBRSAgencyOffenderDenormAge.get(ori=ori)
-        return self.with_metadata(query,args)
-
-class NIBRSNationalVictimDenormCount(CdeResource):
-    schema = marshmallow_schemas.NIBRSNationalVictimDenormCountSchema(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args):
-        self.verify_api_key(args)
-        query = cdemodels.NIBRSNationalVictimDenormCount.query
-        return self.with_metadata(query,args)
-
-class NIBRSNationalVictimDenormSex(CdeResource):
-    schema = marshmallow_schemas.NIBRSNationalVictimDenormSexSchema(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args):
-        self.verify_api_key(args)
-        query = cdemodels.NIBRSNationalVictimDenormSex.query
-        return self.with_metadata(query,args)
-
-class NIBRSNationalVictimDenormRace(CdeResource):
-    schema = marshmallow_schemas.NIBRSNationalVictimDenormRaceSchema(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args):
-        self.verify_api_key(args)
-        query = cdemodels.NIBRSNationalVictimDenormRace.query
-        return self.with_metadata(query,args)
-
-class NIBRSNationalVictimDenormEthnicity(CdeResource):
-    schema = marshmallow_schemas.NIBRSNationalVictimDenormEthnicitySchema(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args):
-        self.verify_api_key(args)
-        query = cdemodels.NIBRSNationalVictimDenormEthnicity.query
-        return self.with_metadata(query,args)
-
-class NIBRSNationalVictimDenormAge(CdeResource):
-    schema = marshmallow_schemas.NIBRSNationalVictimDenormAgeSchema(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args):
-        self.verify_api_key(args)
-        query = cdemodels.NIBRSNationalVictimDenormAge.query
-        return self.with_metadata(query,args)
-
-class NIBRSNationalVictimDenormLocation(CdeResource):
-    schema = marshmallow_schemas.NIBRSNationalVictimDenormLocationSchema(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args):
-        self.verify_api_key(args)
-        query = cdemodels.NIBRSNationalVictimDenormLocation.query
-        return self.with_metadata(query,args)
-
-class NIBRSNationalOffenderDenormCount(CdeResource):
-    schema = marshmallow_schemas.NIBRSNationalOffenderDenormCountSchema(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args):
-        self.verify_api_key(args)
-        query = cdemodels.NIBRSNationalOffenderDenormCount.query
-        return self.with_metadata(query,args)
-
-class NIBRSNationalOffenderDenormSex(CdeResource):
-    schema = marshmallow_schemas.NIBRSNationalOffenderDenormSexSchema(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args):
-        self.verify_api_key(args)
-        query = cdemodels.NIBRSNationalOffenderDenormSex.query
-        return self.with_metadata(query,args)
-
-class NIBRSNationalOffenderDenormRace(CdeResource):
-    schema = marshmallow_schemas.NIBRSNationalOffenderDenormRaceSchema(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args):
-        self.verify_api_key(args)
-        query = cdemodels.NIBRSNationalOffenderDenormRace.query
-        return self.with_metadata(query,args)
-
-class NIBRSNationalOffenderDenormEthnicity(CdeResource):
-    schema = marshmallow_schemas.NIBRSNationalOffenderDenormEthnicitySchema(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args):
-        self.verify_api_key(args)
-        query = cdemodels.NIBRSNationalOffenderDenormEthnicity.query
-        return self.with_metadata(query,args)
-
-class NIBRSNationalOffenderDenormAge(CdeResource):
-    schema = marshmallow_schemas.NIBRSNationalOffenderDenormAgeSchema(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args):
-        self.verify_api_key(args)
-        query = cdemodels.NIBRSNationalOffenderDenormAge.query
-        return self.with_metadata(query,args)
-
-class NIBRSStateVictimDenormCount(CdeResource):
-    schema = marshmallow_schemas.NIBRSStateVictimDenormCountSchema(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, state_abbr=None):
-        self.verify_api_key(args)
-        query = cdemodels.NIBRSStateVictimDenormCount.get(state_abbr=state_abbr)
-        return self.with_metadata(query,args)
-
-class NIBRSStateVictimDenormSex(CdeResource):
-    schema = marshmallow_schemas.NIBRSStateVictimDenormSexSchema(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, state_abbr=None):
-        self.verify_api_key(args)
-        query = cdemodels.NIBRSStateVictimDenormSex.get(state_abbr=state_abbr)
-        return self.with_metadata(query,args)
-
-class NIBRSStateVictimDenormRace(CdeResource):
-    schema = marshmallow_schemas.NIBRSStateVictimDenormRaceSchema(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, state_abbr=None):
-        self.verify_api_key(args)
-        query = cdemodels.NIBRSStateVictimDenormRace.get(state_abbr=state_abbr)
-        return self.with_metadata(query,args)
-
-class NIBRSStateVictimDenormEthnicity(CdeResource):
-    schema = marshmallow_schemas.NIBRSStateVictimDenormEthnicitySchema(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, state_abbr=None):
-        self.verify_api_key(args)
-        query = cdemodels.NIBRSStateVictimDenormEthnicity.get(state_abbr=state_abbr)
-        return self.with_metadata(query,args)
-
-class NIBRSStateVictimDenormAge(CdeResource):
-    schema = marshmallow_schemas.NIBRSStateVictimDenormAgeSchema(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, state_abbr=None):
-        self.verify_api_key(args)
-        query = cdemodels.NIBRSStateVictimDenormAge.get(state_abbr=state_abbr)
-        return self.with_metadata(query,args)
-
-class NIBRSStateVictimDenormLocation(CdeResource):
-    schema = marshmallow_schemas.NIBRSStateVictimDenormLocationSchema(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, state_abbr=None):
-        self.verify_api_key(args)
-        query = cdemodels.NIBRSStateVictimDenormLocation.get(state_abbr=state_abbr)
-        return self.with_metadata(query,args)
-
-class NIBRSStateOffenderDenormCount(CdeResource):
-    schema = marshmallow_schemas.NIBRSStateOffenderDenormCountSchema(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, state_abbr=None):
-        self.verify_api_key(args)
-        query = cdemodels.NIBRSStateOffenderDenormCount.get(state_abbr=state_abbr)
-        return self.with_metadata(query,args)
-
-class NIBRSStateOffenderDenormSex(CdeResource):
-    schema = marshmallow_schemas.NIBRSStateOffenderDenormSexSchema(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, state_abbr=None):
-        self.verify_api_key(args)
-        query = cdemodels.NIBRSStateOffenderDenormSex.get(state_abbr=state_abbr)
-        return self.with_metadata(query,args)
-
-class NIBRSStateOffenderDenormRace(CdeResource):
-    schema = marshmallow_schemas.NIBRSStateOffenderDenormRaceSchema(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, state_abbr=None):
-        self.verify_api_key(args)
-        query = cdemodels.NIBRSStateOffenderDenormRace.get(state_abbr=state_abbr)
-        return self.with_metadata(query,args)
-
-class NIBRSStateOffenderDenormEthnicity(CdeResource):
-    schema = marshmallow_schemas.NIBRSStateOffenderDenormEthnicitySchema(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, state_abbr=None):
-        self.verify_api_key(args)
-        query = cdemodels.NIBRSStateOffenderDenormEthnicity.get(state_abbr=state_abbr)
-        return self.with_metadata(query,args)
-
-class NIBRSStateOffenderDenormAge(CdeResource):
-    schema = marshmallow_schemas.NIBRSStateOffenderDenormAgeSchema(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, state_abbr=None):
-        self.verify_api_key(args)
-        query = cdemodels.NIBRSStateOffenderDenormAge.get(state_abbr=state_abbr)
-        return self.with_metadata(query,args)
-
-class NIBRSNationalOffenseCount(CdeResource):
-    schema = marshmallow_schemas.NIBRSNationalOffenseCountSchema(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args):
-        self.verify_api_key(args)
-        query = cdemodels.NIBRSNationalOffenseCount.query
-        return self.with_metadata(query,args)
-
-class NIBRSAgencyOffenseCount(CdeResource):
-    schema = marshmallow_schemas.NIBRSAgencyOffenseCountSchema(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, ori=None):
-        self.verify_api_key(args)
-        query = cdemodels.NIBRSAgencyOffenseCount.get(ori=ori)
-        return self.with_metadata(query,args)
-
-class NIBRSStateOffenseCount(CdeResource):
-    schema = marshmallow_schemas.NIBRSStateOffenseCountSchema(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, state_abbr=None):
-        self.verify_api_key(args)
-        query = cdemodels.NIBRSStateOffenseCount.get(state_abbr=state_abbr)
-        return self.with_metadata(query,args)
-
-class NIBRSStateDenormVictimOffenderRelationship(CdeResource):
-    schema = marshmallow_schemas.NIBRSStateDenormVictimOffenderRelationshipSchema(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, state_abbr=None):
-        self.verify_api_key(args)
-        query = cdemodels.NIBRSStateDenormVictimOffenderRelationship.get(state_abbr=state_abbr)
-        return self.with_metadata(query,args)
-
-class NIBRSNationalDenormVictimOffenderRelationship(CdeResource):
-    schema = marshmallow_schemas.NIBRSNationalDenormVictimOffenderRelationshipSchema(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args):
-        self.verify_api_key(args)
-        query = cdemodels.NIBRSNationalDenormVictimOffenderRelationship.query
-        return self.with_metadata(query,args)
-
-class NIBRSAgencyDenormVictimOffenderRelationship(CdeResource):
-    schema = marshmallow_schemas.NIBRSNationalDenormVictimOffenderRelationshipSchema(many=True)
-    @use_args(ArgumentsSchema)
-    @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, ori=None):
-        self.verify_api_key(args)
-        query = cdemodels.NIBRSAgencyDenormVictimOffenderRelationship.get(ori=ori)
-        return self.with_metadata(query,args)
+        if queryType == 'victim' and variable == 'count':
+            self.set_schema(marshmallow_schemas.NIBRSAgencyVictimDenormCountSchema(many=True))
+            query = cdemodels.NIBRSAgencyVictimDenormCount.get(ori=ori)
+            creator = munger.UIComponentCreator(query.all(),'nibrs_count','')
+        elif queryType == 'victim' and variable == 'sex':
+            self.set_schema(marshmallow_schemas.NIBRSAgencyVictimDenormSexSchema(many=True))
+            query = cdemodels.NIBRSAgencyVictimDenormSex.get(ori=ori)
+            creator = munger.UIComponentCreator(query.all(),'nibrs_sex','')
+        elif queryType =='victim' and variable == 'race':
+            self.set_schema(marshmallow_schemas.NIBRSAgencyVictimDenormRaceSchema(many=True))
+            query = cdemodels.NIBRSAgencyVictimDenormRace.get(ori=ori)
+            creator = munger.UIComponentCreator(query.all(),'nibrs_race','')
+        elif queryType == 'victim' and variable == 'ethnicity':
+            self.set_schema(marshmallow_schemas.NIBRSAgencyVictimDenormEthnicitySchema(many=True))
+            query = cdemodels.NIBRSAgencyVictimDenormEthnicity.get(ori=ori)
+            creator = munger.UIComponentCreator(query.all(),'nibrs_ethnicity','')
+        elif queryType == 'victim' and variable == 'age':
+            self.set_schema(marshmallow_schemas.NIBRSAgencyVictimDenormAgeSchema(many=True))
+            query = cdemodels.NIBRSAgencyVictimDenormAge.get(ori=ori)
+            creator = munger.UIComponentCreator(query.all(),'nibrs_age','')
+        elif queryType == 'victim' and variable == 'location':
+            self.set_schema(marshmallow_schemas.NIBRSAgencyVictimDenormLocationSchema(many=True))
+            query = cdemodels.NIBRSAgencyVictimDenormLocation.get(ori=ori)
+            creator = munger.UIComponentCreator(query.all(),'nibrs_location','')
+        elif queryType == 'offender' and variable == 'count':
+            self.set_schema(marshmallow_schemas.NIBRSAgencyOffenderDenormCountSchema(many=True))
+            query = cdemodels.NIBRSAgencyOffenderDenormCount.get(ori=ori)
+            creator = munger.UIComponentCreator(query.all(),'nibrs_count','')
+        elif queryType == 'offender' and variable == 'sex':
+            self.set_schema(marshmallow_schemas.NIBRSAgencyOffenderenormSexSchema(many=True))
+            query = cdemodels.NIBRSAgencyOffenderDenormSex.get(ori=ori)
+            creator = munger.UIComponentCreator(query.all(),'nibrs_sex','')
+        elif queryType == 'offender' and variable == 'race':
+            self.set_schema(marshmallow_schemas.NIBRSAgencyOffenderDenormRaceSchema(many=True))
+            query = cdemodels.NIBRSAgencyOffenderDenormRace.query
+            creator = munger.UIComponentCreator(query.all(),'nibrs_race','')
+        elif queryType == 'offender' and variable == 'ethnicity':
+            self.set_schema(marshmallow_schemas.NIBRSAgencyOffenderDenormEthnicitySchema(many=True))
+            query = cdemodels.NIBRSAgencyOffenderDenormEthnicity.query
+            creator = munger.UIComponentCreator(query.all(),'nibrs_ethnicity','')
+        elif queryType == 'offender' and variable == 'age':
+            self.set_schema(marshmallow_schemas.NIBRSAgencyOffenderDenormAgeSchema(many=True))
+            query = cdemodels.NIBRSAgencyOffenderDenormAge.query
+            creator = munger.UIComponentCreator(query.all(),'nibrs_age','')
+        elif queryType == 'offender' and variable == 'location':
+            self.set_schema(marshmallow_schemas.NIBRSAgencyVictimDenormLocationSchema(many=True))
+            query = cdemodels.NIBRSAgencyVictimDenormLocation.query
+            creator = munger.UIComponentCreator(query.all(),'nibrs_location','')
+        elif queryType == 'offense' and variable == 'count':
+            self.set_schema(marshmallow_schemas.NIBRSAgencyOffenseCountSchema(many=True))
+            query = cdemodels.NIBRSAgencyOffenseCount.get(ori=ori)
+            creator = munger.UIComponentCreator(query.all(),'nibrs_offense_count','')
+        elif queryType == 'victim' and variable == 'relationship':
+            self.set_schema(marshmallow_schemas.NIBRSAgencyDenormVictimOffenderRelationshipSchema(many=True))
+            query = cdemodels.NIBRSAgencyDenormVictimOffenderRelationship.get(ori=ori)
+            creator = munger.UIComponentCreator(query.all(),'nibrs_relatiopnship','')
+        else:
+            return self.with_metadata([], args)
+        ui = creator.munge_set()
+        return self.without_metadata(ui, args)

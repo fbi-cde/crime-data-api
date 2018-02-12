@@ -2390,3 +2390,25 @@ class LeokaAssaultWeaponByActivityAgency(db.Model):
     knife_actual = db.Column(db.Integer)
     hands_fists_feet_actual = db.Column(db.Integer)
     other_actual = db.Column(db.Integer)
+
+class TableKeyMapping(db.Model):
+    """
+    Represents Tables mapping to Keys
+    """
+    __tablename__ = 'table_key_mapping'
+    __table_args__ = (
+        PrimaryKeyConstraint('table_name','key'),
+    )
+    def get(table_name=None):
+        query = TableKeyMapping.query
+
+        if table_name:
+            query = query.filter(func.lower(TableKeyMapping.table_name) == func.lower(table_name))
+
+        return query
+
+    table_name = db.Column(db.String)
+    column_name = db.Column(db.String)
+    key = db.Column(db.String)
+    ui_component = db.Column(db.String)
+    ui_text = db.Column(db.String)
