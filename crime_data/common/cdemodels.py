@@ -1110,12 +1110,13 @@ class NIBRSStateVictimDenormLocation(db.Model):
     __table_args__ = (
         PrimaryKeyConstraint('offense_name', 'data_year','state_id'),
     )
-    def get(state_abbr=None):
+    def get(state_abbr=None,offense_name=None):
         query = NIBRSStateVictimDenormLocation.query
 
         if state_abbr:
             query = query.filter(func.lower(NIBRSStateVictimDenormLocation.state_abbr) == func.lower(state_abbr))
-
+        if offense_name:
+            query = query.filter(NIBRSStateVictimDenormLocation.offense_name.in_(offense_name))
         return query
 
     state_id = db.Column(db.Integer)

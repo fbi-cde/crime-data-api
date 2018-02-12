@@ -1,7 +1,7 @@
 -- NIBRS
 -- NIBRS  Count
 INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_count', 'group_1_actual_ct','Count' , 'text', 'Victim Count');
+VALUES ('nibrs_count', 'count','Count' , 'text', 'Count');
 -- NIBRS Sex
 INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
 VALUES ('nibrs_sex', 'male_count','Male' , 'stacked_table', ' Sex');
@@ -293,6 +293,13 @@ VALUES ('nibrs_relatiopnship', 'offender','offender' , 'basic_table', 'Location'
 
 INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
 VALUES ('nibrs_relatiopnship', 'ex_spouse','Ex Spouse' , 'basic_table', 'Location');
+
+-- NIBRS Offense count
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('nibrs_offense_count', 'incident_count','Incident Count' , 'text', 'Offense Count');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('nibrs_offense_count', 'offense_count','Offense Count' , 'text', 'Offense Count');
 
 --LEOKA
 -- LEOKA : Population Group Keys

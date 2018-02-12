@@ -47,14 +47,12 @@ class UIComponentCreator(object):
                             d.value =  d.value + getattr(self.results[i], self.keys[j].column_name)
                     data.append(d)
                 keys.append(key)
-        print('munging set:')
         uiObject.keys = keys
         uiObject.data = data
         return uiObject
 
     def fetchKeys(self):
         schema = marshmallow_schemas.TableKeyMapping(many=True)
-        print('table_name:',self.table_name);
         query = cdemodels.TableKeyMapping.get(table_name=self.table_name)
         return query.all()
 

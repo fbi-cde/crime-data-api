@@ -64,7 +64,7 @@ class NIBRSCountNational(CdeResource):
             self.set_schema(marshmallow_schemas.NIBRSNationalOffenseCountSchema(many=True))
             query = cdemodels.NIBRSNationalOffenseCount.get(offense_name=get_offenses(offense_name))
             creator = munger.UIComponentCreator(query.all(),'nibrs_offense_count','')
-        elif queryType == 'victim' and variable == 'relationship':
+        elif queryType == 'victim' and variable == 'relationships':
             self.set_schema(marshmallow_schemas.NIBRSNationalDenormVictimOffenderRelationshipSchema(many=True))
             query = cdemodels.NIBRSNationalDenormVictimOffenderRelationship.get(offense_name=get_offenses(offense_name))
             creator = munger.UIComponentCreator(query.all(),'nibrs_relatiopnship','')
@@ -108,7 +108,7 @@ class NIBRSCountState(CdeResource):
             query = cdemodels.NIBRSStateOffenderDenormCount.get(state_abbr=state_abbr,offense_name=get_offenses(offense_name))
             creator = munger.UIComponentCreator(query.all(),'nibrs_count','')
         elif queryType == 'offender' and variable == 'sex':
-            self.set_schema(marshmallow_schemas.NIBRSStateOffenderenormSexSchema(many=True))
+            self.set_schema(marshmallow_schemas.NIBRSStateOffenderDenormSexSchema(many=True))
             query = cdemodels.NIBRSStateOffenderDenormSex.get(state_abbr=state_abbr,offense_name=get_offenses(offense_name))
             creator = munger.UIComponentCreator(query.all(),'nibrs_sex','')
         elif queryType == 'offender' and variable == 'race':
@@ -131,7 +131,7 @@ class NIBRSCountState(CdeResource):
             self.set_schema(marshmallow_schemas.NIBRSStateOffenseCountSchema(many=True))
             query = cdemodels.NIBRSStateOffenseCount.get(state_abbr=state_abbr,offense_name=get_offenses(offense_name))
             creator = munger.UIComponentCreator(query.all(),'nibrs_offense_count','')
-        elif queryType == 'victim' and variable == 'relationship':
+        elif queryType == 'victim' and variable == 'relationships':
             self.set_schema(marshmallow_schemas.NIBRSStateDenormVictimOffenderRelationshipSchema(many=True))
             query = cdemodels.NIBRSStateDenormVictimOffenderRelationship.get(state_abbr=state_abbr,offense_name=get_offenses(offense_name))
             creator = munger.UIComponentCreator(query.all(),'nibrs_relatiopnship','')
@@ -197,7 +197,7 @@ class NIBRSCountAgency(CdeResource):
             self.set_schema(marshmallow_schemas.NIBRSAgencyOffenseCountSchema(many=True))
             query = cdemodels.NIBRSAgencyOffenseCount.get(ori=ori,offense_name=get_offenses(offense_name))
             creator = munger.UIComponentCreator(query.all(),'nibrs_offense_count','')
-        elif queryType == 'victim' and variable == 'relationship':
+        elif queryType == 'victim' and variable == 'relationships':
             self.set_schema(marshmallow_schemas.NIBRSAgencyDenormVictimOffenderRelationshipSchema(many=True))
             query = cdemodels.NIBRSAgencyDenormVictimOffenderRelationship.get(ori=ori,offense_name=get_offenses(offense_name))
             creator = munger.UIComponentCreator(query.all(),'nibrs_relatiopnship','')
