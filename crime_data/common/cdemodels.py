@@ -2519,3 +2519,4 @@ class TableKeyMapping(db.Model):
     key = db.Column(db.String)
     ui_component = db.Column(db.String)
     ui_text = db.Column(db.String)
+    category = db.Column(db.String)

@@ -20,7 +20,8 @@ class UIComponentCreator(object):
         self.keys = self.fetchKeys()
         data =[]
         keys = []
-        uiObject = UIObject(self.keys[0].ui_component,self.keys[0].ui_text)
+        uiObject = UIObject(self.keys[0].ui_component,self.keys[0].ui_text,self.keys[0].category)
+        uiObject.toString()
         for j in range(len(self.keys)):
             key = self.keys[j].key
             value = 0
@@ -45,10 +46,12 @@ class UIComponentCreator(object):
                     for i in range(len(self.results)):
                         if data_year == self.results[i].data_year:
                             d.value =  d.value + getattr(self.results[i], self.keys[j].column_name)
+                    d.value = int(d.value)
                     data.append(d)
                 keys.append(key)
         uiObject.keys = keys
         uiObject.data = data
+
         return uiObject
 
     def fetchKeys(self):
@@ -64,20 +67,20 @@ class Key(object):
             self.data_year = 0;
             self.key_type = ''
 
-
         def setTypeKey(self,keytype):
             self.key_type = keytype
 
 
 class UIObject(object):
-    def __init__(self,ui_type,noun):
+    def __init__(self,ui_type,noun,category):
         self.keys = []
-        self.data = [];
-        self.ui_type = ui_type;
+        self.data = []
+        self.ui_type = ui_type
         self.noun = noun
+        self.category = category
 
     def toString(self):
-        print('noun:',self.noun,' ui_type:',self.ui_type, 'data:',len(self.data), ' keys:',len(self.keys));
+        print('noun:',self.noun,' ui_type:',self.ui_type, 'data:',len(self.data), ' keys:',len(self.keys), 'category:',self.category);
 
 
     def toJSON(self):

@@ -15,51 +15,47 @@ class NIBRSCountNational(CdeResource):
         if queryType == 'victim' and variable == 'count':
             self.set_schema(marshmallow_schemas.NIBRSNationalVictimDenormCountSchema(many=True))
             query = cdemodels.NIBRSNationalVictimDenormCount.get(offense_name=get_offenses(offense_name))
-            creator = munger.UIComponentCreator(query.all(),'nibrs_count','')
+            creator = munger.UIComponentCreator(query.all(),'nibrs_count_victim','')
         elif queryType == 'victim' and variable == 'sex':
             self.set_schema(marshmallow_schemas.NIBRSNationalVictimDenormSexSchema(many=True))
             query = cdemodels.NIBRSNationalVictimDenormSex.get(offense_name=get_offenses(offense_name))
-            creator = munger.UIComponentCreator(query.all(),'nibrs_sex','')
+            creator = munger.UIComponentCreator(query.all(),'nibrs_sex_victim','')
         elif queryType =='victim' and variable == 'race':
             self.set_schema(marshmallow_schemas.NIBRSNationalVictimDenormRaceSchema(many=True))
             query = cdemodels.NIBRSNationalVictimDenormRace.get(offense_name=get_offenses(offense_name))
-            creator = munger.UIComponentCreator(query.all(),'nibrs_race','')
+            creator = munger.UIComponentCreator(query.all(),'nibrs_race_victim','')
         elif queryType == 'victim' and variable == 'ethnicity':
             self.set_schema(marshmallow_schemas.NIBRSNationalVictimDenormEthnicitySchema(many=True))
             query = cdemodels.NIBRSNationalVictimDenormEthnicity.get(offense_name=get_offenses(offense_name))
-            creator = munger.UIComponentCreator(query.all(),'nibrs_ethnicity','')
+            creator = munger.UIComponentCreator(query.all(),'nibrs_ethnicity_victim','')
         elif queryType == 'victim' and variable == 'age':
             self.set_schema(marshmallow_schemas.NIBRSNationalVictimDenormAgeSchema(many=True))
             query = cdemodels.NIBRSNationalVictimDenormAge.get(offense_name=get_offenses(offense_name))
-            creator = munger.UIComponentCreator(query.all(),'nibrs_age','')
+            creator = munger.UIComponentCreator(query.all(),'nibrs_age_victim','')
         elif queryType == 'victim' and variable == 'location':
             self.set_schema(marshmallow_schemas.NIBRSNationalVictimDenormLocationSchema(many=True))
             query = cdemodels.NIBRSNationalVictimDenormLocation.get(offense_name=get_offenses(offense_name))
-            creator = munger.UIComponentCreator(query.all(),'nibrs_location','')
+            creator = munger.UIComponentCreator(query.all(),'nibrs_location_victim','')
         elif queryType == 'offender' and variable == 'count':
             self.set_schema(marshmallow_schemas.NIBRSNationalOffenderDenormCountSchema(many=True))
             query = cdemodels.NIBRSNationalOffenderDenormCount.get(offense_name=get_offenses(offense_name))
-            creator = munger.UIComponentCreator(query.all(),'nibrs_count','')
+            creator = munger.UIComponentCreator(query.all(),'nibrs_count_offender','')
         elif queryType == 'offender' and variable == 'sex':
             self.set_schema(marshmallow_schemas.NIBRSNationalOffenderenormSexSchema(many=True))
             query = cdemodels.NIBRSNationalOffenderDenormSex.get(offense_name=get_offenses(offense_name))
-            creator = munger.UIComponentCreator(query.all(),'nibrs_sex','')
+            creator = munger.UIComponentCreator(query.all(),'nibrs_sex_offender','')
         elif queryType == 'offender' and variable == 'race':
             self.set_schema(marshmallow_schemas.NIBRSNationalOffenderDenormRaceSchema(many=True))
             query = cdemodels.NIBRSNationalOffenderDenormRace.get(offense_name=get_offenses(offense_name))
-            creator = munger.UIComponentCreator(query.all(),'nibrs_race','')
+            creator = munger.UIComponentCreator(query.all(),'nibrs_race_offender','')
         elif queryType == 'offender' and variable == 'ethnicity':
             self.set_schema(marshmallow_schemas.NIBRSNationalOffenderDenormEthnicitySchema(many=True))
             query = cdemodels.NIBRSNationalOffenderDenormEthnicity.get(offense_name=get_offenses(offense_name))
-            creator = munger.UIComponentCreator(query.all(),'nibrs_ethnicity','')
+            creator = munger.UIComponentCreator(query.all(),'nibrs_ethnicity_offender','')
         elif queryType == 'offender' and variable == 'age':
             self.set_schema(marshmallow_schemas.NIBRSNationalOffenderDenormAgeSchema(many=True))
             query = cdemodels.NIBRSNationalOffenderDenormAge.get(offense_name=get_offenses(offense_name))
-            creator = munger.UIComponentCreator(query.all(),'nibrs_age','')
-        elif queryType == 'offender' and variable == 'location':
-            self.set_schema(marshmallow_schemas.NIBRSNationalVictimDenormLocationSchema(many=True))
-            query = cdemodels.NIBRSNationalVictimDenormLocation.get(offense_name=get_offenses(offense_name))
-            creator = munger.UIComponentCreator(query.all(),'nibrs_location','')
+            creator = munger.UIComponentCreator(query.all(),'nibrs_age_offender','')
         elif queryType == 'offense' and variable == 'count':
             self.set_schema(marshmallow_schemas.NIBRSNationalOffenseCountSchema(many=True))
             query = cdemodels.NIBRSNationalOffenseCount.get(offense_name=get_offenses(offense_name))
@@ -82,23 +78,23 @@ class NIBRSCountState(CdeResource):
         if queryType == 'victim' and variable == 'count':
             self.set_schema(marshmallow_schemas.NIBRSStateVictimDenormCountSchema(many=True))
             query = cdemodels.NIBRSStateVictimDenormCount.get(state_abbr=state_abbr,offense_name=get_offenses(offense_name))
-            creator = munger.UIComponentCreator(query.all(),'nibrs_count','')
+            creator = munger.UIComponentCreator(query.all(),'nibrs_count_victim','')
         elif queryType == 'victim' and variable == 'sex':
             self.set_schema(marshmallow_schemas.NIBRSStateVictimDenormSexSchema(many=True))
             query = cdemodels.NIBRSStateVictimDenormSex.get(state_abbr=state_abbr,offense_name=get_offenses(offense_name))
-            creator = munger.UIComponentCreator(query.all(),'nibrs_sex','')
+            creator = munger.UIComponentCreator(query.all(),'nibrs_sex_victim','')
         elif queryType =='victim' and variable == 'race':
             self.set_schema(marshmallow_schemas.NIBRSStateVictimDenormRaceSchema(many=True))
             query = cdemodels.NIBRSStateVictimDenormRace.get(state_abbr=state_abbr,offense_name=get_offenses(offense_name))
-            creator = munger.UIComponentCreator(query.all(),'nibrs_race','')
+            creator = munger.UIComponentCreator(query.all(),'nibrs_race_victim','')
         elif queryType == 'victim' and variable == 'ethnicity':
             self.set_schema(marshmallow_schemas.NIBRSStateVictimDenormEthnicitySchema(many=True))
             query = cdemodels.NIBRSStateVictimDenormEthnicity.get(state_abbr=state_abbr,offense_name=get_offenses(offense_name))
-            creator = munger.UIComponentCreator(query.all(),'nibrs_ethnicity','')
+            creator = munger.UIComponentCreator(query.all(),'nibrs_ethnicity_victim','')
         elif queryType == 'victim' and variable == 'age':
             self.set_schema(marshmallow_schemas.NIBRSStateVictimDenormAgeSchema(many=True))
             query = cdemodels.NIBRSStateVictimDenormAge.get(state_abbr=state_abbr,offense_name=get_offenses(offense_name))
-            creator = munger.UIComponentCreator(query.all(),'nibrs_age','')
+            creator = munger.UIComponentCreator(query.all(),'nibrs_age_victim','')
         elif queryType == 'victim' and variable == 'location':
             self.set_schema(marshmallow_schemas.NIBRSStateVictimDenormLocationSchema(many=True))
             query = cdemodels.NIBRSStateVictimDenormLocation.get(state_abbr=state_abbr,offense_name=get_offenses(offense_name))
@@ -106,27 +102,23 @@ class NIBRSCountState(CdeResource):
         elif queryType == 'offender' and variable == 'count':
             self.set_schema(marshmallow_schemas.NIBRSStateOffenderDenormCountSchema(many=True))
             query = cdemodels.NIBRSStateOffenderDenormCount.get(state_abbr=state_abbr,offense_name=get_offenses(offense_name))
-            creator = munger.UIComponentCreator(query.all(),'nibrs_count','')
+            creator = munger.UIComponentCreator(query.all(),'nibrs_count_offender','')
         elif queryType == 'offender' and variable == 'sex':
             self.set_schema(marshmallow_schemas.NIBRSStateOffenderDenormSexSchema(many=True))
             query = cdemodels.NIBRSStateOffenderDenormSex.get(state_abbr=state_abbr,offense_name=get_offenses(offense_name))
-            creator = munger.UIComponentCreator(query.all(),'nibrs_sex','')
+            creator = munger.UIComponentCreator(query.all(),'nibrs_sex_offender','')
         elif queryType == 'offender' and variable == 'race':
             self.set_schema(marshmallow_schemas.NIBRSStateOffenderDenormRaceSchema(many=True))
             query = cdemodels.NIBRSStateOffenderDenormRace.get(state_abbr=state_abbr,offense_name=get_offenses(offense_name))
-            creator = munger.UIComponentCreator(query.all(),'nibrs_race','')
+            creator = munger.UIComponentCreator(query.all(),'nibrs_race_offender','')
         elif queryType == 'offender' and variable == 'ethnicity':
             self.set_schema(marshmallow_schemas.NIBRSStateOffenderDenormEthnicitySchema(many=True))
             query = cdemodels.NIBRSStateOffenderDenormEthnicity.get(state_abbr=state_abbr,offense_name=get_offenses(offense_name))
-            creator = munger.UIComponentCreator(query.all(),'nibrs_ethnicity','')
+            creator = munger.UIComponentCreator(query.all(),'nibrs_ethnicity_offender','')
         elif queryType == 'offender' and variable == 'age':
             self.set_schema(marshmallow_schemas.NIBRSStateOffenderDenormAgeSchema(many=True))
             query = cdemodels.NIBRSStateOffenderDenormAge.get(state_abbr=state_abbr,offense_name=get_offenses(offense_name))
-            creator = munger.UIComponentCreator(query.all(),'nibrs_age','')
-        elif queryType == 'offender' and variable == 'location':
-            self.set_schema(marshmallow_schemas.NIBRSStateVictimDenormLocationSchema(many=True))
-            query = cdemodels.NIBRSStateVictimDenormLocation.get(state_abbr=state_abbr,offense_name=get_offenses(offense_name))
-            creator = munger.UIComponentCreator(query.all(),'nibrs_location','')
+            creator = munger.UIComponentCreator(query.all(),'nibrs_age_offender','')
         elif queryType == 'offense' and variable == 'count':
             self.set_schema(marshmallow_schemas.NIBRSStateOffenseCountSchema(many=True))
             query = cdemodels.NIBRSStateOffenseCount.get(state_abbr=state_abbr,offense_name=get_offenses(offense_name))
@@ -148,51 +140,47 @@ class NIBRSCountAgency(CdeResource):
         if queryType == 'victim' and variable == 'count':
             self.set_schema(marshmallow_schemas.NIBRSAgencyVictimDenormCountSchema(many=True))
             query = cdemodels.NIBRSAgencyVictimDenormCount.get(ori=ori,offense_name=get_offenses(offense_name))
-            creator = munger.UIComponentCreator(query.all(),'nibrs_count','')
+            creator = munger.UIComponentCreator(query.all(),'nibrs_count_victim','')
         elif queryType == 'victim' and variable == 'sex':
             self.set_schema(marshmallow_schemas.NIBRSAgencyVictimDenormSexSchema(many=True))
             query = cdemodels.NIBRSAgencyVictimDenormSex.get(ori=ori,offense_name=get_offenses(offense_name))
-            creator = munger.UIComponentCreator(query.all(),'nibrs_sex','')
+            creator = munger.UIComponentCreator(query.all(),'nibrs_sex_victim','')
         elif queryType =='victim' and variable == 'race':
             self.set_schema(marshmallow_schemas.NIBRSAgencyVictimDenormRaceSchema(many=True))
             query = cdemodels.NIBRSAgencyVictimDenormRace.get(ori=ori,offense_name=get_offenses(offense_name))
-            creator = munger.UIComponentCreator(query.all(),'nibrs_race','')
+            creator = munger.UIComponentCreator(query.all(),'nibrs_race_victim','')
         elif queryType == 'victim' and variable == 'ethnicity':
             self.set_schema(marshmallow_schemas.NIBRSAgencyVictimDenormEthnicitySchema(many=True))
             query = cdemodels.NIBRSAgencyVictimDenormEthnicity.get(ori=ori,offense_name=get_offenses(offense_name))
-            creator = munger.UIComponentCreator(query.all(),'nibrs_ethnicity','')
+            creator = munger.UIComponentCreator(query.all(),'nibrs_ethnicity_victim','')
         elif queryType == 'victim' and variable == 'age':
             self.set_schema(marshmallow_schemas.NIBRSAgencyVictimDenormAgeSchema(many=True))
             query = cdemodels.NIBRSAgencyVictimDenormAge.get(ori=ori,offense_name=get_offenses(offense_name))
             creator = munger.UIComponentCreator(query.all(),'nibrs_age','')
-        elif queryType == 'victim' and variable == 'location':
+        elif queryType == 'victim' and variable == 'location_victim':
             self.set_schema(marshmallow_schemas.NIBRSAgencyVictimDenormLocationSchema(many=True))
             query = cdemodels.NIBRSAgencyVictimDenormLocation.get(ori=ori,offense_name=get_offenses(offense_name))
             creator = munger.UIComponentCreator(query.all(),'nibrs_location','')
         elif queryType == 'offender' and variable == 'count':
             self.set_schema(marshmallow_schemas.NIBRSAgencyOffenderDenormCountSchema(many=True))
             query = cdemodels.NIBRSAgencyOffenderDenormCount.get(ori=ori,offense_name=get_offenses(offense_name))
-            creator = munger.UIComponentCreator(query.all(),'nibrs_count','')
+            creator = munger.UIComponentCreator(query.all(),'nibrs_count_offender','')
         elif queryType == 'offender' and variable == 'sex':
             self.set_schema(marshmallow_schemas.NIBRSAgencyOffenderenormSexSchema(many=True))
             query = cdemodels.NIBRSAgencyOffenderDenormSex.get(ori=ori,offense_name=get_offenses(offense_name))
-            creator = munger.UIComponentCreator(query.all(),'nibrs_sex','')
+            creator = munger.UIComponentCreator(query.all(),'nibrs_sex_offender','')
         elif queryType == 'offender' and variable == 'race':
             self.set_schema(marshmallow_schemas.NIBRSAgencyOffenderDenormRaceSchema(many=True))
             query = cdemodels.NIBRSAgencyOffenderDenormRace.get(ori=ori,offense_name=get_offenses(offense_name))
-            creator = munger.UIComponentCreator(query.all(),'nibrs_race','')
+            creator = munger.UIComponentCreator(query.all(),'nibrs_race_offender','')
         elif queryType == 'offender' and variable == 'ethnicity':
             self.set_schema(marshmallow_schemas.NIBRSAgencyOffenderDenormEthnicitySchema(many=True))
             query = cdemodels.NIBRSAgencyOffenderDenormEthnicity.get(ori=ori,offense_name=get_offenses(offense_name))
-            creator = munger.UIComponentCreator(query.all(),'nibrs_ethnicity','')
+            creator = munger.UIComponentCreator(query.all(),'nibrs_ethnicity_offender','')
         elif queryType == 'offender' and variable == 'age':
             self.set_schema(marshmallow_schemas.NIBRSAgencyOffenderDenormAgeSchema(many=True))
             query = cdemodels.NIBRSAgencyOffenderDenormAge.get(ori=ori,offense_name=get_offenses(offense_name))
-            creator = munger.UIComponentCreator(query.all(),'nibrs_age','')
-        elif queryType == 'offender' and variable == 'location':
-            self.set_schema(marshmallow_schemas.NIBRSAgencyVictimDenormLocationSchema(many=True))
-            query = cdemodels.NIBRSAgencyVictimDenormLocation.get(ori=ori,offense_name=get_offenses(offense_name))
-            creator = munger.UIComponentCreator(query.all(),'nibrs_location','')
+            creator = munger.UIComponentCreator(query.all(),'nibrs_age_offender','')
         elif queryType == 'offense' and variable == 'count':
             self.set_schema(marshmallow_schemas.NIBRSAgencyOffenseCountSchema(many=True))
             query = cdemodels.NIBRSAgencyOffenseCount.get(ori=ori,offense_name=get_offenses(offense_name))

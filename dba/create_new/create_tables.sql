@@ -13,6 +13,15 @@ STATE_FIPS_CODE int,
 region_code smallint REFERENCES region_lk(region_code)
 );
 
+CREATE TABLE table_key_mapping (
+  uuid serial  PRIMARY KEY,
+  table_name varchar(50),
+  column_name varchar(50),
+  key varchar(50),
+  ui_component varchar(50),
+  ui_text varchar(150),
+  category varchar(150)
+);
 
 CREATE TABLE nibrs_victim_count (
     data_year int,
