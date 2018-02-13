@@ -404,6 +404,10 @@ class CdeResource(Resource):
             },
         }
 
+    def without_metadata(self, obj, args):
+        serialized = obj.toJSON();
+        return {'results': serialized}
+
     def as_csv_response(self, results, filename, args):
         """Returns the data as a CSV"""
         output = make_response(self.output_serialize(

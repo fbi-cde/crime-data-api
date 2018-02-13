@@ -1314,7 +1314,7 @@ class ASRFemaleByAgeCountNationalSchema(ma.ModelSchema):
     class Meta:
         model = cdemodels.ASRFemaleByAgeCountNational
         ordered = True
-        
+
 class ASRRaceCountSchema(ma.ModelSchema):
     class Meta:
         model = cdemodels.ASRRaceCount
@@ -1323,4 +1323,9 @@ class ASRRaceCountSchema(ma.ModelSchema):
 class ASRRaceYouthCountSchema(ma.ModelSchema):
     class Meta:
         model = cdemodels.ASRRaceYouthCount
+        ordered = True
+
+class TableKeyMapping(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.TableKeyMapping
         ordered = True
