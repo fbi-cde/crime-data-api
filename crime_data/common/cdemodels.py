@@ -2518,5 +2518,7 @@ class TableKeyMapping(db.Model):
     column_name = db.Column(db.String)
     key = db.Column(db.String)
     ui_component = db.Column(db.String)
-    ui_text = db.Column(db.String)
+    title = db.Column(db.String)
+    short_title = db.Column(db.String)
+    noun = db.Column(db.String)
     category = db.Column(db.String)

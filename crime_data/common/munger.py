@@ -20,7 +20,7 @@ class UIComponentCreator(object):
         self.keys = self.fetchKeys()
         data =[]
         keys = []
-        uiObject = UIObject(self.keys[0].ui_component,self.keys[0].ui_text,self.keys[0].category)
+        uiObject = UIObject(self.keys[0].ui_component,self.keys[0].title,self.keys[0].category,self.keys[0].noun,self.keys[0].short_title)
         uiObject.toString()
         for j in range(len(self.keys)):
             key = self.keys[j].key
@@ -72,12 +72,14 @@ class Key(object):
 
 
 class UIObject(object):
-    def __init__(self,ui_type,noun,category):
+    def __init__(self,ui_type,title,category,noun,short_title):
         self.keys = []
         self.data = []
         self.ui_type = ui_type
-        self.noun = noun
+        self.title = title
         self.category = category
+        self.noun = noun
+        self.short_title = short_title
 
     def toString(self):
         print('noun:',self.noun,' ui_type:',self.ui_type, 'data:',len(self.data), ' keys:',len(self.keys), 'category:',self.category);

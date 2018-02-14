@@ -19,8 +19,10 @@ CREATE TABLE table_key_mapping (
   column_name varchar(50),
   key varchar(50),
   ui_component varchar(50),
-  ui_text varchar(150),
-  category varchar(150)
+  title varchar(150),
+  category varchar(150),
+  noun varchar(50),
+  short_title varchar(50)
 );
 
 CREATE TABLE nibrs_victim_count (
