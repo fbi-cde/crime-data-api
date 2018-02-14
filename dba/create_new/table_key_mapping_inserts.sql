@@ -164,222 +164,222 @@ VALUES ('nibrs_age_victim', 'unknown','Unknown' , 'basic_table', 'Victim Age', '
 
 
 -- NIBRS Location
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'residence_home','Residence Home' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'residence_home','Residence Home' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'parking_garage__lot','Parking Garage/Lot' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'parking_garage__lot','Parking Garage/Lot' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'abandoned_condemned__structure','Abandoned Condemned/Structure' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'abandoned_condemned__structure','Abandoned Condemned/Structure' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'air__bus__train_terminal','Air/Bus/Train Terminal' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'air__bus__train_terminal','Air/Bus/Train Terminal' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'amusement_park','Amusement Park' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'amusement_park','Amusement Park' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'arena__stadium__fairgrounds','Arena/Stadium/Fairgrounds' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'arena__stadium__fairgrounds','Arena/Stadium/Fairgrounds' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'atm_separate_from_bank','ATM Separate From Bank' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'atm_separate_from_bank','ATM Separate From Bank' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'auto_dealership','Auto Dealership' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'auto_dealership','Auto Dealership' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'bank','Bank' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'bank','Bank' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'bar_nightclub','Bar/Nightclub' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'bar_nightclub','Bar/Nightclub' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'campground','Campground' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'campground','Campground' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'church__synagogue__temple__mosque','Church/Synagogue/Temple/Mosque' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'church__synagogue__temple__mosque','Church/Synagogue/Temple/Mosque' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'commercial__office_building','Commercial/Office Building' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'commercial__office_building','Commercial/Office Building' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'community_center','Community Center' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'community_center','Community Center' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'construction_site','Construction Site' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'construction_site','Construction Site' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'cyberspace','Cyberspace' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'cyberspace','Cyberspace' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'daycare_facility','Daycare Facility' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'daycare_facility','Daycare Facility' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'department__discount_store','Department/Discount Store' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'department__discount_store','Department/Discount Store' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'dock__wharf__shipping_terminal','Dock/Wharf/Shipping Terminal' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'dock__wharf__shipping_terminal','Dock/Wharf/Shipping Terminal' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'drug_store__doctors_office__hospital','Drug Store/Doctors Office/Hospital' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'drug_store__doctors_office__hospital','Drug Store/Doctors Office/Hospital' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'farm_facility','Farm Facility' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'farm_facility','Farm Facility' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'field__woods','Field/Woods' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'field__woods','Field/Woods' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'gambling_facility__casino__race_track','Gambling Facility/Casino/Race Track' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'gambling_facility__casino__race_track','Gambling Facility/Casino/Race Track' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'government__public_building','Government/Public Building' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'government__public_building','Government/Public Building' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'grocery_store','Grocery Store' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'grocery_store','Grocery Store' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'highway__alley__street__sidewalk','Highway/Alley/Street/Sidewalk' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'highway__alley__street__sidewalk','Highway/Alley/Street/Sidewalk' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'hotel__motel','Hotel/Motel' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'hotel__motel','Hotel/Motel' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'industrial_site','Industrial Site' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'industrial_site','Industrial Site' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'jail__prison__corrections_facility','Jail/Prison/Corrections Facility' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'jail__prison__corrections_facility','Jail/Prison/Corrections Facility' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'lake__waterway__beach','Lake/Waterway/Beach' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'lake__waterway__beach','Lake/Waterway/Beach' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'liquor_store','Liquor Store' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'liquor_store','Liquor Store' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'military_base','Military Base' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'military_base','Military Base' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'unknown','Unknown' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'unknown','Unknown' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'park__playground','Park/Playground' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'park__playground','Park/Playground' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'rental_storage_facility','Rental Storage Facility' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'rental_storage_facility','Rental Storage Facility' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'rest_area','Rest Area' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'rest_area','Rest Area' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'restaurant','Restaurant' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'restaurant','Restaurant' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'school__college','School/College' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'school__college','School/College' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'school_college__university','School College/University' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'school_college__university','School College/University' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'school_elementary__secondary','School Elementary/Secondary' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'school_elementary__secondary','School Elementary/Secondary' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'gas_station','Gas Station' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'gas_station','Gas Station' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'mission__homeless_shelter','Mission/Homeless Shelter' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'mission__homeless_shelter','Mission/Homeless Shelter' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'shopping_mall','Shopping Mall' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'shopping_mall','Shopping Mall' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'specialty_store','Specialty Store' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'specialty_store','Specialty Store' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'tribal_lands','Tribal Lands' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'tribal_lands','Tribal Lands' , 'basic_table', 'Location type','Location type');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_location', 'convenience_store','Convenience Store' , 'basic_table', 'Location type');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_location', 'convenience_store','Convenience Store' , 'basic_table', 'Location type','Location type');
 
 -- NIBRS :Offender Relationship
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_relatiopnship', 'acquaintance','Acquaintance' , 'basic_table', 'Victim’s relationship to the offender');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_relatiopnship', 'acquaintance','Acquaintance' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_relatiopnship', 'babysittee','Babysittee' , 'basic_table', 'Victim’s relationship to the offender');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_relatiopnship', 'babysittee','Babysittee' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_relatiopnship', 'boyfriend_girlfriend','Boyfriend/Girlfriend' , 'basic_table', 'Victim’s relationship to the offender');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_relatiopnship', 'boyfriend_girlfriend','Boyfriend/Girlfriend' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_relatiopnship', 'child_boyfriend_girlfriend','Child of Boyfriend/Girlfriend' , 'basic_table', 'Victim’s relationship to the offender');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_relatiopnship', 'child_boyfriend_girlfriend','Child of Boyfriend/Girlfriend' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_relatiopnship', 'child','Child' , 'basic_table', 'Victim’s relationship to the offender');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_relatiopnship', 'child','Child' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_relatiopnship', 'common_law_spouse','Spouse' , 'basic_table', 'Victim’s relationship to the offender');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_relatiopnship', 'common_law_spouse','Spouse' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_relatiopnship', 'employee','Employee' , 'basic_table', 'Victim’s relationship to the offender');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_relatiopnship', 'employee','Employee' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_relatiopnship', 'employer','Employer' , 'basic_table', 'Victim’s relationship to the offender');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_relatiopnship', 'employer','Employer' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_relatiopnship', 'friend','Friend' , 'basic_table', 'Victim’s relationship to the offender');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_relatiopnship', 'friend','Friend' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_relatiopnship', 'grandchild','Grandchild' , 'basic_table', 'Victim’s relationship to the offender');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_relatiopnship', 'grandchild','Grandchild' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_relatiopnship', 'grandparent','Grandparent' , 'basic_table', 'Victim’s relationship to the offender');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_relatiopnship', 'grandparent','Grandparent' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_relatiopnship', 'homosexual_relationship','Homosexual Relationship' , 'basic_table', 'Victim’s relationship to the offender');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_relatiopnship', 'homosexual_relationship','Homosexual Relationship' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_relatiopnship', 'in_law','In-Law' , 'basic_table', 'Victim’s relationship to the offender');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_relatiopnship', 'in_law','In-Law' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_relatiopnship', 'neighbor','Neighbor' , 'basic_table', 'Victim’s relationship to the offender');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_relatiopnship', 'neighbor','Neighbor' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_relatiopnship', 'other_family_member','Other Family Member' , 'basic_table', 'Victim’s relationship to the offender');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_relatiopnship', 'other_family_member','Other Family Member' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_relatiopnship', 'otherwise_known','Otherwise Known' , 'basic_table', 'Victim’s relationship to the offender');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_relatiopnship', 'otherwise_known','Otherwise Known' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_relatiopnship', 'parent','Parent' , 'basic_table', 'Victim’s relationship to the offender');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_relatiopnship', 'parent','Parent' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_relatiopnship', 'relationship_unknown','Relationship Unknown' , 'basic_table', 'Victim’s relationship to the offender');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_relatiopnship', 'relationship_unknown','Relationship Unknown' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_relatiopnship', 'sibling','Sibling' , 'basic_table', 'Victim’s relationship to the offender');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_relatiopnship', 'sibling','Sibling' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_relatiopnship', 'stepchild','Stepchild' , 'basic_table', 'Victim’s relationship to the offender');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_relatiopnship', 'stepchild','Stepchild' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_relatiopnship', 'spouse','Spouse' , 'basic_table', 'Victim’s relationship to the offender');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_relatiopnship', 'spouse','Spouse' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_relatiopnship', 'stepparent','Stepparent' , 'basic_table', 'Victim’s relationship to the offender');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_relatiopnship', 'stepparent','Stepparent' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_relatiopnship', 'stepsibling','Stepsibling' , 'basic_table', 'Victim’s relationship to the offender');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_relatiopnship', 'stepsibling','Stepsibling' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_relatiopnship', 'stranger','Stranger' , 'basic_table', 'Victim’s relationship to the offender');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_relatiopnship', 'stranger','Stranger' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_relatiopnship', 'offender','Offender' , 'basic_table', 'Victim’s relationship to the offender');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_relatiopnship', 'offender','Offender' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender');
 
-INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
-VALUES ('nibrs_relatiopnship', 'ex_spouse','Ex Spouse' , 'basic_table', 'Victim’s relationship to the offender');
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text, category)
+VALUES ('nibrs_relatiopnship', 'ex_spouse','Ex Spouse' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender');
 
 -- NIBRS Offense count
 INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
