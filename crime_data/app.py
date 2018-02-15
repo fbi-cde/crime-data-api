@@ -251,12 +251,18 @@ def add_resources(app):
                      '/ct/count/states/<string:state_abbr>/<string:variable>/offenses',
                      '/ct/count/national/<string:variable>/offenses',
                      '/ct/count/agencies/<string:ori>/<string:variable>/offenses')
+
     api.add_resource(crime_data.resources.meta.RegionLK,'/lookup/region')
     api.add_resource(crime_data.resources.meta.StateLK,'/lookup/state')
 
     api.add_resource(crime_data.resources.nibrs_counts.NIBRSCountNational, '/nibrs/<string:offense_name>/<string:queryType>/national/<string:variable>')
     api.add_resource(crime_data.resources.nibrs_counts.NIBRSCountState, '/nibrs/<string:offense_name>/<string:queryType>/states/<string:state_abbr>/<string:variable>')
     api.add_resource(crime_data.resources.nibrs_counts.NIBRSCountAgency, '/nibrs/<string:offense_name>/<string:queryType>/agency/<string:state_abbr>/<string:ori>/<string:variable>')
+
+    api.add_resource(crime_data.resources.police_employment.PoliceEmploymentDataNation,'/police-employment')
+    api.add_resource(crime_data.resources.police_employment.PoliceEmploymentDataRegion,'/police-employment/region/<string:region_name>')
+    api.add_resource(crime_data.resources.police_employment.PoliceEmploymentDataState,'/police-employment/state/<string:state_abbr>')
+    api.add_resource(crime_data.resources.police_employment.PoliceEmploymentDataAgency,'/police-employment/agency/<string:state_abbr>/<string:ori>')
 
 
 def newrelic_status_endpoint():

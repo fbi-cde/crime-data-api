@@ -45,12 +45,6 @@ REFRESH MATERIALIZED VIEW public.nibrs_agency_denorm_offense_count;
 REFRESH MATERIALIZED VIEW public.nibrs_state_denorm_offense_count;
 REFRESH MATERIALIZED VIEW public.nibrs_national_denorm_offense_count;
 
-REFRESH MATERIALIZED VIEW public.police_employment_agency
-REFRESH MATERIALIZED VIEW public.police_employment_state
-REFRESH MATERIALIZED VIEW public.police_employment_region
-REFRESH MATERIALIZED VIEW public.police_employment_nation
-
-
 REFRESH MATERIALIZED VIEW public.nibrs_agency_denorm_victim_location;
 REFRESH MATERIALIZED VIEW public.nibrs_agency_denorm_victim_age;
 REFRESH MATERIALIZED VIEW public.nibrs_agency_denorm_victim_ethnicity;
@@ -70,6 +64,11 @@ REFRESH MATERIALIZED VIEW public.nibrs_national_denorm_victim_race;
 REFRESH MATERIALIZED VIEW public.nibrs_national_denorm_victim_count;
 REFRESH MATERIALIZED VIEW public.nibrs_national_denorm_victim_sex;
 
-REFRESH MATERIALIZED VIEW nibrs_agency_denorm_victim_offender_relationship;
-REFRESH MATERIALIZED VIEW nibrs_state_denorm_victim_offender_relationship;
-REFRESH MATERIALIZED VIEW nibrs_national_denorm_victim_offender_relationship;
+REFRESH MATERIALIZED VIEW public.nibrs_agency_denorm_victim_offender_relationship;
+REFRESH MATERIALIZED VIEW public.nibrs_state_denorm_victim_offender_relationship;
+REFRESH MATERIALIZED VIEW public.nibrs_national_denorm_victim_offender_relationship;
+
+REFRESH MATERIALIZED VIEW public.police_employment_agency;
+REFRESH MATERIALIZED VIEW public.police_employment_state;
+REFRESH MATERIALIZED VIEW public.police_employment_region;
+REFRESH MATERIALIZED VIEW public.police_employment_nation;

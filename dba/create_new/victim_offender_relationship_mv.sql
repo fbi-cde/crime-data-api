@@ -100,7 +100,3 @@ from public.nibrs_victim_to_offender_relationship_count group by agency_id, ori,
 
 UPDATE nibrs_victim_to_offender_relationship_count
 SET  state_abbr = TRIM(state_abbr), ori= TRIM(ori), offense_name = TRIM(offense_name),relationship = TRIM(relationship)
-
-REFRESH MATERIALIZED VIEW nibrs_agency_denorm_victim_offender_relationship;
-REFRESH MATERIALIZED VIEW nibrs_state_denorm_victim_offender_relationship;
-REFRESH MATERIALIZED VIEW nibrs_national_denorm_victim_offender_relationship;
