@@ -42,9 +42,7 @@ class UIComponentCreator(object):
                     d = Key(self.keys[j].key)
                     data_year = self.results[k].data_year
                     d.data_year = data_year
-                    print('len(self.results):',len(self.results))
                     for i in range(len(self.results)):
-                        print('result:',data_year,self.results[i].data_year)
                         if data_year == self.results[i].data_year:
                             d.value =  d.value + getattr(self.results[i], self.keys[j].column_name)
                     d.value = int(d.value)
