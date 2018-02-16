@@ -257,7 +257,7 @@ def add_resources(app):
 
     api.add_resource(crime_data.resources.nibrs_counts.NIBRSCountNational, '/nibrs/<string:offense_name>/<string:queryType>/national/<string:variable>')
     api.add_resource(crime_data.resources.nibrs_counts.NIBRSCountState, '/nibrs/<string:offense_name>/<string:queryType>/states/<string:state_abbr>/<string:variable>')
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSCountAgency, '/nibrs/<string:offense_name>/<string:queryType>/agency/<string:state_abbr>/<string:ori>/<string:variable>')
+    api.add_resource(crime_data.resources.nibrs_counts.NIBRSCountAgency, '/nibrs/<string:offense_name>/<string:queryType>/agency/<string:ori>/<string:variable>')
 
     api.add_resource(crime_data.resources.police_employment.PoliceEmploymentDataNation,'/police-employment')
     api.add_resource(crime_data.resources.police_employment.PoliceEmploymentDataRegion,'/police-employment/region/<string:region_name>')
