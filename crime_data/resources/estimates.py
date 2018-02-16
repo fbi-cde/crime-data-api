@@ -49,3 +49,12 @@ class EstimatesNational(CdeResource):
         self.verify_api_key(args)
         estimates = RetaEstimated.query.filter(RetaEstimated.state_abbr == None).order_by(RetaEstimated.year)
         return self.with_metadata(estimates, args)
+
+class SummarizedDataAgency(CdeResource):
+    schema = marshmallow_schemas.SummarizedDataAgencySchema(many=True)
+    @use_args(marshmallow_schemas.ArgumentsSchema)
+    @cache(max_age=DEFAULT_MAX_AGE, public=True)
+    def get(self, args, ori=None, state_abbr=None):
+        self.verify_api_key(args)
+        query = cdemodels.SummarizedDataAgency.get(ori=ori)
+        return self.with_metadata(query,args)
