@@ -2392,44 +2392,25 @@ class LeokaAssaultWeaponByActivityAgency(db.Model):
     other_actual = db.Column(db.Integer)
 
 class SummarizedDataAgency(db.Model):
-    __tablename__ = 'summarized_data_agency'
+    __tablename__ = 'summarized_data_agency_combined'
     __table_args__ = (
-        PrimaryKeyConstraint('data_year', 'ori'),
+        PrimaryKeyConstraint('data_year', 'ori','offense'),
     )
-    def get(ori=None):
+    def get(ori=None, offense=None):
         """
-        A method to find a Summarized Data by Agency
+        A method to find a Summarized Data by Agency and Offense
         """
         query = SummarizedDataAgency.query
 
         if ori:
             query = query.filter(func.lower(SummarizedDataAgency.ori) == func.lower(ori))
+        if offense:
+            query = query.filter(func.lower(SummarizedDataAgency.offense) == func.lower(offense))
 
         return query
 
+    data_year  = db.Column(db.Integer)
     ori =  db.Column(db.String)
-    data_year = db.Column(db.Integer)
-    homicide_actual = db.Column(db.Integer)
-    homicide_cleared = db.Column(db.Integer)
-    larceny_actual = db.Column(db.Integer)
-    larceny_cleared = db.Column(db.Integer)
-    rape_legacy_actual = db.Column(db.Integer)
-    rape_actual = db.Column(db.Integer)
-    robbery_actual = db.Column(db.Integer)
-    violent_crime_actual = db.Column(db.Integer)
-    aggravated_assault_actual = db.Column(db.Integer)
-    burglary_actual = db.Column(db.Integer)
-    motor_vehicle_theft_actual = db.Column(db.Integer)
-    property_crime_actual = db.Column(db.Integer)
-    human_trafficing_actual = db.Column(db.Integer)
-    arson_actual = db.Column(db.Integer)
-    rape_legacy_cleared = db.Column(db.Integer)
-    rape_cleared = db.Column(db.Integer)
-    robbery_cleared = db.Column(db.Integer)
-    violent_crime_cleared = db.Column(db.Integer)
-    aggravated_assault_cleared = db.Column(db.Integer)
-    burglary_cleared = db.Column(db.Integer)
-    motor_vehicle_theft_cleared = db.Column(db.Integer)
-    property_crime_cleared = db.Column(db.Integer)
-    human_trafficing_cleared = db.Column(db.Integer)
-    arson_cleared = db.Column(db.Integer)
+    offense = db.Column(db.String)
+    cleared = db.Column(db.Integer)
+    actual = db.Column(db.Integer)

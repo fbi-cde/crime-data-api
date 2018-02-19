@@ -25,3 +25,101 @@ select ori,  data_year as data_year,
   (SUM(sum_ht_ns_actual)+SUM(sum_ht_sex_actual)+SUM(sum_ht_srv_actual)) as human_trafficing_actual,
   SUM(sum_ars_actual) as arson_actual
 from public.summarized_data GROUP BY ori, data_year;
+
+CREATE MATERIALIZED VIEW summarized_data_agency_homicide AS
+select ori,  data_year as data_year,
+format('homicide') as offense,
+SUM(homicide_cleared) as cleared,
+SUM(homicide_actual) as actual
+from public.summarized_data_agency GROUP BY ori, data_year;
+
+CREATE MATERIALIZED VIEW summarized_data_agency_rape AS
+select ori,  data_year as data_year,
+format('rape') as offense,
+SUM(rape_cleared) as cleared,
+SUM(rape_actual) as actual
+from public.summarized_data_agency GROUP BY ori, data_year;
+
+CREATE MATERIALIZED VIEW summarized_data_agency_rape_leg AS
+select ori,  data_year as data_year,
+format('rape-legacy') as offense,
+SUM(rape_legacy_cleared) as cleared,
+SUM(rape_legacy_actual) as actual
+from public.summarized_data_agency GROUP BY ori, data_year;
+
+CREATE MATERIALIZED VIEW summarized_data_agency_robbery AS
+select ori,  data_year as data_year,
+format('robbery') as offense,
+SUM(robbery_cleared) as cleared,
+SUM(robbery_actual) as actual
+from public.summarized_data_agency GROUP BY ori, data_year;
+
+CREATE MATERIALIZED VIEW summarized_data_agency_aggravated AS
+select ori,  data_year as data_year,
+format('aggravated-assault') as offense,
+SUM(aggravated_assault_cleared) as cleared,
+SUM(aggravated_assault_actual) as actual
+from public.summarized_data_agency GROUP BY ori, data_year;
+
+CREATE MATERIALIZED VIEW summarized_data_agency_mvt AS
+select ori,  data_year as data_year,
+format('motor-vehicle-theft') as offense,
+SUM(motor_vehicle_theft_cleared) as cleared,
+SUM(motor_vehicle_theft_actual) as actual
+from public.summarized_data_agency GROUP BY ori, data_year;
+
+CREATE MATERIALIZED VIEW summarized_data_agency_buglary AS
+select ori,  data_year as data_year,
+format('buglary') as offense,
+SUM(burglary_cleared) as cleared,
+SUM(burglary_actual) as actual
+from public.summarized_data_agency GROUP BY ori, data_year;
+
+CREATE MATERIALIZED VIEW summarized_data_agency_ht AS
+select ori,  data_year as data_year,
+format('human-trafficing') as offense,
+SUM(human_trafficing_cleared) as cleared,
+SUM(human_trafficing_actual) as actual
+from public.summarized_data_agency GROUP BY ori, data_year;
+
+CREATE MATERIALIZED VIEW summarized_data_agency_vc AS
+select ori,  data_year as data_year,
+format('violent-crime') as offense,
+SUM(violent_crime_cleared) as cleared,
+SUM(violent_crime_actual) as actual
+from public.summarized_data_agency GROUP BY ori, data_year;
+
+CREATE MATERIALIZED VIEW summarized_data_agency_pc AS
+select ori,  data_year as data_year,
+format('property-crime') as offense,
+SUM(property_crime_cleared) as cleared,
+SUM(property_crime_actual) as actual
+from public.summarized_data_agency GROUP BY ori, data_year;
+
+CREATE MATERIALIZED VIEW summarized_data_agency_arson AS
+select ori,  data_year as data_year,
+format('arson') as offense,
+SUM(arson_cleared) as cleared,
+SUM(arson_actual) as actual
+from public.summarized_data_agency GROUP BY ori, data_year;
+
+CREATE MATERIALIZED VIEW summarized_data_agency_larceny AS
+select ori,  data_year as data_year,
+format('larceny') as offense,
+SUM(larceny_cleared) as cleared,
+SUM(larceny_actual) as actual
+from public.summarized_data_agency GROUP BY ori, data_year;
+
+CREATE MATERIALIZED VIEW summarized_data_agency_combined AS
+select * from summarized_data_agency_larceny
+union select * from summarized_data_agency_arson
+union select * from summarized_data_agency_pc
+union select * from summarized_data_agency_vc
+union select * from summarized_data_agency_ht
+union select * from summarized_data_agency_buglary
+union select * from summarized_data_agency_mvt
+union select * from summarized_data_agency_aggravated
+union select * from summarized_data_agency_robbery
+union select * from summarized_data_agency_rape_leg
+union select * from summarized_data_agency_rape
+union select * from summarized_data_agency_homicide;

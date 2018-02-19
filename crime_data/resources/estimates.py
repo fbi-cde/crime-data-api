@@ -54,7 +54,7 @@ class SummarizedDataAgency(CdeResource):
     schema = marshmallow_schemas.SummarizedDataAgencySchema(many=True)
     @use_args(marshmallow_schemas.ArgumentsSchema)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args, ori=None, state_abbr=None):
+    def get(self, args, ori=None, offense=None):
         self.verify_api_key(args)
-        query = cdemodels.SummarizedDataAgency.get(ori=ori)
+        query = cdemodels.SummarizedDataAgency.get(ori=ori,offense=offense)
         return self.with_metadata(query,args)
