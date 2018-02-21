@@ -4472,7 +4472,7 @@ CREATE TABLE nibrs_victim_count (
 -- Load Test Data
 copy nibrs_victim_count (data_year, state_id,state_abbr,agency_id,ori,
   offense_name,victim_type_name,sex_code,age_range,race_desc,ethnicity_name,location,count)
-  from 'create_new/data/roll_nibrs_vic_2016_test.psv' with delimiter as '|';
+  from '/workspace/crime-data-api/dba/create_new/data/roll_nibrs_vic_2016_test.psv' with delimiter as '|';
 
 
 UPDATE nibrs_victim_count
@@ -4861,7 +4861,7 @@ CREATE TABLE nibrs_offender_count (
 -- Load Test Data
 copy nibrs_offender_count (data_year, state_id,state_abbr,agency_id,ori,
   offense_name,sex_code,age_range,race_desc,ethnicity_name,count)
-  from 'create_new/data/roll_nibrs_off_2016_test.psv' with delimiter as '|';
+  from '/workspace/crime-data-api/dba/create_new/data/roll_nibrs_off_2016_test.psv' with delimiter as '|';
 
 UPDATE nibrs_offender_count
   SET  state_abbr = TRIM(state_abbr),ori = TRIM(ori),
@@ -5060,7 +5060,7 @@ CREATE TABLE nibrs_victim_to_offender_relationship_count (
 -- Load Test Data
 copy nibrs_victim_to_offender_relationship_count (data_year, state_id,state_abbr,agency_id,ori,
   offense_name,relationship,count)
-  from 'create_new/data/roll_nibrs_rel_2016_test.psv' with delimiter as '|';
+  from '/workspace/crime-data-api/dba/create_new/data/roll_nibrs_rel_2016_test.psv' with delimiter as '|';
 
 UPDATE nibrs_victim_to_offender_relationship_count
   SET  state_abbr = TRIM(state_abbr), ori= TRIM(ori), offense_name = TRIM(offense_name),relationship = TRIM(relationship);
@@ -5182,7 +5182,7 @@ CREATE TABLE nibrs_offense_count (
 
 copy nibrs_offense_count (data_year, state_id,state_abbr,agency_id,ori,
   offense_name,incident_count,offense_count)
-  from 'create_new/data/roll_nibrs_offense_counts_2016_test.psv' with delimiter as '|';
+  from '/workspace/crime-data-api/dba/create_new/data/roll_nibrs_offense_counts_2016_test.psv' with delimiter as '|';
 
 CREATE MATERIALIZED VIEW nibrs_national_denorm_offense_count AS
   select
