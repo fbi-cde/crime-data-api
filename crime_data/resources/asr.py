@@ -15,19 +15,19 @@ class ASRMaleByAgeCount(CdeResource):
         self.verify_api_key(args)
         if level == 'agency':
             query = cdemodels.ASRMaleByAgeCountAgency.get(level_value)
-            creator = munger.UIComponentCreator(query.all(),'asr_age_male_count','offense_name')
+            creator = munger.UIComponentCreator(query.all(),'asr_age_male_count','age_group')
         elif level == 'state':
             self.schema = marshmallow_schemas.ASRMaleByAgeCountStateSchema(many=True)
             query = cdemodels.ASRMaleByAgeCountState.get(level_value)
-            creator = munger.UIComponentCreator(query.all(),'asr_age_male_count','offense_name')
+            creator = munger.UIComponentCreator(query.all(),'asr_age_male_count','age_group')
         elif level == 'region':
             self.schema = marshmallow_schemas.ASRMaleByAgeCountRegionSchema(many=True)
             query = cdemodels.ASRMaleByAgeCountRegion.get(level_value)
-            creator = munger.UIComponentCreator(query.all(),'asr_age_male_count','offense_name')
+            creator = munger.UIComponentCreator(query.all(),'asr_age_male_count','age_group')
         else:
             self.schema = marshmallow_schemas.ASRMaleByAgeCountNationalSchema(many=True)
             query = cdemodels.ASRMaleByAgeCountNational.query
-            creator = munger.UIComponentCreator(query.all(),'asr_age_male_count','offense_name')
+            creator = munger.UIComponentCreator(query.all(),'asr_age_male_count','age_group')
         ui = creator.munge_set()
         return self.without_metadata(ui, args)
 
@@ -39,19 +39,19 @@ class ASRFemaleByAgeCount(CdeResource):
         self.verify_api_key(args)
         if level == 'agency':
             query = cdemodels.ASRFemaleByAgeCountAgency.get(level_value)
-            creator = munger.UIComponentCreator(query.all(),'asr_age_female_count','offense_name')
+            creator = munger.UIComponentCreator(query.all(),'asr_age_female_count','age_group')
         elif level == 'state':
             self.schema = marshmallow_schemas.ASRFemaleByAgeCountStateSchema(many=True)
             query = cdemodels.ASRFemaleByAgeCountState.get(level_value)
-            creator = munger.UIComponentCreator(query.all(),'asr_age_female_count','offense_name')
+            creator = munger.UIComponentCreator(query.all(),'asr_age_female_count','age_group')
         elif level == 'region':
             self.schema = marshmallow_schemas.ASRFemaleByAgeCountRegionSchema(many=True)
             query = cdemodels.ASRFemaleByAgeCountRegion.get(level_value)
-            creator = munger.UIComponentCreator(query.all(),'asr_age_female_count','offense_name')
+            creator = munger.UIComponentCreator(query.all(),'asr_age_female_count','age_group')
         else:
             self.schema = marshmallow_schemas.ASRFemaleByAgeCountNationalSchema(many=True)
             query = cdemodels.ASRFemaleByAgeCountNational.query
-            creator = munger.UIComponentCreator(query.all(),'asr_age_female_count','offense_name')
+            creator = munger.UIComponentCreator(query.all(),'asr_age_female_count','age_group')
         ui = creator.munge_set()
         return self.without_metadata(ui, args)
 
