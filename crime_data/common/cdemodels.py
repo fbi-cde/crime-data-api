@@ -2390,3 +2390,27 @@ class LeokaAssaultWeaponByActivityAgency(db.Model):
     knife_actual = db.Column(db.Integer)
     hands_fists_feet_actual = db.Column(db.Integer)
     other_actual = db.Column(db.Integer)
+
+class SummarizedDataAgency(db.Model):
+    __tablename__ = 'summarized_data_agency_combined'
+    __table_args__ = (
+        PrimaryKeyConstraint('data_year', 'ori','offense'),
+    )
+    def get(ori=None, offense=None):
+        """
+        A method to find a Summarized Data by Agency and Offense
+        """
+        query = SummarizedDataAgency.query
+
+        if ori:
+            query = query.filter(func.lower(SummarizedDataAgency.ori) == func.lower(ori))
+        if offense:
+            query = query.filter(func.lower(SummarizedDataAgency.offense) == func.lower(offense))
+
+        return query
+
+    data_year  = db.Column(db.Integer)
+    ori =  db.Column(db.String)
+    offense = db.Column(db.String)
+    cleared = db.Column(db.Integer)
+    actual = db.Column(db.Integer)

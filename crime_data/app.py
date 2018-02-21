@@ -330,6 +330,7 @@ def add_resources(app):
     #api.add_resource(crime_data.resources.leoka.LeokaAssaultWeaponByActivityState,'/leoka/assault/weapon-activity/count/state/<string:state_abbr>')
     #api.add_resource(crime_data.resources.leoka.LeokaAssaultWeaponByActivityAgency,'/leoka/assault/weapon-activity/count/agency/<string:state_abbr>/<string:ori>')
 
+    api.add_resource(crime_data.resources.estimates.SummarizedDataAgency,'/summarized/agency/<string:ori>/<string:offense>')
 
 
 def newrelic_status_endpoint():
