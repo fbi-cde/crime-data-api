@@ -2,9 +2,9 @@ CREATE MATERIALIZED VIEW summarized_data_agency AS
 select ori,  data_year as data_year,
    SUM(sum_hom_cleared) as homicide_cleared,
    (COALESCE(SUM(sum_rpe_ns_leg_cleared),0)+COALESCE(SUM(sum_rpe_frc_leg_cleared),0)) as rape_legacy_cleared,
-  (SUM(sum_rpe_ns_cleared)+SUM(sum_rpe_frc_cleared)+SUM(sum_rpe_att_cleared)) as rape_cleared,
+  (COALESCE(SUM(sum_rpe_ns_cleared),0)+COALESCE(SUM(sum_rpe_frc_cleared),0)+COALESCE(SUM(sum_rpe_att_cleared),0)) as rape_cleared,
   (SUM(sum_rob_ns_cleared)+SUM(sum_rob_gun_cleared)+SUM(sum_rob_cut_cleared)+SUM(sum_rob_oth_cleared)+SUM(sum_rob_hff_cleared)) as robbery_cleared,
-  (SUM(sum_ass_ns_cleared)+SUM(sum_ass_gun_cleared)+SUM(sum_ass_cut_cleared)+SUM(sum_ass_hff_cleared)+SUM(sum_hom_cleared)+COALESCE(SUM(sum_rpe_ns_leg_cleared),0)+COALESCE(SUM(sum_rpe_frc_leg_cleared),0)+SUM(sum_rpe_ns_cleared)+SUM(sum_rpe_frc_cleared)+SUM(sum_rpe_att_cleared)+SUM(sum_rob_ns_cleared)+SUM(sum_rob_gun_cleared)+SUM(sum_rob_cut_cleared)+SUM(sum_rob_oth_cleared)+SUM(sum_rob_hff_cleared)) as violent_crime_cleared,
+  (SUM(sum_ass_ns_cleared)+SUM(sum_ass_gun_cleared)+SUM(sum_ass_cut_cleared)+SUM(sum_ass_hff_cleared)+SUM(sum_ass_oth_cleared)+SUM(sum_hom_cleared)+COALESCE(SUM(sum_rpe_ns_leg_cleared),0)+COALESCE(SUM(sum_rpe_frc_leg_cleared),0)+COALESCE(SUM(sum_rpe_ns_cleared),0)+COALESCE(SUM(sum_rpe_frc_cleared),0)+COALESCE(SUM(sum_rpe_att_cleared),0)+SUM(sum_rob_ns_cleared)+SUM(sum_rob_gun_cleared)+SUM(sum_rob_cut_cleared)+SUM(sum_rob_oth_cleared)+SUM(sum_rob_hff_cleared)) as violent_crime_cleared,
   (SUM(sum_ass_ns_cleared)+SUM(sum_ass_gun_cleared)+SUM(sum_ass_cut_cleared)+SUM(sum_ass_hff_cleared)+SUM(sum_ass_oth_cleared)) as aggravated_assault_cleared,
   (SUM(sum_brg_ns_cleared)+SUM(sum_brg_feo_cleared)+SUM(sum_brg_ueo_cleared)+SUM(sum_brg_afe_cleared)) as burglary_cleared,
   SUM(sum_lar_tft_cleared) as larceny_cleared,
@@ -14,9 +14,9 @@ select ori,  data_year as data_year,
   SUM(sum_ars_cleared) as arson_cleared,
   SUM(sum_hom_actual) as homicide_actual,
   (COALESCE(SUM(sum_rpe_ns_leg_actual),0)+COALESCE(SUM(sum_rpe_frc_leg_actual),0)) as rape_legacy_actual,
-  (SUM(sum_rpe_ns_actual)+SUM(sum_rpe_frc_actual)+SUM(sum_rpe_att_actual)) as rape_actual,
+  (COALESCE(SUM(sum_rpe_ns_actual),0)+COALESCE(SUM(sum_rpe_frc_actual),0)+COALESCE(SUM(sum_rpe_att_actual),0)) as rape_actual,
   (SUM(sum_rob_ns_actual)+SUM(sum_rob_gun_actual)+SUM(sum_rob_cut_actual)+SUM(sum_rob_oth_actual)+SUM(sum_rob_hff_actual)) as robbery_actual,
-  (SUM(sum_ass_ns_actual)+SUM(sum_ass_gun_actual)+SUM(sum_ass_cut_actual)+SUM(sum_ass_hff_actual)+SUM(sum_hom_actual)+COALESCE(SUM(sum_rpe_ns_leg_actual),0)+COALESCE(SUM(sum_rpe_frc_leg_actual),0)+SUM(sum_rpe_ns_actual)+SUM(sum_rpe_frc_actual)+SUM(sum_rpe_att_actual)+SUM(sum_rob_ns_actual)+SUM(sum_rob_gun_actual)+SUM(sum_rob_cut_actual)+SUM(sum_rob_oth_actual)+SUM(sum_rob_hff_actual)) as violent_crime_actual,
+  (SUM(sum_ass_ns_actual)+SUM(sum_ass_gun_actual)+SUM(sum_ass_cut_actual)+SUM(sum_ass_hff_actual)+SUM(sum_ass_oth_actual)+SUM(sum_hom_actual)+COALESCE(SUM(sum_rpe_ns_leg_actual),0)+COALESCE(SUM(sum_rpe_frc_leg_actual),0)+COALESCE(SUM(sum_rpe_ns_cleared),0)+COALESCE(SUM(sum_rpe_frc_cleared),0)+COALESCE(SUM(sum_rpe_att_cleared),0)+SUM(sum_rob_ns_actual)+SUM(sum_rob_gun_actual)+SUM(sum_rob_cut_actual)+SUM(sum_rob_oth_actual)+SUM(sum_rob_hff_actual)) as violent_crime_actual,
   (SUM(sum_ass_ns_actual)+SUM(sum_ass_gun_actual)+SUM(sum_ass_cut_actual)+SUM(sum_ass_hff_actual)+SUM(sum_ass_oth_actual)) as aggravated_assault_actual,
   (SUM(sum_brg_ns_actual)+SUM(sum_brg_feo_actual)+SUM(sum_brg_ueo_actual)+SUM(sum_brg_afe_actual)) as burglary_actual,
    SUM(sum_lar_tft_actual) as larceny_actual,
@@ -70,7 +70,7 @@ from public.summarized_data_agency GROUP BY ori, data_year;
 
 CREATE MATERIALIZED VIEW summarized_data_agency_buglary AS
 select ori,  data_year as data_year,
-format('buglary') as offense,
+format('burglary') as offense,
 CAST(coalesce(SUM(burglary_cleared)) as INTEGER) as cleared,
 CAST(coalesce(SUM(burglary_actual)) as INTEGER) as actual
 from public.summarized_data_agency GROUP BY ori, data_year;
