@@ -299,3 +299,305 @@ VALUES ('asr_age_female_count', 'weapons_carrying_possessing_etc','Weapons: Carr
 
 INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
 VALUES ('asr_age_female_count', 'zero_report','Zero Report', 'table', 'Age of Offender');
+
+-- ASR offenses by race
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'aggravated_assault','Aggravated Assault', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'all_other_offenses_except_traffic','All Other Offenses (Except Traffic)', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'arson','Arson', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'burglary_breaking_or_entering','Burglary - Breaking or Entering', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'curfew_and_loitering_law_violations','Curfew and Loitering Law Violations', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'disorderly_conduct','Disordery Conduct', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'driving_under_the_influence','Driving Under the Influence', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'drug_abuse_violations_grand_total','Drug Abuse Violations - Grand Total', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'drug_possession_marijuana','Drug Possession - Marijuana', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'drug_possession_opium_or_cocaine_or_their_derivatives','Drug Possession - Opium or Cocaine or Their Derivatives', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'drug_possession_other_dangerous_nonnarcotic_drugs','Drug Possession - Other - Dangerous Nonnarcotic Drugs', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'drug_possession_subtotal','Drug Possession - Subtotal', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'drug_possession_synthetic_narcotics','Drug Possession - Synthetic Narcotics', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'drug_sale_manufacturing_marijuana','Drug Sale/Manufacturing - Marijuana', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'drug_sale_manufacturing_opium_or_cocaine_or_their_derivatives','Drug Sale/Manufacturing - Opium or Cocaine or Their Derivatives', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'drug_sale_manufacturing_other_dangerous_nonnarcotic_drugs','Drug Sale/Manufacturing - Other - Dangerous Nonnarcotic Drugs', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'drug_sale_manufacturing_subtotal','Drug Sale/Manufacturing - Subtotal', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'drug_sale_manufacturing_synthetic_narcotics','Drug Sale/Manufacturing - Synthetic Narcotics', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'drunkenness','Drunkenness', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'embezzlement','Embezzlement', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'forgery_and_counterfeiting','Forgery and Counterfeiting', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'fraud','Fraud', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'gambling_all_other_gambling','Gambling - All Other Gambling', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'gambling_bookmaking_horse_and_sport_book','Gambling - Bookmaking (Horse and Sport Book)', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'gambling_numbers_and_lottery','Gambling - Numbers and Lottery', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'gambling_total','Gambling - Total', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'human_trafficking_commercial_sex_acts','Human Trafficking - Commercial Sex Acts', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'human_trafficking_involuntary_servitude','Human Trafficking - Involuntary Servitude', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'juvenile_disposition','Juvenile Disposition', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'larceny_theft','Larceny - Theft', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'liquor_laws','Liquor Laws', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'manslaughter_by_negligence','Manslaughter by Negligence', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'motor_vehicle_theft','Motor Vehicle Theft', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'murder_and_nonnegligent_manslaughter','Murder and Nonnegligent Manslaughter', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'offenses_against_the_family_and_children','Offenses Against the Family and Children', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'prostitution_and_commercialized_vice','Prostitution and Commercialized Vice', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'prostitution_and_commercialized_vice_assisting_or_promoting_prostitution','Prostitution and Commercialized Vice - Assisting or Promoting Prostitution', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'prostitution_and_commercialized_vice_prostitution','Prostitution and Commercialized Vice - Prostitution', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'prostitution_and_commercialized_vice_purchasing_prostitution','Prostitution and Commercialized Vice - Purchasing Prostitution', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'rape','Rape', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'robbery','Robbery', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'runaway','Runaway', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'sex_offenses_except_rape_and_prostitution_and_commercialized_vice','Sex Offenses (Except Rape, and Prostitution and Commercialized Vice)', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'simple_assault','Simple Assault', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'stolen_property_buying_receiving_possessing','Stolen Property: Buying, Receiving, Possessing', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'suspicion','Suspicion', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'vagrancy','Vagrancy', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'vandalism','Vandalism', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'weapons_carrying_possessing_etc','Weapons: Carrying, Possessing, Etc.', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_count', 'zero_report','Zero Report', 'table', 'Race of Offender');
+
+-- ASR offenses by race youth
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'aggravated_assault','Aggravated Assault', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'all_other_offenses_except_traffic','All Other Offenses (Except Traffic)', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'arson','Arson', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'burglary_breaking_or_entering','Burglary - Breaking or Entering', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'curfew_and_loitering_law_violations','Curfew and Loitering Law Violations', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'disorderly_conduct','Disordery Conduct', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'driving_under_the_influence','Driving Under the Influence', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'drug_abuse_violations_grand_total','Drug Abuse Violations - Grand Total', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'drug_possession_marijuana','Drug Possession - Marijuana', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'drug_possession_opium_or_cocaine_or_their_derivatives','Drug Possession - Opium or Cocaine or Their Derivatives', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'drug_possession_other_dangerous_nonnarcotic_drugs','Drug Possession - Other - Dangerous Nonnarcotic Drugs', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'drug_possession_subtotal','Drug Possession - Subtotal', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'drug_possession_synthetic_narcotics','Drug Possession - Synthetic Narcotics', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'drug_sale_manufacturing_marijuana','Drug Sale/Manufacturing - Marijuana', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'drug_sale_manufacturing_opium_or_cocaine_or_their_derivatives','Drug Sale/Manufacturing - Opium or Cocaine or Their Derivatives', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'drug_sale_manufacturing_other_dangerous_nonnarcotic_drugs','Drug Sale/Manufacturing - Other - Dangerous Nonnarcotic Drugs', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'drug_sale_manufacturing_subtotal','Drug Sale/Manufacturing - Subtotal', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'drug_sale_manufacturing_synthetic_narcotics','Drug Sale/Manufacturing - Synthetic Narcotics', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'drunkenness','Drunkenness', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'embezzlement','Embezzlement', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'forgery_and_counterfeiting','Forgery and Counterfeiting', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'fraud','Fraud', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'gambling_all_other_gambling','Gambling - All Other Gambling', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'gambling_bookmaking_horse_and_sport_book','Gambling - Bookmaking (Horse and Sport Book)', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'gambling_numbers_and_lottery','Gambling - Numbers and Lottery', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'gambling_total','Gambling - Total', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'human_trafficking_commercial_sex_acts','Human Trafficking - Commercial Sex Acts', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'human_trafficking_involuntary_servitude','Human Trafficking - Involuntary Servitude', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'juvenile_disposition','Juvenile Disposition', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'larceny_theft','Larceny - Theft', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'liquor_laws','Liquor Laws', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'manslaughter_by_negligence','Manslaughter by Negligence', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'motor_vehicle_theft','Motor Vehicle Theft', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'murder_and_nonnegligent_manslaughter','Murder and Nonnegligent Manslaughter', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'offenses_against_the_family_and_children','Offenses Against the Family and Children', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'prostitution_and_commercialized_vice','Prostitution and Commercialized Vice', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'prostitution_and_commercialized_vice_assisting_or_promoting_prostitution','Prostitution and Commercialized Vice - Assisting or Promoting Prostitution', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'prostitution_and_commercialized_vice_prostitution','Prostitution and Commercialized Vice - Prostitution', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'prostitution_and_commercialized_vice_purchasing_prostitution','Prostitution and Commercialized Vice - Purchasing Prostitution', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'rape','Rape', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'robbery','Robbery', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'runaway','Runaway', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'sex_offenses_except_rape_and_prostitution_and_commercialized_vice','Sex Offenses (Except Rape, and Prostitution and Commercialized Vice)', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'simple_assault','Simple Assault', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'stolen_property_buying_receiving_possessing','Stolen Property: Buying, Receiving, Possessing', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'suspicion','Suspicion', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'vagrancy','Vagrancy', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'vandalism','Vandalism', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'weapons_carrying_possessing_etc','Weapons: Carrying, Possessing, Etc.', 'table', 'Race of Offender');
+
+INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, ui_text)
+VALUES ('asr_race_youth_count', 'zero_report','Zero Report', 'table', 'Race of Offender');

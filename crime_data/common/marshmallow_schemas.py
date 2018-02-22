@@ -1315,14 +1315,44 @@ class ASRFemaleByAgeCountNationalSchema(ma.ModelSchema):
         model = cdemodels.ASRFemaleByAgeCountNational
         ordered = True
 
-class ASRRaceCountSchema(ma.ModelSchema):
+class ASRRaceCountAgencySchema(ma.ModelSchema):
     class Meta:
-        model = cdemodels.ASRRaceCount
+        model = cdemodels.ASRRaceCountAgency
         ordered = True
 
-class ASRRaceYouthCountSchema(ma.ModelSchema):
+class ASRRaceCountStateSchema(ma.ModelSchema):
     class Meta:
-        model = cdemodels.ASRRaceYouthCount
+        model = cdemodels.ASRRaceCountState
+        ordered = True
+
+class ASRRaceCountRegionSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.ASRRaceCountRegion
+        ordered = True
+
+class ASRRaceCountNationalSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.ASRRaceCountNational
+        ordered = True
+
+class ASRRaceYouthCountAgencySchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.ASRRaceYouthCountAgency
+        ordered = True
+
+class ASRRaceYouthCountStateSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.ASRRaceYouthCountState
+        ordered = True
+
+class ASRRaceYouthCountRegionSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.ASRRaceYouthCountRegion
+        ordered = True
+
+class ASRRaceYouthCountNationalSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.ASRRaceYouthCountNational
         ordered = True
 
 class TableKeyMapping(ma.ModelSchema):

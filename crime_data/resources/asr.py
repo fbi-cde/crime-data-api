@@ -56,19 +56,49 @@ class ASRFemaleByAgeCount(CdeResource):
         return self.without_metadata(ui, args)
 
 class ASRRaceCount(CdeResource):
-    schema = marshmallow_schemas.ASRRaceCountSchema(many=True)
+    schema = marshmallow_schemas.ASRRaceCountAgencySchema(many=True)
     @use_args(ArgumentsSchema)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args):
+    def get(self, args, level=None, level_value=None):
         self.verify_api_key(args)
-        result = cdemodels.ASRRaceCount.query
-        return self.with_metadata(result, args)
+        if level == 'agency':
+            query = cdemodels.ASRRaceCountAgency.get(level_value)
+            creator = munger.UIComponentCreator(query.all(),'asr_race_count','race')
+        elif level == 'state':
+            self.schema = marshmallow_schemas.ASRRaceCountStateSchema(many=True)
+            query = cdemodels.ASRRaceCountState.get(level_value)
+            creator = munger.UIComponentCreator(query.all(),'asr_race_count','race')
+        elif level == 'region':
+            self.schema = marshmallow_schemas.ASRRaceCountRegionSchema(many=True)
+            query = cdemodels.ASRRaceCountRegion.get(level_value)
+            creator = munger.UIComponentCreator(query.all(),'asr_race_count','race')
+        else:
+            self.schema = marshmallow_schemas.ASRRaceCountNationalSchema(many=True)
+            query = cdemodels.ASRRaceCountNational.query
+            creator = munger.UIComponentCreator(query.all(),'asr_race_count','race')
+        ui = creator.munge_set()
+        return self.without_metadata(ui, args)
 
 class ASRRaceYouthCount(CdeResource):
-    schema = marshmallow_schemas.ASRRaceYouthCountSchema(many=True)
+    schema = marshmallow_schemas.ASRRaceYouthCountAgencySchema(many=True)
     @use_args(ArgumentsSchema)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
-    def get(self, args):
+    def get(self, args, level=None, level_value=None):
         self.verify_api_key(args)
-        result = cdemodels.ASRRaceYouthCount.query
-        return self.with_metadata(result, args)
+        if level == 'agency':
+            query = cdemodels.ASRRaceYouthCountAgency.get(level_value)
+            creator = munger.UIComponentCreator(query.all(),'asr_race_youth_count','race')
+        elif level == 'state':
+            self.schema = marshmallow_schemas.ASRRaceYouthCountStateSchema(many=True)
+            query = cdemodels.ASRRaceYouthCountState.get(level_value)
+            creator = munger.UIComponentCreator(query.all(),'asr_race_youth_count','race')
+        elif level == 'region':
+            self.schema = marshmallow_schemas.ASRRaceYouthCountRegionSchema(many=True)
+            query = cdemodels.ASRRaceYouthCountRegion.get(level_value)
+            creator = munger.UIComponentCreator(query.all(),'asr_race_youth_count','race')
+        else:
+            self.schema = marshmallow_schemas.ASRRaceYouthCountNationalSchema(many=True)
+            query = cdemodels.ASRRaceYouthCountNational.query
+            creator = munger.UIComponentCreator(query.all(),'asr_race_youth_count','race')
+        ui = creator.munge_set()
+        return self.without_metadata(ui, args)

@@ -303,8 +303,8 @@ def add_resources(app):
 
     api.add_resource(crime_data.resources.asr.ASRMaleByAgeCount,'/asr/male/age/<string:level>/<string:level_value>','/asr/male/age')
     api.add_resource(crime_data.resources.asr.ASRFemaleByAgeCount,'/asr/female/age/<string:level>/<string:level_value>','/asr/female/age')
-    api.add_resource(crime_data.resources.asr.ASRRaceCount,'/asr/race')
-    api.add_resource(crime_data.resources.asr.ASRRaceYouthCount,'/asr/race/youth')
+    api.add_resource(crime_data.resources.asr.ASRRaceCount,'/asr/race/<string:level>/<string:level_value>','/asr/race')
+    api.add_resource(crime_data.resources.asr.ASRRaceYouthCount,'/asr/race/youth/<string:level>/<string:level_value>','/asr/race/youth')
 
 def newrelic_status_endpoint():
     return 'OK'
