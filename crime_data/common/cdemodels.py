@@ -2405,9 +2405,10 @@ class SummarizedDataAgency(db.Model):
         if ori:
             query = query.filter(func.lower(SummarizedDataAgency.ori) == func.lower(ori))
         if offense:
-            query = query.filter(func.lower(SummarizedDataAgency.offense) == func.lower(offense))
+            if offense != 'rape':
+                query = query.filter(func.lower(SummarizedDataAgency.offense) == func.lower(offense))
             if offense == 'rape':
-                query = query.filter(func.lower(SummarizedDataAgency.offense) == func.lower('rape-legacy'))
+                query = query.filter(or_(func.lower(SummarizedDataAgency.offense) == func.lower('rape-legacy'),func.lower(SummarizedDataAgency.offense) == func.lower(offense)))
 
         return query
 
