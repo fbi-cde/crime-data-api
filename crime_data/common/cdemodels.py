@@ -2522,3 +2522,27 @@ class TableKeyMapping(db.Model):
     short_title = db.Column(db.String)
     noun = db.Column(db.String)
     category = db.Column(db.String)
+
+class SummarizedDataAgency(db.Model):
+    __tablename__ = 'summarized_data_agency_combined'
+    __table_args__ = (
+        PrimaryKeyConstraint('data_year', 'ori','offense'),
+    )
+    def get(ori=None, offense=None):
+        """
+        A method to find a Summarized Data by Agency and Offense
+        """
+        query = SummarizedDataAgency.query
+
+        if ori:
+            query = query.filter(func.lower(SummarizedDataAgency.ori) == func.lower(ori))
+        if offense:
+            query = query.filter(func.lower(SummarizedDataAgency.offense) == func.lower(offense))
+
+        return query
+
+    data_year  = db.Column(db.Integer)
+    ori =  db.Column(db.String)
+    offense = db.Column(db.String)
+    cleared = db.Column(db.Integer)
+    actual = db.Column(db.Integer)
