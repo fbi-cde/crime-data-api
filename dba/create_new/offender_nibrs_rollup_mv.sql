@@ -174,21 +174,6 @@ coalesce(sum(case when age_range = '90-99' then count end), 0) as range_90_99,
 coalesce(sum(case when age_range = 'UNKNOWN' then count end), 0) as unknown
 from public.nibrs_offender_count group by agency_id, ori, offense_name, data_year;
 
-REFRESH MATERIALIZED VIEW public.nibrs_agency_denorm_offender_age;
-REFRESH MATERIALIZED VIEW public.nibrs_agency_denorm_offender_ethnicity;
-REFRESH MATERIALIZED VIEW public.nibrs_agency_denorm_offender_race;
-REFRESH MATERIALIZED VIEW public.nibrs_agency_denorm_offender_count;
-REFRESH MATERIALIZED VIEW public.nibrs_agency_denorm_offender_sex;
-REFRESH MATERIALIZED VIEW public.nibrs_state_denorm_offender_age;
-REFRESH MATERIALIZED VIEW public.nibrs_state_denorm_offender_ethnicity;
-REFRESH MATERIALIZED VIEW public.nibrs_state_denorm_offender_race;
-REFRESH MATERIALIZED VIEW public.nibrs_state_denorm_offender_count;
-REFRESH MATERIALIZED VIEW public.nibrs_state_denorm_offender_sex;
-REFRESH MATERIALIZED VIEW public.nibrs_national_denorm_offender_age;
-REFRESH MATERIALIZED VIEW public.nibrs_national_denorm_offender_ethnicity;
-REFRESH MATERIALIZED VIEW public.nibrs_national_denorm_offender_race;
-REFRESH MATERIALIZED VIEW public.nibrs_national_denorm_offender_count;
-REFRESH MATERIALIZED VIEW public.nibrs_national_denorm_offender_sex;
 
 UPDATE nibrs_offender_count
 SET  state_abbr = TRIM(state_abbr),ori = TRIM(ori),

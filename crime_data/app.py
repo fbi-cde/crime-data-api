@@ -251,55 +251,13 @@ def add_resources(app):
                      '/ct/count/states/<string:state_abbr>/<string:variable>/offenses',
                      '/ct/count/national/<string:variable>/offenses',
                      '/ct/count/agencies/<string:ori>/<string:variable>/offenses')
+
     api.add_resource(crime_data.resources.meta.RegionLK,'/lookup/region')
     api.add_resource(crime_data.resources.meta.StateLK,'/lookup/state')
 
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSAgencyVictimDenormCount,'/nibrs/victim/count/agencies/<string:ori>')
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSAgencyVictimDenormSex,'/nibrs/victim/count/agencies/<string:ori>/sex')
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSAgencyVictimDenormAge,'/nibrs/victim/count/agencies/<string:ori>/age')
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSAgencyVictimDenormRace,'/nibrs/victim/count/agencies/<string:ori>/race')
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSAgencyVictimDenormEthnicity,'/nibrs/victim/count/agencies/<string:ori>/ethnicity')
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSAgencyVictimDenormLocation,'/nibrs/victim/count/agencies/<string:ori>/location')
-
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSAgencyOffenderDenormCount,'/nibrs/offender/count/agencies/<string:ori>')
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSAgencyOffenderDenormSex,'/nibrs/offender/count/agencies/<string:ori>/sex')
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSAgencyOffenderDenormAge,'/nibrs/offender/count/agencies/<string:ori>/age')
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSAgencyOffenderDenormRace,'/nibrs/offender/count/agencies/<string:ori>/race')
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSAgencyOffenderDenormEthnicity,'/nibrs/offender/count/agencies/<string:ori>/ethnicity')
-
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSStateVictimDenormCount,'/nibrs/victim/count/states/<string:state_abbr>')
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSStateVictimDenormSex,'/nibrs/victim/count/states/<string:state_abbr>/sex')
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSStateVictimDenormAge,'/nibrs/victim/count/states/<string:state_abbr>/age')
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSStateVictimDenormRace,'/nibrs/victim/count/states/<string:state_abbr>/race')
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSStateVictimDenormEthnicity,'/nibrs/victim/count/states/<string:state_abbr>/ethnicity')
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSStateVictimDenormLocation,'/nibrs/victim/count/states/<string:state_abbr>/location')
-
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSStateOffenderDenormCount,'/nibrs/offender/count/states/<string:state_abbr>')
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSStateOffenderDenormSex,'/nibrs/offender/count/states/<string:state_abbr>/sex')
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSStateOffenderDenormAge,'/nibrs/offender/count/states/<string:state_abbr>/age')
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSStateOffenderDenormRace,'/nibrs/offender/count/states/<string:state_abbr>/race')
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSStateOffenderDenormEthnicity,'/nibrs/offender/count/states/<string:state_abbr>/ethnicity')
-
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSNationalVictimDenormCount,'/nibrs/victim/count/national')
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSNationalVictimDenormSex,'/nibrs/victim/count/national/sex')
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSNationalVictimDenormAge,'/nibrs/victim/count/national/age')
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSNationalVictimDenormRace,'/nibrs/victim/count/national/race')
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSNationalVictimDenormEthnicity,'/nibrs/victim/count/national/ethnicity')
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSNationalVictimDenormLocation,'/nibrs/victim/count/national/location')
-
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSNationalOffenderDenormCount,'/nibrs/offender/count/national')
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSNationalOffenderDenormSex,'/nibrs/offender/count/national/sex')
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSNationalOffenderDenormAge,'/nibrs/offender/count/national/age')
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSNationalOffenderDenormRace,'/nibrs/offender/count/national/race')
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSNationalOffenderDenormEthnicity,'/nibrs/offender/count/national/ethnicity')
-
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSStateDenormVictimOffenderRelationship,'/nibrs/victim/count/states/<string:state_abbr>/relationships')
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSAgencyDenormVictimOffenderRelationship,'/nibrs/victim/count/agencies/<string:ori>/relationships')
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSNationalDenormVictimOffenderRelationship,'/nibrs/victim/count/national/relationships')
-
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSStateOffenseCount,'/nibrs/offense/count/states/<string:state_abbr>')
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSAgencyOffenseCount,'/nibrs/offense/count/agencies/<string:ori>')
-    api.add_resource(crime_data.resources.nibrs_counts.NIBRSNationalOffenseCount,'/nibrs/offense/count/national')
+    api.add_resource(crime_data.resources.nibrs_counts.NIBRSCountNational, '/nibrs/<string:offense_name>/<string:queryType>/national/<string:variable>')
+    api.add_resource(crime_data.resources.nibrs_counts.NIBRSCountState, '/nibrs/<string:offense_name>/<string:queryType>/states/<string:state_abbr>/<string:variable>')
+    api.add_resource(crime_data.resources.nibrs_counts.NIBRSCountAgency, '/nibrs/<string:offense_name>/<string:queryType>/agency/<string:ori>/<string:variable>')
 
     api.add_resource(crime_data.resources.police_employment.PoliceEmploymentDataNation,'/police-employment')
     api.add_resource(crime_data.resources.police_employment.PoliceEmploymentDataRegion,'/police-employment/region/<string:region_name>')

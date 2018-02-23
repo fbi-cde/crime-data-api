@@ -1382,6 +1382,14 @@ class LeokaAssaultWeaponByGroupNational(ma.ModelSchema):
         model = cdemodels.LeokaAssaultWeaponByGroupNational
         ordered = True
 
+
+class TableKeyMapping(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.TableKeyMapping
+        ordered = True
+
+
+
 class SummarizedDataAgencySchema(ma.ModelSchema):
     class Meta:
         model = cdemodels.SummarizedDataAgency

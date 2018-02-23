@@ -361,24 +361,6 @@ coalesce(sum(case when location = 'Tribal Lands' then sum end), 0) as Tribal_Lan
 coalesce(sum(case when location = 'Convenience Store' then sum end), 0) as convenience_store
 from public.nibrs_national_denorm_victim_location_temp  group by offense_name, data_year;
 
-REFRESH MATERIALIZED VIEW public.nibrs_agency_denorm_victim_location;
-REFRESH MATERIALIZED VIEW public.nibrs_agency_denorm_victim_age;
-REFRESH MATERIALIZED VIEW public.nibrs_agency_denorm_victim_ethnicity;
-REFRESH MATERIALIZED VIEW public.nibrs_agency_denorm_victim_race;
-REFRESH MATERIALIZED VIEW public.nibrs_agency_denorm_victim_count;
-REFRESH MATERIALIZED VIEW public.nibrs_agency_denorm_victim_sex;
-REFRESH MATERIALIZED VIEW public.nibrs_state_denorm_victim_location;
-REFRESH MATERIALIZED VIEW public.nibrs_state_denorm_victim_age;
-REFRESH MATERIALIZED VIEW public.nibrs_state_denorm_victim_ethnicity;
-REFRESH MATERIALIZED VIEW public.nibrs_state_denorm_victim_race;
-REFRESH MATERIALIZED VIEW public.nibrs_state_denorm_victim_count;
-REFRESH MATERIALIZED VIEW public.nibrs_state_denorm_victim_sex;
-REFRESH MATERIALIZED VIEW public.nibrs_national_denorm_victim_location;
-REFRESH MATERIALIZED VIEW public.nibrs_national_denorm_victim_age;
-REFRESH MATERIALIZED VIEW public.nibrs_national_denorm_victim_ethnicity;
-REFRESH MATERIALIZED VIEW public.nibrs_national_denorm_victim_race;
-REFRESH MATERIALIZED VIEW public.nibrs_national_denorm_victim_count;
-REFRESH MATERIALIZED VIEW public.nibrs_national_denorm_victim_sex;
 
 UPDATE nibrs_victim_count
 SET  location = TRIM(location), victim_type_name= TRIM(victim_type_name), state_abbr = TRIM(state_abbr),ori = TRIM(ori),

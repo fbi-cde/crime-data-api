@@ -170,6 +170,9 @@ class CdeResource(Resource):
             qry = self.set_ordering(qry, args)
         return self.render_response(qry, args, csv_filename=csv_filename)
 
+    def set_schema(self, schema):
+        self.schema = schema
+
     def render_response(self, qry, args, csv_filename='incidents'):
         if args['output'] == 'csv':
             aggregate_many = False
@@ -403,6 +406,10 @@ class CdeResource(Resource):
                 'per_page': args['per_page'],
             },
         }
+
+    def without_metadata(self, obj, args):
+        serialized = obj.toJSON();
+        return {'results': serialized}
 
     def as_csv_response(self, results, filename, args):
         """Returns the data as a CSV"""
