@@ -32,3 +32,4 @@ marshmallow==2.10.5
 flask-marshmallow==0.7.0
 marshmallow-sqlalchemy==0.12.1
 webargs==1.4.0
+jsonpickle==0.9.5
