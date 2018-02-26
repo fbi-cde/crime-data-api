@@ -166,6 +166,7 @@ CREATE TABLE public.agency_data
   COVERED_FLAG varchar(1),
   COUNTY_NAME varchar(100),
   MSA_NAME varchar(100),
+  PUBLISHABLE_FLAG varchar(1),
   MALE_OFFICER int,
   MALE_CIVILIAN int,
   MALE_TOTAL int,

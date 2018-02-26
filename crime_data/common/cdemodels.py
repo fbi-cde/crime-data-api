@@ -2549,3 +2549,98 @@ class SummarizedDataAgency(db.Model):
     offense = db.Column(db.String)
     cleared = db.Column(db.Integer)
     actual = db.Column(db.Integer)
+
+class NationalParticipation(db.Model):
+    __tablename__ = 'participation_national'
+    __table_args__ = (
+        PrimaryKeyConstraint('data_year'),
+    )
+    data_year  = db.Column(db.Integer)
+    population = db.Column(db.Integer)
+    total_agency_count  = db.Column(db.Integer)
+    active_agency_count  = db.Column(db.Integer)
+    covered_agency_count  = db.Column(db.Integer)
+    population_covered  = db.Column(db.Integer)
+    agency_count_nibrs_submitting  = db.Column(db.Integer)
+    agency_count_leoka_submitting  = db.Column(db.Integer)
+    agency_count_pe_submitting  = db.Column(db.Integer)
+    agency_count_srs_submitting  = db.Column(db.Integer)
+
+class RegionParticipation(db.Model):
+    __tablename__ = 'participation_region'
+    __table_args__ = (
+        PrimaryKeyConstraint('data_year', 'region_name','region_code'),
+    )
+    def get(region_name=None):
+        query = RegionParticipation.query
+
+        if region_name:
+            query = query.filter(func.lower(RegionParticipation.region_name) == func.lower(region_name))
+
+        return query
+
+    data_year  = db.Column(db.Integer)
+    population = db.Column(db.Integer)
+    region_code = db.Column(db.Integer)
+    region_name  = db.Column(db.String)
+    total_agency_count  = db.Column(db.Integer)
+    active_agency_count  = db.Column(db.Integer)
+    covered_agency_count  = db.Column(db.Integer)
+    population_covered  = db.Column(db.Integer)
+    agency_count_nibrs_submitting  = db.Column(db.Integer)
+    agency_count_leoka_submitting  = db.Column(db.Integer)
+    agency_count_pe_submitting  = db.Column(db.Integer)
+    agency_count_srs_submitting  = db.Column(db.Integer)
+
+class StateParticipation(db.Model):
+    __tablename__ = 'participation_state'
+    __table_args__ = (
+        PrimaryKeyConstraint('data_year', 'state_abbr','state_id'),
+    )
+    def get(state_abbr=None):
+        query = StateParticipation.query
+
+        if state_abbr:
+            query = query.filter(func.lower(StateParticipation.state_abbr) == func.lower(state_abbr))
+
+        return query
+
+    data_year  = db.Column(db.Integer)
+    population = db.Column(db.Integer)
+    state_id = db.Column(db.Integer)
+    state_abbr  = db.Column(db.String)
+    total_agency_count  = db.Column(db.Integer)
+    active_agency_count  = db.Column(db.Integer)
+    covered_agency_count  = db.Column(db.Integer)
+    population_covered  = db.Column(db.Integer)
+    agency_count_nibrs_submitting  = db.Column(db.Integer)
+    agency_count_leoka_submitting  = db.Column(db.Integer)
+    agency_count_pe_submitting  = db.Column(db.Integer)
+    agency_count_srs_submitting  = db.Column(db.Integer)
+
+class AgencyParticipation(db.Model):
+    __tablename__ = 'participation_agency'
+    __table_args__ = (
+        PrimaryKeyConstraint('data_year', 'ori'),
+    )
+    def get(ori=None):
+        query = AgencyParticipation.query
+
+        if ori:
+            query = query.filter(func.lower(AgencyParticipation.ori) == func.lower(ori))
+
+        return query
+
+    data_year  = db.Column(db.Integer)
+    population = db.Column(db.Integer)
+    state_id = db.Column(db.Integer)
+    state_abbr  = db.Column(db.String)
+    ori  = db.Column(db.String)
+    active  = db.Column(db.Boolean)
+    covered  = db.Column(db.Boolean)
+    nibrs_submitting = db.Column(db.Boolean)
+    nibrs_state_data = db.Column(db.Date)
+    leoka_submitting = db.Column(db.Boolean)
+    leoka_submitting_date = db.Column(db.Date)
+    pe_reported_flag = db.Column(db.Boolean)
+    srs_submitting = db.Column(db.Boolean)

@@ -71,3 +71,47 @@ class AgenciesParticipation(CdeResource):
     @tuning_page
     def get(self, args):
         return self._get(args, csv_filename='agency_participation')
+
+class NationParticipation(CdeResource):
+    schema = marshmallow_schemas.NationalParticipationSchema(many=True)
+
+    @use_args(marshmallow_schemas.ArgumentsSchema)
+    @cache(max_age=DEFAULT_MAX_AGE, public=True)
+    @tuning_page
+    def get(self, args):
+        self.verify_api_key(args)
+        query = cdemodels.NationalParticipation.query
+        return self.with_metadata(query,args)
+
+class RegionsParticipation(CdeResource):
+    schema = marshmallow_schemas.RegionParticipationSchema(many=True)
+
+    @use_args(marshmallow_schemas.ArgumentsSchema)
+    @cache(max_age=DEFAULT_MAX_AGE, public=True)
+    @tuning_page
+    def get(self, args, region_name=None):
+        self.verify_api_key(args)
+        query = cdemodels.RegionParticipation.get(region_name=region_name)
+        return self.with_metadata(query,args)
+
+class StatesParticipation(CdeResource):
+    schema = marshmallow_schemas.StateParticipationSchema(many=True)
+
+    @use_args(marshmallow_schemas.ArgumentsSchema)
+    @cache(max_age=DEFAULT_MAX_AGE, public=True)
+    @tuning_page
+    def get(self, args, state_abbr=None):
+        self.verify_api_key(args)
+        query = cdemodels.StateParticipation.get(state_abbr=state_abbr)
+        return self.with_metadata(query,args)
+
+class AgencyParticipation(CdeResource):
+    schema = marshmallow_schemas.AgencyParticipationSchema(many=True)
+
+    @use_args(marshmallow_schemas.ArgumentsSchema)
+    @cache(max_age=DEFAULT_MAX_AGE, public=True)
+    @tuning_page
+    def get(self, args, ori=None):
+        self.verify_api_key(args)
+        query = cdemodels.AgencyParticipation.get(ori=ori)
+        return self.with_metadata(query,args)

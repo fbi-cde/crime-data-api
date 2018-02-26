@@ -1388,9 +1388,27 @@ class TableKeyMapping(ma.ModelSchema):
         model = cdemodels.TableKeyMapping
         ordered = True
 
-
-
 class SummarizedDataAgencySchema(ma.ModelSchema):
     class Meta:
         model = cdemodels.SummarizedDataAgency
+        ordered = True
+
+class NationalParticipationSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NationalParticipation
+        ordered = True
+
+class RegionParticipationSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.RegionParticipation
+        ordered = True
+
+class StateParticipationSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.StateParticipation
+        ordered = True
+
+class AgencyParticipationSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.AgencyParticipation
         ordered = True
