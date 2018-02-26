@@ -1274,6 +1274,60 @@ class NIBRSStateOffenseCountSchema(ma.ModelSchema):
     class Meta:
         model = cdemodels.NIBRSStateOffenseCount
         ordered = True
+class NIBRSRegionVictimDenormCountSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSRegionVictimDenormCount
+        ordered = True
+
+class NIBRSRegionVictimDenormSexSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSRegionVictimDenormSex
+        ordered = True
+
+class NIBRSRegionVictimDenormRaceSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSRegionVictimDenormRace
+        ordered = True
+
+class NIBRSRegionVictimDenormEthnicitySchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSRegionVictimDenormEthnicity
+        ordered = True
+
+class NIBRSRegionVictimDenormAgeSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSRegionVictimDenormAge
+        ordered = True
+
+class NIBRSRegionVictimDenormLocationSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSRegionVictimDenormLocation
+        ordered = True
+
+class NIBRSRegionOffenderDenormCountSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSRegionOffenderDenormCount
+        ordered = True
+
+class NIBRSRegionOffenderDenormSexSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSRegionOffenderDenormSex
+        ordered = True
+
+class NIBRSRegionOffenderDenormRaceSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSRegionOffenderDenormRace
+        ordered = True
+
+class NIBRSRegionOffenderDenormAgeSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSRegionOffenderDenormAge
+        ordered = True
+
+class NIBRSRegionOffenseCountSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSRegionOffenseCount
+        ordered = True
 
 class PoliceEmploymentDataNationSchema(ma.ModelSchema):
     class Meta:

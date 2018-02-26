@@ -256,6 +256,7 @@ def add_resources(app):
     api.add_resource(crime_data.resources.meta.StateLK,'/lookup/state')
 
     api.add_resource(crime_data.resources.nibrs_counts.NIBRSCountNational, '/nibrs/<string:offense_name>/<string:queryType>/national/<string:variable>')
+    api.add_resource(crime_data.resources.nibrs_counts.NIBRSCountRegion, '/nibrs/<string:offense_name>/<string:queryType>/regions/<string:region_name>/<string:variable>')
     api.add_resource(crime_data.resources.nibrs_counts.NIBRSCountState, '/nibrs/<string:offense_name>/<string:queryType>/states/<string:state_abbr>/<string:variable>')
     api.add_resource(crime_data.resources.nibrs_counts.NIBRSCountAgency, '/nibrs/<string:offense_name>/<string:queryType>/agency/<string:ori>/<string:variable>')
 

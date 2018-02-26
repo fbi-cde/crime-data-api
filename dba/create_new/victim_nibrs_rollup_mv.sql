@@ -362,6 +362,132 @@ coalesce(sum(case when location = 'Convenience Store' then sum end), 0) as conve
 from public.nibrs_national_denorm_victim_location_temp  group by offense_name, data_year;
 
 
+--regions
+CREATE MATERIALIZED VIEW nibrs_region_denorm_victim_sex AS
+select  s.region_code as region_code,
+r.region_name as region_name,
+n.offense_name as offense_name,
+n.data_year as data_year,
+SUM(n.male_count) as male_count,
+SUM(n.female_count) as female_count,
+SUM(n.unknown_count) as unknown_count
+from public.nibrs_state_denorm_victim_sex n, public.state_lk s,public.region_lk r
+where s.region_code = r.region_code group by s.region_code,r.region_name, n.offense_name, n.data_year;
+
+
+CREATE MATERIALIZED VIEW nibrs_region_denorm_victim_count AS
+select  s.region_code as region_code,
+r.region_name as region_name,
+n.offense_name as offense_name,
+n.data_year as data_year,
+sum(n.count) as count
+from public.nibrs_victim_count n, public.state_lk s,public.region_lk r
+where s.region_code = r.region_code group by s.region_code,r.region_name, n.offense_name, n.data_year;
+
+CREATE MATERIALIZED VIEW nibrs_region_denorm_victim_race AS
+select  s.region_code as region_code,
+r.region_name as region_name,
+n.offense_name as offense_name,
+n.data_year as data_year,
+coalesce(sum(case when n.race_desc = 'Asian' then count end), 0) as asian,
+coalesce(sum(case when n.race_desc = 'Native Hawaiian or Pacific Islander' then count end), 0) as native_hawaiian,
+coalesce(sum(case when n.race_desc = 'Black or African American' then count end), 0) as black,
+coalesce(sum(case when n.race_desc = 'American Indian or Alaska Native' then count end), 0) as american_indian,
+coalesce(sum(case when n.race_desc = 'Unknown' then count end), 0) as unknown,
+coalesce(sum(case when n.race_desc = 'White' then count end), 0) as white
+from public.nibrs_victim_count n, public.state_lk s,public.region_lk r
+where s.region_code = r.region_code
+group by s.region_code,r.region_name, n.offense_name, n.data_year;
+
+CREATE MATERIALIZED VIEW nibrs_region_denorm_victim_ethnicity AS
+select  s.region_code as region_code,
+r.region_name as region_name,
+n.offense_name as offense_name,
+n.data_year as data_year,
+coalesce(sum(case when n.ethnicity_name = 'Hispanic or Latino' then count end), 0) as hispanic,
+coalesce(sum(case when n.ethnicity_name = 'Multiple' then count end), 0) as multiple,
+coalesce(sum(case when n.ethnicity_name = 'Not Hispanic or Latino' then count end), 0) as not_Hispanic,
+coalesce(sum(case when n.ethnicity_name = 'Unknown' then count end), 0) as unknown
+from public.nibrs_victim_count  n, public.state_lk s,public.region_lk r
+where s.region_code = r.region_code
+group by s.region_code,r.region_name, n.offense_name, n.data_year;
+
+CREATE MATERIALIZED VIEW nibrs_region_denorm_victim_age AS
+select  s.region_code as region_code,
+r.region_name as region_name,
+n.offense_name as offense_name,
+n.data_year as data_year,
+coalesce(sum(case when n.age_range = '0-9' then count end), 0) as range_0_9,
+coalesce(sum(case when n.age_range = '10-19' then count end), 0) as range_10_19,
+coalesce(sum(case when n.age_range = '20-29' then count end), 0) as range_20_29,
+coalesce(sum(case when n.age_range = '30-39' then count end), 0) as range_30_39,
+coalesce(sum(case when n.age_range = '40-49' then count end), 0) as range_40_49,
+coalesce(sum(case when n.age_range = '50-59' then count end), 0) as range_50_59,
+coalesce(sum(case when n.age_range = '60-69' then count end), 0) as range_60_69,
+coalesce(sum(case when n.age_range = '70-79' then count end), 0) as range_70_79,
+coalesce(sum(case when n.age_range = '80-89' then count end), 0) as range_80_89,
+coalesce(sum(case when n.age_range = '90-99' then count end), 0) as range_90_99,
+coalesce(sum(case when n.age_range = 'UNKNOWN' then count end), 0) as unknown
+from public.nibrs_victim_count n, public.state_lk s,public.region_lk r
+where s.region_code = r.region_code
+group by s.region_code,r.region_name, n.offense_name, n.data_year;
+
+CREATE MATERIALIZED VIEW nibrs_region_denorm_victim_location AS
+select  s.region_code as region_code,
+r.region_name as region_name,
+n.offense_name as offense_name,
+n.data_year as data_year,
+coalesce(sum(case when n.location = 'Residence/Home' then sum end), 0) as Residence_Home,
+coalesce(sum(case when n.location = 'Parking Garage/Lot' then sum end), 0) as Parking_Garage__Lot,
+coalesce(sum(case when n.location = 'Abandoned/Condemned Structure' then sum end), 0) as Abandoned_Condemned__Structure,
+coalesce(sum(case when n.location = 'Air/Bus/Train Terminal' then sum end), 0) as Air__Bus__Train_Terminal,
+coalesce(sum(case when n.location = 'Amusement Park' then sum end), 0) as Amusement_Park,
+coalesce(sum(case when n.location = 'Arena/Stadium/Fairgrounds/Coliseum' then sum end), 0) as Arena__Stadium__Fairgrounds,
+coalesce(sum(case when n.location = 'ATM Separate from Bank' then sum end), 0) as ATM_Separate_from_Bank,
+coalesce(sum(case when n.location = 'Auto Dealership New/Used' then sum end), 0) as Auto_Dealership,
+coalesce(sum(case when n.location = 'Bank/Savings and Loan' then sum end), 0) as Bank,
+coalesce(sum(case when n.location = 'Bar/Nightclub' then sum end), 0) as Bar_Nightclub,
+coalesce(sum(case when n.location = 'Camp/Campground' then sum end), 0) as Campground,
+coalesce(sum(case when n.location = 'Church/Synagogue/Temple/Mosque' then sum end), 0) as Church__Synagogue__Temple__Mosque,
+coalesce(sum(case when n.location = 'Commercial/Office Building' then sum end), 0) as Commercial__Office_Building,
+coalesce(sum(case when n.location = 'Community Center' then sum end), 0) as Community_Center,
+coalesce(sum(case when n.location = 'Construction Site' then sum end), 0) as Construction_Site,
+coalesce(sum(case when n.location = 'Cyberspace' then sum end), 0) as Cyberspace,
+coalesce(sum(case when n.location = 'Daycare Facility' then sum end), 0) as Daycare_Facility,
+coalesce(sum(case when n.location = 'Department/Discount Store' then sum end), 0) as Department__Discount_Store,
+coalesce(sum(case when n.location = 'Dock/Wharf/Freight/Modal Terminal' then sum end), 0) as Dock__Wharf__Shipping_Terminal,
+coalesce(sum(case when n.location = 'Drug Store/Doctor’s Office/Hospital' then sum end), 0) as Drug_Store__Doctors_Office__Hospital,
+coalesce(sum(case when n.location = 'Farm Facility' then sum end), 0) as Farm_Facility,
+coalesce(sum(case when n.location = 'Field/Woods' then sum end), 0) as Field__Woods,
+coalesce(sum(case when n.location = 'Gambling Facility/Casino/Race Track' then sum end), 0) as Gambling_Facility__Casino__Race_Track,
+coalesce(sum(case when n.location = 'Government/Public Building' then sum end), 0) as Government__Public_Building,
+coalesce(sum(case when n.location = 'Grocery/Supermarket' then sum end), 0) as Grocery_Store,
+coalesce(sum(case when n.location = 'Highway/Road/Alley/Street/Sidewalk' then sum end), 0) as Highway__Alley__Street__Sidewalk,
+coalesce(sum(case when n.location = 'Hotel/Motel/Etc.' then sum end), 0) as Hotel__Motel,
+coalesce(sum(case when n.location = 'Industrial Site' then sum end), 0) as Industrial_Site,
+coalesce(sum(case when n.location = 'Jail/Prison/Penitentiary/Corrections Facility' then sum end), 0) as Jail__Prison__Corrections_Facility,
+coalesce(sum(case when n.location = 'Lake/Waterway/Beach' then sum end), 0) as Lake__Waterway__Beach,
+coalesce(sum(case when n.location = 'Liquor Store' then sum end), 0) as Liquor_Store,
+coalesce(sum(case when n.location = 'Military Installation' then sum end), 0) as Military_Base,
+coalesce(sum(case when n.location = 'Other/Unknown' then sum end), 0) as Unknown,
+coalesce(sum(case when n.location = 'Park/Playground' then sum end), 0) as Park__Playground,
+coalesce(sum(case when n.location = 'Rental Storage Facility' then sum end), 0) as Rental_Storage_Facility,
+coalesce(sum(case when n.location = 'Rest Area' then sum end), 0) as Rest_Area,
+coalesce(sum(case when n.location = 'Restaurant' then sum end), 0) as Restaurant,
+coalesce(sum(case when n.location = 'School/College' then sum end), 0) as School__College,
+coalesce(sum(case when n.location = 'School-College/University' then sum end), 0) as School_College__University,
+coalesce(sum(case when n.location = 'School-Elementary/Secondary' then sum end), 0) as School_Elementary__Secondary,
+coalesce(sum(case when n.location = 'Service/Gas Station' then sum end), 0) as Gas_Station,
+coalesce(sum(case when n.location = 'Shelter-Mission/Homeless' then sum end), 0) as Mission__Homeless_Shelter,
+coalesce(sum(case when n.location = 'Shopping Mall' then sum end), 0) as Shopping_Mall,
+coalesce(sum(case when n.location = 'Specialty Store' then sum end), 0) as Specialty_Store,
+coalesce(sum(case when n.location = 'Tribal Lands' then sum end), 0) as Tribal_Lands,
+coalesce(sum(case when n.location = 'Convenience Store' then sum end), 0) as convenience_store
+from public.nibrs_national_denorm_victim_location_temp  n, public.state_lk s,public.region_lk r
+where s.region_code = r.region_code
+group by s.region_code,r.region_name, n.offense_name, n.data_year;
+
+
 UPDATE nibrs_victim_count
 SET  location = TRIM(location), victim_type_name= TRIM(victim_type_name), state_abbr = TRIM(state_abbr),ori = TRIM(ori),
 offense_name = TRIM(offense_name),sex_code = TRIM(sex_code),
