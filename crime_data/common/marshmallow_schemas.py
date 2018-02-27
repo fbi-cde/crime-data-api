@@ -1299,6 +1299,11 @@ class NIBRSRegionVictimDenormAgeSchema(ma.ModelSchema):
         model = cdemodels.NIBRSRegionVictimDenormAge
         ordered = True
 
+class NIBRSRegionDenormVictimOffenderRelationshipSchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSRegionDenormVictimOffenderRelationship
+        ordered = True
+
 class NIBRSRegionVictimDenormLocationSchema(ma.ModelSchema):
     class Meta:
         model = cdemodels.NIBRSRegionVictimDenormLocation
@@ -1322,6 +1327,11 @@ class NIBRSRegionOffenderDenormRaceSchema(ma.ModelSchema):
 class NIBRSRegionOffenderDenormAgeSchema(ma.ModelSchema):
     class Meta:
         model = cdemodels.NIBRSRegionOffenderDenormAge
+        ordered = True
+
+class NIBRSRegionOffenderDenormEthnicitySchema(ma.ModelSchema):
+    class Meta:
+        model = cdemodels.NIBRSRegionOffenderDenormEthnicity
         ordered = True
 
 class NIBRSRegionOffenseCountSchema(ma.ModelSchema):

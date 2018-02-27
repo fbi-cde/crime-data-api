@@ -2191,6 +2191,53 @@ class NIBRSStateDenormVictimOffenderRelationship(db.Model):
     ex_spouse = db.Column(db.Integer)
     data_year = db.Column(db.Integer)
 
+class NIBRSRegionDenormVictimOffenderRelationship(db.Model):
+    """Represents Region Level NIBRS Victim Data"""
+    __tablename__ = 'nibrs_region_denorm_victim_offender_relationship'
+    __table_args__ = (
+        PrimaryKeyConstraint('offense_name', 'data_year','region_name'),
+    )
+
+    def get(region_name=None,offense_name=None):
+        query = NIBRSRegionDenormVictimOffenderRelationship.query
+
+        if region_name:
+            query = query.filter(func.lower(NIBRSRegionDenormVictimOffenderRelationship.region_name) == func.lower(region_name))
+        if offense_name:
+            query = query.filter(NIBRSRegionDenormVictimOffenderRelationship.offense_name.in_(offense_name))
+        return query
+
+    region_code = db.Column(db.Integer)
+    region_name = db.Column(db.String)
+    offense_name = db.Column(db.String)
+    acquaintance = db.Column(db.Integer)
+    babysittee = db.Column(db.Integer)
+    boyfriend_girlfriend = db.Column(db.Integer)
+    child_boyfriend_girlfriend = db.Column(db.Integer)
+    child = db.Column(db.Integer)
+    common_law_spouse = db.Column(db.Integer)
+    employee = db.Column(db.Integer)
+    employer = db.Column(db.Integer)
+    friend = db.Column(db.Integer)
+    grandchild = db.Column(db.Integer)
+    grandparent = db.Column(db.Integer)
+    homosexual_relationship = db.Column(db.Integer)
+    in_law = db.Column(db.Integer)
+    neighbor = db.Column(db.Integer)
+    other_family_member = db.Column(db.Integer)
+    otherwise_known = db.Column(db.Integer)
+    parent = db.Column(db.Integer)
+    relationship_unknown = db.Column(db.Integer)
+    sibling = db.Column(db.Integer)
+    stepchild = db.Column(db.Integer)
+    spouse = db.Column(db.Integer)
+    stepparent = db.Column(db.Integer)
+    stepsibling = db.Column(db.Integer)
+    stranger = db.Column(db.Integer)
+    offender = db.Column(db.Integer)
+    ex_spouse = db.Column(db.Integer)
+    data_year = db.Column(db.Integer)
+
 
 class NIBRSNationalOffenseCount(db.Model):
     """Represents Agency Level NIBRS Offender Ethnicity Data"""
