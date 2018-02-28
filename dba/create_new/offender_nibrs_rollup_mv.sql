@@ -262,13 +262,13 @@ select  s.region_code as region_code,
 r.region_name as region_name,
 n.offense_name as offense_name,
 n.data_year as data_year,
-coalesce(sum(case when n.race_desc = 'Asian' then count end), 0) as asian,
-coalesce(sum(case when n.race_desc = 'Native Hawaiian or Pacific Islander' then count end), 0) as native_hawaiian,
-coalesce(sum(case when n.race_desc = 'Black or African American' then count end), 0) as black,
-coalesce(sum(case when n.race_desc = 'American Indian or Alaska Native' then count end), 0) as american_indian,
-coalesce(sum(case when n.race_desc = 'Unknown' then count end), 0) as unknown,
-coalesce(sum(case when n.race_desc = 'White' then count end), 0) as white
-from public.nibrs_offender_count n, public.state_lk s,public.region_lk r
+sum(n.asian) as asian,
+sum(n.native_hawaiian) as native_hawaiian,
+sum(n.black) as black,
+sum(n.american_indian) as american_indian,
+sum(n.unknown) as unknown,
+sum(n.white) as white
+from public.nibrs_state_denorm_offender_race n, public.state_lk s,public.region_lk r
 where s.region_code = r.region_code
 group by s.region_code,r.region_name, n.offense_name, n.data_year;
 
@@ -277,11 +277,11 @@ select  s.region_code as region_code,
 r.region_name as region_name,
 n.offense_name as offense_name,
 n.data_year as data_year,
-coalesce(sum(case when n.ethnicity_name = 'Hispanic or Latino' then count end), 0) as hispanic,
-coalesce(sum(case when n.ethnicity_name = 'Multiple' then count end), 0) as multiple,
-coalesce(sum(case when n.ethnicity_name = 'Not Hispanic or Latino' then count end), 0) as not_Hispanic,
-coalesce(sum(case when n.ethnicity_name = 'Unknown' then count end), 0) as unknown
-from public.nibrs_offender_count  n, public.state_lk s,public.region_lk r
+sum(n.hispanic) as hispanic,
+sum(n.multiple) as multiple,
+sum(n.not_Hispanic) as not_Hispanic,
+sum(n.unknown) as unknown
+from public.nibrs_state_denorm_offender_ethnicity  n, public.state_lk s,public.region_lk r
 where s.region_code = r.region_code
 group by s.region_code,r.region_name, n.offense_name, n.data_year;
 
@@ -290,21 +290,20 @@ select  s.region_code as region_code,
 r.region_name as region_name,
 n.offense_name as offense_name,
 n.data_year as data_year,
-coalesce(sum(case when n.age_range = '0-9' then count end), 0) as range_0_9,
-coalesce(sum(case when n.age_range = '10-19' then count end), 0) as range_10_19,
-coalesce(sum(case when n.age_range = '20-29' then count end), 0) as range_20_29,
-coalesce(sum(case when n.age_range = '30-39' then count end), 0) as range_30_39,
-coalesce(sum(case when n.age_range = '40-49' then count end), 0) as range_40_49,
-coalesce(sum(case when n.age_range = '50-59' then count end), 0) as range_50_59,
-coalesce(sum(case when n.age_range = '60-69' then count end), 0) as range_60_69,
-coalesce(sum(case when n.age_range = '70-79' then count end), 0) as range_70_79,
-coalesce(sum(case when n.age_range = '80-89' then count end), 0) as range_80_89,
-coalesce(sum(case when n.age_range = '90-99' then count end), 0) as range_90_99,
-coalesce(sum(case when n.age_range = 'UNKNOWN' then count end), 0) as unknown
-from public.nibrs_offender_count n, public.state_lk s,public.region_lk r
+sum(n.range_0_9) as range_0_9,
+sum(n.range_10_19) as range_10_19,
+sum(n.range_20_29) as range_20_29,
+sum(n.range_30_39) as range_30_39,
+sum(n.range_40_49) as range_40_49,
+sum(n.range_50_59) as range_50_59,
+sum(n.range_60_69) as range_60_69,
+sum(n.range_70_79) as range_70_79,
+sum(n.range_80_89) as range_80_89,
+sum(n.range_90_99) as range_90_99,
+sum(n.unknown) as unknown
+from public.nibrs_state_denorm_offender_age n, public.state_lk s,public.region_lk r
 where s.region_code = r.region_code
 group by s.region_code,r.region_name, n.offense_name, n.data_year;
-
 UPDATE nibrs_offender_count
 SET  state_abbr = TRIM(state_abbr),ori = TRIM(ori),
 offense_name = TRIM(offense_name),sex_code = TRIM(sex_code),
