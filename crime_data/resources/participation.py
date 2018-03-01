@@ -111,7 +111,7 @@ class AgencyParticipation(CdeResource):
     @use_args(marshmallow_schemas.ArgumentsSchema)
     @cache(max_age=DEFAULT_MAX_AGE, public=True)
     @tuning_page
-    def get(self, args, ori=None):
+    def get(self, args, ori=None,state_abbr=None):
         self.verify_api_key(args)
-        query = cdemodels.AgencyParticipation.get(ori=ori)
+        query = cdemodels.AgencyParticipation.get(ori=ori,state_abbr=state_abbr)
         return self.with_metadata(query,args)

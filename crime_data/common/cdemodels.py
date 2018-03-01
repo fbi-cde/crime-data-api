@@ -2558,6 +2558,7 @@ class NationalParticipation(db.Model):
     data_year  = db.Column(db.Integer)
     population = db.Column(db.Integer)
     total_agency_count  = db.Column(db.Integer)
+    published_agency_count = db.Column(db.Integer)
     active_agency_count  = db.Column(db.Integer)
     covered_agency_count  = db.Column(db.Integer)
     population_covered  = db.Column(db.Integer)
@@ -2584,6 +2585,7 @@ class RegionParticipation(db.Model):
     region_code = db.Column(db.Integer)
     region_name  = db.Column(db.String)
     total_agency_count  = db.Column(db.Integer)
+    published_agency_count = db.Column(db.Integer)
     active_agency_count  = db.Column(db.Integer)
     covered_agency_count  = db.Column(db.Integer)
     population_covered  = db.Column(db.Integer)
@@ -2610,6 +2612,7 @@ class StateParticipation(db.Model):
     state_id = db.Column(db.Integer)
     state_abbr  = db.Column(db.String)
     total_agency_count  = db.Column(db.Integer)
+    published_agency_count = db.Column(db.Integer)
     active_agency_count  = db.Column(db.Integer)
     covered_agency_count  = db.Column(db.Integer)
     population_covered  = db.Column(db.Integer)
@@ -2623,8 +2626,10 @@ class AgencyParticipation(db.Model):
     __table_args__ = (
         PrimaryKeyConstraint('data_year', 'ori'),
     )
-    def get(ori=None):
+    def get(ori=None,state_abbr=None):
         query = AgencyParticipation.query
+        if state_abbr:
+            query = query.filter(func.lower(AgencyParticipation.state_abbr) == func.lower(state_abbr))
 
         if ori:
             query = query.filter(func.lower(AgencyParticipation.ori) == func.lower(ori))
@@ -2638,9 +2643,10 @@ class AgencyParticipation(db.Model):
     ori  = db.Column(db.String)
     active  = db.Column(db.Boolean)
     covered  = db.Column(db.Boolean)
+    published  = db.Column(db.Boolean)
     nibrs_submitting = db.Column(db.Boolean)
-    nibrs_state_data = db.Column(db.Date)
+    nibrs_start_date = db.Column(db.Date)
     leoka_submitting = db.Column(db.Boolean)
-    leoka_submitting_date = db.Column(db.Date)
+    leoka_start_date = db.Column(db.Date)
     pe_reported_flag = db.Column(db.Boolean)
     srs_submitting = db.Column(db.Boolean)
