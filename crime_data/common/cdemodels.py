@@ -1662,7 +1662,7 @@ class NIBRSNationalOffenderDenormSex(db.Model):
     def get(offense_name=None):
         query = NIBRSNationalOffenderDenormSex.query
         if offense_name:
-            query = query.filter(NIBRSNatNIBRSNationalOffenderDenormSexionalOffenderDenormCount.offense_name.in_(offense_name))
+            query = query.filter(NIBRSNationalOffenderDenormSex.offense_name.in_(offense_name))
         return query
     offense_name = db.Column(db.String)
     male_count = db.Column(db.Integer)

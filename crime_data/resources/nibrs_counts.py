@@ -35,7 +35,7 @@ class NIBRSCountNational(CdeResource):
         elif queryType == 'victim' and variable == 'location':
             self.set_schema(marshmallow_schemas.NIBRSNationalVictimDenormLocationSchema(many=True))
             query = cdemodels.NIBRSNationalVictimDenormLocation.get(offense_name=get_offenses(offense_name))
-            creator = munger.UIComponentCreator(query.all(),'nibrs_location_victim','')
+            creator = munger.UIComponentCreator(query.all(),'nibrs_location','')
         elif queryType == 'offender' and variable == 'count':
             self.set_schema(marshmallow_schemas.NIBRSNationalOffenderDenormCountSchema(many=True))
             query = cdemodels.NIBRSNationalOffenderDenormCount.get(offense_name=get_offenses(offense_name))
