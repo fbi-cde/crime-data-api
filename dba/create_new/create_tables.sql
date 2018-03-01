@@ -174,7 +174,9 @@ CREATE TABLE public.agency_data
   COVERED_FLAG varchar(1),
   COUNTY_NAME varchar(100),
   MSA_NAME varchar(100),
-  PUBLISHABLE_FLAG varchar(1)
+  PUBLISHABLE_FLAG varchar(1),
+  participated varchar(1),
+  nibrs_participated varchar(1)
 );
 
 -- RETA data

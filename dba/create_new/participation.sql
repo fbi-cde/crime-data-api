@@ -10,7 +10,7 @@ sum(  CASE  WHEN extract(year from  agency_data.nibrs_start_date) <= data_year T
 sum(  CASE  WHEN extract(year from  agency_data.nibrs_leoka_start_date) <= data_year THEN 1 ELSE 0 END) AS agency_count_leoka_submitting,
 sum(  CASE WHEN agency_data.pe_reported_flag IS NOT NULL THEN 1 ELSE 0 END) AS agency_count_pe_submitting,
 sum(  CASE WHEN (agency_data.reporting_type::text = 'S'::text) IS NOT NULL THEN 1  ELSE 0 END) AS agency_count_srs_submitting
-from public.agency_data WHERE PUBLISHABLE_FLAG='Y' GROUP BY data_year;
+from public.agency_data GROUP BY data_year;
 
 CREATE MATERIALIZED VIEW participation_region AS
 select data_year as data_year,
@@ -26,7 +26,7 @@ sum(  CASE  WHEN extract(year from  agency_data.nibrs_start_date) <= data_year T
 sum(  CASE  WHEN extract(year from  agency_data.nibrs_leoka_start_date) <= data_year THEN 1 ELSE 0 END) AS agency_count_leoka_submitting,
 sum(  CASE WHEN agency_data.pe_reported_flag IS NOT NULL THEN 1 ELSE 0 END) AS agency_count_pe_submitting,
 sum(  CASE WHEN (agency_data.reporting_type::text = 'S'::text) IS NOT NULL THEN 1  ELSE 0 END) AS agency_count_srs_submitting
-from public.agency_data WHERE PUBLISHABLE_FLAG='Y' GROUP BY data_year,REGION_CODE,REGION_NAME;
+from public.agency_data  GROUP BY data_year,REGION_CODE,REGION_NAME;
 
 CREATE MATERIALIZED VIEW participation_state AS
 select data_year as data_year,
@@ -42,7 +42,7 @@ sum(  CASE  WHEN extract(year from  agency_data.nibrs_start_date) <= data_year T
 sum(  CASE  WHEN extract(year from  agency_data.nibrs_leoka_start_date) <= data_year THEN 1 ELSE 0 END) AS agency_count_leoka_submitting,
 sum(  CASE WHEN agency_data.pe_reported_flag IS NOT NULL THEN 1 ELSE 0 END) AS agency_count_pe_submitting,
 sum(  CASE WHEN (agency_data.reporting_type::text = 'S'::text) IS NOT NULL THEN 1  ELSE 0 END) AS agency_count_srs_submitting
-from public.agency_data WHERE PUBLISHABLE_FLAG='Y' GROUP BY data_year,STATE_ID,STATE_ABBR;
+from public.agency_data GROUP BY data_year,STATE_ID,STATE_ABBR;
 
 CREATE MATERIALIZED VIEW participation_agency AS
 select data_year as data_year,
@@ -59,4 +59,4 @@ COALESCE(  CASE  WHEN extract(year from  agency_data.nibrs_leoka_start_date) <= 
 COALESCE(  CASE  WHEN agency_data.nibrs_leoka_start_date IS NOT NULL THEN nibrs_leoka_start_date  ELSE null END) AS leoka_start_date,
 COALESCE(  CASE WHEN agency_data.pe_reported_flag = 'Y' THEN true  ELSE false END) AS pe_reported_flag,
 COALESCE(  CASE WHEN (agency_data.reporting_type::text = 'S'::text) IS NOT NULL THEN true  ELSE false END) AS srs_submitting
-from public.agency_data WHERE PUBLISHABLE_FLAG='Y' GROUP BY data_year,STATE_ID,STATE_ABBR,PUBLISHABLE_FLAG,ori,pe_reported_flag,reporting_type,population,agency_status,covered_flag,nibrs_start_date,nibrs_leoka_start_date;
+from public.agency_data GROUP BY data_year,STATE_ID,STATE_ABBR,PUBLISHABLE_FLAG,ori,pe_reported_flag,reporting_type,population,agency_status,covered_flag,nibrs_start_date,nibrs_leoka_start_date;
