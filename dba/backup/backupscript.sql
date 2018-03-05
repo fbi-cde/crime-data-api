@@ -1,0 +1,74 @@
+--Tables
+-- new tables
+agency_data
+state_lk
+region_lk
+table_key_mapping
+nibrs_victim_count
+nibrs_offender_count
+nibrs_victim_to_offender_relationship_count
+nibrs_offense_count
+leoka_assault_data
+summarized_data
+
+-mvs
+nibrs_agency_denorm_offender_age;
+nibrs_agency_denorm_offender_ethnicity;
+nibrs_agency_denorm_offender_race;
+nibrs_agency_denorm_offender_count;
+nibrs_agency_denorm_offender_sex;
+nibrs_state_denorm_offender_age;
+nibrs_state_denorm_offender_ethnicity;
+nibrs_state_denorm_offender_race;
+nibrs_state_denorm_offender_count;
+nibrs_state_denorm_offender_sex;
+nibrs_national_denorm_offender_age;
+nibrs_national_denorm_offender_ethnicity;
+nibrs_national_denorm_offender_race;
+nibrs_national_denorm_offender_count;
+nibrs_national_denorm_offender_sex;
+
+
+nibrs_agency_denorm_offense_count;
+nibrs_state_denorm_offense_count;
+nibrs_national_denorm_offense_count;
+
+police_employment_agency
+police_employment_state
+police_employment_region
+police_employment_nation
+
+nibrs_agency_denorm_victim_location;
+nibrs_agency_denorm_victim_age;
+nibrs_agency_denorm_victim_ethnicity;
+nibrs_agency_denorm_victim_race;
+nibrs_agency_denorm_victim_count;
+nibrs_agency_denorm_victim_sex;
+nibrs_state_denorm_victim_location;
+nibrs_state_denorm_victim_age;
+nibrs_state_denorm_victim_ethnicity;
+nibrs_state_denorm_victim_race;
+nibrs_state_denorm_victim_count;
+nibrs_state_denorm_victim_sex;
+nibrs_national_denorm_victim_location;
+nibrs_national_denorm_victim_age;
+nibrs_national_denorm_victim_ethnicity;
+nibrs_national_denorm_victim_race;
+nibrs_national_denorm_victim_count;
+nibrs_national_denorm_victim_sex;
+
+ nibrs_agency_denorm_victim_offender_relationship;
+ nibrs_state_denorm_victim_offender_relationship;
+ nibrs_national_denorm_victim_offender_relationship;
+
+--legacy Tables
+agency_name_edits
+participation_rates
+reta_estimated
+cde_agencies
+agency_participation
+arson_summary
+
+
+DUMP command:
+pg_dump postgres://XXXX:XXXXX@localhost:31337/<long host name> -t agency_data -t state_lk -t region_lk -t table_key_mapping -t nibrs_victim_count -t nibrs_offender_count -t nibrs_victim_to_offender_relationship_count -t nibrs_offense_count -t leoka_assault_data -t summarized_data -t agency_name_edits -t participation_rates -t reta_estimated -t cde_agencies -t agency_participation -t arson_summary backup.pg -f -v
