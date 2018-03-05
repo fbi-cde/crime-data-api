@@ -1,7 +1,15 @@
 # Change Log
 All notable changes to this project will be documented in this file.
+## [2018-3-05]
+### Added
+- Adds Endpoints that return Police Employee Data details
+- Adds new endpoint for Agency Summarized Data
+
+##Changed
+- Alter of NIBRS Counts Endpoints to add offense to query
+
 ## [2018-1-17]
-### Fizxed
+### Fized
 - NIBRS National Endpoints now return values properly  (https://github.com/fbi-cde/crime-data-api/pull/672))
 
 
