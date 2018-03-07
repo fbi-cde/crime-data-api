@@ -30,7 +30,7 @@ CREATE MATERIALIZED VIEW nibrs_national_denorm_victim_ethnicity AS
 select
 offense_name as offense_name,
 data_year as data_year,
-coalesce(sum(case when ethnicity_name = 'Hispanic or Latino' then count end), 0) as hispanic,a
+coalesce(sum(case when ethnicity_name = 'Hispanic or Latino' then count end), 0) as hispanic,
 coalesce(sum(case when ethnicity_name = 'Multiple' then count end), 0) as multiple,
 coalesce(sum(case when ethnicity_name = 'Not Hispanic or Latino' then count end), 0) as not_Hispanic,
 coalesce(sum(case when ethnicity_name = 'Unknown' then count end), 0) as unknown
@@ -174,7 +174,7 @@ coalesce(sum(case when age_range = '90-99' then count end), 0) as range_90_99,
 coalesce(sum(case when age_range = 'UNKNOWN' then count end), 0) as unknown
 from public.nibrs_victim_count group by agency_id, ori, offense_name, data_year;
 
-CCREATE MATERIALIZED VIEW nibrs_agency_denorm_victim_location_temp AS
+CREATE MATERIALIZED VIEW nibrs_agency_denorm_victim_location_temp AS
 select  c.agency_id as agency_id,
 c.ori as ori,
 c.offense_name as offense_name,
@@ -249,7 +249,7 @@ from public.nibrs_victim_count c group by state_id,state_abbr,offense_name, data
 
 CREATE MATERIALIZED VIEW nibrs_state_denorm_victim_location AS
 select state_id as state_id,
-agency_id as state_abbr,
+state_abbr as state_abbr,
 offense_name as offense_name,
 data_year as data_year,
 coalesce(sum(case when location = 'Residence/Home' then sum end), 0) as Residence_Home,
@@ -360,7 +360,6 @@ coalesce(sum(case when location = 'Specialty Store' then sum end), 0) as Special
 coalesce(sum(case when location = 'Tribal Lands' then sum end), 0) as Tribal_Lands,
 coalesce(sum(case when location = 'Convenience Store' then sum end), 0) as convenience_store
 from public.nibrs_national_denorm_victim_location_temp  group by offense_name, data_year;
-
 
 UPDATE nibrs_victim_count
 SET  location = TRIM(location), victim_type_name= TRIM(victim_type_name), state_abbr = TRIM(state_abbr),ori = TRIM(ori),

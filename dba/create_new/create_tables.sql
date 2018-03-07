@@ -114,6 +114,7 @@ CREATE TABLE public.leoka_assault_data
 
 
 -- Agency Data
+-- Agency Data
 CREATE TABLE public.agency_data
 (
   YEARLY_AGENCY_ID int,
@@ -157,6 +158,14 @@ CREATE TABLE public.agency_data
   PE_REPORTED_FLAG varchar(1),
   PE_OFFICER_COUNT int,
   PE_CIVILIAN_COUNT int,
+  MALE_OFFICER int,
+  MALE_CIVILIAN int,
+  MALE_TOTAL int,
+  FEMALE_OFFICER int,
+  FEMALE_CIVILIAN int,
+  FEMALE_TOTAL int,
+  OFFICER_RATE int,
+  EMPLOYEE_RATE int,
   NIBRS_CERT_DATE date,
   NIBRS_START_DATE date,
   NIBRS_LEOKA_START_DATE date,
@@ -166,14 +175,9 @@ CREATE TABLE public.agency_data
   COVERED_FLAG varchar(1),
   COUNTY_NAME varchar(100),
   MSA_NAME varchar(100),
-  MALE_OFFICER int,
-  MALE_CIVILIAN int,
-  MALE_TOTAL int,
-  FEMALE_OFFICER int,
-  FEMALE_CIVILIAN int,
-  FEMALE_TOTAL int,
-  OFFICER_RATE int,
-  EMPLOYEE_RATE int
+  PUBLISHABLE_FLAG varchar(1),
+  participated varchar(1),
+  nibrs_participated varchar(1)
 );
 
 -- RETA data
