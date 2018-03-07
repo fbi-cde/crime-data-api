@@ -35,7 +35,7 @@ class NIBRSCountNational(CdeResource):
         elif queryType == 'victim' and variable == 'location':
             self.set_schema(marshmallow_schemas.NIBRSNationalVictimDenormLocationSchema(many=True))
             query = cdemodels.NIBRSNationalVictimDenormLocation.get(offense_name=get_offenses(offense_name))
-            creator = munger.UIComponentCreator(query.all(),'nibrs_location','')
+            creator = munger.UIComponentCreator(query.all(),'nibrs_victim_location','')
         elif queryType == 'offender' and variable == 'count':
             self.set_schema(marshmallow_schemas.NIBRSNationalOffenderDenormCountSchema(many=True))
             query = cdemodels.NIBRSNationalOffenderDenormCount.get(offense_name=get_offenses(offense_name))
@@ -98,7 +98,7 @@ class NIBRSCountState(CdeResource):
         elif queryType == 'victim' and variable == 'location':
             self.set_schema(marshmallow_schemas.NIBRSStateVictimDenormLocationSchema(many=True))
             query = cdemodels.NIBRSStateVictimDenormLocation.get(state_abbr=state_abbr,offense_name=get_offenses(offense_name))
-            creator = munger.UIComponentCreator(query.all(),'nibrs_location','')
+            creator = munger.UIComponentCreator(query.all(),'nibrs_victim_location','')
         elif queryType == 'offender' and variable == 'count':
             self.set_schema(marshmallow_schemas.NIBRSStateOffenderDenormCountSchema(many=True))
             query = cdemodels.NIBRSStateOffenderDenormCount.get(state_abbr=state_abbr,offense_name=get_offenses(offense_name))
@@ -160,7 +160,7 @@ class NIBRSCountAgency(CdeResource):
         elif queryType == 'victim' and variable == 'location':
             self.set_schema(marshmallow_schemas.NIBRSAgencyVictimDenormLocationSchema(many=True))
             query = cdemodels.NIBRSAgencyVictimDenormLocation.get(ori=ori,offense_name=get_offenses(offense_name))
-            creator = munger.UIComponentCreator(query.all(),'nibrs_location','')
+            creator = munger.UIComponentCreator(query.all(),'nibrs_victim_location','')
         elif queryType == 'offender' and variable == 'count':
             self.set_schema(marshmallow_schemas.NIBRSAgencyOffenderDenormCountSchema(many=True))
             query = cdemodels.NIBRSAgencyOffenderDenormCount.get(ori=ori,offense_name=get_offenses(offense_name))

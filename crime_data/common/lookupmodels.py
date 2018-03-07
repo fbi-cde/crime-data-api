@@ -41,7 +41,7 @@ class RegionLK(db.Model):
 class StateLK(db.Model):
     __tablename__ = 'state_lk'
 
-    def get(region_code=None):
+    def get(region_code=None,state_abbr=None):
         """
         A method to find a state by its region_code
         """
@@ -49,6 +49,9 @@ class StateLK(db.Model):
 
         if region_code:
             query = query.filter(StateLK.region_code == region_code)
+        if state_abbr:
+            query = query.filter(StateLK.state_abbr == state_abbr)
+
         return query
 
     state_id = db.Column(db.Integer, primary_key=True)

@@ -21,7 +21,7 @@ class StateParticipation(CdeResource):
     def get(self, args, state_id=None, state_abbr=None):
         self.verify_api_key(args)
 
-        state = cdemodels.CdeRefState.get(abbr=state_abbr, state_id=state_id).one()
+        state = lookupmodels.StateLK.get(state_abbr=state_abbr).one()
         rates = cdemodels.CdeParticipationRate(state_id=state.state_id).query.order_by('year DESC').all()
         filename = '{}_state_participation'.format(state.state_abbr)
         return self.render_response(rates, args, csv_filename=filename)
