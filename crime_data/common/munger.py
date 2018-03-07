@@ -53,9 +53,10 @@ class UIComponentCreator(object):
         new_data = set()
         new_list = []
         for obj in data:
-            if obj.data_year not in new_data:
+            uuid = str(obj.data_year)+obj.key
+            if uuid not in new_data:
                 new_list.append(obj)
-                new_data.add(obj.data_year)
+                new_data.add(uuid)
 
         uiObject.data = new_list
 
