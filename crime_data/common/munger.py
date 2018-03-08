@@ -46,8 +46,7 @@ class UIComponentCreator(object):
                         if data_year == self.results[i].data_year:
                             d.value =  d.value + getattr(self.results[i], self.keys[j].column_name)
                     d.value = int(d.value)
-                    if d not in data:
-                        data.append(d)
+                    data.append(d)
                 keys.append(key)
         uiObject.keys = keys
         new_data = set()
