@@ -15,7 +15,6 @@ database:
     - psql --username=ubuntu circle_test < dba/crime_data_api_test.sql
 test:
   override:
-    - echo $CF_PASSWORD
     - py.test --cov=crime_data tests/
     - bandit -r .
   post:
