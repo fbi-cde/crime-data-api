@@ -64,6 +64,42 @@ coalesce(sum(case when relationship = 'Victim Was Offender' then count end), 0) 
 coalesce(sum(case when relationship = 'Victim was Ex-Spouse' then count end), 0) as ex_spouse
 from public.nibrs_victim_to_offender_relationship_count group by state_id, state_abbr, offense_name, data_year;
 
+-- region
+CREATE MATERIALIZED VIEW nibrs_region_denorm_victim_offender_relationship AS
+select  s.region_code as region_code,
+r.region_name as region_name,
+n.offense_name as offense_name,
+n.data_year as data_year,
+sum(n.acquaintance) as acquaintance,
+sum(n.babysittee) as babysittee,
+sum(n.boyfriend_girlfriend) as boyfriend_girlfriend,
+sum(n.child_boyfriend_girlfriend) as child_boyfriend_girlfriend,
+sum(n.child) as child,
+sum(n.common_law_spouse) as common_law_spouse,
+sum(n.employee) as employee,
+sum(n.employer) as employer,
+sum(n.friend) as friend,
+sum(n.grandchild) as grandchild,
+sum(n.grandparent) as grandparent,
+sum(n.homosexual_relationship) as homosexual_relationship,
+sum(n.in_law) as in_law,
+sum(n.neighbor) as neighbor,
+sum(n.other_family_member) as other_family_member,
+sum(n.otherwise_known) as otherwise_known,
+sum(n.parent) as parent,
+sum(n.relationship_unknown) as relationship_unknown,
+sum(n.sibling) as sibling,
+sum(n.stepchild) as stepchild,
+sum(n.spouse) as spouse,
+sum(n.stepparent) as stepparent,
+sum(n.stepsibling) as stepsibling,
+sum(n.stranger) as stranger,
+sum(n.offender) as offender,
+sum(n.ex_spouse) as ex_spouse
+from public.nibrs_state_denorm_victim_offender_relationship n, public.state_lk s,public.region_lk r
+where s.region_code = r.region_code
+group by s.region_code,r.region_name, n.offense_name, n.data_year;
+
 CREATE MATERIALIZED VIEW nibrs_agency_denorm_victim_offender_relationship AS
 select  agency_id as agency_id,
 ori as ori,
