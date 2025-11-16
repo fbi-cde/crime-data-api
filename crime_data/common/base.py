@@ -332,7 +332,7 @@ class CdeResource(Resource):
         """
         from sqlalchemy.sql import compiler
         from psycopg2.extensions import adapt as sqlescape
-        # or use the appropiate escape function from your db driver
+        # or use the appropriate escape function from your db driver
         dialect = query.session.bind.dialect
         statement = query.statement
         comp = compiler.SQLCompiler(dialect, statement)
@@ -460,7 +460,7 @@ class CdeResource(Resource):
     def filters(self, parsed):
         """Yields `(key, comparitor, (values))` from `request.args`.
 
-        `parsed` is automatically filled by the Marshmalow schema.
+        `parsed` is automatically filled by the Marshmallow schema.
 
         `comparitor` may be '__eq__', '__gt__', '__le__', etc."""
 

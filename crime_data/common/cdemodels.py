@@ -2153,7 +2153,7 @@ class LeokaAssaultByGroupState(db.Model):
 
 class LeokaAssaultAssignDistNational(db.Model):
     """
-    A method to find Leoka Assault Assignment Distrubution
+    A method to find Leoka Assault Assignment Distribution
     """
     __tablename__ = 'leoka_assault_by_assign_dist_national'
     __table_args__ = (
@@ -2173,7 +2173,7 @@ class LeokaAssaultAssignDistNational(db.Model):
 
 class LeokaAssaultAssignDistRegional(db.Model):
     """
-    Represents Regional Level Leoka Assault Assignment Distrubution
+    Represents Regional Level Leoka Assault Assignment Distribution
     """
     __tablename__ = 'leoka_assault_by_assign_dist_regional'
     __table_args__ = (
@@ -2202,7 +2202,7 @@ class LeokaAssaultAssignDistRegional(db.Model):
 
 
 class LeokaAssaultAssignDistState(db.Model):
-    """Represents State Level LLeoka Assault Assignment Distrubution"""
+    """Represents State Level LLeoka Assault Assignment Distribution"""
     __tablename__ = 'leoka_assault_by_assign_dist_state'
     __table_args__ = (
         PrimaryKeyConstraint('activity_name', 'data_year', 'state_abbr'),
@@ -2229,7 +2229,7 @@ class LeokaAssaultAssignDistState(db.Model):
     other_assisted_actual = db.Column(db.Integer)
 
 class LeokaAssaultAssignDistAgency(db.Model):
-    """Represents Agency Level Leoka Assault Assignment Distrubution"""
+    """Represents Agency Level Leoka Assault Assignment Distribution"""
     __tablename__ = 'leoka_assault_by_assign_dist_agency'
     __table_args__ = (
         PrimaryKeyConstraint('activity_name', 'data_year', 'ori'),
@@ -2294,7 +2294,7 @@ class LeokaAssaultWeaponRegional(db.Model):
     other_actual = db.Column(db.Integer)
 
 class LeokaAssaultWeaponState(db.Model):
-    """Represents State Level LLeoka Assault Assignment Distrubution"""
+    """Represents State Level LLeoka Assault Assignment Distribution"""
     __tablename__ = 'leoka_assault_by_weapon_state'
     __table_args__ = (
         PrimaryKeyConstraint('data_year', 'state_abbr'),
@@ -2316,7 +2316,7 @@ class LeokaAssaultWeaponState(db.Model):
     other_actual = db.Column(db.Integer)
 
 class LeokaAssaultWeaponAgency(db.Model):
-    """Represents Agency Level Leoka Assault Assignment Distrubution"""
+    """Represents Agency Level Leoka Assault Assignment Distribution"""
     __tablename__ = 'leoka_assault_by_weapon_agency'
     __table_args__ = (
         PrimaryKeyConstraint('data_year', 'ori'),

@@ -1,0 +1,30 @@
+[default]
+extend-ignore-identifiers-re = [
+    "AttributeID.*Supress.*",
+]
+
+[default.extend-identifiers]
+AttributeIDSupressMenu = "AttributeIDSupressMenu"
+
+[default.extend-words]
+# words that should not be corrected
+ND = "ND"
+GAM = "GAM"
+OT = "OT"
+BA = "BA"
+HOM = "HOM"
+ser = "ser"
+comparitor = "comparitor"
+AFE = "AFE"
+ANC = "ANC"
+
+
+[files]
+extend-exclude = [
+    ".gitignore",
+    ".pre-commit-config.yaml",
+    "*.sql",
+    "*.json",
+    "*.csv",
+    "*.html"
+]

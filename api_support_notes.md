@@ -95,7 +95,7 @@ Pagination
 App supports `page` and `per_page` arguments. Note that for large
 queries, the total results returned will be a rough estimate for
 performance reasons. This means that if we were to paginate over all
-records, the total nimber of pages might be less or more than the
+records, the total number of pages might be less or more than the
 reported number of pages. Queries that are estimated to return less
 than a 1000 records are then precisely counted so that will not be an
 issue for them.

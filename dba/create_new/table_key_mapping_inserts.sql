@@ -305,82 +305,82 @@ VALUES ('nibrs_location', 'convenience_store','Convenience Store' , 'basic_table
 
 -- NIBRS :Offender Relationship
 INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, title, category, noun)
-VALUES ('nibrs_relatiopnship', 'acquaintance','Acquaintance' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
+VALUES ('nibrs_relationship', 'acquaintance','Acquaintance' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
 
 INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, title, category, noun)
-VALUES ('nibrs_relatiopnship', 'babysittee','Babysittee' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
+VALUES ('nibrs_relationship', 'babysittee','Babysittee' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
 
 INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, title, category, noun)
-VALUES ('nibrs_relatiopnship', 'boyfriend_girlfriend','Boyfriend/Girlfriend' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
+VALUES ('nibrs_relationship', 'boyfriend_girlfriend','Boyfriend/Girlfriend' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
 
 INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, title, category, noun)
-VALUES ('nibrs_relatiopnship', 'child_boyfriend_girlfriend','Child of Boyfriend/Girlfriend' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
+VALUES ('nibrs_relationship', 'child_boyfriend_girlfriend','Child of Boyfriend/Girlfriend' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
 
 INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, title, category, noun)
-VALUES ('nibrs_relatiopnship', 'child','Child' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
+VALUES ('nibrs_relationship', 'child','Child' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
 
 INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, title, category, noun)
-VALUES ('nibrs_relatiopnship', 'common_law_spouse','Spouse' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
+VALUES ('nibrs_relationship', 'common_law_spouse','Spouse' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
 
 INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, title, category, noun)
-VALUES ('nibrs_relatiopnship', 'employee','Employee' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
+VALUES ('nibrs_relationship', 'employee','Employee' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
 
 INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, title, category, noun)
-VALUES ('nibrs_relatiopnship', 'employer','Employer' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
+VALUES ('nibrs_relationship', 'employer','Employer' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
 
 INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, title, category, noun)
-VALUES ('nibrs_relatiopnship', 'friend','Friend' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
+VALUES ('nibrs_relationship', 'friend','Friend' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
 
 INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, title, category, noun)
-VALUES ('nibrs_relatiopnship', 'grandchild','Grandchild' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
+VALUES ('nibrs_relationship', 'grandchild','Grandchild' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
 
 INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, title, category, noun)
-VALUES ('nibrs_relatiopnship', 'grandparent','Grandparent' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
+VALUES ('nibrs_relationship', 'grandparent','Grandparent' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
 
 INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, title, category, noun)
-VALUES ('nibrs_relatiopnship', 'homosexual_relationship','Homosexual Relationship' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
+VALUES ('nibrs_relationship', 'homosexual_relationship','Homosexual Relationship' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
 
 INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, title, category, noun)
-VALUES ('nibrs_relatiopnship', 'in_law','In-Law' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
+VALUES ('nibrs_relationship', 'in_law','In-Law' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
 
 INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, title, category, noun)
-VALUES ('nibrs_relatiopnship', 'neighbor','Neighbor' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
+VALUES ('nibrs_relationship', 'neighbor','Neighbor' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
 
 INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, title, category, noun)
-VALUES ('nibrs_relatiopnship', 'other_family_member','Other Family Member' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
+VALUES ('nibrs_relationship', 'other_family_member','Other Family Member' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
 
 INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, title, category, noun)
-VALUES ('nibrs_relatiopnship', 'otherwise_known','Otherwise Known' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
+VALUES ('nibrs_relationship', 'otherwise_known','Otherwise Known' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
 
 INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, title, category, noun)
-VALUES ('nibrs_relatiopnship', 'parent','Parent' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
+VALUES ('nibrs_relationship', 'parent','Parent' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
 
 INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, title, category, noun)
-VALUES ('nibrs_relatiopnship', 'relationship_unknown','Relationship Unknown' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
+VALUES ('nibrs_relationship', 'relationship_unknown','Relationship Unknown' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
 
 INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, title, category, noun)
-VALUES ('nibrs_relatiopnship', 'sibling','Sibling' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
+VALUES ('nibrs_relationship', 'sibling','Sibling' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
 
 INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, title, category, noun)
-VALUES ('nibrs_relatiopnship', 'stepchild','Stepchild' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
+VALUES ('nibrs_relationship', 'stepchild','Stepchild' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
 
 INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, title, category, noun)
-VALUES ('nibrs_relatiopnship', 'spouse','Spouse' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
+VALUES ('nibrs_relationship', 'spouse','Spouse' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
 
 INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, title, category, noun)
-VALUES ('nibrs_relatiopnship', 'stepparent','Stepparent' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
+VALUES ('nibrs_relationship', 'stepparent','Stepparent' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
 
 INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, title, category, noun)
-VALUES ('nibrs_relatiopnship', 'stepsibling','Stepsibling' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
+VALUES ('nibrs_relationship', 'stepsibling','Stepsibling' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
 
 INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, title, category, noun)
-VALUES ('nibrs_relatiopnship', 'stranger','Stranger' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
+VALUES ('nibrs_relationship', 'stranger','Stranger' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
 
 INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, title, category, noun)
-VALUES ('nibrs_relatiopnship', 'offender','Offender' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
+VALUES ('nibrs_relationship', 'offender','Offender' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
 
 INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, title, category, noun)
-VALUES ('nibrs_relatiopnship', 'ex_spouse','Ex Spouse' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
+VALUES ('nibrs_relationship', 'ex_spouse','Ex Spouse' , 'basic_table', 'Victim’s relationship to the offender','Victim’s relationship to the offender','incident');
 
 -- NIBRS Offense count
 INSERT INTO public.table_key_mapping(table_name, column_name, key, ui_component, title, noun)
