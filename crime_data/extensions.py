@@ -8,7 +8,7 @@ from sqlalchemy.pool import NullPool
 class SQLAlchemy(SQLAlchemyBase):
   def apply_driver_hacks(self, app, info, options):
     super(SQLAlchemy, self).apply_driver_hacks(app, info, options)
-    # A DB pool is unnescessary.
+    # A DB pool is unnecessary.
     options['poolclass'] = NullPool 
     options.pop('pool_size', None)
 

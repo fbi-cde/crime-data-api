@@ -63,7 +63,7 @@ class NIBRSCountNational(CdeResource):
         elif queryType == 'victim' and variable == 'relationships':
             self.set_schema(marshmallow_schemas.NIBRSNationalDenormVictimOffenderRelationshipSchema(many=True))
             query = cdemodels.NIBRSNationalDenormVictimOffenderRelationship.get(offense_name=get_offenses(offense_name))
-            creator = munger.UIComponentCreator(query.all(),'nibrs_relatiopnship','')
+            creator = munger.UIComponentCreator(query.all(),'nibrs_relationship','')
         else:
             return self.with_metadata([], args)
         return self.with_metadata(query,args)

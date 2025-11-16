@@ -14,7 +14,7 @@ ma = Marshmallow()
 AGE_CODES = {'BB': 0, 'NB': 0, 'NN': 0, '99': 99, }
 
 
-class SchemaFormater(object):
+class SchemaFormatter(object):
     """Useful methods for schema transformations"""
 
     @classmethod
@@ -584,7 +584,7 @@ class NibrsVictimInjurySchema(ma.ModelSchema):
     injury = ma.Nested(NibrsInjurySchema)
 
 
-class NibrsVictimSchema(ma.ModelSchema, SchemaFormater):
+class NibrsVictimSchema(ma.ModelSchema, SchemaFormatter):
     class Meta:
         model = models.NibrsVictim
         exclude = ('victim_seq_num', 'victim_id', 'ff_line_number', )
@@ -605,7 +605,7 @@ class NibrsVictimSchema(ma.ModelSchema, SchemaFormater):
         return out_data
 
 
-class NibrsArresteeSchema(ma.ModelSchema, SchemaFormater):
+class NibrsArresteeSchema(ma.ModelSchema, SchemaFormatter):
     class Meta:
         model = models.NibrsArrestee
         exclude = ('arrestee_id',
@@ -633,7 +633,7 @@ class NibrsArrestTypeSchema(ma.ModelSchema):
         ordered = True
 
 
-class NibrsOffenderSchema(ma.ModelSchema, SchemaFormater):
+class NibrsOffenderSchema(ma.ModelSchema, SchemaFormatter):
     class Meta:
         model = models.NibrsOffender
         exclude = ('offender_id',
